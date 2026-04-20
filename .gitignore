@@ -1,0 +1,40 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (if ever used)
+node_modules/
+npm-debug.log*
+
+# Python (if ever used for parsing)
+__pycache__/
+*.py[cod]
+*.pyc
+.pytest_cache/
+
+# Local/temp
+*.log
+*.tmp
+tmp/
+temp/
+
+# Save files from users (shouldn't be in repo)
+*-save.json
+podzch-save.json
+.local_saves/
+
+# Build artifacts (optional - uncomment to skip)
+# dist/
+
+# Secrets (safety)
+.env
+.env.local
+secrets.json
