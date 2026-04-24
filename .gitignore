@@ -34,6 +34,9 @@ podzch-save.json
 # Build artifacts (optional - uncomment to skip)
 # dist/
 
+# Handoff drafts for external AI sessions (local working notes, not for git)
+_handoff/
+
 # Secrets (safety)
 .env
 .env.local

@@ -1,7 +1,10 @@
 # Midjourney Prompts Catalog
 
-Complete prompts and reference URLs for all 36 illustrations in
+Complete prompts and reference URLs for all **43 illustrations** in
 *Dungeons of the Black Castle* (remake 1991, 1221-paragraph edition).
+
+**Status:** 36 illustrations generated (with CDN ref URL), 7 pending
+generation (Batch 4 below — prompts ready, awaiting Midjourney render).
 
 ## Hero character reference
 
@@ -85,10 +88,11 @@ of the winning render (usable as `--cref` to re-generate variations).
 /imagine massive ancient dragon coiled around the base of a dark stone castle, glowing amber eye, smoke rising from arched gateway, hooded hero in dark cloak approaching cautiously, small compared to the beast, dark Slavic fantasy oil painting, Ivan Bilibin style meets Frank Frazetta meets Viktor Vasnetsov, muted earth tones, candlelit gothic atmosphere, painterly detail, cinematic framing, golden autumn leaves drifting --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --ar 3:2 --stylize 250 --v 6 --no cartoon, anime, modern clothing, CGI, text, watermark
 ```
 
-#### `art09_sleeping_princess` — Sleeping princess on crystal bed
+#### `art09_sleeping_princess` — Sleeping princess on crystal bed (pre-victory)
 
-- **Remake (1221) paragraphs:** §1072, §1220
+- **Remake (1221) paragraphs:** §1072
 - **Original (583) paragraphs:** §617
+- **Note:** §1220 (victory scene) was moved to `art52_princess_rescue` in Batch 4.
 - **Reference URL:** https://cdn.midjourney.com/f2d46e42-cd9f-48a5-8a49-0e57bef87e56/0_0.png
 
 **Prompt:**
@@ -471,6 +475,102 @@ of the winning render (usable as `--cref` to re-generate variations).
 
 ```
 /imagine two muscular lumberjacks with axes attacking in enchanted forest, bundles of firewood on their shoulders, hooded hero raises sword, golden autumn leaves whirling, black castle looms behind, dark Slavic fantasy oil painting, Ivan Bilibin style meets Frank Frazetta meets Viktor Vasnetsov, muted earth tones, candlelit gothic atmosphere, painterly detail, cinematic framing, golden autumn leaves drifting --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --ar 3:2 --stylize 250 --v 6 --no cartoon, anime, modern clothing, CGI, text, watermark
+```
+
+### Batch 4 — New key encounters (pending generation)
+
+> **Status:** These 7 illustrations have vetted prompts and verified
+> paragraph targets, but Midjourney renders are NOT YET generated. After
+> running the prompts, paste the winning CDN URLs into each entry's
+> **Reference URL** below and into `art-pack/metadata/art_catalog.py`
+> (`CATALOG[art_id]['ref_url']`).
+>
+> All paragraph numbers were cross-checked against `assets/fb2_remake.fb2` —
+> every scene corresponds to an actual encounter in the remake.
+
+#### `art40_giant_spider_web` — Giant spider descends from web trap
+
+- **Remake (1221) paragraphs:** §436, §448
+- **Scene context:** §436 — the "rope ladder" turns out to be a giant spider web; §448 — combat with the giant spider (Skill 5, Stamina 8).
+- **Reference URL:** *(pending)*
+
+**Prompt:**
+
+```
+/imagine monstrous giant black spider descending from thick white glowing webs in a dark dead forest, hooded hero in dark cloak trapped in a sticky rope-ladder-like web, struggling with a sword, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6
+```
+
+#### `art41_green_knight_mounted` — Green Knight on horseback with lance
+
+- **Remake (1221) paragraphs:** §656
+- **Scene context:** A mounted Green Knight appears on the road with a lance and a shield bearing a black dragon silhouette. Different from `art33_green_knights` (three dismounted knights on foot).
+- **Reference URL:** *(pending)*
+
+**Prompt:**
+
+```
+/imagine towering menacing knight in ornate deep green heavy plate armor wielding a massive lance, riding a black warhorse on misty forest road, black dragon silhouette on shield, hooded hero in dark cloak preparing to fight, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6
+```
+
+#### `art42_crypt_skeletons` — Undead skeletons rising in a crypt
+
+- **Remake (1221) paragraphs:** §733, §811, §1108
+- **Scene context:** §733 — a skeleton blocks a doorway; §811 — victory over a skeleton, two sarcophagi nearby; §1108 — underground tomb of the dead.
+- **Reference URL:** *(pending)*
+
+**Prompt:**
+
+```
+/imagine three terrifying undead skeletons in tattered medieval rags rising from ancient stone sarcophagi, glowing blue eyes, rusted swords, hooded hero in dark cloak holding a torch, underground crypt with burial chambers, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6
+```
+
+#### `art46_giant_snake` — Giant snake with strangely human-shaped head
+
+- **Remake (1221) paragraphs:** §421, §528
+- **Scene context:** §421 — a serpent appears with a head resembling a huge human hand; §528 — combat (Skill 8, Stamina 6).
+- **Reference URL:** *(pending)*
+
+**Prompt:**
+
+```
+/imagine colossal venomous snake with shimmering green and black scales coiled around a dead twisted tree, the serpent head unsettlingly resembling a human hand, dripping fangs, hooded hero in dark cloak standing defensive with sword drawn, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6
+```
+
+#### `art47_stone_rats` — Swarm of petrified stone rats (not ordinary rats!)
+
+- **Remake (1221) paragraphs:** §1003, §1110
+- **Scene context:** Rats in this book are made of **stone** — fire spells don't work on them; only the Green Knight's sword can cut them; the Weakness spell makes them too heavy to move. This is not generic vermin.
+- **Reference URL:** *(pending)*
+
+**Prompt:**
+
+```
+/imagine swarm of menacing stone-rat creatures with partially petrified bodies, cracked granite skin showing veins of muscle, glowing red eye-sockets, gnashing stone fangs scurrying over damp slate dungeon floor, hooded hero in dark cloak swinging a glowing pale-green steel sword to cut through them, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6
+```
+
+#### `art51_barlad_dert_boss` — Final duel: Barlad Dert with glowing sword in his study
+
+- **Remake (1221) paragraphs:** §823, §1096, §1164
+- **Scene context:** §1096 — first meeting: Barlad is a small, tired-looking man at a desk covered in maps; he animates a statue/gargoyle to deal with the hero. §1164 — Barlad talks condescendingly, revealing he watched the whole journey. §823 — the actual duel: the hero rushes him barehanded, then Barlad draws a glowing sword (Skill 13, Stamina 13, no spells allowed).
+- **Reference URL:** *(pending)*
+
+**Prompt:**
+
+```
+/imagine epic final duel against a small slight tired-looking dark sorcerer in black robes, glowing pale magical longsword in his hand, massive writing desk covered in maps and scrolls behind him, gothic study lit by candles, hooded hero in dark cloak rushing him with bare hands before drawing sword, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6
+```
+
+#### `art52_princess_rescue` — Victory — Barlad Dert is slain, Princess is free
+
+- **Remake (1221) paragraphs:** §1220 (final ending)
+- **Original (583) paragraphs:** §617
+- **Scene context:** The journey ends. The hero has killed Barlad Dert, and the Princess is freed. All the castle's evil servants flee. Previously this paragraph was mapped to `art09_sleeping_princess` — reassigned here for a more triumphant visual.
+- **Reference URL:** *(pending)*
+
+**Prompt:**
+
+```
+/imagine hooded hero in dark cloak holding the hand of a beautiful young princess in a torn medieval gown, standing together in a grand castle hall at dawn, soft divine light breaking through tall gothic windows, Barlad Derts black robes crumpled on the floor behind them, relief on the princesss face, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6
 ```
 
 ---

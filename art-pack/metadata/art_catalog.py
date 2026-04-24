@@ -44,10 +44,10 @@ CATALOG = {
         'original_paragraphs': [37, 41],
     },
     'art09_sleeping_princess': {
-        'scene': 'Sleeping princess on crystal bed',
+        'scene': 'Sleeping princess on crystal bed (pre-victory)',
         'prompt': 'beautiful young slavic princess with fair pale skin lying on ornate bed, eyes closed in enchanted sleep, dark cloaked hooded figure watching over her from the background, cathedral castle interior, candles and autumn leaves',
         'ref_url': 'https://cdn.midjourney.com/f2d46e42-cd9f-48a5-8a49-0e57bef87e56/0_0.png',
-        'remake_paragraphs': [1072, 1220],
+        'remake_paragraphs': [1072],  # §1220 moved to art52_princess_rescue (victory scene)
         'original_paragraphs': [617],
     },
     'art10_victory_hero_throne': {
@@ -278,12 +278,84 @@ CATALOG = {
         'remake_paragraphs': [247],
         'original_paragraphs': [6],
     },
+
+    # ─── BATCH 4: New key encounters (proposed by Gemini, paragraphs verified) ───
+    # Status: prompts ready, Midjourney generation PENDING.
+    # 'ref_url' will be filled in after the arts are generated.
+    'art40_giant_spider_web': {
+        'scene': 'Giant spider descends from web trap (rope-ladder scene)',
+        'prompt': 'monstrous giant black spider descending from thick white glowing webs in a dark dead forest, hooded hero in dark cloak trapped in a sticky rope-ladder-like web, struggling with a sword, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': None,  # TO BE FILLED after MJ generation
+        'remake_paragraphs': [436, 448],
+        'original_paragraphs': [],
+    },
+    'art41_green_knight_mounted': {
+        'scene': 'Green Knight on horseback with lance',
+        'prompt': 'towering menacing knight in ornate deep green heavy plate armor wielding a massive lance, riding a black warhorse on misty forest road, black dragon silhouette on shield, hooded hero in dark cloak preparing to fight, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': None,
+        'remake_paragraphs': [656],
+        'original_paragraphs': [],
+    },
+    'art42_crypt_skeletons': {
+        'scene': 'Undead skeletons rising in a crypt',
+        'prompt': 'three terrifying undead skeletons in tattered medieval rags rising from ancient stone sarcophagi, glowing blue eyes, rusted swords, hooded hero in dark cloak holding a torch, underground crypt with burial chambers, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': None,
+        'remake_paragraphs': [733, 811, 1108],
+        'original_paragraphs': [],
+    },
+    'art46_giant_snake': {
+        'scene': 'Giant snake with strangely human-shaped head',
+        'prompt': 'colossal venomous snake with shimmering green and black scales coiled around a dead twisted tree, the serpent head unsettlingly resembling a human hand, dripping fangs, hooded hero in dark cloak standing defensive with sword drawn, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': None,
+        'remake_paragraphs': [421, 528],
+        'original_paragraphs': [],
+    },
+    'art47_stone_rats': {
+        # NOTE: prompt rewritten — in the book they are STONE rats, only the Green Knight's sword hurts them
+        'scene': 'Swarm of petrified stone rats attacking in dungeon',
+        'prompt': 'swarm of menacing stone-rat creatures with partially petrified bodies, cracked granite skin showing veins of muscle, glowing red eye-sockets, gnashing stone fangs scurrying over damp slate dungeon floor, hooded hero in dark cloak swinging a glowing pale-green steel sword to cut through them, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': None,
+        'remake_paragraphs': [1003, 1110],
+        'original_paragraphs': [],
+    },
+    'art51_barlad_dert_boss': {
+        'scene': 'Final duel: Barlad Dert with glowing sword in his study',
+        'prompt': 'epic final duel against a small slight tired-looking dark sorcerer in black robes, glowing pale magical longsword in his hand, massive writing desk covered in maps and scrolls behind him, gothic study lit by candles, hooded hero in dark cloak rushing him with bare hands before drawing sword, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': None,
+        'remake_paragraphs': [823, 1096, 1164],
+        'original_paragraphs': [],
+    },
+    'art52_princess_rescue': {
+        'scene': 'Victory — Barlad Dert is slain, Princess is free',
+        'prompt': 'hooded hero in dark cloak holding the hand of a beautiful sad young princess in a torn medieval gown, standing together in a grand castle hall at dawn, soft divine light breaking through tall gothic windows, Barlad Derts black robes crumpled on the floor behind them, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': None,
+        'remake_paragraphs': [1220],
+        'original_paragraphs': [617],
+    },
 }
 
 if __name__ == '__main__':
     import json
     print(f"Total illustrations: {len(CATALOG)}")
+    generated = sum(1 for v in CATALOG.values() if v.get('ref_url'))
+    pending = len(CATALOG) - generated
+    print(f"Already generated (have ref_url): {generated}")
+    print(f"Pending generation (no ref_url):  {pending}")
     mapped = sum(1 for v in CATALOG.values() if v['remake_paragraphs'])
     print(f"With paragraph mapping: {mapped}")
     total_remake_paras = sum(len(v['remake_paragraphs']) for v in CATALOG.values())
     print(f"Total remake paragraph coverage: {total_remake_paras}")
+
+    # Check for duplicate paragraph assignments
+    from collections import defaultdict
+    para_owners = defaultdict(list)
+    for art_id, data in CATALOG.items():
+        for p in data['remake_paragraphs']:
+            para_owners[p].append(art_id)
+    conflicts = {p: arts for p, arts in para_owners.items() if len(arts) > 1}
+    if conflicts:
+        print("\n⚠ CONFLICTS (same paragraph assigned to multiple arts):")
+        for p, arts in sorted(conflicts.items()):
+            print(f"  §{p}: {', '.join(arts)}")
+    else:
+        print("\n✓ No paragraph conflicts")
