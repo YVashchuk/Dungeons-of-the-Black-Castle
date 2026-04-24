@@ -10,7 +10,7 @@
 
 Откройте [`dist/podzemelye-chyornogo-zamka-remake.html`](dist/podzemelye-chyornogo-zamka-remake.html) в браузере (Chrome, Edge или Firefox).
 
-Игра работает **полностью offline** — никаких внешних зависимостей, никаких установок. Один самодостаточный HTML-файл (~9 MB).
+Игра работает **полностью offline** — никаких внешних зависимостей, никаких установок. Один самодостаточный HTML-файл (~9.3 MB).
 
 ## ✨ Возможности
 
@@ -23,7 +23,7 @@
 - **8 заклятий Майлина:** Огонь, Плавание, Левитация, Иллюзия, Сила, Слабость, Копия, Исцеление
 
 ### UI/UX
-- 🖼 **36 цветных иллюстраций Midjourney** в едином стиле (dark Slavic fantasy)
+- 🖼 **36 цветных иллюстраций Midjourney** в едином стиле (dark Slavic fantasy) + 7 подготовленных промптов к новым артам
 - 🖼 **28 чёрно-белых иллюстраций** из издания 1991 г. (fallback когда нет MJ-арта)
 - 🗺 **Интерактивная карта** с fog-of-war (клавиша `M`)
 - 🎒 **Автоматический инвентарь** — 56 параграфов с NLP-парсингом предметов и золота
@@ -49,9 +49,9 @@
 | Концовок | 60 |
 | Автоматических предметов | 56 параграфов |
 | Узлов на карте | 35 |
-| Цветных MJ-иллюстраций | 36 |
+| Цветных MJ-иллюстраций | 36 (+7 pending) |
 | Ч/б иллюстраций (1991) | 28 |
-| Параграфов покрыто MJ-артом | 91 |
+| Параграфов покрыто MJ-артом | 91 (112 после Batch 4) |
 
 ## 🏗 Структура репозитория
 
@@ -64,17 +64,27 @@ Dungeons-of-the-Black-Castle/
 ├── .gitignore
 ├── build.sh                            # Скрипт сборки src/* → dist/
 │
-├── dist/
-│   └── podzemelye-chyornogo-zamka-remake.html   # 🎮 ИГРАТЬ ЗДЕСЬ (9 MB)
+├── dist/                               # 🎮 Играбельный билд
+│   ├── podzemelye-chyornogo-zamka-remake.html   # Single-file игра (~9.3 MB)
+│   ├── manifest.webmanifest            # (prepared) PWA install metadata
+│   ├── sw.js                           # (prepared) Service Worker
+│   └── icons/
+│       ├── icon-192.png
+│       ├── icon-512.png
+│       └── icon-maskable-512.png       # Android adaptive icon
 │
 ├── src/                                # Исходники (собираются в dist)
 │   ├── game_shell_top.html             # HTML+CSS оболочка
-│   ├── remake_data.js                  # GD = 1221 параграф
+│   ├── remake_data.js                  # GD = 1221 параграф (синк с dist)
 │   ├── mj_art.js                       # 36 Midjourney иллюстраций (base64 + MJ_META)
 │   ├── illustrations.js                # 28 ч/б иллюстраций 1991 (fallback)
 │   ├── title_art.js                    # Lineart титула
 │   ├── map_module.js                   # Модуль карты (fog-of-war)
-│   └── game_logic.js                   # Игровая логика (MJ приоритет над ILLUST)
+│   ├── game_logic.js                   # Игровая логика (MJ приоритет над ILLUST)
+│   ├── mobile.css                      # (prepared) Pixel 7a + safe-area-inset
+│   └── fonts/                          # (prepared) Self-hosted Cinzel/Cormorant woff2
+│       ├── fonts.css                   # @font-face declarations
+│       └── *.woff2                     # 7 файлов, 149 KB
 │
 ├── assets/                             # Источники (текст + PDF + арт)
 │   ├── fb2_remake.fb2                  # Каноничный источник (1221 параграф)
@@ -90,16 +100,23 @@ Dungeons-of-the-Black-Castle/
 │
 ├── art-pack/
 │   └── metadata/
-│       └── art_catalog.py              # Python-каталог: промпты + CDN URL + маппинг
+│       └── art_catalog.py              # Python-каталог: 43 арта, промпты + CDN URL + маппинг
 │
 ├── docs/
-│   └── MIDJOURNEY_PROMPTS.md           # Все 36 промптов + hero --cref URL
+│   ├── MIDJOURNEY_PROMPTS.md           # Все 43 промпта (36 generated + 7 pending) + hero --cref
+│   ├── GRAPH_AUDIT.md                  # Граф-аудит 1221 параграфа (от Gemini G-2)
+│   └── PWA_IMPLEMENTATION.md           # План активации PWA (от ChatGPT C-1)
 │
-└── scripts/                            # Git push helpers
-    ├── init_and_push.sh
-    ├── update_and_push.sh
-    └── ...
+├── scripts/                            # Git push helpers
+│
+└── _handoff/                           # Briefs для передачи контекста в новые AI-сессии
+    ├── PROJECT_BRIEF.md
+    ├── TASKS_CHATGPT.md
+    └── TASKS_GEMINI.md
 ```
+
+> **(prepared)** — файлы подготовлены, но ещё не активированы в билде.
+> См. [`docs/PWA_IMPLEMENTATION.md`](docs/PWA_IMPLEMENTATION.md) для плана активации PWA.
 
 ## 🔨 Сборка
 
@@ -111,7 +128,7 @@ bash build.sh
 
 ## 🎨 Иллюстрации
 
-Все 36 Midjourney-артов сгенерированы в единой стилистике (dark Slavic fantasy, Ivan Bilibin × Frank Frazetta × Viktor Vasnetsov) с общим референсом героя (hooded traveler).
+Все 36 сгенерированных Midjourney-артов выполнены в единой стилистике (dark Slavic fantasy, Ivan Bilibin × Frank Frazetta × Viktor Vasnetsov) с общим референсом героя (hooded traveler). Подготовлены 7 дополнительных промптов для Batch 4 — ключевые боссы и сцены (спайдер, рыцарь на коне, скелеты в склепе, змея, каменные крысы, финал с Барладом, освобождение принцессы).
 
 Для перегенерации или добавления новых сцен:
 
@@ -126,10 +143,13 @@ bash build.sh
 
 ## 🧭 Дальше
 
-- [ ] Мобильная адаптация (Android, Pixel 7a)
-- [ ] PWA manifest + Service Worker (установка на главный экран)
-- [ ] Реальные WAV/OGG звуки
+- [x] Граф-аудит игровой логики (см. [`docs/GRAPH_AUDIT.md`](docs/GRAPH_AUDIT.md))
+- [x] Подготовка PWA (см. [`docs/PWA_IMPLEMENTATION.md`](docs/PWA_IMPLEMENTATION.md))
+- [ ] Сгенерировать 7 артов Batch 4 в Midjourney (промпты готовы)
+- [ ] Активировать PWA (требует HTTPS хостинг)
+- [ ] Реальные WAV/OGG звуки (sound pack)
 - [ ] Полное тестовое прохождение §1 → §1220
+- [ ] Custom combat conditions (wound_2 для Дракона §532, динамическая математика §13 рыбка, §140 Золотой ключ)
 
 ## 📜 Источники
 
@@ -141,7 +161,7 @@ bash build.sh
 ## 🛠 Технологии
 
 - Vanilla JavaScript (без фреймворков)
-- Single-file HTML5 (~9 MB с иллюстрациями)
+- Single-file HTML5 (~9.3 MB с иллюстрациями)
 - CSS3 + CSS Variables
 - SVG для карты и fog-of-war
 - Web Audio API для звуков
@@ -153,4 +173,4 @@ bash build.sh
 
 ---
 
-Разработано с использованием Claude Opus 4.7 (Anthropic) и ChatGPT.
+Разработано с использованием Claude Opus 4.7 (Anthropic), ChatGPT 5.5 Extended и Gemini 3.1 Pro.

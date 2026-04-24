@@ -184,4 +184,10 @@ Beyond data fixes, the engine should gain:
 - No graph cycles detected (beyond legitimate revisit-same-scene mechanics).
 - All `choice.target` values point to valid existing paragraphs (except the §1830 text typo, which was *not* in choices and has been fixed).
 - No paragraph has `choices.length > 10` (UI can always render).
-- All 1221 paragraphs reachable from §1 via BFS **except** the 4 bird orphans.
+- Strict `choice.target` BFS from §1 reaches only 1109 of 1221 paragraphs. The remaining 112 unreachable by naive BFS include:
+  - 4 true orphans (bird-guide hints §106, §151, §178, §277 — see I.1)
+  - ~40 paragraphs reachable only via dynamic math (§13 fish +15, §140 gold key +30, §95 password §146)
+  - ~30 paragraphs reachable only via `luck_type` alternative branches (luck-check success/failure routes that aren't direct targets)
+  - ~30 paragraphs reachable only via combat outcomes (Dragon `wound_2` → §437, escape paths, etc.)
+  - A few reachable only via `spell` effects that redirect navigation
+  - So in practice the reachable set is close to 100% — but a naive graph-only tool like Gemini's G-2 sees only 4 orphans because it checks incoming edges rather than traversal.

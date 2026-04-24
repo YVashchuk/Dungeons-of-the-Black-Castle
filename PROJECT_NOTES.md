@@ -40,27 +40,54 @@ Dungeons-of-the-Black-Castle/
 │       ├── originals/          ← 36 Midjourney PNGs, FULL RESOLUTION (kept as source)
 │       └── web/                ← 36 web-optimised JPEGs (900px, Q82) for runtime
 ├── src/                        ← Game source (JS + HTML shell)
-│   ├── game_shell_top.html     ← HTML frame + CSS
-│   ├── remake_data.js          ← GD = {1221 paragraph objects}
+│   ├── game_shell_top.html     ← HTML frame + CSS (still uses Google Fonts @import)
+│   ├── remake_data.js          ← GD = {1221 paragraph objects}, synced with dist
 │   ├── mj_art.js               ← Midjourney illustrations (base64 + MJ_MAP + MJ_META)
 │   ├── illustrations.js        ← Legacy 1991 b/w scans (fallback when no MJ art)
 │   ├── title_art.js            ← Title-screen lineart
 │   ├── map_module.js           ← Map / fog-of-war panel
-│   └── game_logic.js           ← Engine: combat, luck, inventory, rendering
+│   ├── game_logic.js           ← Engine: combat, luck, inventory, rendering
+│   ├── mobile.css              ← (PREPARED, not active) Pixel 7a layout + safe-area
+│   └── fonts/                  ← (PREPARED, not active) Self-hosted woff2
+│       ├── fonts.css           ← @font-face declarations (replacement for Google Fonts)
+│       └── *.woff2             ← 7 files, ~149 KB
 ├── art-pack/
 │   └── metadata/
-│       └── art_catalog.py      ← Programmatic catalog: prompts + CDN URLs + mappings
+│       └── art_catalog.py      ← Programmatic catalog: 43 arts (36 generated + 7 pending)
 ├── docs/
-│   └── MIDJOURNEY_PROMPTS.md   ← All 36 prompts + hero --cref URL (re-generation)
-├── dist/
-│   └── podzemelye-chyornogo-zamka-remake.html  ← BUILT single-file game (~9 MB)
+│   ├── MIDJOURNEY_PROMPTS.md   ← All 43 prompts + hero --cref URL (re-generation)
+│   ├── GRAPH_AUDIT.md          ← Graph & UX audit (Gemini G-2 verified)
+│   └── PWA_IMPLEMENTATION.md   ← PWA activation plan (ChatGPT C-1 verified)
+├── dist/                       ← Built artifacts
+│   ├── podzemelye-chyornogo-zamka-remake.html  ← BUILT single-file game (~9.3 MB)
+│   ├── manifest.webmanifest    ← (PREPARED, not active) PWA install metadata
+│   ├── sw.js                   ← (PREPARED, not active) Service worker
+│   └── icons/                  ← (PREPARED, not active)
+│       ├── icon-192.png
+│       ├── icon-512.png
+│       └── icon-maskable-512.png  ← Android adaptive icon
 ├── scripts/                    ← Git push helpers
+├── _handoff/                   ← (GIT-IGNORED) Briefs for external AI sessions
 ├── build.sh                    ← Concatenate src/* into dist/
 ├── README.md
 ├── QUICKSTART.md
 ├── PROJECT_NOTES.md            ← This file
 └── LICENSE
 ```
+
+### "(PREPARED, not active)" files
+
+A set of assets is ready in the repo but not yet wired into the build:
+
+- `src/mobile.css` and `src/fonts/*` — phone layout and self-hosted fonts
+- `dist/manifest.webmanifest`, `dist/sw.js`, `dist/icons/*` — PWA installation layer
+
+These are deliberately not integrated because activation requires:
+1. Modifying `src/game_shell_top.html` (remove Google Fonts @import, add manifest link, register service worker, update viewport tag).
+2. Updating `build.sh` to inline/copy the new assets.
+3. Deploying to an HTTPS origin (local `file://` does not support service workers).
+
+See `docs/PWA_IMPLEMENTATION.md` for the step-by-step activation guide.
 
 ## Illustrations — important rules
 
@@ -102,20 +129,24 @@ Examples:
 | Opening forest | §1 | §1, §14 |
 | Black Castle first view | §118 | §244, §250, §330 |
 | Dragon | §37, §41 | §188, §440, §532, §1136 |
-| Sleeping Princess | §617 | §1072, §1220 |
+| Sleeping Princess | §617 | §1072 (§1220 moved to art52) |
 | Library | §22, §350 | §441, §701, §718, §766 |
+| Final duel (Batch 4) | — | §823, §1096, §1164 |
+| Victory (Batch 4) | §617 | §1220 |
 
 Full mapping lives in `src/mj_art.js` (`MJ_META.<art_id>.remakeParagraphs`)
 and mirrored in `art-pack/metadata/art_catalog.py`.
 
-Coverage: **91 paragraphs** out of 1221 are covered by 36 Midjourney arts.
-The remaining paragraphs either fall back to 28 legacy b/w scans (1991 edition)
-or show text only.
+Coverage:
+- **91 paragraphs** covered by 36 currently-generated Midjourney arts
+- **+21 paragraphs** will be covered once Batch 4 (7 prompts ready) is generated
+- Total after Batch 4: **112 paragraphs** (9.2% of 1221)
+- The remaining paragraphs either fall back to 28 legacy b/w scans (1991 edition) or show text only
 
 ## Target platforms
 
 - Windows browser (primary development target)
-- Android (Pixel 7a class) — mobile layout and PWA install pending
+- Android (Pixel 7a class) — mobile layout prepared in `src/mobile.css`, PWA prepared in `dist/`, not yet deployed
 
 ## Save format
 
@@ -139,11 +170,23 @@ The script concatenates these files in order:
 7. `game_logic.js` — engine (renders MJ first, ILLUST fallback)
 8. closes `</script></body></html>`
 
-Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~9 MB).
+Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~9.3 MB).
+
+> **Note:** the current `build.sh` does NOT yet include `mobile.css`, `fonts/`,
+> `manifest.webmanifest`, `sw.js`, or `icons/`. They will be added when PWA is
+> activated. Until then, `build.sh` produces the same self-contained HTML as before.
 
 ## Why single-file HTML?
 
-The deliverable is one big self-contained `.html` file (~9 MB with all MJ
+The deliverable is one big self-contained `.html` file (~9.3 MB with all MJ
 art baked in) so it plays from a local file without a server. Source files
 are kept modular under `src/` for maintainability; `build.sh` concatenates
 them into `dist/podzemelye-chyornogo-zamka-remake.html`.
+
+## Known gotchas
+
+1. **`src/remake_data.js` is synced from `dist/*.html`.** If you hand-edit `src/remake_data.js` and then rebuild, the edits will survive. But if someone improves the GD inside `dist/*.html` (e.g. ChatGPT polish pass) without updating `src/`, a subsequent rebuild from `src/` will REGRESS those improvements. Keep `src/` as the primary source of truth; re-sync from dist only when drift is detected (see `docs/GRAPH_AUDIT.md` section IV.3 for the procedure).
+
+2. **4 orphan paragraphs** (§106, §151, §178, §277) are bird-guide hints never reached by normal gameplay. They're harmless but unreachable.
+
+3. **Dragon §532 and dynamic-math mechanics** (§13 fish +15, §140 gold key +30) are not fully implemented — see `docs/GRAPH_AUDIT.md` sections III.8 and III.10.

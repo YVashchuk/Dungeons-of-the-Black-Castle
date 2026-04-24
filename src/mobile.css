@@ -1,0 +1,244 @@
+/* ═══════════════════════════════════════════════════════════════
+ * Mobile-first overrides for Dungeons of the Black Castle
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * Targets: Android Pixel 7a (412 CSS px portrait, 915 landscape)
+ *          and similar phone-class viewports.
+ *
+ * How to integrate:
+ *   Add after the existing <style>...</style> block in
+ *   src/game_shell_top.html, either inline or via
+ *   <link rel="stylesheet" href="./mobile.css"> (requires dist/mobile.css too).
+ *
+ * Design principles (from C-1 report):
+ *   1. Use env(safe-area-inset-*) for notches/cutouts.
+ *   2. Portrait: collapse sidebar to top sheet (~38vh).
+ *   3. Landscape: keep sidebar narrower (280px).
+ *   4. One active scroll container per screen.
+ *   5. Larger tap targets (≥44px, ≥18px text) per WCAG and
+ *      Android touch-target guidance.
+ * ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+}
+
+/* Body respects device safe areas (notches, rounded corners, bottom bar). */
+body {
+  padding:
+    var(--safe-top)
+    var(--safe-right)
+    var(--safe-bottom)
+    var(--safe-left);
+}
+
+/* ─── Phone portrait (≤700px wide) ─── */
+@media (max-width: 700px) {
+
+  /* Game screen stacks vertically: sidebar on top, story below. */
+  #scr-game {
+    flex-direction: column;
+  }
+
+  /* Sidebar collapses to a compact top sheet (~38vh of the phone height). */
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    max-height: 38vh;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Main scroll area fills remaining height. */
+  .main {
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  /* Story text: reduced paddings, slightly smaller base size. */
+  .story-area {
+    padding: 18px 16px 12px;
+    max-width: none;
+  }
+  .s-text {
+    font-size: 21px;
+    line-height: 1.65;
+  }
+
+  /* Choices take full width with bottom safe-area buffer. */
+  .choices-area {
+    padding: 12px 16px calc(16px + var(--safe-bottom));
+    max-width: none;
+  }
+  .choice-btn {
+    font-size: 20px;
+    padding: 14px 16px;
+  }
+
+  /* Illustrations scaled to max 34vh on phones. */
+  .illustration-container img {
+    max-height: 34vh;
+  }
+
+  /* Event-log FAB respects safe-area-bottom. */
+  .event-log-btn {
+    right: 12px;
+    bottom: calc(12px + var(--safe-bottom));
+  }
+  .event-log-panel {
+    width: 100%;
+    right: -100%;
+  }
+
+  /* Character creation, spells, preface screens tighter. */
+  .cr-wrap, .sp-wrap {
+    padding: 24px 16px;
+  }
+  .cr-title {
+    font-size: 26px;
+  }
+  .stat-val {
+    font-size: 42px;
+    width: 64px;
+  }
+  .stat-info h3 {
+    font-size: 20px;
+  }
+
+  /* Spell selection grid becomes single column. */
+  .sp-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Larger input targets for hero name etc. */
+  .cr-name input,
+  .add-item-input {
+    font-size: 19px;
+    padding: 12px 14px;
+  }
+
+  /* Buttons in title screen: full-width, stack vertically. */
+  .t-btns {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .btn-p {
+    padding: 14px 28px;
+    font-size: 14px;
+  }
+
+  /* Combat modal: cover screen, no wasted margins. */
+  .modal {
+    max-height: 100vh;
+    padding: 20px 16px;
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Map modal: stack vertically on phone, side panel on top. */
+  .map-modal-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    min-height: 0;
+  }
+  .map-modal-side {
+    max-height: 30vh;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .map-svg-wrap {
+    min-height: 300px;
+  }
+}
+
+/* ─── Phone landscape (≤900px wide, landscape orientation) ─── */
+@media (max-width: 900px) and (orientation: landscape) {
+
+  #scr-game {
+    flex-direction: row;
+  }
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    max-height: none;
+    border-bottom: 0;
+    border-right: 1px solid var(--border);
+  }
+
+  .story-area {
+    padding: 14px 20px 10px;
+  }
+  .s-text {
+    font-size: 19px;
+    line-height: 1.6;
+  }
+
+  .choices-area {
+    padding: 10px 20px calc(14px + var(--safe-bottom));
+  }
+  .choice-btn {
+    font-size: 18px;
+    padding: 12px 14px;
+  }
+
+  .illustration-container img {
+    max-height: 42vh;
+  }
+}
+
+/* ─── Tablet portrait (701-900px) — intermediate tweaks ─── */
+@media (min-width: 701px) and (max-width: 900px) and (orientation: portrait) {
+
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+  }
+  .story-area {
+    padding: 30px 32px 16px;
+  }
+  .choices-area {
+    padding: 14px 32px calc(24px + var(--safe-bottom));
+  }
+}
+
+/* ─── Global touch-target improvements (all narrow viewports) ─── */
+@media (max-width: 900px) {
+
+  /* Make small icons/buttons tappable (44×44 WCAG target). */
+  .inv-remove,
+  .event-log-close,
+  .qty-btn {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 6px;
+  }
+
+  /* Prevent iOS zoom-on-focus by ensuring inputs are ≥16px. */
+  .cr-name input,
+  .add-item-input,
+  .sb-notes textarea {
+    font-size: 16px !important;
+  }
+
+  /* Smoother scroll inertia. */
+  .story-area,
+  .sidebar,
+  .event-log-panel,
+  .modal {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ─── Prevent body scroll bleed on iOS when modals are open ─── */
+body:has(.modal-overlay.on),
+body:has(.end-overlay.on) {
+  overflow: hidden;
+}
