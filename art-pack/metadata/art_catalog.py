@@ -47,7 +47,13 @@ CATALOG = {
         'scene': 'Sleeping princess on crystal bed (pre-victory)',
         'prompt': 'beautiful young slavic princess with fair pale skin lying on ornate bed, eyes closed in enchanted sleep, dark cloaked hooded figure watching over her from the background, cathedral castle interior, candles and autumn leaves',
         'ref_url': 'https://cdn.midjourney.com/f2d46e42-cd9f-48a5-8a49-0e57bef87e56/0_0.png',
-        'remake_paragraphs': [1072],  # §1220 moved to art52_princess_rescue (victory scene)
+        'remake_paragraphs': [1072],  # §1220 will move to art52_princess_rescue once that art is generated.
+        # ┌─ TRANSITIONAL STATE (2026-04) ─────────────────────────────┐
+        # │ Current runtime (src/mj_art.js + dist/*.html) still has   │
+        # │ [1072, 1220] for art09 because art52 isn't generated yet. │
+        # │ When you generate art52: ALSO remove 1220 from the        │
+        # │ MJ_META.art09 array in src/mj_art.js, then rebuild dist.  │
+        # └────────────────────────────────────────────────────────────┘
         'original_paragraphs': [617],
     },
     'art10_victory_hero_throne': {

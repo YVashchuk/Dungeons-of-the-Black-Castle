@@ -1,0 +1,35 @@
+{
+  "id": "/black-castle",
+  "name": "Подземелья Чёрного замка",
+  "short_name": "Чёрный замок",
+  "description": "Книга-игра Дмитрия Браславского (ремейк 1991 г., 1221 параграф). Отправьтесь в Зачарованный лес, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.",
+  "lang": "ru",
+  "start_url": "./podzemelye-chyornogo-zamka-remake.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
+  "orientation": "portrait",
+  "theme_color": "#0a0810",
+  "background_color": "#0a0810",
+  "categories": ["games", "books", "entertainment"],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
