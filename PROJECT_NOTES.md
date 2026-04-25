@@ -37,7 +37,7 @@ The original 1991 source files are **explicitly excluded from active development
 
 ## File structure
 
-```
+`
 Dungeons-of-the-Black-Castle/
 ├── assets/                     ← Source texts + reference PDFs + illustrations
 │   ├── fb2_remake.fb2          ← The canonical source (1221 paragraphs)
@@ -84,7 +84,7 @@ Dungeons-of-the-Black-Castle/
 ├── QUICKSTART.md
 ├── PROJECT_NOTES.md            ← This file
 └── LICENSE
-```
+`
 
 ### "(PREPARED, not active)" files
 
@@ -123,9 +123,9 @@ See `docs/PWA_IMPLEMENTATION.md` for the step-by-step activation guide.
 When generating new Midjourney art, use this URL as `--cref` to keep the
 hero's appearance consistent across all scenes:
 
-```
+`
 https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png
-```
+`
 
 ## Paragraph mapping: original (583) → remake (1221)
 
@@ -167,9 +167,9 @@ Coverage:
 
 ## Build
 
-```bash
+`bash
 bash build.sh
-```
+`
 
 The script concatenates these files in order:
 1. `game_shell_top.html` — HTML+CSS frame, opens `<script>`
