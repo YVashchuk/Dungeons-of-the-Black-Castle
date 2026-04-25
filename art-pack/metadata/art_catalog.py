@@ -24,7 +24,7 @@ CATALOG = {
     # ─── BATCH 1: Core hero journey (6 images) ───
     'art01_enchanted_forest_start': {
         'scene': 'Enchanted forest, hero begins his journey',
-        'prompt': 'lone traveler in medieval dark cloak walking into an ancient enchanted slavic forest, forked dirt path, twisted oaks with gnarled roots, morning sunlight piercing canopy, far silhouette of black castle spires on horizon, autumn mood',
+        'prompt': 'lone slavic traveler with Slavic facial features and Eastern European medieval folk costume in medieval dark cloak walking into an ancient enchanted slavic forest, forked dirt path, twisted oaks with gnarled roots, morning sunlight piercing canopy, far silhouette of black castle spires on horizon, autumn mood',
         'ref_url': 'https://cdn.midjourney.com/67f4893a-d0eb-491e-9f88-11a2efddc915/0_0.png',
         'remake_paragraphs': [1, 14],
         'original_paragraphs': [1],
@@ -58,14 +58,14 @@ CATALOG = {
     },
     'art10_victory_hero_throne': {
         'scene': 'Victory — hero returning triumphant',
-        'prompt': 'young hero in dark hooded cloak standing triumphant in golden autumn courtyard of castle, soft evening light, arched gothic window glowing, sword held low, quiet victory',
+        'prompt': 'young slavic hero with Slavic facial features and Eastern European medieval folk costume in dark hooded cloak standing triumphant in golden autumn courtyard of castle, soft evening light, arched gothic window glowing, sword held low, quiet victory',
         'ref_url': 'https://cdn.midjourney.com/972647bf-375c-4040-a8b8-71c7721287f6/0_0.png',
         'remake_paragraphs': [],  # title/end screen, not inline
         'original_paragraphs': [617],
     },
     'art25_cover_hero_castle': {
         'scene': 'COVER / Character reference (title screen)',
-        'prompt': 'lone traveler in medieval cloak gazing at a dark gothic castle from misty ridge, vast autumn landscape, cinematic composition, book cover quality',
+        'prompt': 'lone slavic traveler with Slavic facial features and Eastern European medieval folk costume in medieval cloak gazing at a dark gothic castle from misty ridge, vast autumn landscape, cinematic composition, book cover quality',
         'ref_url': 'https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png',
         'remake_paragraphs': [],  # title screen only
         'original_paragraphs': [],
@@ -172,7 +172,7 @@ CATALOG = {
     },
     'art20_amulet': {
         'scene': 'Hero reveals protective amulet to knights',
-        'prompt': 'hero in dark hooded cloak holding up a glowing silver amulet in castle gateway, two armored knights kneeling in respect, golden autumn leaves swirling around ancient archway',
+        'prompt': 'hero in dark hooded cloak holding up a glowing silver amulet in castle gateway, two slavic knights with Eastern European folk armor kneeling in respect, golden autumn leaves swirling around ancient archway',
         'ref_url': 'https://cdn.midjourney.com/b15fd587-113a-4b20-93e0-3bced6136e4f/0_0.png',
         'remake_paragraphs': [26, 388],
         'original_paragraphs': [26],
@@ -223,7 +223,7 @@ CATALOG = {
     },
     'art29_beautiful_hostess': {
         'scene': 'Beautiful hostess in luxurious castle parlor',
-        'prompt': 'beautiful elegant woman in light summer dress with thin capricious face in luxurious castle sitting room, ornate folding screen, gold-framed paintings, plush sofas, hero in dark hooded cloak watches from aside, deceptive comfort',
+        'prompt': 'beautiful elegant slavic woman with Eastern European facial features in light summer folk dress with thin capricious face in luxurious castle sitting room, ornate folding screen, gold-framed paintings, plush sofas, hero in dark hooded cloak watches from aside, deceptive comfort',
         'ref_url': 'https://cdn.midjourney.com/017ec4ab-a99d-48ed-812c-580ef2b4f882/0_0.png',
         'remake_paragraphs': [707, 773],
         'original_paragraphs': [556],
@@ -237,14 +237,14 @@ CATALOG = {
     },
     'art31_bandit_road': {
         'scene': 'Injured bandit by roadside trap',
-        'prompt': 'injured ragged bandit lying on forest road edge in tattered clothes, feigning helplessness, hooded traveler approaches cautiously, autumn leaves, foggy castle behind',
+        'prompt': 'injured ragged slavic peasant bandit with Eastern European facial features lying on forest road edge in tattered clothes, feigning helplessness, hooded traveler approaches cautiously, autumn leaves, foggy castle behind',
         'ref_url': 'https://cdn.midjourney.com/592ffe4f-4fd5-4711-a9a4-32884d785b63/0_0.png',
         'remake_paragraphs': [19, 155],
         'original_paragraphs': [110],
     },
     'art32_wise_elder': {
         'scene': 'Wise elder at cottage door',
-        'prompt': 'kind frail old man with long white beard and wise eyes opening the door of an ornate carved wooden cottage, hooded black cloak, candle in niche, misty autumn forest, castle spires visible in background',
+        'prompt': 'kind frail slavic old man with long white beard, Eastern European facial features and wise eyes opening the door of an ornate carved wooden cottage, hooded black cloak, candle in niche, misty autumn forest, castle spires visible in background',
         'ref_url': 'https://cdn.midjourney.com/225f5af3-0dea-4e39-8fcc-99704a1267cd/0_0.png',
         'remake_paragraphs': [48, 76, 371, 487, 1045],
         'original_paragraphs': [221],
@@ -265,21 +265,21 @@ CATALOG = {
     },
     'art35_bandits_ambush': {
         'scene': 'Bandits ambushing on forest clearing',
-        'prompt': 'three rough medieval bandits with daggers and clubs ambushing hooded traveler at forest clearing crossroads, hooded cloaks, autumn leaves, misty gothic castle in distance',
+        'prompt': 'three rough slavic peasant bandits with Eastern European folk costume and daggers and clubs ambushing hooded traveler at forest clearing crossroads, hooded cloaks, autumn leaves, misty gothic castle in distance',
         'ref_url': 'https://cdn.midjourney.com/989a7e5d-53a2-49ae-90a8-7bdabd7defbd/0_0.png',
         'remake_paragraphs': [100, 305, 319],
         'original_paragraphs': [181],
     },
     'art36_old_woman_stone': {
         'scene': 'Tiny old woman materializing from castle wall',
-        'prompt': 'tiny hunched old woman in grey rags with a crooked back emerging from bare stone castle wall, empty chamber with three doorways leading to darkness, hooded hero stepping back startled, candlelight',
+        'prompt': 'tiny hunched slavic old woman with wrinkled Eastern European face in grey peasant rags with a crooked back emerging from bare stone castle wall, empty chamber with three doorways leading to darkness, hooded hero stepping back startled, candlelight',
         'ref_url': 'https://cdn.midjourney.com/1ede985f-3563-4613-8b0c-651b69344a85/0_0.png',
         'remake_paragraphs': [215],
         'original_paragraphs': [323],
     },
     'art37_lumberjacks': {
         'scene': 'Lumberjacks attack in enchanted forest',
-        'prompt': 'two muscular lumberjacks with axes attacking in enchanted forest, bundles of firewood on their shoulders, hooded hero raises sword, golden autumn leaves whirling, black castle looms behind',
+        'prompt': 'two muscular slavic peasant lumberjacks in Eastern European folk costume with axes attacking in enchanted forest, bundles of firewood on their shoulders, hooded hero raises sword, golden autumn leaves whirling, black castle looms behind',
         'ref_url': 'https://cdn.midjourney.com/b2a764b8-55e6-44c4-9043-c092035bb51c/0_0.png',
         'remake_paragraphs': [247],
         'original_paragraphs': [6],
@@ -297,7 +297,7 @@ CATALOG = {
     },
     'art41_green_knight_mounted': {
         'scene': 'Green Knight on horseback with lance',
-        'prompt': 'towering menacing knight in ornate deep green heavy plate armor wielding a massive lance, riding a black warhorse on misty forest road, black dragon silhouette on shield, hooded hero in dark cloak preparing to fight, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'prompt': 'towering menacing slavic knight in ornate deep green heavy plate armor with Eastern European medieval design wielding a massive lance, riding a black warhorse on misty forest road, black dragon silhouette on shield, hooded hero in dark cloak preparing to fight, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
         'ref_url': None,
         'remake_paragraphs': [656],
         'original_paragraphs': [],
@@ -326,14 +326,14 @@ CATALOG = {
     },
     'art51_barlad_dert_boss': {
         'scene': 'Final duel: Barlad Dert with glowing sword in his study',
-        'prompt': 'epic final duel against a small slight tired-looking dark sorcerer in black robes, glowing pale magical longsword in his hand, massive writing desk covered in maps and scrolls behind him, gothic study lit by candles, hooded hero in dark cloak rushing him with bare hands before drawing sword, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'prompt': 'epic final duel against a small slight tired-looking slavic dark sorcerer with gaunt Eastern European face in black robes, glowing pale magical longsword in his hand, massive writing desk covered in maps and scrolls behind him, gothic study lit by candles, hooded hero in dark cloak rushing him with bare hands before drawing sword, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
         'ref_url': None,
         'remake_paragraphs': [823, 1096, 1164],
         'original_paragraphs': [],
     },
     'art52_princess_rescue': {
         'scene': 'Victory — Barlad Dert is slain, Princess is free',
-        'prompt': 'hooded hero in dark cloak holding the hand of a beautiful sad young princess in a torn medieval gown, standing together in a grand castle hall at dawn, soft divine light breaking through tall gothic windows, Barlad Derts black robes crumpled on the floor behind them, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'prompt': 'hooded hero in dark cloak holding the hand of a beautiful sad young slavic princess with Eastern European features in a torn medieval folk gown, standing together in a grand castle hall at dawn, soft divine light breaking through tall gothic windows, Barlad Dert’s black robes crumpled on the floor behind them, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
         'ref_url': None,
         'remake_paragraphs': [1220],
         'original_paragraphs': [617],
