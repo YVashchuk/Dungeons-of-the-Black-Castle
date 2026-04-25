@@ -1,0 +1,34 @@
+{
+  "pack": "Dungeons of the Black Castle - procedural fallback sound pack",
+  "version": "C-2-fallback-2026-04-24",
+  "format": {
+    "codec": "OGG Vorbis",
+    "channels": "mono",
+    "short_sfx_bitrate": "64 kbps",
+    "ambience_bitrate": "96 kbps",
+    "sample_rate": "44100 Hz"
+  },
+  "note": "External browsing/download from Freesound, Pixabay, OpenGameArt and BBC Sound Effects Archive was unavailable in this environment. These are local procedural placeholders, not third-party CC0/CC-BY downloads.",
+  "sounds": {
+    "ui_click": "sounds/ui/ui_click.ogg",
+    "ui_hover": "sounds/ui/ui_hover.ogg",
+    "ui_page_turn": "sounds/ui/ui_page_turn.ogg",
+    "combat_sword_hit": "sounds/combat/combat_sword_hit.ogg",
+    "combat_sword_miss": "sounds/combat/combat_sword_miss.ogg",
+    "combat_death_enemy": "sounds/combat/combat_death_enemy.ogg",
+    "combat_dice_roll": "sounds/combat/combat_dice_roll.ogg",
+    "spell_fire": "sounds/spells/spell_fire.ogg",
+    "spell_heal": "sounds/spells/spell_heal.ogg",
+    "spell_force": "sounds/spells/spell_force.ogg",
+    "spell_illusion": "sounds/spells/spell_illusion.ogg",
+    "spell_levitation": "sounds/spells/spell_levitation.ogg",
+    "amb_forest": "sounds/ambience/amb_forest.ogg",
+    "amb_castle": "sounds/ambience/amb_castle.ogg",
+    "amb_dungeon": "sounds/ambience/amb_dungeon.ogg",
+    "event_luck_success": "sounds/events/event_luck_success.ogg",
+    "event_luck_fail": "sounds/events/event_luck_fail.ogg",
+    "event_item_pickup": "sounds/events/event_item_pickup.ogg",
+    "event_victory": "sounds/events/event_victory.ogg",
+    "event_death": "sounds/events/event_death.ogg"
+  }
+}
