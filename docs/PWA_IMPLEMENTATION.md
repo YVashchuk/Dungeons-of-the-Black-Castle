@@ -18,7 +18,7 @@ Based on ChatGPT 5.5 Research task C-1 (April 2026).
 | App icons | `dist/icons/icon-192.png` (62 KB) | Standard launcher icon |
 | | `dist/icons/icon-512.png` (409 KB) | High-res launcher icon |
 | | `dist/icons/icon-maskable-512.png` (270 KB) | Adaptive Android icon (80% safe zone) |
-| Mobile CSS | `src/mobile.css` | Pixel 7a layout, safe-area-inset, portrait/landscape |
+| Mobile CSS | `src/mobile.css` | Pixel 7a / iPhone 15 layout, safe-area-inset, portrait/landscape |
 | Self-hosted fonts | `src/fonts/*.woff2` (7 files, 149 KB) | Removes Google Fonts dependency |
 | Font @font-face rules | `src/fonts/fonts.css` (13 rules) | Drop-in replacement for `@import url(fonts.googleapis.com…)` |
 
@@ -119,7 +119,7 @@ dist/
     └── *.woff2
 ```
 
-### Step 5: Verify on Pixel 7a
+### Step 5: Verify on Pixel 7a / iPhone 15
 
 1. Open the deployed URL in Chrome.
 2. Chrome menu → "Install app" (or "Add to Home Screen"). Icon should appear on the launcher.

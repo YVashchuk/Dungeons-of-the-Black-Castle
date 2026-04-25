@@ -68,10 +68,14 @@ Dungeons-of-the-Black-Castle/
 │   ├── podzemelye-chyornogo-zamka-remake.html   # Single-file игра (~9.3 MB)
 │   ├── manifest.webmanifest            # (prepared) PWA install metadata
 │   ├── sw.js                           # (prepared) Service Worker
-│   └── icons/
-│       ├── icon-192.png
-│       ├── icon-512.png
-│       └── icon-maskable-512.png       # Android adaptive icon
+│   ├── icons/                          # (prepared) PWA icons
+│   │   ├── icon-192.png
+│   │   ├── icon-512.png
+│   │   └── icon-maskable-512.png       # Android adaptive icon
+│   └── sounds/                         # (prepared) Procedural OGG fallback pack
+│       ├── ui/, combat/, spells/, ambience/, events/   # 20 OGG files, 700 KB
+│       ├── credits.txt
+│       └── sounds_manifest.json
 │
 ├── src/                                # Исходники (собираются в dist)
 │   ├── game_shell_top.html             # HTML+CSS оболочка
@@ -81,10 +85,12 @@ Dungeons-of-the-Black-Castle/
 │   ├── title_art.js                    # Lineart титула
 │   ├── map_module.js                   # Модуль карты (fog-of-war)
 │   ├── game_logic.js                   # Игровая логика (MJ приоритет над ILLUST)
-│   ├── mobile.css                      # (prepared) Pixel 7a + safe-area-inset
-│   └── fonts/                          # (prepared) Self-hosted Cinzel/Cormorant woff2
-│       ├── fonts.css                   # @font-face declarations
-│       └── *.woff2                     # 7 файлов, 149 KB
+│   ├── mobile.css                      # (prepared) Pixel 7a / iPhone 15 + safe-area-inset
+│   └── fonts/                          # (prepared) Self-hosted шрифты (149 KB Latin/Cyrillic + 28 KB Slavic)
+│       ├── fonts.css                   # @font-face: Cinzel, Cormorant, Veles, Cyrillic Old Face
+│       ├── Cinzel-lat.woff2 + CinzelDecorative-lat.woff2 + 4× CormorantGaramond
+│       ├── VelesRedone.woff2           # Slavic ornamental, для drop-caps
+│       └── CyrillicOldFace.woff2       # Slavic-flavoured body text alternative
 │
 ├── assets/                             # Источники (текст + PDF + арт)
 │   ├── fb2_remake.fb2                  # Каноничный источник (1221 параграф)
@@ -94,6 +100,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── pdf_original_1991.pdf           # Скан 1-го издания
 │   ├── original_errors.txt             # Известные ошибки 1991 г.
 │   ├── analytical_report.pdf           # Аналитический отчёт (Windows + Android)
+│   ├── book_text.md                    # Полный текст + corrections log (для Gemini/AI)
 │   └── illustrations/
 │       ├── originals/                  # 36 PNG в полном разрешении (НЕ ТРОГАТЬ)
 │       └── web/                        # 36 JPEG 900px Q82 (производные копии)
@@ -145,11 +152,18 @@ bash build.sh
 
 - [x] Граф-аудит игровой логики (см. [`docs/GRAPH_AUDIT.md`](docs/GRAPH_AUDIT.md))
 - [x] Подготовка PWA (см. [`docs/PWA_IMPLEMENTATION.md`](docs/PWA_IMPLEMENTATION.md))
-- [ ] Сгенерировать 7 артов Batch 4 в Midjourney (промпты готовы)
-- [ ] Активировать PWA (требует HTTPS хостинг)
-- [ ] Реальные WAV/OGG звуки (sound pack)
+- [x] Самостоятельные шрифты + 2 славянских шрифта (Veles Redone, Cyrillic Old Face)
+- [x] Sound pack (procedural fallback, 20 OGG в `dist/sounds/`)
+- [x] Markdown-экспорт текста книги для Gemini Project (`assets/book_text.md`)
+- [x] Орфография в Midjourney промптах + явная славянская внешность для не-нежити персонажей
+- [ ] Сгенерировать 7 артов Batch 4 в Midjourney (промпты готовы в `docs/MIDJOURNEY_PROMPTS.md`)
+- [ ] Активировать PWA (требует HTTPS хостинг — см. план активации)
+- [ ] Заменить procedural sounds на real CC0/CC-BY OGG/WAV
 - [ ] Полное тестовое прохождение §1 → §1220
-- [ ] Custom combat conditions (wound_2 для Дракона §532, динамическая математика §13 рыбка, §140 Золотой ключ)
+- [ ] Custom combat conditions (wound_2 для Дракона §532)
+- [ ] Динамическая математика (§13 рыбка +15, §140 Золотой ключ +30)
+- [ ] Локализация на EN/FR с переключателем языка (кроме боя)
+- [ ] Визуальная проверка всех MJ артов на соответствие сцене (после Batch 4)
 
 ## 📜 Источники
 

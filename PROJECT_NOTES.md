@@ -14,7 +14,8 @@ This project is a browser adaptation of **"Подземелья Чёрного �
 | Paragraphs | **1221** (NOT 583 as in the raw 1991 edition) |
 | Victory paragraph | **§1220** (NOT §617) |
 | Source file | `assets/fb2_remake.fb2` |
-| Originals of source materials | `assets/fb2_original_1991.fb2`, `assets/epub_original_1991.epub`, `assets/pdf_original_1991.pdf` |
+| Originals of source materials (REFERENCE ONLY) | `assets/fb2_original_1991.fb2`, `assets/epub_original_1991.epub`, `assets/pdf_original_1991.pdf` |
+| Markdown export for AI tools | `assets/book_text.md` (full text + corrections log, derived from `fb2_remake.fb2`) |
 
 The remake preserves the original story and mechanics but:
 - Renumbers paragraphs 1–1221 (the original had 1–583).
@@ -23,6 +24,16 @@ The remake preserves the original story and mechanics but:
 
 **When referencing paragraph numbers anywhere in this project, assume REMAKE
 numbering (1–1221) unless explicitly stated otherwise.**
+
+### Original 1991 files: REFERENCE ONLY
+
+The original 1991 source files are **explicitly excluded from active development**:
+
+- \ssets/fb2_original_1991.fb2\ — raw 1991 FB2 (583 paragraphs). Kept for historical reference only.
+- \ssets/epub_original_1991.epub\ — raw 1991 EPUB. Same scope: reference only.
+- \ssets/pdf_original_1991.pdf\ — **scanned 2-pages-per-sheet** PDF of the 1991 print edition. Use ONLY for cross-checking original imagery and layout. Do NOT use as a text source — OCR quality is poor and the text has been superseded by the 2018 remake.
+
+**All development must use \ssets/fb2_remake.fb2\ and \ssets/epub_remake.epub\** as the canonical source. Any AI-assisted analysis (Gemini, ChatGPT, Claude) should be fed \ssets/book_text.md\, which is the authoritative MD export with corrections already applied (see header of that file for the corrections log).
 
 ## File structure
 
@@ -34,7 +45,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── epub_remake.epub        ← Same as FB2 but in EPUB format
 │   ├── epub_original_1991.epub ← Reference 1991 edition EPUB
 │   ├── pdf_original_1991.pdf   ← Scanned 1st-edition PDF
-│   ├── original_errors.txt     ← Known errors in the 1991 edition
+│   ├── book_text.md            ← Full text + corrections log (for Gemini/AI tools, MD format)
 │   ├── analytical_report.pdf   ← Design analysis for Windows + Android adaptation
 │   └── illustrations/
 │       ├── originals/          ← 36 Midjourney PNGs, FULL RESOLUTION (kept as source)
@@ -47,7 +58,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── title_art.js            ← Title-screen lineart
 │   ├── map_module.js           ← Map / fog-of-war panel
 │   ├── game_logic.js           ← Engine: combat, luck, inventory, rendering
-│   ├── mobile.css              ← (PREPARED, not active) Pixel 7a layout + safe-area
+│   ├── mobile.css              ← (PREPARED, not active) Pixel 7a / iPhone 15 layout + safe-area
 │   └── fonts/                  ← (PREPARED, not active) Self-hosted woff2
 │       ├── fonts.css           ← @font-face declarations (replacement for Google Fonts)
 │       └── *.woff2             ← 7 files, ~149 KB
@@ -146,7 +157,7 @@ Coverage:
 ## Target platforms
 
 - Windows browser (primary development target)
-- Android (Pixel 7a class) — mobile layout prepared in `src/mobile.css`, PWA prepared in `dist/`, not yet deployed
+- Android (Pixel 7a / iPhone 15 class) — mobile layout prepared in `src/mobile.css`, PWA prepared in `dist/`, not yet deployed
 
 ## Save format
 

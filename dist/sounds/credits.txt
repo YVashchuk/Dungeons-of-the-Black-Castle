@@ -1,0 +1,28 @@
+Dungeons of the Black Castle — Sound Pack C-2 (procedural fallback)
+Generated: 2026-04-24
+
+IMPORTANT:
+External web download was unavailable in this execution environment, so these are NOT third-party files from Freesound/Pixabay/OpenGameArt/BBC and no external author/URL can be truthfully listed.
+All audio files below were procedurally generated locally for this project as temporary placeholders. Treat this ZIP as a ready-to-drop-in fallback pack; replace with verified CC0/CC-BY assets later if strict source-site licensing is required.
+
+Per-file credits:
+- ui_click: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/ui/ui_click.ogg
+- ui_hover: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/ui/ui_hover.ogg
+- ui_page_turn: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/ui/ui_page_turn.ogg
+- combat_sword_hit: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/combat/combat_sword_hit.ogg
+- combat_sword_miss: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/combat/combat_sword_miss.ogg
+- combat_death_enemy: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/combat/combat_death_enemy.ogg
+- combat_dice_roll: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/combat/combat_dice_roll.ogg
+- spell_fire: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/spells/spell_fire.ogg
+- spell_heal: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/spells/spell_heal.ogg
+- spell_force: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/spells/spell_force.ogg
+- spell_illusion: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/spells/spell_illusion.ogg
+- spell_levitation: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/spells/spell_levitation.ogg
+- amb_forest: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/ambience/amb_forest.ogg
+- amb_castle: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/ambience/amb_castle.ogg
+- amb_dungeon: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/ambience/amb_dungeon.ogg
+- event_luck_success: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/events/event_luck_success.ogg
+- event_luck_fail: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/events/event_luck_fail.ogg
+- event_item_pickup: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/events/event_item_pickup.ogg
+- event_victory: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/events/event_victory.ogg
+- event_death: Procedurally generated fallback SFX; external author: N/A; license/source URL: N/A; file: sounds/events/event_death.ogg
