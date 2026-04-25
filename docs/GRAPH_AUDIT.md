@@ -108,7 +108,7 @@ Inspection of `dist/podzemelye-chyornogo-zamka-remake.html` revealed that **the 
 
 ### 6. §974 label "too long" — not critical
 
-Gemini reported 95 characters; actual length is **51 characters**: `«Теперь можете оставить карту здесь и уходите… (809)»`. Fits on Pixel 7a viewport (412 CSS px). The ellipsis at the end is cosmetic; in dist it has already been rewritten.
+Gemini reported 95 characters; actual length is **51 characters**: `«Теперь можете оставить карту здесь и уходите… (809)»`. Fits on Pixel 7a / iPhone 15 viewport (412 CSS px). The ellipsis at the end is cosmetic; in dist it has already been rewritten.
 
 ### 7. Labels contain target ID in parentheses — by design
 
