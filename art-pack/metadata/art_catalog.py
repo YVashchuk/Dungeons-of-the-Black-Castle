@@ -334,7 +334,7 @@ CATALOG = {
     'art52_princess_rescue': {
         'scene': 'Victory — Barlad Dert is slain, Princess is free',
         'prompt': 'hero in dark hooded cloak gently holding the hand of a beautiful slavic princess in a torn white folk gown, her long golden hair visible, she turns slightly toward viewer with tearful grateful eyes, soft dawn light breaking through gothic arched windows, crumbling castle hall strewn with autumn leaves, Barlad Dert\'s black robes collapsed on the floor, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
-        'ref_url': 'https://cdn.midjourney.com/ac46cf3f-6f74-47d6-920d-5ce54292120e/0_0.png',
+        'ref_url': 'https://cdn.midjourney.com/f4e8ed07-2f5c-436e-96e3-904e3ec262a3/0_0.png',
         'remake_paragraphs': [1220],
         'original_paragraphs': [617],
     },

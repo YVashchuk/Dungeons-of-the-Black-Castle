@@ -1,0 +1,20 @@
+﻿Update art52_princess_rescue: replace with upscaled version
+
+Better composition matching §1220:
+- Princess clearly readable (blonde, silver folk dress, female silhouette)
+- Hand-in-hand walking out of castle ("выводите Принцессу наружу")
+- Golden sunrise lighting through autumn leaves matches text
+- Castle in background, hero and princess foreground
+
+New CDN: f4e8ed07-2f5c-436e-96e3-904e3ec262a3
+Replaces previous: ac46cf3f-6f74-47d6-920d-5ce54292120e
+
+Files changed:
+- assets/illustrations/originals/art52_princess_rescue.png (new upscaled PNG)
+- assets/illustrations/web/art52_princess_rescue.jpg (regenerated 900px JPEG Q82)
+- src/mj_art.js (MJ_DATA base64 + MJ_META.refUrl + comment URL)
+- art-pack/metadata/art_catalog.py (ref_url)
+- dist/podzemelye-chyornogo-zamka-remake.html (rebuilt)
+
+Resolves: 1 of 2 critical art QA issues from AUDIT_REPORT_2026-04-25.
+Still pending: art41 green knight regeneration.
