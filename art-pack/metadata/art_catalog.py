@@ -1,4 +1,4 @@
-"""
+﻿"""
 Complete catalog of Midjourney illustrations for
 Dungeons of the Black Castle (Remake 1221-paragraph edition).
 
@@ -291,28 +291,28 @@ CATALOG = {
     'art40_giant_spider_web': {
         'scene': 'Giant spider descends from web trap (rope-ladder scene)',
         'prompt': 'monstrous giant black spider descending from thick white glowing webs in a dark dead forest, hooded hero in dark cloak trapped in a sticky rope-ladder-like web, struggling with a sword, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
-        'ref_url': None,  # TO BE FILLED after MJ generation
+        'ref_url': 'https://cdn.midjourney.com/7f611350-e63a-4206-91f4-79278a724bdd/0_0.png',  # TO BE FILLED after MJ generation
         'remake_paragraphs': [436, 448],
         'original_paragraphs': [],
     },
     'art41_green_knight_mounted': {
         'scene': 'Green Knight on horseback with lance',
         'prompt': 'towering menacing slavic knight in ornate deep green heavy plate armor with Eastern European medieval design wielding a massive lance, riding a black warhorse on misty forest road, black dragon silhouette on shield, hooded hero in dark cloak preparing to fight, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
-        'ref_url': None,
+        'ref_url': 'https://cdn.midjourney.com/5262d54e-b9f6-4da0-97e8-70cb7c9899a6/0_0.png',
         'remake_paragraphs': [656],
         'original_paragraphs': [],
     },
     'art42_crypt_skeletons': {
         'scene': 'Undead skeletons rising in a crypt',
         'prompt': 'three terrifying undead skeletons in tattered medieval rags rising from ancient stone sarcophagi, glowing blue eyes, rusted swords, hooded hero in dark cloak holding a torch, underground crypt with burial chambers, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
-        'ref_url': None,
+        'ref_url': 'https://cdn.midjourney.com/df9aed0f-a9a5-4aad-88b8-f109c17a6422/0_0.png',
         'remake_paragraphs': [733, 811, 1108],
         'original_paragraphs': [],
     },
     'art46_giant_snake': {
         'scene': 'Giant snake with strangely human-shaped head',
         'prompt': 'colossal venomous snake with shimmering green and black scales coiled around a dead twisted tree, the serpent head unsettlingly resembling a human hand, dripping fangs, hooded hero in dark cloak standing defensive with sword drawn, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
-        'ref_url': None,
+        'ref_url': 'https://cdn.midjourney.com/b7217d53-ce7b-4e17-80db-c9465ed9531a/0_0.png',
         'remake_paragraphs': [421, 528],
         'original_paragraphs': [],
     },
@@ -320,21 +320,21 @@ CATALOG = {
         # NOTE: prompt rewritten — in the book they are STONE rats, only the Green Knight's sword hurts them
         'scene': 'Swarm of petrified stone rats attacking in dungeon',
         'prompt': 'swarm of menacing stone-rat creatures with partially petrified bodies, cracked granite skin showing veins of muscle, glowing red eye-sockets, gnashing stone fangs scurrying over damp slate dungeon floor, hooded hero in dark cloak swinging a glowing pale-green steel sword to cut through them, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
-        'ref_url': None,
+        'ref_url': 'https://cdn.midjourney.com/08722381-b984-41fc-b55d-3e383ea15830/0_0.png',
         'remake_paragraphs': [1003, 1110],
         'original_paragraphs': [],
     },
     'art51_barlad_dert_boss': {
         'scene': 'Final duel: Barlad Dert with glowing sword in his study',
-        'prompt': 'epic final duel against a small slight tired-looking slavic dark sorcerer with gaunt Eastern European face in black robes, glowing pale magical longsword in his hand, massive writing desk covered in maps and scrolls behind him, gothic study lit by candles, hooded hero in dark cloak rushing him with bare hands before drawing sword, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
-        'ref_url': None,
+        'prompt': 'two figures facing each other in gothic candlelit study, left: hooded dark-cloaked slavic hero with Slavic facial features sword drawn, right: ancient frail slavic sorcerer Barlad Dert with deeply wrinkled gaunt Eastern European face, long unkempt white beard, hollow burning eyes, skeletal hands crackling with dark magical energy, black robes, massive writing desk covered in maps and scrolls between them, crumbling castle interior, tall arched windows, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': 'https://cdn.midjourney.com/97989923-bf4a-449c-8dd1-aaf55bbabf7a/0_0.png',
         'remake_paragraphs': [823, 1096, 1164],
         'original_paragraphs': [],
     },
     'art52_princess_rescue': {
         'scene': 'Victory — Barlad Dert is slain, Princess is free',
-        'prompt': 'hooded hero in dark cloak holding the hand of a beautiful sad young slavic princess with Eastern European features in a torn medieval folk gown, standing together in a grand castle hall at dawn, soft divine light breaking through tall gothic windows, Barlad Dert’s black robes crumpled on the floor behind them, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
-        'ref_url': None,
+        'prompt': 'hero in dark hooded cloak gently holding the hand of a beautiful slavic princess in a torn white folk gown, her long golden hair visible, she turns slightly toward viewer with tearful grateful eyes, soft dawn light breaking through gothic arched windows, crumbling castle hall strewn with autumn leaves, Barlad Dert\'s black robes collapsed on the floor, dark Slavic fantasy oil painting, Bilibin × Frazetta × Vasnetsov, muted earth tones, burnt sienna, deep forest green, oxblood red, gold leaf accents, candlelit gothic atmosphere, textured brushwork, no text, no UI, no borders, no watermark --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --style raw --ar 3:2 --stylize 250 --v 6',
+        'ref_url': 'https://cdn.midjourney.com/ac46cf3f-6f74-47d6-920d-5ce54292120e/0_0.png',
         'remake_paragraphs': [1220],
         'original_paragraphs': [617],
     },
