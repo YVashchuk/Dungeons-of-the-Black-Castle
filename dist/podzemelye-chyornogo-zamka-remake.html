@@ -224,6 +224,8 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .combat-enemy{background:rgba(139,26,26,.1);border:1px solid rgba(139,26,26,.3);padding:16px 20px;margin-bottom:12px;}
 .combat-enemy-name{font-family:var(--font-ui);color:var(--red2);font-size:20px;letter-spacing:.05em;}
 .combat-stats{display:flex;gap:20px;margin-top:6px;font-size:18px;color:var(--muted);}
+.combat-hp-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:8px;font-family:var(--font-ui);font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.combat-hp-head .ce-hp-head{font-family:var(--font-text);font-size:18px;letter-spacing:0;text-transform:none;color:var(--parchment);}
 .combat-log{max-height:260px;overflow-y:auto;font-size:17px;line-height:1.7;color:var(--muted);
   margin:16px 0;padding:16px;background:var(--bg);border:1px solid var(--border);}
 .combat-log .hit{color:var(--red2);}
@@ -494,7 +496,7 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
  *          and similar phone-class viewports.
  *
  * How to integrate:
- *   Add after the existing <style>...</style> block in
+ *   Add after the existing <style>...<\/style> block in
  *   src/game_shell_top.html, either inline or via
  *   <link rel="stylesheet" href="./mobile.css"> (requires dist/mobile.css too).
  *
@@ -3270,45 +3272,21 @@ function doLuckCheck(sec){
   }
 }
 
-// ── AI Scene Image Generation ──
+// ── Atmospheric Scene Background ──
+// Earlier versions of this function called https://api.anthropic.com/v1/messages
+// to ask a model for an art-direction prompt before painting the background.
+// That call could never work from a file:// origin (CORS blocks it) and its
+// return value was discarded anyway — setAtmosphericBg(text) was always
+// invoked with the local Russian text in both the success and the catch
+// branch. Removed to silence the recurring console error and keep the PWA
+// fully offline. The atmospheric tint still works — setAtmosphericBg below
+// picks a gradient from local keywords (lake / castle / forest / dungeon
+// / battle / night / open field / fallback).
 let lastImageSection=null;
-async function generateSceneImage(text){
+function generateSceneImage(text){
   if(!text||S.section===lastImageSection)return;
   lastImageSection=S.section;
-  
-  const bg=document.getElementById('scene-bg');
-  const loader=document.getElementById('img-loading');
-  
-  try{
-    loader.classList.add('on');
-    // Extract key scene elements from text (first 200 chars)
-    const sceneDesc=text.substring(0,300).replace(/\n/g,' ');
-    
-    const response=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:200,
-        system:'You are an art director. Given a scene description from a fantasy gamebook, output ONLY a short (30-40 word) image generation prompt in English for a dark fantasy illustration. Style: medieval fantasy, oil painting, atmospheric, moody lighting. No characters, focus on environment/mood. Output only the prompt, nothing else.',
-        messages:[{role:'user',content:'Scene: '+sceneDesc}]
-      })
-    });
-    
-    if(!response.ok){loader.classList.remove('on');return;}
-    const data=await response.json();
-    const prompt=data.content?.[0]?.text;
-    if(!prompt){loader.classList.remove('on');return;}
-    
-    // Use the prompt to set a CSS gradient-based atmospheric background
-    // (Since we can't generate actual images in this environment, we create atmospheric CSS)
-    setAtmosphericBg(text);
-    loader.classList.remove('on');
-  }catch(e){
-    console.log('Image gen skipped:',e);
-    loader.classList.remove('on');
-    setAtmosphericBg(text);
-  }
+  setAtmosphericBg(text);
 }
 
 function setAtmosphericBg(text){

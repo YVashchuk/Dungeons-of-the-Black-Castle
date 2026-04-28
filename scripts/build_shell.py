@@ -101,6 +101,27 @@ def main() -> int:
         print("error: no </style> found in shell HTML", file=sys.stderr)
         return 1
 
+    # 3a. Neutralise any literal '</style>' inside the injected CSS, including
+    # inside comments. HTML5 raw-text parsing rules are blunt: the very first
+    # '</style>' closes the <style> element regardless of CSS comment syntax,
+    # so even a comment that mentions '<style>...</style>' as documentation
+    # would terminate the stylesheet early and dump the rest of the file into
+    # the page body. Replace with '<\/style>' which is harmless inside CSS
+    # comments and inside CSS strings, and (crucially) is not recognised by
+    # the HTML parser as a closing tag.
+    style_close_re = re.compile(r"</style>", re.IGNORECASE)
+    n_neutralised = 0
+    new_fonts, n1 = style_close_re.subn(r"<\/style>", fonts_css)
+    new_mobile, n2 = style_close_re.subn(r"<\/style>", mobile_css)
+    fonts_css = new_fonts
+    mobile_css = new_mobile
+    n_neutralised = n1 + n2
+    if n_neutralised:
+        print(
+            f"neutralised {n_neutralised} literal '</style>' substring(s) "
+            f"in injected CSS (fonts={n1}, mobile={n2})"
+        )
+
     inject = (
         "\n/* ===== injected by build.sh: src/fonts/fonts.css (base64-inlined) ===== */\n"
         + fonts_css
