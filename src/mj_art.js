@@ -337,6 +337,7 @@ const MJ_MAP = {
   "440": "art05_dragon_castle",
   "532": "art05_dragon_castle",
   "1136": "art05_dragon_castle",
+  "352": "art05_dragon_castle",
   "1072": "art09_sleeping_princess",
   "1220": "art52_princess_rescue",
   "163": "art03_hut_baba_yaga",
