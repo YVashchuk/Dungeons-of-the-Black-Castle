@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "last_updated": "2026-04-27",
+  "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
+  "schema_fields": {
+    "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', or external location like 'src/game_logic.js:PREFACE_TEXT'",
+    "original": "Exact substring as it appeared in the upstream source",
+    "corrected": "Replacement substring",
+    "comment": "Why this correction is needed",
+    "source": "Audit/PR reference where the issue was identified",
+    "type": "Optional taxonomy: ocr | typo | missing_space | gameplay_logic | disambiguation | broken_target"
+  },
+  "corrections": {
+    "849_text_broken_target": {
+      "paragraph": 849,
+      "field": "text",
+      "original": "На второй — 1830",
+      "corrected": "На второй — 830",
+      "comment": "Параграф 1830 не существует в книге (1221 параграф). Целевой параграф для второго этажа лифта — 830.",
+      "source": "gemini_g2_2026_04",
+      "type": "broken_target"
+    },
+    "849_choices_disambiguation": {
+      "paragraph": 849,
+      "field": "choices.label",
+      "original": ["На второй", "На третий"],
+      "corrected": ["На второй ↑", "На третий ↓"],
+      "comment": "В §849 две choice-метки 'На второй' указывали на разные этажи лифта (вверх и вниз). Добавлены стрелки для дизамбигуации.",
+      "source": "gemini_g2_2026_04",
+      "type": "disambiguation"
+    }
+  },
+  "external_corrections": {
+    "preface_pregame_ocr": {
+      "field": "src/game_logic.js:PREGAME_TEXT",
+      "comment": "OCR artifacts in hardcoded constant (not extracted from FB2). Fixed in commit d23fabc.",
+      "source": "chatgpt_5_5_research_2026_04 + claude_audit_2026_04",
+      "items": [
+        {
+          "original": "кто Такие Гоблины и Орки",
+          "corrected": "кто такие Гоблины и Орки",
+          "type": "ocr",
+          "note": "Случайная капитализация 'Такие' посреди прямой речи."
+        },
+        {
+          "original": "Из мало кто видел.",
+          "corrected": "Их мало кто видел.",
+          "type": "ocr",
+          "note": "OCR прочёл 'Их' как 'Из'."
+        },
+        {
+          "original": "противостоятьвашим заклятиям",
+          "corrected": "противостоять вашим заклятиям",
+          "type": "missing_space",
+          "note": "Слипшиеся слова после OCR."
+        }
+      ]
+    }
+  },
+  "pending_corrections": {
+    "comment": "Затем — gameplay-level правки из Gemini G-2 audit, которые НЕ применены и ждут отдельной gameplay-polish сессии. См. docs/GRAPH_AUDIT.md секции III и V.",
+    "items": [
+      {
+        "paragraph": 13,
+        "field": "stamina_delta",
+        "expected": "+15",
+        "comment": "Fish meal: реальное dynamic math не применяется при выборе.",
+        "source": "gemini_g2_III.10",
+        "type": "gameplay_logic",
+        "priority": "P2"
+      },
+      {
+        "paragraph": 140,
+        "field": "skill_delta",
+        "expected": "+30 gold (или эквивалент)",
+        "comment": "Gold key reward не учитывается.",
+        "source": "gemini_g2_III.10",
+        "type": "gameplay_logic",
+        "priority": "P2"
+      },
+      {
+        "paragraph": 166,
+        "field": "combat_condition",
+        "expected": "stone rats: green_sword check на §135/§633/§1003/§1110",
+        "comment": "Каменные крысы должны требовать зелёный меч.",
+        "source": "gemini_g2_III.9",
+        "type": "gameplay_logic",
+        "priority": "P2"
+      },
+      {
+        "paragraph": 532,
+        "field": "combat_condition",
+        "expected": "Dragon: wound_2 condition",
+        "comment": "Дракон должен требовать второе ранение.",
+        "source": "gemini_g2_III.8",
+        "type": "gameplay_logic",
+        "priority": "P2"
+      }
+    ]
+  }
+}
