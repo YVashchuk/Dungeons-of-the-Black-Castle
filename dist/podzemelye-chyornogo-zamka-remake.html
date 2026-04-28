@@ -44,13 +44,36 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 @keyframes twinkle{0%{opacity:.6}100%{opacity:1}}
 .title-castle{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:500px;height:300px;
   background:linear-gradient(0deg,#0a0810 0%,transparent 60%);opacity:.3;pointer-events:none;}
-.t-content{position:relative;z-index:2;text-align:center;padding:40px;max-width:700px;}
+.t-content{position:relative;z-index:2;padding:40px;width:100%;max-width:1320px;
+  display:grid;
+  grid-template-columns: minmax(320px, 1.05fr) minmax(380px, 0.95fr);
+  align-items:center;
+  gap:clamp(24px, 4vw, 64px);
+  text-align:left;
+}
+.t-rider-col{display:flex;justify-content:center;align-items:center;min-width:0;}
+.t-rider-col img{display:block;width:100%;max-width:560px;height:auto;max-height:78vh;
+  filter:drop-shadow(0 0 32px rgba(200,150,50,.28));}
+.t-text-col{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;gap:14px;}
+.t-text-col .t-author-top{margin:0;font-family:var(--font-ui);font-size:13px;color:var(--muted);opacity:.7;letter-spacing:.18em;text-transform:uppercase;}
+.t-text-col #title-lettering{margin:0;}
+.t-text-col #title-lettering img{max-width:min(440px, 90%);}
+.t-text-col .t-sub{margin-top:8px;}
+.t-text-col .t-orn{margin:8px 0 4px;}
+.t-text-col .t-desc{margin:0 auto 8px;}
+.t-text-col .t-btns{margin-top:6px;}
+.t-text-col .t-author{margin-top:14px;}
+@media (max-width: 900px) {
+  .t-content{grid-template-columns:1fr; gap:18px; padding:24px 20px; max-width:640px;}
+  .t-rider-col img{max-height:38vh; max-width:380px;}
+  .t-text-col #title-lettering img{max-width:min(360px, 80%);}
+}
 .t-main{font-family:var(--font-title);font-size:clamp(32px,5vw,56px);color:var(--gold);
   text-shadow:0 0 40px rgba(200,150,42,.5),0 3px 6px rgba(0,0,0,.9);letter-spacing:.06em;line-height:1.15;margin-bottom:8px;}
 .t-sub{font-family:var(--font-ui);font-size:clamp(13px,1.5vw,17px);color:var(--muted);letter-spacing:.25em;text-transform:uppercase;margin-bottom:10px;}
 .t-orn{color:var(--red);font-size:28px;margin:16px 0;display:block;text-shadow:0 0 12px var(--red-glow);letter-spacing:8px;}
-.t-desc{font-family:var(--font-text);font-size:clamp(15px,1.3vw,18px);color:rgba(232,220,196,.6);max-width:500px;margin:0 auto 36px;line-height:1.7;}
-.t-author{margin-top:28px;font-family:var(--font-ui);font-size:12px;color:var(--muted);opacity:.5;letter-spacing:.1em;}
+.t-desc{font-family:var(--font-text);font-size:clamp(15px,1.3vw,18px);color:rgba(232,220,196,.7);max-width:500px;margin:0 auto 24px;line-height:1.7;}
+.t-author{margin-top:18px;font-family:var(--font-ui);font-size:12px;color:var(--muted);opacity:.55;letter-spacing:.1em;}
 .t-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
 
 /* BUTTONS */
@@ -740,18 +763,19 @@ body:has(.end-overlay.on) {
 <!-- ═══ TITLE ═══ -->
 <div class="scr on" id="scr-title">
   <div class="title-stars"></div>
-  <div class="t-content" style="display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap;">
-    <div id="title-rider" style="opacity:.8;"></div>
-    <div style="text-align:center;">
-      <div id="title-lettering" style="margin-bottom:16px;"></div>
+  <div class="t-content">
+    <div class="t-rider-col" id="title-rider"></div>
+    <div class="t-text-col">
+      <div class="t-author-top">Дмитрий Браславский</div>
+      <div id="title-lettering"></div>
       <div class="t-sub">Книга-игра</div>
       <span class="t-orn">⚔ ✦ ⚔</span>
-      <div class="t-desc" style="max-width:400px;">Отправьтесь в Зачарованный лес, пройдите через ловушки и опасности, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.</div>
+      <div class="t-desc">Отправьтесь в Зачарованный лес, пройдите через ловушки и опасности, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.</div>
       <div class="t-btns">
         <button class="btn btn-p" id="btn-new">Начать игру</button>
         <button class="btn btn-s" id="btn-load" style="display:none">Продолжить</button>
       </div>
-      <div class="t-author">Дмитрий Браславский · 1991 · Ремейк</div>
+      <div class="t-author">1991 · Ремейк 2023</div>
     </div>
   </div>
 </div>
@@ -2151,11 +2175,14 @@ function initTitle(){
   if(sv){bl.style.display='inline-block';bl.onclick=()=>{S=sv;showScr('game');renderGame();};}
   document.getElementById('btn-new').onclick=()=>showScr('create');
   // Title art
+  // Inline styles deliberately do NOT set width/height/max-* — those are
+  // handled by CSS (.t-rider-col img and .t-text-col #title-lettering img)
+  // so the two-column title layout stays in sync with the responsive grid.
   if(typeof TITLE_RIDER!=='undefined'){
-    document.getElementById('title-rider').innerHTML=`<img src="data:image/png;base64,${TITLE_RIDER}" style="max-height:350px;filter:drop-shadow(0 0 20px rgba(200,150,50,.3));" alt="">`;
+    document.getElementById('title-rider').innerHTML=`<img src="data:image/png;base64,${TITLE_RIDER}" alt="">`;
   }
   if(typeof TITLE_ART!=='undefined'){
-    document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}" style="max-width:380px;filter:drop-shadow(0 0 15px rgba(200,150,50,.2));" alt="Подземелья Чёрного замка">`;
+    document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}" alt="Подземелья Чёрного замка">`;
   } else {
     document.getElementById('title-lettering').innerHTML='<div class="t-main">Подземелья<br>Чёрного замка</div>';
   }

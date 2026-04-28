@@ -68,11 +68,14 @@ function initTitle(){
   if(sv){bl.style.display='inline-block';bl.onclick=()=>{S=sv;showScr('game');renderGame();};}
   document.getElementById('btn-new').onclick=()=>showScr('create');
   // Title art
+  // Inline styles deliberately do NOT set width/height/max-* — those are
+  // handled by CSS (.t-rider-col img and .t-text-col #title-lettering img)
+  // so the two-column title layout stays in sync with the responsive grid.
   if(typeof TITLE_RIDER!=='undefined'){
-    document.getElementById('title-rider').innerHTML=`<img src="data:image/png;base64,${TITLE_RIDER}" style="max-height:350px;filter:drop-shadow(0 0 20px rgba(200,150,50,.3));" alt="">`;
+    document.getElementById('title-rider').innerHTML=`<img src="data:image/png;base64,${TITLE_RIDER}" alt="">`;
   }
   if(typeof TITLE_ART!=='undefined'){
-    document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}" style="max-width:380px;filter:drop-shadow(0 0 15px rgba(200,150,50,.2));" alt="Подземелья Чёрного замка">`;
+    document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}" alt="Подземелья Чёрного замка">`;
   } else {
     document.getElementById('title-lettering').innerHTML='<div class="t-main">Подземелья<br>Чёрного замка</div>';
   }
