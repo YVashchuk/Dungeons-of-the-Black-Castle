@@ -4,15 +4,18 @@
 # Combines source files into a single self-contained HTML.
 # ═══════════════════════════════════════════════════════════════
 #
-# File order matters:
-#   1. game_shell_top.html  ← HTML+CSS frame, opens <script>
-#   2. remake_data.js        ← GD (1221 paragraphs)
-#   3. illustrations.js      ← legacy 1991 b/w scans (fallback)
-#   4. title_art.js          ← title-screen lineart
-#   5. mj_art.js             ← Midjourney color art (MJ_DATA/MJ_MAP/MJ_META)
-#   6. map_module.js         ← map / fog-of-war panel
-#   7. game_logic.js         ← engine — renders MJ first, ILLUST fallback
-#   8. closing </script></body></html>
+# Steps:
+#   1. Build the HTML shell from src/game_shell_top.html via
+#      scripts/build_shell.py — strips fonts.googleapis.com @import,
+#      injects src/fonts/fonts.css with woff2 embedded as base64 data:
+#      URLs, and injects src/mobile.css. Both go inside the existing
+#      <style> block. Result: dist HTML is fully self-contained and
+#      mobile-aware on first cold launch (no Google Fonts dependency,
+#      no external dist/fonts/ directory needed).
+#   2. Append the JS modules in fixed order:
+#        remake_data.js → illustrations.js → title_art.js → mj_art.js
+#        → map_module.js → game_logic.js
+#   3. Close </script>, </body>, </html>.
 #
 # ═══════════════════════════════════════════════════════════════
 
@@ -24,7 +27,7 @@ OUTPUT="$DIST_DIR/podzemelye-chyornogo-zamka-remake.html"
 
 echo "🔨 Building Dungeons of the Black Castle..."
 
-# Check all required source files are present
+# ── Required source files ──
 REQUIRED_FILES=(
   game_shell_top.html
   remake_data.js
@@ -33,8 +36,9 @@ REQUIRED_FILES=(
   mj_art.js
   map_module.js
   game_logic.js
+  mobile.css
+  fonts/fonts.css
 )
-
 for f in "${REQUIRED_FILES[@]}"; do
   if [ ! -f "$SRC_DIR/$f" ]; then
     echo "❌ Missing file: $SRC_DIR/$f"
@@ -44,8 +48,15 @@ done
 
 mkdir -p "$DIST_DIR"
 
-# Assemble the file (shell already contains opening <script>)
-cat "$SRC_DIR/game_shell_top.html" > "$OUTPUT"
+# ── Step 1: HTML shell with mobile.css + fonts.css injected ──
+PYBIN=$(command -v python || command -v python3 || true)
+if [ -z "$PYBIN" ]; then
+  echo "❌ Python not found in PATH (needed for shell transform)"
+  exit 1
+fi
+"$PYBIN" -X utf8 scripts/build_shell.py "$SRC_DIR" "$OUTPUT"
+
+# ── Step 2: append JS modules ──
 {
   echo ""
   echo "// ═══ DATA: remake 1221 paragraphs ═══"
@@ -76,14 +87,19 @@ cat "$SRC_DIR/game_shell_top.html" > "$OUTPUT"
   echo "</html>"
 } >> "$OUTPUT"
 
-# Validate <script>/</script> balance
+# ── Sanity: <script>/</script> balance ──
 SCRIPTS_OPEN=$(grep -c "<script>" "$OUTPUT" || true)
 SCRIPTS_CLOSE=$(grep -c "</script>" "$OUTPUT" || true)
 if [ "$SCRIPTS_OPEN" -ne "$SCRIPTS_CLOSE" ]; then
   echo "⚠ Warning: <script>=$SCRIPTS_OPEN, </script>=$SCRIPTS_CLOSE (should be equal)"
 fi
 
-# Optional JS syntax check if node is available
+# ── Sanity: no Google Fonts pulled at runtime (offline build broken if so) ──
+if grep -E -q "@import[[:space:]]+url\([\"']https://fonts\.googleapis\.com" "$OUTPUT"; then
+  echo "⚠ Warning: live @import from fonts.googleapis.com still present in $OUTPUT"
+fi
+
+# ── Optional JS syntax check ──
 if command -v node >/dev/null 2>&1; then
   for f in "${REQUIRED_FILES[@]}"; do
     case "$f" in
