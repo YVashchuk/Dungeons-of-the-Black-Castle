@@ -2972,77 +2972,102 @@ window.onload=()=>{
   }
 };
 
-// ── Sound Effects (Web Audio API) ──
-const AudioCtx=window.AudioContext||window.webkitAudioContext;
-let audioCtx=null;
-function getAudio(){if(!audioCtx)audioCtx=new AudioCtx();return audioCtx;}
+// ── Sound Effects (real OGG files via <audio>) ──
+// Maps semantic event names used throughout game_logic.js to OGG files in
+// dist/sounds/{ui,combat,spells,ambience,events}/. The 20 keys below mirror
+// dist/sounds/sounds_manifest.json. Earlier versions used Web Audio
+// oscillators; that placeholder layer is removed.
+//
+// Files are referenced via relative paths so they resolve correctly when
+// the dist HTML is opened directly via file:// from the dist/ folder.
 
-function playSound(type){
+const SOUND_PATHS={
+  ui_click:           'sounds/ui/ui_click.ogg',
+  ui_hover:           'sounds/ui/ui_hover.ogg',
+  ui_page_turn:       'sounds/ui/ui_page_turn.ogg',
+  combat_sword_hit:   'sounds/combat/combat_sword_hit.ogg',
+  combat_sword_miss:  'sounds/combat/combat_sword_miss.ogg',
+  combat_death_enemy: 'sounds/combat/combat_death_enemy.ogg',
+  combat_dice_roll:   'sounds/combat/combat_dice_roll.ogg',
+  spell_fire:         'sounds/spells/spell_fire.ogg',
+  spell_heal:         'sounds/spells/spell_heal.ogg',
+  spell_force:        'sounds/spells/spell_force.ogg',
+  spell_illusion:     'sounds/spells/spell_illusion.ogg',
+  spell_levitation:   'sounds/spells/spell_levitation.ogg',
+  amb_forest:         'sounds/ambience/amb_forest.ogg',
+  amb_castle:         'sounds/ambience/amb_castle.ogg',
+  amb_dungeon:        'sounds/ambience/amb_dungeon.ogg',
+  event_luck_success: 'sounds/events/event_luck_success.ogg',
+  event_luck_fail:    'sounds/events/event_luck_fail.ogg',
+  event_item_pickup:  'sounds/events/event_item_pickup.ogg',
+  event_victory:      'sounds/events/event_victory.ogg',
+  event_death:        'sounds/events/event_death.ogg'
+};
+
+// Per-key default volume. Tuned conservatively (0.2 — 0.7).
+const SOUND_VOLUMES={
+  ui_click:0.35, ui_hover:0.20, ui_page_turn:0.50,
+  combat_sword_hit:0.65, combat_sword_miss:0.55,
+  combat_dice_roll:0.55, combat_death_enemy:0.65,
+  spell_fire:0.55, spell_heal:0.55, spell_force:0.55,
+  spell_illusion:0.55, spell_levitation:0.55,
+  event_victory:0.65, event_death:0.65,
+  event_item_pickup:0.50,
+  event_luck_success:0.50, event_luck_fail:0.50
+};
+
+// Pre-create one Audio template per key. cloneNode() is used per-play so
+// overlapping triggers don’t cut each other off.
+const SOUNDS={};
+(function preloadSounds(){
+  for(const k in SOUND_PATHS){
+    try{
+      const a=new Audio(SOUND_PATHS[k]);
+      a.preload='auto';
+      SOUNDS[k]=a;
+    }catch(e){}
+  }
+})();
+
+// Legacy semantic-name → manifest-key map. Preserves all existing call sites
+// (playSound('dice'), playSound('hit'), etc.) without touching them.
+const SOUND_LEGACY_MAP={
+  dice:    'combat_dice_roll',
+  hit:     'combat_sword_hit',
+  hurt:    'combat_sword_miss',
+  victory: 'event_victory',
+  death:   'event_death',
+  item:    'event_item_pickup'
+};
+
+let SOUND_ENABLED=true;
+function playSoundKey(key){
+  if(!SOUND_ENABLED) return;
+  const tmpl=SOUNDS[key];
+  if(!tmpl) return;
   try{
-    const ctx=getAudio();
-    const osc=ctx.createOscillator();
-    const gain=ctx.createGain();
-    osc.connect(gain);gain.connect(ctx.destination);
-    
-    switch(type){
-      case 'dice':
-        osc.frequency.setValueAtTime(800,ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(200,ctx.currentTime+0.15);
-        gain.gain.setValueAtTime(0.15,ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.15);
-        osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.15);
-        break;
-      case 'hit':
-        osc.type='sawtooth';
-        osc.frequency.setValueAtTime(150,ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(60,ctx.currentTime+0.2);
-        gain.gain.setValueAtTime(0.2,ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.2);
-        osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.2);
-        break;
-      case 'hurt':
-        osc.type='square';
-        osc.frequency.setValueAtTime(400,ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(100,ctx.currentTime+0.3);
-        gain.gain.setValueAtTime(0.15,ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.3);
-        osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.3);
-        break;
-      case 'victory':
-        [523,659,784].forEach((f,i)=>{
-          const o=ctx.createOscillator();const g=ctx.createGain();
-          o.connect(g);g.connect(ctx.destination);
-          o.frequency.setValueAtTime(f,ctx.currentTime+i*0.15);
-          g.gain.setValueAtTime(0.12,ctx.currentTime+i*0.15);
-          g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+i*0.15+0.4);
-          o.start(ctx.currentTime+i*0.15);o.stop(ctx.currentTime+i*0.15+0.4);
-        });
-        break;
-      case 'death':
-        osc.type='sawtooth';
-        osc.frequency.setValueAtTime(300,ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(40,ctx.currentTime+0.8);
-        gain.gain.setValueAtTime(0.15,ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.8);
-        osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.8);
-        break;
-      case 'item':
-        osc.frequency.setValueAtTime(600,ctx.currentTime);
-        osc.frequency.setValueAtTime(900,ctx.currentTime+0.08);
-        gain.gain.setValueAtTime(0.1,ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.2);
-        osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.2);
-        break;
-    }
+    const inst=tmpl.cloneNode();
+    inst.volume=(SOUND_VOLUMES[key]!==undefined)?SOUND_VOLUMES[key]:0.5;
+    inst.play().catch(()=>{});
   }catch(e){}
 }
+function playSound(type){
+  const key=SOUND_LEGACY_MAP[type];
+  if(key) playSoundKey(key);
+}
+
+// Web Audio API stub kept for any future code that might still want a live
+// AudioContext (e.g. a custom equaliser). Currently unused.
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+let audioCtx=null;
+function getAudio(){if(!audioCtx&&AudioCtx)audioCtx=new AudioCtx();return audioCtx;}
 
 
 
 // ── Visual & Multimedia Polish V1 ──
 const VISUAL_SETTINGS_KEY='blackcastle-visual-v1';
 let VISUAL={ambience:false,inlineArt:true};
-let ambienceNodes=null;
+let ambienceAudio=null;
 function loadVisualSettings(){
   try{const raw=localStorage.getItem(VISUAL_SETTINGS_KEY); if(raw) VISUAL=Object.assign(VISUAL, JSON.parse(raw));}catch(e){}
 }
@@ -3071,40 +3096,22 @@ function syncVisualControls(){
 function toggleInlineArt(){
   VISUAL.inlineArt=!VISUAL.inlineArt; saveVisualSettings(); syncVisualControls();
 }
+// Looping ambience track. Using amb_dungeon as the default — most of the
+// game takes place underground; a future refinement could swap tracks per
+// section (forest → castle → dungeon).
 function stopAmbience(){
-  if(!ambienceNodes) return;
-  try{
-    ambienceNodes.osc1.stop(); ambienceNodes.osc2.stop(); ambienceNodes.lfo.stop();
-  }catch(e){}
-  try{ambienceNodes.master.disconnect();}catch(e){}
-  ambienceNodes=null;
+  if(!ambienceAudio) return;
+  try{ambienceAudio.pause(); ambienceAudio.currentTime=0;}catch(e){}
+  ambienceAudio=null;
 }
 function startAmbience(){
   try{
-    const ctx=getAudio();
-    if(ctx.state==='suspended') ctx.resume();
     stopAmbience();
-    const master=ctx.createGain();
-    master.gain.setValueAtTime(0.0001, ctx.currentTime);
-    master.gain.exponentialRampToValueAtTime(0.035, ctx.currentTime+1.8);
-    master.connect(ctx.destination);
-
-    const filt=ctx.createBiquadFilter();
-    filt.type='lowpass'; filt.frequency.value=420; filt.Q.value=.5;
-    filt.connect(master);
-
-    const osc1=ctx.createOscillator(); osc1.type='sine'; osc1.frequency.value=58;
-    const g1=ctx.createGain(); g1.gain.value=.5; osc1.connect(g1); g1.connect(filt);
-
-    const osc2=ctx.createOscillator(); osc2.type='triangle'; osc2.frequency.value=86;
-    const g2=ctx.createGain(); g2.gain.value=.16; osc2.connect(g2); g2.connect(filt);
-
-    const lfo=ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value=.07;
-    const lfoGain=ctx.createGain(); lfoGain.gain.value=.015;
-    lfo.connect(lfoGain); lfoGain.connect(master.gain);
-
-    osc1.start(); osc2.start(); lfo.start();
-    ambienceNodes={master,osc1,osc2,lfo};
+    const a=new Audio(SOUND_PATHS.amb_dungeon);
+    a.loop=true;
+    a.volume=0.22;
+    a.play().catch(()=>{});
+    ambienceAudio=a;
   }catch(e){}
 }
 function toggleAmbience(){
@@ -3112,16 +3119,7 @@ function toggleAmbience(){
   if(VISUAL.ambience) startAmbience(); else stopAmbience();
   syncVisualControls();
 }
-function playUiClick(){
-  try{
-    const ctx=getAudio();
-    if(ctx.state==='suspended') ctx.resume();
-    const o=ctx.createOscillator(); const g=ctx.createGain();
-    o.type='triangle'; o.frequency.setValueAtTime(440,ctx.currentTime); o.frequency.exponentialRampToValueAtTime(680,ctx.currentTime+.06);
-    g.gain.setValueAtTime(.035,ctx.currentTime); g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.08);
-    o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+.08);
-  }catch(e){}
-}
+function playUiClick(){ playSoundKey('ui_click'); }
 function initVisualPolishV1(){
   loadVisualSettings();
   ensureVisualDock();
