@@ -335,6 +335,53 @@ function closeInvModal(){
   updateHUD();saveGame();
 }
 
+// ── Death Overlay ──
+// Renders the #end-death overlay. Earlier versions truncated the paragraph
+// text to its last 200 characters, which mid-sentence-cut almost every
+// dead-end longer than 200 chars (48 of 59 paragraphs in the book), so e.g.
+// §352 displayed "м по воздуху крылатого… дракона!" instead of the full
+// dragon scene. Now shows the entire text and, if MJ_MAP has an art for
+// this paragraph, places the illustration above the text. Calling without
+// arguments (combat death) resets to the default "Ваше путешествие
+// окончено" line and hides any leftover image from a previous death.
+function showDeathOverlay(opts){
+  const overlay=document.getElementById('end-death');
+  const txt=document.getElementById('death-text');
+  let img=document.getElementById('death-img');
+  // Lazily create the illustration slot the first time it is needed,
+  // immediately after the death title and before the death-text paragraph.
+  if(!img){
+    img=document.createElement('img');
+    img.id='death-img';
+    img.alt='';
+    img.style.cssText='display:none;max-width:min(560px,86%);max-height:48vh;'+
+      'margin:0 auto 22px;border:1px solid var(--border);'+
+      'box-shadow:0 8px 30px rgba(0,0,0,.55);object-fit:contain;';
+    txt.parentNode.insertBefore(img,txt);
+  }
+  if(opts&&opts.sec){
+    txt.textContent=opts.sec.text;
+    let artUrl=null;
+    if(typeof MJ_MAP!=='undefined'&&typeof MJ_DATA!=='undefined'){
+      const artId=MJ_MAP[opts.secKey];
+      if(artId&&MJ_DATA[artId])artUrl=MJ_DATA[artId];
+    }
+    if(artUrl){
+      img.src=artUrl;
+      img.style.display='block';
+    } else {
+      img.removeAttribute('src');
+      img.style.display='none';
+    }
+  } else {
+    // Combat / stamina-zero death: keep the generic line, hide any image.
+    txt.textContent='Ваше путешествие окончено. Зачарованный лес поглотил ещё одного смельчака…';
+    img.removeAttribute('src');
+    img.style.display='none';
+  }
+  overlay.classList.add('on');
+}
+
 // ── Game Rendering ──
 function renderGame(){
   if(!S)return;updateHUD();
@@ -414,13 +461,17 @@ function renderGame(){
     if(statNotifs.length>0){updateHUD();saveGame();showItemNotification(statNotifs);}
   }
   // Check death
-  if(S.stamina<=0){document.getElementById('end-death').classList.add('on');return;}
+  if(S.stamina<=0){
+    showDeathOverlay();
+    return;
+  }
   // Check win
   if(S.section===1220){playSound('victory');document.getElementById('end-win').classList.add('on');return;}
   // Check dead-end (no choices and not win/death screen)
   if(sec.choices.length===0&&S.section!==617){
-    playSound('death');document.getElementById('death-text').textContent=sec.text.substring(sec.text.length-200);
-    document.getElementById('end-death').classList.add('on');return;
+    playSound('death');
+    showDeathOverlay({sec:sec,secKey:secKey});
+    return;
   }
   // Generate scene image
   generateSceneImage(sec.text);
@@ -1049,7 +1100,7 @@ function endCombat(won){
     document.getElementById('btn-combat-round').textContent='Конец';
     document.getElementById('btn-combat-round').onclick=()=>{
       document.getElementById('modal-combat').classList.remove('on');
-      document.getElementById('end-death').classList.add('on');
+      showDeathOverlay();
     };
   }
 }
@@ -1188,7 +1239,7 @@ function doLuckCheck(sec){
         const btn=document.createElement('button');btn.className='btn btn-s';
         btn.style.cssText='margin:8px;font-size:18px;padding:12px 24px;';
         btn.textContent='Конец приключения';
-        btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');document.getElementById('end-death').classList.add('on');};
+        btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');showDeathOverlay();};
         ch.appendChild(btn);
       } else {
         // No tagged luck choices — close modal and show in main view
