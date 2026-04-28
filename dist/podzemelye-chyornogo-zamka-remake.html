@@ -1730,6 +1730,18 @@ const SAVE_KEY='podzch_v5';
 
 // ── State ──
 let S=null;
+
+// Bridge: top-level `let` does not create window.S in browsers, but
+// src/map_module.js reads/writes window.S in 16+ places. Without this
+// bridge the map module silently no-ops everywhere because window.S is
+// permanently undefined. The defineProperty wires window.S to the live
+// closure-scoped S so both layers see the same state.
+Object.defineProperty(window, 'S', {
+  get(){ return S; },
+  set(v){ S = v; },
+  configurable: false
+});
+
 function initState(n,sk,st,lu,sp){
   return{name:n||'Герой',section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,
     luck:lu,luckMax:lu,gold:15,flask:2,
