@@ -119,22 +119,37 @@ let spQty={};SPELLS.forEach(s=>spQty[s.id]=0);
 const MAX_SP=10;
 function totSp(){return Object.values(spQty).reduce((a,b)=>a+b,0);}
 
+// Split a multi-sentence Russian description into separate lines so each
+// sentence reads as its own beat. Splits on '. ', '! ', '? ' followed by a
+// Cyrillic capital letter so abbreviations / mid-sentence ellipses are
+// preserved. Single-sentence descriptions pass through unchanged because
+// no boundary matches. HTML-escaping happens first so any literal &/</>
+// in source data cannot break out of the description container; the <br>
+// tags are inserted after escaping so they remain live HTML.
+function _spellDescHtml(text){
+  const esc = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  return esc.replace(/([.!?])\s+(?=[А-Я])/g, '$1<br>');
+}
+
 function renderSpellSel(){
   const bar=document.getElementById('slots-bar');bar.innerHTML='';const t=totSp(); const chip=document.getElementById('spell-counter-chip'); if(chip) chip.textContent=t+' из '+MAX_SP+' выбрано';
   for(let i=0;i<MAX_SP;i++){const d=document.createElement('div');d.className='slot-pip'+(i<t?' on':'');d.textContent=i<t?'✦':'·';bar.appendChild(d);}
   const grid=document.getElementById('spell-grid');grid.innerHTML='';
   SPELLS.forEach(sp=>{const q=spQty[sp.id];const c=document.createElement('div');
     c.className='sp-card'+(q>0?' sel':'')+(t>=MAX_SP&&q===0?' maxed':'');
-    c.style.cssText='display:flex;align-items:flex-start;gap:12px;padding:12px 14px;';
-    c.innerHTML=`<div class="sp-icon" style="font-size:28px;min-width:34px;text-align:center;margin-top:2px;">${sp.icon}</div>
+    c.style.cssText='display:flex;align-items:flex-start;gap:14px;padding:18px 20px;';
+    c.innerHTML=`<div class="sp-icon" style="font-size:32px;min-width:38px;text-align:center;margin-top:2px;">${sp.icon}</div>
       <div style="flex:1;min-width:0;">
-        <div class="sp-name" style="font-size:19px;margin-bottom:3px;font-weight:500;">${sp.name}</div>
-        <div class="sp-desc" style="font-size:14px;color:rgba(232,220,196,.65);line-height:1.5;">${sp.full}</div>
+        <div class="sp-name" style="font-size:21px;margin-bottom:6px;font-weight:500;">${sp.name}</div>
+        <div class="sp-desc" style="font-size:17px;color:rgba(232,220,196,.78);line-height:1.55;">${_spellDescHtml(sp.full)}</div>
       </div>
-      <div class="sp-qty" style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
-        <button class="qty-btn" data-id="${sp.id}" data-d="-1" style="font-size:18px;width:32px;height:32px;">−</button>
-        <span class="qty-num" style="font-size:20px;min-width:26px;text-align:center;">${q}</span>
-        <button class="qty-btn" data-id="${sp.id}" data-d="1" style="font-size:18px;width:32px;height:32px;">+</button>
+      <div class="sp-qty" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <button class="qty-btn" data-id="${sp.id}" data-d="-1" style="font-size:20px;width:36px;height:36px;">−</button>
+        <span class="qty-num" style="font-size:22px;min-width:30px;text-align:center;">${q}</span>
+        <button class="qty-btn" data-id="${sp.id}" data-d="1" style="font-size:20px;width:36px;height:36px;">+</button>
       </div>`;
     grid.appendChild(c);
   });

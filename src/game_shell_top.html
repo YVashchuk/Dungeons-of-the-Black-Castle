@@ -454,11 +454,15 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 
 <!-- ═══ SPELL SELECTION ═══ -->
 <div class="scr" id="scr-spells">
-  <div class="sp-wrap" style="max-width:1100px;">
+  <div class="sp-wrap" style="max-width:1400px;">
     <div class="sp-title">Заклятия Майлина</div>
-    <div class="sp-sub" style="font-size:18px;line-height:1.7;max-width:900px;margin:0 auto 20px;">Придворный астролог Майлин научил вас самым необходимым заклятиям. Ваше Мастерство позволяет воспользоваться ими только <b>10 раз</b>.<br>Выберите любые заклятия в любом количестве, но всего должно быть ровно десять.</div>
+    <div class="sp-sub" style="font-size:18px;line-height:1.7;max-width:900px;margin:0 auto 20px;">
+      <p style="margin:0 0 10px;">Придворный астролог Майлин научил вас самым необходимым заклятиям.</p>
+      <p style="margin:0 0 10px;">Ваше Мастерство позволяет воспользоваться ими только <b>10 раз</b>.</p>
+      <p style="margin:0;">Выберите любые заклятия в любом количестве, но всего должно быть ровно десять.</p>
+    </div>
     <div class="slots-bar" id="slots-bar"></div>
-    <div class="sp-grid" id="spell-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div>
+    <div class="sp-grid" id="spell-grid" style="grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px;"></div>
     <div class="sp-btns" style="margin-top:20px;">
       <button class="btn btn-s" id="btn-back-cr">← Назад</button>
       <button class="btn btn-s" id="btn-preface" onclick="showScr('preface')">📜 Предисловие</button>
