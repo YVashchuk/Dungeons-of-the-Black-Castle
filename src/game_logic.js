@@ -1189,45 +1189,21 @@ function doLuckCheck(sec){
   }
 }
 
-// ── AI Scene Image Generation ──
+// ── Atmospheric Scene Background ──
+// Earlier versions of this function called https://api.anthropic.com/v1/messages
+// to ask a model for an art-direction prompt before painting the background.
+// That call could never work from a file:// origin (CORS blocks it) and its
+// return value was discarded anyway — setAtmosphericBg(text) was always
+// invoked with the local Russian text in both the success and the catch
+// branch. Removed to silence the recurring console error and keep the PWA
+// fully offline. The atmospheric tint still works — setAtmosphericBg below
+// picks a gradient from local keywords (lake / castle / forest / dungeon
+// / battle / night / open field / fallback).
 let lastImageSection=null;
-async function generateSceneImage(text){
+function generateSceneImage(text){
   if(!text||S.section===lastImageSection)return;
   lastImageSection=S.section;
-  
-  const bg=document.getElementById('scene-bg');
-  const loader=document.getElementById('img-loading');
-  
-  try{
-    loader.classList.add('on');
-    // Extract key scene elements from text (first 200 chars)
-    const sceneDesc=text.substring(0,300).replace(/\n/g,' ');
-    
-    const response=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:200,
-        system:'You are an art director. Given a scene description from a fantasy gamebook, output ONLY a short (30-40 word) image generation prompt in English for a dark fantasy illustration. Style: medieval fantasy, oil painting, atmospheric, moody lighting. No characters, focus on environment/mood. Output only the prompt, nothing else.',
-        messages:[{role:'user',content:'Scene: '+sceneDesc}]
-      })
-    });
-    
-    if(!response.ok){loader.classList.remove('on');return;}
-    const data=await response.json();
-    const prompt=data.content?.[0]?.text;
-    if(!prompt){loader.classList.remove('on');return;}
-    
-    // Use the prompt to set a CSS gradient-based atmospheric background
-    // (Since we can't generate actual images in this environment, we create atmospheric CSS)
-    setAtmosphericBg(text);
-    loader.classList.remove('on');
-  }catch(e){
-    console.log('Image gen skipped:',e);
-    loader.classList.remove('on');
-    setAtmosphericBg(text);
-  }
+  setAtmosphericBg(text);
 }
 
 function setAtmosphericBg(text){
