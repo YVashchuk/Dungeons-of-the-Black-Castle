@@ -187,8 +187,17 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .scene-bg::after{content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,var(--bg) 0%,transparent 20%,transparent 70%,var(--bg) 100%);}
 
-/* Story text area */
-.story-area{flex:1;overflow-y:auto;position:relative;z-index:1;padding:48px 80px 24px;max-width:1200px;margin:0 auto;width:100%;}
+/* Story text area
+ * NOTE: padding-inline uses `max(20px, (100% - 1100px) / 2)` instead of
+ * the older `max-width:1200px; margin:0 auto`. That older approach put
+ * the vertical scrollbar INSIDE a centred 1200 px column, which left
+ * large empty wings on FullHD and made the scrollbar feel attached to
+ * a narrow strip. With the math approach, .story-area stretches edge
+ * to edge of .main — the scrollbar lives on the actual screen edge —
+ * while text is still constrained to a comfortable ~85ch line length
+ * (≤ 1100 px) by the inline padding. mobile.css overrides this for
+ * ≤ 700 px viewports. */
+.story-area{flex:1;overflow-y:auto;position:relative;z-index:1;padding:clamp(24px,4vw,48px) max(20px,calc((100% - 1100px) / 2)) 24px;}
 .s-num{font-family:var(--font-ui);font-size:14px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:20px;opacity:.7;}
 .s-text{font-family:var(--font-text);font-size:25px;line-height:1.8;color:var(--parchment);
   text-shadow:0 1px 3px rgba(0,0,0,.5);}
@@ -196,8 +205,8 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .enemy-block{display:inline-block;background:rgba(139,26,26,.15);border-left:3px solid var(--red);
   padding:3px 12px;margin:6px 0;font-family:var(--font-ui);font-size:17px;color:var(--red2);letter-spacing:.04em;}
 
-/* Choices area */
-.choices-area{position:relative;z-index:1;padding:20px 80px 36px;max-width:1200px;margin:0 auto;width:100%;
+/* Choices area — mirrors .story-area for centred-but-edge-to-edge layout */
+.choices-area{position:relative;z-index:1;padding:20px max(20px,calc((100% - 1100px) / 2)) clamp(24px,4vw,36px);
   border-top:1px solid var(--border);}
 .choice-btn{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--border);
   color:var(--parchment);padding:18px 28px;margin-bottom:10px;font-family:var(--font-text);font-size:23px;
@@ -433,10 +442,10 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 </div>
 
 <!-- ═══ PREFACE ═══ -->
-<div class="scr" id="scr-preface">
+<div class="scr" id="scr-preface" style="overflow-y:auto;">
   <div style="max-width:800px;margin:0 auto;padding:40px 60px;">
     <div class="cr-title" style="margin-bottom:24px;">📜 Предисловие</div>
-    <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);max-height:65vh;overflow-y:auto;padding-right:16px;" id="preface-text"></div>
+    <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="preface-text"></div>
     <div style="margin-top:24px;text-align:center;">
       <button class="btn btn-s" onclick="showScr('spells')">← К выбору заклятий</button>
       <button class="btn btn-p" id="btn-start-from-preface">Начать игру ⚔</button>
@@ -445,10 +454,10 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 </div>
 
 <!-- ═══ PRE-GAME NARRATIVE ═══ -->
-<div class="scr" id="scr-pregame">
+<div class="scr" id="scr-pregame" style="overflow-y:auto;">
   <div style="max-width:800px;margin:0 auto;padding:40px 60px;">
     <div class="cr-title" style="margin-bottom:24px;">⚔ В путь!</div>
-    <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);max-height:65vh;overflow-y:auto;padding-right:16px;" id="pregame-text"></div>
+    <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="pregame-text"></div>
     <div style="margin-top:24px;text-align:center;">
       <button class="btn btn-p" id="btn-enter-forest">Войти в Зачарованный лес ⚔</button>
     </div>
