@@ -376,7 +376,6 @@ const MJ_MAP = {
   "1095": "art15_prison",
   "258": "art16_dungeon",
   "285": "art16_dungeon",
-  "311": "art16_dungeon",
   "129": "art17_bridge_goblin",
   "162": "art17_bridge_goblin",
   "182": "art17_bridge_goblin",
