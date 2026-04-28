@@ -338,6 +338,15 @@ CATALOG = {
         'remake_paragraphs': [1220],
         'original_paragraphs': [617],
     },
+    # ─── TITLE SCREEN: hero rider (splash, not paragraph-bound) ───
+    'art_title_rider': {
+        'scene': 'Title screen splash — hero on horseback riding away into a dark forest toward the distant Black Castle',
+        'prompt': "A lone medieval Slavic hero on horseback riding away from the viewer along a narrow path INTO the depths of a dense dark enchanted pine forest at twilight, side-back three-quarter view, massive towering ancient tree trunks crowding both sides of the path and filling most of the frame, dense forest canopy overhead, cape flowing in the wind, sword at the hip, leather armor with embroidered Slavic ornaments, the horse caparisoned in dark cloth, tiny distant silhouette of a black castle barely visible far in the background glimpsed between the trees, narrow gap of star-filled sky above the treetops, atmospheric moonlight filtering down through branches catching the rider's profile and the horse's flank, dramatic chiaroscuro, oil painting on canvas, painterly brushwork visible, deep blacks, warm gold rim-light on the rider, cool deep-violet midtones in the forest --no panoramic landscape, hilltop overlook, open valley, sweeping vista, sparse trees, text, logo, frame, border --ar 4:5 --style raw --v 6.1 --stylize 250 --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --cw 40",
+        'ref_url': '',  # not generated via Ace Data Cloud — saved manually as art_title_rider.png
+        'remake_paragraphs': [],  # title screen only
+        'original_paragraphs': [],
+    },
+
 }
 
 if __name__ == '__main__':

@@ -72,7 +72,7 @@ function initTitle(){
   // handled by CSS (.t-rider-col img and .t-text-col #title-lettering img)
   // so the two-column title layout stays in sync with the responsive grid.
   if(typeof TITLE_RIDER!=='undefined'){
-    document.getElementById('title-rider').innerHTML=`<img src="data:image/png;base64,${TITLE_RIDER}" alt="">`;
+    document.getElementById('title-rider').innerHTML=`<img src="data:image/jpeg;base64,${TITLE_RIDER}" alt="">`;
   }
   if(typeof TITLE_ART!=='undefined'){
     document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}" alt="Подземелья Чёрного замка">`;
