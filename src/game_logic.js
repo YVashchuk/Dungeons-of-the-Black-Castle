@@ -914,7 +914,20 @@ function renderChoices(sec){
       unluckyChoices.forEach(ch=>list.appendChild(makeChoiceBtn(ch)));
       return;
     }
-    nonLuckChoices.forEach(ch=>list.appendChild(makeChoiceBtn(ch)));
+    if(nonLuckChoices.length){
+      nonLuckChoices.forEach(ch=>list.appendChild(makeChoiceBtn(ch)));
+      return;
+    }
+    // Fatal-unlucky: paragraph has only lucky-tagged choices and the player
+    // failed the luck roll. With no unlucky branch and no non-luck fallback,
+    // c-list would otherwise stay empty and the UI would hang on a screen
+    // with no actionable buttons. Affects §203 (drowning), §289 (falling
+    // tree), §377 (broken back), and any other paragraph where a failed
+    // luck roll is canonically fatal but only the lucky escape was encoded
+    // as a choice. Route directly to the death overlay (which exists from
+    // commit ca50bbd and renders the full paragraph text plus illustration
+    // if MJ_MAP has one for this section).
+    showDeathOverlay({sec:sec, secKey:String(S.section)});
     return;
   }
 
