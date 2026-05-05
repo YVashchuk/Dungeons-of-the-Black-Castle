@@ -26,7 +26,7 @@ CATALOG = {
         'scene': 'Enchanted forest, hero begins his journey',
         'prompt': 'lone slavic traveler with Slavic facial features and Eastern European medieval folk costume in medieval dark cloak walking into an ancient enchanted slavic forest, forked dirt path, twisted oaks with gnarled roots, morning sunlight piercing canopy, far silhouette of black castle spires on horizon, autumn mood',
         'ref_url': 'https://cdn.midjourney.com/67f4893a-d0eb-491e-9f88-11a2efddc915/0_0.png',
-        'remake_paragraphs': [1, 14],
+        'remake_paragraphs': [14],
         'original_paragraphs': [1],
     },
     'art02_black_castle_first_view': {
@@ -146,7 +146,7 @@ CATALOG = {
         'scene': 'Underground catacomb corridor',
         'prompt': 'dark underground dungeon corridor carved from black stone, arched vaulted passage with dripping stalactites, candles on stone pillars, skulls in wall niches, hooded figure walks cautiously with sword',
         'ref_url': 'https://cdn.midjourney.com/ee176009-e4a1-4324-9981-3397cb05cc8b/0_0.png',
-        'remake_paragraphs': [258, 285, 311, 672],
+        'remake_paragraphs': [258, 285, 672],
         'original_paragraphs': [311],
     },
     'art17_bridge_goblin': {
@@ -337,6 +337,20 @@ CATALOG = {
         'ref_url': 'https://cdn.midjourney.com/f4e8ed07-2f5c-436e-96e3-904e3ec262a3/0_0.png',
         'remake_paragraphs': [1220],
         'original_paragraphs': [617],
+    },
+    'art53_six_legged_beast': {
+        'scene': 'Hero kneels by the slain six-legged beast in a quiet forest, examining the leather pouch from its neck containing a gold whistle and a diamond.',
+        'prompt': "A lone medieval Slavic hero kneeling beside the corpse of a slain six-legged beast in a quiet enchanted forest clearing, gently examining a small leather pouch hidden around the beast's neck disguised to match its hide, tiny gold whistle and a sparkling cut diamond spilling out onto moss, the beast sprawled peacefully on its side with all six legs visible, dappled golden sunlight filtering through tall pine canopy, leather armor with embroidered Slavic ornaments, sword sheathed at the hip, atmospheric mood of quiet discovery after combat, oil painting on canvas, painterly brushwork visible --no panoramic landscape, hilltop overlook, open valley, sweeping vista, sparse trees, gore, blood splatter, text, logo, frame, border --ar 4:5 --style raw --v 6.1 --stylize 250 --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --cw 40",
+        'ref_url': 'https://cdn.midjourney.com/fb6c0fa3-6b88-4fee-b232-c0287edc2284/0_0.png',
+        'remake_paragraphs': [311],
+        'original_paragraphs': [],
+    },
+    'art54_forest_path': {
+        'scene': 'Hooded hero in a Slavic-ornamented cape walking forward into a deceptively peaceful enchanted autumn forest at the start of his journey.',
+        'prompt': "A lone medieval Slavic hero walking forward into a deceptively peaceful enchanted forest at early morning, viewed from behind and slightly above, the hero entering the treeline with steady determined gait, soft golden morning mist drifting between tall ancient pine trunks, dappled warm light catching the path ahead, the forest appearing calm and ordinary on the surface but with subtle hints of darkness in the deeper distance, leather armor with embroidered Slavic ornaments, sword at the hip, cape catching light wind, oil painting on canvas, painterly brushwork visible, atmospheric chiaroscuro --no panoramic landscape, hilltop overlook, open valley, sweeping vista, sparse trees, dramatic combat, visible monsters, text, logo, frame, border --ar 4:5 --style raw --v 6.1 --stylize 250 --cref https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png --cw 50",
+        'ref_url': 'https://cdn.midjourney.com/a787c691-d98d-44cc-8cc5-da5a5846eb92/0_0.png',
+        'remake_paragraphs': [1],
+        'original_paragraphs': [],
     },
     # ─── TITLE SCREEN: hero rider (splash, not paragraph-bound) ───
     'art_title_rider': {
