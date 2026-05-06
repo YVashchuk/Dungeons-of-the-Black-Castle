@@ -577,6 +577,21 @@ function getSpellRemaining(spellId){
   return sp?sp.remaining:0;
 }
 
+// Inventory-conditional choice gating. A choice may carry
+// `inventory_condition: "Item Name"` (string) or an array of acceptable
+// names. The choice button is rendered only if S.inventory contains a
+// matching item. Used by the §166 stone-rats branch (requires "Целый
+// меч") and the §1085 gold-key door branch (requires "Золотой ключ").
+// Without an inventory_condition the choice is always visible — this is
+// the default and matches all pre-existing data.
+function passesInventoryCheck(ch){
+  if(!ch||!ch.inventory_condition) return true;
+  if(!S||!S.inventory) return false;
+  const cond=ch.inventory_condition;
+  if(Array.isArray(cond)) return cond.some(name=>S.inventory.includes(name));
+  return S.inventory.includes(cond);
+}
+
 function useSpell(spellId){
   if(!S||!S.spells)return;
   const sp=S.spells.find(s=>s.id===spellId);
@@ -867,7 +882,7 @@ function renderChoices(sec){
     btn.onclick=()=>startCombat(sec.enemies,sec);list.appendChild(btn);
     // Show pre-combat choices but NOT post-combat, luck-result, or combat conditions
     sec.choices.forEach(ch=>{
-      if(!ch.post_combat && !ch.luck_type && !ch.combat_condition){
+      if(!ch.post_combat && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch)){
         list.appendChild(makeChoiceBtn(ch, true));
       }
     });
@@ -877,7 +892,7 @@ function renderChoices(sec){
   if(combatWon){
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
     sec.choices.forEach(ch=>{
-      if(!spellChoiceRe.test(ch.label) && !ch.luck_type && !ch.combat_condition){
+      if(!spellChoiceRe.test(ch.label) && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch)){
         list.appendChild(makeChoiceBtn(ch));
       }
     });
@@ -892,7 +907,7 @@ function renderChoices(sec){
     btn.onclick=()=>startLuckCheck(sec);list.appendChild(btn);
     // Show only true pre-luck alternatives; keep some choices hidden until unlucky combat starts.
     sec.choices.forEach(ch=>{
-      if(!ch.luck_type && !ch.post_combat && !ch.only_after_unlucky){
+      if(!ch.luck_type && !ch.post_combat && !ch.only_after_unlucky && passesInventoryCheck(ch)){
         list.appendChild(makeChoiceBtn(ch));
       }
     });
@@ -900,9 +915,9 @@ function renderChoices(sec){
   }
 
   const lr=luckResult[S.section];
-  const luckyChoices=sec.choices.filter(ch=>ch.luck_type==='lucky');
-  const unluckyChoices=sec.choices.filter(ch=>ch.luck_type==='unlucky');
-  const nonLuckChoices=sec.choices.filter(ch=>!ch.luck_type);
+  const luckyChoices=sec.choices.filter(ch=>ch.luck_type==='lucky' && passesInventoryCheck(ch));
+  const unluckyChoices=sec.choices.filter(ch=>ch.luck_type==='unlucky' && passesInventoryCheck(ch));
+  const nonLuckChoices=sec.choices.filter(ch=>!ch.luck_type && passesInventoryCheck(ch));
 
   if(lr==='lucky' && luckyChoices.length){
     luckyChoices.forEach(ch=>list.appendChild(makeChoiceBtn(ch)));
