@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "last_updated": "2026-04-30",
+  "last_updated": "2026-05-06",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
-    "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster."
+    "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
+    "v2 → v2.1": "May 2026 sweep against current MJ_MAP and art_catalog.py state revealed that all Group 4 art-mapping recommendations from both audits were already in place: §1072 already maps to art09_sleeping_princess; art12_camp/art29_hostess/art41_mounted catalogues already match MJ_MAP; §319/§100/§558/§846/§1123 already use the recommended arts. The audits were taken before previous sessions had already cleaned up these mappings. Items recorded in resolved_no_op below as verified-and-resolved so future audits don't resurrect them."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -26,8 +27,14 @@
     "849_choices_disambiguation": {
       "paragraph": 849,
       "field": "choices.label",
-      "original": ["На второй", "На третий"],
-      "corrected": ["На второй ↑", "На третий ↓"],
+      "original": [
+        "На второй",
+        "На третий"
+      ],
+      "corrected": [
+        "На второй ↑",
+        "На третий ↓"
+      ],
       "comment": "В §849 две choice-метки 'На второй' указывали на разные этажи лифта (вверх и вниз). Добавлены стрелки для дизамбигуации.",
       "source": "gemini_g2_2026_04",
       "type": "disambiguation"
@@ -88,22 +95,38 @@
   },
   "pending_corrections": {
     "comment": "Pending items grouped by implementation strategy. Each group is intended as one Claude commit. Items verified against assets/fb2_remake.fb2 with FB2 quotes provided where the citation is the canonical authority. Sources: GPT = ChatGPT 5.5 Research Mode (Apr 2026, three iterations); GEM = Gemini 3.1 Pro graph audit (Apr 2026).",
-
     "group_1_gold_sign_bugs": {
       "comment": "Pure data fix: paragraphs use auto_items.gold (positive add) instead of auto_items.gold_sub (subtraction). All are scenes where the player gives/throws/spends gold per the text, not receives it. Should be safe single commit.",
       "priority": "P1",
       "type": "sign_bug",
       "source": "chatgpt_5_5_2026_04 v1",
       "items": [
-        {"paragraph": 552, "fix": "auto_items.gold:1 → auto_items.gold_sub:1"},
-        {"paragraph": 686, "fix": "auto_items.gold:1 → auto_items.gold_sub:1"},
-        {"paragraph": 695, "fix": "auto_items.gold:4 → auto_items.gold_sub:4"},
-        {"paragraph": 745, "fix": "auto_items.gold:10 → auto_items.gold_sub:10"},
-        {"paragraph": 903, "fix": "auto_items.gold:1 → auto_items.gold_sub:1"},
-        {"paragraph": 937, "fix": "auto_items.gold:6 → auto_items.gold_sub:6 + add luck_add:1"}
+        {
+          "paragraph": 552,
+          "fix": "auto_items.gold:1 → auto_items.gold_sub:1"
+        },
+        {
+          "paragraph": 686,
+          "fix": "auto_items.gold:1 → auto_items.gold_sub:1"
+        },
+        {
+          "paragraph": 695,
+          "fix": "auto_items.gold:4 → auto_items.gold_sub:4"
+        },
+        {
+          "paragraph": 745,
+          "fix": "auto_items.gold:10 → auto_items.gold_sub:10"
+        },
+        {
+          "paragraph": 903,
+          "fix": "auto_items.gold:1 → auto_items.gold_sub:1"
+        },
+        {
+          "paragraph": 937,
+          "fix": "auto_items.gold:6 → auto_items.gold_sub:6 + add luck_add:1"
+        }
       ]
     },
-
     "group_2_missing_passive_auto_effects": {
       "comment": "Paragraphs where the FB2 text gives a deterministic stat effect on entry, but auto_items is missing. Verify each against fb2_remake.fb2 at implementation time before applying — the two ChatGPT iterations gave overlapping but non-identical lists, so each line below should be confirmed. Single commit, data-only.",
       "priority": "P2",
@@ -111,23 +134,77 @@
       "source": "chatgpt_5_5_2026_04 v1+v2 (overlap §1147 only; rest must be FB2-verified)",
       "verification_required": "For each paragraph below, grep fb2_remake.fb2 for the actual stat-effect language ('добавьте N ВЫНОСЛИВОСТЬ', 'потеряйте N', 'прибавьте N МАСТЕРСТВО', 'УДАЧУ') before adding auto_items entry. Lists from v1 and v2 are non-deterministic Research Mode outputs; do not trust either blindly.",
       "items_v1": [
-        {"paragraph": 25,   "fix": "add auto_items.stamina_sub:2",  "verified_against_fb2": false},
-        {"paragraph": 484,  "fix": "add auto_items.stamina_add:2",  "verified_against_fb2": false},
-        {"paragraph": 513,  "fix": "add auto_items.stamina_add:3",  "verified_against_fb2": false},
-        {"paragraph": 927,  "fix": "add auto_items.stamina_add:8",  "verified_against_fb2": false},
-        {"paragraph": 1147, "fix": "add auto_items.stamina_add:4",  "verified_against_fb2": false}
+        {
+          "paragraph": 25,
+          "fix": "add auto_items.stamina_sub:2",
+          "verified_against_fb2": false
+        },
+        {
+          "paragraph": 484,
+          "fix": "add auto_items.stamina_add:2",
+          "verified_against_fb2": false
+        },
+        {
+          "paragraph": 513,
+          "fix": "add auto_items.stamina_add:3",
+          "verified_against_fb2": false
+        },
+        {
+          "paragraph": 927,
+          "fix": "add auto_items.stamina_add:8",
+          "verified_against_fb2": false
+        },
+        {
+          "paragraph": 1147,
+          "fix": "add auto_items.stamina_add:4",
+          "verified_against_fb2": false
+        }
       ],
       "items_v2": [
-        {"paragraph": 74,   "fix": "add auto_items.luck_add:1",     "verified_against_fb2": false, "fb2_quote": "«…можете добавить себе 1 УДАЧУ.»"},
-        {"paragraph": 444,  "fix": "add auto_items.stamina_add:7",  "verified_against_fb2": false, "fb2_quote": "«…восстановите… 7 ВЫНОСЛИВОСТЕЙ.»"},
-        {"paragraph": 453,  "fix": "add auto_items.stamina_add:3",  "verified_against_fb2": false, "fb2_quote": "«…можете добавить себе 3 ВЫНОСЛИВОСТИ.»"},
-        {"paragraph": 1093, "fix": "add auto_items.stamina_add:10", "verified_against_fb2": false, "fb2_quote": "«…можете добавить себе 10 ВЫНОСЛИВОСТЕЙ.»"},
-        {"paragraph": 1128, "fix": "add auto_items.stamina_add:2",  "verified_against_fb2": false, "fb2_quote": "«…прибавляешь себе 2 ВЫНОСЛИВОСТИ.»"},
-        {"paragraph": 1147, "fix": "add auto_items.stamina_add:4",  "verified_against_fb2": false, "fb2_quote": "«Можете добавить себе 4 ВЫНОСЛИВОСТИ.»"},
-        {"paragraph": 1181, "fix": "add auto_items.stamina_add:4",  "verified_against_fb2": false, "fb2_quote": "«…прибавляешь себе 4 ВЫНОСЛИВОСТИ.»"}
+        {
+          "paragraph": 74,
+          "fix": "add auto_items.luck_add:1",
+          "verified_against_fb2": false,
+          "fb2_quote": "«…можете добавить себе 1 УДАЧУ.»"
+        },
+        {
+          "paragraph": 444,
+          "fix": "add auto_items.stamina_add:7",
+          "verified_against_fb2": false,
+          "fb2_quote": "«…восстановите… 7 ВЫНОСЛИВОСТЕЙ.»"
+        },
+        {
+          "paragraph": 453,
+          "fix": "add auto_items.stamina_add:3",
+          "verified_against_fb2": false,
+          "fb2_quote": "«…можете добавить себе 3 ВЫНОСЛИВОСТИ.»"
+        },
+        {
+          "paragraph": 1093,
+          "fix": "add auto_items.stamina_add:10",
+          "verified_against_fb2": false,
+          "fb2_quote": "«…можете добавить себе 10 ВЫНОСЛИВОСТЕЙ.»"
+        },
+        {
+          "paragraph": 1128,
+          "fix": "add auto_items.stamina_add:2",
+          "verified_against_fb2": false,
+          "fb2_quote": "«…прибавляешь себе 2 ВЫНОСЛИВОСТИ.»"
+        },
+        {
+          "paragraph": 1147,
+          "fix": "add auto_items.stamina_add:4",
+          "verified_against_fb2": false,
+          "fb2_quote": "«Можете добавить себе 4 ВЫНОСЛИВОСТИ.»"
+        },
+        {
+          "paragraph": 1181,
+          "fix": "add auto_items.stamina_add:4",
+          "verified_against_fb2": false,
+          "fb2_quote": "«…прибавляешь себе 4 ВЫНОСЛИВОСТИ.»"
+        }
       ]
     },
-
     "group_3_missing_item_acquisitions": {
       "comment": "Paragraphs where the FB2 text gives the player an item but auto_items.items is empty. Pure data fix, single commit.",
       "priority": "P1",
@@ -154,7 +231,6 @@
         }
       ]
     },
-
     "group_4_conditional_choice_gating": {
       "comment": "Paragraphs where the FB2 text presents inventory-conditional branches but the engine renders them unconditionally. Requires extending the existing combat_condition mechanism with an analogous inventory_condition. Engine code change in src/game_logic.js + data updates in src/remake_data.js.",
       "priority": "P1",
@@ -162,7 +238,11 @@
       "source": "chatgpt_5_5_2026_04 v3",
       "items": [
         {
-          "paragraphs": [1003, 135, 166],
+          "paragraphs": [
+            1003,
+            135,
+            166
+          ],
           "fix": "Render §166 branch only if S.inventory contains 'Целый меч'. From §1003: with sword → §166 → §1101; without → §633. From §135: with sword → §166; without → §633.",
           "fb2_quotes": {
             "166": "«Только мечом Зеленого рыцаря можно победить каменных крыс… Ваш путь свободен — 1101.»",
@@ -173,27 +253,39 @@
           "comment": "Canonical branch set is §1003/§166/§633/§1101 (NOT §135/§633/§1003/§1110 as previously listed in registry)."
         },
         {
-          "paragraphs": [1085],
+          "paragraphs": [
+            1085
+          ],
           "fix": "Render §1115 branch only if S.inventory contains 'Золотой ключ'. With key → §1115; without → §459.",
           "fb2_quote_§1085": "«Если у вас есть Золотой ключ, то можете открыть дверь. Тогда прибавьте к номеру этого параграфа 30.»",
           "depends_on": "group_3_missing_item_acquisitions §1172 + existing §140 + existing §440 (all three give the same canonical 'Золотой ключ' item)"
         }
       ]
     },
-
     "group_5_dead_end_crash_fix": {
       "comment": "Paragraphs with luck-roll where success has a transition but failure does not — UI gets stuck because no death overlay triggers. Either inject synthetic unlucky_target leading to a generic death paragraph, OR add fatal_unlucky:true flag on the paragraph so engine routes failed luck rolls directly to showDeathOverlay({sec, secKey}) (which already exists, see commit ca50bbd).",
       "priority": "P0",
       "type": "dead_end_crash",
       "source": "gemini_g2_2026_04",
       "items": [
-        {"paragraph": 203, "comment": "Drowning luck-roll. Lucky → §62 (or §218 if fish_help). Unlucky → no transition (UI hang)."},
-        {"paragraph": 289, "comment": "Falling tree luck-roll. Lucky → §59. Unlucky → no transition."},
-        {"paragraph": 377, "comment": "Luck-roll death paragraph; success has target, failure narrative-only."},
-        {"paragraph": 456, "comment": "Same pattern."}
+        {
+          "paragraph": 203,
+          "comment": "Drowning luck-roll. Lucky → §62 (or §218 if fish_help). Unlucky → no transition (UI hang)."
+        },
+        {
+          "paragraph": 289,
+          "comment": "Falling tree luck-roll. Lucky → §59. Unlucky → no transition."
+        },
+        {
+          "paragraph": 377,
+          "comment": "Luck-roll death paragraph; success has target, failure narrative-only."
+        },
+        {
+          "paragraph": 456,
+          "comment": "Same pattern."
+        }
       ]
     },
-
     "group_6_dynamic_target_engine": {
       "comment": "Paragraph-arithmetic mechanics: text says 'add N to current paragraph number' and routes player to paragraph+N. CRITICAL: cannot be implemented as a universal engine hook because 1221-renumbering of the remake breaks many offsets. Examples: §1085+30=§1115 works, but §385+910=§1295 exceeds 1221, and §198+50=§248 may not be canonical. Each item below requires per-item remap table verified manually against fb2_remake.fb2 + check that consumer paragraphs exist in remake numbering. Architectural recommendation: per-item conditional routing (Approach 3 from Gemini bonus reply), NOT a generic currentParagraph + modifier hook (Approach 2 was Gemini's first suggestion but ChatGPT v3 verified it's unsafe).",
       "priority": "P3",
@@ -204,15 +296,27 @@
         {
           "item_state": "fish_help",
           "acquisition_paragraph": 13,
-          "consumer_paragraphs_candidate": [32, 203, 699],
+          "consumer_paragraphs_candidate": [
+            32,
+            203,
+            699
+          ],
           "modifier": "+15",
-          "consumer_targets_to_verify": {"§32": "§47", "§203": "§218", "§699": "§714"},
+          "consumer_targets_to_verify": {
+            "§32": "§47",
+            "§203": "§218",
+            "§699": "§714"
+          },
           "fb2_quote": "«…позови меня, и я тебе помогу… прибавьте 15 к номеру параграфа, на котором будете находиться, и рыбка попробует вас спасти.»",
           "comment": "fish_help is a persistent reusable promise token, not a physical inventory item. Choosing 'throw fish back' at §13 grants the token; choosing 'keep fish' at §195 does not."
         },
         {
           "item_state": "Золотой ключ",
-          "acquisition_paragraphs": [140, 440, 1172],
+          "acquisition_paragraphs": [
+            140,
+            440,
+            1172
+          ],
           "consumer_paragraph": 1085,
           "modifier": "+30",
           "consumer_target": "§1115 (success) / §459 (fail)",
@@ -305,7 +409,6 @@
         }
       ]
     },
-
     "group_7_inventory_loss_text_engine_mismatch": {
       "comment": "Paragraphs where the text says inventory and/or gold are lost (player robbed, drugged, etc.) but auto_items is empty so engine never honours the loss. Player keeps everything, breaking narrative causality.",
       "priority": "P2",
@@ -313,12 +416,14 @@
       "source": "gemini_g2_2026_04",
       "items": [
         {
-          "paragraphs": [873, 642],
+          "paragraphs": [
+            873,
+            642
+          ],
           "comment": "Vodyanoy paradox: text describes player drinking water at Vodyanoy's hut, falling asleep (§767), and being robbed (§642): «Ваш заплечный мешок и деньги исчезли». Engine doesn't clear inventory or gold. Should add auto_items at §642 (or wherever the loss is narratively final) that clears all items and zeroes gold."
         }
       ]
     },
-
     "group_8_infinite_item_loot": {
       "comment": "Paragraph allows unlimited collection of an item but engine has no infinite-loot mechanic. Currently the choice does nothing useful for the player.",
       "priority": "P3",
@@ -331,30 +436,115 @@
         }
       ]
     },
-
     "group_9_combat_balance_outliers": {
       "comment": "Combat enemies whose Skill/Stamina values are statistical outliers and may need rebalancing for game pacing. Diagnostic only — not necessarily bugs.",
       "priority": "P3",
       "type": "balance_review",
       "source": "gemini_g2_2026_04",
       "items": [
-        {"paragraph": 36,  "comment": "Trader: Skill 7, Stamina 17. Anomalously high stamina for an NPC encounter (HP sponge)."},
-        {"paragraph": 760, "comment": "Bats: Skill 4, Stamina 6-8. Under-powered; appears to function as stamina-drain encounter, may be intentional."}
+        {
+          "paragraph": 36,
+          "comment": "Trader: Skill 7, Stamina 17. Anomalously high stamina for an NPC encounter (HP sponge)."
+        },
+        {
+          "paragraph": 760,
+          "comment": "Bats: Skill 4, Stamina 6-8. Under-powered; appears to function as stamina-drain encounter, may be intentional."
+        }
       ]
     },
-
     "group_10_spell_economy_warnings": {
       "comment": "Diagnostic only. Some spells from the 8-spell roster get ~1-2 uses across all 1221 paragraphs while others get 12-15. Players selecting weak spells from the 10-budget at character creation will regret it. Either rebalance text or warn at character creation. NOT a bug — design feedback.",
       "priority": "P3",
       "type": "design_review",
       "source": "gemini_g2_2026_04",
       "items": [
-        {"spell": "FIRE",       "uses": "~15", "verdict": "strongest pick"},
-        {"spell": "LEVITATION", "uses": "~12", "verdict": "near-mandatory for rivers and castle windows"},
-        {"spell": "SWIMMING",   "uses": "~4",  "verdict": "narrow but real utility"},
-        {"spell": "ILLUSION",   "uses": "1-2", "verdict": "almost useless — only works on children §341, fails on elders §779"},
-        {"spell": "HEALING",    "uses": "1-2", "verdict": "almost useless — only certain use is bear cub §415"}
+        {
+          "spell": "FIRE",
+          "uses": "~15",
+          "verdict": "strongest pick"
+        },
+        {
+          "spell": "LEVITATION",
+          "uses": "~12",
+          "verdict": "near-mandatory for rivers and castle windows"
+        },
+        {
+          "spell": "SWIMMING",
+          "uses": "~4",
+          "verdict": "narrow but real utility"
+        },
+        {
+          "spell": "ILLUSION",
+          "uses": "1-2",
+          "verdict": "almost useless — only works on children §341, fails on elders §779"
+        },
+        {
+          "spell": "HEALING",
+          "uses": "1-2",
+          "verdict": "almost useless — only certain use is bear cub §415"
+        }
       ]
     }
+  },
+  "resolved_no_op": {
+    "comment": "Items previously listed as recommended fixes by external audits, but on verification against current source-of-truth files (src/mj_art.js, art-pack/metadata/art_catalog.py, assets/fb2_remake.fb2) found to require no action. Kept here as a graveyard alongside removed_pending so future audits don't resurrect them.",
+    "items": [
+      {
+        "id": "1072_sleeping_princess",
+        "previously_claimed": "ChatGPT art-text audit: §1072 maps to art26_crystal_sarcophagus, should be reassigned to art09_sleeping_princess.",
+        "verdict": "already_resolved",
+        "reason": "Current MJ_MAP entry for §1072 is already \"art09_sleeping_princess\". ChatGPT was working from an earlier snapshot of the file.",
+        "source": "chatgpt_5_5_2026_04 (art-text audit)"
+      },
+      {
+        "id": "art12_camp_sync",
+        "previously_claimed": "Gemini visual art audit: art12_camp §1054 in MJ_MAP missing from catalog; catalog has §915 not in MJ_MAP.",
+        "verdict": "already_resolved",
+        "reason": "Both art_catalog.py and MJ_MAP currently list art12_camp at [390, 1045] — perfect match. Neither §1054 nor §915 appears in either side.",
+        "source": "gemini_3_1_pro_2026_04 (visual art audit)"
+      },
+      {
+        "id": "art29_hostess_unconnected",
+        "previously_claimed": "Gemini visual art audit: art29_hostess planned for §825/§975 in catalog but not connected in MJ_MAP.",
+        "verdict": "already_resolved",
+        "reason": "Both catalog.remake_paragraphs and MJ_MAP entries for art29_beautiful_hostess are empty (the art exists with prompt + ref_url but is intentionally not paragraph-bound). No drift between the two sources.",
+        "source": "gemini_3_1_pro_2026_04 (visual art audit)"
+      },
+      {
+        "id": "art41_mounted_warrior",
+        "previously_claimed": "Gemini visual art audit: art41_mounted §468 vs §656 mismatch.",
+        "verdict": "already_resolved",
+        "reason": "Current state: catalog and MJ_MAP both have art41_green_knight_mounted at [656]. §468 does not appear on either side.",
+        "source": "gemini_3_1_pro_2026_04 (visual art audit)"
+      },
+      {
+        "id": "bandit_split_§319_§100",
+        "previously_claimed": "Gemini visual art audit: split art31_bandit_road for §319 (negotiation) vs art35_bandits_ambush for §100 (combat).",
+        "verdict": "rejected_after_fb2_review",
+        "reason": "FB2 §319 describes the moment bandits ambush from all sides (\"с разных сторон на поляну выскакивают пятеро… разбойники, ждущие в засаде\"), so art35_bandits_ambush is the correct illustration for both §319 and §100. art31_bandit_road depicts an injured bandit by a roadside trap, which matches §19/§155 (where it is currently bound). No split needed.",
+        "source": "gemini_3_1_pro_2026_04 (visual art audit)"
+      },
+      {
+        "id": "art07_corridor_fallback",
+        "previously_claimed": "Gemini visual art audit: use art07_corridor as fallback for long corridor paragraphs §558/§846/§1123.",
+        "verdict": "already_resolved",
+        "reason": "Current MJ_MAP already binds art07_corridor to [393, 558, 833, 846, 1013, 1097, 1123] — covers and exceeds Gemini's suggested set.",
+        "source": "gemini_3_1_pro_2026_04 (visual art audit)"
+      },
+      {
+        "id": "38_monkey_correct",
+        "previously_claimed": "ChatGPT art-text audit: §38 art27_monkey is RED mismatch (text said to be 'approaching hut', not monkey combat).",
+        "verdict": "rejected_after_fb2_review",
+        "reason": "FB2 §38 is a monkey combat encounter (\"ОБЕЗЬЯНА. Мастерство 9. Выносливость 14\"). art27_monkey is correct.",
+        "source": "chatgpt_5_5_2026_04 (art-text audit, false positive)"
+      },
+      {
+        "id": "41_prison_correct",
+        "previously_claimed": "ChatGPT art-text audit: §41 art15_prison is ORANGE mismatch (text supposedly does not describe a prison scene).",
+        "verdict": "rejected_after_fb2_review",
+        "reason": "FB2 §41 opens with the hero waking inside a stone-walled solitary cell with damp walls. art15_prison is correct.",
+        "source": "chatgpt_5_5_2026_04 (art-text audit, false positive)"
+      }
+    ]
   }
 }
