@@ -40,7 +40,7 @@ CATALOG = {
         'scene': 'Dragon at castle base',
         'prompt': 'massive ancient dragon coiled around the base of a dark stone castle, glowing amber eye, smoke rising from arched gateway, hooded hero in dark cloak approaching cautiously, small compared to the beast',
         'ref_url': 'https://cdn.midjourney.com/6bcfbfd6-e589-40b9-a636-2d8e0fce5c24/0_0.png',
-        'remake_paragraphs': [188, 440, 532, 1136],
+        'remake_paragraphs': [188, 352, 440, 532, 1136],
         'original_paragraphs': [37, 41],
     },
     'art09_sleeping_princess': {
@@ -76,7 +76,7 @@ CATALOG = {
         'scene': 'Baba Yaga style talking hut on giant chicken legs',
         'prompt': 'Baba Yaga hut standing on two giant bird legs with clawed feet, dark wooden architecture with carved beams and skull-topped fence posts, hooded hero approaches in autumn forest',
         'ref_url': 'https://cdn.midjourney.com/bd29d478-7997-461a-9a9d-11e3535911e8/0_0.png',
-        'remake_paragraphs': [163, 284, 371, 381],
+        'remake_paragraphs': [163, 371, 381],
         'original_paragraphs': [16, 120],
     },
     'art04_goblins': {
@@ -195,7 +195,7 @@ CATALOG = {
         'scene': 'Magical glowing guide ball',
         'prompt': 'small glowing golden ball of yarn the size of a fist floating above an outstretched hand of a hooded figure, golden sparks trailing, dark castle silhouette in misty forest background, autumn leaves',
         'ref_url': 'https://cdn.midjourney.com/d21abe6b-e350-4e3c-81fe-d6fb5a097e18/0_0.png',
-        'remake_paragraphs': [33, 191, 315, 381, 471],
+        'remake_paragraphs': [33, 191, 315, 471],
         'original_paragraphs': [576],
     },
 
@@ -204,7 +204,7 @@ CATALOG = {
         'scene': 'Crystal sarcophagus with enchanted figure',
         'prompt': 'transparent crystal sarcophagus lying flat on a stone pedestal in a cavern, glowing ethereal blue light from within, surrounded by tall candles, hooded figure kneeling before it, dark castle visible through cave opening',
         'ref_url': 'https://cdn.midjourney.com/bcab9377-e428-47d4-b541-46178c03a194/0_0.png',
-        'remake_paragraphs': [45, 1072],
+        'remake_paragraphs': [45],
         'original_paragraphs': [241],
     },
     'art27_monkey': {
@@ -225,7 +225,7 @@ CATALOG = {
         'scene': 'Beautiful hostess in luxurious castle parlor',
         'prompt': 'beautiful elegant slavic woman with Eastern European facial features in light summer folk dress with thin capricious face in luxurious castle sitting room, ornate folding screen, gold-framed paintings, plush sofas, hero in dark hooded cloak watches from aside, deceptive comfort',
         'ref_url': 'https://cdn.midjourney.com/017ec4ab-a99d-48ed-812c-580ef2b4f882/0_0.png',
-        'remake_paragraphs': [707, 773],
+        'remake_paragraphs': [],
         'original_paragraphs': [556],
     },
     'art30_two_headed_dragon': {
@@ -246,7 +246,7 @@ CATALOG = {
         'scene': 'Wise elder at cottage door',
         'prompt': 'kind frail slavic old man with long white beard, Eastern European facial features and wise eyes opening the door of an ornate carved wooden cottage, hooded black cloak, candle in niche, misty autumn forest, castle spires visible in background',
         'ref_url': 'https://cdn.midjourney.com/225f5af3-0dea-4e39-8fcc-99704a1267cd/0_0.png',
-        'remake_paragraphs': [48, 76, 371, 487, 1045],
+        'remake_paragraphs': [48, 487],
         'original_paragraphs': [221],
     },
     'art33_green_knights': {
