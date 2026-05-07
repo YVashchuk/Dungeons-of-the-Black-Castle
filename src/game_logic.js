@@ -417,6 +417,25 @@ function renderGame(){
   if(firstVisit&&sec.auto_items){
     const ai=sec.auto_items;
     let notifications=[];
+    // Wholesale loss (e.g. Vodyanoy paradox §642 — «Vash zaplechnyj meshok
+    // i den'gi ischezli»). Apply BEFORE every other mutation in this
+    // paragraph so any other effect on the same auto_items operates on
+    // the cleared state. clear_inventory empties S.inventory; gold_zero
+    // resets S.gold to 0.
+    if(ai.clear_inventory){
+      const lostCount=S.inventory.length;
+      if(lostCount>0){
+        S.inventory=[];
+        notifications.push('− весь инвентарь ('+lostCount+')');
+        logEvent('loss','− весь инвентарь','Предметов потеряно: '+lostCount);
+      }
+    }
+    if(ai.gold_zero&&S.gold>0){
+      const lostGold=S.gold;
+      S.gold=0;
+      notifications.push('− '+lostGold+' золотых');
+      logEvent('loss','− '+lostGold+' золотых','Всего: 0');
+    }
     // Gold (always auto-add)
     if(ai.gold&&ai.gold>0){
       S.gold+=ai.gold;
