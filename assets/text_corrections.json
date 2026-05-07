@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "last_updated": "2026-05-06",
+  "last_updated": "2026-05-07",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
-    "v2 → v2.1": "May 2026 sweep against current MJ_MAP and art_catalog.py state revealed that all Group 4 art-mapping recommendations from both audits were already in place: §1072 already maps to art09_sleeping_princess; art12_camp/art29_hostess/art41_mounted catalogues already match MJ_MAP; §319/§100/§558/§846/§1123 already use the recommended arts. The audits were taken before previous sessions had already cleaned up these mappings. Items recorded in resolved_no_op below as verified-and-resolved so future audits don't resurrect them."
+    "v2 → v2.1": "May 2026 sweep against current MJ_MAP and art_catalog.py state revealed that all Group 4 art-mapping recommendations from both audits were already in place: §1072 already maps to art09_sleeping_princess; art12_camp/art29_hostess/art41_mounted catalogues already match MJ_MAP; §319/§100/§558/§846/§1123 already use the recommended arts. The audits were taken before previous sessions had already cleaned up these mappings. Items recorded in resolved_no_op below as verified-and-resolved so future audits don't resurrect them.",
+    "v2.1 → v2.2": "May 2026 mid-session sweep: registered three findings discovered while applying Group 1 deferred (white arrow) and Group 6 (Vodyanoy paradox). Each is a non-blocker but should not be lost: §874 silver bracelet has no acquisition path; bronze whistle is granted under three different name strings; §1122 partial inventory loss (knives) is narrative-only. Added as pending groups 11, 12, 13."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -482,6 +483,54 @@
           "spell": "HEALING",
           "uses": "1-2",
           "verdict": "almost useless — only certain use is bear cub §415"
+        }
+      ]
+    },
+    "group_11_silver_bracelet_missing_acquisition": {
+      "comment": "§1090 ch[1] (target=874) is the 'gift silver bracelet to old woman' branch. Verified by full grep of src/remake_data.js: no paragraph anywhere in the book grants 'Серебряный браслет' via auto_items.items[]. Therefore this offer-branch is currently unreachable by rules — players never have the bracelet to give. Two possible resolutions: (a) find the canonical acquisition paragraph in fb2_remake.fb2 and add auto_items.items there, OR (b) verify the bracelet does not exist in canon and remove the branch from §1090. Once acquisition is in place, §1090 ch[1] should also get inventory_condition='Серебряный браслет' for consistency with Group 1.4 deferred / Group 3 conditional gating.",
+      "priority": "P2",
+      "type": "missing_item",
+      "source": "discovered_during_group_1_4_deferred_2026_05",
+      "items": [
+        {
+          "paragraph": 874,
+          "current_state": "Working paragraph (positive outcome of bracelet gift). Reachable only from §1090 ch[1].",
+          "missing": "Acquisition paragraph for 'Серебряный браслет' item",
+          "verification_required": "Search fb2_remake.fb2 for canonical bracelet acquisition. If found, add auto_items.items=['Серебряный браслет'] to that paragraph. If not found, remove ch[1] from §1090."
+        }
+      ]
+    },
+    "group_12_bronze_whistle_name_rationalization": {
+      "comment": "The bronze whistle item is granted under three different name strings across the data, making any future inventory_condition check unreliable — depending on which paragraph the player got the whistle from, the gate may or may not match. Needs a rationalization pass: pick a canonical name (recommended: 'Бронзовый свисток'), rename the other two grants, then add inventory_condition to consumer paragraphs.",
+      "priority": "P2",
+      "type": "name_discipline",
+      "source": "discovered_during_group_1_4_deferred_2026_05",
+      "items": [
+        {
+          "canonical_name_recommended": "Бронзовый свисток",
+          "current_variants_in_data": [
+            "Бронзовый свисток",
+            "Из его кармана бронзовый свисток",
+            "Изящный бронзовый свисток"
+          ],
+          "verification_step_1": "Grep src/remake_data.js for each variant string and identify the granting paragraph for each.",
+          "verification_step_2": "Grep fb2_remake.fb2 for each variant to confirm whether the canon distinguishes between three different whistles or whether they all refer to the same item. Most likely the canon has one item and the data drift happened during paragraph extraction.",
+          "after_rationalization": "Add inventory_condition='Бронзовый свисток' to any offer/consumer paragraph that mentions the bronze whistle in its choice labels (suspected: §148, §491, potentially others — needs full audit)."
+        }
+      ]
+    },
+    "group_13_partial_inventory_loss_§1122": {
+      "comment": "FB2 §1122 narrates the loss of a single named item type (knives — «ножей и следа нет»). Engine has no partial-named-loss mechanism for a specific item type. The Vodyanoy fix (commit 8a2b448) added wholesale clear_inventory but that's the wrong tool for §1122 because only knives are lost, not everything. Existing auto_items.lose substring-match mechanism could work IF knife items use a consistent name, OR a new auto_items.lose_substring field could be added that strips all items matching a substring.",
+      "priority": "P3",
+      "type": "missing_auto_effect",
+      "source": "discovered_during_group_6_2026_05",
+      "items": [
+        {
+          "paragraph": 1122,
+          "fb2_quote": "«Вдруг из мешка вылетают песочные часы и разбиваются о пол. Поднимается такая песочная пыль, что вам приходится зажмурить глаза. Когда пыль исчезает, ножей и следа нет.»",
+          "missing": "auto_items entry that removes all knife-class items from inventory on entry",
+          "verification_step_1": "Grep src/remake_data.js for all distinct knife item name strings used in auto_items.items[] (likely variants like 'нож', 'кинжал', 'острый нож', etc.)",
+          "verification_step_2": "Decide between two implementation strategies: (a) use existing auto_items.lose with the explicit list of knife strings, OR (b) add new auto_items.lose_substring='нож' that strips by case-insensitive substring match. Strategy (b) is more general and aligns with how the existing auto_items.lose substring-fuzzy-match already works."
         }
       ]
     }
