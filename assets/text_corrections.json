@@ -6,7 +6,8 @@
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
     "v2 → v2.1": "May 2026 sweep against current MJ_MAP and art_catalog.py state revealed that all Group 4 art-mapping recommendations from both audits were already in place: §1072 already maps to art09_sleeping_princess; art12_camp/art29_hostess/art41_mounted catalogues already match MJ_MAP; §319/§100/§558/§846/§1123 already use the recommended arts. The audits were taken before previous sessions had already cleaned up these mappings. Items recorded in resolved_no_op below as verified-and-resolved so future audits don't resurrect them.",
     "v2.1 → v2.2": "May 2026 mid-session sweep: registered three findings discovered while applying Group 1 deferred (white arrow) and Group 6 (Vodyanoy paradox). Each is a non-blocker but should not be lost: §874 silver bracelet has no acquisition path; bronze whistle is granted under three different name strings; §1122 partial inventory loss (knives) is narrative-only. Added as pending groups 11, 12, 13.",
-    "v2.2 → v2.3": "May 2026 investigation deepened group_11 (silver bracelet). FB2 search confirmed there is no auto-acquisition paragraph for 'Серебряный браслет'. The item is purchased from the peasant's shop in §340 along with 8 other items. §340 in remake_data.js has the FB2 text describing the shop but no purchase mechanism — only 3 navigation choices (leave west / south / stay). This is a symptom of a missing shop/buy-choice engine feature, not a single-paragraph fix. Group 11 reclassified as architectural; new group_14 added to track the shop-mechanic gap across the book."
+    "v2.2 → v2.3": "May 2026 investigation deepened group_11 (silver bracelet). FB2 search confirmed there is no auto-acquisition paragraph for 'Серебряный браслет'. The item is purchased from the peasant's shop in §340 along with 8 other items. §340 in remake_data.js has the FB2 text describing the shop but no purchase mechanism — only 3 navigation choices (leave west / south / stay). This is a symptom of a missing shop/buy-choice engine feature, not a single-paragraph fix. Group 11 reclassified as architectural; new group_14 added to track the shop-mechanic gap across the book.",
+    "v2.3 → v2.4": "May 2026 — Group 12 (bronze whistle) partially closed: 2 name rationalizations applied + 3 offer-paragraphs gated by inventory_condition. The post-combat acquisition half of group_12 (7 paragraphs where the player kills a goblin and then takes the whistle from the corpse) cannot be closed without a new engine feature, because auto_items applies on first paragraph entry, before combat resolves. Registered as new group_15."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -523,7 +524,8 @@
           "verification_step_2": "Grep fb2_remake.fb2 for each variant to confirm whether the canon distinguishes between three different whistles or whether they all refer to the same item. Most likely the canon has one item and the data drift happened during paragraph extraction.",
           "after_rationalization": "Add inventory_condition='Бронзовый свисток' to any offer/consumer paragraph that mentions the bronze whistle in its choice labels (suspected: §148, §491, potentially others — needs full audit)."
         }
-      ]
+      ],
+      "status_2026_05_07": "PARTIALLY CLOSED. Name rationalization done at §129 and §505 (both → 'Бронзовый свисток'); inventory_condition gating applied to §810 ch[1], §954 ch[1], §1063 ch[0]. Post-combat acquisitions (§58, §69, §233, §250, §567, §717) deferred to group_15."
     },
     "group_13_partial_inventory_loss_§1122": {
       "comment": "FB2 §1122 narrates the loss of a single named item type (knives — «ножей и следа нет»). Engine has no partial-named-loss mechanism for a specific item type. The Vodyanoy fix (commit 8a2b448) added wholesale clear_inventory but that's the wrong tool for §1122 because only knives are lost, not everything. Existing auto_items.lose substring-match mechanism could work IF knife items use a consistent name, OR a new auto_items.lose_substring field could be added that strips all items matching a substring.",
@@ -560,6 +562,57 @@
         "Should item label include the price (e.g. 'Серебряный браслет (4g)') or should the price live in choice.gold_cost only?",
         "Re-render after purchase: should the engine track which items have been bought to prevent buying twice from the same shop, or just rely on gold deduction making infinite purchases self-limiting?"
       ]
+    },
+    "group_15_post_combat_item_grants": {
+      "comment": "Several paragraphs use a 'kill enemy, then take their item' pattern. Currently the only way to express this in data is auto_items.items, which applies on first entry — too early, because the player hasn't yet won the combat. Result: the post_combat choice button says 'Взять X и идти дальше' but X never enters inventory. Found during Group 12 (whistle) work, but the pattern is general and applies to every loot-from-corpse scenario in the book. Need new engine feature.",
+      "priority": "P2",
+      "type": "engine_feature",
+      "source": "discovered_during_group_12_2026_05",
+      "design_options": [
+        "Option A: new auto_items_after_combat field. Engine applies it when sec.enemies && combatDone[S.section] becomes true, rather than on firstVisit. Symmetric with existing auto_items.",
+        "Option B: new acquires field on choice. choice = {target, label, acquires: ['Бронзовый свисток']}. Engine deposits items at the moment the player clicks the choice. More flexible — different post-combat choices could grant different items (e.g. 'take whistle' vs 'leave whistle').",
+        "Option C: paragraph splitting — introduce a synthetic intermediate paragraph between combat and the next location, and put auto_items on it. Heavy data refactor; not recommended."
+      ],
+      "candidate_paragraphs": [
+        {
+          "paragraph": 58,
+          "expected_grant": "Бронзовый свисток"
+        },
+        {
+          "paragraph": 69,
+          "expected_grant": [
+            "Бронзовый свисток",
+            "Медный ключик"
+          ]
+        },
+        {
+          "paragraph": 233,
+          "expected_grant": [
+            "Бронзовый свисток",
+            "Медный ключик"
+          ]
+        },
+        {
+          "paragraph": 250,
+          "expected_grant": "Бронзовый свисток"
+        },
+        {
+          "paragraph": 567,
+          "expected_grant": [
+            "Бронзовый свисток",
+            "Медный ключик"
+          ]
+        },
+        {
+          "paragraph": 717,
+          "expected_grant": "Бронзовый свисток"
+        },
+        {
+          "paragraph": 391,
+          "note": "§391 is a post-combat 'обшарив карманы Гоблина, находите бронзовый свисток' — already has auto_items grant in current data because the combat is in a different paragraph. Listed for completeness but not affected."
+        }
+      ],
+      "verification_required": "Once group_15 is implemented, sweep all post_combat choice labels across remake_data.js for similar 'возьмите/заберите/обыщите' verbs to find every paragraph that needs the new field — there are likely several beyond the whistle list."
     }
   },
   "resolved_no_op": {
