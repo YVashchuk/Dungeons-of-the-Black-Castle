@@ -5,7 +5,8 @@
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
     "v2 → v2.1": "May 2026 sweep against current MJ_MAP and art_catalog.py state revealed that all Group 4 art-mapping recommendations from both audits were already in place: §1072 already maps to art09_sleeping_princess; art12_camp/art29_hostess/art41_mounted catalogues already match MJ_MAP; §319/§100/§558/§846/§1123 already use the recommended arts. The audits were taken before previous sessions had already cleaned up these mappings. Items recorded in resolved_no_op below as verified-and-resolved so future audits don't resurrect them.",
-    "v2.1 → v2.2": "May 2026 mid-session sweep: registered three findings discovered while applying Group 1 deferred (white arrow) and Group 6 (Vodyanoy paradox). Each is a non-blocker but should not be lost: §874 silver bracelet has no acquisition path; bronze whistle is granted under three different name strings; §1122 partial inventory loss (knives) is narrative-only. Added as pending groups 11, 12, 13."
+    "v2.1 → v2.2": "May 2026 mid-session sweep: registered three findings discovered while applying Group 1 deferred (white arrow) and Group 6 (Vodyanoy paradox). Each is a non-blocker but should not be lost: §874 silver bracelet has no acquisition path; bronze whistle is granted under three different name strings; §1122 partial inventory loss (knives) is narrative-only. Added as pending groups 11, 12, 13.",
+    "v2.2 → v2.3": "May 2026 investigation deepened group_11 (silver bracelet). FB2 search confirmed there is no auto-acquisition paragraph for 'Серебряный браслет'. The item is purchased from the peasant's shop in §340 along with 8 other items. §340 in remake_data.js has the FB2 text describing the shop but no purchase mechanism — only 3 navigation choices (leave west / south / stay). This is a symptom of a missing shop/buy-choice engine feature, not a single-paragraph fix. Group 11 reclassified as architectural; new group_14 added to track the shop-mechanic gap across the book."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -487,16 +488,21 @@
       ]
     },
     "group_11_silver_bracelet_missing_acquisition": {
-      "comment": "§1090 ch[1] (target=874) is the 'gift silver bracelet to old woman' branch. Verified by full grep of src/remake_data.js: no paragraph anywhere in the book grants 'Серебряный браслет' via auto_items.items[]. Therefore this offer-branch is currently unreachable by rules — players never have the bracelet to give. Two possible resolutions: (a) find the canonical acquisition paragraph in fb2_remake.fb2 and add auto_items.items there, OR (b) verify the bracelet does not exist in canon and remove the branch from §1090. Once acquisition is in place, §1090 ch[1] should also get inventory_condition='Серебряный браслет' for consistency with Group 1.4 deferred / Group 3 conditional gating.",
-      "priority": "P2",
-      "type": "missing_item",
-      "source": "discovered_during_group_1_4_deferred_2026_05",
+      "comment": "INVESTIGATION DEEPENED (May 2026): the silver bracelet is purchased, not freely acquired. §340 (peasant's shop) lists 9 items with prices including 'серебряный браслет (4 золотых)'. The FB2 paragraph is implemented in remake_data.js with full text, but only 3 navigation choices — there is no purchase mechanism for any of the 9 items. Therefore the silver bracelet branch in §1090 is currently unreachable by gameplay. RESOLUTION DEFERRED to group_14 (shop/buy-choice engine feature) — once that is implemented, §340 will grant the bracelet on purchase, §1090 ch[1] will become reachable, and inventory_condition='Серебряный браслет' should be added to §1090 ch[1] for consistency. DO NOT remove §1090 ch[1] in the meantime — the branch will become legitimately reachable once shops work.",
+      "priority": "P3",
+      "type": "blocked_by_missing_engine_feature",
+      "blocked_by": "group_14_shop_buy_choice_engine",
+      "source": "discovered_during_group_1_4_deferred_2026_05; deepened 2026_05_07",
       "items": [
         {
           "paragraph": 874,
-          "current_state": "Working paragraph (positive outcome of bracelet gift). Reachable only from §1090 ch[1].",
-          "missing": "Acquisition paragraph for 'Серебряный браслет' item",
-          "verification_required": "Search fb2_remake.fb2 for canonical bracelet acquisition. If found, add auto_items.items=['Серебряный браслет'] to that paragraph. If not found, remove ch[1] from §1090."
+          "current_state": "Working positive-outcome paragraph (the bracelet-gift branch from §1090 ch[1]). Reachable by graph but not by rules.",
+          "missing": "Acquisition path for 'Серебряный браслет'. Canonical path is purchase at §340 for 4 gold, but §340 has no purchase choices in remake_data.js."
+        },
+        {
+          "paragraph": 1090,
+          "current_state": "ch[1] (target=874) deliberately left unconditional in commit 87a58d2 (white arrow infrastructure) because there is no acquisition path.",
+          "missing": "inventory_condition='Серебряный браслет' on ch[1]. Cannot be applied until the bracelet is grantable by some path."
         }
       ]
     },
@@ -532,6 +538,27 @@
           "verification_step_1": "Grep src/remake_data.js for all distinct knife item name strings used in auto_items.items[] (likely variants like 'нож', 'кинжал', 'острый нож', etc.)",
           "verification_step_2": "Decide between two implementation strategies: (a) use existing auto_items.lose with the explicit list of knife strings, OR (b) add new auto_items.lose_substring='нож' that strips by case-insensitive substring match. Strategy (b) is more general and aligns with how the existing auto_items.lose substring-fuzzy-match already works."
         }
+      ]
+    },
+    "group_14_shop_buy_choice_engine": {
+      "comment": "Several paragraphs across the book describe a shop-style merchant selling multiple items at named prices, but the engine has no purchase choice type. Players read the prices in the text, but the only choices on the screen are navigation. Found via the silver bracelet investigation (group_11) — §340 (peasant) is one such case with 9 items. There are likely others (Vodyanoy's tavern food/water sales in §873 use ad-hoc gold_sub but only on auto_items, not on choice-level purchase). A general shop mechanism would unify these. Architectural design needed before implementation: choice schema extension (new fields on choice: purchase=true, gold_cost=N, grants_items=['...']), engine renderChoices changes (show price in label, gate by S.gold>=cost, deduct gold and add item on click), and per-paragraph data fixes wherever shops occur.",
+      "priority": "P3",
+      "type": "engine_feature",
+      "source": "discovered_during_group_11_investigation_2026_05",
+      "candidate_shop_paragraphs_for_audit": [
+        {
+          "paragraph": 340,
+          "comment": "Peasant's shop. Items: ананас 2g, банан 2g, лимон 2g, красивый кусочек дерева 1g, фигурный ключ 2g, попона 5g, блестящий кусок металла 3g, сделанная из золота устрица 8g, серебряный браслет 4g. Currently no purchase choices."
+        },
+        {
+          "paragraph": 873,
+          "comment": "Vodyanoy's tavern. Items: жареная рыба 1g (→§922), родниковая вода 2g (→§767). Has navigation choices but no item grant on those purchases. Less critical because the only food benefit is narrative — but adds inconsistency."
+        }
+      ],
+      "design_open_questions": [
+        "Should the player be able to make multiple purchases from a single shop paragraph (re-render the shop after each), or are shops one-shot?",
+        "Should item label include the price (e.g. 'Серебряный браслет (4g)') or should the price live in choice.gold_cost only?",
+        "Re-render after purchase: should the engine track which items have been bought to prevent buying twice from the same shop, or just rely on gold deduction making infinite purchases self-limiting?"
       ]
     }
   },
