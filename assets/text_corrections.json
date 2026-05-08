@@ -1,13 +1,14 @@
 {
   "version": 2,
-  "last_updated": "2026-05-07",
+  "last_updated": "2026-05-08",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
     "v2 → v2.1": "May 2026 sweep against current MJ_MAP and art_catalog.py state revealed that all Group 4 art-mapping recommendations from both audits were already in place: §1072 already maps to art09_sleeping_princess; art12_camp/art29_hostess/art41_mounted catalogues already match MJ_MAP; §319/§100/§558/§846/§1123 already use the recommended arts. The audits were taken before previous sessions had already cleaned up these mappings. Items recorded in resolved_no_op below as verified-and-resolved so future audits don't resurrect them.",
     "v2.1 → v2.2": "May 2026 mid-session sweep: registered three findings discovered while applying Group 1 deferred (white arrow) and Group 6 (Vodyanoy paradox). Each is a non-blocker but should not be lost: §874 silver bracelet has no acquisition path; bronze whistle is granted under three different name strings; §1122 partial inventory loss (knives) is narrative-only. Added as pending groups 11, 12, 13.",
     "v2.2 → v2.3": "May 2026 investigation deepened group_11 (silver bracelet). FB2 search confirmed there is no auto-acquisition paragraph for 'Серебряный браслет'. The item is purchased from the peasant's shop in §340 along with 8 other items. §340 in remake_data.js has the FB2 text describing the shop but no purchase mechanism — only 3 navigation choices (leave west / south / stay). This is a symptom of a missing shop/buy-choice engine feature, not a single-paragraph fix. Group 11 reclassified as architectural; new group_14 added to track the shop-mechanic gap across the book.",
-    "v2.3 → v2.4": "May 2026 — Group 12 (bronze whistle) partially closed: 2 name rationalizations applied + 3 offer-paragraphs gated by inventory_condition. The post-combat acquisition half of group_12 (7 paragraphs where the player kills a goblin and then takes the whistle from the corpse) cannot be closed without a new engine feature, because auto_items applies on first paragraph entry, before combat resolves. Registered as new group_15."
+    "v2.3 → v2.4": "May 2026 — Group 12 (bronze whistle) partially closed: 2 name rationalizations applied + 3 offer-paragraphs gated by inventory_condition. The post-combat acquisition half of group_12 (7 paragraphs where the player kills a goblin and then takes the whistle from the corpse) cannot be closed without a new engine feature, because auto_items applies on first paragraph entry, before combat resolves. Registered as new group_15.",
+    "v2.4 → v2.5": "May 2026 — group_13 reclassified after FB2 verification. The Gemini graph audit had read the §1122 «ножей и след простыл» line as inventory loss of knife-class items, but FB2 review shows the knives were never inventory items at all — they were an attack effect from a previous trap paragraph causing wounds. The §1122 effect is the canonical −5 STAMINA cost the canon states explicitly («вычесть 5 ВЫНОСЛИВОСТЕЙ за те раны»), so this is a Group 1.3-class missing auto-effect, not a Group 7-class inventory loss. Applied auto_items.stamina_sub=5 and moved registry entry from pending_corrections to resolved_no_op with the corrected interpretation. The lose_substring engine extension idea originally floated in group_13 is no longer needed for this paragraph (and there are no other knife-loss paragraphs in the data either)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -527,21 +528,6 @@
       ],
       "status_2026_05_07": "PARTIALLY CLOSED. Name rationalization done at §129 and §505 (both → 'Бронзовый свисток'); inventory_condition gating applied to §810 ch[1], §954 ch[1], §1063 ch[0]. Post-combat acquisitions (§58, §69, §233, §250, §567, §717) deferred to group_15."
     },
-    "group_13_partial_inventory_loss_§1122": {
-      "comment": "FB2 §1122 narrates the loss of a single named item type (knives — «ножей и следа нет»). Engine has no partial-named-loss mechanism for a specific item type. The Vodyanoy fix (commit 8a2b448) added wholesale clear_inventory but that's the wrong tool for §1122 because only knives are lost, not everything. Existing auto_items.lose substring-match mechanism could work IF knife items use a consistent name, OR a new auto_items.lose_substring field could be added that strips all items matching a substring.",
-      "priority": "P3",
-      "type": "missing_auto_effect",
-      "source": "discovered_during_group_6_2026_05",
-      "items": [
-        {
-          "paragraph": 1122,
-          "fb2_quote": "«Вдруг из мешка вылетают песочные часы и разбиваются о пол. Поднимается такая песочная пыль, что вам приходится зажмурить глаза. Когда пыль исчезает, ножей и следа нет.»",
-          "missing": "auto_items entry that removes all knife-class items from inventory on entry",
-          "verification_step_1": "Grep src/remake_data.js for all distinct knife item name strings used in auto_items.items[] (likely variants like 'нож', 'кинжал', 'острый нож', etc.)",
-          "verification_step_2": "Decide between two implementation strategies: (a) use existing auto_items.lose with the explicit list of knife strings, OR (b) add new auto_items.lose_substring='нож' that strips by case-insensitive substring match. Strategy (b) is more general and aligns with how the existing auto_items.lose substring-fuzzy-match already works."
-        }
-      ]
-    },
     "group_14_shop_buy_choice_engine": {
       "comment": "Several paragraphs across the book describe a shop-style merchant selling multiple items at named prices, but the engine has no purchase choice type. Players read the prices in the text, but the only choices on the screen are navigation. Found via the silver bracelet investigation (group_11) — §340 (peasant) is one such case with 9 items. There are likely others (Vodyanoy's tavern food/water sales in §873 use ad-hoc gold_sub but only on auto_items, not on choice-level purchase). A general shop mechanism would unify these. Architectural design needed before implementation: choice schema extension (new fields on choice: purchase=true, gold_cost=N, grants_items=['...']), engine renderChoices changes (show price in label, gate by S.gold>=cost, deduct gold and add item on click), and per-paragraph data fixes wherever shops occur.",
       "priority": "P3",
@@ -673,6 +659,13 @@
         "verdict": "rejected_after_fb2_review",
         "reason": "FB2 §41 opens with the hero waking inside a stone-walled solitary cell with damp walls. art15_prison is correct.",
         "source": "chatgpt_5_5_2026_04 (art-text audit, false positive)"
+      },
+      {
+        "id": "1122_misclassified_inventory_loss",
+        "previously_claimed": "Gemini graph audit: §1122 narrates loss of a single named item type (knives — «ножей и следа нет»). Engine has no partial-named-loss mechanism — needs lose_substring or explicit lose list.",
+        "verdict": "misclassified",
+        "reason": "FB2 verification: the «ножей» in §1122 are NOT inventory items. They are wound-effects from a previous trap paragraph. Knife-class items are nowhere granted in any auto_items.items[] across the entire data. The actual §1122 mutation per canon is «вычесть 5 ВЫНОСЛИВОСТЕЙ за те раны, которые были нанесены вам ножами» — a stamina cost, not inventory loss. Applied as auto_items.stamina_sub=5. The lose_substring engine idea is no longer needed for this paragraph.",
+        "source": "gemini_3_1_pro_2026_04 (graph audit, misread of «ножей»)"
       }
     ]
   }
