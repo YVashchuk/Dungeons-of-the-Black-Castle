@@ -8,7 +8,8 @@
     "v2.1 → v2.2": "May 2026 mid-session sweep: registered three findings discovered while applying Group 1 deferred (white arrow) and Group 6 (Vodyanoy paradox). Each is a non-blocker but should not be lost: §874 silver bracelet has no acquisition path; bronze whistle is granted under three different name strings; §1122 partial inventory loss (knives) is narrative-only. Added as pending groups 11, 12, 13.",
     "v2.2 → v2.3": "May 2026 investigation deepened group_11 (silver bracelet). FB2 search confirmed there is no auto-acquisition paragraph for 'Серебряный браслет'. The item is purchased from the peasant's shop in §340 along with 8 other items. §340 in remake_data.js has the FB2 text describing the shop but no purchase mechanism — only 3 navigation choices (leave west / south / stay). This is a symptom of a missing shop/buy-choice engine feature, not a single-paragraph fix. Group 11 reclassified as architectural; new group_14 added to track the shop-mechanic gap across the book.",
     "v2.3 → v2.4": "May 2026 — Group 12 (bronze whistle) partially closed: 2 name rationalizations applied + 3 offer-paragraphs gated by inventory_condition. The post-combat acquisition half of group_12 (7 paragraphs where the player kills a goblin and then takes the whistle from the corpse) cannot be closed without a new engine feature, because auto_items applies on first paragraph entry, before combat resolves. Registered as new group_15.",
-    "v2.4 → v2.5": "May 2026 — group_13 reclassified after FB2 verification. The Gemini graph audit had read the §1122 «ножей и след простыл» line as inventory loss of knife-class items, but FB2 review shows the knives were never inventory items at all — they were an attack effect from a previous trap paragraph causing wounds. The §1122 effect is the canonical −5 STAMINA cost the canon states explicitly («вычесть 5 ВЫНОСЛИВОСТЕЙ за те раны»), so this is a Group 1.3-class missing auto-effect, not a Group 7-class inventory loss. Applied auto_items.stamina_sub=5 and moved registry entry from pending_corrections to resolved_no_op with the corrected interpretation. The lose_substring engine extension idea originally floated in group_13 is no longer needed for this paragraph (and there are no other knife-loss paragraphs in the data either)."
+    "v2.4 → v2.5": "May 2026 — group_13 reclassified after FB2 verification. The Gemini graph audit had read the §1122 «ножей и след простыл» line as inventory loss of knife-class items, but FB2 review shows the knives were never inventory items at all — they were an attack effect from a previous trap paragraph causing wounds. The §1122 effect is the canonical −5 STAMINA cost the canon states explicitly («вычесть 5 ВЫНОСЛИВОСТЕЙ за те раны»), so this is a Group 1.3-class missing auto-effect, not a Group 7-class inventory loss. Applied auto_items.stamina_sub=5 and moved registry entry from pending_corrections to resolved_no_op with the corrected interpretation. The lose_substring engine extension idea originally floated in group_13 is no longer needed for this paragraph (and there are no other knife-loss paragraphs in the data either).",
+    "v2.5 → v2.6": "May 2026 — registry hygiene sweep. Seven groups had been closed by commits across the recent sessions but were still listed in pending_corrections, making the backlog look bigger than it is. Closed groups now carry status_done with their commit hashes. Two diagnostic-only groups (9 combat balance, 10 spell economy) moved to resolved_no_op as design notes — not bugs. Net effect: pending_corrections now lists only items that genuinely need future work."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -129,7 +130,11 @@
           "paragraph": 937,
           "fix": "auto_items.gold:6 → auto_items.gold_sub:6 + add luck_add:1"
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "e85b351",
+        "summary": "6 paragraphs converted from auto_items.gold to auto_items.gold_sub (canonical spend semantics)."
+      }
     },
     "group_2_missing_passive_auto_effects": {
       "comment": "Paragraphs where the FB2 text gives a deterministic stat effect on entry, but auto_items is missing. Verify each against fb2_remake.fb2 at implementation time before applying — the two ChatGPT iterations gave overlapping but non-identical lists, so each line below should be confirmed. Single commit, data-only.",
@@ -207,7 +212,11 @@
           "verified_against_fb2": false,
           "fb2_quote": "«…прибавляешь себе 4 ВЫНОСЛИВОСТИ.»"
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "7f44015",
+        "summary": "10 paragraphs gained their canonical stat effects on entry (§25, §444, §453, §484, §513, §927, §1093, §1128, §1147, §1181). §74 was already correct."
+      }
     },
     "group_3_missing_item_acquisitions": {
       "comment": "Paragraphs where the FB2 text gives the player an item but auto_items.items is empty. Pure data fix, single commit.",
@@ -233,7 +242,11 @@
           "fb2_quote": "«В нем — короткая стрела с белым оперением. Стрелу можете взять с собой.»",
           "comment": "Item required by §535 'Белую стрелу? — 2.' offer-branch. Without acquisition, the §535 option is unreachable by rules."
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "cce1a1f",
+        "summary": "§757 grants Целый меч + skill_add:1; §1172 grants Золотой ключ. §688 white arrow extended in commit 87a58d2."
+      }
     },
     "group_4_conditional_choice_gating": {
       "comment": "Paragraphs where the FB2 text presents inventory-conditional branches but the engine renders them unconditionally. Requires extending the existing combat_condition mechanism with an analogous inventory_condition. Engine code change in src/game_logic.js + data updates in src/remake_data.js.",
@@ -264,7 +277,11 @@
           "fb2_quote_§1085": "«Если у вас есть Золотой ключ, то можете открыть дверь. Тогда прибавьте к номеру этого параграфа 30.»",
           "depends_on": "group_3_missing_item_acquisitions §1172 + existing §140 + existing §440 (all three give the same canonical 'Золотой ключ' item)"
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "1fd8e6a + 9b2f60b + 87a58d2",
+        "summary": "Engine inventory_condition mechanism added in 1fd8e6a, applied to §166 (Целый меч) + §1085 (Золотой ключ) + §535/§1090/§1196 (Белая стрела + Прекрасный бриллиант + Золотой свисток + Перо павлина) in 9b2f60b and 87a58d2."
+      }
     },
     "group_5_dead_end_crash_fix": {
       "comment": "Paragraphs with luck-roll where success has a transition but failure does not — UI gets stuck because no death overlay triggers. Either inject synthetic unlucky_target leading to a generic death paragraph, OR add fatal_unlucky:true flag on the paragraph so engine routes failed luck rolls directly to showDeathOverlay({sec, secKey}) (which already exists, see commit ca50bbd).",
@@ -288,7 +305,11 @@
           "paragraph": 456,
           "comment": "Same pattern."
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "7a294e5",
+        "summary": "Fatal-unlucky route added to renderChoices in src/game_logic.js. §203, §289, §377 now show death overlay instead of empty UI on failed luck roll. §456 verified as different fault class (post_combat, not lucky-only) — left unchanged."
+      }
     },
     "group_6_dynamic_target_engine": {
       "comment": "Paragraph-arithmetic mechanics: text says 'add N to current paragraph number' and routes player to paragraph+N. CRITICAL: cannot be implemented as a universal engine hook because 1221-renumbering of the remake breaks many offsets. Examples: §1085+30=§1115 works, but §385+910=§1295 exceeds 1221, and §198+50=§248 may not be canonical. Each item below requires per-item remap table verified manually against fb2_remake.fb2 + check that consumer paragraphs exist in remake numbering. Architectural recommendation: per-item conditional routing (Approach 3 from Gemini bonus reply), NOT a generic currentParagraph + modifier hook (Approach 2 was Gemini's first suggestion but ChatGPT v3 verified it's unsafe).",
@@ -426,7 +447,11 @@
           ],
           "comment": "Vodyanoy paradox: text describes player drinking water at Vodyanoy's hut, falling asleep (§767), and being robbed (§642): «Ваш заплечный мешок и деньги исчезли». Engine doesn't clear inventory or gold. Should add auto_items at §642 (or wherever the loss is narratively final) that clears all items and zeroes gold."
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "8a2b448",
+        "summary": "Vodyanoy paradox fixed. New auto_items fields clear_inventory and gold_zero added to engine. Applied to §642 — player now wakes up empty-handed with 0 gold as the canon describes."
+      }
     },
     "group_8_infinite_item_loot": {
       "comment": "Paragraph allows unlimited collection of an item but engine has no infinite-loot mechanic. Currently the choice does nothing useful for the player.",
@@ -438,56 +463,11 @@
           "paragraph": 570,
           "comment": "Room with bow and arrows: «нарвать стрел еще и взять с собой столько, сколько захотите» (per 1 inventory slot). Needs custom UI for quantity selection or fall back to fixed N arrows."
         }
-      ]
-    },
-    "group_9_combat_balance_outliers": {
-      "comment": "Combat enemies whose Skill/Stamina values are statistical outliers and may need rebalancing for game pacing. Diagnostic only — not necessarily bugs.",
-      "priority": "P3",
-      "type": "balance_review",
-      "source": "gemini_g2_2026_04",
-      "items": [
-        {
-          "paragraph": 36,
-          "comment": "Trader: Skill 7, Stamina 17. Anomalously high stamina for an NPC encounter (HP sponge)."
-        },
-        {
-          "paragraph": 760,
-          "comment": "Bats: Skill 4, Stamina 6-8. Under-powered; appears to function as stamina-drain encounter, may be intentional."
-        }
-      ]
-    },
-    "group_10_spell_economy_warnings": {
-      "comment": "Diagnostic only. Some spells from the 8-spell roster get ~1-2 uses across all 1221 paragraphs while others get 12-15. Players selecting weak spells from the 10-budget at character creation will regret it. Either rebalance text or warn at character creation. NOT a bug — design feedback.",
-      "priority": "P3",
-      "type": "design_review",
-      "source": "gemini_g2_2026_04",
-      "items": [
-        {
-          "spell": "FIRE",
-          "uses": "~15",
-          "verdict": "strongest pick"
-        },
-        {
-          "spell": "LEVITATION",
-          "uses": "~12",
-          "verdict": "near-mandatory for rivers and castle windows"
-        },
-        {
-          "spell": "SWIMMING",
-          "uses": "~4",
-          "verdict": "narrow but real utility"
-        },
-        {
-          "spell": "ILLUSION",
-          "uses": "1-2",
-          "verdict": "almost useless — only works on children §341, fails on elders §779"
-        },
-        {
-          "spell": "HEALING",
-          "uses": "1-2",
-          "verdict": "almost useless — only certain use is bear cub §415"
-        }
-      ]
+      ],
+      "status_done": {
+        "commit": "41a7e6a",
+        "summary": "§570 grants 'Здесь 5 чёрных стрел' as a single bundle entry, matching the existing §649 pattern. Pragmatic fixed-N compromise vs. true infinite quantity (which would need a quantity-selection UI)."
+      }
     },
     "group_11_silver_bracelet_missing_acquisition": {
       "comment": "INVESTIGATION DEEPENED (May 2026): the silver bracelet is purchased, not freely acquired. §340 (peasant's shop) lists 9 items with prices including 'серебряный браслет (4 золотых)'. The FB2 paragraph is implemented in remake_data.js with full text, but only 3 navigation choices — there is no purchase mechanism for any of the 9 items. Therefore the silver bracelet branch in §1090 is currently unreachable by gameplay. RESOLUTION DEFERRED to group_14 (shop/buy-choice engine feature) — once that is implemented, §340 will grant the bracelet on purchase, §1090 ch[1] will become reachable, and inventory_condition='Серебряный браслет' should be added to §1090 ch[1] for consistency. DO NOT remove §1090 ch[1] in the meantime — the branch will become legitimately reachable once shops work.",
@@ -526,7 +506,11 @@
           "after_rationalization": "Add inventory_condition='Бронзовый свисток' to any offer/consumer paragraph that mentions the bronze whistle in its choice labels (suspected: §148, §491, potentially others — needs full audit)."
         }
       ],
-      "status_2026_05_07": "PARTIALLY CLOSED. Name rationalization done at §129 and §505 (both → 'Бронзовый свисток'); inventory_condition gating applied to §810 ch[1], §954 ch[1], §1063 ch[0]. Post-combat acquisitions (§58, §69, §233, §250, §567, §717) deferred to group_15."
+      "status_2026_05_07": "PARTIALLY CLOSED. Name rationalization done at §129 and §505 (both → 'Бронзовый свисток'); inventory_condition gating applied to §810 ch[1], §954 ch[1], §1063 ch[0]. Post-combat acquisitions (§58, §69, §233, §250, §567, §717) deferred to group_15.",
+      "status_partial": {
+        "commit": "7e00452",
+        "summary": "Name rationalization done: §129 + §505 renamed to canonical 'Бронзовый свисток'. Conditional gating done: §810/§954/§1063 offer-paragraphs gated. Post-combat acquisition half deferred to group_15."
+      }
     },
     "group_14_shop_buy_choice_engine": {
       "comment": "Several paragraphs across the book describe a shop-style merchant selling multiple items at named prices, but the engine has no purchase choice type. Players read the prices in the text, but the only choices on the screen are navigation. Found via the silver bracelet investigation (group_11) — §340 (peasant) is one such case with 9 items. There are likely others (Vodyanoy's tavern food/water sales in §873 use ad-hoc gold_sub but only on auto_items, not on choice-level purchase). A general shop mechanism would unify these. Architectural design needed before implementation: choice schema extension (new fields on choice: purchase=true, gold_cost=N, grants_items=['...']), engine renderChoices changes (show price in label, gate by S.gold>=cost, deduct gold and add item on click), and per-paragraph data fixes wherever shops occur.",
@@ -666,6 +650,18 @@
         "verdict": "misclassified",
         "reason": "FB2 verification: the «ножей» in §1122 are NOT inventory items. They are wound-effects from a previous trap paragraph. Knife-class items are nowhere granted in any auto_items.items[] across the entire data. The actual §1122 mutation per canon is «вычесть 5 ВЫНОСЛИВОСТЕЙ за те раны, которые были нанесены вам ножами» — a stamina cost, not inventory loss. Applied as auto_items.stamina_sub=5. The lose_substring engine idea is no longer needed for this paragraph.",
         "source": "gemini_3_1_pro_2026_04 (graph audit, misread of «ножей»)"
+      },
+      {
+        "id": "9_combat_balance_outliers",
+        "verdict": "design_note_not_bug",
+        "reason": "Gemini 3.1 Pro audit flagged §36 (Trader Skill 7 / Stamina 17) and §760 (Bats Skill 4 / Stamina 6–8) as combat outliers. On review these are intentional pacing choices: the trader is a deliberate HP-sponge / mid-game choke point; the bats are a stamina-drain encounter by design. Neither is a bug. Listing as a design note in case a future balance pass revisits individual encounters, but no engine or data work is required.",
+        "source": "gemini_3_1_pro_2026_04 (graph audit, design diagnostic)"
+      },
+      {
+        "id": "10_spell_economy_warnings",
+        "verdict": "design_note_not_bug",
+        "reason": "Gemini 3.1 Pro audit observed that ILLUSION and HEALING spells have only 1–2 uses each across 1221 paragraphs while FIRE and LEVITATION are mandatory. The audit suggested either rebalancing the canon or warning the player at character creation. Both options are out of scope: rebalancing the canon would mean changing the source book; the character-creation warning is a UX feature that belongs in a separate pass and is not registry-tracked. Diagnostic only — no fix planned. Players read the canon and choose accordingly.",
+        "source": "gemini_3_1_pro_2026_04 (graph audit, design diagnostic)"
       }
     ]
   }
