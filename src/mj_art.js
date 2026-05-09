@@ -445,7 +445,10 @@ const MJ_MAP = {
   "1108": "art42_crypt_skeletons",
   "1110": "art47_stone_rats",
   "1164": "art51_barlad_dert_boss",
-  "311": "art53_six_legged_beast"
+  "311": "art53_six_legged_beast",
+  "558": "art07_corridor",
+  "846": "art07_corridor",
+  "1123": "art07_corridor"
 };
 
 // Base64-encoded web-optimized JPEGs (900px, Q82).

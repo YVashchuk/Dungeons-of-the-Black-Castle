@@ -97,7 +97,7 @@ CATALOG = {
         'scene': 'Grand castle corridor/hall',
         'prompt': 'interior of a dark medieval castle great hall, massive stone arches, tall gothic windows with stained glass glowing, hooded hero from behind walking between columns, golden autumn leaves drifting in through broken windows',
         'ref_url': 'https://cdn.midjourney.com/b78cf00d-75ff-4896-9f66-e3a7398e3cff/0_0.png',
-        'remake_paragraphs': [393, 833, 1013, 1097],
+        'remake_paragraphs': [393, 558, 833, 846, 1013, 1097, 1123],
         'original_paragraphs': [39, 100],
     },
     'art08_library': {
