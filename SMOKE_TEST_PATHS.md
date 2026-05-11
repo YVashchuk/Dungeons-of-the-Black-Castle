@@ -735,10 +735,227 @@ Conventions:
 
 ---
 
+## acquires_§58_whistle_after_goblin
+
+**Target:** §58
+
+**Commit:** `group_15`
+
+**What to check:** On entering §58 a single Goblin combat starts. After winning, click 'Взять бронзовый свисток...'. The choice should grant 'Бронзовый свисток' via the new acquires field (deposited into inventory before navigation to §580). Open inventory after to confirm.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Пойти вдоль берега на запад → §596'
+    22. From §596: click 'Заклятием Левитации → §579'
+    23. From §579: click 'На правый берег → §317'
+    24. From §317: click 'Идти дальше без отдыха → §58'
+```
+  (24 clicks total, graph: basic)
+
+---
+
+## acquires_§69_whistle_and_key_after_two_goblins
+
+**Target:** §69
+
+**Commit:** `group_15`
+
+**What to check:** On entering §69 two-Goblin combat starts. After winning, the (relabelled) 'Забрать бронзовый свисток и медный ключик...' choice grants BOTH items via acquires array. Inventory should gain 2 entries.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Свернуть на нее → §5'
+     8. From §5: click 'Идти прямо → §105'
+     9. From §105: click 'Идти дальше → §467'
+    10. From §467: click 'Продолжать идти прямо → §553'
+    11. From §553: click 'Попросту уйти с поляны, ничего не трогая → §480'
+    12. From §480: click 'Решайте, пойдете туда → §1176'
+    13. From §1176: click 'Продолжить → §129'
+    14. From §129: click 'Положить свисток в заплечный мешок и идти к мосту → §568'
+    15. From §568: click 'Пойти прямо → §115'
+    16. From §115: click 'Отдохнуть под одним из деревьев рядом с дорогой → §513'
+    17. From §513: click 'Проснувшись с рассветом, вы отправляетесь в путь → §503'
+    18. From §503: click 'Продолжить → §555'
+    19. From §555: click 'Заклятие Слабости → §69'
+```
+  (19 clicks total, graph: basic)
+
+---
+
+## acquires_§233_whistle_and_key_post_combat_added
+
+**Target:** §233
+
+**Commit:** `group_15`
+
+**What to check:** §233 had a descriptive label about taking whistle + key but no post_combat flag before this commit. Now the choice appears only after combat resolution and grants both items.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Свернуть на нее → §5'
+     8. From §5: click 'Идти прямо → §105'
+     9. From §105: click 'Идти дальше → §467'
+    10. From §467: click 'Продолжать идти прямо → §553'
+    11. From §553: click 'Попросту уйти с поляны, ничего не трогая → §480'
+    12. From §480: click 'Решайте, пойдете туда → §1176'
+    13. From §1176: click 'Продолжить → §129'
+    14. From §129: click 'Положить свисток в заплечный мешок и идти к мосту → §568'
+    15. From §568: click 'Пойти прямо → §115'
+    16. From §115: click 'Отдохнуть под одним из деревьев рядом с дорогой → §513'
+    17. From §513: click 'Проснувшись с рассветом, вы отправляетесь в путь → §503'
+    18. From §503: click 'Продолжить → §555'
+    19. From §555: click 'Заклятие Огня → §233'
+```
+  (19 clicks total, graph: basic)
+
+---
+
+## acquires_§250_whistle_after_two_goblins
+
+**Target:** §250
+
+**Commit:** `group_15`
+
+**What to check:** On entering §250 two-Goblin combat starts. After winning, the 'Взять бронзовый свисток и идти по дороге вдоль реки' choice grants 'Бронзовый свисток'.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Пройти мимо по тропинке дальше в лес → §560'
+     7. From §560: click 'Посмотрите, что за тропинка и куда она приведет → §538'
+     8. From §538: click 'Попробовать залезть на него → §370'
+     9. From §370: click 'Слева → §461'
+    10. From §461: click 'Выбравшись наружу, вы оказываетесь на широкой дороге → §250'
+```
+  (10 clicks total, graph: basic)
+
+---
+
+## acquires_§567_whistle_and_key_post_combat_added
+
+**Target:** §567
+
+**Commit:** `group_15`
+
+**What to check:** §567 had no post_combat flag before this commit. Now after winning the two-Goblin fight, the choice grants both whistle and key.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Свернуть на нее → §5'
+     8. From §5: click 'Идти прямо → §105'
+     9. From §105: click 'Идти дальше → §467'
+    10. From §467: click 'Продолжать идти прямо → §553'
+    11. From §553: click 'Попросту уйти с поляны, ничего не трогая → §480'
+    12. From §480: click 'Решайте, пойдете туда → §1176'
+    13. From §1176: click 'Продолжить → §129'
+    14. From §129: click 'Положить свисток в заплечный мешок и идти к мосту → §568'
+    15. From §568: click 'Пойти прямо → §115'
+    16. From §115: click 'Отдохнуть под одним из деревьев рядом с дорогой → §513'
+    17. From §513: click 'Проснувшись с рассветом, вы отправляетесь в путь → §503'
+    18. From §503: click 'Продолжить → §555'
+    19. From §555: click 'Будете драться с ними → §567'
+```
+  (19 clicks total, graph: basic)
+
+---
+
+## acquires_§717_whistle_after_two_goblins
+
+**Target:** §717
+
+**Commit:** `group_15`
+
+**What to check:** On entering §717 two-Goblin combat starts. After winning, 'Взять бронзовый свисток и идти дальше в лес' grants 'Бронзовый свисток'.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Пойти вдоль берега на запад → §596'
+    22. From §596: click 'Лодки на берегу нет, и, если все же хотите… → §57'
+    23. From §57: click 'Поплыть на противоположный берег → §641'
+    24. From §641: click 'Позвать на помощь Золотую рыбку и выбраться к берегу → §717'
+```
+  (24 clicks total, graph: basic)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **20 / 21**
+- Scenarios with paths found: **26 / 27**
 - Scenarios needing manual route discovery: **1**
 
 ### Manual routing required for:
