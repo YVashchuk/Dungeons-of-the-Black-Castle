@@ -649,7 +649,113 @@ function applyChoiceAcquires(ch, onDone){
   }
 }
 
-function makeChoiceBtn(ch, duringCombat){
+// Shop / buy-choice mechanism (group_14). A choice with purchase:true is
+// a transaction button rather than a navigation button. It costs N gold
+// (gold_cost), grants items (grants_items) and/or restores stamina
+// (grants_stamina), and re-renders the same paragraph after completion
+// so the player can keep shopping. Bought items are tracked in
+// S.shopBought[paragraph]=[choice_index,...] so the same item can't be
+// bought twice from one shop. Food (grants_stamina without grants_items)
+// is considered consumable — not tracked, can be re-purchased any
+// number of times until gold runs out. The choice's `target` field is
+// the paragraph to re-render (typically the shop itself) and is unused
+// for the transaction logic.
+function makePurchaseBtn(ch, choiceIndex){
+  const btn=document.createElement('button');
+  btn.className='choice-btn purchase-btn';
+  const cost=ch.gold_cost||0;
+  const grantsItems=Array.isArray(ch.grants_items)?ch.grants_items:(ch.grants_items?[ch.grants_items]:[]);
+  const grantsStamina=ch.grants_stamina||0;
+  // Auto-append price to label if not already mentioned
+  let displayLabel=ch.label||'';
+  if(!/\d\s*золот/i.test(displayLabel)){
+    displayLabel+=` — ${cost} зол.`;
+  }
+  btn.textContent=`💰 ${displayLabel}`;
+  btn.style.borderColor='var(--gold)';
+  btn.style.color='var(--gold)';
+  btn.style.background='rgba(212,175,55,.08)';
+  // State checks: already bought? not enough gold? inventory full?
+  if(!S.shopBought)S.shopBought={};
+  const paraKey=String(S.section);
+  const bought=S.shopBought[paraKey]||[];
+  const isBought=(grantsItems.length>0)&&bought.includes(choiceIndex);
+  const canAfford=S.gold>=cost;
+  const wouldOverflow=(grantsItems.length>0)&&((S.inventory?S.inventory.length:0)+grantsItems.filter(n=>!S.inventory.includes(n)).length>7);
+  let disabled=false;
+  let tooltip='';
+  if(isBought){
+    disabled=true;tooltip='Уже куплено';
+    btn.textContent='✓ '+displayLabel;
+  } else if(!canAfford){
+    disabled=true;tooltip='Не хватает золота ('+S.gold+'/'+cost+')';
+  } else if(wouldOverflow){
+    disabled=true;tooltip='Мешок полон';
+  }
+  if(disabled){
+    btn.style.opacity='.4';btn.style.cursor='not-allowed';
+    btn.style.borderStyle='dashed';
+    btn.title=tooltip;
+    btn.onclick=(e)=>{e.preventDefault();};
+  } else {
+    btn.onclick=()=>completePurchase(ch,choiceIndex,grantsItems,grantsStamina,cost);
+  }
+  return btn;
+}
+
+function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
+  if(!S)return;
+  // Deduct gold first so any subsequent rerender shows the correct balance.
+  S.gold=Math.max(0,S.gold-cost);
+  const notifs=['− '+cost+' золотых'];
+  logEvent('loss','− '+cost+' золотых','Покупка (§'+S.section+'). Осталось: '+S.gold);
+  // Stamina grant (food). Capped at staminaMax.
+  if(grantsStamina>0){
+    const before=S.stamina;
+    S.stamina=Math.min(S.staminaMax,S.stamina+grantsStamina);
+    const actual=S.stamina-before;
+    if(actual>0){
+      notifs.push('+ '+actual+' выносливости');
+      logEvent('gain','+ '+actual+' выносливости','Теперь: '+S.stamina+'/'+S.staminaMax);
+    }
+  }
+  // Items grant. Only items not already owned are deposited; bought-list is
+  // marked once the item enters the inventory so a re-buy is blocked even
+  // if the player drops the item later.
+  const newItems=grantsItems.filter(n=>!S.inventory.includes(n));
+  newItems.forEach(name=>{
+    if(S.inventory.length<7){
+      S.inventory.push(name);
+      notifs.push('+ '+name);
+      logEvent('gain','+ '+name,'Куплено (§'+S.section+')');
+    }
+  });
+  // Track bought (only for item-grant choices; consumable food unlimited).
+  if(grantsItems.length>0){
+    if(!S.shopBought)S.shopBought={};
+    const paraKey=String(S.section);
+    if(!S.shopBought[paraKey])S.shopBought[paraKey]=[];
+    if(!S.shopBought[paraKey].includes(choiceIndex)){
+      S.shopBought[paraKey].push(choiceIndex);
+    }
+  }
+  playSound('item');
+  showItemNotification(notifs,'💰 Покупка');
+  updateHUD();saveGame();
+  // Re-render the current paragraph to refresh shop-button states (bought
+  // greys out, no-longer-affordable greys out, etc). Use renderChoices
+  // not renderGame to avoid retriggering auto_items.
+  const sec=GD[String(S.section)];
+  if(sec)renderChoices(sec);
+}
+
+function makeChoiceBtn(ch, duringCombat, choiceIndex){
+  // Purchase choice (group_14 shop engine) — render as transaction
+  // button via makePurchaseBtn instead of navigation button. The shop
+  // path lives entirely in that helper.
+  if(ch&&ch.purchase===true){
+    return makePurchaseBtn(ch, choiceIndex);
+  }
   const btn=document.createElement('button');btn.className='choice-btn';
   const spellId=getSpellId(ch);
   if(spellId){
@@ -932,9 +1038,9 @@ function renderChoices(sec){
     btn.innerHTML='⚔ Вступить в бой';
     btn.onclick=()=>startCombat(sec.enemies,sec);list.appendChild(btn);
     // Show pre-combat choices but NOT post-combat, luck-result, or combat conditions
-    sec.choices.forEach(ch=>{
+    sec.choices.forEach((ch,idx)=>{
       if(!ch.post_combat && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch)){
-        list.appendChild(makeChoiceBtn(ch, true));
+        list.appendChild(makeChoiceBtn(ch, true, idx));
       }
     });
     return;
@@ -942,9 +1048,9 @@ function renderChoices(sec){
 
   if(combatWon){
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
-    sec.choices.forEach(ch=>{
+    sec.choices.forEach((ch,idx)=>{
       if(!spellChoiceRe.test(ch.label) && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch)){
-        list.appendChild(makeChoiceBtn(ch));
+        list.appendChild(makeChoiceBtn(ch, false, idx));
       }
     });
     return;
@@ -957,9 +1063,9 @@ function renderChoices(sec){
     btn.innerHTML='🎲 Проверить удачу';
     btn.onclick=()=>startLuckCheck(sec);list.appendChild(btn);
     // Show only true pre-luck alternatives; keep some choices hidden until unlucky combat starts.
-    sec.choices.forEach(ch=>{
+    sec.choices.forEach((ch,idx)=>{
       if(!ch.luck_type && !ch.post_combat && !ch.only_after_unlucky && passesInventoryCheck(ch)){
-        list.appendChild(makeChoiceBtn(ch));
+        list.appendChild(makeChoiceBtn(ch, false, idx));
       }
     });
     return;
