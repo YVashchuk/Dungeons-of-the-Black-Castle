@@ -331,6 +331,33 @@ SCENARIOS = [
         "commit": "7e00452",
     },
 
+    # ── Conditional gating regressions (user smoke-test 2026-05-11) ──────
+    {
+        "id": "rope_gate_§412_NO_rope",
+        "target": 412,
+        "what_to_check": "Without 'Верёвка' in inventory, §412 hides the 'Если есть верёвка — взобраться на скалу (375)' button. Remaining choices: обойти скалу (214), вернуться на развилку (424), и Левитация (405) — последняя disabled если 0 заклятий.",
+        "commit": "user_smoke_test_2026_05_11",
+    },
+    {
+        "id": "rope_gate_§412_WITH_rope",
+        "target": 412,
+        "must_visit": [1193],
+        "what_to_check": "After visiting §1193 (which grants 'Верёвка'), §412 shows the rope-climb button. Click to verify navigation to §375.",
+        "commit": "user_smoke_test_2026_05_11",
+    },
+    {
+        "id": "rope_gate_§464_NO_rope",
+        "target": 464,
+        "what_to_check": "Without 'Верёвка' in inventory, §464 hides the 'Если есть веревка (530)' button.",
+        "commit": "user_smoke_test_2026_05_11",
+    },
+    {
+        "id": "gold_whistle_gate_§725_NO_whistle",
+        "target": 725,
+        "what_to_check": "Without 'Золотой свисток' in inventory, §725 hides the 'если есть Золотой свисток (142)' button.",
+        "commit": "user_smoke_test_2026_05_11",
+    },
+
     # ── Group 15: post-combat item grants via `acquires` field ────────────
     {
         "id": "acquires_§58_whistle_after_goblin",

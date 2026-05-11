@@ -10,7 +10,8 @@
     "v2.3 → v2.4": "May 2026 — Group 12 (bronze whistle) partially closed: 2 name rationalizations applied + 3 offer-paragraphs gated by inventory_condition. The post-combat acquisition half of group_12 (7 paragraphs where the player kills a goblin and then takes the whistle from the corpse) cannot be closed without a new engine feature, because auto_items applies on first paragraph entry, before combat resolves. Registered as new group_15.",
     "v2.4 → v2.5": "May 2026 — group_13 reclassified after FB2 verification. The Gemini graph audit had read the §1122 «ножей и след простыл» line as inventory loss of knife-class items, but FB2 review shows the knives were never inventory items at all — they were an attack effect from a previous trap paragraph causing wounds. The §1122 effect is the canonical −5 STAMINA cost the canon states explicitly («вычесть 5 ВЫНОСЛИВОСТЕЙ за те раны»), so this is a Group 1.3-class missing auto-effect, not a Group 7-class inventory loss. Applied auto_items.stamina_sub=5 and moved registry entry from pending_corrections to resolved_no_op with the corrected interpretation. The lose_substring engine extension idea originally floated in group_13 is no longer needed for this paragraph (and there are no other knife-loss paragraphs in the data either).",
     "v2.5 → v2.6": "May 2026 — registry hygiene sweep. Seven groups had been closed by commits across the recent sessions but were still listed in pending_corrections, making the backlog look bigger than it is. Closed groups now carry status_done with their commit hashes. Two diagnostic-only groups (9 combat balance, 10 spell economy) moved to resolved_no_op as design notes — not bugs. Net effect: pending_corrections now lists only items that genuinely need future work.",
-    "v2.6 → v2.7": "May 2026 — group_15 (post-combat item grants) closed. New engine field 'acquires' added to choice schema: a choice may carry an item name (string) or array of names, deposited into S.inventory when the player clicks the button. Uses existing showInventoryModal for 7-slot overflow handling. Applied to 6 paragraphs (§58, §69, §233, §250, §567, §717). Three of those also gained the missing post_combat:true flag so the button only appears after combat resolves. Smoke-test scenarios extended to cover all 6."
+    "v2.6 → v2.7": "May 2026 — group_15 (post-combat item grants) closed. New engine field 'acquires' added to choice schema: a choice may carry an item name (string) or array of names, deposited into S.inventory when the player clicks the button. Uses existing showInventoryModal for 7-slot overflow handling. Applied to 6 paragraphs (§58, §69, §233, §250, §567, §717). Three of those also gained the missing post_combat:true flag so the button only appears after combat resolves. Smoke-test scenarios extended to cover all 6.",
+    "v2.7 → v2.8": "May 2026 — user manual smoke-test found 3 conditional-gating regressions that slipped through Group 3 / Group 1.4 work: §412, §464 (both rope), §725 (gold whistle). Fixed in same commit. Also found two related patterns that need separate work: §774 has gold-amount conditional choices (1g and 5g checks) that require a new gold_condition mechanism, and §1208 has 'если у вас есть фигурный ключ' but no paragraph in the data grants 'Фигурный ключ' (same class as silver bracelet group_11). Registered as group_16 and group_17."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -588,6 +589,50 @@
         "commit": "(this commit)",
         "summary": "New engine field 'acquires' on choice. Applied to §58 (Бронзовый свисток), §69 (whistle + Медный ключик), §233 (both), §250 (whistle only), §567 (both), §717 (whistle only). §391 already correct via auto_items and not affected."
       }
+    },
+    "group_16_gold_condition_gating": {
+      "comment": "Some paragraphs offer the player a choice that costs a specific amount of gold (e.g. §774: 'если есть 1 золотой — открыть дверь монетой', 'если есть 5 золотых — попробовать открыть большой сундук'). The engine has no way to gate a choice by gold-on-hand and no way to deduct the cost on click. Currently the buttons show regardless of gold balance, and clicking does not subtract. Resolution requires a new choice-level field gold_condition:N (button rendered only when S.gold>=N) and gold_cost:N (deduct on click — could reuse acquires' onclick wrapper). Different from group_14 (shop engine) in that this is a single conditional choice, not a full multi-item shop transaction.",
+      "priority": "P3",
+      "type": "engine_feature",
+      "source": "discovered_during_user_smoke_test_2026_05_11",
+      "candidate_paragraphs": [
+        {
+          "paragraph": 774,
+          "choices_needing_gold_condition": [
+            {
+              "index": 2,
+              "target": 686,
+              "amount": 1,
+              "label": "Если есть 1 золотой — открыть дверь монетой (686)"
+            },
+            {
+              "index": 3,
+              "target": 299,
+              "amount": 5,
+              "label": "Если есть 5 золотых — попробовать открыть большой сундук (299)"
+            }
+          ]
+        }
+      ],
+      "design_open_questions": [
+        "Should gold_cost also be tracked in event log as a loss notification?",
+        "Reuse acquires onclick wrapper or add a separate applyChoiceGoldCost helper?",
+        "Are there other paragraphs with the same pattern? Need to grep for 'если есть N золот'"
+      ]
+    },
+    "group_17_figurine_key_missing_acquisition": {
+      "comment": "Same class as group_11 (silver bracelet): §1208 ch[0] offers 'если у вас есть фигурный ключ — открыть средний сундук (984)' but no paragraph anywhere in src/remake_data.js grants 'Фигурный ключ' via auto_items.items. The branch is unreachable by rules until either (a) the canonical acquisition paragraph is found in FB2 and added, or (b) it is verified that the item does not exist in canon and the branch is removed. Pattern: same as silver bracelet — FB2 §340 (peasant shop) lists 'фигурный ключ' as one of the 9 items at 2 gold, so resolution is also blocked by group_14 (shop engine). DO NOT remove ch[0] — it will become reachable once the shop mechanic lands.",
+      "priority": "P3",
+      "type": "blocked_by_missing_engine_feature",
+      "blocked_by": "group_14_shop_buy_choice_engine",
+      "source": "discovered_during_user_smoke_test_2026_05_11",
+      "items": [
+        {
+          "paragraph": 1208,
+          "current_state": "ch[0] target=984 with label 'если у вас есть фигурный ключ — открыть средний сундук'. Unconditional — button shows regardless of inventory. Pending the gating fix once the key becomes acquirable.",
+          "missing": "Acquisition for 'Фигурный ключ' via §340 shop (group_14)"
+        }
+      ]
     }
   },
   "resolved_no_op": {
