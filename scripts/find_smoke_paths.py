@@ -358,6 +358,42 @@ SCENARIOS = [
         "commit": "user_smoke_test_2026_05_11",
     },
 
+    # ── Group 14: shop / buy-choice engine ──────────────────────────
+    {
+        "id": "shop_§340_food_purchase",
+        "target": 340,
+        "what_to_check": "On entering §340 the peasant shop renders 9 purchase buttons (3 food + 6 items) above 3 navigation buttons. Each purchase shows a gold-coin icon and a cost. Click 'Купить ананас' — 2 gold deducted, stamina +3, button stays available (food is consumable, unlimited buys until gold runs out).",
+        "commit": "group_14",
+    },
+    {
+        "id": "shop_§340_item_purchase_bracelet",
+        "target": 340,
+        "what_to_check": "Click 'Купить серебряный браслет' — 4 gold deducted, 'Серебряный браслет' added to inventory, button greys out with '✓ Купить...' label so it can't be re-bought.",
+        "commit": "group_14",
+    },
+    {
+        "id": "shop_§340_disabled_when_broke",
+        "target": 340,
+        "what_to_check": "With low gold (e.g. 2g remaining), expensive items (золотая устрица 8g, попона 5g, браслет 4g) render greyed out with tooltip 'Не хватает золота (2/N)'. Affordable items remain active.",
+        "commit": "group_14",
+    },
+
+    # ── Group 11 + group 17: unblocked consumers ─────────────────────────
+    {
+        "id": "bracelet_gate_§1090_WITH_bracelet",
+        "target": 1090,
+        "must_visit": [340],
+        "what_to_check": "After buying 'Серебряный браслет' at §340, §1090 ch[1] 'Подарить серебряный браслет (874)' becomes visible. Without it, button is hidden (this branch was unreachable until shop landed).",
+        "commit": "group_14 (unblocks group_11)",
+    },
+    {
+        "id": "figurine_key_gate_§1208_WITH_key",
+        "target": 1208,
+        "must_visit": [340],
+        "what_to_check": "After buying 'Фигурный ключ' at §340, §1208 ch[0] 'Если у вас есть фигурный ключ — открыть средний сундук (984)' becomes visible.",
+        "commit": "group_14 (unblocks group_17)",
+    },
+
     # ── Group 15: post-combat item grants via `acquires` field ────────────
     {
         "id": "acquires_§58_whistle_after_goblin",

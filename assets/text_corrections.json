@@ -11,7 +11,8 @@
     "v2.4 → v2.5": "May 2026 — group_13 reclassified after FB2 verification. The Gemini graph audit had read the §1122 «ножей и след простыл» line as inventory loss of knife-class items, but FB2 review shows the knives were never inventory items at all — they were an attack effect from a previous trap paragraph causing wounds. The §1122 effect is the canonical −5 STAMINA cost the canon states explicitly («вычесть 5 ВЫНОСЛИВОСТЕЙ за те раны»), so this is a Group 1.3-class missing auto-effect, not a Group 7-class inventory loss. Applied auto_items.stamina_sub=5 and moved registry entry from pending_corrections to resolved_no_op with the corrected interpretation. The lose_substring engine extension idea originally floated in group_13 is no longer needed for this paragraph (and there are no other knife-loss paragraphs in the data either).",
     "v2.5 → v2.6": "May 2026 — registry hygiene sweep. Seven groups had been closed by commits across the recent sessions but were still listed in pending_corrections, making the backlog look bigger than it is. Closed groups now carry status_done with their commit hashes. Two diagnostic-only groups (9 combat balance, 10 spell economy) moved to resolved_no_op as design notes — not bugs. Net effect: pending_corrections now lists only items that genuinely need future work.",
     "v2.6 → v2.7": "May 2026 — group_15 (post-combat item grants) closed. New engine field 'acquires' added to choice schema: a choice may carry an item name (string) or array of names, deposited into S.inventory when the player clicks the button. Uses existing showInventoryModal for 7-slot overflow handling. Applied to 6 paragraphs (§58, §69, §233, §250, §567, §717). Three of those also gained the missing post_combat:true flag so the button only appears after combat resolves. Smoke-test scenarios extended to cover all 6.",
-    "v2.7 → v2.8": "May 2026 — user manual smoke-test found 3 conditional-gating regressions that slipped through Group 3 / Group 1.4 work: §412, §464 (both rope), §725 (gold whistle). Fixed in same commit. Also found two related patterns that need separate work: §774 has gold-amount conditional choices (1g and 5g checks) that require a new gold_condition mechanism, and §1208 has 'если у вас есть фигурный ключ' but no paragraph in the data grants 'Фигурный ключ' (same class as silver bracelet group_11). Registered as group_16 and group_17."
+    "v2.7 → v2.8": "May 2026 — user manual smoke-test found 3 conditional-gating regressions that slipped through Group 3 / Group 1.4 work: §412, §464 (both rope), §725 (gold whistle). Fixed in same commit. Also found two related patterns that need separate work: §774 has gold-amount conditional choices (1g and 5g checks) that require a new gold_condition mechanism, and §1208 has 'если у вас есть фигурный ключ' but no paragraph in the data grants 'Фигурный ключ' (same class as silver bracelet group_11). Registered as group_16 and group_17.",
+    "v2.8 → v2.9": "May 2026 — group_14 (shop / buy-choice engine) closed. New engine mechanism: purchase:true flag on choice, with gold_cost, grants_items, and grants_stamina fields. Bought items tracked in S.shopBought[para] so same item can't be bought twice; food (grants_stamina without items) is consumable, unlimited buys until gold runs out. Applied to §340 (peasant shop, 9 items: 3 food + 6 inventory items). This unblocks group_11 (silver bracelet — granted by §340 at 4g) and group_17 (figurine key — granted by §340 at 2g). Both consumer paragraphs (§1090 ch[1], §1208 ch[0]) now gated by inventory_condition. §873 (Vodyanoy tavern) NOT migrated — its food choices are narrative drink/eat with stat effects and one trap branch; different mechanic. Kept as-is."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -488,7 +489,11 @@
           "current_state": "ch[1] (target=874) deliberately left unconditional in commit 87a58d2 (white arrow infrastructure) because there is no acquisition path.",
           "missing": "inventory_condition='Серебряный браслет' on ch[1]. Cannot be applied until the bracelet is grantable by some path."
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "(this commit)",
+        "summary": "Silver bracelet now grantable via §340 purchase (4 gold). §1090 ch[1] gated by inventory_condition='Серебряный браслет'. Branch is finally reachable by rules. Item-id discipline: single canonical name 'Серебряный браслет' used both in grants_items and inventory_condition."
+      }
     },
     "group_12_bronze_whistle_name_rationalization": {
       "comment": "The bronze whistle item is granted under three different name strings across the data, making any future inventory_condition check unreliable — depending on which paragraph the player got the whistle from, the gate may or may not match. Needs a rationalization pass: pick a canonical name (recommended: 'Бронзовый свисток'), rename the other two grants, then add inventory_condition to consumer paragraphs.",
@@ -533,7 +538,11 @@
         "Should the player be able to make multiple purchases from a single shop paragraph (re-render the shop after each), or are shops one-shot?",
         "Should item label include the price (e.g. 'Серебряный браслет (4g)') or should the price live in choice.gold_cost only?",
         "Re-render after purchase: should the engine track which items have been bought to prevent buying twice from the same shop, or just rely on gold deduction making infinite purchases self-limiting?"
-      ]
+      ],
+      "status_done": {
+        "commit": "(this commit)",
+        "summary": "New choice schema fields: purchase:true, gold_cost:N, grants_items:'Name' or array, grants_stamina:N. Engine helpers makePurchaseBtn + completePurchase in src/game_logic.js. Applied to §340 with 9 purchase choices."
+      }
     },
     "group_15_post_combat_item_grants": {
       "comment": "Several paragraphs use a 'kill enemy, then take their item' pattern. Currently the only way to express this in data is auto_items.items, which applies on first entry — too early, because the player hasn't yet won the combat. Result: the post_combat choice button says 'Взять X и идти дальше' but X never enters inventory. Found during Group 12 (whistle) work, but the pattern is general and applies to every loot-from-corpse scenario in the book. Need new engine feature.",
@@ -632,7 +641,11 @@
           "current_state": "ch[0] target=984 with label 'если у вас есть фигурный ключ — открыть средний сундук'. Unconditional — button shows regardless of inventory. Pending the gating fix once the key becomes acquirable.",
           "missing": "Acquisition for 'Фигурный ключ' via §340 shop (group_14)"
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "(this commit)",
+        "summary": "Figurine key now grantable via §340 purchase (2 gold). §1208 ch[0] gated by inventory_condition='Фигурный ключ'. Branch is finally reachable by rules."
+      }
     }
   },
   "resolved_no_op": {
