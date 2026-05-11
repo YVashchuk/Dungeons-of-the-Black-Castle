@@ -330,6 +330,44 @@ SCENARIOS = [
         "what_to_check": "Without 'Бронзовый свисток' in inventory, §810 hides the 'Бронзовый свисток (395)' branch. With it, button is visible.",
         "commit": "7e00452",
     },
+
+    # ── Group 15: post-combat item grants via `acquires` field ────────────
+    {
+        "id": "acquires_§58_whistle_after_goblin",
+        "target": 58,
+        "what_to_check": "On entering §58 a single Goblin combat starts. After winning, click 'Взять бронзовый свисток...'. The choice should grant 'Бронзовый свисток' via the new acquires field (deposited into inventory before navigation to §580). Open inventory after to confirm.",
+        "commit": "group_15",
+    },
+    {
+        "id": "acquires_§69_whistle_and_key_after_two_goblins",
+        "target": 69,
+        "what_to_check": "On entering §69 two-Goblin combat starts. After winning, the (relabelled) 'Забрать бронзовый свисток и медный ключик...' choice grants BOTH items via acquires array. Inventory should gain 2 entries.",
+        "commit": "group_15",
+    },
+    {
+        "id": "acquires_§233_whistle_and_key_post_combat_added",
+        "target": 233,
+        "what_to_check": "§233 had a descriptive label about taking whistle + key but no post_combat flag before this commit. Now the choice appears only after combat resolution and grants both items.",
+        "commit": "group_15",
+    },
+    {
+        "id": "acquires_§250_whistle_after_two_goblins",
+        "target": 250,
+        "what_to_check": "On entering §250 two-Goblin combat starts. After winning, the 'Взять бронзовый свисток и идти по дороге вдоль реки' choice grants 'Бронзовый свисток'.",
+        "commit": "group_15",
+    },
+    {
+        "id": "acquires_§567_whistle_and_key_post_combat_added",
+        "target": 567,
+        "what_to_check": "§567 had no post_combat flag before this commit. Now after winning the two-Goblin fight, the choice grants both whistle and key.",
+        "commit": "group_15",
+    },
+    {
+        "id": "acquires_§717_whistle_after_two_goblins",
+        "target": 717,
+        "what_to_check": "On entering §717 two-Goblin combat starts. After winning, 'Взять бронзовый свисток и идти дальше в лес' grants 'Бронзовый свисток'.",
+        "commit": "group_15",
+    },
 ]
 
 

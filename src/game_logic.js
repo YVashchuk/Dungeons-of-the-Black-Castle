@@ -617,6 +617,38 @@ function useSpell(spellId){
   if(sp&&sp.remaining>0){sp.remaining--;const def=SPELLS.find(s=>s.id===spellId);logEvent('gain',def.icon+' Заклятие '+def.name,'Осталось: '+sp.remaining);updateHUD();saveGame();}
 }
 
+// Per-choice item grant. A choice may carry `acquires: "Item Name"`
+// (string) or an array of names. When the player clicks the button,
+// the named items are deposited into S.inventory before navigation.
+// Used for the post-combat 'kill enemy, take their item' pattern
+// (group_15) where auto_items.items would fire too early (on first
+// paragraph entry, before combat resolves). Defensive against null
+// S/S.inventory; silently ignores already-owned items so a re-visit
+// to the same paragraph doesn't duplicate stacks. If inventory is
+// full or any item is new, hands off to the existing showInventoryModal
+// (with overflow / drop UI) before completing navigation.
+function applyChoiceAcquires(ch, onDone){
+  if(!ch||!ch.acquires||!S){if(onDone)onDone();return;}
+  if(!S.inventory)S.inventory=[];
+  const list=Array.isArray(ch.acquires)?ch.acquires:[ch.acquires];
+  const newItems=list.filter(name=>!S.inventory.includes(name));
+  if(newItems.length===0){if(onDone)onDone();return;}
+  // Hand off to the standard pickup modal so 7-slot overflow logic
+  // is shared with auto_items. The modal's Continue button closes
+  // itself; we wire navigation onto the close-handler via a one-shot.
+  showInventoryModal(newItems, []);
+  const modal=document.getElementById('modal-inventory');
+  const closeBtn=modal.querySelector('.btn-primary')||modal.querySelector('button');
+  if(closeBtn&&onDone){
+    const originalOnClick=closeBtn.onclick;
+    closeBtn.onclick=(e)=>{
+      if(originalOnClick)originalOnClick.call(closeBtn,e);
+      else closeInvModal();
+      onDone();
+    };
+  }
+}
+
 function makeChoiceBtn(ch, duringCombat){
   const btn=document.createElement('button');btn.className='choice-btn';
   const spellId=getSpellId(ch);
@@ -632,7 +664,7 @@ function makeChoiceBtn(ch, duringCombat){
       btn.title='Заклятие недоступно';
       btn.onclick=(e)=>{e.preventDefault();};
     } else {
-      btn.onclick=()=>{useSpell(spellId);goTo(ch.target);};
+      btn.onclick=()=>{useSpell(spellId);applyChoiceAcquires(ch,()=>goTo(ch.target));};
     }
   } else {
     btn.textContent=ch.label;
@@ -643,10 +675,10 @@ function makeChoiceBtn(ch, duringCombat){
         S.stamina=Math.max(0,S.stamina-2);
         updateHUD();saveGame();
         showItemNotification(['− 2 выносливости (бегство из боя)']);
-        goTo(ch.target);
+        applyChoiceAcquires(ch,()=>goTo(ch.target));
       };
     } else {
-      btn.onclick=()=>goTo(ch.target);
+      btn.onclick=()=>applyChoiceAcquires(ch,()=>goTo(ch.target));
     }
   }
   return btn;

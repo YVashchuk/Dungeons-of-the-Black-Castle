@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-05-08",
+  "last_updated": "2026-05-11",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -9,7 +9,8 @@
     "v2.2 → v2.3": "May 2026 investigation deepened group_11 (silver bracelet). FB2 search confirmed there is no auto-acquisition paragraph for 'Серебряный браслет'. The item is purchased from the peasant's shop in §340 along with 8 other items. §340 in remake_data.js has the FB2 text describing the shop but no purchase mechanism — only 3 navigation choices (leave west / south / stay). This is a symptom of a missing shop/buy-choice engine feature, not a single-paragraph fix. Group 11 reclassified as architectural; new group_14 added to track the shop-mechanic gap across the book.",
     "v2.3 → v2.4": "May 2026 — Group 12 (bronze whistle) partially closed: 2 name rationalizations applied + 3 offer-paragraphs gated by inventory_condition. The post-combat acquisition half of group_12 (7 paragraphs where the player kills a goblin and then takes the whistle from the corpse) cannot be closed without a new engine feature, because auto_items applies on first paragraph entry, before combat resolves. Registered as new group_15.",
     "v2.4 → v2.5": "May 2026 — group_13 reclassified after FB2 verification. The Gemini graph audit had read the §1122 «ножей и след простыл» line as inventory loss of knife-class items, but FB2 review shows the knives were never inventory items at all — they were an attack effect from a previous trap paragraph causing wounds. The §1122 effect is the canonical −5 STAMINA cost the canon states explicitly («вычесть 5 ВЫНОСЛИВОСТЕЙ за те раны»), so this is a Group 1.3-class missing auto-effect, not a Group 7-class inventory loss. Applied auto_items.stamina_sub=5 and moved registry entry from pending_corrections to resolved_no_op with the corrected interpretation. The lose_substring engine extension idea originally floated in group_13 is no longer needed for this paragraph (and there are no other knife-loss paragraphs in the data either).",
-    "v2.5 → v2.6": "May 2026 — registry hygiene sweep. Seven groups had been closed by commits across the recent sessions but were still listed in pending_corrections, making the backlog look bigger than it is. Closed groups now carry status_done with their commit hashes. Two diagnostic-only groups (9 combat balance, 10 spell economy) moved to resolved_no_op as design notes — not bugs. Net effect: pending_corrections now lists only items that genuinely need future work."
+    "v2.5 → v2.6": "May 2026 — registry hygiene sweep. Seven groups had been closed by commits across the recent sessions but were still listed in pending_corrections, making the backlog look bigger than it is. Closed groups now carry status_done with their commit hashes. Two diagnostic-only groups (9 combat balance, 10 spell economy) moved to resolved_no_op as design notes — not bugs. Net effect: pending_corrections now lists only items that genuinely need future work.",
+    "v2.6 → v2.7": "May 2026 — group_15 (post-combat item grants) closed. New engine field 'acquires' added to choice schema: a choice may carry an item name (string) or array of names, deposited into S.inventory when the player clicks the button. Uses existing showInventoryModal for 7-slot overflow handling. Applied to 6 paragraphs (§58, §69, §233, §250, §567, §717). Three of those also gained the missing post_combat:true flag so the button only appears after combat resolves. Smoke-test scenarios extended to cover all 6."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -582,7 +583,11 @@
           "note": "§391 is a post-combat 'обшарив карманы Гоблина, находите бронзовый свисток' — already has auto_items grant in current data because the combat is in a different paragraph. Listed for completeness but not affected."
         }
       ],
-      "verification_required": "Once group_15 is implemented, sweep all post_combat choice labels across remake_data.js for similar 'возьмите/заберите/обыщите' verbs to find every paragraph that needs the new field — there are likely several beyond the whistle list."
+      "verification_required": "Once group_15 is implemented, sweep all post_combat choice labels across remake_data.js for similar 'возьмите/заберите/обыщите' verbs to find every paragraph that needs the new field — there are likely several beyond the whistle list.",
+      "status_done": {
+        "commit": "(this commit)",
+        "summary": "New engine field 'acquires' on choice. Applied to §58 (Бронзовый свисток), §69 (whistle + Медный ключик), §233 (both), §250 (whistle only), §567 (both), §717 (whistle only). §391 already correct via auto_items and not affected."
+      }
     }
   },
   "resolved_no_op": {
