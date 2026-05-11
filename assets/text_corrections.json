@@ -12,7 +12,8 @@
     "v2.5 → v2.6": "May 2026 — registry hygiene sweep. Seven groups had been closed by commits across the recent sessions but were still listed in pending_corrections, making the backlog look bigger than it is. Closed groups now carry status_done with their commit hashes. Two diagnostic-only groups (9 combat balance, 10 spell economy) moved to resolved_no_op as design notes — not bugs. Net effect: pending_corrections now lists only items that genuinely need future work.",
     "v2.6 → v2.7": "May 2026 — group_15 (post-combat item grants) closed. New engine field 'acquires' added to choice schema: a choice may carry an item name (string) or array of names, deposited into S.inventory when the player clicks the button. Uses existing showInventoryModal for 7-slot overflow handling. Applied to 6 paragraphs (§58, §69, §233, §250, §567, §717). Three of those also gained the missing post_combat:true flag so the button only appears after combat resolves. Smoke-test scenarios extended to cover all 6.",
     "v2.7 → v2.8": "May 2026 — user manual smoke-test found 3 conditional-gating regressions that slipped through Group 3 / Group 1.4 work: §412, §464 (both rope), §725 (gold whistle). Fixed in same commit. Also found two related patterns that need separate work: §774 has gold-amount conditional choices (1g and 5g checks) that require a new gold_condition mechanism, and §1208 has 'если у вас есть фигурный ключ' but no paragraph in the data grants 'Фигурный ключ' (same class as silver bracelet group_11). Registered as group_16 and group_17.",
-    "v2.8 → v2.9": "May 2026 — group_14 (shop / buy-choice engine) closed. New engine mechanism: purchase:true flag on choice, with gold_cost, grants_items, and grants_stamina fields. Bought items tracked in S.shopBought[para] so same item can't be bought twice; food (grants_stamina without items) is consumable, unlimited buys until gold runs out. Applied to §340 (peasant shop, 9 items: 3 food + 6 inventory items). This unblocks group_11 (silver bracelet — granted by §340 at 4g) and group_17 (figurine key — granted by §340 at 2g). Both consumer paragraphs (§1090 ch[1], §1208 ch[0]) now gated by inventory_condition. §873 (Vodyanoy tavern) NOT migrated — its food choices are narrative drink/eat with stat effects and one trap branch; different mechanic. Kept as-is."
+    "v2.8 → v2.9": "May 2026 — group_14 (shop / buy-choice engine) closed. New engine mechanism: purchase:true flag on choice, with gold_cost, grants_items, and grants_stamina fields. Bought items tracked in S.shopBought[para] so same item can't be bought twice; food (grants_stamina without items) is consumable, unlimited buys until gold runs out. Applied to §340 (peasant shop, 9 items: 3 food + 6 inventory items). This unblocks group_11 (silver bracelet — granted by §340 at 4g) and group_17 (figurine key — granted by §340 at 2g). Both consumer paragraphs (§1090 ch[1], §1208 ch[0]) now gated by inventory_condition. §873 (Vodyanoy tavern) NOT migrated — its food choices are narrative drink/eat with stat effects and one trap branch; different mechanic. Kept as-is.",
+    "v2.9 → v2.10": "May 2026 — group_16 (gold-condition gating) closed. Two new engine fields: gold_condition:N (visibility gate, button hidden if S.gold<N) and gold_cost:N (deducted on click, before navigation). Both compose with existing inventory_condition, acquires, purchase. Applied to §774 (3 gates + 1 inventory_condition) and §686 ch[0] (gate + cost for 'кинуть ещё 4 золотых'). Also registered new finding group_18: §774 FB2 text lists 'красивый кусочек дерева' as one of 4 hatch-opening options but no choice exists for it. Pattern: missing-choice, similar class as the silver bracelet/key branches except the data already has §340 granting the item — just §774 doesn't expose the choice."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -627,7 +628,11 @@
         "Should gold_cost also be tracked in event log as a loss notification?",
         "Reuse acquires onclick wrapper or add a separate applyChoiceGoldCost helper?",
         "Are there other paragraphs with the same pattern? Need to grep for 'если есть N золот'"
-      ]
+      ],
+      "status_done": {
+        "commit": "(this commit)",
+        "summary": "New choice schema fields: gold_condition:N (gate) and gold_cost:N (deduct on click). Applied to §774 ch[2] (condition 1, no cost — §686 deducts), §774 ch[3] (condition 5, cost 5), §686 ch[0] (condition 4, cost 4). §774 ch[1] also gained inventory_condition='Фигурный ключ' as part of the same audit pass (second usage of figurine key after §1208)."
+      }
     },
     "group_17_figurine_key_missing_acquisition": {
       "comment": "Same class as group_11 (silver bracelet): §1208 ch[0] offers 'если у вас есть фигурный ключ — открыть средний сундук (984)' but no paragraph anywhere in src/remake_data.js grants 'Фигурный ключ' via auto_items.items. The branch is unreachable by rules until either (a) the canonical acquisition paragraph is found in FB2 and added, or (b) it is verified that the item does not exist in canon and the branch is removed. Pattern: same as silver bracelet — FB2 §340 (peasant shop) lists 'фигурный ключ' as one of the 9 items at 2 gold, so resolution is also blocked by group_14 (shop engine). DO NOT remove ch[0] — it will become reachable once the shop mechanic lands.",
@@ -646,6 +651,19 @@
         "commit": "(this commit)",
         "summary": "Figurine key now grantable via §340 purchase (2 gold). §1208 ch[0] gated by inventory_condition='Фигурный ключ'. Branch is finally reachable by rules."
       }
+    },
+    "group_18_missing_choice_§774_wood_piece": {
+      "comment": "FB2 §774 text lists FOUR ways to open the hatch: (a) красивый кусочек дерева → §1132, (b) фигурный ключ → §251, (c) 1 золотой → §686, (d) 5 золотых → §299. Currently §774 in remake_data.js has choices for (b), (c), (d) plus a generic ch[0] labelled 'Попробовать открыть дверь подходящим предметом' targeting §1132 (the wood-piece outcome). The generic label hides the canonical wood-piece option from the player and routes them blindly. Fix: replace ch[0] with a specific wood-piece choice gated by inventory_condition='Красивый кусочек дерева'. Item is grantable via §340 (commit ab5e585). Small fix, P3.",
+      "priority": "P3",
+      "type": "missing_choice_clarity",
+      "source": "discovered_during_group_16_2026_05",
+      "items": [
+        {
+          "paragraph": 774,
+          "current_state": "ch[0] target=1132 with generic label 'Попробовать открыть дверь подходящим предметом'.",
+          "fix": "Replace ch[0] label with 'Если есть красивый кусочек дерева — попробовать им (1132)' and add inventory_condition='Красивый кусочек дерева'. The choice should be hidden when player has no wood piece, same pattern as figurine key gating in the same paragraph."
+        }
+      ]
     }
   },
   "resolved_no_op": {

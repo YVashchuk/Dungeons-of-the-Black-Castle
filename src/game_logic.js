@@ -611,6 +611,17 @@ function passesInventoryCheck(ch){
   return S.inventory.includes(cond);
 }
 
+// Gold-conditional choice gating (group_16). A choice may carry
+// `gold_condition: N` and the button is rendered only when S.gold >= N.
+// Used at §774 for the «если 1 золотой» / «если 5 золотых» branches
+// where the canon expects the player to be able to spend coins to
+// open a hatch. Without a gold_condition the choice is always visible.
+function passesGoldCheck(ch){
+  if(!ch||ch.gold_condition===undefined||ch.gold_condition===null) return true;
+  if(!S) return false;
+  return (S.gold||0) >= ch.gold_condition;
+}
+
 function useSpell(spellId){
   if(!S||!S.spells)return;
   const sp=S.spells.find(s=>s.id===spellId);
@@ -647,6 +658,24 @@ function applyChoiceAcquires(ch, onDone){
       onDone();
     };
   }
+}
+
+// Per-choice gold deduction (group_16). A choice may carry `gold_cost: N`
+// (number). On click the engine subtracts N from S.gold (clamped to 0)
+// before navigation. Logs the cost to the event log and shows a quick
+// notification. Composes with acquires: a single choice can both spend
+// gold and grant items (not currently used in data but supported for
+// future paragraphs). Composes with inventory_condition / gold_condition
+// which gate visibility.
+function applyChoiceGoldCost(ch){
+  if(!ch||!ch.gold_cost||!S) return;
+  const cost=ch.gold_cost;
+  if(cost<=0) return;
+  S.gold=Math.max(0,(S.gold||0)-cost);
+  logEvent('loss','− '+cost+' золотых','Заплачено за выбор. Осталось: '+S.gold);
+  playSound('item');
+  showItemNotification(['− '+cost+' золотых']);
+  updateHUD();saveGame();
 }
 
 // Shop / buy-choice mechanism (group_14). A choice with purchase:true is
@@ -770,7 +799,7 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
       btn.title='Заклятие недоступно';
       btn.onclick=(e)=>{e.preventDefault();};
     } else {
-      btn.onclick=()=>{useSpell(spellId);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+      btn.onclick=()=>{useSpell(spellId);applyChoiceGoldCost(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
     }
   } else {
     btn.textContent=ch.label;
@@ -781,10 +810,11 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
         S.stamina=Math.max(0,S.stamina-2);
         updateHUD();saveGame();
         showItemNotification(['− 2 выносливости (бегство из боя)']);
+        applyChoiceGoldCost(ch);
         applyChoiceAcquires(ch,()=>goTo(ch.target));
       };
     } else {
-      btn.onclick=()=>applyChoiceAcquires(ch,()=>goTo(ch.target));
+      btn.onclick=()=>{applyChoiceGoldCost(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
     }
   }
   return btn;
@@ -1039,7 +1069,7 @@ function renderChoices(sec){
     btn.onclick=()=>startCombat(sec.enemies,sec);list.appendChild(btn);
     // Show pre-combat choices but NOT post-combat, luck-result, or combat conditions
     sec.choices.forEach((ch,idx)=>{
-      if(!ch.post_combat && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch)){
+      if(!ch.post_combat && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch) && passesGoldCheck(ch)){
         list.appendChild(makeChoiceBtn(ch, true, idx));
       }
     });
@@ -1049,7 +1079,7 @@ function renderChoices(sec){
   if(combatWon){
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
     sec.choices.forEach((ch,idx)=>{
-      if(!spellChoiceRe.test(ch.label) && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch)){
+      if(!spellChoiceRe.test(ch.label) && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch) && passesGoldCheck(ch)){
         list.appendChild(makeChoiceBtn(ch, false, idx));
       }
     });
@@ -1064,7 +1094,7 @@ function renderChoices(sec){
     btn.onclick=()=>startLuckCheck(sec);list.appendChild(btn);
     // Show only true pre-luck alternatives; keep some choices hidden until unlucky combat starts.
     sec.choices.forEach((ch,idx)=>{
-      if(!ch.luck_type && !ch.post_combat && !ch.only_after_unlucky && passesInventoryCheck(ch)){
+      if(!ch.luck_type && !ch.post_combat && !ch.only_after_unlucky && passesInventoryCheck(ch) && passesGoldCheck(ch)){
         list.appendChild(makeChoiceBtn(ch, false, idx));
       }
     });
@@ -1072,9 +1102,9 @@ function renderChoices(sec){
   }
 
   const lr=luckResult[S.section];
-  const luckyChoices=sec.choices.filter(ch=>ch.luck_type==='lucky' && passesInventoryCheck(ch));
-  const unluckyChoices=sec.choices.filter(ch=>ch.luck_type==='unlucky' && passesInventoryCheck(ch));
-  const nonLuckChoices=sec.choices.filter(ch=>!ch.luck_type && passesInventoryCheck(ch));
+  const luckyChoices=sec.choices.filter(ch=>ch.luck_type==='lucky' && passesInventoryCheck(ch) && passesGoldCheck(ch));
+  const unluckyChoices=sec.choices.filter(ch=>ch.luck_type==='unlucky' && passesInventoryCheck(ch) && passesGoldCheck(ch));
+  const nonLuckChoices=sec.choices.filter(ch=>!ch.luck_type && passesInventoryCheck(ch) && passesGoldCheck(ch));
 
   if(lr==='lucky' && luckyChoices.length){
     luckyChoices.forEach(ch=>list.appendChild(makeChoiceBtn(ch)));
