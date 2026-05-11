@@ -331,6 +331,38 @@ SCENARIOS = [
         "commit": "7e00452",
     },
 
+    # ── Group 16: gold_condition gating + gold_cost deduction ──────────
+    {
+        "id": "gold_gate_§774_NO_gold",
+        "target": 774,
+        "what_to_check": "With 0 gold, §774 hides both 'Если есть 1 золотой (686)' and 'Если есть 5 золотых (299)' buttons. Remaining choices: §1132 (wood-piece fallback), §251 (figurine key, gated), §1084 (silver vessel), §848 (glass vessel), §1003 (exit).",
+        "commit": "group_16",
+    },
+    {
+        "id": "gold_gate_§774_WITH_1g_only",
+        "target": 774,
+        "what_to_check": "With 1–4 gold, the 1-gold button is visible but the 5-gold button stays hidden. Click 1-gold button — §686 deducts 1 gold via auto_items.",
+        "commit": "group_16",
+    },
+    {
+        "id": "gold_gate_§774_WITH_5g",
+        "target": 774,
+        "what_to_check": "With 5+ gold, both gold buttons visible. Click 5-gold button — 5 gold deducted via gold_cost, navigation to §299. After arriving at §299 (hatch opens), gold balance shows the 5g deduction.",
+        "commit": "group_16",
+    },
+    {
+        "id": "gold_gate_§686_to_§299_4g_more",
+        "target": 686,
+        "what_to_check": "After entering §686 via the 1-gold branch (already lost 1g), the 'Сделаете это — кинуть ещё 4 золотых (299)' button is hidden if gold<4, visible otherwise. Click it: 4 gold deducted, navigate to §299.",
+        "commit": "group_16",
+    },
+    {
+        "id": "figurine_key_gate_§774_NO_key",
+        "target": 774,
+        "what_to_check": "Without 'Фигурный ключ' in inventory, §774 hides ch[1] 'Если фигурный ключ (251)'. With it (via §340 shop purchase 2g), button visible. This is the second usage of the key after §1208 from commit ab5e585.",
+        "commit": "group_16",
+    },
+
     # ── Conditional gating regressions (user smoke-test 2026-05-11) ──────
     {
         "id": "rope_gate_§412_NO_rope",
