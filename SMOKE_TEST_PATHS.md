@@ -735,6 +735,120 @@ Conventions:
 
 ---
 
+## rope_gate_§412_NO_rope
+
+**Target:** §412
+
+**Commit:** `user_smoke_test_2026_05_11`
+
+**What to check:** Without 'Верёвка' in inventory, §412 hides the 'Если есть верёвка — взобраться на скалу (375)' button. Remaining choices: обойти скалу (214), вернуться на развилку (424), и Левитация (405) — последняя disabled если 0 заклятий.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти прямо → §264'
+     6. From §264: click 'Пойти вправо → §122'
+     7. From §122: click 'Попробовать залезть на скалу → §412'
+```
+  (7 clicks total, graph: basic)
+
+---
+
+## rope_gate_§412_WITH_rope
+
+**Target:** §412
+
+**Commit:** `user_smoke_test_2026_05_11`
+
+**Must visit first:** §1193
+
+**What to check:** After visiting §1193 (which grants 'Верёвка'), §412 shows the rope-climb button. Click to verify navigation to §375.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Сделать место для ночлега → §211'
+     3. From §211: click 'Сломать замок и заглянуть в сундук → §1193'
+     4. From §1193: click 'Уйти, чтобы не попасться владельцу сундука → §517'
+     5. From §517: click 'Свернуть → §212'
+     6. From §212: click 'Пойти по ней дальше → §255'
+     7. From §255: click 'Пойти прямо → §264'
+     8. From §264: click 'Пойти вправо → §122'
+     9. From §122: click 'Попробовать залезть на скалу → §412'
+```
+  (9 clicks total, graph: basic)
+
+---
+
+## rope_gate_§464_NO_rope
+
+**Target:** §464
+
+**Commit:** `user_smoke_test_2026_05_11`
+
+**What to check:** Without 'Верёвка' in inventory, §464 hides the 'Если есть веревка (530)' button.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Пройти мимо по тропинке дальше в лес → §560'
+     7. From §560: click 'Посмотрите, что за тропинка и куда она приведет → §538'
+     8. From §538: click 'Обойти его и посмотрите, не продолжается ли… → §274'
+     9. From §274: click 'Свернуть на дорогу, которая идет налево → §268'
+    10. From §268: click 'Пойти прямо → §80'
+    11. From §80: click 'Дальше по дороге → §539'
+    12. From §539: click 'Все же не будете сворачивать и пойдете дальше → §460'
+    13. From §460: click 'Продолжить → §348'
+    14. From §348: click 'Удача с вами → §464'
+```
+  (14 clicks total, graph: full)
+
+---
+
+## gold_whistle_gate_§725_NO_whistle
+
+**Target:** §725
+
+**Commit:** `user_smoke_test_2026_05_11`
+
+**What to check:** Without 'Золотой свисток' in inventory, §725 hides the 'если есть Золотой свисток (142)' button.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'В дверь направо → §1177'
+    14. From §1177: click 'Выйти в дверь направо → §725'
+```
+  (14 clicks total, graph: basic)
+
+---
+
 ## acquires_§58_whistle_after_goblin
 
 **Target:** §58
@@ -955,7 +1069,7 @@ Conventions:
 
 ## Summary
 
-- Scenarios with paths found: **26 / 27**
+- Scenarios with paths found: **30 / 31**
 - Scenarios needing manual route discovery: **1**
 
 ### Manual routing required for:
