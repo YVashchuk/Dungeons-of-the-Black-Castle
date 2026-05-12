@@ -263,6 +263,13 @@ SCENARIOS = [
         "what_to_check": "After visiting §440 (which grants 'Золотой ключ' via auto_items), §1085 shows BOTH buttons. Choose the gold-key option to confirm it leads to §1115.",
         "commit": "9b2f60b",
     },
+    {
+        "id": "gold_key_sec1085_WITH_key_via_sec1172",
+        "target": 1085,
+        "must_visit": [1172],
+        "what_to_check": "Alternate acquisition path: sec.1172 grants 'Zolotoj kljuch' via auto_items after the dragon-route victory (different graph subtree from sec.440). After visiting sec.1172, sec.1085 should show BOTH the gold-key button (target 1115) and the fallback (target 459). Click the gold-key option to confirm canonical sec.1115 routing. Catches a regression in which sec.1172 grant breaks while sec.440 still works.",
+        "commit": "group_6_gold_key (verification)",
+    },
 
     # ── Group 6: Vodyanoy paradox ─────────────────────────────────────────
     {
