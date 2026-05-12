@@ -921,6 +921,43 @@ Conventions:
 
 ---
 
+## wood_piece_gate_§774_NO_wood
+
+**Target:** §774
+
+**Commit:** `group_18`
+
+**What to check:** Without 'Красивый кусочек дерева' in inventory, §774 hides ch[0] 'Если есть красивый кусочек дерева — попробовать им (1132)'. With it (via §340 shop purchase 1g), button visible. After click → §1132 narrates that the wood piece does not fit and routes back to §774, so it's a deliberate dead-end option in the canon.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'В дверь направо → §1177'
+    14. From §1177: click 'Выйти в дверь перед собой → §246'
+    15. From §246: click 'Открыть ее → §730'
+    16. From §730: click 'Поискать в мешке что-то вроде пропуска → §90'
+    17. From §90: click 'Предложить шкуру лисы → §679'
+    18. From §679: click 'Выйти в среднюю дверь → §987'
+    19. From §987: click 'Стеклянный → §187'
+    20. From §187: click 'Осмотреть люк на другой стороне алтаря → §774'
+```
+  (20 clicks total, graph: basic)
+
+---
+
 ## rope_gate_§412_NO_rope
 
 **Target:** §412
@@ -1487,7 +1524,7 @@ Conventions:
 
 ## Summary
 
-- Scenarios with paths found: **40 / 41**
+- Scenarios with paths found: **41 / 42**
 - Scenarios needing manual route discovery: **1**
 
 ### Manual routing required for:

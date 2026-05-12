@@ -362,6 +362,12 @@ SCENARIOS = [
         "what_to_check": "Without 'Фигурный ключ' in inventory, §774 hides ch[1] 'Если фигурный ключ (251)'. With it (via §340 shop purchase 2g), button visible. This is the second usage of the key after §1208 from commit ab5e585.",
         "commit": "group_16",
     },
+    {
+        "id": "wood_piece_gate_§774_NO_wood",
+        "target": 774,
+        "what_to_check": "Without 'Красивый кусочек дерева' in inventory, §774 hides ch[0] 'Если есть красивый кусочек дерева — попробовать им (1132)'. With it (via §340 shop purchase 1g), button visible. After click → §1132 narrates that the wood piece does not fit and routes back to §774, so it's a deliberate dead-end option in the canon.",
+        "commit": "group_18",
+    },
 
     # ── Conditional gating regressions (user smoke-test 2026-05-11) ──────
     {
