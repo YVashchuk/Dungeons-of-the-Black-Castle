@@ -1521,14 +1521,183 @@ Conventions:
 
 ---
 
+## fish_help_acq_sec13
+
+**Target:** §13
+
+**Commit:** `group_6_fish_help`
+
+**What to check:** On entering sec.13 the only choice 'Теперь обратите внимание на местность (639)' should grant 'Помощь рыбки' via the acquires field (group_15 mechanism reused). Click it: notification 'Помощь рыбки' appears, inventory shows the token. Note: sec.195 (put fish in bag) is the alternative acquisition path and must NOT grant the help token.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти прямо → §31'
+    10. From §31: click 'Пойти по дорожке, ведущей от дома → §53'
+    11. From §53: click 'Пойти по левой дороге → §355'
+    12. From §355: click 'Не рисковать и пойти дальше → §973'
+    13. From §973: click 'Однако видно вокруг достаточно хорошо, и вы с… → §194'
+    14. From §194: click 'Воспользоваться заклятием Левитации → §6'
+    15. From §6: click 'Поймаете ее → §573'
+    16. From §573: click 'Направиться к лодке — и вот вы уже в ней → §504'
+    17. From §504: click 'Дальше по течению → §248'
+    18. From §248: click 'Бросить рыбку в воду → §13'
+```
+  (18 clicks total, graph: basic)
+
+---
+
+## fish_help_sec32_NO_token
+
+**Target:** §32
+
+**Commit:** `group_6_fish_help`
+
+**What to check:** Without 'Помощь рыбки' in inventory, entering sec.32 should trigger the death overlay (canonical drowning). The filtered-choices dead-end fix routes raw-1 / visible-0 paragraphs to showDeathOverlay correctly.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Пойти вдоль берега на запад → §596'
+    22. From §596: click 'Заклятием Левитации → §579'
+    23. From §579: click 'На другой берег → §402'
+    24. From §402: click 'Иначе упадете в воду → §32'
+```
+  (24 clicks total, graph: basic)
+
+---
+
+## fish_help_sec32_WITH_token
+
+**Target:** §32
+
+**Commit:** `group_6_fish_help`
+
+**Must visit first:** §13
+
+**What to check:** After visiting sec.13 (where 'Помощь рыбки' is granted on click of the navigation choice), sec.32 should show one button: 'Позвать на помощь Золотую рыбку (47)'. Click → sec.47 → sec.717 rescue.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §32 via §13
+
+---
+
+## fish_help_sec203_NO_token
+
+**Target:** §203
+
+**Commit:** `group_6_fish_help`
+
+**What to check:** Without 'Помощь рыбки', sec.203 should show only the luck-roll button (existing fatal_unlucky route preserved). Failed luck → death overlay.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Построить плот → §294'
+    22. From §294: click 'К острову → §430'
+    23. From §430: click 'Нырнете и обследуете дно → §61'
+    24. From §61: click 'Использовать заклятие Плавания → §119'
+    25. From §119: click 'Обследуете люк → §203'
+```
+  (25 clicks total, graph: basic)
+
+---
+
+## fish_help_sec203_WITH_token
+
+**Target:** §203
+
+**Commit:** `group_6_fish_help`
+
+**Must visit first:** §13
+
+**What to check:** With 'Помощь рыбки', sec.203 should show TWO buttons: 'Проверить удачу' AND 'Позвать на помощь Золотую рыбку (218)'. Player can bypass the luck check entirely. Click the fish button → sec.218 → sec.62.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §203 via §13
+
+---
+
+## fish_help_sec699_WITH_token
+
+**Target:** §699
+
+**Commit:** `group_6_fish_help`
+
+**Must visit first:** §13
+
+**What to check:** With 'Помощь рыбки', sec.699 (carnivorous fish lake) should show 'Позвать на помощь Золотую рыбку (714)'. Click → sec.714 → sec.58.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §699 via §13
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **41 / 42**
-- Scenarios needing manual route discovery: **1**
+- Scenarios with paths found: **44 / 48**
+- Scenarios needing manual route discovery: **4**
 
 ### Manual routing required for:
 
   - white_arrow_offer_§535_WITH_arrow: §1 → §535 via [688]
+  - fish_help_sec32_WITH_token: §1 → §32 via [13]
+  - fish_help_sec203_WITH_token: §1 → §203 via [13]
+  - fish_help_sec699_WITH_token: §1 → §699 via [13]
 
 These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.

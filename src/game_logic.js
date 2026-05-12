@@ -486,8 +486,22 @@ function renderGame(){
   }
   // Check win
   if(S.section===1220){playSound('victory');document.getElementById('end-win').classList.add('on');return;}
-  // Check dead-end (no choices and not win/death screen)
-  if(sec.choices.length===0&&S.section!==617){
+  // Check dead-end. Two cases covered:
+  //  (a) raw 0 choices — original narrative dead-ends like the §32
+  //      drowning paragraph in its pre-group_6 state.
+  //  (b) all choices filtered out by inventory_condition or
+  //      gold_condition — group_6 case where the only escape from a
+  //      drowning / falling / lost paragraph is gated by a token the
+  //      player may not possess (e.g. «Помощь рыбки» at §32 / §699).
+  //      Without this generalisation, raw count > 0 but visible count
+  //      === 0 produces an empty choice list and a UI hang.
+  // Combat paragraphs (sec.enemies) and pending-luck paragraphs
+  // (sec.has_luck) generate their own action buttons inside
+  // renderChoices and must not be short-circuited here even when no
+  // ordinary navigation choice is visible.
+  const inCombatOrLuck=(sec.enemies&&sec.enemies.length>0)||sec.has_luck;
+  const visibleChoices=sec.choices.filter(ch=>passesInventoryCheck(ch)&&passesGoldCheck(ch));
+  if(!inCombatOrLuck&&visibleChoices.length===0&&S.section!==617){
     playSound('death');
     showDeathOverlay({sec:sec,secKey:secKey});
     return;
