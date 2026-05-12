@@ -435,6 +435,62 @@ Conventions:
 
 ---
 
+## gold_key_sec1085_WITH_key_via_sec1172
+
+**Target:** §1085
+
+**Commit:** `group_6_gold_key (verification)`
+
+**Must visit first:** §1172
+
+**What to check:** Alternate acquisition path: sec.1172 grants 'Zolotoj kljuch' via auto_items after the dragon-route victory (different graph subtree from sec.440). After visiting sec.1172, sec.1085 should show BOTH the gold-key button (target 1115) and the fallback (target 459). Click the gold-key option to confirm canonical sec.1115 routing. Catches a regression in which sec.1172 grant breaks while sec.440 still works.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Свернуть на нее → §5'
+     8. From §5: click 'Идти направо → §288'
+     9. From §288: click 'Хотите последовать по ней → §224'
+    10. From §224: click 'Выйти на дорогу → §22'
+    11. From §22: click 'Пойти дальше → §1170'
+    12. From §1170: click 'Пойти налево → §245'
+    13. From §245: click 'Выйти на странную поляну → §449'
+    14. From §449: click 'Либо биться с ним → §532'
+    15. From §532: click 'Ранили Дракона дважды! → §437'
+    16. From §437: click 'Воспользоваться передышкой и наложите заклятие Огня → §1172'
+    17. From §1172: click 'Дракона и срубили вторую голову, ей уже не → §353'
+    18. From §353: click 'Поговорить с ним → §544'
+    19. From §544: click 'Вернуться на перекресток и пойдете в другую сторону → §250'
+    20. From §250: click 'Взять бронзовый свисток и идти по дороге вдоль реки → §19'
+    21. From §19: click 'Пройдете мимо → §452'
+    22. From §452: click 'Пойти прямо к воротам → §205'
+    23. From §205: click 'Сказать, что вы бродячий торговец и идёте в замок торговать → §345'
+    24. From §345: click 'Показать шкуру лисы как образец товара → §933'
+    25. From §933: click 'Пойти к строению в центре двора → §845'
+    26. From §845: click 'К центральному строению → §590'
+    27. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    28. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    29. From §833: click 'В дверь направо → §1177'
+    30. From §1177: click 'Выйти в дверь налево → §393'
+    31. From §393: click 'Выйти через дверь в стене справа → §622'
+    32. From §622: click 'Пойти направо → §394'
+    33. From §394: click 'Пройдете к ней → §507'
+    34. From §507: click 'Пойти дальше по коридору → §912'
+    35. From §912: click 'В конце коридора широкая лестница с удобными… → §1097'
+    36. From §1097: click 'В левый → §997'
+    37. From §997: click 'Куда вы пойдете, в правую дверь → §1085'
+```
+  (37 clicks total, graph: full)
+
+---
+
 ## vodyanoy_paradox_§642
 
 **Target:** §642
@@ -1690,7 +1746,7 @@ Conventions:
 
 ## Summary
 
-- Scenarios with paths found: **44 / 48**
+- Scenarios with paths found: **45 / 49**
 - Scenarios needing manual route discovery: **4**
 
 ### Manual routing required for:
