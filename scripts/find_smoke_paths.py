@@ -469,6 +469,47 @@ SCENARIOS = [
         "what_to_check": "On entering §717 two-Goblin combat starts. After winning, 'Взять бронзовый свисток и идти дальше в лес' grants 'Бронзовый свисток'.",
         "commit": "group_15",
     },
+    # ── Group 6: fish_help (item 1 of 13) — paragraph-arithmetic via inventory_condition ─
+    {
+        "id": "fish_help_acq_sec13",
+        "target": 13,
+        "what_to_check": "On entering sec.13 the only choice 'Теперь обратите внимание на местность (639)' should grant 'Помощь рыбки' via the acquires field (group_15 mechanism reused). Click it: notification 'Помощь рыбки' appears, inventory shows the token. Note: sec.195 (put fish in bag) is the alternative acquisition path and must NOT grant the help token.",
+        "commit": "group_6_fish_help",
+    },
+    {
+        "id": "fish_help_sec32_NO_token",
+        "target": 32,
+        "what_to_check": "Without 'Помощь рыбки' in inventory, entering sec.32 should trigger the death overlay (canonical drowning). The filtered-choices dead-end fix routes raw-1 / visible-0 paragraphs to showDeathOverlay correctly.",
+        "commit": "group_6_fish_help",
+    },
+    {
+        "id": "fish_help_sec32_WITH_token",
+        "target": 32,
+        "must_visit": [13],
+        "what_to_check": "After visiting sec.13 (where 'Помощь рыбки' is granted on click of the navigation choice), sec.32 should show one button: 'Позвать на помощь Золотую рыбку (47)'. Click → sec.47 → sec.717 rescue.",
+        "commit": "group_6_fish_help",
+    },
+    {
+        "id": "fish_help_sec203_NO_token",
+        "target": 203,
+        "what_to_check": "Without 'Помощь рыбки', sec.203 should show only the luck-roll button (existing fatal_unlucky route preserved). Failed luck → death overlay.",
+        "commit": "group_6_fish_help",
+    },
+    {
+        "id": "fish_help_sec203_WITH_token",
+        "target": 203,
+        "must_visit": [13],
+        "what_to_check": "With 'Помощь рыбки', sec.203 should show TWO buttons: 'Проверить удачу' AND 'Позвать на помощь Золотую рыбку (218)'. Player can bypass the luck check entirely. Click the fish button → sec.218 → sec.62.",
+        "commit": "group_6_fish_help",
+    },
+    {
+        "id": "fish_help_sec699_WITH_token",
+        "target": 699,
+        "must_visit": [13],
+        "what_to_check": "With 'Помощь рыбки', sec.699 (carnivorous fish lake) should show 'Позвать на помощь Золотую рыбку (714)'. Click → sec.714 → sec.58.",
+        "commit": "group_6_fish_help",
+    },
+
 ]
 
 
