@@ -2461,10 +2461,178 @@ Conventions:
 
 ---
 
+## thread_ball_acq_sec198
+
+**Target:** §198
+
+**Commit:** `group_6_thread_ball`
+
+**What to check:** sec.198 (Лесовичок encounter) should now grant 'Клубочек' on click of the only nav choice to sec.54. Open inventory after entering sec.54: 'Клубочек' present. The narrative explicitly establishes the +50-crossroads mechanic in the paragraph text.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Куда вы пойдете: направо → §79'
+    10. From §79: click 'Сказать, что идёте в Чёрный замок сражаться с волшебником → §382'
+    11. From §382: click 'Говорите, что идете в замок драться с… → §198'
+```
+  (11 clicks total, graph: basic)
+
+---
+
+## thread_ball_sec108_NO_klubochek
+
+**Target:** §108
+
+**Commit:** `group_6_thread_ball`
+
+**What to check:** Without 'Клубочек' in inventory, sec.108 (first forest crossroads) shows TWO manual-direction buttons: sec.485 (направо) and sec.64 (налево). The klubochek-follow button must be HIDDEN.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Куда вы пойдете: направо → §79'
+    10. From §79: click 'Обнажить меч и отказаться отвечать → §303'
+    11. From §303: click 'Взять серебряный свисток и идти дальше → §54'
+    12. From §54: click 'Продолжить → §438'
+    13. From §438: click 'Пойти налево → §401'
+    14. From §401: click 'Решите, что дорога ведет вас в правильном… → §366'
+    15. From §366: click 'Пойти прямо → §549'
+    16. From §549: click 'Пойти дальше → §466'
+    17. From §466: click 'Хотите поискать убежища на ночь → §82'
+    18. From §82: click 'С рассветом отправляйтесь дальше → §108'
+```
+  (18 clicks total, graph: basic)
+
+---
+
+## thread_ball_sec108_WITH_klubochek
+
+**Target:** §108
+
+**Commit:** `group_6_thread_ball`
+
+**Must visit first:** §198
+
+**What to check:** After visiting sec.198, sec.108 shows THREE buttons: the new gated 'Идти за клубочком (158)' AND the two existing manual-direction options. Click the klubochek option → sec.158 'Клубочек сворачивает на тропинку, ведущую налево'. This canonically follows Лесовичок's 'налево первый перекресток' directive.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Куда вы пойдете: направо → §79'
+    10. From §79: click 'Сказать, что идёте в Чёрный замок сражаться с волшебником → §382'
+    11. From §382: click 'Говорите, что идете в замок драться с… → §198'
+    12. From §198: click 'Попрощаться с Лесовичком и отправиться дальше → §54'
+    13. From §54: click 'Продолжить → §438'
+    14. From §438: click 'Пойти налево → §401'
+    15. From §401: click 'Решите, что дорога ведет вас в правильном… → §366'
+    16. From §366: click 'Пойти прямо → §549'
+    17. From §549: click 'Пойти дальше → §466'
+    18. From §466: click 'Хотите поискать убежища на ночь → §82'
+    19. From §82: click 'С рассветом отправляйтесь дальше → §108'
+```
+  (19 clicks total, graph: basic)
+
+---
+
+## thread_ball_sec366_WITH_klubochek
+
+**Target:** §366
+
+**Commit:** `group_6_thread_ball`
+
+**Must visit first:** §198
+
+**What to check:** After visiting sec.198, sec.366 (three-way fork) shows FOUR buttons: the new gated 'Идти за клубочком (416)' AND the three existing manual choices. Click klubochek → sec.416 'Клубочек катится прямо. Вернитесь на sec.366'.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Куда вы пойдете: направо → §79'
+    10. From §79: click 'Сказать, что идёте в Чёрный замок сражаться с волшебником → §382'
+    11. From §382: click 'Говорите, что идете в замок драться с… → §198'
+    12. From §198: click 'Попрощаться с Лесовичком и отправиться дальше → §54'
+    13. From §54: click 'Продолжить → §438'
+    14. From §438: click 'Пойти налево → §401'
+    15. From §401: click 'Решите, что дорога ведет вас в правильном… → §366'
+```
+  (15 clicks total, graph: basic)
+
+---
+
+## thread_ball_sec401_WITH_klubochek
+
+**Target:** §401
+
+**Commit:** `group_6_thread_ball`
+
+**Must visit first:** §198
+
+**What to check:** After visiting sec.198, sec.401 shows THREE buttons: the new gated 'Идти за клубочком (451)' AND the two existing manual choices. Click klubochek → sec.451 'Клубочек катится прямо, а вы можете вернуться на sec.401'.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Куда вы пойдете: направо → §79'
+    10. From §79: click 'Сказать, что идёте в Чёрный замок сражаться с волшебником → §382'
+    11. From §382: click 'Говорите, что идете в замок драться с… → §198'
+    12. From §198: click 'Попрощаться с Лесовичком и отправиться дальше → §54'
+    13. From §54: click 'Продолжить → §438'
+    14. From §438: click 'Пойти налево → §401'
+```
+  (14 clicks total, graph: basic)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **59 / 68**
+- Scenarios with paths found: **64 / 73**
 - Scenarios needing manual route discovery: **9**
 
 ### Manual routing required for:

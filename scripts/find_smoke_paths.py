@@ -644,6 +644,41 @@ SCENARIOS = [
         "what_to_check": "After visiting sec.612, sec.881 (corridor branching from sec.851) should show 'Отпереть дверь Медным ключиком (921)' alongside the existing fallback (sec.1123). Click the key option → sec.921 tomb-entrance narrative. This restores an orphan-target — sec.921 was unreachable in remake prior to this commit.",
         "commit": "group_6_bear_key",
     },
+    # ── Group 6: thread_ball (item 8 of 13) — Klubochek crossroads +50 mechanic ─
+    {
+        "id": "thread_ball_acq_sec198",
+        "target": 198,
+        "what_to_check": "sec.198 (Лесовичок encounter) should now grant 'Клубочек' on click of the only nav choice to sec.54. Open inventory after entering sec.54: 'Клубочек' present. The narrative explicitly establishes the +50-crossroads mechanic in the paragraph text.",
+        "commit": "group_6_thread_ball",
+    },
+    {
+        "id": "thread_ball_sec108_NO_klubochek",
+        "target": 108,
+        "what_to_check": "Without 'Клубочек' in inventory, sec.108 (first forest crossroads) shows TWO manual-direction buttons: sec.485 (направо) and sec.64 (налево). The klubochek-follow button must be HIDDEN.",
+        "commit": "group_6_thread_ball",
+    },
+    {
+        "id": "thread_ball_sec108_WITH_klubochek",
+        "target": 108,
+        "must_visit": [198],
+        "what_to_check": "After visiting sec.198, sec.108 shows THREE buttons: the new gated 'Идти за клубочком (158)' AND the two existing manual-direction options. Click the klubochek option → sec.158 'Клубочек сворачивает на тропинку, ведущую налево'. This canonically follows Лесовичок\'s 'налево первый перекресток' directive.",
+        "commit": "group_6_thread_ball",
+    },
+    {
+        "id": "thread_ball_sec366_WITH_klubochek",
+        "target": 366,
+        "must_visit": [198],
+        "what_to_check": "After visiting sec.198, sec.366 (three-way fork) shows FOUR buttons: the new gated 'Идти за клубочком (416)' AND the three existing manual choices. Click klubochek → sec.416 'Клубочек катится прямо. Вернитесь на sec.366'.",
+        "commit": "group_6_thread_ball",
+    },
+    {
+        "id": "thread_ball_sec401_WITH_klubochek",
+        "target": 401,
+        "must_visit": [198],
+        "what_to_check": "After visiting sec.198, sec.401 shows THREE buttons: the new gated 'Идти за клубочком (451)' AND the two existing manual choices. Click klubochek → sec.451 'Клубочек катится прямо, а вы можете вернуться на sec.401'.",
+        "commit": "group_6_thread_ball",
+    },
+
 
 
 
