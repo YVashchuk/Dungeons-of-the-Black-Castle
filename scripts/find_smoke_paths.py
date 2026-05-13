@@ -516,6 +516,40 @@ SCENARIOS = [
         "what_to_check": "With 'Помощь рыбки', sec.699 (carnivorous fish lake) should show 'Позвать на помощь Золотую рыбку (714)'. Click → sec.714 → sec.58.",
         "commit": "group_6_fish_help",
     },
+    # ── Group 6: candle_lamp (item 3 of 13) — +10 light-source mechanic ─
+    {
+        "id": "candle_lamp_acq_sec929",
+        "target": 929,
+        "what_to_check": "On entering sec.929 (buried chest), gold +10 already applies via auto_items. After click of the single nav choice to sec.167, the new acquires field should also deposit 'Свеча' into S.inventory. Open inventory after to confirm both gold delta and the new token.",
+        "commit": "group_6_candle_lamp",
+    },
+    {
+        "id": "candle_lamp_sec696_NO_token",
+        "target": 696,
+        "what_to_check": "Without 'Свеча' in inventory, sec.696 (tunnel-of-darkness hatch) should show ONLY the two darkness-fallback buttons (right wall sec.1091 / left wall sec.909). The +10 light-source success button 'Зажечь свечу или светильник (706)' must be hidden.",
+        "commit": "group_6_candle_lamp",
+    },
+    {
+        "id": "candle_lamp_sec696_WITH_token",
+        "target": 696,
+        "must_visit": [600],
+        "what_to_check": "After visiting sec.600 (Vodyanoi taverna chest auto-grant 'Свеча' + 'Огниво' + 'Белая стрела'), sec.696 should show THREE buttons: the new 'Зажечь свечу или светильник (706)' light-source branch ALONGSIDE the two fallback darkness branches. Click the light button — should navigate to sec.706 with the 'у вас есть свой источник света' narrative.",
+        "commit": "group_6_candle_lamp",
+    },
+    {
+        "id": "candle_lamp_sec1000_NO_token",
+        "target": 1000,
+        "what_to_check": "Without 'Свеча' in inventory, sec.1000 (post-Goblins darkness) shows ONLY the two darkness fallbacks (right wall sec.924 / left wall sec.726). Light button hidden.",
+        "commit": "group_6_candle_lamp",
+    },
+    {
+        "id": "candle_lamp_sec1000_WITH_token",
+        "target": 1000,
+        "must_visit": [600],
+        "what_to_check": "With 'Свеча' in inventory, sec.1000 shows THREE buttons including the new 'Зажечь свечу или светильник (1010)'. Click → sec.1010 darkness-rescue narrative.",
+        "commit": "group_6_candle_lamp",
+    },
+
 
 ]
 
