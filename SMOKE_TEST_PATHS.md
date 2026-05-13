@@ -2257,11 +2257,215 @@ Conventions:
 
 ---
 
+## bear_key_acq_sec612
+
+**Target:** §612
+
+**Commit:** `group_6_bear_key`
+
+**What to check:** sec.612 (bear gift after rescuing the cub) now grants 'Медный ключик' via auto_items (was previously the anonymous 'Ключ' — name unification). Click the only nav choice to sec.1106. Open inventory: 'Медный ключик' should be present, alongside the magical bell.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти прямо → §155'
+    20. From §155: click 'Попробовать поговорить с ней → §415'
+    21. From §415: click 'Использовать Золотой браслет → §84'
+    22. From §84: click 'Отказаться от подарка → §281'
+    23. From §281: click 'Передать привет медведю при встрече → §612'
+```
+  (23 clicks total, graph: basic)
+
+---
+
+## bear_key_sec803_NO_key
+
+**Target:** §803
+
+**Commit:** `group_6_bear_key`
+
+**What to check:** Without 'Медный ключик' in inventory, sec.803 shows ONLY two fallback buttons (window sec.323, back-door sec.607). The success branch 'Есть медный ключик, то достаньте его (1035)' must be HIDDEN — regression fix.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Пройти мимо по тропинке дальше в лес → §560'
+     7. From §560: click 'Посмотрите, что за тропинка и куда она приведет → §538'
+     8. From §538: click 'Обойти его и посмотрите, не продолжается ли… → §274'
+     9. From §274: click 'Пойти дальше прямо → §433'
+    10. From §433: click 'Пойти дальше по дороге → §529'
+    11. From §529: click 'Дорога оказывается очень длиной. Придется отдохнуть → §447'
+    12. From §447: click 'По левой → §210'
+    13. From §210: click 'Идти быстро по дороге и вскоре видите ее конец → §319'
+    14. From §319: click 'Сразу драться с разбойниками → §100'
+    15. From §100: click 'Обшарить карманы убитых → §335'
+    16. From §335: click 'Взять каменного Кентавра → §434'
+    17. From §434: click 'Она является пропуском, и Начальник стражи… → §1046'
+    18. From §1046: click 'Выйти в левую дверь → §215'
+    19. From §215: click 'Замахнуться на нее мечом → §744'
+    20. From §744: click 'Пойти в дверь справа → §803'
+```
+  (20 clicks total, graph: basic)
+
+---
+
+## bear_key_sec803_WITH_key
+
+**Target:** §803
+
+**Commit:** `group_6_bear_key`
+
+**Must visit first:** §612
+
+**What to check:** After visiting sec.612 (bear gift), sec.803 should show THREE buttons including the gated 'Есть медный ключик, то достаньте его (1035)'. Click it to confirm the storeroom narrative (sec.1035 with sword/shield/potion).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти прямо → §155'
+    20. From §155: click 'Попробовать поговорить с ней → §415'
+    21. From §415: click 'Использовать Золотой браслет → §84'
+    22. From §84: click 'Отказаться от подарка → §281'
+    23. From §281: click 'Передать привет медведю при встрече → §612'
+    24. From §612: click 'Попрощавшись с медведем, вы выходите в коридор → §1106'
+    25. From §1106: click 'Куда вы по нему пойдете: вправо → §955'
+    26. From §955: click 'Пойти в дверь налево → §361'
+    27. From §361: click 'Что вы сделаете: поищите у себя пропуск → §658'
+    28. From §658: click '5 золотых → §1014'
+    29. From §1014: click 'Протягиваете контролеру деньги. Он за них… → §919'
+    30. From §919: click 'На выходе вас ждет охрана, но вы отдаете им… → §1100'
+    31. From §1100: click 'Открыв дверь, попадаете в короткий коридор → §671'
+    32. From §671: click 'Поднявшись, вы останавливаетесь перед закрытой… → §42'
+    33. From §42: click 'Открыть дверь справа → §161'
+    34. From §161: click 'Пойти прямо → §488'
+    35. From §488: click 'Будете простукивать стены → §359'
+    36. From §359: click 'Простучать левую стену → §814'
+    37. From §814: click 'Будете разбирать руками → §735'
+    38. From §735: click 'Открыть дверь перед собой → §1065'
+    39. From §1065: click 'Попробовать поговорить с Орками → §1056'
+    40. From §1056: click 'Как пройти к Начальнику стражи → §646'
+    41. From §646: click 'Менять решение уже поздно, и вы открываете… → §1189'
+    42. From §1189: click 'Попробовать подкупить его → §785'
+    43. From §785: click 'Он требует 10 золотых и готов выписать за это… → §349'
+    44. From §349: click 'Уходите через одну из трех дверей → §1046'
+    45. From §1046: click 'Выйти в левую дверь → §215'
+    46. From §215: click 'Замахнуться на нее мечом → §744'
+    47. From §744: click 'Пойти в дверь справа → §803'
+```
+  (47 clicks total, graph: basic)
+
+---
+
+## bear_key_sec804_NO_key
+
+**Target:** §804
+
+**Commit:** `group_6_bear_key`
+
+**What to check:** Without 'Медный ключик' in inventory, sec.804 shows THREE buttons (кусок металла sec.1184, the figured-key option ONLY if player owns it, and the exit-to-sec.590). The fail-narrative 'Может быть, есть медный ключик (1064)' must be HIDDEN — regression fix parallel to the figured-key sec.895 fix.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Войти → §760'
+    11. From §760: click 'Сражаться с ними вам придется одновременно. Если вы → §985'
+    12. From §985: click 'Исследуете люк → §804'
+```
+  (12 clicks total, graph: basic)
+
+---
+
+## bear_key_sec851_WITH_key
+
+**Target:** §851
+
+**Commit:** `group_6_bear_key`
+
+**Must visit first:** §612
+
+**What to check:** After visiting sec.612, sec.851 (long polutemniy corridor with a door) should show 'Отпереть дверь Медным ключиком (891)' alongside the existing fallback (sec.881). Click the key option → sec.891 jamming-narrative.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §851 via §612
+
+---
+
+## bear_key_sec881_WITH_key
+
+**Target:** §881
+
+**Commit:** `group_6_bear_key`
+
+**Must visit first:** §612
+
+**What to check:** After visiting sec.612, sec.881 (corridor branching from sec.851) should show 'Отпереть дверь Медным ключиком (921)' alongside the existing fallback (sec.1123). Click the key option → sec.921 tomb-entrance narrative. This restores an orphan-target — sec.921 was unreachable in remake prior to this commit.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §881 via §612
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **55 / 62**
-- Scenarios needing manual route discovery: **7**
+- Scenarios with paths found: **59 / 68**
+- Scenarios needing manual route discovery: **9**
 
 ### Manual routing required for:
 
@@ -2272,5 +2476,7 @@ Conventions:
   - candle_lamp_acq_sec929: §1 → §929
   - candle_lamp_sec696_WITH_token: §1 → §696 via [600]
   - candle_lamp_sec1000_WITH_token: §1 → §1000 via [600]
+  - bear_key_sec851_WITH_key: §1 → §851 via [612]
+  - bear_key_sec881_WITH_key: §1 → §881 via [612]
 
 These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.
