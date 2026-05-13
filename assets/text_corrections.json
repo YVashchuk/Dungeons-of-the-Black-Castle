@@ -20,7 +20,8 @@
     "v2.13 -> v2.14": "May 2026 — Group 6 item 3 of 13 (candle_lamp) closed via inventory_condition + acquires machinery (no new engine hook, consistent with fish_help approach). sec.929 grants \"Свеча\" via new acquires field on its single nav choice; sec.600 already grants the same name via pre-existing auto_items. Two consumers gated: sec.696→sec.706 (corridor light), sec.1000→sec.1010 (post-Goblins darkness lift). sec.972→sec.982 explicitly rejected (fail-route belonging to the separate Подсвечник item-offer mechanism). FB2 sweep confirms no other +10 consumers exist in the canon for this item family.",
     "v2.14 -> v2.15": "May 2026 — Group 6 item 4 of 13 (figured_key) closed. Audit found figured_key has NO +40 arithmetic mechanic in the FB2 canon — the registry +40 quote was misattributed (canonical +40 at sec.487 belongs to a separate ring/перстень item). figured_key is functionally a shop-purchase item gated via inventory_condition. Acquisitions and two of three consumer gating already shipped in groups 14/16/17. This commit fixes the third consumer at sec.804 (figured-key choice to sec.895 was missing inventory_condition gating — a regression that showed the figured-key option to players without the key). Documented a future-cleanup task: create a new ring-key item entry for the sec.487 +40 mechanic.",
     "v2.15 -> v2.16": "May 2026 — Group 6 item 5 of 13 (castle_key) closed. Acquisition sec.471 already shipped via auto_items granting \"Ключ Чёрного замка\". Four canonical +40 consumer doors gated via inventory_condition: sec.91→sec.131 (sentry tower), sec.687→sec.727 (stairwell), sec.694→sec.734 (corridor to sec.671), sec.768→sec.808 (stairwell to sec.1150). Three previously-suggested consumers rejected: sec.70→sec.110 (monster trap), sec.393→sec.433 (door not locked), sec.1074→sec.1114 (canon-locked even with key). No new engine work — reuses existing inventory_condition machinery.",
-    "v2.16 -> v2.17": "May 2026 — Group 6 item 6 of 13 (bear_key) closed. Registry had two transcription errors: modifier \"+400\" wrong (canonical sec.612 says +40), and item-state name implied single-acquisition but FB2 has TWO routes (bear-gift sec.612 + goblin-loot sec.69 / sec.233 / sec.567). Unified inventory name to \"Медный ключик\" (sec.612 auto_items renamed from bare \"Ключ\"). Two canonical +40 consumers wired: sec.851→sec.891, sec.881→sec.921 — both target paragraphs were ORPHANED in remake. Two regression fixes: sec.803→sec.1035 and sec.804→sec.1064 were unconditional in remake despite source narratives saying \"если у вас есть медный ключик\" / \"может быть, есть медный ключик\" — both now gated. Two +40 mappings rejected (sec.899→sec.939 unrelated dialog, sec.962→sec.1002 anti-pattern with key-breaking)."
+    "v2.16 -> v2.17": "May 2026 — Group 6 item 6 of 13 (bear_key) closed. Registry had two transcription errors: modifier \"+400\" wrong (canonical sec.612 says +40), and item-state name implied single-acquisition but FB2 has TWO routes (bear-gift sec.612 + goblin-loot sec.69 / sec.233 / sec.567). Unified inventory name to \"Медный ключик\" (sec.612 auto_items renamed from bare \"Ключ\"). Two canonical +40 consumers wired: sec.851→sec.891, sec.881→sec.921 — both target paragraphs were ORPHANED in remake. Two regression fixes: sec.803→sec.1035 and sec.804→sec.1064 were unconditional in remake despite source narratives saying \"если у вас есть медный ключик\" / \"может быть, есть медный ключик\" — both now gated. Two +40 mappings rejected (sec.899→sec.939 unrelated dialog, sec.962→sec.1002 anti-pattern with key-breaking).",
+    "v2.17 -> v2.18": "May 2026 — Group 6 item 7 of 13 (candle_set) marked status_deprecated after comprehensive FB2 audit. The registry-claimed +20/+100 mechanic and \"Возьми подсвечник\" quote are absent from the remake 1221-paragraph canon: 0 paragraphs mention white/black candles, 0 contain \"прибавьте 20\" or \"прибавьте 100\", 0 contain \"Возьми подсвечник\". The mechanic was either a 1991-original artifact dropped in the remake or an audit cross-talk hallucination. The light-source family is fully served by candle_lamp (commit 1c57f48) and the separate \"Подсвечник\" item-offer consumer at sec.972 / sec.34. No data, engine, smoke-test, or build changes — this is an audit-only deprecation commit."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -407,7 +408,14 @@
           "acquisition_paragraph": 600,
           "modifier": "+20 (white) / +100 (black)",
           "consumer_paragraphs": "context-sensitive light-dependent paragraphs",
-          "fb2_quote": "«Возьми подсвечник. Если понадобятся белые свечи, прибавь… 20. Если нужны будут черные свечи, то 100.»"
+          "fb2_quote": "«Возьми подсвечник. Если понадобятся белые свечи, прибавь… 20. Если нужны будут черные свечи, то 100.»",
+          "status_deprecated": {
+            "commit": "(this commit, audit-only deprecation)",
+            "verdict": "mechanic_absent_from_remake_canon",
+            "summary": "candle_set is item 7 of 13 in the group_6 cluster, marked status_deprecated rather than status_done because the FB2 audit conclusively demonstrates that the registry-claimed +20 / +100 mechanic does NOT exist in the remake 1221-paragraph canon. Comprehensive grep results: 0 paragraphs match \"белые свечи\" / \"чёрные свечи\" variants, 0 contain \"прибавьте 20\" or \"прибавьте 100\" anywhere, and 0 contain the registry-quoted command form \"Возьми подсвечник\". The quote and modifier are either a 1991-original artifact lost during the 1221-renumber remake, or an audit cross-talk hallucination from ChatGPT/Gemini when populating the registry. No implementation is possible without canonical anchor text.",
+            "related_items_already_functional": "The light-source mechanic exists in the remake canon as candle_lamp (+10 modifier, item state \"Свеча\" — closed in commit 1c57f48). The \"Подсвечник\" inventory item (different from candle_set) is also functional via item-offer pattern at sec.972 → sec.34, not via group_6 arithmetic. No further implementation work is needed for the light-source family.",
+            "recommendation": "Future cleanup: remove candle_set entry from group_6.items entirely, or relabel as \"candle_set_LOST_TO_REMAKE\" with the audit evidence preserved for historical reference."
+          }
         },
         {
           "item_state": "bear_key",
@@ -482,7 +490,8 @@
         "candle_lamp": "status_done",
         "figured_key": "status_done",
         "castle_key (Чёрного замка)": "status_done",
-        "bear_key": "status_done"
+        "bear_key": "status_done",
+        "candle_set": "status_deprecated"
       }
     },
     "group_7_inventory_loss_text_engine_mismatch": {
