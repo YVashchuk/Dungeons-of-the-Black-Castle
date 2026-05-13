@@ -2629,11 +2629,113 @@ Conventions:
 
 ---
 
+## ruby_ring_acq_sec1071
+
+**Target:** §1071
+
+**Commit:** `group_6_ruby_ring`
+
+**What to check:** sec.1071 (post-magician cabinet, ring selection) should now grant 'Перстень с рубином' via auto_items on entry. Open inventory after entering sec.1071: the ruby ring is present. The four cabinet inspection options (sec.797 / sec.411 / sec.850 / sec.297) remain unchanged.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'Вниз → §654'
+    14. From §654: click 'Открыть единственную дверь → §742'
+    15. From §742: click 'Если перебили Орков — вернуться по лестнице наверх → §1074'
+    16. From §1074: click 'Идти дальше по коридору, он делает поворот и… → §766'
+    17. From §766: click 'Скажете, что вы передумали и уйдете из библиотеки → §718'
+    18. From §718: click 'Проходите через библиотеку тщательно стараясь… → §285'
+    19. From §285: click 'Открыть левую дверь → §782'
+    20. From §782: click 'Пришли в тупик, но в правой стене есть дверь,… → §1196'
+    21. From §1196: click 'Войти в среднюю дверь → §886'
+    22. From §886: click 'Вернуться на → §1044'
+    23. From §1044: click 'Переступаете порог → §1096'
+    24. From §1096: click 'Если вы дали Гарпии зеркальце или убили ее, то → §1164'
+    25. From §1164: click 'Иначе вам придется просто стоять и смотреть,… → §823'
+    26. From §823: click 'Если вам удастся победить мага, то → §81'
+    27. From §81: click 'Осмотреть побеждённого врага → §623'
+    28. From §623: click 'Внимание прежде всего привлекают руки волшебника. На → §1071'
+```
+  (28 clicks total, graph: full)
+
+---
+
+## ruby_ring_sec226_NO_ring
+
+**Target:** §226
+
+**Commit:** `group_6_ruby_ring`
+
+**What to check:** Without 'Перстень с рубином' in inventory, sec.226 (Princess bed) shows ONLY the two no-progress fallbacks (sec.1057 mirror / sec.860 candle-tables). The new gated 'Использовать Перстень с рубином (627)' button must be HIDDEN. This is the canonical fail-state where the Princess cannot be woken.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'Вниз → §654'
+    14. From §654: click 'Открыть единственную дверь → §742'
+    15. From §742: click 'Если перебили Орков — вернуться по лестнице наверх → §1074'
+    16. From §1074: click 'Идти дальше по коридору, он делает поворот и… → §766'
+    17. From §766: click 'Скажете, что вы передумали и уйдете из библиотеки → §718'
+    18. From §718: click 'Проходите через библиотеку тщательно стараясь… → §285'
+    19. From §285: click 'Открыть левую дверь → §782'
+    20. From §782: click 'Пришли в тупик, но в правой стене есть дверь,… → §1196'
+    21. From §1196: click 'Открыть дверь с золотым орлом → §604'
+    22. From §604: click 'Она не заперта → §45'
+    23. From §45: click 'Посмотреться в большое зеркало → §1019'
+    24. From §1019: click 'Подойти к кровати слева → §226'
+```
+  (24 clicks total, graph: basic)
+
+---
+
+## ruby_ring_sec226_WITH_ring
+
+**Target:** §226
+
+**Commit:** `group_6_ruby_ring`
+
+**Must visit first:** §1071
+
+**What to check:** After visiting sec.1071, sec.226 should show THREE buttons including the new gated 'Использовать Перстень с рубином (627)'. Click it → sec.627 canonical Princess wake-up narrative ('свет свечи падает на рубин перстня, и камень оживает'). sec.627 then routes to sec.1120 (Barlad alive) or sec.1220 (Barlad dead, victory). This is the canonical centerpiece of the game victory route, previously unreachable.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §226 via §1071
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **64 / 73**
-- Scenarios needing manual route discovery: **9**
+- Scenarios with paths found: **66 / 76**
+- Scenarios needing manual route discovery: **10**
 
 ### Manual routing required for:
 
@@ -2646,5 +2748,6 @@ Conventions:
   - candle_lamp_sec1000_WITH_token: §1 → §1000 via [600]
   - bear_key_sec851_WITH_key: §1 → §851 via [612]
   - bear_key_sec881_WITH_key: §1 → §881 via [612]
+  - ruby_ring_sec226_WITH_ring: §1 → §226 via [1071]
 
 These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.
