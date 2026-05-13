@@ -2935,10 +2935,194 @@ Conventions:
 
 ---
 
+## spell_book_acq_sec1137
+
+**Target:** §1137
+
+**Commit:** `group_6_spell_book`
+
+**What to check:** sec.1137 (post-РУКА monster Hand-loot discovery) should now grant 'Книга' via auto_items on entry. Open inventory after entering sec.1137: 'Книга' present. The only exit choice (sec.397) remains unchanged.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Идти напролом через лес → §110'
+     3. From §110: click 'Убив ее, можете осмотреть ее логово → §1137'
+```
+  (3 clicks total, graph: basic)
+
+---
+
+## spell_book_sec4_WITH_book
+
+**Target:** §4
+
+**Commit:** `group_6_spell_book`
+
+**Must visit first:** §1137
+
+**What to check:** After visiting sec.1137, sec.4 (stone with mystery inscriptions on forest road) should show TWO buttons including new gated 'Расшифровать с помощью Книги (28)'. Click → sec.28 with 3-answer hint (pautina/kladbishche/smert) for later item-offer puzzles.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Идти напролом через лес → §110'
+     3. From §110: click 'Убив ее, можете осмотреть ее логово → §1137'
+     4. From §1137: click 'Выбраться из ямы и вернуться на дорогу → §397'
+     5. From §397: click 'Продолжить → §372'
+     6. From §372: click 'Воспользоваться заклятием Огня → §103'
+     7. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     8. From §216: click 'Пойти прямо → §212'
+     9. From §212: click 'Пойти по ней дальше → §255'
+    10. From §255: click 'Пойти направо → §15'
+    11. From §15: click 'Отдохнуть и поспать → §453'
+    12. From §453: click 'Времени терять нельзя, до цели еще не близко → §376'
+    13. From §376: click 'Пойти прямо → §242'
+    14. From §242: click 'Пойти прямо → §4'
+```
+  (14 clicks total, graph: basic)
+
+---
+
+## spell_book_sec339_WITH_book
+
+**Target:** §339
+
+**Commit:** `group_6_spell_book`
+
+**Must visit first:** §1137
+
+**What to check:** After visiting sec.1137, sec.339 (another stone with mystery inscriptions) shows gated 'Расшифровать с помощью Книги (363)'. Click → sec.363 fork-prophecy translation.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Идти напролом через лес → §110'
+     3. From §110: click 'Убив ее, можете осмотреть ее логово → §1137'
+     4. From §1137: click 'Выбраться из ямы и вернуться на дорогу → §397'
+     5. From §397: click 'Продолжить → §372'
+     6. From §372: click 'Воспользоваться заклятием Огня → §103'
+     7. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     8. From §216: click 'Пойти направо → §517'
+     9. From §517: click 'Пойти дальше → §419'
+    10. From §419: click 'Хотите поискать убежища на ночь → §1181'
+    11. From §1181: click 'Добавьте себе 4 ВЫНОСЛИВОСТИ и отправляйтесь в… → §234'
+    12. From §234: click 'Пойти по тропинке → §14'
+    13. From §14: click 'Подняться на холм → §310'
+    14. From §310: click 'Спуститься обратно на дорогу и продолжить путь → §312'
+    15. From §312: click 'Идти к концу тропинки → §201'
+    16. From §201: click 'Пойти направо → §425'
+    17. From §425: click 'Попытаться поймать зайца → §184'
+    18. From §184: click 'Идти по тропинке, которая уходит в глубь леса → §235'
+    19. From §235: click 'Во время боя можете воспользоваться заклятиями Копии, Огня → §338'
+    20. From §338: click 'Огненный шар ударяет Зверю в грудь и сжигает… → §228'
+    21. From §228: click 'Пойти дальше → §557'
+    22. From §557: click 'Как быть: свернуть с дороги в лес → §109'
+    23. From §109: click 'Решайте, куда направитесь по ней: на юг → §339'
+```
+  (23 clicks total, graph: basic)
+
+---
+
+## spell_book_sec732_WITH_book
+
+**Target:** §732
+
+**Commit:** `group_6_spell_book`
+
+**Must visit first:** §1137
+
+**What to check:** After visiting sec.1137, sec.732 (7-cranes room) shows the gated 'Расшифровать надписи с помощью Книги (756)' button alongside the 7 crane-choice buttons. Click decoder → sec.756 reveals which crane is poison vs water vs medicine. Then return to sec.732 for actual crane choice.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Идти напролом через лес → §110'
+     3. From §110: click 'Убив ее, можете осмотреть ее логово → §1137'
+     4. From §1137: click 'Выбраться из ямы и вернуться на дорогу → §397'
+     5. From §397: click 'Продолжить → §372'
+     6. From §372: click 'Воспользоваться заклятием Огня → §103'
+     7. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     8. From §216: click 'Пойти прямо → §212'
+     9. From §212: click 'Пойти по ней дальше → §255'
+    10. From §255: click 'Пойти налево → §380'
+    11. From §380: click 'Можно войти внутрь и все выяснить → §371'
+    12. From §371: click 'Освобождать принцессу → §76'
+    13. From §76: click 'Войти в замок через потайную дверцу → §1145'
+    14. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    15. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    16. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    17. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    18. From §833: click 'В дверь направо → §1177'
+    19. From §1177: click 'Выйти в дверь налево → §393'
+    20. From §393: click 'Выйти через левую дверь перед собой → §816'
+    21. From §816: click 'Коридор приводит двери, но не заканчивается у… → §732'
+```
+  (21 clicks total, graph: basic)
+
+---
+
+## spell_book_sec798_WITH_book
+
+**Target:** §798
+
+**Commit:** `group_6_spell_book`
+
+**Must visit first:** §1137
+
+**What to check:** After visiting sec.1137, sec.798 (control panel) shows the gated 'Расшифровать надписи с помощью Книги (822)' button. Click → sec.822 reveals what each panel button corresponds to (Barlad Dert, Harem, Baron, etc).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Идти напролом через лес → §110'
+     3. From §110: click 'Убив ее, можете осмотреть ее логово → §1137'
+     4. From §1137: click 'Выбраться из ямы и вернуться на дорогу → §397'
+     5. From §397: click 'Продолжить → §372'
+     6. From §372: click 'Воспользоваться заклятием Огня → §103'
+     7. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     8. From §216: click 'Пойти налево → §423'
+     9. From §423: click 'Пойти дальше по дороге → §83'
+    10. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+    11. From §408: click 'Пойти прямо → §31'
+    12. From §31: click 'Пойти по дорожке, ведущей от дома → §53'
+    13. From §53: click 'Пойти по левой дороге → §355'
+    14. From §355: click 'Не рисковать и пойти дальше → §973'
+    15. From §973: click 'Однако видно вокруг достаточно хорошо, и вы с… → §194'
+    16. From §194: click 'Воспользоваться заклятием Левитации → §6'
+    17. From §6: click 'Поймаете ее → §573'
+    18. From §573: click 'Направиться к лодке — и вот вы уже в ней → §504'
+    19. From §504: click 'Дальше по течению → §248'
+    20. From §248: click 'Бросить рыбку в воду → §13'
+    21. From §13: click 'Теперь обратите внимание на местность → §639'
+    22. From §639: click 'Проплыть под мостом и плыть дальше по течению → §272'
+    23. From §272: click 'Интуиция и тут подсказывает вам верное решение → §65'
+    24. From §65: click 'После победы над Орками → §666'
+    25. From §666: click 'Оставите свою лодку и перейдете в их → §1205'
+    26. From §1205: click 'Без каких-либо сомнений можете взять ее себе → §249'
+    27. From §249: click 'Пройдете внутрь → §799'
+    28. From §799: click 'Зайти в дверь → §849'
+    29. From §849: click 'На третий ↓ → §869'
+    30. From §869: click 'В правый → §798'
+```
+  (30 clicks total, graph: full)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **70 / 81**
+- Scenarios with paths found: **75 / 86**
 - Scenarios needing manual route discovery: **11**
 
 ### Manual routing required for:

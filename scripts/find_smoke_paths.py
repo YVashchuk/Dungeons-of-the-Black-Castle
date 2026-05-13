@@ -733,6 +733,42 @@ SCENARIOS = [
         "what_to_check": "After visiting sec.791, sec.1082 (post-Orcs room with three doors) shows FOUR buttons including the gated star option to sec.1153 hint about the right door (sec.136).",
         "commit": "group_6_ruby_star",
     },
+    # ── Group 6: spell_book (item 11 of 13) — +24 inscription-decoder mechanic ─
+    {
+        "id": "spell_book_acq_sec1137",
+        "target": 1137,
+        "what_to_check": "sec.1137 (post-РУКА monster Hand-loot discovery) should now grant 'Книга' via auto_items on entry. Open inventory after entering sec.1137: 'Книга' present. The only exit choice (sec.397) remains unchanged.",
+        "commit": "group_6_spell_book",
+    },
+    {
+        "id": "spell_book_sec4_WITH_book",
+        "target": 4,
+        "must_visit": [1137],
+        "what_to_check": "After visiting sec.1137, sec.4 (stone with mystery inscriptions on forest road) should show TWO buttons including new gated 'Расшифровать с помощью Книги (28)'. Click → sec.28 with 3-answer hint (pautina/kladbishche/smert) for later item-offer puzzles.",
+        "commit": "group_6_spell_book",
+    },
+    {
+        "id": "spell_book_sec339_WITH_book",
+        "target": 339,
+        "must_visit": [1137],
+        "what_to_check": "After visiting sec.1137, sec.339 (another stone with mystery inscriptions) shows gated 'Расшифровать с помощью Книги (363)'. Click → sec.363 fork-prophecy translation.",
+        "commit": "group_6_spell_book",
+    },
+    {
+        "id": "spell_book_sec732_WITH_book",
+        "target": 732,
+        "must_visit": [1137],
+        "what_to_check": "After visiting sec.1137, sec.732 (7-cranes room) shows the gated 'Расшифровать надписи с помощью Книги (756)' button alongside the 7 crane-choice buttons. Click decoder → sec.756 reveals which crane is poison vs water vs medicine. Then return to sec.732 for actual crane choice.",
+        "commit": "group_6_spell_book",
+    },
+    {
+        "id": "spell_book_sec798_WITH_book",
+        "target": 798,
+        "must_visit": [1137],
+        "what_to_check": "After visiting sec.1137, sec.798 (control panel) shows the gated 'Расшифровать надписи с помощью Книги (822)' button. Click → sec.822 reveals what each panel button corresponds to (Barlad Dert, Harem, Baron, etc).",
+        "commit": "group_6_spell_book",
+    },
+
 
 
 
