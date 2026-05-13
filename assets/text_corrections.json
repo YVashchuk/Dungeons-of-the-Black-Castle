@@ -17,7 +17,8 @@
     "v2.10 -> v2.11": "May 2026 - group_18 (missing wood-piece choice at sec.774) closed. sec.774 ch[0] label rewritten from the generic 'Poprobovat otkryt dver podhodyaschim predmetom' to the specific wood-piece variant, and gated by inventory_condition='Krasivyi kusochek dereva'. Matches the FB2 canon where the wood piece is one of 4 explicit hatch-opening options. Item is grantable via sec.340 shop (1 gold) since commit ab5e585.",
     "v2.11 -> v2.12": "May 2026 — Group 6 (paragraph-arithmetic mechanics) started. fish_help (item 1 of 13) closed via existing inventory_condition + acquires machinery, no new universal engine hook (per group_6 warning about 1221-renumbering breaking arithmetic). sec.13 grants \"Помощь рыбки\" via acquires on the throw-fish-back choice (not on sec.195 put-in-bag path). Three consumers gated: sec.32→sec.47, sec.203→sec.218, sec.699→sec.714. sec.698→sec.713 rejected after FB2 verification. Engine: dead-end check in renderGame generalised from raw 0 choices to filtered 0 choices, so inventory-gated dead-ends route to the death overlay correctly when the player has no token. This generalisation is reusable for all remaining 12 group_6 items.",
     "v2.12 -> v2.13": "May 2026 — Group 6 item 2 of 13 (gold_key) closed as verification-only. No engine or data changes — the work was already shipped across two prior commits: 9b2f60b (sec.1085 inventory_condition gating, group_4) and cce1a1f (sec.140 / sec.440 / sec.1172 acquisition grants, group_3). FB2 sweep confirms no additional gold-key consumer doors in the canon. sec.140 has no auto_items by design (reachable only via sec.440 which already grants the key). One new smoke-test scenario added for the sec.1172 alternate-route acquisition path (dragon-route victory).",
-    "v2.13 -> v2.14": "May 2026 — Group 6 item 3 of 13 (candle_lamp) closed via inventory_condition + acquires machinery (no new engine hook, consistent with fish_help approach). sec.929 grants \"Свеча\" via new acquires field on its single nav choice; sec.600 already grants the same name via pre-existing auto_items. Two consumers gated: sec.696→sec.706 (corridor light), sec.1000→sec.1010 (post-Goblins darkness lift). sec.972→sec.982 explicitly rejected (fail-route belonging to the separate Подсвечник item-offer mechanism). FB2 sweep confirms no other +10 consumers exist in the canon for this item family."
+    "v2.13 -> v2.14": "May 2026 — Group 6 item 3 of 13 (candle_lamp) closed via inventory_condition + acquires machinery (no new engine hook, consistent with fish_help approach). sec.929 grants \"Свеча\" via new acquires field on its single nav choice; sec.600 already grants the same name via pre-existing auto_items. Two consumers gated: sec.696→sec.706 (corridor light), sec.1000→sec.1010 (post-Goblins darkness lift). sec.972→sec.982 explicitly rejected (fail-route belonging to the separate Подсвечник item-offer mechanism). FB2 sweep confirms no other +10 consumers exist in the canon for this item family.",
+    "v2.14 -> v2.15": "May 2026 — Group 6 item 4 of 13 (figured_key) closed. Audit found figured_key has NO +40 arithmetic mechanic in the FB2 canon — the registry +40 quote was misattributed (canonical +40 at sec.487 belongs to a separate ring/перстень item). figured_key is functionally a shop-purchase item gated via inventory_condition. Acquisitions and two of three consumer gating already shipped in groups 14/16/17. This commit fixes the third consumer at sec.804 (figured-key choice to sec.895 was missing inventory_condition gating — a regression that showed the figured-key option to players without the key). Documented a future-cleanup task: create a new ring-key item entry for the sec.487 +40 mechanic."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -386,7 +387,13 @@
           "modifier": "+40",
           "consumer_paragraphs": "specific figured-lock door(s) (need enumeration)",
           "fb2_quote": "«…дарит вам фигурный ключ с брелком в виде башни… прибавьте 40 к номеру параграфа.»",
-          "warning": "Same +40 modifier as castle_key — must be kept as separate state, not merged."
+          "warning": "Same +40 modifier as castle_key — must be kept as separate state, not merged.",
+          "status_done": {
+            "commit": "(this commit)",
+            "summary": "figured_key is item 4 of 13 in the group_6 cluster, but the +40 arithmetic modifier in the registry entry is an audit error. FB2 sweep confirmed NO occurrence of \"прибавьте 40\" near figured-key context in the remake; the +40 mechanic at sec.487 belongs to a separate ring/перстень gift event (door-opening ring), and was misattributed to figured_key by ChatGPT/Gemini audit cross-talk. figured_key is functionally a shop-purchase item gated via inventory_condition, not a paragraph-arithmetic item. Acquisition sec.340 (2-gold shop purchase) was shipped in group_14. Two consumers already wired in earlier groups: sec.774→sec.251 (size fail, group_16) and sec.1208→sec.984 (success, group_17). A third consumer at sec.804 was missing inventory_condition gating and is fixed in this commit: choice to sec.895 (size fail) now hidden unless player owns \"Фигурный ключ\". sec.984 is the ONE canonical success route (medium chest → golden necklace), reachable exclusively via the already-gated sec.1208 path.",
+            "verification": "sec.340 grants \"Фигурный ключ\" via existing purchase mechanism (2 gold cost, deducted on click). sec.774 / sec.1208 already gated correctly in prior commits (group_16 / group_17). sec.804 NEW gating: without the key, the figured-key choice is hidden; remaining choices are медный ключик (1064), кусок металла (1184), and the no-key exit to sec.590. With the key, all four choices visible; clicking the figured-key option routes to sec.895 (size-fail narrative) then sec.590 exit. Reusable token: shop purchases are persistent (no consume_on_use). No engine work needed — pure data gating addition.",
+            "registry_error_note": "The +40 modifier and \"брелок в виде башни\" quote in this item's registry entry should be moved to a NEW item entry for the ring/перстень mechanic from sec.487. Registry entry for figured_key should have its modifier field changed from \"+40\" to \"(none — shop-purchase item, not arithmetic)\" in a future cleanup pass."
+          }
         },
         {
           "item_state": "candle_set",
@@ -459,7 +466,8 @@
       "progress": {
         "fish_help": "status_done",
         "Золотой ключ": "status_done",
-        "candle_lamp": "status_done"
+        "candle_lamp": "status_done",
+        "figured_key": "status_done"
       }
     },
     "group_7_inventory_loss_text_engine_mismatch": {
