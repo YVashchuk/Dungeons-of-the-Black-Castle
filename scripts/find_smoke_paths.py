@@ -789,6 +789,27 @@ SCENARIOS = [
         "what_to_check": "After visiting both sec.74 AND sec.1071, sec.226 shows FOUR buttons: gated ruby_ring → sec.627, gated golden_orange → sec.976, plus two fallbacks. Both wake-up routes available simultaneously; canonical alternatives. Either leads to sec.1120 (Barlad alive) or sec.1220 (victory).",
         "commit": "group_6_golden_orange",
     },
+    # ── Group 6: white_arrow_navigation (item 13 of 13, FINAL) — throne-tray knowledge +400 ─
+    {
+        "id": "throne_knowledge_acq_sec688",
+        "target": 688,
+        "what_to_check": "sec.688 (dining-hall throne discovery) should now grant BOTH 'Белая стрела' AND new token 'Знание о троне' via auto_items. Open inventory after entering: both items present. The arrow remains a separate physical item; the knowledge token is a new transferable mechanic specifically for the throne-tray +400 consumer.",
+        "commit": "group_6_white_arrow_navigation (FINAL group_6 item)",
+    },
+    {
+        "id": "throne_knowledge_sec741_NO_knowledge",
+        "target": 741,
+        "what_to_check": "Without 'Знание о троне' in inventory (player did NOT visit sec.688), sec.741 (Hall-of-Council throne) shows ONLY the two existing manual-door choices (sec.809 / sec.1076). The throne-knowledge gated button must be HIDDEN. Crucially: a player who acquired 'Белая стрела' at sec.600 (Vodyanoi taverna) but NOT at sec.688 should ALSO see only the two manual doors — the new token correctly distinguishes throne-knowledge from arrow possession.",
+        "commit": "group_6_white_arrow_navigation",
+    },
+    {
+        "id": "throne_knowledge_sec741_WITH_knowledge",
+        "target": 741,
+        "must_visit": [688],
+        "what_to_check": "After visiting sec.688, sec.741 should show THREE buttons including the gated 'Применить знание о троне (1141)'. Click → sec.1141 canonical narrative ('Вы помните, как открывался потайной ящичек в троне, стоящем в столовой… теперь в секретном ящичке не стрела, а карта-план этажа'). sec.1141 then routes to luck check (sec.974 lucky / sec.1118 unlucky).",
+        "commit": "group_6_white_arrow_navigation",
+    },
+
 
 
 
