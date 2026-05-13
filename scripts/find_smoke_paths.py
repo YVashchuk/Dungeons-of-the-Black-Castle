@@ -768,6 +768,28 @@ SCENARIOS = [
         "what_to_check": "After visiting sec.1137, sec.798 (control panel) shows the gated 'Расшифровать надписи с помощью Книги (822)' button. Click → sec.822 reveals what each panel button corresponds to (Barlad Dert, Harem, Baron, etc).",
         "commit": "group_6_spell_book",
     },
+    # ── Group 6: golden_orange (item 12 of 13) — alternative Princess wake-up via +750 ─
+    {
+        "id": "golden_orange_acq_sec74",
+        "target": 74,
+        "what_to_check": "sec.74 (fruit-island pluck of golden orange) already grants 'Золотой апельсин' + 1 LUCK via existing auto_items. Open inventory after entering sec.74: 'Золотой апельсин' present. Single exit choice (sec.614) unchanged. This is the acquisition prerequisite for the new sec.226→sec.976 wake-up route.",
+        "commit": "group_6_golden_orange (acquisition reused)",
+    },
+    {
+        "id": "golden_orange_sec226_WITH_orange_only",
+        "target": 226,
+        "must_visit": [74],
+        "what_to_check": "After visiting sec.74 (orange acquisition) but NOT sec.1071 (ruby ring), sec.226 should show THREE buttons: gated 'Разрезать Золотой апельсин (976)' AND two fallbacks (sec.1057 mirror / sec.860 candle-tables). Click orange → sec.976 'Вы достаете золотой апельсин и разрезаете его' canonical Princess wake-up.",
+        "commit": "group_6_golden_orange",
+    },
+    {
+        "id": "golden_orange_sec226_WITH_both_ring_and_orange",
+        "target": 226,
+        "must_visit": [74, 1071],
+        "what_to_check": "After visiting both sec.74 AND sec.1071, sec.226 shows FOUR buttons: gated ruby_ring → sec.627, gated golden_orange → sec.976, plus two fallbacks. Both wake-up routes available simultaneously; canonical alternatives. Either leads to sec.1120 (Barlad alive) or sec.1220 (victory).",
+        "commit": "group_6_golden_orange",
+    },
+
 
 
 

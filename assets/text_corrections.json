@@ -25,7 +25,8 @@
     "v2.18 -> v2.19": "May 2026 — Group 6 item 8 of 13 (thread_ball) closed. Registry had one transcription error: modifier \"-50\" should be \"+50\" (canonical sec.198 says \"прибавляйте 50\", positive). Acquisition sec.198 grants \"Клубочек\" via new acquires field on its only nav choice. Three canonical +50 consumers wired via inventory_condition: sec.108→sec.158, sec.366→sec.416, sec.401→sec.451. Seven of ChatGPT v4's ten candidates rejected after narrative verification — including the most egregious sec.1170→sec.1220 (final victory paragraph). Klubochek is reusable; sec.747 fail-trap mechanic (klubochek loss in forest) is canonically already wired without group_6 changes.",
     "v2.19 -> v2.20": "May 2026 — Group 6 item 9 of 13 (ruby_ring) closed. Most narratively important group_6 closure to date: restores the canonical Princess wake-up at sec.627 which was previously orphan. Registry had conflated THREE ring items into one entry; sec.1071 \"Перстень с рубином\" +401 now correctly wired with auto_items on acquisition and inventory_condition gating at sec.226. sec.86 disambiguation preserved — emerald ring still canonically useless for Princess wake-up. Follow-up tracked: sec.479 \"Перстень с изумрудом\" -140 mechanic needs a new group_6 entry (emerald_ring).",
     "v2.20 -> v2.21": "May 2026 — Group 6 item 10 of 13 (ruby_star) closed. sec.791 acquisition previously had no auto_items grant; ruby star never reached inventory. This commit adds auto_items granting \"Рубиновая звезда\" on entry. Four canonical +71 path-hint consumers wired via inventory_condition: sec.637→sec.708, sec.846→sec.917, sec.934→sec.1005, sec.1082→sec.1153. All four target paragraphs were orphan in remake. FB2 grep for \"звезда сияет\" / \"звезда начинает светиться\" identified the exact canonical pairs, all verified with Δ=71 arithmetic and matching source/target narratives.",
-    "v2.21 -> v2.22": "May 2026 — Group 6 item 11 of 13 (spell_book) closed. Registry had one transcription error: modifier \"+20\" should be \"+24\" (canonical sec.1137 says \"прибавьте 24\"). Acquisition sec.1137 previously had no auto_items grant; magic book never reached inventory. This commit adds the missing grant. Four canonical +24 decoder consumers wired via inventory_condition: sec.4→sec.28, sec.339→sec.363, sec.732→sec.756, sec.798→sec.822. All four target paragraphs were orphan in remake. FB2 grep methodology: search \"расшифр\" + \"надпис\" + verify Δ=24 offset, identical to ruby_star's \"звезда\" grep approach."
+    "v2.21 -> v2.22": "May 2026 — Group 6 item 11 of 13 (spell_book) closed. Registry had one transcription error: modifier \"+20\" should be \"+24\" (canonical sec.1137 says \"прибавьте 24\"). Acquisition sec.1137 previously had no auto_items grant; magic book never reached inventory. This commit adds the missing grant. Four canonical +24 decoder consumers wired via inventory_condition: sec.4→sec.28, sec.339→sec.363, sec.732→sec.756, sec.798→sec.822. All four target paragraphs were orphan in remake. FB2 grep methodology: search \"расшифр\" + \"надпис\" + verify Δ=24 offset, identical to ruby_star's \"звезда\" grep approach.",
+    "v2.22 -> v2.23": "May 2026 — Group 6 item 12 of 13 (golden_orange) closed. Registry modifier \"+750\" verified at canonical sec.74. Acquisition already shipped via auto_items. Single canonical +750 consumer sec.226 → sec.976 wired via inventory_condition. sec.976 was orphan in remake. This is the parallel canonical Princess wake-up route — both ruby_ring (sec.627 via +401) and golden_orange (sec.976 via +750) lead to sec.1120/sec.1220 victory routing. Player can hold either or both items and the gating shows the appropriate button."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -483,7 +484,12 @@
           "modifier": "+750",
           "consumer_paragraphs": "single use, unknown specific consumer",
           "fb2_quote": "«Можете взять его с собой (когда он вам понадобится, прибавьте 750 к номеру параграфа, на котором будете находиться).»",
-          "warning": "+750 offset is large; many candidate consumer paragraphs may exceed 1221. Verify reachable target exists in remake numbering."
+          "warning": "+750 offset is large; many candidate consumer paragraphs may exceed 1221. Verify reachable target exists in remake numbering.",
+          "status_done": {
+            "commit": "(this commit)",
+            "summary": "golden_orange is item 12 of 13 in the group_6 cluster. Registry modifier \"+750\" verified at canonical sec.74. Acquisition was ALREADY shipped (auto_items grants \"Золотой апельсин\" + 1 LUCK on entry to sec.74). The single canonical +750 consumer pair is sec.226 → sec.976 (Δ=750), restoring the alternative Princess wake-up route paralleling ruby_ring (sec.226 → sec.627 +401, shipped commit e3a42f9). sec.976 was ORPHAN in remake until this commit — the canonical golden-orange Princess wake-up (\"Вы достаете золотой апельсин и разрезаете его… Принцесса вздыхает и садится на кровати\") was entirely missing. Both sec.627 (ruby) and sec.976 (orange) lead to sec.1120/sec.1220 victory routing — they are parallel canonical paths and the player can choose either based on which item they acquired (visiting sec.74 grants orange, visiting sec.1071 grants ruby).",
+            "verification": "sec.226 now has FOUR choices: (1) gated ruby_ring → sec.627, (2) gated golden_orange → sec.976, (3) fallback mirror → sec.1057, (4) fallback candle-tables → sec.860. Order ensures both gated choices appear first when items present, fallbacks always visible. Click of golden orange button leads to sec.976 canonical wake-up narrative then sec.1120 (Barlad alive) or sec.1220 (final victory). Player can hold BOTH items if they discovered sec.74 and sec.1071 separately — both buttons show. Reusable token (canon does not explicitly consume); no consume_on_use applied. sec.226 narrative says \"волшебный перстень\" specifically, so the ruby_ring path is the canonical first-choice; golden_orange is the canonical alternative when the player chose the fruit-island route instead of the magician-cabinet route."
+          }
         },
         {
           "item_state": "ruby_star",
@@ -523,7 +529,8 @@
         "thread_ball": "status_done",
         "ruby_ring": "status_done",
         "ruby_star": "status_done",
-        "spell_book": "status_done"
+        "spell_book": "status_done",
+        "golden_orange": "status_done"
       }
     },
     "group_7_inventory_loss_text_engine_mismatch": {

@@ -3119,11 +3119,137 @@ Conventions:
 
 ---
 
+## golden_orange_acq_sec74
+
+**Target:** §74
+
+**Commit:** `group_6_golden_orange (acquisition reused)`
+
+**What to check:** sec.74 (fruit-island pluck of golden orange) already grants 'Золотой апельсин' + 1 LUCK via existing auto_items. Open inventory after entering sec.74: 'Золотой апельсин' present. Single exit choice (sec.614) unchanged. This is the acquisition prerequisite for the new sec.226→sec.976 wake-up route.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Пойти вдоль берега на запад → §596'
+    22. From §596: click 'Лодки на берегу нет, и, если все же хотите… → §57'
+    23. From §57: click 'Поплыть к острову → §290'
+    24. From §290: click 'Благополучно достигаете острова и выходите на берег → §582'
+    25. From §582: click 'Рискнуть сорвать его → §74'
+```
+  (25 clicks total, graph: basic)
+
+---
+
+## golden_orange_sec226_WITH_orange_only
+
+**Target:** §226
+
+**Commit:** `group_6_golden_orange`
+
+**Must visit first:** §74
+
+**What to check:** After visiting sec.74 (orange acquisition) but NOT sec.1071 (ruby ring), sec.226 should show THREE buttons: gated 'Разрезать Золотой апельсин (976)' AND two fallbacks (sec.1057 mirror / sec.860 candle-tables). Click orange → sec.976 'Вы достаете золотой апельсин и разрезаете его' canonical Princess wake-up.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Его за 5 раундов атаки, то → §391'
+    14. From §391: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Пойти вдоль берега на запад → §596'
+    22. From §596: click 'Лодки на берегу нет, и, если все же хотите… → §57'
+    23. From §57: click 'Поплыть к острову → §290'
+    24. From §290: click 'Благополучно достигаете острова и выходите на берег → §582'
+    25. From §582: click 'Рискнуть сорвать его → §74'
+    26. From §74: click 'Покинуть остров → §614'
+    27. From §614: click 'Если у вас есть еще заклятия Плавания или Левитации → §581'
+    28. From §581: click 'Куда вы направитесь: на правый берег → §317'
+    29. From §317: click 'Идти дальше без отдыха → §58'
+    30. From §58: click 'Взять бронзовый свисток и идти дальше по тропинке в лес → §580'
+    31. From §580: click 'Пойти налево → §77'
+    32. From §77: click 'Пойти прямо → §244'
+    33. From §244: click 'Направиться прямо к воротам замка → §56'
+    34. From §56: click 'Сказать, что вы бродячий торговец и идёте в замок торговать → §1201'
+    35. From §1201: click 'Показать шкуру лисы как образец → §1054'
+    36. From §1054: click 'К палаткам → §915'
+    37. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    38. From §833: click 'Вниз → §654'
+    39. From §654: click 'Открыть единственную дверь → §742'
+    40. From §742: click 'Если перебили Орков — вернуться по лестнице наверх → §1074'
+    41. From §1074: click 'Идти дальше по коридору, он делает поворот и… → §766'
+    42. From §766: click 'Скажете, что вы передумали и уйдете из библиотеки → §718'
+    43. From §718: click 'Проходите через библиотеку тщательно стараясь… → §285'
+    44. From §285: click 'Открыть левую дверь → §782'
+    45. From §782: click 'Пришли в тупик, но в правой стене есть дверь,… → §1196'
+    46. From §1196: click 'Открыть дверь с золотым орлом → §604'
+    47. From §604: click 'Она не заперта → §45'
+    48. From §45: click 'Посмотреться в большое зеркало → §1019'
+    49. From §1019: click 'Подойти к кровати слева → §226'
+```
+  (49 clicks total, graph: full)
+
+---
+
+## golden_orange_sec226_WITH_both_ring_and_orange
+
+**Target:** §226
+
+**Commit:** `group_6_golden_orange`
+
+**Must visit first:** §74, §1071
+
+**What to check:** After visiting both sec.74 AND sec.1071, sec.226 shows FOUR buttons: gated ruby_ring → sec.627, gated golden_orange → sec.976, plus two fallbacks. Both wake-up routes available simultaneously; canonical alternatives. Either leads to sec.1120 (Barlad alive) or sec.1220 (victory).
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §226 via §74, §1071
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **75 / 86**
-- Scenarios needing manual route discovery: **11**
+- Scenarios with paths found: **77 / 89**
+- Scenarios needing manual route discovery: **12**
 
 ### Manual routing required for:
 
@@ -3138,5 +3264,6 @@ Conventions:
   - bear_key_sec881_WITH_key: §1 → §881 via [612]
   - ruby_ring_sec226_WITH_ring: §1 → §226 via [1071]
   - ruby_star_sec637_WITH_star: §1 → §637 via [791]
+  - golden_orange_sec226_WITH_both_ring_and_orange: §1 → §226 via [74, 1071]
 
 These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.
