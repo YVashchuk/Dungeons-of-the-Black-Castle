@@ -678,6 +678,27 @@ SCENARIOS = [
         "what_to_check": "After visiting sec.198, sec.401 shows THREE buttons: the new gated 'Идти за клубочком (451)' AND the two existing manual choices. Click klubochek → sec.451 'Клубочек катится прямо, а вы можете вернуться на sec.401'.",
         "commit": "group_6_thread_ball",
     },
+    # ── Group 6: ruby_ring (item 9 of 13) — canonical Princess wake-up via +401 ─
+    {
+        "id": "ruby_ring_acq_sec1071",
+        "target": 1071,
+        "what_to_check": "sec.1071 (post-magician cabinet, ring selection) should now grant 'Перстень с рубином' via auto_items on entry. Open inventory after entering sec.1071: the ruby ring is present. The four cabinet inspection options (sec.797 / sec.411 / sec.850 / sec.297) remain unchanged.",
+        "commit": "group_6_ruby_ring",
+    },
+    {
+        "id": "ruby_ring_sec226_NO_ring",
+        "target": 226,
+        "what_to_check": "Without 'Перстень с рубином' in inventory, sec.226 (Princess bed) shows ONLY the two no-progress fallbacks (sec.1057 mirror / sec.860 candle-tables). The new gated 'Использовать Перстень с рубином (627)' button must be HIDDEN. This is the canonical fail-state where the Princess cannot be woken.",
+        "commit": "group_6_ruby_ring",
+    },
+    {
+        "id": "ruby_ring_sec226_WITH_ring",
+        "target": 226,
+        "must_visit": [1071],
+        "what_to_check": "After visiting sec.1071, sec.226 should show THREE buttons including the new gated 'Использовать Перстень с рубином (627)'. Click it → sec.627 canonical Princess wake-up narrative ('свет свечи падает на рубин перстня, и камень оживает'). sec.627 then routes to sec.1120 (Barlad alive) or sec.1220 (Barlad dead, victory). This is the canonical centerpiece of the game victory route, previously unreachable.",
+        "commit": "group_6_ruby_ring",
+    },
+
 
 
 
