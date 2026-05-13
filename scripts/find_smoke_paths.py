@@ -563,6 +563,48 @@ SCENARIOS = [
         "what_to_check": "After buying 'Фигурный ключ' at sec.340 (2 gold), sec.804 should show FOUR buttons including the new 'Фигурный ключ (895)' option. Click it: routes to sec.895 size-fail narrative, then sec.590 exit. This is the third figured-key consumer wired (after sec.774 / sec.1208 in earlier groups).",
         "commit": "group_6_figured_key",
     },
+    # ── Group 6: castle_key (item 5 of 13) — +40 consumer doors via inventory_condition ─
+    {
+        "id": "castle_key_acq_sec471",
+        "target": 471,
+        "what_to_check": "sec.471 grants 'Ключ Чёрного замка' (plus 8 gold and 'Медный браслет') via existing auto_items on entry — this acquisition was shipped earlier and is the upstream for all four consumer-door scenarios below. Open inventory after entering: 'Ключ Чёрного замка' present.",
+        "commit": "group_6_castle_key (acquisition reused)",
+    },
+    {
+        "id": "castle_key_sec91_NO_key",
+        "target": 91,
+        "what_to_check": "Without 'Ключ Чёрного замка' in inventory, sec.91 (corridor locked door) shows ONLY the corridor-continue fallback (sec.671). The new 'Отпереть дверь Ключом Чёрного замка (131)' button must be HIDDEN.",
+        "commit": "group_6_castle_key",
+    },
+    {
+        "id": "castle_key_sec91_WITH_key",
+        "target": 91,
+        "must_visit": [471],
+        "what_to_check": "After visiting sec.471 (acquisition), sec.91 should show BOTH buttons: the new gated 'Отпереть дверь Ключом Чёрного замка (131)' AND the existing fallback (sec.671). Click the key option → sec.131 sentry-tower battle narrative ('Вы достаете ключ. Он легко поворачивается').",
+        "commit": "group_6_castle_key",
+    },
+    {
+        "id": "castle_key_sec687_WITH_key",
+        "target": 687,
+        "must_visit": [471],
+        "what_to_check": "With the castle key, sec.687 shows 'Отпереть дверь Ключом Чёрного замка (727)' alongside the existing fallback to sec.1009. Click the key → sec.727 stairwell narrative.",
+        "commit": "group_6_castle_key",
+    },
+    {
+        "id": "castle_key_sec694_WITH_key",
+        "target": 694,
+        "must_visit": [471],
+        "what_to_check": "With the castle key, sec.694 shows 'Отпереть дверь Ключом Чёрного замка (734)' alongside the existing fallback to sec.1046. Click the key → sec.734 'Достав ключ, вы отпираете дверь' narrative leading to sec.671.",
+        "commit": "group_6_castle_key",
+    },
+    {
+        "id": "castle_key_sec768_WITH_key",
+        "target": 768,
+        "must_visit": [471],
+        "what_to_check": "With the castle key, sec.768 shows 'Отпереть дверь Ключом Чёрного замка (808)' alongside the existing fallback to sec.362. Click the key → sec.808 'Вы находите в заплечном мешке ключ' narrative leading to sec.1150.",
+        "commit": "group_6_castle_key",
+    },
+
 
 
 
