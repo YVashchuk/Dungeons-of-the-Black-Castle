@@ -604,6 +604,47 @@ SCENARIOS = [
         "what_to_check": "With the castle key, sec.768 shows 'Отпереть дверь Ключом Чёрного замка (808)' alongside the existing fallback to sec.362. Click the key → sec.808 'Вы находите в заплечном мешке ключ' narrative leading to sec.1150.",
         "commit": "group_6_castle_key",
     },
+    # ── Group 6: bear_key (item 6 of 13) — +40 castle doors, "Медный ключик" unified ─
+    {
+        "id": "bear_key_acq_sec612",
+        "target": 612,
+        "what_to_check": "sec.612 (bear gift after rescuing the cub) now grants 'Медный ключик' via auto_items (was previously the anonymous 'Ключ' — name unification). Click the only nav choice to sec.1106. Open inventory: 'Медный ключик' should be present, alongside the magical bell.",
+        "commit": "group_6_bear_key",
+    },
+    {
+        "id": "bear_key_sec803_NO_key",
+        "target": 803,
+        "what_to_check": "Without 'Медный ключик' in inventory, sec.803 shows ONLY two fallback buttons (window sec.323, back-door sec.607). The success branch 'Есть медный ключик, то достаньте его (1035)' must be HIDDEN — regression fix.",
+        "commit": "group_6_bear_key",
+    },
+    {
+        "id": "bear_key_sec803_WITH_key",
+        "target": 803,
+        "must_visit": [612],
+        "what_to_check": "After visiting sec.612 (bear gift), sec.803 should show THREE buttons including the gated 'Есть медный ключик, то достаньте его (1035)'. Click it to confirm the storeroom narrative (sec.1035 with sword/shield/potion).",
+        "commit": "group_6_bear_key",
+    },
+    {
+        "id": "bear_key_sec804_NO_key",
+        "target": 804,
+        "what_to_check": "Without 'Медный ключик' in inventory, sec.804 shows THREE buttons (кусок металла sec.1184, the figured-key option ONLY if player owns it, and the exit-to-sec.590). The fail-narrative 'Может быть, есть медный ключик (1064)' must be HIDDEN — regression fix parallel to the figured-key sec.895 fix.",
+        "commit": "group_6_bear_key",
+    },
+    {
+        "id": "bear_key_sec851_WITH_key",
+        "target": 851,
+        "must_visit": [612],
+        "what_to_check": "After visiting sec.612, sec.851 (long polutemniy corridor with a door) should show 'Отпереть дверь Медным ключиком (891)' alongside the existing fallback (sec.881). Click the key option → sec.891 jamming-narrative.",
+        "commit": "group_6_bear_key",
+    },
+    {
+        "id": "bear_key_sec881_WITH_key",
+        "target": 881,
+        "must_visit": [612],
+        "what_to_check": "After visiting sec.612, sec.881 (corridor branching from sec.851) should show 'Отпереть дверь Медным ключиком (921)' alongside the existing fallback (sec.1123). Click the key option → sec.921 tomb-entrance narrative. This restores an orphan-target — sec.921 was unreachable in remake prior to this commit.",
+        "commit": "group_6_bear_key",
+    },
+
 
 
 
