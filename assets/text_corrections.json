@@ -24,7 +24,8 @@
     "v2.17 -> v2.18": "May 2026 — Group 6 item 7 of 13 (candle_set) marked status_deprecated after comprehensive FB2 audit. The registry-claimed +20/+100 mechanic and \"Возьми подсвечник\" quote are absent from the remake 1221-paragraph canon: 0 paragraphs mention white/black candles, 0 contain \"прибавьте 20\" or \"прибавьте 100\", 0 contain \"Возьми подсвечник\". The mechanic was either a 1991-original artifact dropped in the remake or an audit cross-talk hallucination. The light-source family is fully served by candle_lamp (commit 1c57f48) and the separate \"Подсвечник\" item-offer consumer at sec.972 / sec.34. No data, engine, smoke-test, or build changes — this is an audit-only deprecation commit.",
     "v2.18 -> v2.19": "May 2026 — Group 6 item 8 of 13 (thread_ball) closed. Registry had one transcription error: modifier \"-50\" should be \"+50\" (canonical sec.198 says \"прибавляйте 50\", positive). Acquisition sec.198 grants \"Клубочек\" via new acquires field on its only nav choice. Three canonical +50 consumers wired via inventory_condition: sec.108→sec.158, sec.366→sec.416, sec.401→sec.451. Seven of ChatGPT v4's ten candidates rejected after narrative verification — including the most egregious sec.1170→sec.1220 (final victory paragraph). Klubochek is reusable; sec.747 fail-trap mechanic (klubochek loss in forest) is canonically already wired without group_6 changes.",
     "v2.19 -> v2.20": "May 2026 — Group 6 item 9 of 13 (ruby_ring) closed. Most narratively important group_6 closure to date: restores the canonical Princess wake-up at sec.627 which was previously orphan. Registry had conflated THREE ring items into one entry; sec.1071 \"Перстень с рубином\" +401 now correctly wired with auto_items on acquisition and inventory_condition gating at sec.226. sec.86 disambiguation preserved — emerald ring still canonically useless for Princess wake-up. Follow-up tracked: sec.479 \"Перстень с изумрудом\" -140 mechanic needs a new group_6 entry (emerald_ring).",
-    "v2.20 -> v2.21": "May 2026 — Group 6 item 10 of 13 (ruby_star) closed. sec.791 acquisition previously had no auto_items grant; ruby star never reached inventory. This commit adds auto_items granting \"Рубиновая звезда\" on entry. Four canonical +71 path-hint consumers wired via inventory_condition: sec.637→sec.708, sec.846→sec.917, sec.934→sec.1005, sec.1082→sec.1153. All four target paragraphs were orphan in remake. FB2 grep for \"звезда сияет\" / \"звезда начинает светиться\" identified the exact canonical pairs, all verified with Δ=71 arithmetic and matching source/target narratives."
+    "v2.20 -> v2.21": "May 2026 — Group 6 item 10 of 13 (ruby_star) closed. sec.791 acquisition previously had no auto_items grant; ruby star never reached inventory. This commit adds auto_items granting \"Рубиновая звезда\" on entry. Four canonical +71 path-hint consumers wired via inventory_condition: sec.637→sec.708, sec.846→sec.917, sec.934→sec.1005, sec.1082→sec.1153. All four target paragraphs were orphan in remake. FB2 grep for \"звезда сияет\" / \"звезда начинает светиться\" identified the exact canonical pairs, all verified with Δ=71 arithmetic and matching source/target narratives.",
+    "v2.21 -> v2.22": "May 2026 — Group 6 item 11 of 13 (spell_book) closed. Registry had one transcription error: modifier \"+20\" should be \"+24\" (canonical sec.1137 says \"прибавьте 24\"). Acquisition sec.1137 previously had no auto_items grant; magic book never reached inventory. This commit adds the missing grant. Four canonical +24 decoder consumers wired via inventory_condition: sec.4→sec.28, sec.339→sec.363, sec.732→sec.756, sec.798→sec.822. All four target paragraphs were orphan in remake. FB2 grep methodology: search \"расшифр\" + \"надпис\" + verify Δ=24 offset, identical to ruby_star's \"звезда\" grep approach."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -468,7 +469,13 @@
           "modifier": "+24 (or +20 — verify)",
           "consumer_paragraphs": "unknown inscriptions / contextual matches",
           "fb2_quote": "«Когда в пути встретится незнакомая надпись, прибавьте 24 к номеру параграфа, на котором будете находиться, и книга вам поможет.»",
-          "warning": "Multi-step branching when book responds; highest implementation complexity in this cluster."
+          "warning": "Multi-step branching when book responds; highest implementation complexity in this cluster.",
+          "status_done": {
+            "commit": "(this commit)",
+            "summary": "spell_book is item 11 of 13 in the group_6 cluster. Registry modifier \"+20\" was wrong: canonical sec.1137 acquisition text says \"прибавьте 24\" (+24, not +20). ChatGPT v4 was correct on the modifier. Acquisition sec.1137 previously had no auto_items — the magic book was described in narrative (\"находите то, что хранила Рука — пыльную Книгу\") but never inventoried. Four canonical +24 decoder consumer pairs verified via FB2 grep for \"расшифр\" + \"надпис\" + numerical Δ=24 offset: sec.4→sec.28 (stone inscriptions answers), sec.339→sec.363 (stone inscriptions translation), sec.732→sec.756 (7-cranes labels), sec.798→sec.822 (control-panel labels). All four target paragraphs were ORPHAN in remake until this commit. The canonical decoder function of the spell book was entirely missing.",
+            "verification": "sec.1137 now grants \"Книга\" via auto_items on entry. Four consumer paragraphs each gain a \"Расшифровать с помощью Книги\" gated choice prepended to their existing manual choices. Decoder targets reveal canonical translations: sec.28 with 3-answer hint (pautina/kladbishche/smert), sec.363 with fork-prophecy, sec.756 with 7-crane labels, sec.822 with 6-panel labels. Reusable token (canon \"когда в пути встретится незнакомая надпись\" with imperfective verb implies multi-use); no consume_on_use applied.",
+            "registry_error_fixed": "Future cleanup: change registry modifier from \"+20\" to \"+24\"."
+          }
         },
         {
           "item_state": "golden_orange",
@@ -515,7 +522,8 @@
         "candle_set": "status_deprecated",
         "thread_ball": "status_done",
         "ruby_ring": "status_done",
-        "ruby_star": "status_done"
+        "ruby_star": "status_done",
+        "spell_book": "status_done"
       }
     },
     "group_7_inventory_loss_text_engine_mismatch": {
