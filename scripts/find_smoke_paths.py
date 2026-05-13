@@ -698,6 +698,42 @@ SCENARIOS = [
         "what_to_check": "After visiting sec.1071, sec.226 should show THREE buttons including the new gated 'Использовать Перстень с рубином (627)'. Click it → sec.627 canonical Princess wake-up narrative ('свет свечи падает на рубин перстня, и камень оживает'). sec.627 then routes to sec.1120 (Barlad alive) or sec.1220 (Barlad dead, victory). This is the canonical centerpiece of the game victory route, previously unreachable.",
         "commit": "group_6_ruby_ring",
     },
+    # ── Group 6: ruby_star (item 10 of 13) — +71 path-hint mechanic ─
+    {
+        "id": "ruby_star_acq_sec791",
+        "target": 791,
+        "what_to_check": "sec.791 (small chest in upper room) should now grant 'Рубиновая звезда' via auto_items on entry. Open inventory after entering sec.791: 'Рубиновая звезда' present. Four exit choices (sec.1029 / sec.836 / sec.907 / sec.1075) remain unchanged.",
+        "commit": "group_6_ruby_star",
+    },
+    {
+        "id": "ruby_star_sec637_WITH_star",
+        "target": 637,
+        "must_visit": [791],
+        "what_to_check": "After visiting sec.791, sec.637 (corridor fork sec.1105 right / sec.676 left) should show THREE buttons including the new gated 'Прочитать подсказку Рубиновой звезды (708)'. Click the star button → sec.708 'У правого прохода звезда сияет ярче, чем у левого'.",
+        "commit": "group_6_ruby_star",
+    },
+    {
+        "id": "ruby_star_sec846_WITH_star",
+        "target": 846,
+        "must_visit": [791],
+        "what_to_check": "After visiting sec.791, sec.846 (low corridor with left side-passage) shows THREE buttons including gated 'Прочитать подсказку Рубиновой звезды (917)'. Click → sec.917 hint pointing to side-passage (sec.296).",
+        "commit": "group_6_ruby_star",
+    },
+    {
+        "id": "ruby_star_sec934_WITH_star",
+        "target": 934,
+        "must_visit": [791],
+        "what_to_check": "After visiting sec.791, sec.934 (three-way intersection) shows FOUR buttons including the new gated star option leading to sec.1005 hint about left corridor (sec.1001).",
+        "commit": "group_6_ruby_star",
+    },
+    {
+        "id": "ruby_star_sec1082_WITH_star",
+        "target": 1082,
+        "must_visit": [791],
+        "what_to_check": "After visiting sec.791, sec.1082 (post-Orcs room with three doors) shows FOUR buttons including the gated star option to sec.1153 hint about the right door (sec.136).",
+        "commit": "group_6_ruby_star",
+    },
+
 
 
 

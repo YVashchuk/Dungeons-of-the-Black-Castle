@@ -2731,11 +2731,215 @@ Conventions:
 
 ---
 
+## ruby_star_acq_sec791
+
+**Target:** §791
+
+**Commit:** `group_6_ruby_star`
+
+**What to check:** sec.791 (small chest in upper room) should now grant 'Рубиновая звезда' via auto_items on entry. Open inventory after entering sec.791: 'Рубиновая звезда' present. Four exit choices (sec.1029 / sec.836 / sec.907 / sec.1075) remain unchanged.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'По лестнице вверх → §1218'
+    14. From §1218: click 'Подняться по лестнице наверх → §1058'
+    15. From §1058: click 'Подняться по лестнице → §899'
+    16. From §899: click 'Продолжить → §772'
+    17. From §772: click 'Другая справа → §962'
+    18. From §962: click 'Идите до конца → §1075'
+    19. From §1075: click 'Хотите пройти через цветы к окну → §705'
+    20. From §705: click 'Что вы сделаете: вылетите в окно, наложив заклятие → §905'
+    21. From §905: click 'Облетите ее и посмотрите, что за углом → §722'
+    22. From §722: click 'Спуститься → §684'
+    23. From §684: click 'Посмотреть вниз сквозь зубцы → §791'
+```
+  (23 clicks total, graph: basic)
+
+---
+
+## ruby_star_sec637_WITH_star
+
+**Target:** §637
+
+**Commit:** `group_6_ruby_star`
+
+**Must visit first:** §791
+
+**What to check:** After visiting sec.791, sec.637 (corridor fork sec.1105 right / sec.676 left) should show THREE buttons including the new gated 'Прочитать подсказку Рубиновой звезды (708)'. Click the star button → sec.708 'У правого прохода звезда сияет ярче, чем у левого'.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §637 via §791
+
+---
+
+## ruby_star_sec846_WITH_star
+
+**Target:** §846
+
+**Commit:** `group_6_ruby_star`
+
+**Must visit first:** §791
+
+**What to check:** After visiting sec.791, sec.846 (low corridor with left side-passage) shows THREE buttons including gated 'Прочитать подсказку Рубиновой звезды (917)'. Click → sec.917 hint pointing to side-passage (sec.296).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'По лестнице вверх → §1218'
+    14. From §1218: click 'Подняться по лестнице наверх → §1058'
+    15. From §1058: click 'Подняться по лестнице → §899'
+    16. From §899: click 'Продолжить → §772'
+    17. From §772: click 'Другая справа → §962'
+    18. From §962: click 'Идите до конца → §1075'
+    19. From §1075: click 'Хотите пройти через цветы к окну → §705'
+    20. From §705: click 'Что вы сделаете: вылетите в окно, наложив заклятие → §905'
+    21. From §905: click 'Облетите ее и посмотрите, что за углом → §722'
+    22. From §722: click 'Спуститься → §684'
+    23. From §684: click 'Посмотреть вниз сквозь зубцы → §791'
+    24. From §791: click 'К окну слева → §1075'
+    25. From §1075: click 'Понюхать цветы → §1156'
+    26. From §1156: click 'Чувствуете, как кружится голова, и теряете сознание → §41'
+    27. From §41: click 'Попробовать использовать заклятие Иллюзии → §1094'
+    28. From §1094: click 'Сразу уйти → §1000'
+    29. From §1000: click 'За правую → §924'
+    30. From §924: click 'Пойти направо → §1048'
+    31. From §1048: click 'Подняться по лестнице → §846'
+```
+  (31 clicks total, graph: basic)
+
+---
+
+## ruby_star_sec934_WITH_star
+
+**Target:** §934
+
+**Commit:** `group_6_ruby_star`
+
+**Must visit first:** §791
+
+**What to check:** After visiting sec.791, sec.934 (three-way intersection) shows FOUR buttons including the new gated star option leading to sec.1005 hint about left corridor (sec.1001).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'По лестнице вверх → §1218'
+    14. From §1218: click 'Подняться по лестнице наверх → §1058'
+    15. From §1058: click 'Подняться по лестнице → §899'
+    16. From §899: click 'Продолжить → §772'
+    17. From §772: click 'Другая справа → §962'
+    18. From §962: click 'Идите до конца → §1075'
+    19. From §1075: click 'Хотите пройти через цветы к окну → §705'
+    20. From §705: click 'Что вы сделаете: вылетите в окно, наложив заклятие → §905'
+    21. From §905: click 'Облетите ее и посмотрите, что за углом → §722'
+    22. From §722: click 'Спуститься → §684'
+    23. From §684: click 'Посмотреть вниз сквозь зубцы → §791'
+    24. From §791: click 'К окну справа → §907'
+    25. From §907: click 'Выйти в правую → §607'
+    26. From §607: click 'Она оказывается незапертой → §934'
+```
+  (26 clicks total, graph: basic)
+
+---
+
+## ruby_star_sec1082_WITH_star
+
+**Target:** §1082
+
+**Commit:** `group_6_ruby_star`
+
+**Must visit first:** §791
+
+**What to check:** After visiting sec.791, sec.1082 (post-Orcs room with three doors) shows FOUR buttons including the gated star option to sec.1153 hint about the right door (sec.136).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'По лестнице вверх → §1218'
+    14. From §1218: click 'Подняться по лестнице наверх → §1058'
+    15. From §1058: click 'Подняться по лестнице → §899'
+    16. From §899: click 'Продолжить → §772'
+    17. From §772: click 'Другая справа → §962'
+    18. From §962: click 'Идите до конца → §1075'
+    19. From §1075: click 'Хотите пройти через цветы к окну → §705'
+    20. From §705: click 'Что вы сделаете: вылетите в окно, наложив заклятие → §905'
+    21. From §905: click 'Облетите ее и посмотрите, что за углом → §722'
+    22. From §722: click 'Спуститься → §684'
+    23. From §684: click 'Посмотреть вниз сквозь зубцы → §791'
+    24. From §791: click 'Теперь можете либо уходить → §1029'
+    25. From §1029: click 'Она открывается, и вы попадаете в какой-то коридор → §671'
+    26. From §671: click 'Поднявшись, вы останавливаетесь перед закрытой… → §42'
+    27. From §42: click 'Открыть дверь справа → §161'
+    28. From §161: click 'Пойти прямо → §488'
+    29. From §488: click 'Будете простукивать стены → §359'
+    30. From §359: click 'Простучать левую стену → §814'
+    31. From §814: click 'Будете разбирать руками → §735'
+    32. From §735: click 'Открыть дверь перед собой → §1065'
+    33. From §1065: click 'Будете драться → §43'
+    34. From §43: click 'Если победили обоих Орков за 10 раундов → §1082'
+```
+  (34 clicks total, graph: full)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **66 / 76**
-- Scenarios needing manual route discovery: **10**
+- Scenarios with paths found: **70 / 81**
+- Scenarios needing manual route discovery: **11**
 
 ### Manual routing required for:
 
@@ -2749,5 +2953,6 @@ Conventions:
   - bear_key_sec851_WITH_key: §1 → §851 via [612]
   - bear_key_sec881_WITH_key: §1 → §881 via [612]
   - ruby_ring_sec226_WITH_ring: §1 → §226 via [1071]
+  - ruby_star_sec637_WITH_star: §1 → §637 via [791]
 
 These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.

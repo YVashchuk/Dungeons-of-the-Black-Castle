@@ -23,7 +23,8 @@
     "v2.16 -> v2.17": "May 2026 — Group 6 item 6 of 13 (bear_key) closed. Registry had two transcription errors: modifier \"+400\" wrong (canonical sec.612 says +40), and item-state name implied single-acquisition but FB2 has TWO routes (bear-gift sec.612 + goblin-loot sec.69 / sec.233 / sec.567). Unified inventory name to \"Медный ключик\" (sec.612 auto_items renamed from bare \"Ключ\"). Two canonical +40 consumers wired: sec.851→sec.891, sec.881→sec.921 — both target paragraphs were ORPHANED in remake. Two regression fixes: sec.803→sec.1035 and sec.804→sec.1064 were unconditional in remake despite source narratives saying \"если у вас есть медный ключик\" / \"может быть, есть медный ключик\" — both now gated. Two +40 mappings rejected (sec.899→sec.939 unrelated dialog, sec.962→sec.1002 anti-pattern with key-breaking).",
     "v2.17 -> v2.18": "May 2026 — Group 6 item 7 of 13 (candle_set) marked status_deprecated after comprehensive FB2 audit. The registry-claimed +20/+100 mechanic and \"Возьми подсвечник\" quote are absent from the remake 1221-paragraph canon: 0 paragraphs mention white/black candles, 0 contain \"прибавьте 20\" or \"прибавьте 100\", 0 contain \"Возьми подсвечник\". The mechanic was either a 1991-original artifact dropped in the remake or an audit cross-talk hallucination. The light-source family is fully served by candle_lamp (commit 1c57f48) and the separate \"Подсвечник\" item-offer consumer at sec.972 / sec.34. No data, engine, smoke-test, or build changes — this is an audit-only deprecation commit.",
     "v2.18 -> v2.19": "May 2026 — Group 6 item 8 of 13 (thread_ball) closed. Registry had one transcription error: modifier \"-50\" should be \"+50\" (canonical sec.198 says \"прибавляйте 50\", positive). Acquisition sec.198 grants \"Клубочек\" via new acquires field on its only nav choice. Three canonical +50 consumers wired via inventory_condition: sec.108→sec.158, sec.366→sec.416, sec.401→sec.451. Seven of ChatGPT v4's ten candidates rejected after narrative verification — including the most egregious sec.1170→sec.1220 (final victory paragraph). Klubochek is reusable; sec.747 fail-trap mechanic (klubochek loss in forest) is canonically already wired without group_6 changes.",
-    "v2.19 -> v2.20": "May 2026 — Group 6 item 9 of 13 (ruby_ring) closed. Most narratively important group_6 closure to date: restores the canonical Princess wake-up at sec.627 which was previously orphan. Registry had conflated THREE ring items into one entry; sec.1071 \"Перстень с рубином\" +401 now correctly wired with auto_items on acquisition and inventory_condition gating at sec.226. sec.86 disambiguation preserved — emerald ring still canonically useless for Princess wake-up. Follow-up tracked: sec.479 \"Перстень с изумрудом\" -140 mechanic needs a new group_6 entry (emerald_ring)."
+    "v2.19 -> v2.20": "May 2026 — Group 6 item 9 of 13 (ruby_ring) closed. Most narratively important group_6 closure to date: restores the canonical Princess wake-up at sec.627 which was previously orphan. Registry had conflated THREE ring items into one entry; sec.1071 \"Перстень с рубином\" +401 now correctly wired with auto_items on acquisition and inventory_condition gating at sec.226. sec.86 disambiguation preserved — emerald ring still canonically useless for Princess wake-up. Follow-up tracked: sec.479 \"Перстень с изумрудом\" -140 mechanic needs a new group_6 entry (emerald_ring).",
+    "v2.20 -> v2.21": "May 2026 — Group 6 item 10 of 13 (ruby_star) closed. sec.791 acquisition previously had no auto_items grant; ruby star never reached inventory. This commit adds auto_items granting \"Рубиновая звезда\" on entry. Four canonical +71 path-hint consumers wired via inventory_condition: sec.637→sec.708, sec.846→sec.917, sec.934→sec.1005, sec.1082→sec.1153. All four target paragraphs were orphan in remake. FB2 grep for \"звезда сияет\" / \"звезда начинает светиться\" identified the exact canonical pairs, all verified with Δ=71 arithmetic and matching source/target narratives."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -483,7 +484,12 @@
           "modifier": "+71",
           "consumer_paragraphs": "safer-path activation (need enumeration)",
           "fb2_quote": "(quote needed)",
-          "source_extra": "gemini_g2_2026_04 originally"
+          "source_extra": "gemini_g2_2026_04 originally",
+          "status_done": {
+            "commit": "(this commit)",
+            "summary": "ruby_star is item 10 of 13 in the group_6 cluster. Acquisition at sec.791 (\"Можете взять ее: она поможет в пути выбрать лучший и более безопасный ход. Для этого вам нужно только прибавить 71 к номеру параграфа, на котором будете находиться.\") previously had no auto_items — the ruby star was described but never inventoried. This commit adds the missing auto_items grant. Four canonical +71 path-hint consumer pairs verified via FB2 grep for \"звезда сияет\" / \"звезда начинает светиться\": sec.637→sec.708 (right passage hint), sec.846→sec.917 (left side-passage hint), sec.934→sec.1005 (left corridor hint), sec.1082→sec.1153 (right door hint). All four target paragraphs were ORPHAN in remake — the canonical path-hint function of the ruby star was entirely missing until this commit. Each target highlights a direction but routes back to source for the player to choose, matching canonical \"но вы можете выбрать ход самостоятельно\" semantics: the star advises, doesn't decide.",
+            "verification": "sec.791 acquisition: chest discovery now grants \"Рубиновая звезда\" via auto_items on entry. The four cabinet/passage exit choices (sec.1029 / sec.836 / sec.907 / sec.1075) remain unchanged. Four consumer paragraphs (sec.637 / sec.846 / sec.934 / sec.1082) each gain a single \"Прочитать подсказку Рубиновой звезды\" button when player owns the star, hidden otherwise. Click each to reach the canonical hint paragraph; hint paragraph routes back to source for actual choice. Reusable token (canon \"поможет в пути\" with imperfective verb implies multi-use); no consume_on_use applied."
+          }
         },
         {
           "item_state": "candle_lamp",
@@ -508,7 +514,8 @@
         "bear_key": "status_done",
         "candle_set": "status_deprecated",
         "thread_ball": "status_done",
-        "ruby_ring": "status_done"
+        "ruby_ring": "status_done",
+        "ruby_star": "status_done"
       }
     },
     "group_7_inventory_loss_text_engine_mismatch": {
