@@ -1743,11 +1743,128 @@ Conventions:
 
 ---
 
+## candle_lamp_acq_sec929
+
+**Target:** §929
+
+**Commit:** `group_6_candle_lamp`
+
+**What to check:** On entering sec.929 (buried chest), gold +10 already applies via auto_items. After click of the single nav choice to sec.167, the new acquires field should also deposit 'Свеча' into S.inventory. Open inventory after to confirm both gold delta and the new token.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §929
+
+---
+
+## candle_lamp_sec696_NO_token
+
+**Target:** §696
+
+**Commit:** `group_6_candle_lamp`
+
+**What to check:** Without 'Свеча' in inventory, sec.696 (tunnel-of-darkness hatch) should show ONLY the two darkness-fallback buttons (right wall sec.1091 / left wall sec.909). The +10 light-source success button 'Зажечь свечу или светильник (706)' must be hidden.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'В дверь направо → §1177'
+    14. From §1177: click 'Выйти в дверь налево → §393'
+    15. From §393: click 'Выйти из столовой через дверь в стене напротив → §771'
+    16. From §771: click 'Осмотреть люк → §696'
+```
+  (16 clicks total, graph: basic)
+
+---
+
+## candle_lamp_sec696_WITH_token
+
+**Target:** §696
+
+**Commit:** `group_6_candle_lamp`
+
+**Must visit first:** §600
+
+**What to check:** After visiting sec.600 (Vodyanoi taverna chest auto-grant 'Свеча' + 'Огниво' + 'Белая стрела'), sec.696 should show THREE buttons: the new 'Зажечь свечу или светильник (706)' light-source branch ALONGSIDE the two fallback darkness branches. Click the light button — should navigate to sec.706 with the 'у вас есть свой источник света' narrative.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §696 via §600
+
+---
+
+## candle_lamp_sec1000_NO_token
+
+**Target:** §1000
+
+**Commit:** `group_6_candle_lamp`
+
+**What to check:** Without 'Свеча' in inventory, sec.1000 (post-Goblins darkness) shows ONLY the two darkness fallbacks (right wall sec.924 / left wall sec.726). Light button hidden.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'Вниз → §654'
+    14. From §654: click 'Открыть единственную дверь → §742'
+    15. From §742: click 'Если перебили Орков — вернуться по лестнице наверх → §1074'
+    16. From §1074: click 'Идти дальше по коридору, он делает поворот и… → §766'
+    17. From §766: click 'О самом волшебнике → §1026'
+    18. From §1026: click 'Подождать библиотекаря → §701'
+    19. From §701: click 'Сильный удар по голове → §41'
+    20. From §41: click 'Попробовать использовать заклятие Иллюзии → §1094'
+    21. From §1094: click 'Сразу уйти → §1000'
+```
+  (21 clicks total, graph: basic)
+
+---
+
+## candle_lamp_sec1000_WITH_token
+
+**Target:** §1000
+
+**Commit:** `group_6_candle_lamp`
+
+**Must visit first:** §600
+
+**What to check:** With 'Свеча' in inventory, sec.1000 shows THREE buttons including the new 'Зажечь свечу или светильник (1010)'. Click → sec.1010 darkness-rescue narrative.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §1000 via §600
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **45 / 49**
-- Scenarios needing manual route discovery: **4**
+- Scenarios with paths found: **47 / 54**
+- Scenarios needing manual route discovery: **7**
 
 ### Manual routing required for:
 
@@ -1755,5 +1872,8 @@ Conventions:
   - fish_help_sec32_WITH_token: §1 → §32 via [13]
   - fish_help_sec203_WITH_token: §1 → §203 via [13]
   - fish_help_sec699_WITH_token: §1 → §699 via [13]
+  - candle_lamp_acq_sec929: §1 → §929
+  - candle_lamp_sec696_WITH_token: §1 → §696 via [600]
+  - candle_lamp_sec1000_WITH_token: §1 → §1000 via [600]
 
 These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.
