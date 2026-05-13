@@ -3245,10 +3245,110 @@ Conventions:
 
 ---
 
+## throne_knowledge_acq_sec688
+
+**Target:** §688
+
+**Commit:** `group_6_white_arrow_navigation (FINAL group_6 item)`
+
+**What to check:** sec.688 (dining-hall throne discovery) should now grant BOTH 'Белая стрела' AND new token 'Знание о троне' via auto_items. Open inventory after entering: both items present. The arrow remains a separate physical item; the knowledge token is a new transferable mechanic specifically for the throne-tray +400 consumer.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'В дверь направо → §1177'
+    14. From §1177: click 'Выйти в дверь налево → §393'
+    15. From §393: click 'Осмотреть трон → §688'
+```
+  (15 clicks total, graph: basic)
+
+---
+
+## throne_knowledge_sec741_NO_knowledge
+
+**Target:** §741
+
+**Commit:** `group_6_white_arrow_navigation`
+
+**What to check:** Without 'Знание о троне' in inventory (player did NOT visit sec.688), sec.741 (Hall-of-Council throne) shows ONLY the two existing manual-door choices (sec.809 / sec.1076). The throne-knowledge gated button must be HIDDEN. Crucially: a player who acquired 'Белая стрела' at sec.600 (Vodyanoi taverna) but NOT at sec.688 should ALSO see only the two manual doors — the new token correctly distinguishes throne-knowledge from arrow possession.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'Пойти налево → §969'
+    14. From §969: click 'Осмотреть трон → §741'
+```
+  (14 clicks total, graph: basic)
+
+---
+
+## throne_knowledge_sec741_WITH_knowledge
+
+**Target:** §741
+
+**Commit:** `group_6_white_arrow_navigation`
+
+**Must visit first:** §688
+
+**What to check:** After visiting sec.688, sec.741 should show THREE buttons including the gated 'Применить знание о троне (1141)'. Click → sec.1141 canonical narrative ('Вы помните, как открывался потайной ящичек в троне, стоящем в столовой… теперь в секретном ящичке не стрела, а карта-план этажа'). sec.1141 then routes to luck check (sec.974 lucky / sec.1118 unlucky).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'В дверь направо → §1177'
+    14. From §1177: click 'Выйти в дверь налево → §393'
+    15. From §393: click 'Осмотреть трон → §688'
+    16. From §688: click 'Слева → §771'
+    17. From §771: click 'Войти в дверь → §969'
+    18. From §969: click 'Осмотреть трон → §741'
+```
+  (18 clicks total, graph: basic)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **77 / 89**
+- Scenarios with paths found: **80 / 92**
 - Scenarios needing manual route discovery: **12**
 
 ### Manual routing required for:
