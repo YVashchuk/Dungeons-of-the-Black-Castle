@@ -549,6 +549,21 @@ SCENARIOS = [
         "what_to_check": "With 'Свеча' in inventory, sec.1000 shows THREE buttons including the new 'Зажечь свечу или светильник (1010)'. Click → sec.1010 darkness-rescue narrative.",
         "commit": "group_6_candle_lamp",
     },
+    # ── Group 6: figured_key (item 4 of 13) — shop-purchase gating regression fix ─
+    {
+        "id": "figured_key_sec804_NO_key",
+        "target": 804,
+        "what_to_check": "Without 'Фигурный ключ' in inventory, sec.804 (locked hatch, item-offer prompt) should show THREE buttons: медный ключик (1064), кусок металла (1184), and the no-key exit (590). The 'Фигурный ключ (895)' button must be HIDDEN — this was a pre-fix regression where the figured-key button appeared without the key and led the player to a misleading dead-narrative.",
+        "commit": "group_6_figured_key",
+    },
+    {
+        "id": "figured_key_sec804_WITH_key",
+        "target": 804,
+        "must_visit": [340],
+        "what_to_check": "After buying 'Фигурный ключ' at sec.340 (2 gold), sec.804 should show FOUR buttons including the new 'Фигурный ключ (895)' option. Click it: routes to sec.895 size-fail narrative, then sec.590 exit. This is the third figured-key consumer wired (after sec.774 / sec.1208 in earlier groups).",
+        "commit": "group_6_figured_key",
+    },
+
 
 
 ]

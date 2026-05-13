@@ -1860,10 +1860,90 @@ Conventions:
 
 ---
 
+## figured_key_sec804_NO_key
+
+**Target:** §804
+
+**Commit:** `group_6_figured_key`
+
+**What to check:** Without 'Фигурный ключ' in inventory, sec.804 (locked hatch, item-offer prompt) should show THREE buttons: медный ключик (1064), кусок металла (1184), and the no-key exit (590). The 'Фигурный ключ (895)' button must be HIDDEN — this was a pre-fix regression where the figured-key button appeared without the key and led the player to a misleading dead-narrative.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Войти → §760'
+    11. From §760: click 'Сражаться с ними вам придется одновременно. Если вы → §985'
+    12. From §985: click 'Исследуете люк → §804'
+```
+  (12 clicks total, graph: basic)
+
+---
+
+## figured_key_sec804_WITH_key
+
+**Target:** §804
+
+**Commit:** `group_6_figured_key`
+
+**Must visit first:** §340
+
+**What to check:** After buying 'Фигурный ключ' at sec.340 (2 gold), sec.804 should show FOUR buttons including the new 'Фигурный ключ (895)' option. Click it: routes to sec.895 size-fail narrative, then sec.590 exit. This is the third figured-key consumer wired (after sec.774 / sec.1208 in earlier groups).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Пойти дальше → §419'
+     4. From §419: click 'Хотите поискать убежища на ночь → §1181'
+     5. From §1181: click 'Добавьте себе 4 ВЫНОСЛИВОСТИ и отправляйтесь в… → §234'
+     6. From §234: click 'Пойти по тропинке → §14'
+     7. From §14: click 'Подняться на холм → §310'
+     8. From §310: click 'Спуститься обратно на дорогу и продолжить путь → §312'
+     9. From §312: click 'Идти к концу тропинки → §201'
+    10. From §201: click 'Пойти направо → §425'
+    11. From §425: click 'Попытаться поймать зайца → §184'
+    12. From §184: click 'Идти по тропинке, которая уходит в глубь леса → §235'
+    13. From §235: click 'Во время боя можете воспользоваться заклятиями Копии, Огня → §338'
+    14. From §338: click 'Огненный шар ударяет Зверю в грудь и сжигает… → §228'
+    15. From §228: click 'Пойти дальше → §557'
+    16. From §557: click 'Как быть: свернуть с дороги в лес → §109'
+    17. From §109: click 'Пойти на север → §426'
+    18. From §426: click 'Дорога постепенно превращается в широкую мостовую → §327'
+    19. From §327: click 'Куда вы пойдете: в деревню → §185'
+    20. From §185: click 'Где можно купить еду → §340'
+    21. From §340: click 'Покинуть деревню на запад → §207'
+    22. From §207: click 'Продолжить путь по дороге → §143'
+    23. From §143: click 'Отомстить ему за то, что он смеялся над вами → §3'
+    24. From §3: click 'Продолжить → §523'
+    25. From §523: click 'Продолжить → §452'
+    26. From §452: click 'Пойти прямо к воротам → §205'
+    27. From §205: click 'Сказать, что вы бродячий торговец и идёте в замок торговать → §345'
+    28. From §345: click 'Показать шкуру лисы как образец товара → §933'
+    29. From §933: click 'Пойти к маленькому домику слева → §885'
+    30. From §885: click 'Войти → §760'
+    31. From §760: click 'Сражаться с ними вам придется одновременно. Если вы → §985'
+    32. From §985: click 'Исследуете люк → §804'
+```
+  (32 clicks total, graph: basic)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **47 / 54**
+- Scenarios with paths found: **49 / 56**
 - Scenarios needing manual route discovery: **7**
 
 ### Manual routing required for:
