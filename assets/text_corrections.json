@@ -28,7 +28,8 @@
     "v2.21 -> v2.22": "May 2026 — Group 6 item 11 of 13 (spell_book) closed. Registry had one transcription error: modifier \"+20\" should be \"+24\" (canonical sec.1137 says \"прибавьте 24\"). Acquisition sec.1137 previously had no auto_items grant; magic book never reached inventory. This commit adds the missing grant. Four canonical +24 decoder consumers wired via inventory_condition: sec.4→sec.28, sec.339→sec.363, sec.732→sec.756, sec.798→sec.822. All four target paragraphs were orphan in remake. FB2 grep methodology: search \"расшифр\" + \"надпис\" + verify Δ=24 offset, identical to ruby_star's \"звезда\" grep approach.",
     "v2.22 -> v2.23": "May 2026 — Group 6 item 12 of 13 (golden_orange) closed. Registry modifier \"+750\" verified at canonical sec.74. Acquisition already shipped via auto_items. Single canonical +750 consumer sec.226 → sec.976 wired via inventory_condition. sec.976 was orphan in remake. This is the parallel canonical Princess wake-up route — both ruby_ring (sec.627 via +401) and golden_orange (sec.976 via +750) lead to sec.1120/sec.1220 victory routing. Player can hold either or both items and the gating shows the appropriate button.",
     "v2.23 -> v2.24": "May 2026 — Group 6 FINAL CLOSURE (item 13 of 13, white_arrow_navigation). Registry entry had three transcription errors: modifier \"-550\" (actually \"+400\"), mechanic \"labyrinth bailout\" (actually \"throne-tray knowledge\"), and item-name implying the white-arrow inventory item (actually a separate canonical knowledge token). Implementation: new \"Знание о троне\" token granted at sec.688 alongside existing white arrow, single canonical +400 consumer sec.741 → sec.1141 wired via inventory_condition. sec.1141 was orphan in remake. With this commit, group_6 is fully closed: 11 status_done, 1 verification-only (gold_key), 1 status_deprecated (candle_set). Final tally added to group_6.group_complete registry entry. No new engine work beyond the fish_help dead-end fix from commit 9c037b3. Future follow-ups documented including emerald_ring -140 mechanic and unknown +910/+916 modifiers identified during the audit series.",
-    "v2.24 -> v2.25": "May 2026 — Post-audit closure for group_6 (Gemini 3.1 Pro audit). Engine extension: new applyChoiceConsume(ch) function in src/game_logic.js (mirrors applyChoiceGoldCost pattern). Wired into all 3 choice-click sites in makeChoiceBtn. Data: consume_on_use field added to two canonical single-use consumers: sec.851→sec.891 (\"Медный ключик\" breaks per sec.891 narrative) and sec.226→sec.976 (\"Золотой апельсин\" cut up per sec.976 narrative). Closes both P3 narrative-dissonance findings from the Gemini audit. Other group_6 items remain reusable per their respective canonical narratives — no other consume_on_use additions needed."
+    "v2.24 -> v2.25": "May 2026 — Post-audit closure for group_6 (Gemini 3.1 Pro audit). Engine extension: new applyChoiceConsume(ch) function in src/game_logic.js (mirrors applyChoiceGoldCost pattern). Wired into all 3 choice-click sites in makeChoiceBtn. Data: consume_on_use field added to two canonical single-use consumers: sec.851→sec.891 (\"Медный ключик\" breaks per sec.891 narrative) and sec.226→sec.976 (\"Золотой апельсин\" cut up per sec.976 narrative). Closes both P3 narrative-dissonance findings from the Gemini audit. Other group_6 items remain reusable per their respective canonical narratives — no other consume_on_use additions needed.",
+    "v2.25 -> v2.26": "May 2026 — Group 6 extension (post-Gemini-audit follow-up #2): emerald_ring -140 mechanic closed as item 14 of the cluster. Previously tracked only as a pending follow-up in ruby_ring registry notes (commit e3a42f9). sec.479 acquisition now grants \"Перстень с изумрудом\" via auto_items (was unwired). sec.226 → sec.86 wired as canonical FAIL-feedback path (inverse of ruby/orange success paths). sec.86 was orphan in remake. Completes ring-trilogy narrative at sec.226 — player gets explicit feedback for any of the 3 ring/fruit choices, not just dead-end fallbacks."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -526,6 +527,18 @@
             "summary": "candle_lamp is item 3 of 13 in the group_6 cluster. The light-source item family has two acquisition paragraphs and two canonical +10 consumers in the FB2 canon. sec.600 acquisition (Огниво + Свеча + Белая стрела via auto_items) was already shipped in earlier groups; this commit adds acquires:\"Свеча\" to the single nav choice in sec.929 (the buried chest contains a светильник, registered under the shared \"Свеча\" gating key — narrative integrity preserved because FB2 consumer text uses \"свеча или светильник\" interchangeably). Two consumer paragraphs gain inventory-gated +10 success branches: sec.696→sec.706 and sec.1000→sec.1010. sec.972→sec.982 was DELIBERATELY EXCLUDED: sec.982 is a fail-route (Духи тьмы black-cloth-snuff → sec.853 → sec.1121 death), and sec.972 canonically routes via the item-offer mechanism (sec.34 Подсвечник et al, group_15) which targets a different inventory item (Подсвечник, not the Свеча/Светильник family). candle_lamp per registry has success-only semantics (\"если вам понадобится зажечь светильник\"). No new engine work — uses the existing inventory_condition and acquires machinery exactly like fish_help.",
             "verification": "sec.600 was already granting the light source via existing auto_items; sec.929 grants \"Свеча\" on click of the only nav choice (target=167). sec.696 / sec.1000 each show a new \"Зажечь свечу или светильник\" button when player owns \"Свеча\" inventory; button hidden otherwise. Reusable token — canon \"если вам понадобится зажечь\" is multi-use, no consume_on_use applied. Engine generalisation from group_6 fish_help (filtered-choices dead-end) is not exercised here because neither sec.696 nor sec.1000 are dead-ends — each retains its 2-choice fallback (right/left wall in darkness)."
           }
+        },
+        {
+          "item_state": "emerald_ring",
+          "modifier": "-140",
+          "fb2_quote": "Перстень с изумрудом наденьте на палец. Если он понадобится вам, отнимите 140 из номера параграфа, на котором тогда будете.",
+          "fb2_paragraph": 479,
+          "comment": "Tracked as pending follow-up in ruby_ring registry notes after commit e3a42f9. Closed in this commit as the 14th group_6 item. Canonical mechanic: emerald ring is the \"wrong\" Princess wake-up item — picking emerald instead of ruby at sec.623 leads to sec.226 -> sec.86 \"сейчас бесполезен\" fail-feedback narrative. sec.86 was orphan until this commit. Completes the ring-trilogy gating at sec.226 alongside ruby_ring (success) and golden_orange (alt-success).",
+          "status_done": {
+            "commit": "(this commit)",
+            "summary": "emerald_ring closes the ring-trilogy at sec.226 with the canonical FAIL-feedback path. sec.479 acquisition now grants \"Перстень с изумрудом\" via auto_items (was unwired). sec.226 now has a gated emerald choice → sec.86 (\"Перстень с изумрудом очень красив, но как он может помочь разбудить Принцессу? Может быть, он и мог бы где-нибудь пригодиться, но сейчас бесполезен\"). sec.86 was ORPHAN in remake until this commit — canonical emerald-fail feedback was unreachable. Player who chose emerald at sec.623 (instead of ruby) now sees explicit feedback at sec.226 rather than just hitting the two no-progress fallbacks (sec.1057 mirror / sec.860 candles). sec.86 routes to sec.1034 (Barlad approaching) continuing the canonical chain.",
+            "verification": "sec.479 grants \"Перстень с изумрудом\" via auto_items on entry; sec.226 shows the emerald-fail option only when the player owns the emerald ring. sec.86 narrative reads cleanly as the canonical failure response and routes to sec.1034 final-chain entry. No consume_on_use — canon at sec.86 says \"мог бы где-нибудь пригодиться\", implying the ring remains intact (though no other canonical consumer exists in the 1221 canon)."
+          }
         }
       ],
       "progress": {
@@ -541,7 +554,8 @@
         "ruby_star": "status_done",
         "spell_book": "status_done",
         "golden_orange": "status_done",
-        "white_arrow_navigation": "status_done"
+        "white_arrow_navigation": "status_done",
+        "emerald_ring": "status_done"
       },
       "group_complete": {
         "completed_at_commit": "(this commit)",
@@ -561,6 +575,10 @@
           ],
           "engine_extension": "applyChoiceConsume(ch) function added to src/game_logic.js, mirroring applyChoiceGoldCost pattern. Reads ch.consume_on_use (string or array), removes named items from S.inventory, logs to event log, shows notification. Wired into all three choice-click sites in makeChoiceBtn (spell / flee-during-combat / regular).",
           "reusability": "The consume_on_use field is now available data-side for any future single-use canonical item. Already-shipped group_6 items remain reusable per their respective FB2 narratives — no other consumer paragraph requires consume_on_use as audited by Gemini."
+        },
+        "post_audit_extension_emerald_ring": {
+          "commit": "(this commit)",
+          "summary": "emerald_ring (-140 mechanic at sec.479) closed as item 14 of an extended group_6 cluster. Previously tracked only as a pending follow-up in ruby_ring registry notes. Completes the ring-trilogy at sec.226 with canonical fail-feedback for the emerald-picker player. sec.86 was orphan, now wired. Reuses existing engine machinery (no new code, no consume_on_use)."
         }
       }
     },

@@ -824,6 +824,28 @@ SCENARIOS = [
         "what_to_check": "After visiting sec.74 (orange acquisition), enter sec.226 and click the gated 'Разрезать Золотой апельсин (976)' button. Two state changes expected: (1) navigation to sec.976 Princess wake-up; (2) 'Золотой апельсин' REMOVED from S.inventory via consume_on_use. Verify inventory after the click — the orange should be gone (the ruby ring, if present, stays). Notification '− Золотой апельсин' should appear.",
         "commit": "group_6_post_audit_consume_on_use",
     },
+    # ── Group 6 extension: emerald_ring (item 14, -140 fail-feedback) ─
+    {
+        "id": "emerald_ring_acq_sec479",
+        "target": 479,
+        "what_to_check": "sec.479 (emerald-ring put-on) should now grant 'Перстень с изумрудом' via auto_items on entry. Open inventory after entering: 'Перстень с изумрудом' present. The four cabinet inspection choices (sec.797 / sec.411 / sec.850 / sec.297) remain unchanged.",
+        "commit": "group_6_emerald_ring",
+    },
+    {
+        "id": "emerald_ring_sec226_WITH_emerald_only",
+        "target": 226,
+        "must_visit": [479],
+        "what_to_check": "After visiting sec.479 (emerald acquisition) but NOT sec.74 (orange) or sec.1071 (ruby), sec.226 should show THREE buttons: gated 'Попробовать Перстень с изумрудом (86)' AND two fallbacks (sec.1057 / sec.860). Click emerald → sec.86 canonical fail-feedback 'сейчас бесполезен' then sec.1034.",
+        "commit": "group_6_emerald_ring",
+    },
+    {
+        "id": "emerald_ring_sec226_WITH_all_three_items",
+        "target": 226,
+        "must_visit": [479, 74, 1071],
+        "what_to_check": "After visiting all three ring/orange acquisition paragraphs, sec.226 shows FIVE buttons: gated ruby_ring → sec.627, gated golden_orange → sec.976, gated emerald → sec.86 (fail-feedback), plus two fallbacks. The player has full diagnostic feedback for any item choice. Canonical victory route via ruby or orange remains the success path.",
+        "commit": "group_6_emerald_ring",
+    },
+
 
 
 

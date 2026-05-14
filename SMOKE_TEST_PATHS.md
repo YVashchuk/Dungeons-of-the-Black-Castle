@@ -3429,11 +3429,88 @@ Conventions:
 
 ---
 
+## emerald_ring_acq_sec479
+
+**Target:** §479
+
+**Commit:** `group_6_emerald_ring`
+
+**What to check:** sec.479 (emerald-ring put-on) should now grant 'Перстень с изумрудом' via auto_items on entry. Open inventory after entering: 'Перстень с изумрудом' present. The four cabinet inspection choices (sec.797 / sec.411 / sec.850 / sec.297) remain unchanged.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'Вниз → §654'
+    14. From §654: click 'Открыть единственную дверь → §742'
+    15. From §742: click 'Если перебили Орков — вернуться по лестнице наверх → §1074'
+    16. From §1074: click 'Идти дальше по коридору, он делает поворот и… → §766'
+    17. From §766: click 'Скажете, что вы передумали и уйдете из библиотеки → §718'
+    18. From §718: click 'Проходите через библиотеку тщательно стараясь… → §285'
+    19. From §285: click 'Открыть левую дверь → §782'
+    20. From §782: click 'Пришли в тупик, но в правой стене есть дверь,… → §1196'
+    21. From §1196: click 'Войти в среднюю дверь → §886'
+    22. From §886: click 'Вернуться на → §1044'
+    23. From §1044: click 'Переступаете порог → §1096'
+    24. From §1096: click 'Если вы дали Гарпии зеркальце или убили ее, то → §1164'
+    25. From §1164: click 'Иначе вам придется просто стоять и смотреть,… → §823'
+    26. From §823: click 'Если вам удастся победить мага, то → §81'
+    27. From §81: click 'Осмотреть побеждённого врага → §623'
+    28. From §623: click 'С изумрудом → §479'
+```
+  (28 clicks total, graph: full)
+
+---
+
+## emerald_ring_sec226_WITH_emerald_only
+
+**Target:** §226
+
+**Commit:** `group_6_emerald_ring`
+
+**Must visit first:** §479
+
+**What to check:** After visiting sec.479 (emerald acquisition) but NOT sec.74 (orange) or sec.1071 (ruby), sec.226 should show THREE buttons: gated 'Попробовать Перстень с изумрудом (86)' AND two fallbacks (sec.1057 / sec.860). Click emerald → sec.86 canonical fail-feedback 'сейчас бесполезен' then sec.1034.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §226 via §479
+
+---
+
+## emerald_ring_sec226_WITH_all_three_items
+
+**Target:** §226
+
+**Commit:** `group_6_emerald_ring`
+
+**Must visit first:** §479, §74, §1071
+
+**What to check:** After visiting all three ring/orange acquisition paragraphs, sec.226 shows FIVE buttons: gated ruby_ring → sec.627, gated golden_orange → sec.976, gated emerald → sec.86 (fail-feedback), plus two fallbacks. The player has full diagnostic feedback for any item choice. Canonical victory route via ruby or orange remains the success path.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §226 via §479, §74, §1071
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **81 / 94**
-- Scenarios needing manual route discovery: **13**
+- Scenarios with paths found: **82 / 97**
+- Scenarios needing manual route discovery: **15**
 
 ### Manual routing required for:
 
@@ -3450,5 +3527,7 @@ Conventions:
   - ruby_star_sec637_WITH_star: §1 → §637 via [791]
   - golden_orange_sec226_WITH_both_ring_and_orange: §1 → §226 via [74, 1071]
   - consume_on_use_sec891_breaks_key: §1 → §851 via [612]
+  - emerald_ring_sec226_WITH_emerald_only: §1 → §226 via [479]
+  - emerald_ring_sec226_WITH_all_three_items: §1 → §226 via [479, 74, 1071]
 
 These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.
