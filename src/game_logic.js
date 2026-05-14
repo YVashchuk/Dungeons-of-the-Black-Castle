@@ -692,6 +692,37 @@ function applyChoiceGoldCost(ch){
   updateHUD();saveGame();
 }
 
+// Per-choice inventory consumption (group_6 post-audit, Gemini findings).
+// A choice may carry `consume_on_use: "Item name"` (string) or
+// `consume_on_use: ["A","B"]` (array). On click the engine removes each
+// named item from S.inventory if present (one occurrence each), logs the
+// loss to the event log, and shows a quick notification. Mirrors the
+// applyChoiceGoldCost pattern: state mutation happens before navigation.
+// Used for canonical single-use items where the FB2 narrative explicitly
+// destroys or expends the item (e.g. sec.891 "ключ обламывается",
+// sec.976 "разрезаете апельсин"). Items not in inventory at click time
+// are silently skipped — gating via inventory_condition guarantees
+// possession in well-formed data, but a defensive check is cheap.
+function applyChoiceConsume(ch){
+  if(!ch||!ch.consume_on_use||!S||!S.inventory) return;
+  const list=Array.isArray(ch.consume_on_use)?ch.consume_on_use:[ch.consume_on_use];
+  const removed=[];
+  for(const name of list){
+    const idx=S.inventory.indexOf(name);
+    if(idx>=0){
+      S.inventory.splice(idx,1);
+      removed.push(name);
+    }
+  }
+  if(removed.length===0) return;
+  for(const name of removed){
+    logEvent('loss','− '+name,'Предмет израсходован.');
+  }
+  playSound('item');
+  showItemNotification(removed.map(n=>'− '+n));
+  updateHUD();saveGame();
+}
+
 // Shop / buy-choice mechanism (group_14). A choice with purchase:true is
 // a transaction button rather than a navigation button. It costs N gold
 // (gold_cost), grants items (grants_items) and/or restores stamina
@@ -813,7 +844,7 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
       btn.title='Заклятие недоступно';
       btn.onclick=(e)=>{e.preventDefault();};
     } else {
-      btn.onclick=()=>{useSpell(spellId);applyChoiceGoldCost(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+      btn.onclick=()=>{useSpell(spellId);applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
     }
   } else {
     btn.textContent=ch.label;
@@ -825,10 +856,11 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
         updateHUD();saveGame();
         showItemNotification(['− 2 выносливости (бегство из боя)']);
         applyChoiceGoldCost(ch);
+        applyChoiceConsume(ch);
         applyChoiceAcquires(ch,()=>goTo(ch.target));
       };
     } else {
-      btn.onclick=()=>{applyChoiceGoldCost(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+      btn.onclick=()=>{applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
     }
   }
   return btn;

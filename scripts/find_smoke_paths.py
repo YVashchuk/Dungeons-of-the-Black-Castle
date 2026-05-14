@@ -809,6 +809,22 @@ SCENARIOS = [
         "what_to_check": "After visiting sec.688, sec.741 should show THREE buttons including the gated 'Применить знание о троне (1141)'. Click → sec.1141 canonical narrative ('Вы помните, как открывался потайной ящичек в троне, стоящем в столовой… теперь в секретном ящичке не стрела, а карта-план этажа'). sec.1141 then routes to luck check (sec.974 lucky / sec.1118 unlucky).",
         "commit": "group_6_white_arrow_navigation",
     },
+    # ── Post-audit (Gemini 3.1 Pro): consume_on_use verification ─
+    {
+        "id": "consume_on_use_sec891_breaks_key",
+        "target": 851,
+        "must_visit": [612],
+        "what_to_check": "After visiting sec.612 (bear-gift acquisition), enter sec.851 and click the gated 'Отпереть дверь Медным ключиком (891)' button. Two state changes expected: (1) navigation to sec.891 jamming-narrative; (2) 'Медный ключик' REMOVED from S.inventory via the new consume_on_use field. Verify inventory after the click — the copper key should be gone. The notification panel should show '− Медный ключик'. The event log should record 'Предмет израсходован.'",
+        "commit": "group_6_post_audit_consume_on_use",
+    },
+    {
+        "id": "consume_on_use_sec976_cuts_orange",
+        "target": 226,
+        "must_visit": [74],
+        "what_to_check": "After visiting sec.74 (orange acquisition), enter sec.226 and click the gated 'Разрезать Золотой апельсин (976)' button. Two state changes expected: (1) navigation to sec.976 Princess wake-up; (2) 'Золотой апельсин' REMOVED from S.inventory via consume_on_use. Verify inventory after the click — the orange should be gone (the ruby ring, if present, stays). Notification '− Золотой апельсин' should appear.",
+        "commit": "group_6_post_audit_consume_on_use",
+    },
+
 
 
 
