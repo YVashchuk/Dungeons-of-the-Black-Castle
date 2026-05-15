@@ -30,7 +30,8 @@
     "v2.23 -> v2.24": "May 2026 — Group 6 FINAL CLOSURE (item 13 of 13, white_arrow_navigation). Registry entry had three transcription errors: modifier \"-550\" (actually \"+400\"), mechanic \"labyrinth bailout\" (actually \"throne-tray knowledge\"), and item-name implying the white-arrow inventory item (actually a separate canonical knowledge token). Implementation: new \"Знание о троне\" token granted at sec.688 alongside existing white arrow, single canonical +400 consumer sec.741 → sec.1141 wired via inventory_condition. sec.1141 was orphan in remake. With this commit, group_6 is fully closed: 11 status_done, 1 verification-only (gold_key), 1 status_deprecated (candle_set). Final tally added to group_6.group_complete registry entry. No new engine work beyond the fish_help dead-end fix from commit 9c037b3. Future follow-ups documented including emerald_ring -140 mechanic and unknown +910/+916 modifiers identified during the audit series.",
     "v2.24 -> v2.25": "May 2026 — Post-audit closure for group_6 (Gemini 3.1 Pro audit). Engine extension: new applyChoiceConsume(ch) function in src/game_logic.js (mirrors applyChoiceGoldCost pattern). Wired into all 3 choice-click sites in makeChoiceBtn. Data: consume_on_use field added to two canonical single-use consumers: sec.851→sec.891 (\"Медный ключик\" breaks per sec.891 narrative) and sec.226→sec.976 (\"Золотой апельсин\" cut up per sec.976 narrative). Closes both P3 narrative-dissonance findings from the Gemini audit. Other group_6 items remain reusable per their respective canonical narratives — no other consume_on_use additions needed.",
     "v2.25 -> v2.26": "May 2026 — Group 6 extension (post-Gemini-audit follow-up #2): emerald_ring -140 mechanic closed as item 14 of the cluster. Previously tracked only as a pending follow-up in ruby_ring registry notes (commit e3a42f9). sec.479 acquisition now grants \"Перстень с изумрудом\" via auto_items (was unwired). sec.226 → sec.86 wired as canonical FAIL-feedback path (inverse of ruby/orange success paths). sec.86 was orphan in remake. Completes ring-trilogy narrative at sec.226 — player gets explicit feedback for any of the 3 ring/fruit choices, not just dead-end fallbacks.",
-    "v2.26 -> v2.27": "May 2026 — Group 6 extension (post-Gemini-audit follow-up #3): bandit_tip +910 mechanic closed as item 15 of the cluster. Previously tracked only as unknown modifier in golden_orange audit. sec.385 grants \"Знание о кладе\" via acquires on the bandit-help nav choice; sec.19 → sec.929 gated treasure-dig choice added. sec.929 was ORPHAN in remake — this commit is its sole canonical entry, indirectly fixing candle_lamp acquisition route through this paragraph. Companion +916 letter-riddle mechanic at sec.1131 decoded but registered as future_enhancements entry (requires new engine UI work, out of scope). sec.929 auto_items known_gap recorded for serebryanoe kol'co and 1 LUCK currently missing."
+    "v2.26 -> v2.27": "May 2026 — Group 6 extension (post-Gemini-audit follow-up #3): bandit_tip +910 mechanic closed as item 15 of the cluster. Previously tracked only as unknown modifier in golden_orange audit. sec.385 grants \"Знание о кладе\" via acquires on the bandit-help nav choice; sec.19 → sec.929 gated treasure-dig choice added. sec.929 was ORPHAN in remake — this commit is its sole canonical entry, indirectly fixing candle_lamp acquisition route through this paragraph. Companion +916 letter-riddle mechanic at sec.1131 decoded but registered as future_enhancements entry (requires new engine UI work, out of scope). sec.929 auto_items known_gap recorded for serebryanoe kol'co and 1 LUCK currently missing.",
+    "v2.27 -> v2.28": "May 2026 — Pure registry-hygiene cleanup commit. Updated top-level modifier fields in 3 group_6 items to reflect canonical FB2 values discovered during the implementation series: figured_key (drop +40 misattribution), bear_key (+400→+40), candle_set (deprecated marker), thread_ball (-50→+50), spell_book (+20→+24), white_arrow_navigation (-550→+400 plus rename note to throne_tray_knowledge). Each item now has a modifier_history sub-object preserving the original registry value and the correction reason. No data, engine, smoke-test, build, or behavioural changes. Second pass added: candle_set, spell_book, white_arrow_navigation (format mismatches resolved)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -381,7 +382,7 @@
         {
           "item_state": "thread_ball",
           "acquisition_paragraph": 198,
-          "modifier": "-50",
+          "modifier": "+50",
           "consumer_paragraphs": "road forks (need enumeration)",
           "fb2_quote": "«На каждом перекрестке прибавляйте 50 к номеру параграфа, на котором окажетесь, и клубочек укажет правильную дорогу.»",
           "warning": "FB2 text says +50, not -50. Original v2 audit said -50; verify direction at implementation.",
@@ -390,6 +391,12 @@
             "summary": "thread_ball is item 8 of 13 in the group_6 cluster. Registry modifier \"-50\" was wrong: canonical sec.198 acquisition text says \"прибавляйте 50 к номеру параграфа\" (positive +50). ChatGPT v4 was correct on the sign. Acquisition sec.198 was previously unwired (no acquires/auto_items); this commit adds acquires:\"Клубочек\" to its only nav choice. Three canonical +50 consumers wired with inventory_condition gating: sec.108→sec.158 (first crossroads, Лесовичок's \"налево\" directive), sec.366→sec.416, sec.401→sec.451. Each target paragraph narrative explicitly references \"клубочек\". Seven ChatGPT v4 candidates REJECTED after narrative verification: sec.64→sec.114 (goblin death), sec.438→sec.488 (castle corridor), sec.483→sec.533 (castle elevator), sec.485→sec.535 (item-offer), sec.549→sec.599 (village street), sec.554→sec.604 (castle door), sec.1170→sec.1220 (FINAL VICTORY paragraph — obviously not a klubochek crossroads). ChatGPT v4 made blind +50 arithmetic without narrative grounding.",
             "verification": "Acquisition string \"Клубочек\" is set by sec.198 acquires field; all three new inventory_condition values match it exactly. Without the klubochek, the three crossroads paragraphs show their existing manual-direction choices unchanged. With the klubochek, each shows an additional \"Идти за клубочком\" button leading to the canonical +50 success destination. Reusable token (canon \"На каждом перекрестке\" implies multi-use); no consume_on_use applied. sec.747 (klubochek-loss trap after sec.158 follow-up) is already correctly wired in remake — a future enhancement could remove \"Клубочек\" from inventory on sec.747 entry to mirror canonical \"клубка за ними нет\" narrative, but that requires new engine work beyond group_6 scope.",
             "registry_error_fixed": "Future cleanup: change registry modifier from \"-50\" to \"+50\"."
+          },
+          "modifier_history": {
+            "original_registry_value": "-50",
+            "corrected_to": "+50",
+            "reason": "Canonical sec.198 text says \"прибавляйте 50\" (positive, not negative). ChatGPT v4 was correct on the sign; registry had the sign error. See commit b49961f.",
+            "corrected_in_commit": "(this registry-cleanup commit)"
           }
         },
         {
@@ -407,7 +414,7 @@
         {
           "item_state": "figured_key",
           "acquisition_paragraph": 471,
-          "modifier": "+40",
+          "modifier": "(none — shop-purchase item, inventory_condition gating only)",
           "consumer_paragraphs": "specific figured-lock door(s) (need enumeration)",
           "fb2_quote": "«…дарит вам фигурный ключ с брелком в виде башни… прибавьте 40 к номеру параграфа.»",
           "warning": "Same +40 modifier as castle_key — must be kept as separate state, not merged.",
@@ -416,12 +423,18 @@
             "summary": "figured_key is item 4 of 13 in the group_6 cluster, but the +40 arithmetic modifier in the registry entry is an audit error. FB2 sweep confirmed NO occurrence of \"прибавьте 40\" near figured-key context in the remake; the +40 mechanic at sec.487 belongs to a separate ring/перстень gift event (door-opening ring), and was misattributed to figured_key by ChatGPT/Gemini audit cross-talk. figured_key is functionally a shop-purchase item gated via inventory_condition, not a paragraph-arithmetic item. Acquisition sec.340 (2-gold shop purchase) was shipped in group_14. Two consumers already wired in earlier groups: sec.774→sec.251 (size fail, group_16) and sec.1208→sec.984 (success, group_17). A third consumer at sec.804 was missing inventory_condition gating and is fixed in this commit: choice to sec.895 (size fail) now hidden unless player owns \"Фигурный ключ\". sec.984 is the ONE canonical success route (medium chest → golden necklace), reachable exclusively via the already-gated sec.1208 path.",
             "verification": "sec.340 grants \"Фигурный ключ\" via existing purchase mechanism (2 gold cost, deducted on click). sec.774 / sec.1208 already gated correctly in prior commits (group_16 / group_17). sec.804 NEW gating: without the key, the figured-key choice is hidden; remaining choices are медный ключик (1064), кусок металла (1184), and the no-key exit to sec.590. With the key, all four choices visible; clicking the figured-key option routes to sec.895 (size-fail narrative) then sec.590 exit. Reusable token: shop purchases are persistent (no consume_on_use). No engine work needed — pure data gating addition.",
             "registry_error_note": "The +40 modifier and \"брелок в виде башни\" quote in this item's registry entry should be moved to a NEW item entry for the ring/перстень mechanic from sec.487. Registry entry for figured_key should have its modifier field changed from \"+40\" to \"(none — shop-purchase item, not arithmetic)\" in a future cleanup pass."
+          },
+          "modifier_history": {
+            "original_registry_value": "+40",
+            "corrected_to": "(none — shop-purchase item, inventory_condition gating only)",
+            "reason": "+40 quote was misattributed to figured_key; canonical +40 at sec.487 belongs to the separate \"Перстень\" item (see commit f58b8eb).",
+            "corrected_in_commit": "(this registry-cleanup commit)"
           }
         },
         {
           "item_state": "candle_set",
           "acquisition_paragraph": 600,
-          "modifier": "+20 (white) / +100 (black)",
+          "modifier": "(deprecated — mechanic absent from remake canon)",
           "consumer_paragraphs": "context-sensitive light-dependent paragraphs",
           "fb2_quote": "«Возьми подсвечник. Если понадобятся белые свечи, прибавь… 20. Если нужны будут черные свечи, то 100.»",
           "status_deprecated": {
@@ -430,12 +443,18 @@
             "summary": "candle_set is item 7 of 13 in the group_6 cluster, marked status_deprecated rather than status_done because the FB2 audit conclusively demonstrates that the registry-claimed +20 / +100 mechanic does NOT exist in the remake 1221-paragraph canon. Comprehensive grep results: 0 paragraphs match \"белые свечи\" / \"чёрные свечи\" variants, 0 contain \"прибавьте 20\" or \"прибавьте 100\" anywhere, and 0 contain the registry-quoted command form \"Возьми подсвечник\". The quote and modifier are either a 1991-original artifact lost during the 1221-renumber remake, or an audit cross-talk hallucination from ChatGPT/Gemini when populating the registry. No implementation is possible without canonical anchor text.",
             "related_items_already_functional": "The light-source mechanic exists in the remake canon as candle_lamp (+10 modifier, item state \"Свеча\" — closed in commit 1c57f48). The \"Подсвечник\" inventory item (different from candle_set) is also functional via item-offer pattern at sec.972 → sec.34, not via group_6 arithmetic. No further implementation work is needed for the light-source family.",
             "recommendation": "Future cleanup: remove candle_set entry from group_6.items entirely, or relabel as \"candle_set_LOST_TO_REMAKE\" with the audit evidence preserved for historical reference."
+          },
+          "modifier_history": {
+            "original_registry_value": "+20 (white) / +100 (black)",
+            "corrected_to": "(deprecated — mechanic absent from remake canon)",
+            "reason": "Comprehensive FB2 grep returned 0 hits for \"белые свечи\" / \"чёрные свечи\" / \"прибавьте 20\" / \"прибавьте 100\" / \"Возьми подсвечник\". Mechanic either lost in 1991→1221 renumber or audit cross-talk hallucination. See commit 9559cd8.",
+            "corrected_in_commit": "(this registry-cleanup commit)"
           }
         },
         {
           "item_state": "bear_key",
           "acquisition_paragraph": 612,
-          "modifier": "+400",
+          "modifier": "+40",
           "consumer_paragraphs": "specific bear-locked door(s) (need enumeration)",
           "fb2_quote": "«…старый медведь даст вам медный ключ… прибавляйте… 400.»",
           "status_done": {
@@ -444,12 +463,18 @@
             "verification": "Acquisition string \"Медный ключик\" is now canonical across all four acquisition paragraphs (sec.612 bear-gift, sec.69 / sec.233 / sec.567 goblin-loot). All five new/fixed inventory_condition values match it exactly. sec.851 and sec.881 now show \"Отпереть дверь Медным ключиком\" buttons when player owns the key, fallback choices unchanged. sec.803 and sec.804 now hide their key-related branches when player lacks the key. Reusable token (canon \"им можно открыть МНОГИЕ двери\" implies multi-use). No consume_on_use applied even though sec.891 narrates key jamming — that is narrative flavor; the item remains in inventory per the canonical +40 mechanic. consume-on-jam is a future enhancement, not in this commit.",
             "registry_errors_fixed": "Future registry cleanup tasks: (1) change bear_key modifier from \"+400\" to \"+40\"; (2) clarify item-name semantics — \"bear_key\" registry entry actually covers BOTH bear-gift and goblin-loot acquisition routes for the same mechanical item, unified under inventory string \"Медный ключик\".",
             "post_audit_followup": "Post-audit (Gemini 3.1 Pro): added consume_on_use:\"Медный ключик\" to the sec.851→sec.891 choice. Canonical FB2 at sec.891 narrates \"ключ не поворачивается… ключ обламывается… бросаете оставшуюся от ключа часть на пол\". The key physically breaks; mechanically removing it from inventory now matches canon. Other bear_key consumers (sec.803/sec.804/sec.881) remain reusable per canon (\"им можно открыть многие двери\"). Engine extension applyChoiceConsume() added in same commit."
+          },
+          "modifier_history": {
+            "original_registry_value": "+400",
+            "corrected_to": "+40",
+            "reason": "Canonical sec.612 text says \"прибавьте 40\" (not 400). Computing +400 from any candidate consumer yielded nonsense destinations. Also: item_state name implies single bear-gift acquisition, but FB2 has TWO acquisition routes (bear-gift sec.612 AND goblin-loot sec.69 / sec.233 / sec.567) for the SAME mechanical item, unified under inventory string \"Медный ключик\". See commit fa37667.",
+            "corrected_in_commit": "(this registry-cleanup commit)"
           }
         },
         {
           "item_state": "white_arrow_navigation",
           "acquisition_paragraph": 688,
-          "modifier": "-550",
+          "modifier": "+400 (throne-tray knowledge, NOT white-arrow navigation)",
           "consumer_paragraphs": "labyrinth bailout situations",
           "fb2_quote": "«Если вы заблудитесь в подземелье или устанете бродить по ее лабиринтам, то вычтите… 550.»",
           "comment": "Distinct from the §535 'Белую стрелу?' offer-branch in group_3 — the same physical item has both an offer-branch use AND a labyrinth-navigation arithmetic use.",
@@ -458,6 +483,12 @@
             "summary": "white_arrow_navigation is item 13 of 13 — the FINAL group_6 closure. Registry entry was comprehensively misdiagnosed: (1) modifier \"-550\" was wrong (canonical sec.688 says \"+400\"), (2) item description \"labyrinth bailout\" was wrong (mechanic is throne-tray knowledge, not labyrinth navigation), (3) item NAME implied the white arrow inventory item but the arrow itself is already fully wired in prior groups (3 acquisition routes, 3 consumer paths via item-offer pattern). The +400 mechanic at sec.688 is a SEPARATE token: knowledge of the throne-tray secret. After discovering the secret tray in the dining-hall throne (sec.688), the player gains transferable knowledge they can apply to ANOTHER throne. Single canonical +400 consumer: sec.741 (Hall-of-Council throne) → sec.1141 (canonical narrative \"вы помните, как открывался потайной ящичек в троне, стоящем в столовой… теперь в секретном ящичке не стрела, а карта-план этажа\"). sec.1141 was COMPLETELY ORPHAN in remake — no paragraph targeted it. Implementation: new \"Знание о троне\" inventory token granted at sec.688 (alongside the existing white arrow), gated choice at sec.741 → sec.1141. Token chosen instead of reusing \"Белая стрела\" because the arrow has TWO other acquisition routes (sec.600 taverna, sec.535 trade) that do not impart the throne-tray knowledge.",
             "verification": "sec.688 now grants BOTH \"Белая стрела\" AND \"Знание о троне\" via auto_items on entry. The arrow remains a separate physical item with its own item-offer and door-opening consumers. The throne-knowledge token gates ONLY sec.741 → sec.1141. Players acquiring the arrow at sec.600 or sec.535 do NOT receive the throne-knowledge token — correctly so, since they never witnessed the canonical throne mechanism. sec.741 now shows three choices: gated \"Применить знание о троне (1141)\" first, then the two existing manual-door choices (sec.809 / sec.1076). Reusable token; no consume_on_use. sec.1141 routes the player to a luck-check (sec.974 if lucky / sec.1118 if unlucky), both wired in prior commits.",
             "registry_errors_summary": "This registry entry had three independent transcription errors (modifier sign + value + mechanic semantics + item-name misuse). Future cleanup: rename \"white_arrow_navigation\" → \"throne_tray_knowledge\" in items list, modifier \"+400\", and document that the white-arrow inventory item is a separate fully-shipped item."
+          },
+          "modifier_history": {
+            "original_registry_value": "-550",
+            "corrected_to": "+400 (throne-tray knowledge, NOT white-arrow navigation)",
+            "reason": "Three independent transcription errors in original entry: (1) modifier sign+value (-550 should be +400); (2) mechanic semantics (\"labyrinth bailout\" should be \"throne-tray knowledge\"); (3) item-name implied the white-arrow inventory item, but +400 actually gates a SEPARATE \"Знание о троне\" token granted at sec.688. The white arrow itself is a separately wired item (3 acquisition routes, 3 consumer paths) already fully shipped. See commit fe72347. Conceptual rename to \"throne_tray_knowledge\" recorded in the comment but item_state key NOT changed (would break progress map references).",
+            "corrected_in_commit": "(this registry-cleanup commit)"
           }
         },
         {
@@ -478,7 +509,7 @@
         {
           "item_state": "spell_book",
           "acquisition_paragraph": 1137,
-          "modifier": "+24 (or +20 — verify)",
+          "modifier": "+24",
           "consumer_paragraphs": "unknown inscriptions / contextual matches",
           "fb2_quote": "«Когда в пути встретится незнакомая надпись, прибавьте 24 к номеру параграфа, на котором будете находиться, и книга вам поможет.»",
           "warning": "Multi-step branching when book responds; highest implementation complexity in this cluster.",
@@ -487,6 +518,12 @@
             "summary": "spell_book is item 11 of 13 in the group_6 cluster. Registry modifier \"+20\" was wrong: canonical sec.1137 acquisition text says \"прибавьте 24\" (+24, not +20). ChatGPT v4 was correct on the modifier. Acquisition sec.1137 previously had no auto_items — the magic book was described in narrative (\"находите то, что хранила Рука — пыльную Книгу\") but never inventoried. Four canonical +24 decoder consumer pairs verified via FB2 grep for \"расшифр\" + \"надпис\" + numerical Δ=24 offset: sec.4→sec.28 (stone inscriptions answers), sec.339→sec.363 (stone inscriptions translation), sec.732→sec.756 (7-cranes labels), sec.798→sec.822 (control-panel labels). All four target paragraphs were ORPHAN in remake until this commit. The canonical decoder function of the spell book was entirely missing.",
             "verification": "sec.1137 now grants \"Книга\" via auto_items on entry. Four consumer paragraphs each gain a \"Расшифровать с помощью Книги\" gated choice prepended to their existing manual choices. Decoder targets reveal canonical translations: sec.28 with 3-answer hint (pautina/kladbishche/smert), sec.363 with fork-prophecy, sec.756 with 7-crane labels, sec.822 with 6-panel labels. Reusable token (canon \"когда в пути встретится незнакомая надпись\" with imperfective verb implies multi-use); no consume_on_use applied.",
             "registry_error_fixed": "Future cleanup: change registry modifier from \"+20\" to \"+24\"."
+          },
+          "modifier_history": {
+            "original_registry_value": "+24 (or +20 — verify)",
+            "corrected_to": "+24",
+            "reason": "Canonical sec.1137 text says \"прибавьте 24\". The \"(or +20 — verify)\" qualifier was an earlier-audit hedge; FB2 verification in commit 435c051 confirmed +24 is correct.",
+            "corrected_in_commit": "(this registry-cleanup commit)"
           }
         },
         {
@@ -615,6 +652,22 @@
           "gap": "auto_items currently grants only gold:10 + acquires:\"Свеча\". FB2 narrative additionally mentions \"серебряное кольцо\" inventory item and \"1 УДАЧУ\" stat boost — both NOT currently shipped.",
           "priority": "P2 — canonical content missing",
           "discovered_in_commit": "(bandit_tip closure)"
+        }
+      ],
+      "registry_hygiene": [
+        {
+          "commit": "(this commit)",
+          "summary": "Pure registry-cleanup pass. Updated top-level \"modifier\" fields in 3 item entries (thread_ball, figured_key, bear_key) to reflect canonical FB2 values discovered during the group_6 implementation series. Each item's modifier_history field preserves the original registry value and explains the correction. No data, engine, smoke-test, build, or behavioural changes — pure bookkeeping. Second pass updated 3 additional items (candle_set, white_arrow_navigation, spell_book) where the actual modifier string format differed from the initial guess.",
+          "items_updated": [
+            "thread_ball",
+            "figured_key",
+            "bear_key"
+          ],
+          "second_pass_updates": [
+            "candle_set",
+            "white_arrow_navigation",
+            "spell_book"
+          ]
         }
       ]
     },
