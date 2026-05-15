@@ -845,6 +845,27 @@ SCENARIOS = [
         "what_to_check": "After visiting all three ring/orange acquisition paragraphs, sec.226 shows FIVE buttons: gated ruby_ring → sec.627, gated golden_orange → sec.976, gated emerald → sec.86 (fail-feedback), plus two fallbacks. The player has full diagnostic feedback for any item choice. Canonical victory route via ruby or orange remains the success path.",
         "commit": "group_6_emerald_ring",
     },
+    # ── Group 6 extension: bandit_tip (item 15, +910 treasure-tip) ─
+    {
+        "id": "bandit_tip_acq_sec385",
+        "target": 385,
+        "what_to_check": "sec.385 (player chose to help dying bandit with water) — clicking the only nav choice to sec.554 should grant 'Знание о кладе' via the acquires field. Open inventory after: token present. The narrative establishes the dying bandit\'s treasure tip about a dry tree with a hollow.",
+        "commit": "group_6_bandit_tip",
+    },
+    {
+        "id": "bandit_tip_sec19_NO_knowledge",
+        "target": 19,
+        "what_to_check": "Without 'Знание о кладе' in inventory, sec.19 (uprooted tree with hollow) shows the TWO original fallback buttons: 'Присядете отдохнуть (167)' and 'Пройдете мимо (452)'. The gated treasure-dig button must be HIDDEN.",
+        "commit": "group_6_bandit_tip",
+    },
+    {
+        "id": "bandit_tip_sec19_WITH_knowledge",
+        "target": 19,
+        "must_visit": [385],
+        "what_to_check": "After visiting sec.385, sec.19 shows THREE buttons including 'Копать под дуплом сухого дерева (929)'. Click → sec.929 treasure-chest narrative (10 gold + Свеча via existing auto_items + 1 LUCK + Серебряное кольцо per canon — note known_gap: серебряное кольцо and 1 LUCK not yet in auto_items). This route was the SOLE canonical entry to sec.929 before this commit; without it, the candle_lamp acquisition via this paragraph was unreachable.",
+        "commit": "group_6_bandit_tip",
+    },
+
 
 
 
