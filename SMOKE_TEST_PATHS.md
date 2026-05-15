@@ -1753,7 +1753,22 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §929
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Пройти мимо по тропинке дальше в лес → §560'
+     7. From §560: click 'Посмотрите, что за тропинка и куда она приведет → §538'
+     8. From §538: click 'Попробовать залезть на него → §370'
+     9. From §370: click 'Слева → §461'
+    10. From §461: click 'Выбравшись наружу, вы оказываетесь на широкой дороге → §250'
+    11. From §250: click 'Взять бронзовый свисток и идти по дороге вдоль реки → §19'
+    12. From §19: click 'Копать под дуплом сухого дерева → §929'
+```
+  (12 clicks total, graph: full)
 
 ---
 
@@ -3506,11 +3521,109 @@ Conventions:
 
 ---
 
+## bandit_tip_acq_sec385
+
+**Target:** §385
+
+**Commit:** `group_6_bandit_tip`
+
+**What to check:** sec.385 (player chose to help dying bandit with water) — clicking the only nav choice to sec.554 should grant 'Знание о кладе' via the acquires field. Open inventory after: token present. The narrative establishes the dying bandit's treasure tip about a dry tree with a hollow.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Свернуть на нее → §5'
+     8. From §5: click 'Идти прямо → §105'
+     9. From §105: click 'Идти дальше → §467'
+    10. From §467: click 'Продолжать идти прямо → §553'
+    11. From §553: click 'Попросту уйти с поляны, ничего не трогая → §480'
+    12. From §480: click 'Пойти прямо → §483'
+    13. From §483: click 'Опять идти прямо → §566'
+    14. From §566: click 'Подойти к человеку и выяснить, что ему надо → §279'
+    15. From §279: click 'Дать умирающему напиться → §385'
+```
+  (15 clicks total, graph: basic)
+
+---
+
+## bandit_tip_sec19_NO_knowledge
+
+**Target:** §19
+
+**Commit:** `group_6_bandit_tip`
+
+**What to check:** Without 'Знание о кладе' in inventory, sec.19 (uprooted tree with hollow) shows the TWO original fallback buttons: 'Присядете отдохнуть (167)' and 'Пройдете мимо (452)'. The gated treasure-dig button must be HIDDEN.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Пройти мимо по тропинке дальше в лес → §560'
+     7. From §560: click 'Посмотрите, что за тропинка и куда она приведет → §538'
+     8. From §538: click 'Попробовать залезть на него → §370'
+     9. From §370: click 'Слева → §461'
+    10. From §461: click 'Выбравшись наружу, вы оказываетесь на широкой дороге → §250'
+    11. From §250: click 'Взять бронзовый свисток и идти по дороге вдоль реки → §19'
+```
+  (11 clicks total, graph: full)
+
+---
+
+## bandit_tip_sec19_WITH_knowledge
+
+**Target:** §19
+
+**Commit:** `group_6_bandit_tip`
+
+**Must visit first:** §385
+
+**What to check:** After visiting sec.385, sec.19 shows THREE buttons including 'Копать под дуплом сухого дерева (929)'. Click → sec.929 treasure-chest narrative (10 gold + Свеча via existing auto_items + 1 LUCK + Серебряное кольцо per canon — note known_gap: серебряное кольцо and 1 LUCK not yet in auto_items). This route was the SOLE canonical entry to sec.929 before this commit; without it, the candle_lamp acquisition via this paragraph was unreachable.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Свернуть на нее → §5'
+     8. From §5: click 'Идти прямо → §105'
+     9. From §105: click 'Идти дальше → §467'
+    10. From §467: click 'Продолжать идти прямо → §553'
+    11. From §553: click 'Попросту уйти с поляны, ничего не трогая → §480'
+    12. From §480: click 'Пойти прямо → §483'
+    13. From §483: click 'Опять идти прямо → §566'
+    14. From §566: click 'Подойти к человеку и выяснить, что ему надо → §279'
+    15. From §279: click 'Дать умирающему напиться → §385'
+    16. From §385: click 'Теперь же сделав все, что можно для умирающего… → §554'
+    17. From §554: click 'По тропинке → §78'
+    18. From §78: click 'Тропинкой пользуются не часто! Но должна же → §250'
+    19. From §250: click 'Взять бронзовый свисток и идти по дороге вдоль реки → §19'
+```
+  (19 clicks total, graph: full)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **82 / 97**
-- Scenarios needing manual route discovery: **15**
+- Scenarios with paths found: **86 / 100**
+- Scenarios needing manual route discovery: **14**
 
 ### Manual routing required for:
 
@@ -3518,7 +3631,6 @@ Conventions:
   - fish_help_sec32_WITH_token: §1 → §32 via [13]
   - fish_help_sec203_WITH_token: §1 → §203 via [13]
   - fish_help_sec699_WITH_token: §1 → §699 via [13]
-  - candle_lamp_acq_sec929: §1 → §929
   - candle_lamp_sec696_WITH_token: §1 → §696 via [600]
   - candle_lamp_sec1000_WITH_token: §1 → §1000 via [600]
   - bear_key_sec851_WITH_key: §1 → §851 via [612]

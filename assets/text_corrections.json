@@ -29,7 +29,8 @@
     "v2.22 -> v2.23": "May 2026 — Group 6 item 12 of 13 (golden_orange) closed. Registry modifier \"+750\" verified at canonical sec.74. Acquisition already shipped via auto_items. Single canonical +750 consumer sec.226 → sec.976 wired via inventory_condition. sec.976 was orphan in remake. This is the parallel canonical Princess wake-up route — both ruby_ring (sec.627 via +401) and golden_orange (sec.976 via +750) lead to sec.1120/sec.1220 victory routing. Player can hold either or both items and the gating shows the appropriate button.",
     "v2.23 -> v2.24": "May 2026 — Group 6 FINAL CLOSURE (item 13 of 13, white_arrow_navigation). Registry entry had three transcription errors: modifier \"-550\" (actually \"+400\"), mechanic \"labyrinth bailout\" (actually \"throne-tray knowledge\"), and item-name implying the white-arrow inventory item (actually a separate canonical knowledge token). Implementation: new \"Знание о троне\" token granted at sec.688 alongside existing white arrow, single canonical +400 consumer sec.741 → sec.1141 wired via inventory_condition. sec.1141 was orphan in remake. With this commit, group_6 is fully closed: 11 status_done, 1 verification-only (gold_key), 1 status_deprecated (candle_set). Final tally added to group_6.group_complete registry entry. No new engine work beyond the fish_help dead-end fix from commit 9c037b3. Future follow-ups documented including emerald_ring -140 mechanic and unknown +910/+916 modifiers identified during the audit series.",
     "v2.24 -> v2.25": "May 2026 — Post-audit closure for group_6 (Gemini 3.1 Pro audit). Engine extension: new applyChoiceConsume(ch) function in src/game_logic.js (mirrors applyChoiceGoldCost pattern). Wired into all 3 choice-click sites in makeChoiceBtn. Data: consume_on_use field added to two canonical single-use consumers: sec.851→sec.891 (\"Медный ключик\" breaks per sec.891 narrative) and sec.226→sec.976 (\"Золотой апельсин\" cut up per sec.976 narrative). Closes both P3 narrative-dissonance findings from the Gemini audit. Other group_6 items remain reusable per their respective canonical narratives — no other consume_on_use additions needed.",
-    "v2.25 -> v2.26": "May 2026 — Group 6 extension (post-Gemini-audit follow-up #2): emerald_ring -140 mechanic closed as item 14 of the cluster. Previously tracked only as a pending follow-up in ruby_ring registry notes (commit e3a42f9). sec.479 acquisition now grants \"Перстень с изумрудом\" via auto_items (was unwired). sec.226 → sec.86 wired as canonical FAIL-feedback path (inverse of ruby/orange success paths). sec.86 was orphan in remake. Completes ring-trilogy narrative at sec.226 — player gets explicit feedback for any of the 3 ring/fruit choices, not just dead-end fallbacks."
+    "v2.25 -> v2.26": "May 2026 — Group 6 extension (post-Gemini-audit follow-up #2): emerald_ring -140 mechanic closed as item 14 of the cluster. Previously tracked only as a pending follow-up in ruby_ring registry notes (commit e3a42f9). sec.479 acquisition now grants \"Перстень с изумрудом\" via auto_items (was unwired). sec.226 → sec.86 wired as canonical FAIL-feedback path (inverse of ruby/orange success paths). sec.86 was orphan in remake. Completes ring-trilogy narrative at sec.226 — player gets explicit feedback for any of the 3 ring/fruit choices, not just dead-end fallbacks.",
+    "v2.26 -> v2.27": "May 2026 — Group 6 extension (post-Gemini-audit follow-up #3): bandit_tip +910 mechanic closed as item 15 of the cluster. Previously tracked only as unknown modifier in golden_orange audit. sec.385 grants \"Знание о кладе\" via acquires on the bandit-help nav choice; sec.19 → sec.929 gated treasure-dig choice added. sec.929 was ORPHAN in remake — this commit is its sole canonical entry, indirectly fixing candle_lamp acquisition route through this paragraph. Companion +916 letter-riddle mechanic at sec.1131 decoded but registered as future_enhancements entry (requires new engine UI work, out of scope). sec.929 auto_items known_gap recorded for serebryanoe kol'co and 1 LUCK currently missing."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -539,6 +540,19 @@
             "summary": "emerald_ring closes the ring-trilogy at sec.226 with the canonical FAIL-feedback path. sec.479 acquisition now grants \"Перстень с изумрудом\" via auto_items (was unwired). sec.226 now has a gated emerald choice → sec.86 (\"Перстень с изумрудом очень красив, но как он может помочь разбудить Принцессу? Может быть, он и мог бы где-нибудь пригодиться, но сейчас бесполезен\"). sec.86 was ORPHAN in remake until this commit — canonical emerald-fail feedback was unreachable. Player who chose emerald at sec.623 (instead of ruby) now sees explicit feedback at sec.226 rather than just hitting the two no-progress fallbacks (sec.1057 mirror / sec.860 candles). sec.86 routes to sec.1034 (Barlad approaching) continuing the canonical chain.",
             "verification": "sec.479 grants \"Перстень с изумрудом\" via auto_items on entry; sec.226 shows the emerald-fail option only when the player owns the emerald ring. sec.86 narrative reads cleanly as the canonical failure response and routes to sec.1034 final-chain entry. No consume_on_use — canon at sec.86 says \"мог бы где-нибудь пригодиться\", implying the ring remains intact (though no other canonical consumer exists in the 1221 canon)."
           }
+        },
+        {
+          "item_state": "bandit_tip",
+          "modifier": "+910",
+          "fb2_quote": "Если вы ему поверили, то, когда увидите дерево, прибавьте 910 к номеру параграфа, на котором будете находиться, и попробуйте поискать клад.",
+          "fb2_paragraph": 385,
+          "comment": "Discovered during the golden_orange audit (commit ce1d54d) as one of two unknown +N modifiers (+910 at sec.385, +916 at sec.1131). Decoded post-emerald_ring (commit f19d59d) and closed in this commit as item 15 of the group_6 extension. Dying-bandit gives the player a treasure tip; when player reaches the dry-tree paragraph (sec.19), +910 leads to the treasure-dig narrative at sec.929. sec.929 was COMPLETELY ORPHAN in remake — this commit restores its canonical entry point AND incidentally fixes the candle_lamp acquisition route through sec.929 (which was technically wired in 1c57f48 but practically unreachable).",
+          "status_done": {
+            "commit": "(this commit)",
+            "summary": "bandit_tip (+910 mechanic) closes the dying-bandit treasure-tip narrative. sec.385 acquisition grants \"Знание о кладе\" on click of the existing sec.554 nav choice (i.e. when player has helped the bandit). sec.19 (uprooted tree with hollow) gains a gated treasure-dig choice → sec.929 alongside the existing sec.167/sec.452 fallbacks. sec.929 (canonical treasure-chest narrative with 10 gold + Свеча + 1 LUCK) was orphan in remake — this commit is its sole canonical entry point.",
+            "verification": "sec.385 grants \"Знание о кладе\" only on the sec.554 continue-path choice (i.e. when player chose to help the bandit; no fallback choice in sec.385 since helping is mandatory at that paragraph). sec.19 without the knowledge shows two manual choices unchanged. sec.19 with the knowledge shows three choices; click of the gated option leads to sec.929 treasure narrative which currently grants Свеча and 10 gold (canonical text also mentions \"серебряное кольцо\" and 1 LUCK which are NOT currently in auto_items — flagged as known gap, separate from bandit_tip scope). Reusable token; no consume_on_use.",
+            "incidental_orphan_fix": "sec.929 had ZERO inbound paragraphs in remake before this commit (verified via comprehensive grep). The candle_lamp commit (1c57f48) wired Свеча acquisition at sec.929 but the paragraph was unreachable. This commit restores the canonical entry point, indirectly fixing the candle_lamp acquisition path through this route."
+          }
         }
       ],
       "progress": {
@@ -555,7 +569,8 @@
         "spell_book": "status_done",
         "golden_orange": "status_done",
         "white_arrow_navigation": "status_done",
-        "emerald_ring": "status_done"
+        "emerald_ring": "status_done",
+        "bandit_tip": "status_done"
       },
       "group_complete": {
         "completed_at_commit": "(this commit)",
@@ -579,8 +594,29 @@
         "post_audit_extension_emerald_ring": {
           "commit": "(this commit)",
           "summary": "emerald_ring (-140 mechanic at sec.479) closed as item 14 of an extended group_6 cluster. Previously tracked only as a pending follow-up in ruby_ring registry notes. Completes the ring-trilogy at sec.226 with canonical fail-feedback for the emerald-picker player. sec.86 was orphan, now wired. Reuses existing engine machinery (no new code, no consume_on_use)."
+        },
+        "post_audit_extension_bandit_tip": {
+          "commit": "(this commit)",
+          "summary": "bandit_tip (+910 mechanic at sec.385) closed as item 15 of an extended group_6 cluster. Previously tracked only as an unknown modifier in golden_orange audit notes. Restores the canonical dying-bandit treasure-tip narrative and indirectly fixes the previously-orphan sec.929 candle_lamp acquisition path."
         }
-      }
+      },
+      "future_enhancements": [
+        {
+          "name": "letter_sum_riddle_mechanic",
+          "paragraph": 1131,
+          "modifier": "+916 / +825",
+          "description": "sec.1131 spider riddle (\"стоит село — заселено, но петухи там не поют, и люди не встают\") — answer \"кладбище\", letter-ordinal sum 76, 76+916=sec.992 canonical success. sec.992 contains a CHAIN second riddle (\"стоит столб\") with +825 modifier requiring further decoding. Currently sec.1131 only routes to sec.1190 (death-by-wrong-answer). The success path (sec.992 + chain) requires NEW engine work: either text-input UI for the player to type their answer, or multiple-choice answer selection with pre-computed targets. Fundamentally different mechanic from item-gating; unknown if other letter-riddle paragraphs exist in the canon. Discovered during bandit_tip closure investigation. Not in group_6 scope; tracked here for future engine extension work.",
+          "status": "documented, not implemented"
+        }
+      ],
+      "known_gaps": [
+        {
+          "paragraph": 929,
+          "gap": "auto_items currently grants only gold:10 + acquires:\"Свеча\". FB2 narrative additionally mentions \"серебряное кольцо\" inventory item and \"1 УДАЧУ\" stat boost — both NOT currently shipped.",
+          "priority": "P2 — canonical content missing",
+          "discovered_in_commit": "(bandit_tip closure)"
+        }
+      ]
     },
     "group_7_inventory_loss_text_engine_mismatch": {
       "comment": "Paragraphs where the text says inventory and/or gold are lost (player robbed, drugged, etc.) but auto_items is empty so engine never honours the loss. Player keeps everything, breaking narrative causality.",
