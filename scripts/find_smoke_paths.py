@@ -865,6 +865,33 @@ SCENARIOS = [
         "what_to_check": "After visiting sec.385, sec.19 shows THREE buttons including 'Копать под дуплом сухого дерева (929)'. Click → sec.929 treasure-chest narrative (10 gold + Свеча via existing auto_items + 1 LUCK + Серебряное кольцо per canon — note known_gap: серебряное кольцо and 1 LUCK not yet in auto_items). This route was the SOLE canonical entry to sec.929 before this commit; without it, the candle_lamp acquisition via this paragraph was unreachable.",
         "commit": "group_6_bandit_tip",
     },
+    # ── §600 sibling audit follow-ups ─
+    {
+        "id": "gold_ring_acq_sec1050",
+        "target": 1050,
+        "what_to_check": "After defeating Тролль at §1050, auto_items grants 'Золотое кольцо' (clean name, no longer 'Из его кармана…' fragment) plus +1 LUCK. Inventory shows the clean ring name; HUD shows the LUCK increment. Single nav choice → §383 unchanged.",
+        "commit": "group_6_post_audit_sibling_gold_ring",
+    },
+    {
+        "id": "gold_ring_sec1164_NO_ring",
+        "target": 1164,
+        "what_to_check": "Without 'Золотое кольцо' in inventory, §1164 (Barlad Dert dialogue) shows only the TWO original choices: 'Выхватить меч и попробовать убить мага (776)' and 'Иначе вам придется просто стоять и смотреть (823)'. The gated ring-twist button must be HIDDEN.",
+        "commit": "group_6_post_audit_sibling_gold_ring",
+    },
+    {
+        "id": "gold_ring_sec1164_WITH_ring",
+        "target": 1164,
+        "must_visit": [1050],
+        "what_to_check": "After defeating Тролль at §1050 (acquires gold ring), §1164 shows THREE choices including new gated 'Повернуть Золотое кольцо на пальце (1112)'. Click → §1112 canonical Barlad insta-kill: 'Вы поворачиваете на пальце золотое кольцо. Гром потрясает Замок до основания. Ваш противник замертво падает со стула — 81'. consume_on_use removes the ring from inventory after this single canonical use. This is THE THIRD canonical Barlad-defeat route.",
+        "commit": "group_6_post_audit_sibling_gold_ring",
+    },
+    {
+        "id": "orc_drop_sec462_content_fidelity",
+        "target": 462,
+        "what_to_check": "§462 auto_items now grants 3 gold + Игральная кость + Фляга с водой (matching canonical 'В кармане у Орка лежит 3 золотых и игральная кость' plus the pre-existing flask). HUD shows +3 gold notification. Pickup modal offers Фляга с водой + Игральная кость.",
+        "commit": "group_6_post_audit_sibling_sec462",
+    },
+
 
 
 
