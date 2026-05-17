@@ -38,15 +38,28 @@ performed by Gemini 3.1 Pro in May 2026.
 
 Final group_6 cluster: 16 items addressed (14 status_done, 1 verification-only, 1 status_deprecated).
 
-### `spell_economy_may_2026/` — Spell economy review
+### `spell_economy_may_2026/` — Spell economy review + spell hook audit
 
-Comprehensive audit of all 8 canonical spells against current data hooks. Conducted by Claude (this session) in May 2026 after the group_6 cluster closure.
+Comprehensive audit of all 8 canonical spells against current data hooks. Initial review by Claude (May 2026) revealed 30% data-hook coverage of canonical FB2 spell mentions. Follow-up Gemini Deep Research audit pending.
 
 **Files:**
-- `SPELL_ECONOMY_REVIEW.md` — full findings + 3 recommended options for follow-up
+- `SPELL_ECONOMY_REVIEW.md` — Claude's initial review (May 2026): per-spell coverage table, HEALING engine-driven note, three recommended options for follow-up
+- `SPELL_HOOKS_AUDIT_TASK.md` — task spec for Gemini 3 Thinking Deep Research mode
+- `SPELL_CANDIDATE_PARAGRAPHS.md` — primary data: pre-extracted FB2 text + current remake_data.js JSON for all 132 paragraphs across 8 spells, with auto-categorization hints
+- `GRAPH_AUDIT_REPORT_POST_SPELL_HOOKS.md` — Gemini's findings (PENDING — to be added after audit completion)
 
-**Key finding:** Only **30% data-hook coverage** of canonical FB2 spell mentions. ~50-60 paragraphs have player-cast spell choices without proper `spell:"X"` field wiring (P0/P1 bugs — spell budget doesn't decrement on click).
+**Key finding to verify:** ~50-60 paragraphs have player-cast spell choices missing `spell:"X"` field (P0/P1 bug — spell budget not decrementing on click). Confirmed P0 examples: §93 LEVITATION marsh, §7 SWIMMING/LEVITATION lake, §415 HEALING bear cub.
 
-**Recommendation:** Defer to new audit-and-implement cycle (similar pattern to group_6) — too large for single commit, needs FB2 narrative verification per paragraph.
+**Status:** Audit task prepared, awaiting external LLM execution.
 
-**Outcome:** Documentation-only archival commit. No source code, data, registry, or build changes. Registered as future audit cycle target.
+### `letter_riddle_engine_may_2026/` — Letter-sum riddle engine design
+
+Design proposals for implementing the canonical letter-sum riddle mechanic at FB2 §1131 and §992. Discovered during the `bandit_tip` closure (commit `a91d540`) as out-of-scope for group_6 — requires new engine UI work.
+
+**Files:**
+- `LETTER_RIDDLE_DESIGN_BRIEF.md` — design task spec for generic extended thinking LLM (ChatGPT 5.5 Plus thinking OR Gemini 3.1 Pro extended thinking)
+- `RIDDLE_DESIGN_PROPOSAL.md` — LLM's design proposals (PENDING — to be added after task completion)
+
+**Mechanic:** Player computes letter-ordinal sum of riddle answer ("кладбище" = 76), adds canonical modifier (916 / 825), navigates to result paragraph. Wrong answer → death narrative.
+
+**Status:** Design brief prepared, awaiting external LLM execution.
