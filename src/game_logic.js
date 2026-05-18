@@ -409,7 +409,9 @@ function renderGame(){
   }
   document.getElementById('s-text').innerHTML=illustHtml+fmtText(sec.text);
   document.getElementById('s-area').scrollTop=0;
-  renderChoices(sec);
+  // Riddle mechanic dispatch: if paragraph has a riddle field, render the
+  // text-input widget instead of standard choice buttons. Per group_18 design.
+  if(sec.riddle){renderRiddle(sec);}else{renderChoices(sec);}
   // Track visited
   const firstVisit=!S.visited.includes(S.section);
   if(firstVisit)S.visited.push(S.section);
@@ -500,8 +502,9 @@ function renderGame(){
   // renderChoices and must not be short-circuited here even when no
   // ordinary navigation choice is visible.
   const inCombatOrLuck=(sec.enemies&&sec.enemies.length>0)||sec.has_luck;
+  const hasRiddle=!!sec.riddle;
   const visibleChoices=sec.choices.filter(ch=>passesInventoryCheck(ch)&&passesGoldCheck(ch));
-  if(!inCombatOrLuck&&visibleChoices.length===0&&S.section!==617){
+  if(!inCombatOrLuck&&!hasRiddle&&visibleChoices.length===0&&S.section!==617){
     playSound('death');
     showDeathOverlay({sec:sec,secKey:secKey});
     return;
@@ -721,6 +724,140 @@ function applyChoiceConsume(ch){
   playSound('item');
   showItemNotification(removed.map(n=>'− '+n));
   updateHUD();saveGame();
+}
+
+// Letter-sum riddle mechanic (group_18, May 2026).
+// Two canonical riddles in the FB2: sec.1131 (cemetery riddle, +916 → sec.992)
+// and sec.992 (spider's column riddle, +825 → sec.932). Player types Russian
+// answer; engine computes letter-ordinal sum and adds the modifier. Anti-cheat
+// by design — answer string is never stored in code or data. Math sum is
+// one-way; modifier + valid_targets reveal nothing about the answer (76
+// could be "кладбище" or thousands of other 76-summing strings).
+//
+// Russian alphabet: А=1, Б=2 ... Ё=7 ... Я=33. The "*" prefix below makes
+// indexOf return the correct 1-based position for letters.
+const ALPHABET_RU='*АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+
+function applyRiddleAnswer(input,riddleConfig){
+  if(!input||!riddleConfig)return;
+  // Normalise: uppercase, strip everything except Cyrillic letters.
+  let cleaned=input.toUpperCase().replace(/[^А-ЯЁ]/g,'');
+  // Optional ё→е equivalence (per-riddle config). When alphabet_mode is
+  // "ru_yo_eq", treat ё as е for the sum. Default ("ru_standard") uses
+  // canonical 33-letter alphabet with Ё=7.
+  if(riddleConfig.alphabet_mode==='ru_yo_eq'){
+    cleaned=cleaned.replace(/Ё/g,'Е');
+  }
+  // Compute letter-ordinal sum.
+  let sum=0;
+  for(const ch of cleaned){
+    const val=ALPHABET_RU.indexOf(ch);
+    if(val>0)sum+=val;
+  }
+  const targetId=sum+riddleConfig.modifier;
+  // Validate: target must be in the valid_targets allow-list AND must
+  // exist in GD. The allow-list prevents random navigation to unintended
+  // paragraphs that happen to have the right offset.
+  const valid=(riddleConfig.valid_targets||[]).includes(targetId);
+  if(valid&&GD[String(targetId)]){
+    S.riddle_attempts=0;
+    logEvent('gain','✓ Загадка разгадана','Параграф: '+targetId);
+    playSound('item');
+    goTo(targetId);
+  }else{
+    handleRiddleFail(riddleConfig);
+  }
+}
+
+function handleRiddleFail(riddleConfig){
+  S.riddle_attempts=(S.riddle_attempts||0)+1;
+  const maxAttempts=riddleConfig.max_attempts||3;
+  const remaining=maxAttempts-S.riddle_attempts;
+  if(remaining<=0){
+    S.riddle_attempts=0;
+    logEvent('loss','✗ Загадка не разгадана','Параграф: '+riddleConfig.fail_target);
+    playSound('death');
+    goTo(riddleConfig.fail_target);
+  }else{
+    // Visual feedback: shake animation + attempts counter.
+    const input=document.getElementById('riddle-input');
+    const feedback=document.getElementById('riddle-feedback');
+    const remEl=document.getElementById('riddle-attempts');
+    if(input){
+      input.classList.remove('shake');
+      void input.offsetWidth; // restart animation
+      input.classList.add('shake');
+      input.value='';
+      input.focus();
+    }
+    if(feedback&&remEl){
+      remEl.textContent=remaining;
+      feedback.classList.remove('hidden');
+    }
+    saveGame();
+  }
+}
+
+function renderRiddle(sec){
+  // Replaces renderChoices when sec.riddle is present. Renders a Cyrillic
+  // text input + submit button + feedback row showing remaining attempts.
+  const cont=document.getElementById('choices');
+  if(!cont)return;
+  cont.innerHTML='';
+  const maxAttempts=sec.riddle.max_attempts||3;
+  const used=S.riddle_attempts||0;
+  const remaining=Math.max(0,maxAttempts-used);
+  // Build UI
+  const wrap=document.createElement('div');
+  wrap.className='riddle-container';
+  // Input row
+  const inputRow=document.createElement('div');
+  inputRow.className='riddle-input-row';
+  const inp=document.createElement('input');
+  inp.type='text';
+  inp.id='riddle-input';
+  inp.placeholder='Ваш ответ (им. падеж, ед. ч.)';
+  inp.autocomplete='off';
+  inp.autocorrect='off';
+  inp.spellcheck=false;
+  inp.maxLength=40;
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();submit();}
+  });
+  const btn=document.createElement('button');
+  btn.className='choice-btn riddle-submit';
+  btn.textContent='Ответить';
+  function submit(){
+    const val=inp.value;
+    if(!val||!val.trim())return;
+    applyRiddleAnswer(val,sec.riddle);
+  }
+  btn.addEventListener('click',submit);
+  inputRow.appendChild(inp);
+  inputRow.appendChild(btn);
+  wrap.appendChild(inputRow);
+  // Feedback line (initially shown only if attempts already used)
+  const fb=document.createElement('div');
+  fb.id='riddle-feedback';
+  fb.className=used>0?'riddle-feedback':'riddle-feedback hidden';
+  fb.innerHTML='Неверно. Осталось попыток: <span id="riddle-attempts">'+remaining+'</span>';
+  wrap.appendChild(fb);
+  // Optional fail-target manual exit (canon-compliant for sec.992 where
+  // the spider explicitly says "если не знаете ответа, уходите — 1123").
+  // Only show when riddle.fail_target_label is set (per-riddle config).
+  if(sec.riddle.fail_target_label){
+    const exitBtn=document.createElement('button');
+    exitBtn.className='choice-btn riddle-exit';
+    exitBtn.textContent=sec.riddle.fail_target_label;
+    exitBtn.addEventListener('click',function(){
+      S.riddle_attempts=0;
+      goTo(sec.riddle.fail_target);
+    });
+    wrap.appendChild(exitBtn);
+  }
+  cont.appendChild(wrap);
+  // Focus input after render (slight delay so DOM is ready).
+  setTimeout(function(){inp.focus();},50);
 }
 
 // Shop / buy-choice mechanism (group_14). A choice with purchase:true is

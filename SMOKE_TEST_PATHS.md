@@ -3778,11 +3778,125 @@ Conventions:
 
 ---
 
+## riddle1_acquisition_sec1131
+
+**Target:** §1131
+
+**Commit:** `group_18_letter_riddle`
+
+**What to check:** sec.1131 (cemetery riddle setup) should render the riddle widget instead of standard choice buttons. Text input + 'Ответить' button visible. No standard navigation choices shown. Manual test: type 'кладбище' + Enter → navigate to sec.992. Type wrong word 3 times → forced navigation to sec.1190 (canonical death by spiders). Russian alphabet sum for 'кладбище' = К(12)+Л(13)+А(1)+Д(5)+Б(2)+И(10)+Щ(27)+Е(6) = 76; 76+916 = 992.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §1131
+
+---
+
+## riddle2_chain_sec992
+
+**Target:** §992
+
+**Commit:** `group_18_letter_riddle`
+
+**Must visit first:** §1131
+
+**What to check:** sec.992 (spider's column riddle) should ALSO render riddle widget (the SECOND riddle). Reached only by correctly answering Riddle 1 at sec.1131. Three buttons visible: input + 'Ответить' + 'Уйти в другую комнату (1123)' (canonical exit option per FB2 'уходите — 1123'). Manual test: type 'смерть' + Enter → sec.932 (spider gives larvae + dice roll). Type wrong 3 times → sec.1123 (NOT death, just exit). Click manual-exit button → sec.1123 immediately. Russian alphabet sum for 'смерть' = С(19)+М(14)+Е(6)+Р(18)+Т(20)+Ь(30) = 107; 107+825 = 932.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §992 via §1131
+
+---
+
+## riddle_anti_cheat_data_inspection
+
+**Target:** §1131
+
+**Commit:** `group_18_letter_riddle`
+
+**What to check:** Open browser devtools → inspect remake_data.js. sec.1131 should show riddle config with modifier:916 and valid_targets:[992]; sec.992 should show modifier:825 and valid_targets:[932]. NO answer strings ('кладбище', 'смерть') anywhere in remake_data.js or game_logic.js. Confirms anti-cheat-by-design — math sum is one-way; cannot recover answer from data.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §1131
+
+---
+
+## riddle_mobile_no_zoom
+
+**Target:** §1131
+
+**Commit:** `group_18_letter_riddle`
+
+**What to check:** On iOS Safari (or mobile emulation): focus the riddle input. Page should NOT zoom in on focus (which would break PWA layout). #riddle-input has font-size:22px in CSS, well above the 16px iOS zoom threshold. Also: autocomplete=off, autocorrect=off, spellcheck=false prevent mobile keyboard suggestions from polluting input.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §1131
+
+---
+
+## riddle1_kladbishche_success
+
+**Target:** §1131
+
+**Commit:** `group_18_letter_riddle`
+
+**What to check:** §1131 (spider cemetery riddle) should render the riddle widget — text input + 'Ответить' button, NOT standard choice buttons. Type 'кладбище' (sum 76 + 916 = §992) and press Enter or click 'Ответить'. Navigation → §992 (canonical success). §992 then chains a second riddle widget. Anti-cheat: 'кладбище' string never appears in code/data.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §1131
+
+---
+
+## riddle1_wrong_answer_attempts
+
+**Target:** §1131
+
+**Commit:** `group_18_letter_riddle`
+
+**What to check:** Type a wrong word (e.g. 'ошибка') in §1131 input. Expected behaviour: input shakes red, feedback shows 'Неверно. Осталось попыток: 2'. After 3 wrong submissions, forced navigation → §1190 (canonical spider death). S.riddle_attempts is reset to 0 between paragraphs.
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §1131
+
+---
+
+## riddle2_smert_success
+
+**Target:** §992
+
+**Commit:** `group_18_letter_riddle`
+
+**What to check:** §992 (spider column riddle) renders riddle widget with manual exit button 'Уйти в другую комнату (1123)'. Type 'смерть' (sum 107 + 825 = §932). Navigation → §932 canonical success: 'Верно, ты угадал, смерть деньгами не подкупишь, — говорит паук, — ты заслужил награды' (spider larvae one-shot items granted via dice roll, then →§1123).
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §992
+
+---
+
+## riddle2_manual_exit
+
+**Target:** §992
+
+**Commit:** `group_18_letter_riddle`
+
+**What to check:** §992 shows manual exit button per canonical 'уходите — 1123'. Click → §1123 directly without attempt counter increment. Different from §1131 which has NO manual exit (canonical forces 3-attempt death).
+
+**Path:**
+
+  ❌ NO PATH FOUND from §1 to §992
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **90 / 104**
-- Scenarios needing manual route discovery: **14**
+- Scenarios with paths found: **90 / 112**
+- Scenarios needing manual route discovery: **22**
 
 ### Manual routing required for:
 
@@ -3800,5 +3914,13 @@ Conventions:
   - consume_on_use_sec891_breaks_key: §1 → §851 via [612]
   - emerald_ring_sec226_WITH_emerald_only: §1 → §226 via [479]
   - emerald_ring_sec226_WITH_all_three_items: §1 → §226 via [479, 74, 1071]
+  - riddle1_acquisition_sec1131: §1 → §1131
+  - riddle2_chain_sec992: §1 → §992 via [1131]
+  - riddle_anti_cheat_data_inspection: §1 → §1131
+  - riddle_mobile_no_zoom: §1 → §1131
+  - riddle1_kladbishche_success: §1 → §1131
+  - riddle1_wrong_answer_attempts: §1 → §1131
+  - riddle2_smert_success: §1 → §992
+  - riddle2_manual_exit: §1 → §992
 
 These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.

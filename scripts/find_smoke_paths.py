@@ -891,6 +891,59 @@ SCENARIOS = [
         "what_to_check": "§462 auto_items now grants 3 gold + Игральная кость + Фляга с водой (matching canonical 'В кармане у Орка лежит 3 золотых и игральная кость' plus the pre-existing flask). HUD shows +3 gold notification. Pickup modal offers Фляга с водой + Игральная кость.",
         "commit": "group_6_post_audit_sibling_sec462",
     },
+    # ── Group 18 letter-sum riddles ─
+    {
+        "id": "riddle1_acquisition_sec1131",
+        "target": 1131,
+        "what_to_check": "sec.1131 (cemetery riddle setup) should render the riddle widget instead of standard choice buttons. Text input + 'Ответить' button visible. No standard navigation choices shown. Manual test: type 'кладбище' + Enter → navigate to sec.992. Type wrong word 3 times → forced navigation to sec.1190 (canonical death by spiders). Russian alphabet sum for 'кладбище' = К(12)+Л(13)+А(1)+Д(5)+Б(2)+И(10)+Щ(27)+Е(6) = 76; 76+916 = 992.",
+        "commit": "group_18_letter_riddle",
+    },
+    {
+        "id": "riddle2_chain_sec992",
+        "target": 992,
+        "must_visit": [1131],
+        "what_to_check": "sec.992 (spider's column riddle) should ALSO render riddle widget (the SECOND riddle). Reached only by correctly answering Riddle 1 at sec.1131. Three buttons visible: input + 'Ответить' + 'Уйти в другую комнату (1123)' (canonical exit option per FB2 'уходите — 1123'). Manual test: type 'смерть' + Enter → sec.932 (spider gives larvae + dice roll). Type wrong 3 times → sec.1123 (NOT death, just exit). Click manual-exit button → sec.1123 immediately. Russian alphabet sum for 'смерть' = С(19)+М(14)+Е(6)+Р(18)+Т(20)+Ь(30) = 107; 107+825 = 932.",
+        "commit": "group_18_letter_riddle",
+    },
+    {
+        "id": "riddle_anti_cheat_data_inspection",
+        "target": 1131,
+        "what_to_check": "Open browser devtools → inspect remake_data.js. sec.1131 should show riddle config with modifier:916 and valid_targets:[992]; sec.992 should show modifier:825 and valid_targets:[932]. NO answer strings ('кладбище', 'смерть') anywhere in remake_data.js or game_logic.js. Confirms anti-cheat-by-design — math sum is one-way; cannot recover answer from data.",
+        "commit": "group_18_letter_riddle",
+    },
+    {
+        "id": "riddle_mobile_no_zoom",
+        "target": 1131,
+        "what_to_check": "On iOS Safari (or mobile emulation): focus the riddle input. Page should NOT zoom in on focus (which would break PWA layout). #riddle-input has font-size:22px in CSS, well above the 16px iOS zoom threshold. Also: autocomplete=off, autocorrect=off, spellcheck=false prevent mobile keyboard suggestions from polluting input.",
+        "commit": "group_18_letter_riddle",
+    },
+    # ── Group 18: Letter-sum riddle engine (May 2026, ChatGPT design) ─
+    {
+        "id": "riddle1_kladbishche_success",
+        "target": 1131,
+        "what_to_check": "§1131 (spider cemetery riddle) should render the riddle widget — text input + 'Ответить' button, NOT standard choice buttons. Type 'кладбище' (sum 76 + 916 = §992) and press Enter or click 'Ответить'. Navigation → §992 (canonical success). §992 then chains a second riddle widget. Anti-cheat: 'кладбище' string never appears in code/data.",
+        "commit": "group_18_letter_riddle",
+    },
+    {
+        "id": "riddle1_wrong_answer_attempts",
+        "target": 1131,
+        "what_to_check": "Type a wrong word (e.g. 'ошибка') in §1131 input. Expected behaviour: input shakes red, feedback shows 'Неверно. Осталось попыток: 2'. After 3 wrong submissions, forced navigation → §1190 (canonical spider death). S.riddle_attempts is reset to 0 between paragraphs.",
+        "commit": "group_18_letter_riddle",
+    },
+    {
+        "id": "riddle2_smert_success",
+        "target": 992,
+        "what_to_check": "§992 (spider column riddle) renders riddle widget with manual exit button 'Уйти в другую комнату (1123)'. Type 'смерть' (sum 107 + 825 = §932). Navigation → §932 canonical success: 'Верно, ты угадал, смерть деньгами не подкупишь, — говорит паук, — ты заслужил награды' (spider larvae one-shot items granted via dice roll, then →§1123).",
+        "commit": "group_18_letter_riddle",
+    },
+    {
+        "id": "riddle2_manual_exit",
+        "target": 992,
+        "what_to_check": "§992 shows manual exit button per canonical 'уходите — 1123'. Click → §1123 directly without attempt counter increment. Different from §1131 which has NO manual exit (canonical forces 3-attempt death).",
+        "commit": "group_18_letter_riddle",
+    },
+
+
 
 
 

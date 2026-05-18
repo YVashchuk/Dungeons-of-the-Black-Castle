@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-05-13",
+  "last_updated": "2026-05-18",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -33,7 +33,8 @@
     "v2.26 -> v2.27": "May 2026 — Group 6 extension (post-Gemini-audit follow-up #3): bandit_tip +910 mechanic closed as item 15 of the cluster. Previously tracked only as unknown modifier in golden_orange audit. sec.385 grants \"Знание о кладе\" via acquires on the bandit-help nav choice; sec.19 → sec.929 gated treasure-dig choice added. sec.929 was ORPHAN in remake — this commit is its sole canonical entry, indirectly fixing candle_lamp acquisition route through this paragraph. Companion +916 letter-riddle mechanic at sec.1131 decoded but registered as future_enhancements entry (requires new engine UI work, out of scope). sec.929 auto_items known_gap recorded for serebryanoe kol'co and 1 LUCK currently missing.",
     "v2.27 -> v2.28": "May 2026 — Pure registry-hygiene cleanup commit. Updated top-level modifier fields in 3 group_6 items to reflect canonical FB2 values discovered during the implementation series: figured_key (drop +40 misattribution), bear_key (+400→+40), candle_set (deprecated marker), thread_ball (-50→+50), spell_book (+20→+24), white_arrow_navigation (-550→+400 plus rename note to throne_tray_knowledge). Each item now has a modifier_history sub-object preserving the original registry value and the correction reason. No data, engine, smoke-test, build, or behavioural changes. Second pass added: candle_set, spell_book, white_arrow_navigation (format mismatches resolved).",
     "v2.28 -> v2.29": "May 2026 — sec.929 known_gap resolved. auto_items extended from {gold:10} to {gold:10, items:[\"Свеча\",\"Серебряное кольцо\"], luck_add:1} to match canonical FB2 \"10 золотых, серебряное кольцо и светильник… добавьте себе 1 УДАЧУ\". The \"Свеча\" grant moved from nav-choice acquires to auto_items.items[] for cleaner pickup semantics — one modal on paragraph entry instead of two transitions. Engine support verified pre-existing (auto_items.items handler in game_logic.js line 461; auto_items.luck_add handler at line 479). Pure data change; no engine, smoke-test, or other behavioural modifications.",
-    "v2.29 -> v2.30": "May 2026 — §600 sibling audit follow-up: TWO content-fidelity bugs fixed in single commit. §1050 (Тролль drop) had three independent bugs: malformed item name \"Из его кармана Золотое кольцо\" (text leaked into item string), missing +1 LUCK boost, and missing -52 arithmetic mechanic. The latter is item 16 of the group_6 extension (gold_ring), with single canonical consumer §1164 → §1112 — THE THIRD CANONICAL BARLAD-DEFEAT ROUTE. §1112 was orphan in remake. Companion §462 fix (Orc-drop): added +3 gold and \"Игральная кость\" item to match canonical \"В кармане у Орка лежит 3 золотых и игральная кость\". §600 itself audited and confirmed canonically complete — no fixes needed there. 26 other paragraphs with auto_items.items[] arrays spot-checked against FB2; all confirmed correct or false-positive (e.g. §35 sword stat is conditional item-offer not auto-grant; §471 stamina items are separate purchasable foods; §1172 stat numbers are Dragon stats not player rewards)."
+    "v2.29 -> v2.30": "May 2026 — §600 sibling audit follow-up: TWO content-fidelity bugs fixed in single commit. §1050 (Тролль drop) had three independent bugs: malformed item name \"Из его кармана Золотое кольцо\" (text leaked into item string), missing +1 LUCK boost, and missing -52 arithmetic mechanic. The latter is item 16 of the group_6 extension (gold_ring), with single canonical consumer §1164 → §1112 — THE THIRD CANONICAL BARLAD-DEFEAT ROUTE. §1112 was orphan in remake. Companion §462 fix (Orc-drop): added +3 gold and \"Игральная кость\" item to match canonical \"В кармане у Орка лежит 3 золотых и игральная кость\". §600 itself audited and confirmed canonically complete — no fixes needed there. 26 other paragraphs with auto_items.items[] arrays spot-checked against FB2; all confirmed correct or false-positive (e.g. §35 sword stat is conditional item-offer not auto-grant; §471 stamina items are separate purchasable foods; §1172 stat numbers are Dragon stats not player rewards).",
+    "v2.30 -> v2.31": "May 2026 — Group 18 letter-sum riddle engine implemented. New engine functions (applyRiddleAnswer, handleRiddleFail, renderRiddle) + ALPHABET_RU constant + dispatch from renderGame. CSS widget with iOS-safe 16px-equivalent input, shake animation. Data: sec.1131 (cemetery riddle, +916→§992, fail→§1190) and sec.992 (column riddle, +825→§932, fail→§1123 with manual exit). Anti-cheat: answer strings never stored — math sum is one-way. Riddle 2 canonical answer verified via FB2 §932 narrative (\"смерть деньгами не подкупишь\"); ChatGPT design proposal's \"год\" hypothesis ruled out (§850 is throne-tray narrative). Implementation per ChatGPT 5.5 Plus thinking proposal archived in audit_cycles/letter_riddle_engine_may_2026/."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -662,7 +663,9 @@
           "paragraph": 1131,
           "modifier": "+916 / +825",
           "description": "sec.1131 spider riddle (\"стоит село — заселено, но петухи там не поют, и люди не встают\") — answer \"кладбище\", letter-ordinal sum 76, 76+916=sec.992 canonical success. sec.992 contains a CHAIN second riddle (\"стоит столб\") with +825 modifier requiring further decoding. Currently sec.1131 only routes to sec.1190 (death-by-wrong-answer). The success path (sec.992 + chain) requires NEW engine work: either text-input UI for the player to type their answer, or multiple-choice answer selection with pre-computed targets. Fundamentally different mechanic from item-gating; unknown if other letter-riddle paragraphs exist in the canon. Discovered during bandit_tip closure investigation. Not in group_6 scope; tracked here for future engine extension work.",
-          "status": "documented, not implemented"
+          "status": "status_done",
+          "resolved_in_commit": "(this commit)",
+          "resolution_summary": "Implemented as group_18_letter_sum_riddle (see separate pending_corrections entry). Both canonical riddles wired (sec.1131 cemetery + sec.992 column); engine functions applyRiddleAnswer/handleRiddleFail/renderRiddle added."
         }
       ],
       "known_gaps": [
@@ -932,6 +935,79 @@
         "commit": "(this commit)",
         "summary": "sec.774 ch[0] rewritten and gated. Wood-piece option now surfaces only when the player owns the wood piece (acquirable via sec.340 shop). Matches the pattern of the other three gated options at sec.774 (figurine key, 1g, 5g)."
       }
+    },
+    "group_18_letter_sum_riddle": {
+      "status": "closed",
+      "closure_commit": "(this commit)",
+      "description": "Letter-ordinal-sum riddle mechanic. Player types Russian answer; engine computes letter-sum and adds canonical modifier to navigate to success paragraph. Two canonical riddles wired:\n  - sec.1131 cemetery riddle (+916 → sec.992 success / sec.1190 death)\n  - sec.992 spider column riddle (+825 → sec.932 success / sec.1123 exit)",
+      "design_source": "audit_cycles/letter_riddle_engine_may_2026/RIDDLE_DESIGN_PROPOSAL.md",
+      "fb2_verification": "Riddle 1 answer \"кладбище\" (sum 76) verified: sec.992 narrative opens \"Да, молодец, странник! Конечно… это кладбище\". Riddle 2 answer \"смерть\" (sum 107) verified: sec.932 narrative opens \"Верно, ты угадал, смерть деньгами не подкупишь, — говорит паук\". ChatGPT design proposal speculated \"год\" → §850, but Claude verification showed §850 is throne-tray narrative, not a riddle success. Correct answer rederived from canonical spider gift narrative at §932.",
+      "engine_changes": "Three new functions in src/game_logic.js:\n  - applyRiddleAnswer(input, riddleConfig): normalise input (uppercase, strip non-Cyrillic), optional ё→е equivalence, compute sum, validate target against valid_targets allow-list AND GD existence, call goTo() or handleRiddleFail.\n  - handleRiddleFail(riddleConfig): increment S.riddle_attempts, show shake animation + attempts counter; on max_attempts exhausted call goTo(fail_target).\n  - renderRiddle(sec): replaces renderChoices for paragraphs with sec.riddle field; renders input + submit button + feedback row; optional manual-exit button when fail_target_label is set.\nrenderGame() modified to dispatch to renderRiddle when sec.riddle present; dead-end check bypassed for riddle paragraphs (their choices array is empty by design).",
+      "anti_cheat": "Answer string never stored in code, data, or localStorage. Only modifier + valid_targets + fail_target + max_attempts stored. Math sum is one-way: 76 has thousands of letter-string preimages, so a player inspecting modifier:916 and valid_targets:[992] cannot recover \"кладбище\" algorithmically.",
+      "css_changes": "src/game_shell_top.html received .riddle-container, .riddle-input-row, #riddle-input (font-size 22px to prevent iOS zoom-on-focus), .riddle-submit, .riddle-feedback, .riddle-exit classes plus @keyframes riddle-shake animation. Inserted just before final </style> in main inline style block.",
+      "data_changes": "sec.1131: choices array emptied; new \"riddle\":{modifier:916, fail_target:1190, max_attempts:3, alphabet_mode:\"ru_standard\", valid_targets:[992]} field.\nsec.992: choices array emptied (removed junk target:825 and manual exit choice — both replaced by riddle config); new \"riddle\":{modifier:825, fail_target:1123, fail_target_label:\"Уйти в другую комнату (1123)\", max_attempts:3, alphabet_mode:\"ru_standard\", valid_targets:[932]} field. The fail_target_label preserves canonical \"уходите\" exit option per FB2 narrative.",
+      "future_enhancements": [
+        "Spell hooks audit (group_17): ~50-60 paragraphs with player-cast choices missing spell:\"X\" field; Gemini audit produced partial result (only LEVITATION classified). Manual classification or re-run with corrections needed.",
+        "Art issues (Yuriy Midjourney work): sec.449 art30 two-headed dragon BROKEN, sec.1003 art47 stone_rats OFF-CONTEXT, sec.311 missing illustration.",
+        "group_18 itself could be extended if more letter-riddle paragraphs discovered in canon — current implementation supports any number of riddle paragraphs with single per-riddle riddle config."
+      ],
+      "cluster_description": "Letter-sum riddle engine for canonical Braslavsky 1991 puzzle paragraphs. Player types Russian answer; engine computes letter-ordinal sum (А=1...Я=33), adds per-riddle modifier, navigates to result if valid. Anti-cheat: answer string is never stored — math sum is one-way function. Implementation per ChatGPT 5.5 Plus thinking design proposal archived in audit_cycles/letter_riddle_engine_may_2026/.",
+      "items": [
+        {
+          "item_state": "riddle_cemetery",
+          "fb2_paragraph": 1131,
+          "modifier": "+916",
+          "canonical_answer": "(intentionally not documented — anti-cheat by design)",
+          "canonical_success_target": 992,
+          "canonical_fail_target": 1190,
+          "status_done": {
+            "commit": "(this commit)",
+            "summary": "sec.1131 spider cemetery riddle wired with riddle field. Modifier 916, valid_targets [992], fail_target 1190 (canonical 3-attempt death by spiders). No manual exit per canon (\"иначе — смерть\"). Three attempts then forced death."
+          }
+        },
+        {
+          "item_state": "riddle_column",
+          "fb2_paragraph": 992,
+          "modifier": "+825",
+          "canonical_answer": "(intentionally not documented — anti-cheat by design)",
+          "canonical_success_target": 932,
+          "canonical_fail_target": 1123,
+          "status_done": {
+            "commit": "(this commit)",
+            "summary": "sec.992 spider column riddle wired with riddle field. Modifier 825, valid_targets [932], fail_target 1123. fail_target_label set (\"Уйти в другую комнату (1123)\") for canonical manual exit (\"уходите — 1123\"). §932 grants spider larvae one-shot enemy-kill items via dice roll. Different from §1131 — exit is non-lethal here per canon."
+          }
+        }
+      ],
+      "engine_extension": {
+        "new_functions": [
+          "applyRiddleAnswer(input, riddleConfig)",
+          "handleRiddleFail(riddleConfig)",
+          "renderRiddle(sec)"
+        ],
+        "new_constant": "ALPHABET_RU = \"*АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ\"",
+        "renderGame_hooks": [
+          "dispatch to renderRiddle when sec.riddle present",
+          "dead-end check bypassed for riddle paragraphs"
+        ],
+        "css_added": [
+          ".riddle-container, .riddle-input-row, #riddle-input",
+          ".riddle-submit, .riddle-feedback, .riddle-exit",
+          "@keyframes riddle-shake"
+        ],
+        "state_added": "S.riddle_attempts (transient counter, reset on success/failure)"
+      },
+      "anti_cheat_properties": [
+        "Answer string NEVER stored in code or data",
+        "Math letter-sum is one-way function (76 has thousands of preimages)",
+        "modifier + valid_targets reveal nothing about the answer",
+        "localStorage inspection only shows S.riddle_attempts counter"
+      ],
+      "mobile_safety": [
+        "font-size 22px on input prevents iOS Safari zoom-on-focus",
+        "autocomplete=off, autocorrect=off, spellcheck=false on input",
+        "maxLength=40 prevents pathological inputs",
+        "replace(/[^А-ЯЁ]/g,\"\") strips whitespace and non-Cyrillic"
+      ]
     }
   },
   "resolved_no_op": {
