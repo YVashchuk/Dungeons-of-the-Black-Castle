@@ -1341,6 +1341,8 @@ function startCombat(enemies,sec){
     wounds:0,
     sec:sec,
     playerMod:pMod,
+    forceBuff:false,       // group_19: FORCE spell active for whole combat (+2 СИЛА УДАРА)
+    weaknessDebuff:false,  // group_19: WEAKNESS spell active for whole combat (-2 enemy attack)
     special:script==='sec1175_canon_orcs'?{type:'sec1175',reinforcementsJoined:false,firstDeathHandled:false,luckChecked:false}:null
   };
   const ce=document.getElementById('combat-enemies');ce.innerHTML='';
@@ -1375,14 +1377,39 @@ function startCombat(enemies,sec){
   document.getElementById('btn-combat-round').style.display='inline-block';
   document.getElementById('btn-combat-round').textContent='Удар!';
   document.getElementById('btn-combat-round').onclick=combatRound;
+  // group_19: per-paragraph allowlist controls which spell buttons appear.
+  // If sec.combat_spells_allowed is set, only listed spell IDs get buttons.
+  // If absent (default), all three combat spells (COPY/FORCE/WEAKNESS) are
+  // available subject to spell-budget availability.
+  const allowedSpells=sec.combat_spells_allowed||['COPY','FORCE','WEAKNESS'];
   const copyBtn=document.getElementById('btn-copy-spell');
   const copyRemaining=getSpellRemaining('COPY');
   if(copyBtn){
-    if(copyRemaining>0){
+    if(allowedSpells.includes('COPY')&&copyRemaining>0){
       copyBtn.style.display='inline-block';
       copyBtn.textContent='👤 Заклятие Копии ['+copyRemaining+']';
     } else {
       copyBtn.style.display='none';
+    }
+  }
+  const forceBtn=document.getElementById('btn-force-spell');
+  const forceRemaining=getSpellRemaining('FORCE');
+  if(forceBtn){
+    if(allowedSpells.includes('FORCE')&&forceRemaining>0){
+      forceBtn.style.display='inline-block';
+      forceBtn.textContent='💪 Заклятие Силы ['+forceRemaining+']';
+    } else {
+      forceBtn.style.display='none';
+    }
+  }
+  const weakBtn=document.getElementById('btn-weakness-spell');
+  const weakRemaining=getSpellRemaining('WEAKNESS');
+  if(weakBtn){
+    if(allowedSpells.includes('WEAKNESS')&&weakRemaining>0){
+      weakBtn.style.display='inline-block';
+      weakBtn.textContent='🫀 Заклятие Слабости ['+weakRemaining+']';
+    } else {
+      weakBtn.style.display='none';
     }
   }
   updateCombatEnemyDisplay(combatState);
@@ -1408,7 +1435,10 @@ function combatRound(){
 
   const alive=getAliveCombatEnemies(cs);
   if(alive.length===0){endCombat(true);return;}
-  const pMod=cs.playerMod||0;
+  // group_19: FORCE spell adds +2 to player attack for whole combat duration.
+  // playerMod already accumulates external modifiers from sec.player_attack_mod
+  // (e.g. fatigue penalties from §1154/§1182); FORCE stacks additively.
+  const pMod=(cs.playerMod||0)+(cs.forceBuff?2:0);
   const pd=d6()+d6();const pStr=pd+S.skill+pMod;
   log.innerHTML+=`<div>— Раунд ${cs.round} —</div>`;
   if(pMod!==0){
@@ -1417,9 +1447,15 @@ function combatRound(){
     log.innerHTML+=`<div>Вы: 2к6(${pd}) + ${S.skill} = <b>${pStr}</b></div>`;
   }
 
+  // group_19: WEAKNESS spell subtracts 2 from each enemy's attack for whole combat.
+  const enemyMod=cs.weaknessDebuff?-2:0;
   alive.forEach((e,i)=>{
-    const ed=d6()+d6();const eStr=ed+e.skill;
-    log.innerHTML+=`<div>${e.name}: 2к6(${ed}) + ${e.skill} = <b>${eStr}</b></div>`;
+    const ed=d6()+d6();const eStr=ed+e.skill+enemyMod;
+    if(enemyMod!==0){
+      log.innerHTML+=`<div>${e.name}: 2к6(${ed}) + ${e.skill} ${enemyMod>0?'+':''}${enemyMod} = <b>${eStr}</b></div>`;
+    } else {
+      log.innerHTML+=`<div>${e.name}: 2к6(${ed}) + ${e.skill} = <b>${eStr}</b></div>`;
+    }
     if(i===0){
       if(pStr>eStr){playSound('hit');e.hp-=2;cs.wounds++;log.innerHTML+=`<div class="hit">→ Вы ранили ${e.name} (−2 вын., осталось ${Math.max(0,e.hp)})</div>`;}
       else if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name} ранил вас (−${d} вын., осталось ${Math.max(0,S.stamina)})</div>`;}
@@ -1483,6 +1519,10 @@ function endCombat(won){
   const log=document.getElementById('combat-log');
   const copyBtn=document.getElementById('btn-copy-spell');
   if(copyBtn)copyBtn.style.display='none';
+  const forceBtn=document.getElementById('btn-force-spell');
+  if(forceBtn)forceBtn.style.display='none';
+  const weakBtn=document.getElementById('btn-weakness-spell');
+  if(weakBtn)weakBtn.style.display='none';
   if(won){
     playSound('victory');
     logEvent('combat','✦ Победа в бою','Раундов: '+(combatState?combatState.round:0));
@@ -1570,6 +1610,51 @@ function useCopyInCombat(){
   updateHUD();
   log.scrollTop=log.scrollHeight;
 }
+
+
+// ── Force Spell in Combat (group_19) ──
+// FORCE adds +2 to player СИЛА УДАРА for the whole combat duration.
+// Per canon: "Прибавит вам силу и увеличит вашу СИЛУ УДАРА в бою."
+// Persistent buff; one-shot cast (doesn't re-trigger per round).
+function useForceInCombat(){
+  if(!combatState||!S)return;
+  if(combatState.forceBuff)return; // already active, don't double-spend
+  const remaining=getSpellRemaining('FORCE');
+  if(remaining<=0)return;
+  useSpell('FORCE');
+  combatState.forceBuff=true;
+  const log=document.getElementById('combat-log');
+  log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">💪 Заклятие Силы! СИЛА УДАРА +2 до конца боя.</div>`;
+  log.scrollTop=log.scrollHeight;
+  // Hide the button — single-cast for this combat
+  const forceBtn=document.getElementById('btn-force-spell');
+  if(forceBtn)forceBtn.style.display='none';
+}
+
+// ── Weakness Spell in Combat (group_19) ──
+// WEAKNESS subtracts 2 from each enemy's attack for the whole combat duration.
+// Per canon: "Сделает вашего врага неуклюжим и неповоротливым, ослабит
+// СИЛУ его УДАРА." Persistent debuff; one-shot cast.
+// FB2 canonical phrasing varies between "ослабит СИЛУ УДАРА медведицы"
+// (single enemy) and "уменьшите на 2 СИЛУ УДАРА любого из Гоблинов"
+// (one of several). Engine applies -2 globally to all active enemies
+// because the per-round attack math doesn't track which single enemy
+// was targeted; this is slightly more generous than canon for multi-enemy
+// fights but matches the spirit of "ослабляет врага в этом бою".
+function useWeaknessInCombat(){
+  if(!combatState||!S)return;
+  if(combatState.weaknessDebuff)return;
+  const remaining=getSpellRemaining('WEAKNESS');
+  if(remaining<=0)return;
+  useSpell('WEAKNESS');
+  combatState.weaknessDebuff=true;
+  const log=document.getElementById('combat-log');
+  log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">🫀 Заклятие Слабости! Атака врагов −2 до конца боя.</div>`;
+  log.scrollTop=log.scrollHeight;
+  const weakBtn=document.getElementById('btn-weakness-spell');
+  if(weakBtn)weakBtn.style.display='none';
+}
+
 
 
 // ── Luck Check ──

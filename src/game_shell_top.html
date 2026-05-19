@@ -620,6 +620,8 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
     <div class="combat-log" id="combat-log"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="combat-buttons">
       <button class="btn btn-p" id="btn-combat-round" onclick="combatRound()">Удар!</button>
+      <button class="btn btn-s" id="btn-force-spell" style="display:none;border-color:#7a5;color:#9d6;" onclick="useForceInCombat()">💪 Заклятие Силы</button>
+      <button class="btn btn-s" id="btn-weakness-spell" style="display:none;border-color:#a76;color:#d96;" onclick="useWeaknessInCombat()">🫀 Заклятие Слабости</button>
       <button class="btn btn-s" id="btn-copy-spell" style="display:none;border-color:#666;color:#999;" onclick="useCopyInCombat()">👤 Заклятие Копии</button>
     </div>
   </div>
