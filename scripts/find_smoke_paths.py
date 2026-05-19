@@ -942,6 +942,62 @@ SCENARIOS = [
         "what_to_check": "§992 shows manual exit button per canonical 'уходите — 1123'. Click → §1123 directly without attempt counter increment. Different from §1131 which has NO manual exit (canonical forces 3-attempt death).",
         "commit": "group_18_letter_riddle",
     },
+    # ── Group 17: spell-hook fixes (May 2026, post-Gemini manual audit) ─
+    {
+        "id": "group17_sec93_LEVITATION_marsh",
+        "target": 93,
+        "what_to_check": "§93 marsh rescue: player with LEVITATION in spell budget should see 'Использовать заклятие Левитации (130)' button. Click → spell count decrements by 1, navigates to §130. Player without LEVITATION sees only the dead-end (game over). The spell:'LEVITATION' field added in this commit.",
+        "commit": "group_17_spell_hooks",
+    },
+    {
+        "id": "group17_sec329_LEVITATION_sinkhole",
+        "target": 329,
+        "what_to_check": "§329 sinkhole — same pattern as §93. Click 'target 432' button consumes LEVITATION charge. Without spell, dead-end death.",
+        "commit": "group_17_spell_hooks",
+    },
+    {
+        "id": "group17_sec521_LEVITATION_bog",
+        "target": 521,
+        "what_to_check": "§521 bog rescue — same pattern. Click 'target 326' button consumes LEVITATION charge.",
+        "commit": "group_17_spell_hooks",
+    },
+    {
+        "id": "group17_sec705_LEVITATION_window_flight",
+        "target": 705,
+        "what_to_check": "§705 castle window flight: 'Вылетите в окно, наложив заклятие Левитации (905)' button now consumes LEVITATION charge. Other 2 choices (target 892, 1059) remain non-spell.",
+        "commit": "group_17_spell_hooks",
+    },
+    {
+        "id": "group17_sec935_LEVITATION_pit_escape",
+        "target": 935,
+        "what_to_check": "§935 stone pit escape — single LEVITATION choice now consumes charge on click → §469.",
+        "commit": "group_17_spell_hooks",
+    },
+    {
+        "id": "group17_sec308_FORCE_combat_transition",
+        "target": 308,
+        "what_to_check": "§308 FORCE cast → §1175 combat: clicking the choice now consumes FORCE charge. Combat at §1175 begins with +2 СИЛА УДАРА per canonical effect.",
+        "commit": "group_17_spell_hooks",
+    },
+    {
+        "id": "group17_sec596_SWIMMING_lake",
+        "target": 596,
+        "what_to_check": "§596 lake crossing — 'target 57' SWIMMING branch now consumes spell. §596 LEVITATION branch (target 579) was already correctly wired. Third option (walk along shore, target 171) remains non-spell.",
+        "commit": "group_17_spell_hooks",
+    },
+    {
+        "id": "group17_sec698_SWIMMING_second_cast",
+        "target": 698,
+        "what_to_check": "§698 second SWIMMING cast against underground current. Click 'target 813' consumes SECOND SWIMMING charge per canonical 'наложить еще одно заклятие Плавания'. Player without two SWIMMING charges dies (canon).",
+        "commit": "group_17_spell_hooks",
+    },
+    {
+        "id": "group17_sec415_HEALING_bear_cub_with_label_fix",
+        "target": 415,
+        "what_to_check": "§415 bear cub healing: choice label fixed from malformed 'Использовать Золотой браслет (84)' to canonical 'Истратить заклятие Исцеления на медвежонка (84)'. Now consumes HEALING charge on click → §84. Without HEALING, only fallback to §197 (she-bear combat).",
+        "commit": "group_17_spell_hooks",
+    },
+
 
 
 

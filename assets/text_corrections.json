@@ -34,7 +34,8 @@
     "v2.27 -> v2.28": "May 2026 — Pure registry-hygiene cleanup commit. Updated top-level modifier fields in 3 group_6 items to reflect canonical FB2 values discovered during the implementation series: figured_key (drop +40 misattribution), bear_key (+400→+40), candle_set (deprecated marker), thread_ball (-50→+50), spell_book (+20→+24), white_arrow_navigation (-550→+400 plus rename note to throne_tray_knowledge). Each item now has a modifier_history sub-object preserving the original registry value and the correction reason. No data, engine, smoke-test, build, or behavioural changes. Second pass added: candle_set, spell_book, white_arrow_navigation (format mismatches resolved).",
     "v2.28 -> v2.29": "May 2026 — sec.929 known_gap resolved. auto_items extended from {gold:10} to {gold:10, items:[\"Свеча\",\"Серебряное кольцо\"], luck_add:1} to match canonical FB2 \"10 золотых, серебряное кольцо и светильник… добавьте себе 1 УДАЧУ\". The \"Свеча\" grant moved from nav-choice acquires to auto_items.items[] for cleaner pickup semantics — one modal on paragraph entry instead of two transitions. Engine support verified pre-existing (auto_items.items handler in game_logic.js line 461; auto_items.luck_add handler at line 479). Pure data change; no engine, smoke-test, or other behavioural modifications.",
     "v2.29 -> v2.30": "May 2026 — §600 sibling audit follow-up: TWO content-fidelity bugs fixed in single commit. §1050 (Тролль drop) had three independent bugs: malformed item name \"Из его кармана Золотое кольцо\" (text leaked into item string), missing +1 LUCK boost, and missing -52 arithmetic mechanic. The latter is item 16 of the group_6 extension (gold_ring), with single canonical consumer §1164 → §1112 — THE THIRD CANONICAL BARLAD-DEFEAT ROUTE. §1112 was orphan in remake. Companion §462 fix (Orc-drop): added +3 gold and \"Игральная кость\" item to match canonical \"В кармане у Орка лежит 3 золотых и игральная кость\". §600 itself audited and confirmed canonically complete — no fixes needed there. 26 other paragraphs with auto_items.items[] arrays spot-checked against FB2; all confirmed correct or false-positive (e.g. §35 sword stat is conditional item-offer not auto-grant; §471 stamina items are separate purchasable foods; §1172 stat numbers are Dragon stats not player rewards).",
-    "v2.30 -> v2.31": "May 2026 — Group 18 letter-sum riddle engine implemented. New engine functions (applyRiddleAnswer, handleRiddleFail, renderRiddle) + ALPHABET_RU constant + dispatch from renderGame. CSS widget with iOS-safe 16px-equivalent input, shake animation. Data: sec.1131 (cemetery riddle, +916→§992, fail→§1190) and sec.992 (column riddle, +825→§932, fail→§1123 with manual exit). Anti-cheat: answer strings never stored — math sum is one-way. Riddle 2 canonical answer verified via FB2 §932 narrative (\"смерть деньгами не подкупишь\"); ChatGPT design proposal's \"год\" hypothesis ruled out (§850 is throne-tray narrative). Implementation per ChatGPT 5.5 Plus thinking proposal archived in audit_cycles/letter_riddle_engine_may_2026/."
+    "v2.30 -> v2.31": "May 2026 — Group 18 letter-sum riddle engine implemented. New engine functions (applyRiddleAnswer, handleRiddleFail, renderRiddle) + ALPHABET_RU constant + dispatch from renderGame. CSS widget with iOS-safe 16px-equivalent input, shake animation. Data: sec.1131 (cemetery riddle, +916→§992, fail→§1190) and sec.992 (column riddle, +825→§932, fail→§1123 with manual exit). Anti-cheat: answer strings never stored — math sum is one-way. Riddle 2 canonical answer verified via FB2 §932 narrative (\"смерть деньгами не подкупишь\"); ChatGPT design proposal's \"год\" hypothesis ruled out (§850 is throne-tray narrative). Implementation per ChatGPT 5.5 Plus thinking proposal archived in audit_cycles/letter_riddle_engine_may_2026/.",
+    "v2.31 -> v2.32": "May 2026 — Group 17 spell hook coverage: 9 P0 bugs fixed in single commit (player-cast spell choices without spell:\"X\" field). Affected paragraphs: §93/§329/§521/§705/§935 (LEVITATION rescue points), §308 (FORCE → combat), §596/§698 (SWIMMING), §415 (HEALING bear cub + label fix from malformed \"Золотой браслет\"). 26 combat-modal pattern paragraphs deferred (require new engine work). 57 paragraphs verified already correctly wired. 29 narrative-only paragraphs need no fix. Comprehensive manual audit completes Gemini's partial Deep Research pass; full findings in audit_cycles/spell_economy_may_2026/. Real coverage now 66/132 = 50% (was 57/132 = 43% before commit)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -1008,6 +1009,265 @@
         "maxLength=40 prevents pathological inputs",
         "replace(/[^А-ЯЁ]/g,\"\") strips whitespace and non-Cyrillic"
       ]
+    },
+    "group_17_spell_hooks": {
+      "cluster_description": "Spell-hook coverage audit (post-Gemini Deep Research partial audit May 2026). Comprehensive manual classification of all 132 FB2 spell mentions across 8 spells. Real per-spell data-hook coverage was understated in Gemini's audit (engine claim was WRONG — applyChoiceConsume exists since commit aeebe69). After manual reclassification, real picture: 57 already-wired (OK) + 9 fixable P0 bugs (this commit) + 26 deferred combat-modal pattern + 40 narrative-only paragraphs (B/C/D/E). Total real coverage after this commit: 66/132 = 50% (was 57/132 = 43% before).",
+      "completed_items": {
+        "cluster_p0_navigation_spell_hooks": {
+          "description": "Player-cast spell choices where engine was not decrementing spell budget on click. Identified via FB2-vs-data audit. Each fix adds spell:\"<ID>\" field to the relevant choice.",
+          "paragraphs": [
+            {
+              "pid": 93,
+              "target": 130,
+              "spell": "LEVITATION",
+              "context": "Marsh rescue — single-shot escape"
+            },
+            {
+              "pid": 329,
+              "target": 432,
+              "spell": "LEVITATION",
+              "context": "Sinkhole rescue — single-shot escape"
+            },
+            {
+              "pid": 521,
+              "target": 326,
+              "spell": "LEVITATION",
+              "context": "Bog rescue — single-shot escape"
+            },
+            {
+              "pid": 705,
+              "target": 905,
+              "spell": "LEVITATION",
+              "context": "Castle window flight"
+            },
+            {
+              "pid": 935,
+              "target": 469,
+              "spell": "LEVITATION",
+              "context": "Stone pit escape — single-shot"
+            },
+            {
+              "pid": 308,
+              "target": 1175,
+              "spell": "FORCE",
+              "context": "FORCE cast transitions to multi-orc combat"
+            },
+            {
+              "pid": 596,
+              "target": 57,
+              "spell": "SWIMMING",
+              "context": "Lake crossing — was missing"
+            },
+            {
+              "pid": 698,
+              "target": 813,
+              "spell": "SWIMMING",
+              "context": "Second SWIMMING vs underground current"
+            },
+            {
+              "pid": 415,
+              "target": 84,
+              "spell": "HEALING",
+              "context": "Bear cub healing — also fixed malformed label (was \"Золотой браслет\"!)"
+            }
+          ],
+          "fix_method": "Add `\"spell\":\"<ID>\"` field to the relevant choice object in remake_data.js. Engine's applyChoiceConsume + useSpell handler decrements the spell budget on click."
+        },
+        "special_label_fix": {
+          "paragraph": 415,
+          "issue": "Choice label said \"Использовать Золотой браслет (84)\" but FB2 canon mandates HEALING spell. Likely a copy-paste artifact from another paragraph during initial data entry.",
+          "fix": "Changed label to \"Истратить заклятие Исцеления на медвежонка (84)\" and added spell:\"HEALING\" field."
+        }
+      },
+      "deferred_items": {
+        "cluster_combat_modal_spell_selection": {
+          "description": "Combat-time spell selection where canonical FB2 narrative offers \"Если хотите, воспользуйтесь заклятием X\" before enemy stats. These are NOT navigation choices — they're meant to be cast during combat rounds via a combat-modal. Current engine has combat-time button for HEALING only (#btn-heal HUD). Implementing combat-time COPY/FORCE/WEAKNESS/FIRE selection requires NEW engine work: combat modal UI + per-round spell decrement + per-spell effect application during combat math. Significant scope. Deferred to future audit-and-implement cycle.",
+          "paragraphs_count": 26,
+          "paragraphs": [
+            {
+              "pid": 43,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Orcs ambush combat"
+            },
+            {
+              "pid": 100,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Bandits combat (5 enemies)"
+            },
+            {
+              "pid": 162,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Goblin bridge combat"
+            },
+            {
+              "pid": 197,
+              "spells": [
+                "FORCE",
+                "WEAKNESS",
+                "COPY"
+              ],
+              "context": "She-bear combat"
+            },
+            {
+              "pid": 233,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Post-FIRE Goblin combat"
+            },
+            {
+              "pid": 235,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Beast combat — other spells wired, COPY missing"
+            },
+            {
+              "pid": 240,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Six-snake combat"
+            },
+            {
+              "pid": 456,
+              "spells": [
+                "FORCE",
+                "WEAKNESS",
+                "COPY"
+              ],
+              "context": "Giant Spider combat"
+            },
+            {
+              "pid": 486,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Two Lumberjacks combat"
+            },
+            {
+              "pid": 506,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Werewolf combat — COPY only allowed"
+            },
+            {
+              "pid": 532,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Dragon combat"
+            },
+            {
+              "pid": 536,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Four Goblins ambush — other spells wired, COPY missing"
+            },
+            {
+              "pid": 567,
+              "spells": [
+                "COPY"
+              ],
+              "context": "2-Goblin combat — paragraph has 0 choices, may be orphan"
+            },
+            {
+              "pid": 628,
+              "spells": [
+                "COPY"
+              ],
+              "context": "3-Orc combat with multi-round rules"
+            },
+            {
+              "pid": 717,
+              "spells": [
+                "FORCE",
+                "WEAKNESS",
+                "COPY"
+              ],
+              "context": "2 Goblins riverbank combat"
+            },
+            {
+              "pid": 1096,
+              "spells": [
+                "COPY"
+              ],
+              "context": "Harpy combat in Barlad room"
+            },
+            {
+              "pid": 1175,
+              "spells": [
+                "COPY"
+              ],
+              "context": "3-Orc combat at gates"
+            },
+            {
+              "pid": 1177,
+              "spells": [
+                "FORCE",
+                "WEAKNESS",
+                "COPY"
+              ],
+              "context": "2 Goblins door combat"
+            },
+            {
+              "pid": 436,
+              "spells": [
+                "FORCE",
+                "WEAKNESS"
+              ],
+              "context": "Tree Spider — FIRE explicitly banned"
+            },
+            {
+              "pid": 528,
+              "spells": [
+                "FORCE",
+                "WEAKNESS",
+                "COPY"
+              ],
+              "context": "Huge Snake on tree — FIRE banned"
+            },
+            {
+              "pid": 950,
+              "spells": [
+                "FORCE",
+                "HEALING"
+              ],
+              "context": "Arena Goblin — FORCE/HEALING allowed self-cast"
+            }
+          ],
+          "recommended_approach": "Engine extension: combat-modal with per-spell buttons. Activate when combat starts AND spell budget > 0. Apply effects per canonical rules (+2/-2 СИЛА УДАРА for FORCE/WEAKNESS; clone for COPY; +damage for FIRE). Decrement spell budget on click. Future audit cycle topic."
+        },
+        "cluster_orphan_choices": {
+          "description": "Spell offered in canonical narrative but no matching choice button exists in remake. Likely combat-modal pattern (see above).",
+          "paragraphs": [
+            235,
+            950
+          ]
+        }
+      },
+      "verified_correct": {
+        "description": "57 paragraphs already have correct spell:\"X\" wiring (no fix needed). Counted across all 8 spells.",
+        "count": 57
+      },
+      "narrative_only": {
+        "description": "29 paragraphs are narrative-only spell mentions (post-action, enemy cast, hedge, description) — NO data fix needed.",
+        "subcategories": {
+          "post_action_narrative": 21,
+          "enemy_or_npc_cast": 3,
+          "item_or_character_description": 4,
+          "hedge_or_conditional": 1
+        }
+      },
+      "audit_source": "audit_cycles/spell_economy_may_2026/ (Gemini partial + Claude manual completion)"
     }
   },
   "resolved_no_op": {
