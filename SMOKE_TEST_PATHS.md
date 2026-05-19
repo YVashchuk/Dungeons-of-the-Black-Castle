@@ -2304,7 +2304,7 @@ Conventions:
     18. From §253: click 'Пойти дальше по дороге → §508'
     19. From §508: click 'Пойти прямо → §155'
     20. From §155: click 'Попробовать поговорить с ней → §415'
-    21. From §415: click 'Использовать Золотой браслет → §84'
+    21. From §415: click 'Истратить заклятие Исцеления на медвежонка → §84'
     22. From §84: click 'Отказаться от подарка → §281'
     23. From §281: click 'Передать привет медведю при встрече → §612'
 ```
@@ -2383,7 +2383,7 @@ Conventions:
     18. From §253: click 'Пойти дальше по дороге → §508'
     19. From §508: click 'Пойти прямо → §155'
     20. From §155: click 'Попробовать поговорить с ней → §415'
-    21. From §415: click 'Использовать Золотой браслет → §84'
+    21. From §415: click 'Истратить заклятие Исцеления на медвежонка → §84'
     22. From §84: click 'Отказаться от подарка → §281'
     23. From §281: click 'Передать привет медведю при встрече → §612'
     24. From §612: click 'Попрощавшись с медведем, вы выходите в коридор → §1106'
@@ -3892,10 +3892,318 @@ Conventions:
 
 ---
 
+## group17_sec93_LEVITATION_marsh
+
+**Target:** §93
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §93 marsh rescue: player with LEVITATION in spell budget should see 'Использовать заклятие Левитации (130)' button. Click → spell count decrements by 1, navigates to §130. Player without LEVITATION sees only the dead-end (game over). The spell:'LEVITATION' field added in this commit.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Пойти вдоль берега на запад → §596'
+    22. From §596: click 'Идти дальше по дорожке, ведущей вас по берегу → §171'
+    23. From §171: click 'Пойти направо → §93'
+```
+  (23 clicks total, graph: basic)
+
+---
+
+## group17_sec329_LEVITATION_sinkhole
+
+**Target:** §329
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §329 sinkhole — same pattern as §93. Click 'target 432' button consumes LEVITATION charge. Without spell, dead-end death.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти прямо → §264'
+     6. From §264: click 'Пойти влево → §424'
+     7. From §424: click 'Решать: поможете человеку → §261'
+     8. From §261: click 'Если победили за два или три раунда, перейти к §520 → §520'
+     9. From §520: click 'Вместе с ним трогаетесь в путь и задумываетесь… → §413'
+    10. From §413: click 'По тропинке влево → §329'
+```
+  (10 clicks total, graph: full)
+
+---
+
+## group17_sec521_LEVITATION_bog
+
+**Target:** §521
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §521 bog rescue — same pattern. Click 'target 326' button consumes LEVITATION charge.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Пойти дальше → §419'
+     4. From §419: click 'Хотите поискать убежища на ночь → §1181'
+     5. From §1181: click 'Добавьте себе 4 ВЫНОСЛИВОСТИ и отправляйтесь в… → §234'
+     6. From §234: click 'Пойти по тропинке → §14'
+     7. From §14: click 'Подняться на холм → §310'
+     8. From §310: click 'Спуститься обратно на дорогу и продолжить путь → §312'
+     9. From §312: click 'Идти к концу тропинки → §201'
+    10. From §201: click 'Пойти направо → §425'
+    11. From §425: click 'Попытаться поймать зайца → §184'
+    12. From §184: click 'Идти по тропинке, которая уходит в глубь леса → §235'
+    13. From §235: click 'Во время боя можете воспользоваться заклятиями Копии, Огня → §338'
+    14. From §338: click 'Огненный шар ударяет Зверю в грудь и сжигает… → §228'
+    15. From §228: click 'Свернуть на дорогу, которая идет налево → §521'
+```
+  (15 clicks total, graph: basic)
+
+---
+
+## group17_sec705_LEVITATION_window_flight
+
+**Target:** §705
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §705 castle window flight: 'Вылетите в окно, наложив заклятие Левитации (905)' button now consumes LEVITATION charge. Other 2 choices (target 892, 1059) remain non-spell.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'По лестнице вверх → §1218'
+    14. From §1218: click 'Подняться по лестнице наверх → §1058'
+    15. From §1058: click 'Подняться по лестнице → §899'
+    16. From §899: click 'Продолжить → §772'
+    17. From §772: click 'Другая справа → §962'
+    18. From §962: click 'Идите до конца → §1075'
+    19. From §1075: click 'Хотите пройти через цветы к окну → §705'
+```
+  (19 clicks total, graph: basic)
+
+---
+
+## group17_sec935_LEVITATION_pit_escape
+
+**Target:** §935
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §935 stone pit escape — single LEVITATION choice now consumes charge on click → §469.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'Вниз → §654'
+    14. From §654: click 'Открыть единственную дверь → §742'
+    15. From §742: click 'Если перебили Орков — вернуться по лестнице наверх → §1074'
+    16. From §1074: click 'Идти дальше по коридору, он делает поворот и… → §766'
+    17. From §766: click 'Скажете, что вы передумали и уйдете из библиотеки → §718'
+    18. From §718: click 'Проходите через библиотеку тщательно стараясь… → §285'
+    19. From §285: click 'Открыть левую дверь → §782'
+    20. From §782: click 'Пришли в тупик, но в правой стене есть дверь,… → §1196'
+    21. From §1196: click 'Открыть дверь с белой стрелой → §871'
+    22. From §871: click 'Пойти в правый → §925'
+    23. From §925: click 'При полете ударяетесь обо что-то головой… → §935'
+```
+  (23 clicks total, graph: full)
+
+---
+
+## group17_sec308_FORCE_combat_transition
+
+**Target:** §308
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §308 FORCE cast → §1175 combat: clicking the choice now consumes FORCE charge. Combat at §1175 begins with +2 СИЛА УДАРА per canonical effect.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Пройти мимо по тропинке дальше в лес → §560'
+     7. From §560: click 'Посмотрите, что за тропинка и куда она приведет → §538'
+     8. From §538: click 'Попробовать залезть на него → §370'
+     9. From §370: click 'Выбирайте: пойдете в коридор справа → §559'
+    10. From §559: click 'Продолжить → §452'
+    11. From §452: click 'Пойти прямо к воротам → §205'
+    12. From §205: click 'Сказать, что вы бродячий торговец и идёте в замок торговать → §345'
+    13. From §345: click 'Удача вас покинула… → §208'
+    14. From §208: click 'Заклятие Силы → §308'
+```
+  (14 clicks total, graph: basic)
+
+---
+
+## group17_sec596_SWIMMING_lake
+
+**Target:** §596
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §596 lake crossing — 'target 57' SWIMMING branch now consumes spell. §596 LEVITATION branch (target 579) was already correctly wired. Third option (walk along shore, target 171) remains non-spell.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Пойти вдоль берега на запад → §596'
+```
+  (21 clicks total, graph: basic)
+
+---
+
+## group17_sec698_SWIMMING_second_cast
+
+**Target:** §698
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §698 second SWIMMING cast against underground current. Click 'target 813' consumes SECOND SWIMMING charge per canonical 'наложить еще одно заклятие Плавания'. Player without two SWIMMING charges dies (canon).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'К реке → §951'
+    10. From §951: click 'Воспользоваться заклятием плавания и поплыть по течению → §698'
+```
+  (10 clicks total, graph: basic)
+
+---
+
+## group17_sec415_HEALING_bear_cub_with_label_fix
+
+**Target:** §415
+
+**Commit:** `group_17_spell_hooks`
+
+**What to check:** §415 bear cub healing: choice label fixed from malformed 'Использовать Золотой браслет (84)' to canonical 'Истратить заклятие Исцеления на медвежонка (84)'. Now consumes HEALING charge on click → §84. Without HEALING, only fallback to §197 (she-bear combat).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти прямо → §155'
+    20. From §155: click 'Попробовать поговорить с ней → §415'
+```
+  (20 clicks total, graph: basic)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **90 / 112**
+- Scenarios with paths found: **99 / 121**
 - Scenarios needing manual route discovery: **22**
 
 ### Manual routing required for:
