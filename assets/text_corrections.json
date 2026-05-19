@@ -35,7 +35,8 @@
     "v2.28 -> v2.29": "May 2026 — sec.929 known_gap resolved. auto_items extended from {gold:10} to {gold:10, items:[\"Свеча\",\"Серебряное кольцо\"], luck_add:1} to match canonical FB2 \"10 золотых, серебряное кольцо и светильник… добавьте себе 1 УДАЧУ\". The \"Свеча\" grant moved from nav-choice acquires to auto_items.items[] for cleaner pickup semantics — one modal on paragraph entry instead of two transitions. Engine support verified pre-existing (auto_items.items handler in game_logic.js line 461; auto_items.luck_add handler at line 479). Pure data change; no engine, smoke-test, or other behavioural modifications.",
     "v2.29 -> v2.30": "May 2026 — §600 sibling audit follow-up: TWO content-fidelity bugs fixed in single commit. §1050 (Тролль drop) had three independent bugs: malformed item name \"Из его кармана Золотое кольцо\" (text leaked into item string), missing +1 LUCK boost, and missing -52 arithmetic mechanic. The latter is item 16 of the group_6 extension (gold_ring), with single canonical consumer §1164 → §1112 — THE THIRD CANONICAL BARLAD-DEFEAT ROUTE. §1112 was orphan in remake. Companion §462 fix (Orc-drop): added +3 gold and \"Игральная кость\" item to match canonical \"В кармане у Орка лежит 3 золотых и игральная кость\". §600 itself audited and confirmed canonically complete — no fixes needed there. 26 other paragraphs with auto_items.items[] arrays spot-checked against FB2; all confirmed correct or false-positive (e.g. §35 sword stat is conditional item-offer not auto-grant; §471 stamina items are separate purchasable foods; §1172 stat numbers are Dragon stats not player rewards).",
     "v2.30 -> v2.31": "May 2026 — Group 18 letter-sum riddle engine implemented. New engine functions (applyRiddleAnswer, handleRiddleFail, renderRiddle) + ALPHABET_RU constant + dispatch from renderGame. CSS widget with iOS-safe 16px-equivalent input, shake animation. Data: sec.1131 (cemetery riddle, +916→§992, fail→§1190) and sec.992 (column riddle, +825→§932, fail→§1123 with manual exit). Anti-cheat: answer strings never stored — math sum is one-way. Riddle 2 canonical answer verified via FB2 §932 narrative (\"смерть деньгами не подкупишь\"); ChatGPT design proposal's \"год\" hypothesis ruled out (§850 is throne-tray narrative). Implementation per ChatGPT 5.5 Plus thinking proposal archived in audit_cycles/letter_riddle_engine_may_2026/.",
-    "v2.31 -> v2.32": "May 2026 — Group 17 spell hook coverage: 9 P0 bugs fixed in single commit (player-cast spell choices without spell:\"X\" field). Affected paragraphs: §93/§329/§521/§705/§935 (LEVITATION rescue points), §308 (FORCE → combat), §596/§698 (SWIMMING), §415 (HEALING bear cub + label fix from malformed \"Золотой браслет\"). 26 combat-modal pattern paragraphs deferred (require new engine work). 57 paragraphs verified already correctly wired. 29 narrative-only paragraphs need no fix. Comprehensive manual audit completes Gemini's partial Deep Research pass; full findings in audit_cycles/spell_economy_may_2026/. Real coverage now 66/132 = 50% (was 57/132 = 43% before commit)."
+    "v2.31 -> v2.32": "May 2026 — Group 17 spell hook coverage: 9 P0 bugs fixed in single commit (player-cast spell choices without spell:\"X\" field). Affected paragraphs: §93/§329/§521/§705/§935 (LEVITATION rescue points), §308 (FORCE → combat), §596/§698 (SWIMMING), §415 (HEALING bear cub + label fix from malformed \"Золотой браслет\"). 26 combat-modal pattern paragraphs deferred (require new engine work). 57 paragraphs verified already correctly wired. 29 narrative-only paragraphs need no fix. Comprehensive manual audit completes Gemini's partial Deep Research pass; full findings in audit_cycles/spell_economy_may_2026/. Real coverage now 66/132 = 50% (was 57/132 = 43% before commit).",
+    "v2.32 -> v2.33": "May 2026 — Group 19 combat-modal spell engine: extended COPY-in-combat pattern with FORCE and WEAKNESS spells. Engine: 2 new functions (useForceInCombat, useWeaknessInCombat), 3 modified (startCombat/combatRound/endCombat), 2 new combatState fields (forceBuff/weaknessDebuff), 2 new HTML buttons. Data: combat_spells_allowed allowlist added to §506 (COPY only — werewolf canon) and §950 (FORCE only — arena goblin canon). 20 other combat paragraphs use default (all 3 spells available). Resolves 26 of 26 deferred A*-deferred paragraphs from group_17 audit. Combat-spell coverage now functional across all canonical combat paragraphs."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -1268,6 +1269,55 @@
         }
       },
       "audit_source": "audit_cycles/spell_economy_may_2026/ (Gemini partial + Claude manual completion)"
+    },
+    "group_19_combat_modal_spells": {
+      "cluster_description": "Combat-modal spell selection engine extension for FORCE and WEAKNESS spells. Resolves 26 deferred A*-deferred paragraphs from group_17 audit. Extends existing useCopyInCombat pattern (commit aeebe69) — three combat-modal spell buttons now exist: COPY (clones strongest enemy), FORCE (+2 СИЛА УДАРА persistent buff), WEAKNESS (-2 enemy attack persistent debuff). Each is a one-shot cast per combat (re-click prevented via combatState flags). Per-paragraph allowlist via new sec.combat_spells_allowed optional array. When absent (default), all 3 buttons available subject to spell budget. When present, only listed spells get buttons (e.g. §506 werewolf only allows COPY per canon).",
+      "engine_extension": {
+        "new_functions": [
+          "useForceInCombat() — applies +2 СИЛА УДАРА persistent buff",
+          "useWeaknessInCombat() — applies -2 enemy attack persistent debuff"
+        ],
+        "modified_functions": [
+          "startCombat — sets up FORCE/WEAKNESS buttons per allowlist",
+          "combatRound — applies forceBuff/weaknessDebuff to attack math",
+          "endCombat — hides all spell buttons"
+        ],
+        "new_state_fields": [
+          "combatState.forceBuff (bool, FORCE active for combat)",
+          "combatState.weaknessDebuff (bool, WEAKNESS active for combat)"
+        ],
+        "new_data_field": "sec.combat_spells_allowed (optional array of spell IDs). When present, restricts which spells get combat-modal buttons for this paragraph. When absent, all three are available subject to spell budget.",
+        "new_html_elements": [
+          "#btn-force-spell (💪 Заклятие Силы)",
+          "#btn-weakness-spell (🫀 Заклятие Слабости)"
+        ]
+      },
+      "wired_paragraphs": [
+        {
+          "pid": 506,
+          "restriction": "COPY only",
+          "reason": "Canon: \"Сражаться с Оборотнем можно только обычным оружием или с помощью заклятия Копии\""
+        },
+        {
+          "pid": 950,
+          "restriction": "FORCE only",
+          "reason": "Canon: \"можете использовать заклятие Силы и Исцеления\" — HEALING is engine-global HUD button"
+        }
+      ],
+      "default_behavior_paragraphs": [
+        "§43, §100, §162, §197, §233, §235, §240, §388, §436, §456, §486, §528, §532, §536, §567, §628, §717, §1096, §1175, §1177",
+        "(20 paragraphs use default — all 3 combat buttons available subject to spell budget)"
+      ],
+      "canonical_notes": {
+        "FORCE": "FB2 canon: \"Прибавит вам силу и увеличит вашу СИЛУ УДАРА в бою.\" Persistent buff applied to player attack math for whole combat duration. Implementation: combatState.forceBuff=true, pMod += 2 in combatRound. Single cast per combat (re-click prevented).",
+        "WEAKNESS": "FB2 canon varies: \"Сделает вашего врага неуклюжим и неповоротливым, ослабит СИЛУ его УДАРА\" (general) and \"уменьшите на 2 СИЛУ УДАРА любого из Гоблинов\" (single target in multi-enemy fights). Engine applies -2 globally to all active enemies because per-round attack math doesn't track which single enemy was targeted; slightly more generous than canon for multi-enemy fights but matches the spirit of \"ослабляет врага в этом бою\".",
+        "COPY": "Pre-existing implementation (commit aeebe69) clones the strongest active enemy and runs auto-combat between clone and original. Unchanged by group_19.",
+        "FIRE_combat": "NOT IMPLEMENTED in this group. FB2 canon at §436 and §528 explicitly forbids FIRE on trees (\"Пользоваться заклятием Огня на дереве неразумно — спалите все дерево\"). Where FIRE is allowed in combat narrative, it's pre-combat (cast at a navigation screen that transitions to a different combat paragraph, like §65 → §208). No combat-modal FIRE button needed — pattern doesn't exist in canon.",
+        "HEALING_combat": "NOT IMPLEMENTED as combat-modal. HEALING is engine-global HUD #btn-heal restricted to NON-combat moments per spell definition (\"В любой момент (но не во время сражения)\"). Player can use HEALING between combats to restore stamina."
+      },
+      "audit_source": "audit_cycles/spell_economy_may_2026/CLAUDE_MANUAL_CLASSIFICATION.md (A*-deferred category)",
+      "status": "engine_extension_complete",
+      "closure_note": "21 of 26 deferred A*-deferred paragraphs now functional via default combat-spell behavior. 2 paragraphs get canonical allowlist restrictions (§506, §950). 3 paragraphs (§43, §100, §567) have separate considerations: §567 has zero choices and may be orphan; §43/§100 are post-combat narrative referenced but combat starts at earlier paragraph. All 26 now have consistent canonical-respecting combat spell behavior."
     }
   },
   "resolved_no_op": {

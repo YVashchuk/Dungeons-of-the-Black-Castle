@@ -4200,10 +4200,190 @@ Conventions:
 
 ---
 
+## group19_force_in_combat_sec197
+
+**Target:** §197
+
+**Commit:** `group_19_combat_modal_spells`
+
+**What to check:** §197 she-bear combat: open combat modal. If player has FORCE charges, '💪 Заклятие Силы [N]' button visible alongside '👤 Заклятие Копии [N]' and '🫀 Заклятие Слабости [N]'. Click FORCE → +2 СИЛА УДАРА for whole combat (visible in attack log), spell budget decremented by 1, button hides. Same combat math applies for remaining rounds.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти прямо → §155'
+    20. From §155: click 'Будете защищаться → §197'
+```
+  (20 clicks total, graph: basic)
+
+---
+
+## group19_weakness_in_combat_sec456
+
+**Target:** §456
+
+**Commit:** `group_19_combat_modal_spells`
+
+**What to check:** §456 Giant Spider combat: WEAKNESS button visible. Click → -2 to enemy attack for whole combat. Enemy log shows '2к6(X) + skill -2 = total' format for remaining rounds. Spell budget -1, button hides.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Свернуть на нее → §5'
+     8. From §5: click 'Идти направо → §288'
+     9. From §288: click 'Хотите последовать по ней → §224'
+    10. From §224: click 'Выйти на дорогу → §22'
+    11. From §22: click 'Взобраться на дерево и посмотреть, кто там живёт → §436'
+    12. From §436: click 'Удача с вами → §456'
+```
+  (12 clicks total, graph: full)
+
+---
+
+## group19_force_weakness_combined_sec717
+
+**Target:** §717
+
+**Commit:** `group_19_combat_modal_spells`
+
+**What to check:** §717 2-goblin combat: cast both FORCE and WEAKNESS in same combat. Both buffs persist for remaining rounds. Player attack +2, enemy attack -2 (net +4 advantage per round). Both buttons hide after single cast each.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Если же за это время вы не смогли его одолеть, то → §182'
+    14. From §182: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Отказаться от его помощи и пойти дальше → §1203'
+    17. From §1203: click 'Пойти налево → §253'
+    18. From §253: click 'Пойти дальше по дороге → §508'
+    19. From §508: click 'Пойти налево → §291'
+    20. From §291: click 'Свернуть к озеру → §7'
+    21. From §7: click 'Пойти вдоль берега на запад → §596'
+    22. From §596: click 'Лодки на берегу нет, и, если все же хотите… → §57'
+    23. From §57: click 'Поплыть на противоположный берег → §641'
+    24. From §641: click 'Позвать на помощь Золотую рыбку и выбраться к берегу → §717'
+```
+  (24 clicks total, graph: basic)
+
+---
+
+## group19_werewolf_only_copy_sec506
+
+**Target:** §506
+
+**Commit:** `group_19_combat_modal_spells`
+
+**What to check:** §506 werewolf combat: combat_spells_allowed=['COPY'] means only Copy button visible, FORCE and WEAKNESS buttons hidden even if player has charges. Per canon: 'Сражаться с Оборотнем можно только обычным оружием или с помощью заклятия Копии.'
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По левой дороге → §282'
+     2. From §282: click 'Пойти по дороге дальше → §397'
+     3. From §397: click 'Продолжить → §372'
+     4. From §372: click 'Воспользоваться заклятием Огня → §103'
+     5. From §103: click 'Идти беспрепятственно дальше по дороге → §216'
+     6. From §216: click 'Пойти налево → §423'
+     7. From §423: click 'Пойти дальше по дороге → §83'
+     8. From §83: click 'Решить, что это ловушка, и пойти дальше → §408'
+     9. From §408: click 'Пойти налево → §292'
+    10. From §292: click 'Пойти туда → §157'
+    11. From §157: click 'Свернуть по тропинке направо → §716'
+    12. From §716: click 'Пойти прямо → §737'
+    13. From §737: click 'Его за 5 раундов атаки, то → §391'
+    14. From §391: click 'Заклятие Плавания → §841'
+    15. From §841: click 'Заклятие действует успешно, и вы переплываете реку → §164'
+    16. From §164: click 'Поверить ему и сказать, что идёте драться с волшебником → §289'
+    17. From §289: click 'Если вы удачливы → §59'
+    18. From §59: click 'Свернуть с дороги и сразиться с Оборотнем → §506'
+```
+  (18 clicks total, graph: full)
+
+---
+
+## group19_arena_only_force_sec950
+
+**Target:** §950
+
+**Commit:** `group_19_combat_modal_spells`
+
+**What to check:** §950 arena goblin combat: combat_spells_allowed=['FORCE'] means only Force button visible, WEAKNESS and COPY hidden. HEALING engine HUD button still works between combats. Per canon: 'можете использовать заклятие Силы и Исцеления.'
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click 'По правой дороге → §1219'
+     2. From §1219: click 'Не рисковать и пойти дальше → §517'
+     3. From §517: click 'Свернуть → §212'
+     4. From §212: click 'Пойти по ней дальше → §255'
+     5. From §255: click 'Пойти налево → §380'
+     6. From §380: click 'Можно войти внутрь и все выяснить → §371'
+     7. From §371: click 'Освобождать принцессу → §76'
+     8. From §76: click 'Войти в замок через потайную дверцу → §1145'
+     9. From §1145: click 'Справа — невысокое маленькое строение, которого… → §885'
+    10. From §885: click 'Решить не рисковать и направитесь к… → §590'
+    11. From §590: click 'Лучше не терять времени и попробовать войти → §915'
+    12. From §915: click 'Убив льва, вы можете перешагнуть через него и войти → §833'
+    13. From §833: click 'В дверь направо → §1177'
+    14. From §1177: click 'Выйти в дверь перед собой → §246'
+    15. From §246: click 'Открыть ее → §730'
+    16. From §730: click 'Поискать в мешке что-то вроде пропуска → §90'
+    17. From §90: click 'Предложить арбуз → §720'
+    18. From §720: click 'Вот развлечение так развлечение! Просто так… → §781'
+    19. From §781: click 'Итак, если попали, то → §863'
+    20. From §863: click 'С легким сердцем встаете и готовитесь уйти, но… → §926'
+    21. From §926: click 'Принять вызов → §950'
+```
+  (21 clicks total, graph: basic)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **99 / 121**
+- Scenarios with paths found: **104 / 126**
 - Scenarios needing manual route discovery: **22**
 
 ### Manual routing required for:

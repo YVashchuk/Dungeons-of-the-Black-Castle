@@ -997,6 +997,38 @@ SCENARIOS = [
         "what_to_check": "§415 bear cub healing: choice label fixed from malformed 'Использовать Золотой браслет (84)' to canonical 'Истратить заклятие Исцеления на медвежонка (84)'. Now consumes HEALING charge on click → §84. Without HEALING, only fallback to §197 (she-bear combat).",
         "commit": "group_17_spell_hooks",
     },
+    # ── Group 19: combat-modal spell engine (FORCE/WEAKNESS) ─
+    {
+        "id": "group19_force_in_combat_sec197",
+        "target": 197,
+        "what_to_check": "§197 she-bear combat: open combat modal. If player has FORCE charges, '💪 Заклятие Силы [N]' button visible alongside '👤 Заклятие Копии [N]' and '🫀 Заклятие Слабости [N]'. Click FORCE → +2 СИЛА УДАРА for whole combat (visible in attack log), spell budget decremented by 1, button hides. Same combat math applies for remaining rounds.",
+        "commit": "group_19_combat_modal_spells",
+    },
+    {
+        "id": "group19_weakness_in_combat_sec456",
+        "target": 456,
+        "what_to_check": "§456 Giant Spider combat: WEAKNESS button visible. Click → -2 to enemy attack for whole combat. Enemy log shows '2к6(X) + skill -2 = total' format for remaining rounds. Spell budget -1, button hides.",
+        "commit": "group_19_combat_modal_spells",
+    },
+    {
+        "id": "group19_force_weakness_combined_sec717",
+        "target": 717,
+        "what_to_check": "§717 2-goblin combat: cast both FORCE and WEAKNESS in same combat. Both buffs persist for remaining rounds. Player attack +2, enemy attack -2 (net +4 advantage per round). Both buttons hide after single cast each.",
+        "commit": "group_19_combat_modal_spells",
+    },
+    {
+        "id": "group19_werewolf_only_copy_sec506",
+        "target": 506,
+        "what_to_check": "§506 werewolf combat: combat_spells_allowed=['COPY'] means only Copy button visible, FORCE and WEAKNESS buttons hidden even if player has charges. Per canon: 'Сражаться с Оборотнем можно только обычным оружием или с помощью заклятия Копии.'",
+        "commit": "group_19_combat_modal_spells",
+    },
+    {
+        "id": "group19_arena_only_force_sec950",
+        "target": 950,
+        "what_to_check": "§950 arena goblin combat: combat_spells_allowed=['FORCE'] means only Force button visible, WEAKNESS and COPY hidden. HEALING engine HUD button still works between combats. Per canon: 'можете использовать заклятие Силы и Исцеления.'",
+        "commit": "group_19_combat_modal_spells",
+    },
+
 
 
 
