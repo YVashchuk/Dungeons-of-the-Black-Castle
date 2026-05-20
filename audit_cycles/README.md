@@ -64,3 +64,10 @@ Phase A.2 from POST_GROUP6_ROADMAP.md — visual art coverage gap analysis. Per-
 - `MIDJOURNEY_PROMPTS_BUNDLE.md` — 2 re-generations (broken art30/art47) + 6 new generations (iconic gaps) with full prompts in `art_catalog.py` style + post-generation integration steps
 
 **Status:** Awaiting user's Midjourney run. After generation, a new Claude session can paste the output URLs and handle catalog updates + MJ_MAP wiring + base64 re-encoding + build + commit in one session.
+
+
+**Files:**
+- `MIDJOURNEY_PROMPTS_BUNDLE.md` — 2 re-generations (broken art30/art47) + 6 new generations (iconic gaps) with full prompts in `art_catalog.py` style + post-generation integration steps
+- `LEGACY_BW_ILLUSTRATION_AUDIT.md` — **NEW (May 2026):** root-cause + full inventory of the legacy 1991/5th-edition black-and-white scan fallback layer (`src/illustrations.js` → `ILLUST_DATA`/`ILLUST_MAP`) that our earlier coverage analysis missed. 56 paragraphs have a B&W scan; 31 are already superseded by colour MJ art; **25 still show black-and-white in-game (14 unique scans)**. Each of the 14 scans was viewed and visually documented, with a ready-to-use regeneration prompt (B1–B14). Includes engine-precedence confirmation (MJ_MAP wins, ILLUST_MAP is fallback) so future wiring needs only `mj_art.js` edits.
+
+**Status:** Awaiting user's Midjourney run (subscription lapsed; user will regenerate at end of project with a new subscription). After generation, a new Claude session can paste the output URLs and handle catalog updates + MJ_MAP wiring + base64 re-encoding + build + commit in one session. The B&W audit means we will NOT need to re-investigate this gap — the analysis is complete and the targets are documented.
