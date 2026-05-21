@@ -49,12 +49,37 @@ function d6(){const a=new Uint32Array(1);crypto.getRandomValues(a);return(a[0]%6
 
 // ── Save/Load ──
 function saveGame(){if(!S)return;localStorage.setItem(SAVE_KEY,JSON.stringify(S));}
-function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const s=JSON.parse(r);return s.v===5||s.v===4?s:null;}catch{return null;}}
+// Defensive structural normalization for any loaded save (localStorage,
+// imported file, or deep-link). Every read site in the engine is already
+// individually guarded, but normalizing once at load time guarantees a
+// well-formed shape regardless of the save's vintage or hand-editing:
+//   - core array/string fields that pre-date a field always exist
+//   - runtime-only fields (eventLog, shopBought, riddle_attempts) added in
+//     later sessions are backfilled so old saves match current structure
+// Mutates and returns the same object. Safe to call on null (returns null).
+function normalizeSave(s){
+  if(!s||typeof s!=='object') return s;
+  // Core fields from initState() — backfill if missing or wrong type.
+  if(!Array.isArray(s.inventory)) s.inventory=[];
+  if(!Array.isArray(s.spells))    s.spells=[];
+  if(!Array.isArray(s.visited))   s.visited=[];
+  if(typeof s.notes!=='string')   s.notes='';
+  if(typeof s.gold!=='number')    s.gold=0;
+  if(typeof s.flask!=='number')   s.flask=0;
+  if(typeof s.section!=='number') s.section=1;
+  // Runtime-only fields added in later sessions.
+  if(!Array.isArray(s.eventLog))  s.eventLog=[];
+  if(typeof s.shopBought!=='object'||s.shopBought===null||Array.isArray(s.shopBought)) s.shopBought={};
+  if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
+  return s;
+}
+function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const s=JSON.parse(r);return (s.v===5||s.v===4)?normalizeSave(s):null;}catch{return null;}}
 function exportSave(){saveGame();const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='podzch-save.json';a.click();closeModal('overlay-menu');}
 function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const s=JSON.parse(t);
   if(s.v!==5&&s.v!==4){alert('Несовместимый формат');return;}
   if(s.v===4){s.v=5;s.luckMax=s.luck;delete s.luckBoxes;}// upgrade v4→v5
+  normalizeSave(s);
   S=s;saveGame();showScr('game');renderGame();closeModal('overlay-menu');}catch{alert('Ошибка загрузки');}});e.target.value='';}
 
 // ── Screens ──
