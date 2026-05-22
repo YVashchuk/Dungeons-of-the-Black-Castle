@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-05-18",
+  "last_updated": "2026-05-22",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -36,7 +36,8 @@
     "v2.29 -> v2.30": "May 2026 — §600 sibling audit follow-up: TWO content-fidelity bugs fixed in single commit. §1050 (Тролль drop) had three independent bugs: malformed item name \"Из его кармана Золотое кольцо\" (text leaked into item string), missing +1 LUCK boost, and missing -52 arithmetic mechanic. The latter is item 16 of the group_6 extension (gold_ring), with single canonical consumer §1164 → §1112 — THE THIRD CANONICAL BARLAD-DEFEAT ROUTE. §1112 was orphan in remake. Companion §462 fix (Orc-drop): added +3 gold and \"Игральная кость\" item to match canonical \"В кармане у Орка лежит 3 золотых и игральная кость\". §600 itself audited and confirmed canonically complete — no fixes needed there. 26 other paragraphs with auto_items.items[] arrays spot-checked against FB2; all confirmed correct or false-positive (e.g. §35 sword stat is conditional item-offer not auto-grant; §471 stamina items are separate purchasable foods; §1172 stat numbers are Dragon stats not player rewards).",
     "v2.30 -> v2.31": "May 2026 — Group 18 letter-sum riddle engine implemented. New engine functions (applyRiddleAnswer, handleRiddleFail, renderRiddle) + ALPHABET_RU constant + dispatch from renderGame. CSS widget with iOS-safe 16px-equivalent input, shake animation. Data: sec.1131 (cemetery riddle, +916→§992, fail→§1190) and sec.992 (column riddle, +825→§932, fail→§1123 with manual exit). Anti-cheat: answer strings never stored — math sum is one-way. Riddle 2 canonical answer verified via FB2 §932 narrative (\"смерть деньгами не подкупишь\"); ChatGPT design proposal's \"год\" hypothesis ruled out (§850 is throne-tray narrative). Implementation per ChatGPT 5.5 Plus thinking proposal archived in audit_cycles/letter_riddle_engine_may_2026/.",
     "v2.31 -> v2.32": "May 2026 — Group 17 spell hook coverage: 9 P0 bugs fixed in single commit (player-cast spell choices without spell:\"X\" field). Affected paragraphs: §93/§329/§521/§705/§935 (LEVITATION rescue points), §308 (FORCE → combat), §596/§698 (SWIMMING), §415 (HEALING bear cub + label fix from malformed \"Золотой браслет\"). 26 combat-modal pattern paragraphs deferred (require new engine work). 57 paragraphs verified already correctly wired. 29 narrative-only paragraphs need no fix. Comprehensive manual audit completes Gemini's partial Deep Research pass; full findings in audit_cycles/spell_economy_may_2026/. Real coverage now 66/132 = 50% (was 57/132 = 43% before commit).",
-    "v2.32 -> v2.33": "May 2026 — Group 19 combat-modal spell engine: extended COPY-in-combat pattern with FORCE and WEAKNESS spells. Engine: 2 new functions (useForceInCombat, useWeaknessInCombat), 3 modified (startCombat/combatRound/endCombat), 2 new combatState fields (forceBuff/weaknessDebuff), 2 new HTML buttons. Data: combat_spells_allowed allowlist added to §506 (COPY only — werewolf canon) and §950 (FORCE only — arena goblin canon). 20 other combat paragraphs use default (all 3 spells available). Resolves 26 of 26 deferred A*-deferred paragraphs from group_17 audit. Combat-spell coverage now functional across all canonical combat paragraphs."
+    "v2.32 -> v2.33": "May 2026 — Group 19 combat-modal spell engine: extended COPY-in-combat pattern with FORCE and WEAKNESS spells. Engine: 2 new functions (useForceInCombat, useWeaknessInCombat), 3 modified (startCombat/combatRound/endCombat), 2 new combatState fields (forceBuff/weaknessDebuff), 2 new HTML buttons. Data: combat_spells_allowed allowlist added to §506 (COPY only — werewolf canon) and §950 (FORCE only — arena goblin canon). 20 other combat paragraphs use default (all 3 spells available). Resolves 26 of 26 deferred A*-deferred paragraphs from group_17 audit. Combat-spell coverage now functional across all canonical combat paragraphs.",
+    "v2.x verification sweep 2026-05-22": "Verification session confirmed all recent work is real in the source, then closed a registry-hygiene gap: four entries were implemented and committed but lacked a top-level status_done flag, so the backlog falsely showed them pending. Marked status_done on: group_6_dynamic_target_engine (already had group_complete = 13/13 items, commits 9c037b3..fe72347), group_17_spell_hooks (commit 082cdb8, verified 9/9 spell fields in remake_data.js), group_19_combat_modal_spells (commit ba13de5, verified useForceInCombat/useWeaknessInCombat + §506/§950 wiring), and group_18_letter_sum_riddle (commit b6cd0cb, had internal status:closed). After this sweep there are ZERO genuinely-pending items in pending_corrections — the entire audit backlog is closed. Remaining work lives in POST_GROUP6_ROADMAP (Midjourney regen, mobile audit, map nodes, PWA, localisation) and external deliverables."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -705,7 +706,11 @@
             "spell_book"
           ]
         }
-      ]
+      ],
+      "status_done": {
+        "commit": "9c037b3..fe72347 (+ extensions a91d540, f19d59d, aeebe69, 1ed6d31)",
+        "summary": "13/13 dynamic-target items addressed via per-item static inventory_condition gating (no universal +N hook, per the original warning). 11 status_done, 1 verification-only (gold_key), 1 deprecated as absent-from-canon (candle_set). Plus 3 extension items (emerald_ring, bandit_tip, gold_ring). Cluster already had group_complete; promoting to top-level status_done."
+      }
     },
     "group_7_inventory_loss_text_engine_mismatch": {
       "comment": "Paragraphs where the text says inventory and/or gold are lost (player robbed, drugged, etc.) but auto_items is empty so engine never honours the loss. Player keeps everything, breaking narrative causality.",
@@ -1009,7 +1014,11 @@
         "autocomplete=off, autocorrect=off, spellcheck=false on input",
         "maxLength=40 prevents pathological inputs",
         "replace(/[^А-ЯЁ]/g,\"\") strips whitespace and non-Cyrillic"
-      ]
+      ],
+      "status_done": {
+        "commit": "b6cd0cb",
+        "summary": "Letter-ordinal-sum riddle engine. §1131 (+916->§992) and §992 (+825->§932) wired. Anti-cheat: answer string never stored. Had internal status:closed; promoting to top-level status_done."
+      }
     },
     "group_17_spell_hooks": {
       "cluster_description": "Spell-hook coverage audit (post-Gemini Deep Research partial audit May 2026). Comprehensive manual classification of all 132 FB2 spell mentions across 8 spells. Real per-spell data-hook coverage was understated in Gemini's audit (engine claim was WRONG — applyChoiceConsume exists since commit aeebe69). After manual reclassification, real picture: 57 already-wired (OK) + 9 fixable P0 bugs (this commit) + 26 deferred combat-modal pattern + 40 narrative-only paragraphs (B/C/D/E). Total real coverage after this commit: 66/132 = 50% (was 57/132 = 43% before).",
@@ -1268,7 +1277,11 @@
           "hedge_or_conditional": 1
         }
       },
-      "audit_source": "audit_cycles/spell_economy_may_2026/ (Gemini partial + Claude manual completion)"
+      "audit_source": "audit_cycles/spell_economy_may_2026/ (Gemini partial + Claude manual completion)",
+      "status_done": {
+        "commit": "082cdb8",
+        "summary": "9 P0 player-cast spell-hook bugs fixed (LEVITATION x5, FORCE x1, SWIMMING x2, HEALING x1 + §415 label repair). Verified 9/9 spell fields present in remake_data.js this session. Combat-modal cases handled by group_19."
+      }
     },
     "group_19_combat_modal_spells": {
       "cluster_description": "Combat-modal spell selection engine extension for FORCE and WEAKNESS spells. Resolves 26 deferred A*-deferred paragraphs from group_17 audit. Extends existing useCopyInCombat pattern (commit aeebe69) — three combat-modal spell buttons now exist: COPY (clones strongest enemy), FORCE (+2 СИЛА УДАРА persistent buff), WEAKNESS (-2 enemy attack persistent debuff). Each is a one-shot cast per combat (re-click prevented via combatState flags). Per-paragraph allowlist via new sec.combat_spells_allowed optional array. When absent (default), all 3 buttons available subject to spell budget. When present, only listed spells get buttons (e.g. §506 werewolf only allows COPY per canon).",
@@ -1317,7 +1330,11 @@
       },
       "audit_source": "audit_cycles/spell_economy_may_2026/CLAUDE_MANUAL_CLASSIFICATION.md (A*-deferred category)",
       "status": "engine_extension_complete",
-      "closure_note": "21 of 26 deferred A*-deferred paragraphs now functional via default combat-spell behavior. 2 paragraphs get canonical allowlist restrictions (§506, §950). 3 paragraphs (§43, §100, §567) have separate considerations: §567 has zero choices and may be orphan; §43/§100 are post-combat narrative referenced but combat starts at earlier paragraph. All 26 now have consistent canonical-respecting combat spell behavior."
+      "closure_note": "21 of 26 deferred A*-deferred paragraphs now functional via default combat-spell behavior. 2 paragraphs get canonical allowlist restrictions (§506, §950). 3 paragraphs (§43, §100, §567) have separate considerations: §567 has zero choices and may be orphan; §43/§100 are post-combat narrative referenced but combat starts at earlier paragraph. All 26 now have consistent canonical-respecting combat spell behavior.",
+      "status_done": {
+        "commit": "ba13de5",
+        "summary": "Combat-modal FORCE (+2 СИЛА УДАРА) and WEAKNESS (-2 enemy attack) engine. Verified useForceInCombat/useWeaknessInCombat in game_logic.js, combatRound applies buffs, §506=[COPY]/§950=[FORCE] wired, 20 combats use default."
+      }
     }
   },
   "resolved_no_op": {
