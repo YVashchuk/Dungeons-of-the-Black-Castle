@@ -71,6 +71,7 @@ function normalizeSave(s){
   if(!Array.isArray(s.eventLog))  s.eventLog=[];
   if(typeof s.shopBought!=='object'||s.shopBought===null||Array.isArray(s.shopBought)) s.shopBought={};
   if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
+  if(typeof s.sec436_force!=='boolean') s.sec436_force=false; // §436 Force-on-tree round-trip flag
   return s;
 }
 function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const s=JSON.parse(r);return (s.v===5||s.v===4)?normalizeSave(s):null;}catch{return null;}}
@@ -1209,12 +1210,26 @@ function renderCanonCombatChoices(sec,list){
     return true;
   }
   if(sec.combat_script==='sec436_pre_luck'){
-    // §436 spider-on-the-tree. Canon: roll luck first. Lucky → §456 (cut the
-    // ladder, drop to the ground, fight on equal terms — handled entirely by
-    // §456). Unlucky → forced tree fight at −1 СИЛА УДАРА, where Force (→526)
-    // and Weakness (→448) are *navigation* spell choices, not in-combat modal
-    // casts (combat_spells_allowed:[] on §436). This handler also honours the
-    // only_after_unlucky flags that the default render path ignores.
+    // §436 spider-on-the-tree. Canon flow:
+    //  • Roll luck. Lucky → §456 (cut ladder, drop to ground, equal-terms
+    //    fight handled by §456). Unlucky → forced tree fight at −1 СИЛА УДАРА.
+    //  • On the unlucky branch the player may cast Force (→§526) or Weakness
+    //    (→§448) as NAVIGATION choices (combat_spells_allowed:[]; Copy is
+    //    forbidden — "Копии негде поместиться").
+    //  • Force round-trip: §436→(cast Force once)→§526→§436. Because goTo()
+    //    resets sectionPrepState, the Force flag must live on S (the save
+    //    state), like shopBought/riddle_attempts. On Force-return we skip the
+    //    luck roll and fight at +1 (canon §526: "не вычитать, а прибавлять 1").
+    if(S.sec436_force){
+      // Returning from §526 after a successful Force cast: fight at +1, once.
+      S.sec436_force=false; saveGame();
+      const fightF=document.createElement('button');fightF.className='choice-btn';
+      fightF.style.borderColor='var(--gold)';fightF.style.color='var(--gold)';fightF.style.background='rgba(212,175,55,.12)';
+      fightF.innerHTML='⚔ Драться (заклятие Силы: +1 к СИЛЕ УДАРА)';
+      fightF.onclick=()=>startCombat(sec.enemies,{...sec, player_attack_mod:1, combat_spells_allowed:[]});
+      list.appendChild(fightF);
+      return true;
+    }
     if(!st.luckResolved){
       const btn=document.createElement('button');
       btn.className='choice-btn';
@@ -1232,7 +1247,7 @@ function renderCanonCombatChoices(sec,list){
       return true;
     }
     if(st.escaped){ goTo(456); return true; }
-    // Unlucky branch: forced tree fight with −1 (player_attack_mod in data).
+    // Unlucky branch: forced tree fight with −1 (player_attack_mod:-1 in data).
     const fight=document.createElement('button');fight.className='choice-btn';
     fight.style.borderColor='var(--red)';fight.style.color='var(--red2)';fight.style.background='rgba(180,30,30,.12)';
     fight.innerHTML='⚔ Драться с пауком на дереве';
@@ -1240,7 +1255,20 @@ function renderCanonCombatChoices(sec,list){
     list.appendChild(fight);
     // Canonical navigation spell choices, shown only after the unlucky roll.
     sec.choices.forEach((ch,idx)=>{
-      if(ch.only_after_unlucky && passesInventoryCheck(ch) && passesGoldCheck(ch)){
+      if(!ch.only_after_unlucky || !passesInventoryCheck(ch) || !passesGoldCheck(ch)) return;
+      if(ch.spell==='FORCE'){
+        // Force: cast once here, set the persistent round-trip flag, go to §526.
+        // (§526's return choice is plain navigation — no second cast.)
+        const rem=getSpellRemaining('FORCE');
+        const fb=document.createElement('button');fb.className='choice-btn';
+        const stl=SPELL_STYLE_BY_ID['FORCE']||{icon:'✨',border:'#8a4dbd',color:'#b070e0',bg:'rgba(140,70,200,.12)'};
+        fb.style.borderColor=stl.border;fb.style.color=stl.color;fb.style.background=stl.bg;
+        fb.innerHTML=stl.icon+' '+ch.label+(rem>0?' <span style="opacity:.6;font-size:14px">['+rem+']</span>':'');
+        if(rem<=0){ fb.style.opacity='.35';fb.style.cursor='not-allowed';fb.style.borderStyle='dashed';fb.title='Заклятие недоступно';fb.onclick=(e)=>{e.preventDefault();}; }
+        else { fb.onclick=()=>{ useSpell('FORCE'); S.sec436_force=true; saveGame(); goTo(ch.target); }; }
+        list.appendChild(fb);
+      } else {
+        // Weakness (→§448) and any other: standard spell-navigation button.
         list.appendChild(makeChoiceBtn(ch,false,idx));
       }
     });
