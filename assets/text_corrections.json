@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-05-22",
+  "last_updated": "2026-05-24",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -37,7 +37,8 @@
     "v2.30 -> v2.31": "May 2026 — Group 18 letter-sum riddle engine implemented. New engine functions (applyRiddleAnswer, handleRiddleFail, renderRiddle) + ALPHABET_RU constant + dispatch from renderGame. CSS widget with iOS-safe 16px-equivalent input, shake animation. Data: sec.1131 (cemetery riddle, +916→§992, fail→§1190) and sec.992 (column riddle, +825→§932, fail→§1123 with manual exit). Anti-cheat: answer strings never stored — math sum is one-way. Riddle 2 canonical answer verified via FB2 §932 narrative (\"смерть деньгами не подкупишь\"); ChatGPT design proposal's \"год\" hypothesis ruled out (§850 is throne-tray narrative). Implementation per ChatGPT 5.5 Plus thinking proposal archived in audit_cycles/letter_riddle_engine_may_2026/.",
     "v2.31 -> v2.32": "May 2026 — Group 17 spell hook coverage: 9 P0 bugs fixed in single commit (player-cast spell choices without spell:\"X\" field). Affected paragraphs: §93/§329/§521/§705/§935 (LEVITATION rescue points), §308 (FORCE → combat), §596/§698 (SWIMMING), §415 (HEALING bear cub + label fix from malformed \"Золотой браслет\"). 26 combat-modal pattern paragraphs deferred (require new engine work). 57 paragraphs verified already correctly wired. 29 narrative-only paragraphs need no fix. Comprehensive manual audit completes Gemini's partial Deep Research pass; full findings in audit_cycles/spell_economy_may_2026/. Real coverage now 66/132 = 50% (was 57/132 = 43% before commit).",
     "v2.32 -> v2.33": "May 2026 — Group 19 combat-modal spell engine: extended COPY-in-combat pattern with FORCE and WEAKNESS spells. Engine: 2 new functions (useForceInCombat, useWeaknessInCombat), 3 modified (startCombat/combatRound/endCombat), 2 new combatState fields (forceBuff/weaknessDebuff), 2 new HTML buttons. Data: combat_spells_allowed allowlist added to §506 (COPY only — werewolf canon) and §950 (FORCE only — arena goblin canon). 20 other combat paragraphs use default (all 3 spells available). Resolves 26 of 26 deferred A*-deferred paragraphs from group_17 audit. Combat-spell coverage now functional across all canonical combat paragraphs.",
-    "v2.x verification sweep 2026-05-22": "Verification session confirmed all recent work is real in the source, then closed a registry-hygiene gap: four entries were implemented and committed but lacked a top-level status_done flag, so the backlog falsely showed them pending. Marked status_done on: group_6_dynamic_target_engine (already had group_complete = 13/13 items, commits 9c037b3..fe72347), group_17_spell_hooks (commit 082cdb8, verified 9/9 spell fields in remake_data.js), group_19_combat_modal_spells (commit ba13de5, verified useForceInCombat/useWeaknessInCombat + §506/§950 wiring), and group_18_letter_sum_riddle (commit b6cd0cb, had internal status:closed). After this sweep there are ZERO genuinely-pending items in pending_corrections — the entire audit backlog is closed. Remaining work lives in POST_GROUP6_ROADMAP (Midjourney regen, mobile audit, map nodes, PWA, localisation) and external deliverables."
+    "v2.x verification sweep 2026-05-22": "Verification session confirmed all recent work is real in the source, then closed a registry-hygiene gap: four entries were implemented and committed but lacked a top-level status_done flag, so the backlog falsely showed them pending. Marked status_done on: group_6_dynamic_target_engine (already had group_complete = 13/13 items, commits 9c037b3..fe72347), group_17_spell_hooks (commit 082cdb8, verified 9/9 spell fields in remake_data.js), group_19_combat_modal_spells (commit ba13de5, verified useForceInCombat/useWeaknessInCombat + §506/§950 wiring), and group_18_letter_sum_riddle (commit b6cd0cb, had internal status:closed). After this sweep there are ZERO genuinely-pending items in pending_corrections — the entire audit backlog is closed. Remaining work lives in POST_GROUP6_ROADMAP (Midjourney regen, mobile audit, map nodes, PWA, localisation) and external deliverables.",
+    "v2.33 -> v2.34": "May 2026 (2026-05-24) — Group 20 combat-canon balance audit. Closed 7 valid findings from deep-research-report.md across 3 commits (1301c23 / f68caae / 37f95db): (a) per-hit damage canon — §36 trader +damage:4, §65 orcs & §368 knight remove spurious damage:1 (the -1 was a PLAYER strike-force penalty already in player_attack_mod); (b) combat_spells_allowed tightening — §65 & §436 ['FORCE','WEAKNESS'] (no COPY per 'Копии негде поместиться'), §368 [] ('времени на новые заклятия уже нет'); §436 moved out of group_19 default list; (c) §804 metal-piece consumer (→1184) gated on 'Блестящий кусок металла' — completes §804 gating begun in group_16/17. All FB2-verified against assets/fb2_remake.fb2. P3 design-notes in the same report (pineapple/FORCE≈WEAKNESS/ILLUSION/slot-tax) intentionally not actioned. The companion visual-coverage audit was rejected wholesale as confabulated (invented sci-fi/Shakespeare lore absent from the book; per-paragraph content did not match real §-text or MJ_MAP/ILLUST_MAP)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -1318,8 +1319,8 @@
         }
       ],
       "default_behavior_paragraphs": [
-        "§43, §100, §162, §197, §233, §235, §240, §388, §436, §456, §486, §528, §532, §536, §567, §628, §717, §1096, §1175, §1177",
-        "(20 paragraphs use default — all 3 combat buttons available subject to spell budget)"
+        "§43, §100, §162, §197, §233, §235, §240, §388, §456, §486, §528, §532, §536, §567, §628, §717, §1096, §1175, §1177",
+        "(19 paragraphs use default — all 3 combat buttons available subject to spell budget; §436 moved to a restricted allowlist in group_20, FB2 forbids COPY on the tree)"
       ],
       "canonical_notes": {
         "FORCE": "FB2 canon: \"Прибавит вам силу и увеличит вашу СИЛУ УДАРА в бою.\" Persistent buff applied to player attack math for whole combat duration. Implementation: combatState.forceBuff=true, pMod += 2 in combatRound. Single cast per combat (re-click prevented).",
@@ -1334,6 +1335,80 @@
       "status_done": {
         "commit": "ba13de5",
         "summary": "Combat-modal FORCE (+2 СИЛА УДАРА) and WEAKNESS (-2 enemy attack) engine. Verified useForceInCombat/useWeaknessInCombat in game_logic.js, combatRound applies buffs, §506=[COPY]/§950=[FORCE] wired, 20 combats use default."
+      }
+    },
+    "group_20_combat_canon_balance_audit": {
+      "cluster_description": "Combat-canon balance audit (deep-research-report.md, May 2026). Findings cross-checked against actual code in src/remake_data.js + src/game_logic.js and canon in assets/fb2_remake.fb2. Seven valid findings closed across three commits. All P3 design-notes in the same report (pineapple dominance, FORCE≈WEAKNESS parity, ILLUSION underuse, slot-tax) were intentionally NOT actioned — self-labelled by the auditor as balance-design, not bugs.",
+      "priority": "P1/P2",
+      "source": "deep_research_balance_audit_2026_05 + claude_fb2_verification_2026_05_24",
+      "subgroup_a_per_hit_damage_canon": {
+        "type": "gameplay_logic",
+        "comment": "Engine computes per-hit enemy damage as dmg = e.damage || 2 (startCombat). Canon deviations from the default 2 must be encoded as enemy.damage.",
+        "items": [
+          {
+            "paragraph": 36,
+            "fix": "add enemies[0].damage:4 (ТОРГОВЕЦ)",
+            "fb2_quote": "«вычитайте у себя не 2, а 4 ВЫНОСЛИВОСТИ»",
+            "note": "Distinct from resolved_no_op id 9 (Gemini flagged the trader's Skill 7 / Stamina 17 as an intentional HP-sponge — still true, untouched). That verdict concerned the stat block; this fixes the separate per-hit damage value, which is unambiguous canon."
+          },
+          {
+            "paragraph": 65,
+            "fix": "remove enemies[*].damage:1 on all three ОРКИ",
+            "fb2_quote": "«в качающейся на воде лодке… вычитайте 1 из Силы вашего Удара»",
+            "note": "Canon penalty is -1 to the PLAYER strike force, already modeled by player_attack_mod:-1. The damage:1 mis-encoded that as reduced enemy damage; orcs deal the default 2."
+          },
+          {
+            "paragraph": 368,
+            "fix": "remove enemies[0].damage:1 (ЗЕЛЕНЫЙ РЫЦАРЬ)",
+            "fb2_quote": "«вычитайте 1 из своей СИЛЫ УДАРА»",
+            "note": "Same pattern as §65: -1 player strike force handled by player_attack_mod:-1 / combat_script sec368_optional_pre_luck; knight deals the default 2."
+          }
+        ],
+        "verified_no_op": {
+          "paragraph": 240,
+          "reason": "Already correct (damage:3 on all six ЗМЕИ, FB2: «не 2, а 3 ВЫНОСЛИВОСТИ»). No change."
+        }
+      },
+      "subgroup_b_combat_spell_allowlist": {
+        "type": "gameplay_logic",
+        "comment": "Engine default is allowedSpells = sec.combat_spells_allowed || ['COPY','FORCE','WEAKNESS'], so any combat paragraph without the field exposes all three. Canon forbids some. Tightens the group_19 default for these paragraphs. Note: [] is truthy in JS, so combat_spells_allowed:[] correctly yields zero spell buttons.",
+        "items": [
+          {
+            "paragraph": 65,
+            "fix": "add combat_spells_allowed:['FORCE','WEAKNESS']",
+            "fb2_quote": "«Копии же просто негде будет поместиться»"
+          },
+          {
+            "paragraph": 368,
+            "fix": "add combat_spells_allowed:[] (no new spells)",
+            "fb2_quote": "«времени на новые заклятия уже нет»"
+          },
+          {
+            "paragraph": 436,
+            "fix": "add combat_spells_allowed:['FORCE','WEAKNESS']",
+            "fb2_quote": "«Пользоваться заклятием Огня на дереве неразумно. Копии же просто негде будет поместиться»",
+            "supersedes": "group_19_combat_modal_spells.default_behavior_paragraphs (§436 was previously left on the all-3 default; that list updated this commit)."
+          }
+        ]
+      },
+      "subgroup_c_item_gate": {
+        "type": "conditional_choice",
+        "comment": "§804 offers three keyed item-checks. Copper-key (→1064) and figured-key (→1895) were gated in prior commits (group_16/group_17); the metal-piece consumer (→1184) was still ungated, letting any player take the success route for free and making the §340 shop purchase pointless.",
+        "items": [
+          {
+            "paragraph": 804,
+            "fix": "add inventory_condition:'Блестящий кусок металла' to the target-1184 choice",
+            "note": "Item name matches §340 grants_items exactly. Visible label unchanged ('Кусок металла (1184)'). The metal piece becomes a meaningful 3-gold purchase again."
+          }
+        ]
+      },
+      "status_done": {
+        "commits": {
+          "1301c23": "subgroup_a — per-hit damage canon (§36 +damage:4; §65/§368 remove damage:1).",
+          "f68caae": "subgroup_b — combat_spells_allowed on §65/§368/§436.",
+          "37f95db": "subgroup_c — §804 metal-piece inventory_condition gate."
+        },
+        "verified": "Each change reserialized per-paragraph (round-trip proven byte-identical); 1221 paragraphs intact; full-file JSON valid after each phase."
       }
     }
   },
@@ -1407,7 +1482,8 @@
         "id": "9_combat_balance_outliers",
         "verdict": "design_note_not_bug",
         "reason": "Gemini 3.1 Pro audit flagged §36 (Trader Skill 7 / Stamina 17) and §760 (Bats Skill 4 / Stamina 6–8) as combat outliers. On review these are intentional pacing choices: the trader is a deliberate HP-sponge / mid-game choke point; the bats are a stamina-drain encounter by design. Neither is a bug. Listing as a design note in case a future balance pass revisits individual encounters, but no engine or data work is required.",
-        "source": "gemini_3_1_pro_2026_04 (graph audit, design diagnostic)"
+        "source": "gemini_3_1_pro_2026_04 (graph audit, design diagnostic)",
+        "note_2026_05_24": "Verdict unchanged: the trader's Skill 7 / Stamina 17 HP-sponge stays as designed. SEPARATELY, the per-hit damage value (canon: 'не 2, а 4') was missing and was fixed in group_20 subgroup_a (commit 1301c23). The stat block and the per-hit damage are different attributes; this note prevents the damage fix being mistaken for overturning the design-note."
       },
       {
         "id": "10_spell_economy_warnings",
