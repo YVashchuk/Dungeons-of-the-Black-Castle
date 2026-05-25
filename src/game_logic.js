@@ -1208,6 +1208,44 @@ function renderCanonCombatChoices(sec,list){
     list.appendChild(btn);
     return true;
   }
+  if(sec.combat_script==='sec436_pre_luck'){
+    // §436 spider-on-the-tree. Canon: roll luck first. Lucky → §456 (cut the
+    // ladder, drop to the ground, fight on equal terms — handled entirely by
+    // §456). Unlucky → forced tree fight at −1 СИЛА УДАРА, where Force (→526)
+    // and Weakness (→448) are *navigation* spell choices, not in-combat modal
+    // casts (combat_spells_allowed:[] on §436). This handler also honours the
+    // only_after_unlucky flags that the default render path ignores.
+    if(!st.luckResolved){
+      const btn=document.createElement('button');
+      btn.className='choice-btn';
+      btn.style.borderColor='var(--green)';btn.style.color='var(--green2)';btn.style.background='rgba(40,180,100,.12)';
+      btn.innerHTML='🎲 Проверить удачу';
+      btn.onclick=()=>startScriptedLuckCheck({
+        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Паук тянет вас к себе. Если повезёт — успеете перерубить лестницу и спрыгнуть на землю, где будете драться на равных. Если нет — паук затянет вас на дерево, и в бою придётся вычитать 1 из СИЛЫ УДАРА.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
+        successHtml:'Вы перерубаете лестницу и спрыгиваете на землю — теперь будете драться на равных.',
+        failHtml:'Паук затягивает вас на дерево. В бою вычитайте 1 из СИЛЫ УДАРА.',
+        onLucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, escaped:true}; },
+        onUnlucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, escaped:false}; },
+        afterClose:()=>{ const s=getSectionPrep(sec.id); if(s.escaped){ goTo(456); } else { renderGame(); } }
+      });
+      list.appendChild(btn);
+      return true;
+    }
+    if(st.escaped){ goTo(456); return true; }
+    // Unlucky branch: forced tree fight with −1 (player_attack_mod in data).
+    const fight=document.createElement('button');fight.className='choice-btn';
+    fight.style.borderColor='var(--red)';fight.style.color='var(--red2)';fight.style.background='rgba(180,30,30,.12)';
+    fight.innerHTML='⚔ Драться с пауком на дереве';
+    fight.onclick=()=>startCombat(sec.enemies,sec);
+    list.appendChild(fight);
+    // Canonical navigation spell choices, shown only after the unlucky roll.
+    sec.choices.forEach((ch,idx)=>{
+      if(ch.only_after_unlucky && passesInventoryCheck(ch) && passesGoldCheck(ch)){
+        list.appendChild(makeChoiceBtn(ch,false,idx));
+      }
+    });
+    return true;
+  }
   return false;
 }
 
