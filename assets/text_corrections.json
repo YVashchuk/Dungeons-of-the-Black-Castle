@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-05-24",
+  "last_updated": "2026-05-28",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -42,7 +42,8 @@
     "v2.34 -> v2.35": "May 2026 (2026-05-24) — Group 20 follow-up. (1) §436 spider fight: added player_attack_mod:-1 (canon 'уменьшайте СИЛУ УДАРА на 1'), commit f0233e3 — Claude-found, not in the original report; logged as group_20 subgroup_d. Separate §436 luck-escape wiring gap flagged but not fixed (needs combat_script). (2) group_12 bronze-whistle: VERIFICATION CORRECTION — the 'deferred post-combat acquisitions (§58/§69/§233/§250/§567/§717)' were already closed by group_15 via the `acquires` field on each post_combat win-choice (canonical names, consumers match). §250 confirmed correctly wired (earlier 'mislisted' doubt was an FB2-truncation artifact). No code change; stale status_2026_05_07 note superseded. A prior-turn working assumption that this whistle group was still open was a false positive caught by graph verification before any commit — the project's 'audits misclassify, verify against source' principle applied to Claude's own analysis.",
     "v2.35 -> v2.36": "May 2026 (2026-05-24) — §436 luck-escape + group_6 followups closure. (1) New sec436_pre_luck combat_script (engine, src/game_logic.js) + §436 data: combat_spells_allowed → [] (Force/Weakness are navigation 526/448, Copy forbidden), combat_script added, player_attack_mod:-1 kept. Lucky→goTo(456) equal-terms fight; unlucky→tree fight -1 + Force(526)/Weakness(448), honouring only_after_unlucky (which the default render path ignored). node --check + 16/16 Node behavioural assertions pass. Commit b1f5278. group_20 subgroup_b/d updated; remaining §526 Force round-trip flagged. (2) group_6 future_followups: VERIFICATION CORRECTION — all three were already done (renames in registry_hygiene[0] + per-item modifier_history; emerald_ring/bandit_tip closed via post_audit_extensions; +916 = group_18 riddle). Stale to-do list annotated resolved. Meta: this is the 3rd stale 'pending/followup' note found this session (whistle group_12, group_6 followups, and the v2.x sweep's status flags) — completed work whose tracking note lagged. These are what cause repeat audit re-flagging; worth a periodic stale-note sweep.",
     "v2.36 -> v2.37": "May 2026 (2026-05-24) — §436 Force round-trip fix + stale-note sweep. (1) Fixed two §436 Force-branch bugs (commit 478f0a5): double-spend (removed spell:'FORCE' from §526 return choice) and missing canonical +1 (persistent S.sec436_force flag in normalizeSave, survives goTo reset; re-entry fights at +1, no luck reroll, no re-cast). 19/19 Node behavioural assertions + node --check both files. (2) Stale-note sweep of text_corrections.json: a 65-string marker scan found 28 'pending/deferred/followup/not-implemented' candidates; verified each against code. 4 were genuinely stale (work shipped this session) and were annotated resolved inline: group_20 subgroup_d separate_open_issue (§436 luck-escape, b1f5278) + remaining_subissue (§436 Force round-trip, 478f0a5); group_6 future_followups[1]/[2] tagged [RESOLVED]. The other 24 are correctly open (genuine future work: §992 +825 riddle chain, group_19 design notes) or historical prose already covered by a status_done in the same block (group_11/group_17/group_19) — left as-is. Method note: marker text-scan + per-candidate code verification is the repeatable 'stale-note sweep' for future cycles.",
-    "v2.37 -> v2.38": "May 2026 (2026-05-24) — §992 riddle chain VERIFICATION (no code change). Planned to implement the §992 second-riddle chain, but verification showed group_18_letter_sum_riddle is already complete and correct: §1131 'кладбище'(76)+916⇒§992 and §992 'смерть'(107)+825⇒§932, both matching canonical success paragraphs; engine applyRiddleAnswer/handleRiddleFail/renderRiddle present with anti-cheat allow-list. Verified by letter-sum math + a 9/9 Node behavioural harness against the actual engine functions, plus a full-canon scan finding exactly two input-riddles (zero unwired). This was the 5th stale 'open/future' note this session (whistle, group_6 followups, two §436 sub-issues, now the riddle chain) — all completed work whose framing lagged. Annotated group_6.future_enhancements[0] and group_18 with the verification; the stale 'Currently… requires NEW engine work' opener tagged as pre-implementation history. Ledger-only."
+    "v2.37 -> v2.38": "May 2026 (2026-05-24) — §992 riddle chain VERIFICATION (no code change). Planned to implement the §992 second-riddle chain, but verification showed group_18_letter_sum_riddle is already complete and correct: §1131 'кладбище'(76)+916⇒§992 and §992 'смерть'(107)+825⇒§932, both matching canonical success paragraphs; engine applyRiddleAnswer/handleRiddleFail/renderRiddle present with anti-cheat allow-list. Verified by letter-sum math + a 9/9 Node behavioural harness against the actual engine functions, plus a full-canon scan finding exactly two input-riddles (zero unwired). This was the 5th stale 'open/future' note this session (whistle, group_6 followups, two §436 sub-issues, now the riddle chain) — all completed work whose framing lagged. Annotated group_6.future_enhancements[0] and group_18 with the verification; the stale 'Currently… requires NEW engine work' opener tagged as pre-implementation history. Ledger-only.",
+    "v2.38 -> v2.39": "May 2026 (2026-05-28) — Group 21 free-payment clusters (ChatGPT balance re-audit finding F2, P1). Verified against assets/fb2_remake.fb2 + engine + a 30-assertion Node harness against the real passesGoldCheck / applyChoiceGoldCost. 11 paragraphs / 15 choices that the canon states cost gold but left S.gold untouched now carry gold_condition (visibility gate) + gold_cost (deducted on click), reusing the group_16 mechanism (§774/§686). Touched: §2/§463/§548/§564 ch[0]→§148 (trader info, 7g); §49 ch[0/1/2] (beggar 3/6/8g); §630 ch[0/1/2] (host gift 2/4/6g); §658 ch[2]→§1014 (controller pass, 5g); §785 ch[0]→§349 (guard pass, 10g); §1092 ch[0/1/2] (crowd bribe 3/6/10g). §745 auto_items.gold_sub:10 REMOVED — deduction moved onto §1092→§745 choice, so the 10-gold branch is no longer the only one that charges and §745 cannot double-charge. Safety: §1092/§630 are the only clusters with no canon-explicit insufficient-funds fallback, but both have an unconditional upstream escape (§730 ch[0] 'убежать', §88 ch[2] 'поблагодарить'), so gating to zero visible choices cannot soft-lock. Companion Gemini art-coverage re-audit (Gamebook_Art_Coverage_Audit.pdf) rejected wholesale as confabulated (invented lore 'Elgariol'/'Bardush' absent from canon — real antagonist is 'Барлад'; claimed 428 colour-art vs actual 107; per-§ scene descriptions did not match remake_data.js)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -1449,6 +1450,78 @@
           "summary": "§436 player_attack_mod:-1 added; canonical -1 strike-force penalty now applies to the spider fight."
         }
       }
+    },
+    "group_21_free_payment_clusters": {
+      "cluster_description": "Free-payment clusters. The canon (fb2_remake.fb2) states these choices cost gold (paid / thrown / handed over), but the choices had no gold_cost and the destinations had no auto_items.gold_sub, so the player kept the gold — inflating the economy and making 'pay' branches artificially dominant. Fixed with the existing group_16 gold_condition + gold_cost choice fields. ChatGPT balance re-audit finding F2 (P1).",
+      "priority": "P1",
+      "source": "chatgpt_balance_reaudit_2026_05 (F2) + claude_fb2_verification_2026_05_28",
+      "status_done": "Closed 2026-05-28 — see commit; 30/30 Node harness assertions pass; node --check OK.",
+      "mechanism": "choice.gold_condition:N (hide button if S.gold<N) + choice.gold_cost:N (deduct on click). Engine: passesGoldCheck (filters every render path) + applyChoiceGoldCost (clamped to 0). Same fields used at §774/§686 since v2.10.",
+      "items": [
+        {
+          "paragraphs": [
+            2,
+            463,
+            548,
+            564
+          ],
+          "choice": "ch[0] → §148",
+          "gold": 7,
+          "fb2_quote": "«просит за это 7 золотых или подарок» (§463/§548/§564); §2 is the white-arrow-rejected fallback to the same §148 payment",
+          "note": "All four trader-info paragraphs route the pay-choice through §148 ('Ваши деньги исчезают в бездонном кармане торговца'). Other choices (gift §535, leave §354, fight §36) stay ungated, so no dead-end."
+        },
+        {
+          "paragraph": 49,
+          "choice": "ch[0/1/2] → §821/§952/§1055",
+          "gold": [
+            3,
+            6,
+            8
+          ],
+          "fb2_quote": "«Сколько монет вы кинете нищенке? Три…, шесть… или восемь…?»",
+          "note": "ch[3]→§744 (drive her off with sword) is the canon insufficient-funds fallback, left ungated."
+        },
+        {
+          "paragraph": 630,
+          "choice": "ch[0/1/2] → §619/§220/§111",
+          "gold": [
+            2,
+            4,
+            6
+          ],
+          "fb2_quote": "«Сколько вы ему дадите? 2 золотых — 619. 4 золотых — 220. 6 золотых — 111.»",
+          "note": "Reached only via §88 ch[1] 'Дать денег'; §88 ch[0] gift / ch[2] 'поблагодарить и пойти' are the unconditional escapes."
+        },
+        {
+          "paragraph": 658,
+          "choice": "ch[2] → §1014",
+          "gold": 5,
+          "fb2_quote": "«5 золотых? — 1014»",
+          "note": "ch[0] helmet / ch[1] cards / ch[3] §900 'нет пропуска' remain ungated."
+        },
+        {
+          "paragraph": 785,
+          "choice": "ch[0] → §349",
+          "gold": 10,
+          "fb2_quote": "«Он требует 10 золотых и готов выписать за это пропуск»",
+          "note": "ch[1]→§1099 (fight) is the ungated alternative."
+        },
+        {
+          "paragraph": 1092,
+          "choice": "ch[0/1/2] → §936/§113/§745",
+          "gold": [
+            3,
+            6,
+            10
+          ],
+          "fb2_quote": "«сколько монет вы кинете толпе? Три золотых? — 936. Шесть золотых? — 113. Десять золотых? — 745.»",
+          "note": "Reached only via §730 ch[2] 'кинете им несколько золотых монет'; §730 ch[0] 'убежать' (§620) / ch[1] 'пропуск' (§90) are the unconditional escapes."
+        }
+      ],
+      "side_observations_for_yuriy": [
+        "§745 previously held auto_items.gold_sub:10 as the ONLY deducting branch of the §1092 bribe; removed and replaced by gold_cost on the §1092→§745 choice for consistency with the 3/6 branches.",
+        "§972 ch[0/1/2] (Подсвечник §34 / Перо павлина §878 / Серебряный сосуд §897) lack inventory_condition, same class as the §972 ch[3] necklace gap fixed in group_22 — not in F2 scope, flagged for a future pass."
+      ]
     }
   },
   "resolved_no_op": {
