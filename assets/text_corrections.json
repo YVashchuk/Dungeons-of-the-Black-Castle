@@ -45,7 +45,8 @@
     "v2.37 -> v2.38": "May 2026 (2026-05-24) — §992 riddle chain VERIFICATION (no code change). Planned to implement the §992 second-riddle chain, but verification showed group_18_letter_sum_riddle is already complete and correct: §1131 'кладбище'(76)+916⇒§992 and §992 'смерть'(107)+825⇒§932, both matching canonical success paragraphs; engine applyRiddleAnswer/handleRiddleFail/renderRiddle present with anti-cheat allow-list. Verified by letter-sum math + a 9/9 Node behavioural harness against the actual engine functions, plus a full-canon scan finding exactly two input-riddles (zero unwired). This was the 5th stale 'open/future' note this session (whistle, group_6 followups, two §436 sub-issues, now the riddle chain) — all completed work whose framing lagged. Annotated group_6.future_enhancements[0] and group_18 with the verification; the stale 'Currently… requires NEW engine work' opener tagged as pre-implementation history. Ledger-only.",
     "v2.38 -> v2.39": "May 2026 (2026-05-28) — Group 21 free-payment clusters (ChatGPT balance re-audit finding F2, P1). Verified against assets/fb2_remake.fb2 + engine + a 30-assertion Node harness against the real passesGoldCheck / applyChoiceGoldCost. 11 paragraphs / 15 choices that the canon states cost gold but left S.gold untouched now carry gold_condition (visibility gate) + gold_cost (deducted on click), reusing the group_16 mechanism (§774/§686). Touched: §2/§463/§548/§564 ch[0]→§148 (trader info, 7g); §49 ch[0/1/2] (beggar 3/6/8g); §630 ch[0/1/2] (host gift 2/4/6g); §658 ch[2]→§1014 (controller pass, 5g); §785 ch[0]→§349 (guard pass, 10g); §1092 ch[0/1/2] (crowd bribe 3/6/10g). §745 auto_items.gold_sub:10 REMOVED — deduction moved onto §1092→§745 choice, so the 10-gold branch is no longer the only one that charges and §745 cannot double-charge. Safety: §1092/§630 are the only clusters with no canon-explicit insufficient-funds fallback, but both have an unconditional upstream escape (§730 ch[0] 'убежать', §88 ch[2] 'поблагодарить'), so gating to zero visible choices cannot soft-lock. Companion Gemini art-coverage re-audit (Gamebook_Art_Coverage_Audit.pdf) rejected wholesale as confabulated (invented lore 'Elgariol'/'Bardush' absent from canon — real antagonist is 'Барлад'; claimed 428 colour-art vs actual 107; per-§ scene descriptions did not match remake_data.js).",
     "v2.39 -> v2.40": "May 2026 (2026-05-28) — Group 22 golden-necklace grant (ChatGPT balance re-audit finding F8, P1). Verified against fb2_remake.fb2 + a 10-assertion Node harness against the real passesInventoryCheck / applyChoiceConsume. §984 ('Достаете его, открываете и видите золотое ожерелье. Если у вас есть лишнее место, то берите его с собой.') had no auto_items, so the player never received the necklace — breaking the figured-key reward chain (§1208→§984) and nerfing the §972→§1169 consumer route. Added auto_items.items:['Золотое ожерелье'] (engine uses showInventoryModal for 7-slot overflow). §972 ch[3]→§1169 ('Золотое ожерелье') had no inventory_condition, so it was offered to players without the item; added inventory_condition + consume_on_use (canon §1169: 'оно исчезает'). ch[4]→§1121 'нет ни одного из этих предметов' is the ungated fallback, so no dead-end. Side observation logged for Yuriy: §972 ch[0/1/2] (Подсвечник §34 / Перо павлина §878 / Серебряный сосуд §897) have the same missing inventory_condition pattern — out of F8 scope, future pass.",
-    "v2.40 -> v2.41": "May 2026 (2026-05-28) — F2 follow-up (Variant A). Verification-of-the-verifier found that the F2 gold-gating (commit 8fde9d9) introduced a non-canonical death: §1092 and §630 have no ungated choice, so an under-funded player reaching them via the UNGATED upstream pay-choices (§730->1092, §88->630) hit showDeathOverlay(). Fixed by gating those upstream pay-choices on the minimum gold (§730->1092 gold_condition:3, §88->630 gold_condition:2; visibility only, no gold_cost — single downstream charge preserved). 13/13 Node harness + node --check. §49/§658 unaffected (canon gives them explicit no-money fallbacks). group_21 follow_up_fix_2026_05_28."
+    "v2.40 -> v2.41": "May 2026 (2026-05-28) — F2 follow-up (Variant A). Verification-of-the-verifier found that the F2 gold-gating (commit 8fde9d9) introduced a non-canonical death: §1092 and §630 have no ungated choice, so an under-funded player reaching them via the UNGATED upstream pay-choices (§730->1092, §88->630) hit showDeathOverlay(). Fixed by gating those upstream pay-choices on the minimum gold (§730->1092 gold_condition:3, §88->630 gold_condition:2; visibility only, no gold_cost — single downstream charge preserved). 13/13 Node harness + node --check. §49/§658 unaffected (canon gives them explicit no-money fallbacks). group_21 follow_up_fix_2026_05_28.",
+    "v2.41 -> v2.42": "May 2026 (2026-05-28) — §972 dark-room offers + §746 canonical grants. Re-audit side-note (verify-of-verifier follow-up after F8). Closed 4 stacked bugs across §746 and §972: (1) §746 auto_items empty — granted Подсвечник/Кнут/Верёвка so the canonical 'кладите вещи в заплечный мешок' actually grants. CRITICAL: this also restores the §464→530 rope path (gate was on 'Верёвка' with ё; grant byte-matches). (2) §972 ch[0] WRONG LABEL ('По лесу…' → §34) replaced with canonical 'Подсвечник (34)' to match the §972 prompt. (3) §972 ch[0/1/2] all gated with inventory_condition + consume_on_use (mirrors the F8 pattern on ch[3]). (4) ch[4]→§1121 left ungated — canonical Spirits death, not a softlock. 17/18 Node harness (1 cosmetic ё-index off-by-one in the test, data correct). group_23_dark_room_offers_and_grants_746_972."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -1558,6 +1559,40 @@
       "side_observations_for_yuriy": [
         "§972 ch[0]→§34 (Подсвечник), ch[1]→§878 (Перо павлина), ch[2]→§897 (Серебряный сосуд) share the same missing inventory_condition — they are offered regardless of ownership. Same fix class as ch[3]; not in F8 scope. Worth a dedicated pass to gate all four §972 item-offer choices consistently (and decide which, if any, should also consume_on_use per their target narratives)."
       ]
+    },
+    "group_23_dark_room_offers_and_grants_746_972": {
+      "cluster_description": "§972 dark-room scene: the Spirits of Darkness demand an offering. Canon prompt: 'Что вы достанете? Подсвечник (34)? Перо павлина (878)? Серебряный сосуд (897)? Золотое ожерелье (1169)?' F8 closed the necklace (ch[3]) but ch[0/1/2] were still ungated, and the upstream grant for Подсвечник/Кнут/Верёвка at §746 was broken. Re-audit side-note (verification of the verifier) → fixed three stacked bugs across §746 and §972.",
+      "priority": "P1",
+      "source": "verify-of-verifier (deep-research F8 follow-up + canonical cross-check)",
+      "findings": [
+        {
+          "paragraph": 746,
+          "issue": "auto_items empty. Canon: 'Это подсвечник, кнут и веревка. Кладите вещи в заплечный мешок'.",
+          "impact": "Подсвечник, Кнут, Верёвка never enterable into inventory. CRITICAL because Верёвка is the canonical gate at §464 ch[0] (→530) and §375 — without §746's grant, that path was permanently unreachable. Also dead §972 ch[0] (only Подсвечник source).",
+          "fix": "auto_items.items = ['Подсвечник','Кнут','Верёвка'] — Верёвка spelt with ё to byte-match the existing §464 gate ('Верёвка', U+0451)."
+        },
+        {
+          "paragraph": 972,
+          "issue": "ch[0] target 34 (Подсвечник): WRONG LABEL ('По лесу он наверняка прошел быстрее — и вот…') unrelated to §34 which begins 'Вы достаете подсвечник…'. Also ungated.",
+          "fix": "label → 'Подсвечник (34)' (canonical); add inventory_condition='Подсвечник' + consume_on_use='Подсвечник'."
+        },
+        {
+          "paragraph": 972,
+          "issue": "ch[1] target 878 (Перо павлина): ungated.",
+          "fix": "inventory_condition='Перо павлина' + consume_on_use='Перо павлина'. Grant exists at §98 (auto_items)."
+        },
+        {
+          "paragraph": 972,
+          "issue": "ch[2] target 897 (Серебряный сосуд): ungated. NB: this option is a CANON TRAP — §897 leads to §1121 (death: 'В этом сосуде таится смерть'). Gating just hides it from non-owners; player choice handles the trap.",
+          "fix": "inventory_condition='Серебряный сосуд' + consume_on_use='Серебряный сосуд'. Grant exists at §97 and §1084."
+        }
+      ],
+      "softlock_safety": "§972 ch[4] target 1121 is correctly LEFT ungated as the canonical fallback. A player with no offer-items hits the canonical Spirits-of-Darkness death — that IS the canon outcome at §972, not a non-canonical softlock.",
+      "verification": "17 substantive Node harness assertions PASS (visibility per inventory state, consume_on_use removes only the chosen item, byte-match between §746 grant 'Верёвка' and §464 gate 'Верёвка'). One cosmetic harness assertion failed due to an off-by-one in the test (checking the wrong char index for ё) — the actual data is correct (verified independently: 'Верёвка'[3]=ё U+0451, identical to §464 gate). node --check OK. 1221 paragraphs intact.",
+      "status_done": {
+        "commit": "(see commit hash on push)",
+        "summary": "§746 grants 3 items; §972 ch[0/1/2] gated + consumed; ch[0] label fixed."
+      }
     }
   },
   "resolved_no_op": {
