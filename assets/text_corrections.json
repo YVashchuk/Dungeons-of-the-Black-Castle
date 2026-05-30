@@ -52,7 +52,8 @@
     "v2.44 -> v2.45": "May 2026 (2026-05-28) — Documentation sync (ChatGPT-research rec #2). Doc-only, no code change. assets/book_text.md corrections-log rewritten: 5 stale TODO/'не реализована' entries (§532 wound_2, §13 fish_help, §140 gold-key, §106/151/178/277 bird-guide) moved to 'applied' with sources — all verified DONE in code+registry; §562 and §972/§746 recent fixes added; 'known gaps' reduced to genuine deferred items (§86 emerald-ring, §416/§849 cosmetic, §1128 night-flag); added pointer to text_corrections.json as the authoritative ledger. README 'Выборов' 2120→2156 (recomputed). This drift was the root cause of repeated false-positive audits re-flagging §13/§140/§532. PROJECT_NOTES.md and GRAPH_AUDIT.md left untouched (no false markers). group_26_doc_sync_2026_05_28.",
     "v2.45 -> v2.46": "May 2026 (2026-05-28) — README stats refresh (follow-on to group_26). Doc-only. Recomputed every metric from source: Проверок удачи 22→19 (has_luck count); Авто-предметов '56'→'78' (any auto_items effect; 47 items-only) — old value matched neither; Цветных MJ '36(+7)'→'42 art ids/45 files'; Покрыто MJ-артом '91(112)'→'107 paragraphs'; Ч/б '28'→'21 files (56 paragraphs)'; added 'Покрыто артом всего: 132'. Confirmed correct and kept: Параграфов 1221, Выборов 2156, Боёв 76, Концовок 60, Узлов-локаций 35 (verified by ow_/ce_/ci_ split; +34 e_ encounter markers noted). group_27_readme_stats_refresh_2026_05_28.",
     "v2.46 -> v2.47": "May 2026 (2026-05-28) — §1128 night-retrigger investigation. The deferred '§1128 infinite-stamina via 759→212→104→30→255→15' concern (Claude-research) was verified against the actual choice-graph and found NOT to be a bug: the path is a strict forward chain (every node visited once), no night/rest node can reach itself (zero cycles among them), and §1128 (+2) plus the later §15→§453 (+3) are two DISTINCT nights on a multi-day forward journey — canon-correct, not a farm. A once-only night flag would have wrongly blocked a legitimate second rest. NO code change. group_28_night_retrigger_investigation_2026_05_28. This is the Nth fan-map-derived 'finding' refuted by graph verification — consistent with the project principle that external topology claims are hypotheses requiring code verification, not facts.",
-    "v2.47 -> v2.48": "May 2026 (2026-05-28) — Full reachability audit from §1. Built the complete navigation graph (choice.target + riddle goTo edges); confirmed choice.target is the only nav field. Result: 1167/1221 reachable, 54 unreachable — ALL root orphans (edge model complete, 0 missed reachable inbound). Verdict: NOT 54 bugs. The unreachable set is dominated by paragraph-arithmetic + item-conditional entry nodes (bird-guide -50, speaking-house riddle +50, password/star/key/candle/amulet inventory_condition, post-combat-win), i.e. the group_5/6/7/8 mechanics that a static BFS cannot see. Spot-checked vs FB2 (§146←§95, §600←§260; §831/§968/§1114/§1131/§106 have zero textual refs = pure mechanic entry). Wiring them as plain choices would BREAK the intended conditional gating, so NO code change. Classified map recorded in group_29_reachability_audit_2026_05_28. Same principle as the topology PDF / §1128: static 'unreachability' is a hypothesis, not a bug list; ~4.4% of paragraphs are intentionally mechanic-only entries."
+    "v2.47 -> v2.48": "May 2026 (2026-05-28) — Full reachability audit from §1. Built the complete navigation graph (choice.target + riddle goTo edges); confirmed choice.target is the only nav field. Result: 1167/1221 reachable, 54 unreachable — ALL root orphans (edge model complete, 0 missed reachable inbound). Verdict: NOT 54 bugs. The unreachable set is dominated by paragraph-arithmetic + item-conditional entry nodes (bird-guide -50, speaking-house riddle +50, password/star/key/candle/amulet inventory_condition, post-combat-win), i.e. the group_5/6/7/8 mechanics that a static BFS cannot see. Spot-checked vs FB2 (§146←§95, §600←§260; §831/§968/§1114/§1131/§106 have zero textual refs = pure mechanic entry). Wiring them as plain choices would BREAK the intended conditional gating, so NO code change. Classified map recorded in group_29_reachability_audit_2026_05_28. Same principle as the topology PDF / §1128: static 'unreachability' is a hypothesis, not a bug list; ~4.4% of paragraphs are intentionally mechanic-only entries.",
+    "v2.48 -> v2.49": "May 2026 (2026-05-28) — Repo cleanup + documentation truth-pass (Opus 4.8). Removed 3 duplicate/superseded asset files via git rm: fb2_original_1991.fb2 + epub_original_1991.epub (raw 1991 text, superseded; scanned pdf_original_1991.pdf retained for reference) and epub_remake.epub (duplicate container of canonical fb2_remake.fb2). Verified build.sh reads only src/ so removals are build-safe. Synced docs to actual state: PROJECT_NOTES.md (fixed 6× BEL/backslash corruption of '`assets'; removed deleted-file refs; corrected the two stale 'Known gotchas' — §532 wound_2 and §13/§140 are DONE, orphans reachable via bird-guide; refreshed art coverage 36→42/107/132/21); README.md (removed PHANTOM assets/original_errors.txt reference + 3 deleted files; art counts 36→42, 28→21, auto 56→78; checked off Batch4/wound_2/§13/§140 roadmap items; Opus 4.7→4.8); GRAPH_AUDIT.md (added HISTORICAL/superseded banner). Verified per user request that book_text.md PROSE = faithful 1:1 mirror of fb2_remake.fb2 (1221/1221), but its machine '**Выборы:**' lists drifted from an older remake_data.js (§562 still shows self-loop) — flagged for future regeneration, not done this pass. group_30. No code/data change."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -1811,6 +1812,48 @@
       "genuine_gaps_found": "None confirmed as static wiring bugs. Every spot-checked node is reached via a documented mechanic (riddle arithmetic, bird-guide -50, item/pass/star/key/candle inventory_condition, post-combat win). The bird-guide (group_5/7/8), speaking-house riddle, and arithmetic items (group_6) are all already implemented in the engine; these paragraphs are their canonical destinations, correctly NOT wired as plain choices.",
       "method_note": "This is the same lesson as the topology PDF and §1128: static graph 'unreachability' is a HYPOTHESIS, not a bug list. For this gamebook, ~4.4% of paragraphs are intentionally reached only by conditional/arithmetic mechanics. A static BFS cannot see those edges, so it over-reports orphans. Verified per-cluster against FB2 + the documented group_5/6/7/8 mechanics.",
       "status_done": "Audit complete, map recorded 2026-05-28 — NO code change (correctly so)."
+    },
+    "group_30_repo_cleanup_doc_sync_2026_05_28": {
+      "cluster_description": "Repo cleanup + full documentation truth-pass (Opus 4.8 session). Removed duplicate/superseded source files and brought PROJECT_NOTES.md / README.md / GRAPH_AUDIT.md into agreement with the actual code, registry (v2.48), and source files. Verified build.sh consumes only src/ (no assets/ dependency), so asset removals are build-safe.",
+      "priority": "P2 (repo hygiene; doc accuracy is the root cause of repeated false-positive audits)",
+      "file_removals": {
+        "removed_via_git_rm": [
+          "assets/fb2_original_1991.fb2 — raw 1991 text (583 paragraphs); superseded by the remake. The scanned assets/pdf_original_1991.pdf covers historical-reference need. In git history if needed.",
+          "assets/epub_original_1991.epub — raw 1991 EPUB; same rationale.",
+          "assets/epub_remake.epub — duplicate format of the canonical assets/fb2_remake.fb2 (byte-for-byte same text, different container). fb2_remake.fb2 is the source of truth (book_text.md and remake_data.js derive from it)."
+        ],
+        "kept": [
+          "assets/fb2_remake.fb2 — CANONICAL source (1221 paragraphs).",
+          "assets/pdf_original_1991.pdf — scanned 1991 print edition (original illustrations); historical reference only.",
+          "assets/book_text.md — MD export of fb2_remake.fb2 + corrections-log header (fed to AI tools).",
+          "assets/text_corrections.json — authoritative correction registry.",
+          "assets/analytical_report.pdf — Windows+Android design analysis; legitimate design doc, NOT a source/build dependency. Kept in assets/ (could move to docs/ later; left in place to avoid churn)."
+        ]
+      },
+      "doc_corrections": {
+        "PROJECT_NOTES.md": [
+          "Fixed file corruption: 6× backslash+BEL (0x07) artifacts where '`assets' had been mangled (a stray \\a alert escape) → restored to `assets`.",
+          "Removed references to the 3 deleted files; rewrote the 'Original 1991 edition: REFERENCE ONLY' section to point only at the PDF scan + note the text files are in git history.",
+          "Known gotcha #2 (orphans §106/§151/§178/§277 'unreachable') → corrected: reachable via bird-guide arithmetic; cross-ref group_29.",
+          "Known gotcha #3 (§532 wound_2 + §13/§140 'not fully implemented') → corrected: all implemented (group_6 + commit 4573325); §13/§140 re-architected to inventory tokens.",
+          "Coverage numbers refreshed: 36→ '42 art-ids / 45 images / 46 source PNGs', b/w 28→21 (56 paragraphs), total 132; Batch 4 marked integrated.",
+          "File tree updated (deleted files removed, art-folder counts 36→46, added text_corrections.json)."
+        ],
+        "README.md": [
+          "Removed PHANTOM file reference: assets/original_errors.txt was listed in the tree but does not exist — deleted from the tree.",
+          "Removed the 3 deleted files from the tree; added text_corrections.json.",
+          "Feature/tree art counts: 36→42 MJ, 28→21 b/w, 56→78 auto-effect paragraphs; art_catalog 43→45.",
+          "Roadmap: checked off Batch 4 generation, §532 wound_2, and §13/§140 token mechanics (all done).",
+          "Dev-tools credit: Opus 4.7 → 4.8.",
+          "(Stat block itself was already corrected in group_27 v2.46.)"
+        ],
+        "docs/GRAPH_AUDIT.md": [
+          "Added a prominent 'HISTORICAL DOCUMENT — superseded by text_corrections.json (v2.48)' banner correcting the now-false §532/§13/§140/orphan/reachability claims; left the original April-2026 body unmodified as a point-in-time record."
+        ]
+      },
+      "book_text_correspondence_check": "Verified per user request: book_text.md PROSE is a faithful 1:1 mirror of fb2_remake.fb2 (1221/1221 '### §N' headers, range 1..1221, zero gaps; original FB2 typos like §562's self-reference preserved in prose). HOWEVER the machine-generated '**Выборы:**' lists at the foot of each paragraph were exported from an OLDER remake_data.js and have drifted (e.g. §562 still shows '→ §562' instead of the corrected '→ §315'). Since book_text.md is the file fed to AI audits, this stale choice-list data is a known re-flag risk. NOT regenerated this pass (large operation) — flagged for a future regeneration of the Выборы lists from current remake_data.js. The authoritative state for choices remains remake_data.js + this registry.",
+      "verification": "git grep confirms no remaining references to deleted files except (a) the intentional 'were removed' note in PROJECT_NOTES.md and (b) the dated historical report docs/AUDIT_REPORT_2026-04-25.md (a point-in-time snapshot, intentionally left). node-checked source files unaffected (no code/data change in this group).",
+      "status_done": "Repo cleanup + doc sync complete 2026-05-28 — see commit. NO change to src/ code or remake_data.js."
     }
   },
   "resolved_no_op": {

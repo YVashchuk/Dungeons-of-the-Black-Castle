@@ -1,5 +1,31 @@
 # Graph & UX Audit — Dungeons of the Black Castle
 
+> ## ⚠️ HISTORICAL DOCUMENT — superseded by `assets/text_corrections.json` (v2.48)
+>
+> This is the **original Gemini G-2 audit (April 2026)**, kept as a point-in-time record.
+> Several "pending / not-implemented / unreachable" items below have since been **resolved
+> or re-classified**. For the authoritative current state, always use
+> **`assets/text_corrections.json`** (29 groups) and the live code. Key corrections to this report:
+>
+> - **§532 Dragon `wound_2` — DONE.** Implemented as `combat_condition:"wound_2"`; the engine
+>   routes to §437 after two wounds (registry group_6). Sections III.8 / the verification table
+>   row are obsolete.
+> - **§13 fish "+15" and §140 gold-key "+30" — DONE (re-architected).** The paragraph-arithmetic
+>   approach described in III.10 was intentionally **replaced by reusable inventory tokens**
+>   ("Помощь рыбки"; "Золотой ключ" with static §1085 gating) — renumbering-safe. (group_6 +
+>   commit 4573325, which also fixed the unrelated §140 grant gap and the §562 self-loop.)
+> - **Orphans §106/§151/§178/§277 — reachable in play.** They are entered via the bird-guide
+>   arithmetic mechanic, not static `choice.target` edges (group_5/7/8). "Leave as-is / unreachable"
+>   (section I.1) is superseded.
+> - **Reachability (Appendix).** A full audit (registry group_29) over `choice.target` + riddle
+>   edges finds **1167/1221 reachable; 54 unreachable** — all intentional conditional/arithmetic
+>   mechanic-only entries (bird-guide, speaking-house riddle, password/star/key/candle/amulet
+>   inventory gates, post-combat-win). The "1109 / 112" figures below predate later data changes.
+> - **§849 typo & duplicate labels, §18 restored choice** — applied (still accurate below).
+>
+> Everything below is the **unmodified April-2026 text**.
+
+
 Source: Gemini 3.1 Pro analysis (task G-2), verified against `src/remake_data.js` (1221 paragraphs).
 
 **Verification summary:**

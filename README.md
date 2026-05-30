@@ -23,10 +23,10 @@
 - **8 заклятий Майлина:** Огонь, Плавание, Левитация, Иллюзия, Сила, Слабость, Копия, Исцеление
 
 ### UI/UX
-- 🖼 **36 цветных иллюстраций Midjourney** в едином стиле (dark Slavic fantasy) + 7 подготовленных промптов к новым артам
-- 🖼 **28 чёрно-белых иллюстраций** из издания 1991 г. (fallback когда нет MJ-арта)
+- 🖼 **42 цветных иллюстрации Midjourney** в едином стиле (dark Slavic fantasy), покрывают 107 параграфов
+- 🖼 **21 чёрно-белая иллюстрация** из издания 1991 г. (fallback когда нет MJ-арта; покрывают 56 параграфов)
 - 🗺 **Интерактивная карта** с fog-of-war (клавиша `M`)
-- 🎒 **Автоматический инвентарь** — 56 параграфов с NLP-парсингом предметов и золота
+- 🎒 **Автоматический инвентарь** — 78 параграфов с авто-эффектами (предметы / золото / выносливость)
 - 📜 **Журнал событий** — полная история находок, боёв, проверок удачи
 - 💾 **Сохранение** в localStorage, экспорт/импорт JSON
 - 🎲 **Анимация бросков кубиков**
@@ -81,8 +81,8 @@ Dungeons-of-the-Black-Castle/
 ├── src/                                # Исходники (собираются в dist)
 │   ├── game_shell_top.html             # HTML+CSS оболочка
 │   ├── remake_data.js                  # GD = 1221 параграф (синк с dist)
-│   ├── mj_art.js                       # 36 Midjourney иллюстраций (base64 + MJ_META)
-│   ├── illustrations.js                # 28 ч/б иллюстраций 1991 (fallback)
+│   ├── mj_art.js                       # 42 Midjourney иллюстрации (base64 + MJ_META)
+│   ├── illustrations.js                # 21 ч/б иллюстрация 1991 (fallback)
 │   ├── title_art.js                    # Lineart титула
 │   ├── map_module.js                   # Модуль карты (fog-of-war)
 │   ├── game_logic.js                   # Игровая логика (MJ приоритет над ILLUST)
@@ -95,23 +95,20 @@ Dungeons-of-the-Black-Castle/
 │
 ├── assets/                             # Источники (текст + PDF + арт)
 │   ├── fb2_remake.fb2                  # Каноничный источник (1221 параграф)
-│   ├── fb2_original_1991.fb2           # Справочно: сырой 1991 (583 параграфа)
-│   ├── epub_remake.epub
-│   ├── epub_original_1991.epub
-│   ├── pdf_original_1991.pdf           # Скан 1-го издания
-│   ├── original_errors.txt             # Известные ошибки 1991 г.
-│   ├── analytical_report.pdf           # Аналитический отчёт (Windows + Android)
+│   ├── pdf_original_1991.pdf           # Скан 1-го издания (только для справки)
 │   ├── book_text.md                    # Полный текст + corrections log (для Gemini/AI)
+│   ├── text_corrections.json           # Авторитетный реестр правок (v2.48, 29 групп)
+│   ├── analytical_report.pdf           # Аналитический отчёт (Windows + Android)
 │   └── illustrations/
-│       ├── originals/                  # 36 PNG в полном разрешении (НЕ ТРОГАТЬ)
-│       └── web/                        # 36 JPEG 900px Q82 (производные копии)
+│       ├── originals/                  # 46 PNG в полном разрешении (НЕ ТРОГАТЬ)
+│       └── web/                        # 46 JPEG 900px Q82 (производные копии)
 │
 ├── art-pack/
 │   └── metadata/
-│       └── art_catalog.py              # Python-каталог: 43 арта, промпты + CDN URL + маппинг
+│       └── art_catalog.py              # Python-каталог: 45 арт-записей, промпты + CDN URL + маппинг
 │
 ├── docs/
-│   ├── MIDJOURNEY_PROMPTS.md           # Все 43 промпта (36 generated + 7 pending) + hero --cref
+│   ├── MIDJOURNEY_PROMPTS.md           # Промпты всех артов (включая Batch 4) + hero --cref
 │   ├── GRAPH_AUDIT.md                  # Граф-аудит 1221 параграфа (от Gemini G-2)
 │   └── PWA_IMPLEMENTATION.md           # План активации PWA (от ChatGPT C-1)
 │
@@ -136,7 +133,7 @@ bash build.sh
 
 ## 🎨 Иллюстрации
 
-Все 36 сгенерированных Midjourney-артов выполнены в единой стилистике (dark Slavic fantasy, Ivan Bilibin × Frank Frazetta × Viktor Vasnetsov) с общим референсом героя (hooded traveler). Подготовлены 7 дополнительных промптов для Batch 4 — ключевые боссы и сцены (спайдер, рыцарь на коне, скелеты в склепе, змея, каменные крысы, финал с Барладом, освобождение принцессы).
+Все Midjourney-арты (42 art-id, 45 изображений) выполнены в единой стилистике (dark Slavic fantasy, Ivan Bilibin × Frank Frazetta × Viktor Vasnetsov) с общим референсом героя (hooded traveler). Batch 4 — ключевые боссы и сцены (спайдер, рыцарь на коне, скелеты в склепе, змея, каменные крысы, финал с Барладом, освобождение принцессы) — сгенерирован и интегрирован.
 
 Для перегенерации или добавления новых сцен:
 
@@ -157,12 +154,12 @@ bash build.sh
 - [x] Sound pack (procedural fallback, 20 OGG в `dist/sounds/`)
 - [x] Markdown-экспорт текста книги для Gemini Project (`assets/book_text.md`)
 - [x] Орфография в Midjourney промптах + явная славянская внешность для не-нежити персонажей
-- [ ] Сгенерировать 7 артов Batch 4 в Midjourney (промпты готовы в `docs/MIDJOURNEY_PROMPTS.md`)
+- [x] Сгенерировать 7 артов Batch 4 в Midjourney (интегрированы: спайдер, рыцарь на коне, скелеты, змея, каменные крысы, Барлад, принцесса)
 - [ ] Активировать PWA (требует HTTPS хостинг — см. план активации)
 - [ ] Заменить procedural sounds на real CC0/CC-BY OGG/WAV
 - [ ] Полное тестовое прохождение §1 → §1220
-- [ ] Custom combat conditions (wound_2 для Дракона §532)
-- [ ] Динамическая математика (§13 рыбка +15, §140 Золотой ключ +30)
+- [x] Custom combat conditions (wound_2 для Дракона §532 — реализовано, движок → §437 после 2 ранений)
+- [x] §13 рыбка / §140 Золотой ключ — реализованы через переиспользуемые предметы-токены (renumbering-safe; см. text_corrections.json group_6 + commit 4573325)
 - [ ] Локализация на EN/FR с переключателем языка (кроме боя)
 - [ ] Визуальная проверка всех MJ артов на соответствие сцене (после Batch 4)
 
@@ -188,4 +185,4 @@ bash build.sh
 
 ---
 
-Разработано с использованием Claude Opus 4.7 (Anthropic), ChatGPT 5.5 Extended и Gemini 3.1 Pro.
+Разработано с использованием Claude Opus 4.8 (Anthropic), ChatGPT 5.5 Extended и Gemini 3.1 Pro.

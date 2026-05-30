@@ -14,7 +14,7 @@ This project is a browser adaptation of **"Подземелья Чёрного �
 | Paragraphs | **1221** (NOT 583 as in the raw 1991 edition) |
 | Victory paragraph | **§1220** (NOT §617) |
 | Source file | `assets/fb2_remake.fb2` |
-| Originals of source materials (REFERENCE ONLY) | `assets/fb2_original_1991.fb2`, `assets/epub_original_1991.epub`, `assets/pdf_original_1991.pdf` |
+| Original source material (REFERENCE ONLY) | `assets/pdf_original_1991.pdf` (scanned 1991 print edition, with original illustrations) |
 | Markdown export for AI tools | `assets/book_text.md` (full text + corrections log, derived from `fb2_remake.fb2`) |
 
 The remake preserves the original story and mechanics but:
@@ -25,15 +25,15 @@ The remake preserves the original story and mechanics but:
 **When referencing paragraph numbers anywhere in this project, assume REMAKE
 numbering (1–1221) unless explicitly stated otherwise.**
 
-### Original 1991 files: REFERENCE ONLY
+### Original 1991 edition: REFERENCE ONLY
 
-The original 1991 source files are **explicitly excluded from active development**:
+The original 1991 edition is kept only as a scanned reference:
 
-- \ssets/fb2_original_1991.fb2\ — raw 1991 FB2 (583 paragraphs). Kept for historical reference only.
-- \ssets/epub_original_1991.epub\ — raw 1991 EPUB. Same scope: reference only.
-- \ssets/pdf_original_1991.pdf\ — **scanned 2-pages-per-sheet** PDF of the 1991 print edition. Use ONLY for cross-checking original imagery and layout. Do NOT use as a text source — OCR quality is poor and the text has been superseded by the 2018 remake.
+- `assets/pdf_original_1991.pdf` — **scanned 2-pages-per-sheet** PDF of the 1991 print edition, retained for cross-checking original imagery and layout. Do NOT use as a text source — OCR quality is poor and the text has been superseded by the 2018 remake.
 
-**All development must use \ssets/fb2_remake.fb2\ and \ssets/epub_remake.epub\** as the canonical source. Any AI-assisted analysis (Gemini, ChatGPT, Claude) should be fed \ssets/book_text.md\, which is the authoritative MD export with corrections already applied (see header of that file for the corrections log).
+> The raw 1991 text files (`fb2_original_1991.fb2`, `epub_original_1991.epub`) were removed from the repo — the scanned PDF above covers the historical-reference need, and all development uses the remake. They remain in git history if ever needed.
+
+**All development uses `assets/fb2_remake.fb2`** as the canonical source. Any AI-assisted analysis (Gemini, ChatGPT, Claude) should be fed `assets/book_text.md`, the MD export of that text whose header carries the corrections log; the authoritative correction registry is `assets/text_corrections.json`.
 
 ## File structure
 
@@ -41,15 +41,13 @@ The original 1991 source files are **explicitly excluded from active development
 Dungeons-of-the-Black-Castle/
 ├── assets/                     ← Source texts + reference PDFs + illustrations
 │   ├── fb2_remake.fb2          ← The canonical source (1221 paragraphs)
-│   ├── fb2_original_1991.fb2   ← Reference: raw 1991 edition (583 paragraphs)
-│   ├── epub_remake.epub        ← Same as FB2 but in EPUB format
-│   ├── epub_original_1991.epub ← Reference 1991 edition EPUB
-│   ├── pdf_original_1991.pdf   ← Scanned 1st-edition PDF
+│   ├── pdf_original_1991.pdf   ← Scanned 1st-edition PDF (historical reference only)
 │   ├── book_text.md            ← Full text + corrections log (for Gemini/AI tools, MD format)
+│   ├── text_corrections.json   ← Authoritative correction registry (v2.48, 29 groups)
 │   ├── analytical_report.pdf   ← Design analysis for Windows + Android adaptation
 │   └── illustrations/
-│       ├── originals/          ← 36 Midjourney PNGs, FULL RESOLUTION (kept as source)
-│       └── web/                ← 36 web-optimised JPEGs (900px, Q82) for runtime
+│       ├── originals/          ← 46 Midjourney PNGs, FULL RESOLUTION (kept as source)
+│       └── web/                ← 46 web-optimised JPEGs (900px, Q82) for runtime
 ├── src/                        ← Game source (JS + HTML shell)
 │   ├── game_shell_top.html     ← HTML frame + CSS (still uses Google Fonts @import)
 │   ├── remake_data.js          ← GD = {1221 paragraph objects}, synced with dist
@@ -64,9 +62,9 @@ Dungeons-of-the-Black-Castle/
 │       └── *.woff2             ← 7 files, ~149 KB
 ├── art-pack/
 │   └── metadata/
-│       └── art_catalog.py      ← Programmatic catalog: 43 arts (36 generated + 7 pending)
+│       └── art_catalog.py      ← Programmatic catalog: 45 art entries
 ├── docs/
-│   ├── MIDJOURNEY_PROMPTS.md   ← All 43 prompts + hero --cref URL (re-generation)
+│   ├── MIDJOURNEY_PROMPTS.md   ← All Midjourney prompts (incl. Batch 4) + hero --cref URL
 │   ├── GRAPH_AUDIT.md          ← Graph & UX audit (Gemini G-2 verified)
 │   └── PWA_IMPLEMENTATION.md   ← PWA activation plan (ChatGPT C-1 verified)
 ├── dist/                       ← Built artifacts
@@ -148,11 +146,11 @@ Examples:
 Full mapping lives in `src/mj_art.js` (`MJ_META.<art_id>.remakeParagraphs`)
 and mirrored in `art-pack/metadata/art_catalog.py`.
 
-Coverage:
-- **91 paragraphs** covered by 36 currently-generated Midjourney arts
-- **+21 paragraphs** will be covered once Batch 4 (7 prompts ready) is generated
-- Total after Batch 4: **112 paragraphs** (9.2% of 1221)
-- The remaining paragraphs either fall back to 28 legacy b/w scans (1991 edition) or show text only
+Coverage (current, verified against `src/mj_art.js` / `src/illustrations.js`, registry v2.46+):
+- **107 paragraphs** covered by Midjourney colour art (42 art-ids / 45 runtime images; 46 source PNGs incl. title art and Batch 4)
+- **56 paragraphs** covered by 21 legacy 1991 b/w scans (fallback when no MJ art)
+- **132 paragraphs total** have art; the rest show text only
+- Batch 4 (spider, mounted knight, crypt skeletons, snake, stone rats, Barlad finale, princess rescue) has been generated and integrated
 
 ## Target platforms
 
@@ -176,7 +174,7 @@ The script concatenates these files in order:
 2. `remake_data.js` — 1221-paragraph game data
 3. `illustrations.js` — legacy 1991 b/w scans (fallback)
 4. `title_art.js` — title-screen lineart
-5. `mj_art.js` — 36 Midjourney illustrations + metadata
+5. `mj_art.js` — Midjourney illustrations (42 art-ids) + metadata
 6. `map_module.js` — map / fog-of-war panel
 7. `game_logic.js` — engine (renders MJ first, ILLUST fallback)
 8. closes `</script></body></html>`
@@ -198,6 +196,6 @@ them into `dist/podzemelye-chyornogo-zamka-remake.html`.
 
 1. **`src/remake_data.js` is synced from `dist/*.html`.** If you hand-edit `src/remake_data.js` and then rebuild, the edits will survive. But if someone improves the GD inside `dist/*.html` (e.g. ChatGPT polish pass) without updating `src/`, a subsequent rebuild from `src/` will REGRESS those improvements. Keep `src/` as the primary source of truth; re-sync from dist only when drift is detected (see `docs/GRAPH_AUDIT.md` section IV.3 for the procedure).
 
-2. **4 orphan paragraphs** (§106, §151, §178, §277) are bird-guide hints never reached by normal gameplay. They're harmless but unreachable.
+2. **Bird-guide hint paragraphs** (§106, §151, §178, §277) are not reached by static `choice.target` edges — they are entered via the bird-guide arithmetic mechanic (the engine's conditional `currentParagraph−50`-style jump, implemented). A naive graph BFS reports them as "orphans", but they are reachable in play. See `text_corrections.json` group_29 (full reachability audit: 1167/1221 reachable by static edges; the other 54 are intentional mechanic-only entries).
 
-3. **Dragon §532 and dynamic-math mechanics** (§13 fish +15, §140 gold key +30) are not fully implemented — see `docs/GRAPH_AUDIT.md` sections III.8 and III.10.
+3. **Dragon §532 and the former "dynamic-math" mechanics are implemented** (this note previously said otherwise — corrected). §532 uses `combat_condition:"wound_2"` (engine routes to §437 after two wounds). The §13 "fish +15" and §140 "gold key +30" arithmetic were replaced by reusable inventory tokens ("Помощь рыбки"; "Золотой ключ" with static §1085 gating) — the renumbering-safe approach. `docs/GRAPH_AUDIT.md` is the original (now historical) Gemini audit; `assets/text_corrections.json` is the authoritative current state (§532 = group_6; §13/§140 = group_6 + commit 4573325).
