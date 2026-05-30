@@ -45,3 +45,8 @@ secrets.json
 # Commit message drafts (used with git commit -F)
 _commit_msg.txt
 _commit_msg_*.txt
+
+# Per-cycle working artifacts (throwaway verification scripts + commit-msg drafts).
+# The audit BRIEFS/REPORTS (*.md) under audit_cycles/ are tracked; these are not.
+audit_cycles/**/scripts/
+audit_cycles/**/*_commit_msg.txt
