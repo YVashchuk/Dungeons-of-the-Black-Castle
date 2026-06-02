@@ -504,7 +504,7 @@ function renderGame(){
     if(ai.stamina_sub){S.stamina=Math.max(0,S.stamina-ai.stamina_sub);statNotifs.push('− '+ai.stamina_sub+' выносливости');logEvent('loss','− '+ai.stamina_sub+' выносливости','Теперь: '+S.stamina+'/'+S.staminaMax);}
     if(ai.skill_add){S.skill=Math.min(S.skillMax,S.skill+ai.skill_add);statNotifs.push('+ '+ai.skill_add+' мастерства');}
     if(ai.skill_sub){S.skill=Math.max(1,S.skill-ai.skill_sub);statNotifs.push('− '+ai.skill_sub+' мастерства');}
-    if(ai.luck_add){S.luck+=ai.luck_add;statNotifs.push('+ '+ai.luck_add+' удачи');}
+    if(ai.luck_add){S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);statNotifs.push('+ '+ai.luck_add+' удачи');}
     if(statNotifs.length>0){updateHUD();saveGame();showItemNotification(statNotifs);}
   }
   // Check death
