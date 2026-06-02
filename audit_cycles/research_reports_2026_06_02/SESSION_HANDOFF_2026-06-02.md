@@ -1,8 +1,10 @@
 # Session handoff — research-report re-audit (2026-06-02)
 
+**Status:** updated 2026-06-02 after the F-1 commit, report archival, and the §132 shop core. This reflects the **final** state of the session's committed work; the remaining items are architecture/design tasks awaiting Yuriy's direction (see deferred queue).
+
 **Cycle:** ChatGPT (2 reports) + Claude (2 diagnostic audits) + Gemini (1 visual/spatial audit), re-audited through the **canon → code → Node-harness** funnel.
 **Registry:** `assets/text_corrections.json` v2.50, `group_31_research_reports_item_spell_chains_2026_06_02`.
-**Engine change this cycle:** none. All 9 fixes are data-only in `src/remake_data.js`. The pre-existing **F-1 luck-cap** in `src/game_logic.js` is still **uncommitted** in the working tree (reserved for Yuriy).
+**Engine change this cycle:** one — the **F-1 luck-cap** in `src/game_logic.js` (committed `766e0d8`). All other fixes are data-only in `src/remake_data.js`.
 **Push:** none performed. Yuriy pushes.
 
 ---
@@ -10,7 +12,7 @@
 ## What each provider's report turned out to be
 
 - **ChatGPT — NOT confabulated.** Both reports leaned on `book_text.md` (whose `**Выборы:**` lists are stale), so the *risk* was high, but per-claim verification against the live `remake_data.js` confirmed real bugs in 9 clusters. Two Claude diagnostic audits the same day had reported "0 P0/P1/P2" — they were wrong *by omission*: they inspected only **structured** `inventory_condition` gates and per-paragraph data, and never looked at **text-only gates** (e.g. «Если у вас есть шкура лисы» in prose with both branches as plain choices) or **per-choice `spell:` tags**. That blind spot is exactly where the ChatGPT findings lived.
-- **Claude — useful as a clean bill on the structured layer**, and its single P3 (F-1 luck-cap) is correct and applied (uncommitted).
+- **Claude — useful as a clean bill on the structured layer**, and its single P3 (F-1 luck-cap) is correct and now committed (`766e0d8`).
 - **Gemini — no code-actionable bug.** Details under "Gemini verdict" below.
 
 ---
@@ -29,8 +31,13 @@
 | `044b38a` | §506 + §388/§742/§411/§1210 — restore the never-granted «Оберег» (§506 werewolf loot) and gate the talisman/vessel/arrow bypasses | ChatGPT r1 #7 |
 | `f8932e0` | §131/§980/§944/§951 — tag the untagged sibling spell-exits (LEVITATION / SWIMMING) | ChatGPT r2 #5 (single-spell subset) |
 | `06118c2` | registry group_31 (v2.50) documenting all of the above + Gemini adjudication | — |
+| `09f04d7` | this session handoff doc | — |
+| `ee911c6` | archive the 5 original provider reports (incl. Gemini PDF) | — |
+| `766e0d8` | **F-1** — engine luck-cap `Math.min(luckMax, luck+luck_add)` (`game_logic.js`) | Claude FINAL |
+| `259cd85` | §132 — make the forest-trader shop functional (10 food purchases, §340 schema) | ChatGPT r1 #1 |
+| _(pending)_ | registry §132 close + this handoff update | — |
 
-**Whole-repo regression after all commits:** `node --check src/game_logic.js` OK; GD parses, 1221 paragraphs contiguous; 2157 choice edges, **0 dangling targets**; BFS reachability **54 → 53** unreachable (only delta: **§249 became reachable** via the §1078 retarget — no new orphan).
+**Whole-repo regression after all commits:** `node --check src/game_logic.js` OK; GD parses, 1221 paragraphs contiguous; **2167** choice edges, **0 dangling targets**; BFS reachability **54 → 53** unreachable (only delta: **§249 became reachable** via the §1078 retarget — no new orphan; §132's self-loop purchases added 10 edges and changed no reachability).
 
 ---
 
@@ -68,7 +75,7 @@ So at §944 «либо Плавания (1217), либо Левитации (956
 
 ## Deferred to Yuriy (design / architecture — intentionally NOT auto-committed)
 
-1. **§132 forest-trader shop** — genuinely non-functional (live GD has only «Уйти 354» / «Поговорить 314», no purchase mechanism) although canon describes a full priced merchant ending «…Если вы что-то хотите купить — покупайте», and §63 promises post-kill access («Загляните ещё раз в параграф 132»). **Verified real in live data — not a stale-`book_text.md` artifact.** Needs a decision: do food buys grant carried items or heal on the spot? The food core can mirror §340's `purchase:true` schema, but the 7-gold **9-slot bag upgrade** and the **flask refill** (4g full / 2g half / free water) have **no engine mechanism** — those need engine work. Highest-value finding; held for your call on scope.
+1. **§132 shop SUB-FEATURES** — the shop **core is now DONE** (commit `259cd85`: 10 food purchases mirroring §340, harness 9/9). Food is `grants_stamina` (eat-on-the-spot, repeatable) because **no eat-from-inventory action exists** in the engine — `grants_items` food would be permanent dead weight (§340 has the same limitation). Still NOT implemented, each needing net-new engine mechanism: the 7-gold **9-slot bag upgrade**, the **flask refill** (4g full / 2g half / free water), and **«взять с собой» carried food**. Engine work for a future cycle.
 2. **§950 HEALING** — canon «заклятие Силы и Исцеления», but HEALING is HUD-only and barred from combat ("но не во время сражения"); the combat modal only renders COPY/FORCE/WEAKNESS. Stop-list records §950=[FORCE] as intentional. Architecture decision.
 3. **R2-3 pre-cast combat buffs** — §308/§667/§655/§470 say «прибавьте/вычтите 2 … и сражайтесь» then route into a combat, but the ±2 only applies via the in-combat modal buttons (group_19). A naive `pending_combat_mod` risks **double-application** (bridge buff + modal button). Architecture decision.
 4. **§402 / §614 dual-spell** — single choice can't carry two spell ids; needs engine `spell_any:[…]`.
