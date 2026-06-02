@@ -5,7 +5,7 @@
 **Cycle:** ChatGPT (2 reports) + Claude (2 diagnostic audits) + Gemini (1 visual/spatial audit), re-audited through the **canon → code → Node-harness** funnel.
 **Registry:** `assets/text_corrections.json` v2.50, `group_31_research_reports_item_spell_chains_2026_06_02`.
 **Engine change this cycle:** one — the **F-1 luck-cap** in `src/game_logic.js` (committed `766e0d8`). All other fixes are data-only in `src/remake_data.js`.
-**Push:** none performed. Yuriy pushes.
+**Push:** as of 2026-06-02, commits **through `b5cdbc7` are pushed** (`b97e043..b5cdbc7`). **Pending push:** `b6e0324` (R2-1) and the registry/handoff doc commit that records it. Yuriy pushes.
 
 ---
 
@@ -14,6 +14,32 @@
 - **ChatGPT — NOT confabulated.** Both reports leaned on `book_text.md` (whose `**Выборы:**` lists are stale), so the *risk* was high, but per-claim verification against the live `remake_data.js` confirmed real bugs in 9 clusters. Two Claude diagnostic audits the same day had reported "0 P0/P1/P2" — they were wrong *by omission*: they inspected only **structured** `inventory_condition` gates and per-paragraph data, and never looked at **text-only gates** (e.g. «Если у вас есть шкура лисы» in prose with both branches as plain choices) or **per-choice `spell:` tags**. That blind spot is exactly where the ChatGPT findings lived.
 - **Claude — useful as a clean bill on the structured layer**, and its single P3 (F-1 luck-cap) is correct and now committed (`766e0d8`).
 - **Gemini — no code-actionable bug.** Details under "Gemini verdict" below.
+
+---
+
+## Why the 2026-06-01 Claude diagnostic audits missed all of this (lessons for future briefs)
+
+This matters for brief-writing, so it's worth being precise. The two Claude diagnostic audits (`AUDIT_2026-06-01_diagnostic.md` / `_FINAL.md`) were **not lazy** — they were rigorous *within their frame*: harness-grade Python over the live-parsed `GD`, a 200k-trial Monte-Carlo combat harness, exact-string gate↔grant matching, full BFS reachability, persistence/`auto_items`-key coverage. They concluded **0 P0/P1/P2**. ChatGPT then found 10+ real bugs in the same build. The gap was the **frame**, not the rigor.
+
+**Root cause:** the Claude audits verified **structure** (does every `choice.target` resolve? is every paragraph reachable?) and **mechanism** (does the combat math hold? does the spell budget decrement? does the allowlist filter correctly?) — but never ran a **per-paragraph canon-vs-data diff at the choice/field level**. They implicitly assumed the data faithfully encodes the canon and then audited the *engine over that data*. A correct engine faithfully executing canon-divergent data yields a spotless mechanism audit and wrong gameplay.
+
+Four concrete blind spots, each tied to findings above:
+
+1. **Text-only conditions were invisible.** The audits enumerated only **structured** fields (`inventory_condition`, `spell:`). Items and gates expressed in **prose** — «Если у вас есть шкура лисы» / «Если у вас есть Оберег» / «Есть ли у вас Песочные часы?» — with the branches rendered as *plain choices* never entered the audit's item universe. So «Шкура лисы», «Оберег», «Песочные часы» were absent entirely, and the proud "28 gating item-names, every one has a grant, zero problem gates" was true **only within the structured subset**, which was incomplete. (→ §84/§496, §345/§1201, §506, §941/§749, §1078.)
+
+2. **No canon-vs-choice diff** — in either direction. "Every target resolves" (no dangling) was checked; "the data's choices *match what canon says should be here*" was not. That misses **extra** choices (§511 stat-line «ВЫНОСЛИВОСТЬ — 10» parsed into a jump to §10 — §10 exists, so it passed the dangling check), **wrong** targets (§1078→634 instead of →249 — 634 exists), **wrong** tags (§283 tagged ILLUSION where canon says «заклятие Огня»), and **missing** choices/branches (§700's dropped FIRE→1188; §749's missing hourglass escape; §244's missing belt option). None of these is detectable structurally.
+
+3. **Mechanism-verified ≠ data-verified.** For combat/spells the audits proved the *engine* is correct (Monte-Carlo win-rates, budget decrement, `combat_spells_allowed` filtering — they even cite the allowlist). They did **not** check the *data* is canon-faithful: which combats canon says forbid magic (R2-1: §58/§481/§617/§618/§742/§823/§994 all left at the all-3 default), which choice should carry which spell (§131/§980/§944/§951 untagged siblings). "The allowlist mechanism works" and "the allowlist values are right" are different claims; only the first was tested.
+
+4. **Structural reachability ≠ semantic correctness.** BFS confirmed *which paragraphs* are reachable and validated the 54-orphan set as intentional. But node-level reachability says nothing about whether a reachable paragraph's **internal choices** are correct. §749 was "reachable" and looked like a normal leaf/ending — the audit had no signal that canon grants the hourglass-holder an escape there.
+
+**Why ChatGPT caught them:** it started from the **canon prose** (reading `book_text.md` paragraph by paragraph) and asked, per paragraph, "does the data *do what this paragraph says*?" — which *is* the canon-vs-data diff. (Its own risk was the opposite: `book_text.md`'s machine `**Выборы:**` lists are stale, so it could have mis-stated the data's *current* choices. The findings held because its reading of the **prose** was sound — and we re-verified every one against live `remake_data.js`, not the stale lists.)
+
+**Recommendations for the next brief** (make these explicit asks, not assumptions):
+- Require a **per-paragraph canon↔data diff at the choice/field level**, not just structural integrity and not just mechanism correctness. For each §: do the data's choices (targets + labels + `spell:` tags + gates + `acquires`/`auto_items`) match the options, conditions, and effects the canon prose states — with **nothing extra and nothing missing**?
+- Require **prose-level extraction**: grep the canon (and choice labels) for «Если (у вас )?есть …», «заклятие … (N)», «добавьте/вычтите … УДАЧУ/ВЫНОСЛИВОСТ…», and stat-lines («МАСТЕРСТВО — N» / «ВЫНОСЛИВОСТЬ — N») that may have been mis-parsed into choices. Build the item/condition universe from **prose**, then confirm each has the right structured encoding.
+- Treat **"the engine is correct"** and **"the data is canon-faithful"** as **separate deliverables**, each independently verified. A clean Monte-Carlo / reachability / gate↔grant pass is necessary but **not** sufficient.
+- When two sources disagree on a list (here: the combat-forbid set), **run an independent sweep AND union the sources** — in this cycle sweep#1 missed §58/§823/§994, ChatGPT missed §481; only the union was complete.
 
 ---
 
@@ -35,7 +61,9 @@
 | `ee911c6` | archive the 5 original provider reports (incl. Gemini PDF) | — |
 | `766e0d8` | **F-1** — engine luck-cap `Math.min(luckMax, luck+luck_add)` (`game_logic.js`) | Claude FINAL |
 | `259cd85` | §132 — make the forest-trader shop functional (10 food purchases, §340 schema) | ChatGPT r1 #1 |
-| _(pending)_ | registry §132 close + this handoff update | — |
+| `b5cdbc7` | close §132 in group_31 + finalize this handoff | — |
+| `b6e0324` | **R2-1** — `combat_spells_allowed:[]` for 7 spell-forbidding combats (§58/§481/§617/§618/§742/§823/§994) | ChatGPT r2 R2-1 |
+| _(pending)_ | registry R2-1 close + this "why Claude missed it" handoff section | — |
 
 **Whole-repo regression after all commits:** `node --check src/game_logic.js` OK; GD parses, 1221 paragraphs contiguous; **2167** choice edges, **0 dangling targets**; BFS reachability **54 → 53** unreachable (only delta: **§249 became reachable** via the §1078 retarget — no new orphan; §132's self-loop purchases added 10 edges and changed no reachability).
 
