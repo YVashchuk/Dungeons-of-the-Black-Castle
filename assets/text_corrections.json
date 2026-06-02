@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-05-28",
+  "last_updated": "2026-06-02",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -53,7 +53,8 @@
     "v2.45 -> v2.46": "May 2026 (2026-05-28) — README stats refresh (follow-on to group_26). Doc-only. Recomputed every metric from source: Проверок удачи 22→19 (has_luck count); Авто-предметов '56'→'78' (any auto_items effect; 47 items-only) — old value matched neither; Цветных MJ '36(+7)'→'42 art ids/45 files'; Покрыто MJ-артом '91(112)'→'107 paragraphs'; Ч/б '28'→'21 files (56 paragraphs)'; added 'Покрыто артом всего: 132'. Confirmed correct and kept: Параграфов 1221, Выборов 2156, Боёв 76, Концовок 60, Узлов-локаций 35 (verified by ow_/ce_/ci_ split; +34 e_ encounter markers noted). group_27_readme_stats_refresh_2026_05_28.",
     "v2.46 -> v2.47": "May 2026 (2026-05-28) — §1128 night-retrigger investigation. The deferred '§1128 infinite-stamina via 759→212→104→30→255→15' concern (Claude-research) was verified against the actual choice-graph and found NOT to be a bug: the path is a strict forward chain (every node visited once), no night/rest node can reach itself (zero cycles among them), and §1128 (+2) plus the later §15→§453 (+3) are two DISTINCT nights on a multi-day forward journey — canon-correct, not a farm. A once-only night flag would have wrongly blocked a legitimate second rest. NO code change. group_28_night_retrigger_investigation_2026_05_28. This is the Nth fan-map-derived 'finding' refuted by graph verification — consistent with the project principle that external topology claims are hypotheses requiring code verification, not facts.",
     "v2.47 -> v2.48": "May 2026 (2026-05-28) — Full reachability audit from §1. Built the complete navigation graph (choice.target + riddle goTo edges); confirmed choice.target is the only nav field. Result: 1167/1221 reachable, 54 unreachable — ALL root orphans (edge model complete, 0 missed reachable inbound). Verdict: NOT 54 bugs. The unreachable set is dominated by paragraph-arithmetic + item-conditional entry nodes (bird-guide -50, speaking-house riddle +50, password/star/key/candle/amulet inventory_condition, post-combat-win), i.e. the group_5/6/7/8 mechanics that a static BFS cannot see. Spot-checked vs FB2 (§146←§95, §600←§260; §831/§968/§1114/§1131/§106 have zero textual refs = pure mechanic entry). Wiring them as plain choices would BREAK the intended conditional gating, so NO code change. Classified map recorded in group_29_reachability_audit_2026_05_28. Same principle as the topology PDF / §1128: static 'unreachability' is a hypothesis, not a bug list; ~4.4% of paragraphs are intentionally mechanic-only entries.",
-    "v2.48 -> v2.49": "May 2026 (2026-05-28) — Repo cleanup + documentation truth-pass (Opus 4.8). Removed 3 duplicate/superseded asset files via git rm: fb2_original_1991.fb2 + epub_original_1991.epub (raw 1991 text, superseded; scanned pdf_original_1991.pdf retained for reference) and epub_remake.epub (duplicate container of canonical fb2_remake.fb2). Verified build.sh reads only src/ so removals are build-safe. Synced docs to actual state: PROJECT_NOTES.md (fixed 6× BEL/backslash corruption of '`assets'; removed deleted-file refs; corrected the two stale 'Known gotchas' — §532 wound_2 and §13/§140 are DONE, orphans reachable via bird-guide; refreshed art coverage 36→42/107/132/21); README.md (removed PHANTOM assets/original_errors.txt reference + 3 deleted files; art counts 36→42, 28→21, auto 56→78; checked off Batch4/wound_2/§13/§140 roadmap items; Opus 4.7→4.8); GRAPH_AUDIT.md (added HISTORICAL/superseded banner). Verified per user request that book_text.md PROSE = faithful 1:1 mirror of fb2_remake.fb2 (1221/1221), but its machine '**Выборы:**' lists drifted from an older remake_data.js (§562 still shows self-loop) — flagged for future regeneration, not done this pass. group_30. No code/data change."
+    "v2.48 -> v2.49": "May 2026 (2026-05-28) — Repo cleanup + documentation truth-pass (Opus 4.8). Removed 3 duplicate/superseded asset files via git rm: fb2_original_1991.fb2 + epub_original_1991.epub (raw 1991 text, superseded; scanned pdf_original_1991.pdf retained for reference) and epub_remake.epub (duplicate container of canonical fb2_remake.fb2). Verified build.sh reads only src/ so removals are build-safe. Synced docs to actual state: PROJECT_NOTES.md (fixed 6× BEL/backslash corruption of '`assets'; removed deleted-file refs; corrected the two stale 'Known gotchas' — §532 wound_2 and §13/§140 are DONE, orphans reachable via bird-guide; refreshed art coverage 36→42/107/132/21); README.md (removed PHANTOM assets/original_errors.txt reference + 3 deleted files; art counts 36→42, 28→21, auto 56→78; checked off Batch4/wound_2/§13/§140 roadmap items; Opus 4.7→4.8); GRAPH_AUDIT.md (added HISTORICAL/superseded banner). Verified per user request that book_text.md PROSE = faithful 1:1 mirror of fb2_remake.fb2 (1221/1221), but its machine '**Выборы:**' lists drifted from an older remake_data.js (§562 still shows self-loop) — flagged for future regeneration, not done this pass. group_30. No code/data change.",
+    "v2.49 -> v2.50": "June 2026 (2026-06-02) — Two ChatGPT deep-research reports (item-chain + spell-usage) re-audited via canon->code->Node-harness. NOT confabulated: surfaced real bugs the same-day Claude diagnostic audits missed (those checked only structured inventory_condition gates, not text-only gates or per-choice spell tags). 9 data commits (6f80089 §511 misparsed stat-line choice; 5436322 §84/§496 three-gifts grant-the-chosen; d52c1aa §575/§244 Magic Belt timing+grant+luck; 274d468 §345/§1201 fox-skin gate; 856aa1b §1078 ship-badge gate+retarget→249; 11a0d81 §941/§749 hourglass grant/gate/consume; 6ec996b §283/§700 FIRE hooks; 044b38a §506 restore Оберег grant + §388/§742/§411/§1210 bypass gating; f8932e0 §131/§980/§944/§951 single-spell movement gating). NEW discovery during verification: 'Оберег' was never granted anywhere (§506 had no acquires) — fixed. Harnesses: 15/15 + 10/10 + 8/8 + 15/15. node --check OK; 1221 paragraphs intact; 0 dangling across 2157 edges; reachability 54->53 (only §249 newly reachable, no new orphan). DEFERRED to Yuriy: §132 shop (non-functional but needs design decision + engine work for bag/flask), §950 HEALING (architecture), R2-3 pre-cast combat buffs (architecture), §402/§614 dual-spell (engine spell_any), §340 dead-weight + spell rebalance (P3 design). NOT closed: R2-1 spell-forbidding combats need a dedicated combat_spells_allowed sweep. No game_logic.js change; the F-1 luck-cap remains uncommitted for Yuriy. group_31."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -1854,6 +1855,143 @@
       "book_text_correspondence_check": "Verified per user request: book_text.md PROSE is a faithful 1:1 mirror of fb2_remake.fb2 (1221/1221 '### §N' headers, range 1..1221, zero gaps; original FB2 typos like §562's self-reference preserved in prose). HOWEVER the machine-generated '**Выборы:**' lists at the foot of each paragraph were exported from an OLDER remake_data.js and have drifted (e.g. §562 still shows '→ §562' instead of the corrected '→ §315'). Since book_text.md is the file fed to AI audits, this stale choice-list data is a known re-flag risk. NOT regenerated this pass (large operation) — flagged for a future regeneration of the Выборы lists from current remake_data.js. The authoritative state for choices remains remake_data.js + this registry.",
       "verification": "git grep confirms no remaining references to deleted files except (a) the intentional 'were removed' note in PROJECT_NOTES.md and (b) the dated historical report docs/AUDIT_REPORT_2026-04-25.md (a point-in-time snapshot, intentionally left). node-checked source files unaffected (no code/data change in this group).",
       "status_done": "Repo cleanup + doc sync complete 2026-05-28 — see commit. NO change to src/ code or remake_data.js."
+    },
+    "group_31_research_reports_item_spell_chains_2026_06_02": {
+      "cluster_description": "Two ChatGPT deep-research reports (item-chain audit + spell-usage audit, 2026-06-02) re-examined against canon. They were NOT confabulated: they surfaced real bugs that the two same-day Claude diagnostic audits (AUDIT_2026-06-01) missed because those audits only inspected STRUCTURED inventory_condition gates and per-paragraph data, never the text-only gates or per-choice spell tags. Each finding was run through the canon (fb2_remake.fb2) -> code (remake_data.js / game_logic.js) -> Node-harness funnel; only verified ones were committed. The reports' headline §132 shop claim is REAL but deferred (design decision); their §950 HEALING claim conflicts with the standing 'HEALING is HUD-only, barred from combat' architecture and is deferred.",
+      "priority": "P1 (broken item chains, free combat/door bypasses, dropped spell branches) + P3 (spell gating completeness)",
+      "source": "chatgpt_research_deep x2 (deep-research-report_1 item chains, deep-research-report_2 spell usage), 2026-06-02; every finding independently verified against assets/fb2_remake.fb2 + src/remake_data.js + a stubbed-DOM Node harness driving src/game_logic.js.",
+      "status_done": "Closed 2026-06-02 — 9 data commits. Per-cluster Node harnesses: hourglass 15/15, Оберег/bypass 10/10, spell-gating 8/8. node --check OK. 1221 paragraphs intact, 0 dangling targets across 2157 edges. BFS reachability 54->53 unreachable (§249 newly reachable via the §1078 retarget; no new orphan).",
+      "findings": [
+        {
+          "paragraph": 511,
+          "commit": "6f80089",
+          "issue": "A bogus navigation choice {target:10, label:'Ее МАСТЕРСТВО — 8, а ВЫНОСЛИВОСТЬ (10)'} — the bear's stamina stat sentence was misparsed into a clickable jump to §10.",
+          "fb2_quote": "«Ее МАСТЕРСТВО — 8, а ВЫНОСЛИВОСТЬ — 10. … Поблагодарив медведицу, вы собираетесь вылезать из берлоги — 281.»",
+          "fix": "Removed the misparsed choice; §511 now has exactly one choice → §281.",
+          "report": "ChatGPT report 1, finding #6."
+        },
+        {
+          "paragraphs": [
+            84,
+            496
+          ],
+          "commit": "5436322",
+          "issue": "Three-gifts chain: §84 auto-granted 'Амулет' on ENTRY (so the player got the amulet regardless of which gift was chosen), while choosing the fox-skin (§496) granted nothing.",
+          "fb2_quote": "§84: «взять с собой одну из трех вещей: либо амулет (511), либо пояс (575), либо шкуру (496) или отказаться (281).»  §496: «Ваш выбор падает на шкуру лисы.»",
+          "fix": "§84 — removed auto_items:{items:['Амулет']}; the §511 branch now carries acquires:'Амулет'. §496 — added auto_items:{items:['Шкура лисы']}.",
+          "report": "ChatGPT report 1, finding #2 (acquisition side)."
+        },
+        {
+          "paragraphs": [
+            575,
+            244
+          ],
+          "commit": "d52c1aa",
+          "issue": "Magic Belt: §575 granted no 'Волшебный пояс' item and applied no +1 LUCK, and exposed a live →§1148 mole-summon from inside the bear's den; canon makes the summon a FUTURE use gated on seeing the castle.",
+          "fb2_quote": "§575: «Теперь на вас Волшебный пояс (добавьте 1 УДАЧУ). … Когда вы увидите замок, обратитесь к параграфу 1148…»  §244: «…А может быть у вас есть волшебный пояс?»",
+          "fix": "§575 — auto_items:{items:['Волшебный пояс'],luck_add:1} on entry (reachable only via the §84 belt choice); removed the premature →1148 jump. §244 (castle-sighting) — added belt-gated choice →1148 (inventory_condition:'Волшебный пояс').",
+          "note": "luck_add is clamped to luckMax by game_logic.js:507 (the pre-existing F-1 fix), verified by harness: at-max stays at max, below-max +1.",
+          "report": "ChatGPT report 1, finding #5; matches a prior session memory note."
+        },
+        {
+          "paragraphs": [
+            345,
+            1201
+          ],
+          "commit": "274d468",
+          "issue": "Fox-skin 'show as sample' bypass choices lacked inventory_condition, so an item-less player could skip the §208/§700 combat for free.",
+          "fb2_quote": "§345: «Если у вас есть шкура лисы, то покажите ее как образец и проходите (933), если же нет … придется драться (208).»  §1201: «…иначе … своим мечом — 700.»",
+          "fix": "Added inventory_condition:'Шкура лисы' to the show-skin branch in each; fallback (§208 fight / §700 sword) left ungated. Now meaningful because §496 grants the skin (above).",
+          "report": "ChatGPT report 1, finding #2 (consumer side)."
+        },
+        {
+          "paragraph": 1078,
+          "commit": "856aa1b",
+          "issue": "Ship-badge tainik exposed a single UNGATED choice → §634 (the no-badge fallback corridor), so the badge-use scene §249 was unreachable and the badge had no consumer.",
+          "fb2_quote": "§1078: «Если у вас есть бляха с кораблем, то попробуйте что-нибудь сделать, иначе придется идти до конца — 634.»  §1205: «…когда понадобится, обратитесь к параграфу 249.»  §249: «Вы достаете бляху и вкладываете в углубление в стене.»",
+          "fix": "Split into →249 (inventory_condition:'Бляха с парусным корабликом') + →634 (ungated fallback).",
+          "report": "ChatGPT report 1, finding #4."
+        },
+        {
+          "paragraphs": [
+            941,
+            749
+          ],
+          "commit": "11a0d81",
+          "issue": "Hourglass deferred-use chain: §941 granted no item + had a premature direct →1122 jump; §749 had ZERO choices (every player died at the knife-trap, even holding the hourglass); the hourglass existed nowhere as an item.",
+          "fb2_quote": "§941: «…выиграли песочные часы. Когда они понадобятся, обратитесь к параграфу 1122…»  §749: «Есть ли у вас Песочные часы? Если нет, то конец ваш предрешен: смерти вам не избежать…»  §1122: «вылетают песочные часы и разбиваются…»",
+          "fix": "§941 — auto_items:{items:['Песочные часы']}; dropped the →1122 jump (keeps →919). §749 — added ONE escape →1122 with inventory_condition+consume_on_use 'Песочные часы'; non-holders hit the engine's no-visible-choices death overlay (canon-faithful). §1122 unchanged (stamina_sub:5 already present).",
+          "verification": "Node harness 15/15: non-holder→death; holder→§1122, hourglass consumed, other items kept, −5 stamina.",
+          "report": "ChatGPT report 1, finding #3."
+        },
+        {
+          "paragraphs": [
+            283,
+            700
+          ],
+          "commit": "6ec996b",
+          "issue": "FIRE spell hooks wrong: §283 choice→779 tagged ILLUSION though canon offers «заклятие Огня (779)»; §700 merged the Fire and sword options into one →628 choice, dropping the FIRE→§1188 branch (orcs flee).",
+          "fb2_quote": "§283: «Заклятие Иллюзии не действует на стариков. Хотите наложить заклятие Огня (779)…»  §700: «…заклятиями Силы (667), Слабости (655), Огня(1188) или драться мечом (628).»",
+          "fix": "§283 — retag →779 to spell:'FIRE' (§779→283 stays ILLUSION, a genuine Illusion attempt per §779's text). §700 — split into spell:'FIRE'→1188 and sword→628.",
+          "report": "ChatGPT report 2, finding #4."
+        },
+        {
+          "paragraphs": [
+            506,
+            388,
+            742,
+            411,
+            1210
+          ],
+          "commit": "044b38a",
+          "issue": "Talisman/vessel/arrow 'show the item to pass' exploit. PROBLEM 1: 'Оберег' was never granted anywhere (the §506 werewolf-kill choice had no acquires), so every Оберег gate was dead. PROBLEM 2: the show-Оберег / серебряный сосуд / золотая стрела choices at §388/§742/§411/§1210 lacked inventory_condition, and each target is a 'you used X successfully' result granting free passage WITHOUT re-checking the item (e.g. §739/§861 gas the knights, §26/§692/§764 wave you through, §1053 opens the door).",
+          "fb2_quote": "§506: «Если вы убили Оборотня, то можете снять с его шеи Оберег и надеть на себя.»  §388: «Если у вас есть Оберег, то 26. Если есть серебряный сосуд, то 739.»  §411: «Если у вас есть золотая стрела … (1053).»  §1210: «Если у вас есть Оберег, то 764, если есть серебряный сосуд, то 556.»",
+          "fix": "§506 — →1203 choice gains acquires:'Оберег'+post_combat:true. §388 — Оберег→26 & Серебряный сосуд→739 gated. §742 — Оберег→692 & Серебряный сосуд→861 gated. §411 — Золотая стрела→1053 gated. §1210 — Оберег→764 & Серебряный сосуд→556 gated. All fallbacks (fight / 'идти до конца' / 'подумать о пропуске' / attack) stay ungated.",
+          "verification": "Node harness 10/10: §506 grants Оберег after victory; each bypass appears only when the item is owned; all fallbacks remain.",
+          "report": "ChatGPT report 1, finding #7 (the unobtainable-Оберег half was a NEW discovery during verification — the reports flagged only the gating)."
+        },
+        {
+          "paragraphs": [
+            131,
+            980,
+            944,
+            951
+          ],
+          "commit": "f8932e0",
+          "issue": "Multi-destination movement paragraphs gated only the FIRST spell-exit, leaving sibling exits the canon conditions on the same spell as ungated plain navigation (clickable by anyone, no charge).",
+          "fb2_quote": "§131: «…подняться по воздуху вверх (836), или в какое-нибудь окно … справа (907) … слева (1075)» (all under «Если у вас есть заклятие Левитации»).  §944: «либо Плавания (1217), либо Левитации (956)».  §951: «Плавания (1021) или Левитации (571)».",
+          "fix": "§131 — spell:'LEVITATION' added to 907, 1075. §980 — LEVITATION added to 1067, 888, 836. §944 — SWIMMING added to 1217. §951 — SWIMMING added to 1021.",
+          "verification": "Node harness 8/8: each tagged exit is non-navigating at 0 charges and consumes one charge when cast.",
+          "report": "ChatGPT report 2, finding #5 (single-spell subset)."
+        }
+      ],
+      "deferred_to_yuriy": [
+        "§132 forest-trader shop — GENUINELY non-functional (live GD has only 'Уйти 354' / 'Поговорить 314', no purchase mechanism), despite canon describing a full priced merchant ending '...Если вы что-то хотите купить — покупайте' and §63 promising post-kill access ('Загляните еще раз в параграф 132'). NOT a stale-book_text.md artifact — verified in live remake_data.js. DEFERRED: needs a design decision (do food buys grant carried items or heal on the spot?) plus the 7-gold 9-slot bag-upgrade and flask-refill (4g full/2g half/free water) have NO engine mechanism. The food-purchase core could mirror §340's purchase:true schema; the bag/flask parts need engine work. ChatGPT report 1, finding #1 (highest-value).",
+        "§950 HEALING — canon: «пару заклятий вы можете использовать: это заклятие Силы и Исцеления». §950 currently has combat_spells_allowed:['FORCE']. Surfacing HEALING in the combat modal conflicts with the standing architecture (HEALING is HUD-only, spell text 'но не во время сражения', combat modal only renders COPY/FORCE/WEAKNESS). The §2 stop-list records §950=[FORCE] as intentional. DEFERRED: architecture decision for Yuriy. ChatGPT report 2, finding #2.",
+        "R2-3 pre-cast FORCE/WEAKNESS navigation buffs (§308/§667/§655/§470 → combat) do not persist the ±2 into the target fight; the +2/−2 only applies via the in-combat modal buttons (group_19). Real gap, but a naive 'pending_combat_mod' field risks DOUBLE-application (bridge buff + modal button) and conflicts with the group_19 combat-modal design. DEFERRED: architectural. ChatGPT report 2, finding #3.",
+        "§402 / §614 dual-spell ('Левитации ИЛИ Плавания' on one destination) — a single choice cannot carry two spell IDs; needs an engine spell_any:[...] extension. §402→641 currently tagged LEVITATION only; §614→581 tagged SWIMMING only. DEFERRED: engine extension. ChatGPT report 2, finding #5 (dual-spell subset).",
+        "§340 dead-weight items (Попона для лошади, Золотая устрица) — no downstream consumer found; ChatGPT report 1 #8 flags as possible gold-traps. P3 BALANCE/DESIGN note, not a bug (canon sells them as 'могут пригодиться').",
+        "Spell rebalance — ILLUSION genuinely sparse (≈4 explicit-use paragraphs); HEALING low-count. P3 design note; a character-creation hint would fit but changing the canon spell distribution is out of scope."
+      ],
+      "rejected_or_non_bug": [
+        "ChatGPT report 1 §132 framing as a pure 'code bug' — the shop IS broken, but the fix is a design decision, not a mechanical one-liner (see deferred).",
+        "ChatGPT report 2 raw 'combat-default inflates COPY/FORCE/WEAKNESS' (R2-1) — confirmed canon-true that §58/§617/§823/§994 etc. forbid spells, but those combats are NOT allowlisted to []. This is a real faithfulness gap, NOT committed this pass: it is a large per-paragraph combat_spells_allowed sweep (design + canon classification of every spell-forbidding combat) better done as its own dedicated cycle. Flagged, not closed.",
+        "§402/§614 single-spell 'fix' — NOT applied as a plain inventory_condition; correctly recognized as needing engine spell_any (deferred)."
+      ],
+      "verification": "Per-cluster stubbed-DOM Node harnesses (hourglass 15/15, Оберег+bypass 10/10, spell-gating 8/8) + a combined item-grant harness 15/15 confirming §84/§496/§575/§941 grants and §345/§1078/§244 gate visibility. node --check src/game_logic.js OK. Whole-GD: 1221 paragraphs contiguous, 2157 choice edges with 0 dangling targets, BFS 54->53 unreachable (only delta: §249 newly reachable). No engine (game_logic.js) change in this group — all fixes are data-only; the pre-existing F-1 luck-cap remains uncommitted in the working tree for Yuriy.",
+      "gemini_report_adjudication": {
+        "report": "Gemini 'Diagnostic Audit of Visual Assets and Spatial Architecture' (PDF, 2026-06-02).",
+        "verdict": "No code-actionable bug. Content is (a) art-coverage recommendations -> Yuriy's Midjourney queue, (b) P3 map-UX ideas -> deferred, (c) independent confirmation of already-known-good state.",
+        "checked_claims": [
+          "CRASH-RISK claim 'map_module.js pathfinding may fail on nodes > index 1221' — FALSE for the actual file. Verified src/map_module.js: the only integers > 1221 (1290/1310/1360/1440/1600) are SVG x-coordinates and canvas width, NOT paragraph refs; paragraph-binding fields are all <= 1221. Same error-class as the group_24 topology fabrication (reasoned a risk without reading the file).",
+          "COUNTS claim '35 location nodes + 34 encounter markers' — STALE. Live map_module.js (BC_MAP_DEF) has 40 'kind'-tagged location nodes (74 total ids); Gemini's density math (35/1221, 34/1221) is built on outdated counts.",
+          "Antagonist 'Барлад' verified; 'Bardush'/'Elgariol' rejected — CONSISTENT with project (no action).",
+          "group_24 topology rejection (max-index 1366, 1233 nodes, BFS 222) — Gemini independently agrees it is fabricated; CONFIRMS group_24 (no action).",
+          "Art-coverage baseline (107 colour / 56 B&W / 132 total) — matches project's group_27 figures; no action."
+        ],
+        "art_candidates_for_yuriy": "Gemini proposes 6 new colour illustrations (§1 forest portal, §10 hermit hut, §22 castle gates, §105 corridor fork, §210 descent staircase, §1221 finale) with dark-Slavic MJ prompts, explicitly excluding the active-queue items (§449/§1003/§311) and the verified-correct §38/§41. These are net-new art suggestions, not bugs — routed to Yuriy's Midjourney queue alongside the existing art_prompts.",
+        "map_ux_deferred": "P3 cosmetic map enhancements (nested transit nodes, dynamic path-intersection highlight at junctions like §105, desaturate-cleared encounter states). Legitimate UX polish, no bug; deferred to Yuriy."
+      }
     }
   },
   "resolved_no_op": {
