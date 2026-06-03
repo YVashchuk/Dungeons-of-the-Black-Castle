@@ -99,6 +99,17 @@ So at §944 «либо Плавания (1217), либо Левитации (956
 - **Confirms** the «Барлад» antagonist name, the group_24 rejection, and the 107/56/132 art-coverage baseline — independent corroboration, no action.
 - **Net-new value for Yuriy (not bugs):** 6 proposed colour-illustration candidates (§1, §10, §22, §105, §210, §1221) with dark-Slavic MJ prompts → Midjourney queue; and P3 map-UX ideas (nested transit nodes, dynamic junction highlight, desaturate-cleared encounters).
 
+### Brief-improvement notes for the NEXT Gemini run (access pre-flight) — fold these into the Gemini provider brief next cycle
+Yuriy's field observation (2026-06-02): a Gemini research run spent ~15 min, then reported it had **no access to the attached files**, and in the meantime produced **off-topic confabulations** ("Captain Nemo"-style tangents unrelated to the project). It appeared to treat the brief's *path strings* (e.g. `src/game_logic.js`) as something to "go find," never matched them to the actually-attached `game_logic.js`, and filled the void with invention. Yuriy now also uploads the whole `Dungeons-of-the-Black-Castle/` folder to **Google Drive** and adds it to the chat's sources before starting. Lessons to bake into the next Gemini brief (deliberately recorded HERE, not retro-edited into the dated 2026-05-29 brief):
+
+1. **Mandatory access pre-flight (STEP 0, before any analysis).** Instruct Gemini to first open each expected source and **quote one verbatim Russian line from each** as proof of access (e.g. the opening of §1 from `book_text.md`). No quote ⇒ no access.
+2. **Fail loud, don't confabulate.** If any source is unreadable, Gemini must **STOP and ask the human to re-share** (attachment or Drive) and name exactly which files it cannot see — a "can't see X, please re-share" reply is the *success* outcome; 15 min of analysis on unopened files is the failure.
+3. **Match by bare filename + content, NOT the path string.** The brief lists repo paths (`src/…`, `assets/…`) only to show where files live; attachments/Drive expose them as `game_logic.js`, `book_text.md`, possibly under a `Dungeons-of-the-Black-Castle/` Drive folder. The `src/`/`assets/` prefix is not part of the name to search for. A file attached as `game_logic.js` **is** `src/game_logic.js`.
+4. **State the real environment plainly:** Gemini has **no GitHub access and no disk access** — it must never claim to have "checked the repo/codebase." Every claim must trace to a file it actually opened ("no quote, no claim").
+5. **Note the Google-Drive path** explicitly as the primary share channel, with bare filenames mapping 1:1 to the brief's repo paths.
+
+(These are also the likely root cause of the earlier wholesale-confabulation incident — "Elgariol"/"Bardush", 428 illustrations: an audit run with no real file access defaults to invention. The access pre-flight attacks the cause, not just the symptom.)
+
 ---
 
 ## Deferred to Yuriy (design / architecture — intentionally NOT auto-committed)
