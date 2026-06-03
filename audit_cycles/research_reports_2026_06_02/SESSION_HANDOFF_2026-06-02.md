@@ -5,7 +5,7 @@
 **Cycle:** ChatGPT (2 reports) + Claude (2 diagnostic audits) + Gemini (1 visual/spatial audit), re-audited through the **canon → code → Node-harness** funnel.
 **Registry:** `assets/text_corrections.json` v2.50, `group_31_research_reports_item_spell_chains_2026_06_02`.
 **Engine change this cycle:** one — the **F-1 luck-cap** in `src/game_logic.js` (committed `766e0d8`). All other fixes are data-only in `src/remake_data.js`.
-**Push:** as of 2026-06-02, commits **through `b5cdbc7` are pushed** (`b97e043..b5cdbc7`). **Pending push:** `b6e0324` (R2-1) and the registry/handoff doc commit that records it. Yuriy pushes.
+**Push:** as of 2026-06-02, commits **through `d6fe11a` are pushed**. **Pending push:** `fd729ea` (§402/§614 spell_any) and the registry/handoff doc commit that records it. Yuriy pushes.
 
 ---
 
@@ -43,7 +43,7 @@ Four concrete blind spots, each tied to findings above:
 
 ---
 
-## Commits (local; not pushed)
+## Commits (this cycle — newest at bottom; see Push line for what's pushed)
 
 | Commit | Finding | Source |
 |---|---|---|
@@ -63,7 +63,10 @@ Four concrete blind spots, each tied to findings above:
 | `259cd85` | §132 — make the forest-trader shop functional (10 food purchases, §340 schema) | ChatGPT r1 #1 |
 | `b5cdbc7` | close §132 in group_31 + finalize this handoff | — |
 | `b6e0324` | **R2-1** — `combat_spells_allowed:[]` for 7 spell-forbidding combats (§58/§481/§617/§618/§742/§823/§994) | ChatGPT r2 R2-1 |
-| _(pending)_ | registry R2-1 close + this "why Claude missed it" handoff section | — |
+| `f3b4a98` | registry R2-1 close (v2.51) + "why Claude missed it" handoff section | — |
+| `d6fe11a` | handoff: Gemini access-preflight lessons for future briefs | — |
+| `fd729ea` | **§402/§614** — engine `spell_any:[ids]` + data; dual-spell single-destination crossings (closes R2-5) | ChatGPT r2 #5 |
+| _(pending)_ | registry §402/§614 close (v2.52) + this handoff refresh | — |
 
 **Whole-repo regression after all commits:** `node --check src/game_logic.js` OK; GD parses, 1221 paragraphs contiguous; **2167** choice edges, **0 dangling targets**; BFS reachability **54 → 53** unreachable (only delta: **§249 became reachable** via the §1078 retarget — no new orphan; §132's self-loop purchases added 10 edges and changed no reachability).
 
@@ -88,7 +91,7 @@ Each spell option is an **independent button tagged `spell:"X"`**, rendered by `
 
 So at §944 «либо Плавания (1217), либо Левитации (956)»: the two are separate buttons, each gated on *its own* spell. Have Swimming but not Levitation → Swimming active, Levitation greyed. Have neither → **both greyed** (exactly the "if you have no spells they must be greyed" requirement). You don't "pick one and the other greys" — you pick whichever spell you actually own; picking it navigates away, so the other is moot. Same pattern for §951 (1021 SWIMMING / 571 LEVITATION) and the LEVITATION exits at §131/§980.
 
-**Still open (deliberately):** §402 and §614 phrase it as «Левитации **ИЛИ** Плавания» on a **single** destination. A choice can carry only one `spell:` id, so those need an engine `spell_any:[…]` extension — deferred (see below).
+**Still open (deliberately):** §402 and §614 phrase it as «Левитации **ИЛИ** Плавания» on a **single** destination — NOW CLOSED (commit `fd729ea`) via the new engine `spell_any:[ids]` field: the button is enabled if *either* listed spell has a charge and spends one from the first available, greyed if neither. (§449/§1003/§1066 route each spell to a distinct target and were already correct — untouched.)
 
 ---
 
@@ -117,11 +120,11 @@ Yuriy's field observation (2026-06-02): a Gemini research run spent ~15 min, the
 1. **§132 shop SUB-FEATURES** — the shop **core is now DONE** (commit `259cd85`: 10 food purchases mirroring §340, harness 9/9). Food is `grants_stamina` (eat-on-the-spot, repeatable) because **no eat-from-inventory action exists** in the engine — `grants_items` food would be permanent dead weight (§340 has the same limitation). Still NOT implemented, each needing net-new engine mechanism: the 7-gold **9-slot bag upgrade**, the **flask refill** (4g full / 2g half / free water), and **«взять с собой» carried food**. Engine work for a future cycle.
 2. **§950 HEALING** — canon «заклятие Силы и Исцеления», but HEALING is HUD-only and barred from combat ("но не во время сражения"); the combat modal only renders COPY/FORCE/WEAKNESS. Stop-list records §950=[FORCE] as intentional. Architecture decision.
 3. **R2-3 pre-cast combat buffs** — §308/§667/§655/§470 say «прибавьте/вычтите 2 … и сражайтесь» then route into a combat, but the ±2 only applies via the in-combat modal buttons (group_19). A naive `pending_combat_mod` risks **double-application** (bridge buff + modal button). Architecture decision.
-4. **§402 / §614 dual-spell** — single choice can't carry two spell ids; needs engine `spell_any:[…]`.
+4. **§402 / §614 dual-spell** — CLOSED 2026-06-02 (commit `fd729ea`) via the new engine `spell_any:[ids]` field. (Was deferred as needing an engine extension; done. Closes ChatGPT R2-5 entirely.)
 5. **§340 dead-weight items** (Попона, Золотая устрица) — no downstream consumer found; possible gold-traps. P3 balance note (canon sells them as «могут пригодиться», so not a bug).
 6. **Spell rebalance** — ILLUSION sparse, HEALING low-count; a character-creation hint would help. P3 design.
 
-**Flagged but NOT closed:** **R2-1** — §58/§617/§823/§994 etc. canon-forbid spells but those combats aren't `combat_spells_allowed:[]`. Real faithfulness gap, but it's a per-paragraph sweep (canon-classify every spell-forbidding combat) best done as its own cycle.
+**Now CLOSED (were flagged-not-closed in earlier passes):** **R2-1** spell-forbidding combats — done, commit `b6e0324` (7 paragraphs). The narrower **partial-permissive** allowlist tightening (combats that name only SOME spells but show all 3 modal buttons) remains a separate P3 sweep for a future cycle.
 
 ---
 
