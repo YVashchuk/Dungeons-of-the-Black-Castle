@@ -600,6 +600,27 @@ function useHealing(){
   updateHUD();saveGame();
   showItemNotification(['💚 Исцеление: +8 выносливости']);
 }
+// §950: Healing cast DURING combat (the HUD heal button is hidden behind the
+// combat overlay). Rendered as a combat-modal button when the section's
+// combat_spells_allowed includes 'HEALING'. Caps at staminaMax; refuses at full.
+function useHealingInCombat(){
+  if(!S)return;
+  const remaining=getSpellRemaining('HEALING');
+  if(remaining<=0)return;
+  const log=document.getElementById('combat-log');
+  if(S.stamina>=S.staminaMax){
+    if(log)log.innerHTML+=`<div style="color:var(--muted);margin:4px 0;">Выносливость уже полная — Исцеление не требуется.</div>`;
+    return;
+  }
+  useSpell('HEALING');
+  S.stamina=Math.min(S.staminaMax,S.stamina+8);
+  if(log)log.innerHTML+=`<div style="color:var(--green2);margin:4px 0;">💚 Заклятие Исцеления: +8 выносливости (стало ${S.stamina}/${S.staminaMax}).</div>`;
+  logEvent('gain','💚 Заклятие Исцеления','+8 выносливости (в бою)');
+  const hb=document.getElementById('btn-heal-spell');
+  const r2=getSpellRemaining('HEALING');
+  if(hb){ if(r2>0){ hb.textContent='💚 Заклятие Исцеления +8 ['+r2+']'; } else { hb.style.display='none'; } }
+  updateHUD();saveGame();
+}
 function toggleAddItem(){const a=document.getElementById('add-item-area');a.style.display=a.style.display==='none'?'block':'none';}
 function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.trim();
   if(!v)return;if(S.inventory.length>=7){alert('Мешок полон (7 предметов)');return;}
@@ -1549,6 +1570,19 @@ function startCombat(enemies,sec){
       weakBtn.textContent='🫀 Заклятие Слабости ['+weakRemaining+']';
     } else {
       weakBtn.style.display='none';
+    }
+  }
+  // §950: HEALING usable in combat where canon permits (self-cast, invisible).
+  // Shown whenever the allowlist includes HEALING and a charge remains; the
+  // handler caps at staminaMax. The HUD heal button stays hidden (overlay).
+  const healSpellBtn=document.getElementById('btn-heal-spell');
+  const healSpellRemaining=getSpellRemaining('HEALING');
+  if(healSpellBtn){
+    if(allowedSpells.includes('HEALING')&&healSpellRemaining>0){
+      healSpellBtn.style.display='inline-block';
+      healSpellBtn.textContent='💚 Заклятие Исцеления +8 ['+healSpellRemaining+']';
+    } else {
+      healSpellBtn.style.display='none';
     }
   }
   updateCombatEnemyDisplay(combatState);
