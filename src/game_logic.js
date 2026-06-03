@@ -994,6 +994,27 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
     return makePurchaseBtn(ch, choiceIndex);
   }
   const btn=document.createElement('button');btn.className='choice-btn';
+  // spell_any: one destination reachable by ANY of several spells (canon
+  // "заклятие X или Y" → single target). Enabled if any listed spell has a
+  // charge; on click, spend ONE charge from the first listed spell that has
+  // one. Mirrors the single-spell branch's styling/greying exactly.
+  if(Array.isArray(ch.spell_any)&&ch.spell_any.length>0){
+    const ids=ch.spell_any;
+    const totalRemaining=ids.reduce((sum,id)=>sum+getSpellRemaining(id),0);
+    const style=SPELL_STYLE_BY_ID[ids[0]]||{icon:'✨',border:'#8a4dbd',color:'#b070e0',bg:'rgba(140,70,200,.12)'};
+    btn.style.borderColor=style.border;btn.style.color=style.color;
+    btn.style.background=style.bg;
+    btn.innerHTML=style.icon+' '+ch.label+(totalRemaining>0?' <span style="opacity:.6;font-size:14px">['+totalRemaining+']</span>':'');
+    if(totalRemaining<=0){
+      btn.style.opacity='.35';btn.style.cursor='not-allowed';
+      btn.style.borderStyle='dashed';
+      btn.title='Заклятие недоступно';
+      btn.onclick=(e)=>{e.preventDefault();};
+    } else {
+      btn.onclick=()=>{const pick=ids.find(id=>getSpellRemaining(id)>0);useSpell(pick);applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+    }
+    return btn;
+  }
   const spellId=getSpellId(ch);
   if(spellId){
     const style=SPELL_STYLE_BY_ID[spellId]||{icon:'✨',border:'#8a4dbd',color:'#b070e0',bg:'rgba(140,70,200,.12)'};
