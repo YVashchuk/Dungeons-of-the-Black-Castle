@@ -4,8 +4,8 @@
 
 **Cycle:** ChatGPT (2 reports) + Claude (2 diagnostic audits) + Gemini (1 visual/spatial audit), re-audited through the **canon → code → Node-harness** funnel.
 **Registry:** `assets/text_corrections.json` v2.50, `group_31_research_reports_item_spell_chains_2026_06_02`.
-**Engine change this cycle:** one — the **F-1 luck-cap** in `src/game_logic.js` (committed `766e0d8`). All other fixes are data-only in `src/remake_data.js`.
-**Push:** as of 2026-06-02, commits **through `d6fe11a` are pushed**. **Pending push:** `fd729ea` (§402/§614 spell_any) and the registry/handoff doc commit that records it. Yuriy pushes.
+**Engine change this cycle:** F-1 luck-cap (`766e0d8`), the `spell_any` field for §402/§614 (`fd729ea`), and the R2-3 `combat_mod` / pre-cast-buff system (`c4b01e2`). Other fixes are data-only in `src/remake_data.js`.
+**Push:** as of 2026-06-02, commits **through `234ca94` are pushed**. **Pending push:** `c4b01e2` (R2-3) and the registry/handoff doc commit that records it. Yuriy pushes.
 
 ---
 
@@ -66,7 +66,9 @@ Four concrete blind spots, each tied to findings above:
 | `f3b4a98` | registry R2-1 close (v2.51) + "why Claude missed it" handoff section | — |
 | `d6fe11a` | handoff: Gemini access-preflight lessons for future briefs | — |
 | `fd729ea` | **§402/§614** — engine `spell_any:[ids]` + data; dual-spell single-destination crossings (closes R2-5) | ChatGPT r2 #5 |
-| _(pending)_ | registry §402/§614 close (v2.52) + this handoff refresh | — |
+| `234ca94` | registry §402/§614 close (v2.52) + handoff refresh | — |
+| `c4b01e2` | **R2-3** — engine `combat_mod` + `S.pending_combat_buff` + `enemyAttackMod`; 10 bridges (§160/§192/§286/§308/§387/§404/§667/§751/§865/§39). Fixes double-spend **and** never-applied ±2 | ChatGPT r2 R2-3 |
+| _(pending)_ | registry R2-3 close (v2.53) + this handoff refresh | — |
 
 **Whole-repo regression after all commits:** `node --check src/game_logic.js` OK; GD parses, 1221 paragraphs contiguous; **2167** choice edges, **0 dangling targets**; BFS reachability **54 → 53** unreachable (only delta: **§249 became reachable** via the §1078 retarget — no new orphan; §132's self-loop purchases added 10 edges and changed no reachability).
 
@@ -119,7 +121,7 @@ Yuriy's field observation (2026-06-02): a Gemini research run spent ~15 min, the
 
 1. **§132 shop SUB-FEATURES** — the shop **core is now DONE** (commit `259cd85`: 10 food purchases mirroring §340, harness 9/9). Food is `grants_stamina` (eat-on-the-spot, repeatable) because **no eat-from-inventory action exists** in the engine — `grants_items` food would be permanent dead weight (§340 has the same limitation). Still NOT implemented, each needing net-new engine mechanism: the 7-gold **9-slot bag upgrade**, the **flask refill** (4g full / 2g half / free water), and **«взять с собой» carried food**. Engine work for a future cycle.
 2. **§950 HEALING** — canon «заклятие Силы и Исцеления», but HEALING is HUD-only and barred from combat ("но не во время сражения"); the combat modal only renders COPY/FORCE/WEAKNESS. Stop-list records §950=[FORCE] as intentional. Architecture decision.
-3. **R2-3 pre-cast combat buffs** — §308/§667/§655/§470 say «прибавьте/вычтите 2 … и сражайтесь» then route into a combat, but the ±2 only applies via the in-combat modal buttons (group_19). A naive `pending_combat_mod` risks **double-application** (bridge buff + modal button). Architecture decision.
+3. **R2-3 pre-cast combat buffs** — CLOSED 2026-06-02 (commit `c4b01e2`, Option B). The bridges now apply their ±2 via a new `combat_mod` field + persistent `S.pending_combat_buff` consumed one-shot by `startCombat` (FORCE→+2 player & hide Force modal; ENEMY_PLUS2→enemy +2 for the §865 reflection; PLAYER_MINUS2→player −2 for the §39 reflection), and the double-spend on §160/§192/§286/§308/§865 is gone. The charge is spent once, at the source cast. Harness 26/26.
 4. **§402 / §614 dual-spell** — CLOSED 2026-06-02 (commit `fd729ea`) via the new engine `spell_any:[ids]` field. (Was deferred as needing an engine extension; done. Closes ChatGPT R2-5 entirely.)
 5. **§340 dead-weight items** (Попона, Золотая устрица) — no downstream consumer found; possible gold-traps. P3 balance note (canon sells them as «могут пригодиться», so not a bug).
 6. **Spell rebalance** — ILLUSION sparse, HEALING low-count; a character-creation hint would help. P3 design.
