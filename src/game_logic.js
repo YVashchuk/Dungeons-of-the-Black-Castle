@@ -41,7 +41,7 @@ Object.defineProperty(window, 'S', {
 function initState(n,sk,st,lu,sp){
   return{name:n||'Герой',section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,
     luck:lu,luckMax:lu,gold:15,flask:2,
-    inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),v:5};
+    inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),pending_combat_buff:null,v:5};
 }
 
 // ── RNG ──
@@ -1015,6 +1015,15 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
     }
     return btn;
   }
+  // R2-3: combat_mod choices are pre-cast "buff bridges" leading into a combat.
+  // The spell charge was already spent at the SOURCE cast, so this navigation
+  // spends NOTHING; it only queues the whole-fight modifier (consumed by
+  // startCombat). This replaces the old erroneous double-spend spell tag.
+  if(ch.combat_mod){
+    btn.innerHTML=ch.label;
+    btn.onclick=()=>{if(S)S.pending_combat_buff=ch.combat_mod;applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+    return btn;
+  }
   const spellId=getSpellId(ch);
   if(spellId){
     const style=SPELL_STYLE_BY_ID[spellId]||{icon:'✨',border:'#8a4dbd',color:'#b070e0',bg:'rgba(140,70,200,.12)'};
@@ -1447,14 +1456,24 @@ function startCombat(enemies,sec){
   logEvent('combat','⚔ Бой начался','Враги: '+enemies.map(e=>e.name).join(', '));
   const pMod=sec.player_attack_mod||0;
   const script=sec.combat_script||null;
+  // R2-3: a pre-cast "buff bridge" may have queued a whole-fight modifier in
+  // S.pending_combat_buff (the spell charge was already spent at the SOURCE
+  // cast). Consume it here, one-shot, and fold it into the initial state:
+  //   FORCE         -> player +2 (via forceBuff, identical to the modal cast)
+  //   PLAYER_MINUS2 -> Weakness reflected back onto the player (§39 backfire)
+  //   ENEMY_PLUS2   -> Force reflected onto the enemy (§865 Green Knight)
+  const pendingBuff=(S&&S.pending_combat_buff)||null;
+  if(S)S.pending_combat_buff=null;
+  const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
   combatState={
     enemies:enemies.map((e,idx)=>({...e,hp:e.stamina,dmg:e.damage||2,active:!(script==='sec1175_canon_orcs' && idx>0),fled:false})),
     round:0,
     wounds:0,
     sec:sec,
-    playerMod:pMod,
-    forceBuff:false,       // group_19: FORCE spell active for whole combat (+2 СИЛА УДАРА)
+    playerMod:pModInit,
+    forceBuff:(pendingBuff==='FORCE'),  // group_19 FORCE whole-combat +2; R2-3 may pre-set via bridge
     weaknessDebuff:false,  // group_19: WEAKNESS spell active for whole combat (-2 enemy attack)
+    enemyAttackMod:(pendingBuff==='ENEMY_PLUS2'?2:0),  // R2-3 §865 Force-backfire: enemy +2 whole combat
     special:script==='sec1175_canon_orcs'?{type:'sec1175',reinforcementsJoined:false,firstDeathHandled:false,luckChecked:false}:null
   };
   const ce=document.getElementById('combat-enemies');ce.innerHTML='';
@@ -1480,8 +1499,14 @@ function startCombat(enemies,sec){
     </div>`;
   });
   document.getElementById('combat-log').innerHTML='';
-  if(pMod!==0){
-    document.getElementById('combat-log').innerHTML=`<div style="color:var(--gold);margin-bottom:8px;">⚠ Модификатор Силы Удара: ${pMod>0?'+':''}${pMod}</div>`;
+  if(pModInit!==0){
+    document.getElementById('combat-log').innerHTML=`<div style="color:var(--gold);margin-bottom:8px;">⚠ Модификатор Силы Удара: ${pModInit>0?'+':''}${pModInit}</div>`;
+  }
+  if(combatState.forceBuff){
+    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">💪 Заклятие Силы действует: СИЛА УДАРА +2 до конца боя.</div>`;
+  }
+  if(combatState.enemyAttackMod){
+    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--red2);margin-bottom:8px;">⚠ Заклятие обратилось против вас: СИЛА УДАРА врага +${combatState.enemyAttackMod} до конца боя.</div>`;
   }
   if(script==='sec1175_canon_orcs'){
     document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">✦ Сначала вы сражаетесь только с Первым Орком. Остальные вступят в бой позже, если он продержится три раунда.</div>`;
@@ -1507,7 +1532,9 @@ function startCombat(enemies,sec){
   const forceBtn=document.getElementById('btn-force-spell');
   const forceRemaining=getSpellRemaining('FORCE');
   if(forceBtn){
-    if(allowedSpells.includes('FORCE')&&forceRemaining>0){
+    if(combatState.forceBuff){
+      forceBtn.style.display='none';  // R2-3: Force already pre-cast via a bridge — no re-cast
+    } else if(allowedSpells.includes('FORCE')&&forceRemaining>0){
       forceBtn.style.display='inline-block';
       forceBtn.textContent='💪 Заклятие Силы ['+forceRemaining+']';
     } else {
@@ -1560,7 +1587,7 @@ function combatRound(){
   }
 
   // group_19: WEAKNESS spell subtracts 2 from each enemy's attack for whole combat.
-  const enemyMod=cs.weaknessDebuff?-2:0;
+  const enemyMod=(cs.weaknessDebuff?-2:0)+(cs.enemyAttackMod||0);
   alive.forEach((e,i)=>{
     const ed=d6()+d6();const eStr=ed+e.skill+enemyMod;
     if(enemyMod!==0){
