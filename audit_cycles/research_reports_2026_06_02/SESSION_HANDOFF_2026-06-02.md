@@ -5,7 +5,7 @@
 **Cycle:** ChatGPT (2 reports) + Claude (2 diagnostic audits) + Gemini (1 visual/spatial audit), re-audited through the **canon → code → Node-harness** funnel.
 **Registry:** `assets/text_corrections.json` v2.50, `group_31_research_reports_item_spell_chains_2026_06_02`.
 **Engine change this cycle:** F-1 luck-cap (`766e0d8`), `spell_any` for §402/§614 (`fd729ea`), the R2-3 `combat_mod` system (`c4b01e2`), the §950 in-combat HEALING button (`68b53b3`, first HTML-shell change), and the §132 shop sub-features (`c2c69dc`, stateful `S.bagSize` + new purchase fields + `eatFood`). Other fixes are data-only.
-**Push:** as of 2026-06-02, commits **through `f204de3` are pushed**. **Pending push:** the registry/handoff doc commit closing §340 (verified, no code change). Yuriy pushes.
+**Push:** as of 2026-06-02, commits **through `35ff2b9` are pushed**. **Pending push:** `b5abc8b` (§455 spell-forbidding) and the registry/handoff doc commit recording it + the spell-economy audit. Yuriy pushes.
 **dist/ status:** tracked but **stale** — last built at `8ddbf81`, before every src change this cycle. An authoritative `bash build.sh` + dist commit is scheduled for the end-of-cycle cleanup (bash is available at `C:\Program Files\Git\usr\bin\bash.exe`).
 
 ---
@@ -74,7 +74,9 @@ Four concrete blind spots, each tied to findings above:
 | `362d6f2` | registry §950 close (v2.54) + handoff refresh | — |
 | `c2c69dc` | **§132 sub-features** — stateful `S.bagSize` + `getBagSize`; `grants_bag_size`/`flask_fill`/`grants_food` purchase fields; `eatFood`; §132 choices 12→25 | deferred item |
 | `f204de3` | registry §132 close (v2.55) + handoff refresh + tidy deferred | — |
-| _(pending)_ | registry §340 verified-closed (v2.56, **no code change**) + this handoff refresh | — |
+| `35ff2b9` | registry §340 verified-closed (v2.56, no code change) + handoff refresh | — |
+| `b5abc8b` | **§455** — Spirit-of-the-Dead `combat_spells_allowed:[]` (canon §723; matches §994) | deferred-audit |
+| _(pending)_ | registry §455 + spell-economy audit (v2.57) + this handoff refresh | — |
 
 **Whole-repo regression after all commits:** `node --check src/game_logic.js` OK; GD parses, 1221 paragraphs contiguous; **2167** choice edges, **0 dangling targets**; BFS reachability **54 → 53** unreachable (only delta: **§249 became reachable** via the §1078 retarget — no new orphan; §132's self-loop purchases added 10 edges and changed no reachability).
 
@@ -130,7 +132,7 @@ Yuriy's field observation (2026-06-02): a Gemini research run spent ~15 min, the
 3. **R2-3 pre-cast combat buffs** — CLOSED 2026-06-02 (commit `c4b01e2`, Option B). The bridges now apply their ±2 via a new `combat_mod` field + persistent `S.pending_combat_buff` consumed one-shot by `startCombat` (FORCE→+2 player & hide Force modal; ENEMY_PLUS2→enemy +2 for the §865 reflection; PLAYER_MINUS2→player −2 for the §39 reflection), and the double-spend on §160/§192/§286/§308/§865 is gone. The charge is spent once, at the source cast. Harness 26/26.
 4. **§402 / §614 dual-spell** — CLOSED 2026-06-02 (commit `fd729ea`) via the new engine `spell_any:[ids]` field. (Was deferred as needing an engine extension; done. Closes ChatGPT R2-5 entirely.)
 5. **§340 dead-weight items** — **VERIFIED-INTENTIONAL 2026-06-02 (no code change).** Traced all 6 §340 trinkets through canon + data: **4 are correctly wired** with exact grant↔consumer match («Красивый кусочек дерева»→§774; «Фигурный ключ»→§774/§804/§1208; «Блестящий кусок металла»→§804; «Серебряный браслет»→§1090→§874, given to the beggar-woman). Only **Попона** (5g) and **Золотая устрица** (8g) are unused, and they appear **only at §340** in all 1221 paragraphs — intentional canon gold-traps (horse blanket useless on foot; golden oyster a decoy). No name-mismatch typos (the real bug risk). Faithful as-is.
-6. **Spell rebalance** — ILLUSION sparse, HEALING low-count; a character-creation hint would help. P3 design.
+6. **Spell rebalance** — **VERIFIED 2026-06-02 (design call pending Yuriy).** Spell-economy audit measured the per-spell opportunity surface and cross-checked ILLUSION's canon mentions vs wired hooks. ILLUSION's sparsity is **genuine** (4 opportunities §41/§350/§779/§1066; the 5 unwired canon «иллюзия» mentions §134/§283/§481/§723/§1094 are all anti-Illusion / immunity text, **NOT** missing hooks — so no faithful coverage fix exists, unlike the earlier FIRE hooks). HEALING is anytime-usable (+8 via HUD), not sparse. The audit surfaced & **fixed** one real forbidding-bug: §455 Spirit (`b5abc8b`). The only remaining lever is a character-creation utility hint — Claude **recommends AGAINST** (unfaithful; the blind 10-pick is part of the 1991 book; the canon spell descriptions already signal relative utility). Awaiting Yuriy: add a hint (and how subtle) or close as faithful-as-is.
 
 **Now CLOSED (were flagged-not-closed in earlier passes):** **R2-1** spell-forbidding combats — done, commit `b6e0324` (7 paragraphs). The narrower **partial-permissive** allowlist tightening (combats that name only SOME spells but show all 3 modal buttons) remains a separate P3 sweep for a future cycle.
 
