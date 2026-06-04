@@ -40,7 +40,7 @@ Object.defineProperty(window, 'S', {
 
 function initState(n,sk,st,lu,sp){
   return{name:n||'Герой',section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,
-    luck:lu,luckMax:lu,gold:15,flask:2,
+    luck:lu,luckMax:lu,gold:15,flask:2,bagSize:7,
     inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),pending_combat_buff:null,v:5};
 }
 
@@ -66,6 +66,7 @@ function normalizeSave(s){
   if(typeof s.notes!=='string')   s.notes='';
   if(typeof s.gold!=='number')    s.gold=0;
   if(typeof s.flask!=='number')   s.flask=0;
+  if(typeof s.bagSize!=='number'||s.bagSize<7) s.bagSize=7; // §132: 9-slot bag upgrade (default 7)
   if(typeof s.section!=='number') s.section=1;
   // Runtime-only fields added in later sessions.
   if(!Array.isArray(s.eventLog))  s.eventLog=[];
@@ -274,12 +275,12 @@ let pendingItems=[];
 function showInventoryModal(newItems, extraNotifs){
   pendingItems=newItems.slice();
   const modal=document.getElementById('modal-inventory');
-  const freeSlots=7-S.inventory.length;
+  const freeSlots=getBagSize()-S.inventory.length;
   
   // Text
   const txt=document.getElementById('inv-modal-text');
   if(freeSlots<newItems.length){
-    txt.innerHTML=`Найдено ${newItems.length} предметов, но в мешке только ${freeSlots} свободных мест из 7.<br>Выберите что взять, или выбросьте ненужное.`;
+    txt.innerHTML=`Найдено ${newItems.length} предметов, но в мешке только ${freeSlots} свободных мест из ${getBagSize()}.<br>Выберите что взять, или выбросьте ненужное.`;
   } else {
     txt.innerHTML=`Найдено ${newItems.length} предметов. Свободных мест: ${freeSlots}.`;
   }
@@ -309,7 +310,7 @@ function showInventoryModal(newItems, extraNotifs){
 
 function renderInvModalCurrent(){
   const cur=document.getElementById('inv-modal-current');
-  cur.innerHTML='<div style="font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;">В МЕШКЕ ('+S.inventory.length+'/7):</div>';
+  cur.innerHTML='<div style="font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;">В МЕШКЕ ('+S.inventory.length+'/'+getBagSize()+'):</div>';
   if(S.inventory.length===0){
     cur.innerHTML+='<div style="font-size:14px;color:var(--muted);opacity:.5;">Пусто</div>';
   } else {
@@ -329,7 +330,7 @@ function renderInvModalCurrent(){
     if(!btn)return;
     if(S.inventory.includes(item)){
       btn.textContent='✓ В мешке';btn.disabled=true;btn.style.opacity='.4';
-    } else if(S.inventory.length>=7){
+    } else if(S.inventory.length>=getBagSize()){
       btn.textContent='Мешок полон';btn.disabled=true;btn.style.opacity='.4';
     } else {
       btn.textContent='+ Взять';btn.disabled=false;btn.style.opacity='1';
@@ -338,7 +339,7 @@ function renderInvModalCurrent(){
 }
 
 function takeItem(idx){
-  if(!S||S.inventory.length>=7)return;
+  if(!S||S.inventory.length>=getBagSize())return;
   const item=pendingItems[idx];
   if(!item||S.inventory.includes(item))return;
   S.inventory.push(item);
@@ -582,13 +583,39 @@ function updateHUD(){
   // Inventory
   const il=document.getElementById('inv-list');il.innerHTML='';
   if(S.inventory&&S.inventory.length>0){S.inventory.forEach((item,i)=>{
-    il.innerHTML+=`<div class="inv-item"><span>${item}</span><span class="inv-remove" onclick="removeItem(${i})" title="Выбросить">🗑</span></div>`;});}
+    const foodM=/\(еда:\s*\+(\d+)\)/.exec(item);
+    const eatBtn=foodM?`<span class="inv-eat" onclick="eatFood(${i})" title="Съесть (+${foodM[1]} вын.)" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">🍴</span>`:'';
+    il.innerHTML+=`<div class="inv-item"><span>${item}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i})" title="Выбросить">🗑</span></span></div>`;});}
   else{il.innerHTML='<div class="inv-empty">Мешок пуст</div>';}
-  document.getElementById('inv-count').textContent=`(${S.inventory?S.inventory.length:0}/7)`;
+  document.getElementById('inv-count').textContent=`(${S.inventory?S.inventory.length:0}/${getBagSize()})`;
   // Notes
   const nta=document.getElementById('notes-ta');if(nta&&S.notes!==undefined)nta.value=S.notes;
 }
 
+// §132: bag capacity is stateful (7 default, upgradeable to 9). getBagSize()
+// is the single source of truth — every inventory-cap site reads it.
+function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bagSize:7;}
+// §132: eat a carried-food string («Название (еда: +N)») from the bag. Restores
+// N ВЫНОСЛИВОСТЬ (capped), removes the item. Refuses at full stamina so the
+// provision isn't wasted.
+function eatFood(i){
+  if(!S||!S.inventory)return;
+  const item=S.inventory[i];
+  if(!item)return;
+  const m=/\(еда:\s*\+(\d+)\)/.exec(item);
+  if(!m)return;
+  if(S.stamina>=S.staminaMax){showItemNotification(['Выносливость уже полная']);return;}
+  const amt=parseInt(m[1],10);
+  const before=S.stamina;
+  S.stamina=Math.min(S.staminaMax,S.stamina+amt);
+  const actual=S.stamina-before;
+  const clean=item.replace(/\s*\(еда:.*?\)/,'');
+  S.inventory.splice(i,1);
+  logEvent('gain','🍴 Съедено: '+clean,'+'+actual+' выносливости');
+  playSound('item');
+  showItemNotification(['🍴 '+clean+': +'+actual+' вын.']);
+  updateHUD();saveGame();
+}
 function useFlask(){if(!S||S.flask<=0)return;S.flask--;S.stamina=Math.min(S.staminaMax,S.stamina+2);logEvent('gain','🥤 Глоток из фляги','+2 выносливости (осталось глотков: '+S.flask+')');updateHUD();saveGame();}
 function useHealing(){
   if(!S)return;
@@ -623,7 +650,7 @@ function useHealingInCombat(){
 }
 function toggleAddItem(){const a=document.getElementById('add-item-area');a.style.display=a.style.display==='none'?'block':'none';}
 function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.trim();
-  if(!v)return;if(S.inventory.length>=7){alert('Мешок полон (7 предметов)');return;}
+  if(!v)return;if(S.inventory.length>=getBagSize()){alert('Мешок полон ('+getBagSize()+' предметов)');return;}
   S.inventory.push(v);inp.value='';updateHUD();saveGame();}
 function removeItem(i){if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+itm,'Выброшено из мешка');S.inventory.splice(i,1);updateHUD();saveGame();}
 
@@ -924,9 +951,9 @@ function makePurchaseBtn(ch, choiceIndex){
   const cost=ch.gold_cost||0;
   const grantsItems=Array.isArray(ch.grants_items)?ch.grants_items:(ch.grants_items?[ch.grants_items]:[]);
   const grantsStamina=ch.grants_stamina||0;
-  // Auto-append price to label if not already mentioned
+  // Auto-append price to label if not already mentioned (skip for free items).
   let displayLabel=ch.label||'';
-  if(!/\d\s*золот/i.test(displayLabel)){
+  if(cost>0&&!/\d\s*золот/i.test(displayLabel)){
     displayLabel+=` — ${cost} зол.`;
   }
   btn.textContent=`💰 ${displayLabel}`;
@@ -939,15 +966,27 @@ function makePurchaseBtn(ch, choiceIndex){
   const bought=S.shopBought[paraKey]||[];
   const isBought=(grantsItems.length>0)&&bought.includes(choiceIndex);
   const canAfford=S.gold>=cost;
-  const wouldOverflow=(grantsItems.length>0)&&((S.inventory?S.inventory.length:0)+grantsItems.filter(n=>!S.inventory.includes(n)).length>7);
+  // §132 sub-features:
+  //  • grants_bag_size — one-time bag upgrade (disabled once bagSize already >=).
+  //  • flask_fill      — disabled when the flask is already full (max 2).
+  //  • grants_food     — carried food string; counts against bag like an item.
+  const bagMaxed=ch.grants_bag_size&&getBagSize()>=ch.grants_bag_size;
+  const flaskFull=ch.flask_fill&&((S.flask||0)>=2);
+  const foodOverflow=ch.grants_food&&((S.inventory?S.inventory.length:0)>=getBagSize());
+  const wouldOverflow=(grantsItems.length>0)&&((S.inventory?S.inventory.length:0)+grantsItems.filter(n=>!S.inventory.includes(n)).length>getBagSize());
   let disabled=false;
   let tooltip='';
   if(isBought){
     disabled=true;tooltip='Уже куплено';
     btn.textContent='✓ '+displayLabel;
+  } else if(bagMaxed){
+    disabled=true;tooltip='Мешок уже куплен';
+    btn.textContent='✓ '+displayLabel;
+  } else if(flaskFull){
+    disabled=true;tooltip='Фляга уже полна';
   } else if(!canAfford){
     disabled=true;tooltip='Не хватает золота ('+S.gold+'/'+cost+')';
-  } else if(wouldOverflow){
+  } else if(wouldOverflow||foodOverflow){
     disabled=true;tooltip='Мешок полон';
   }
   if(disabled){
@@ -965,8 +1004,11 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   if(!S)return;
   // Deduct gold first so any subsequent rerender shows the correct balance.
   S.gold=Math.max(0,S.gold-cost);
-  const notifs=['− '+cost+' золотых'];
-  logEvent('loss','− '+cost+' золотых','Покупка (§'+S.section+'). Осталось: '+S.gold);
+  const notifs=[];
+  if(cost>0){
+    notifs.push('− '+cost+' золотых');
+    logEvent('loss','− '+cost+' золотых','Покупка (§'+S.section+'). Осталось: '+S.gold);
+  }
   // Stamina grant (food). Capped at staminaMax.
   if(grantsStamina>0){
     const before=S.stamina;
@@ -982,7 +1024,7 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   // if the player drops the item later.
   const newItems=grantsItems.filter(n=>!S.inventory.includes(n));
   newItems.forEach(name=>{
-    if(S.inventory.length<7){
+    if(S.inventory.length<getBagSize()){
       S.inventory.push(name);
       notifs.push('+ '+name);
       logEvent('gain','+ '+name,'Куплено (§'+S.section+')');
@@ -996,6 +1038,32 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
     if(!S.shopBought[paraKey].includes(choiceIndex)){
       S.shopBought[paraKey].push(choiceIndex);
     }
+  }
+  // §132 bag upgrade — raise capacity (one-time; guarded by the >= check).
+  if(ch.grants_bag_size&&getBagSize()<ch.grants_bag_size){
+    S.bagSize=ch.grants_bag_size;
+    notifs.push('+ заплечный мешок ('+ch.grants_bag_size+' мест)');
+    logEvent('gain','+ заплечный мешок','Вместимость теперь: '+ch.grants_bag_size);
+  }
+  // §132 flask refill — 'full'/'water' top to max (2), 'half' adds one sip.
+  if(ch.flask_fill){
+    const beforeF=S.flask||0;
+    if(ch.flask_fill==='half'){ S.flask=Math.min(2,beforeF+1); }
+    else { S.flask=2; }
+    const addedF=S.flask-beforeF;
+    if(addedF>0){
+      notifs.push('+ фляга ('+S.flask+'/2)');
+      logEvent('gain','🥤 Фляга наполнена','Глотков: '+S.flask+'/2');
+    }
+  }
+  // §132 carried food — deposit a self-describing food string (repeatable,
+  // counts against bag capacity, eaten later via eatFood()).
+  if(ch.grants_food&&S.inventory.length<getBagSize()){
+    const f=ch.grants_food;
+    const foodStr=f.name+' (еда: +'+f.stamina+')';
+    S.inventory.push(foodStr);
+    notifs.push('+ '+foodStr);
+    logEvent('gain','+ '+foodStr,'Куплено, взято с собой (§'+S.section+')');
   }
   playSound('item');
   showItemNotification(notifs,'💰 Покупка');
