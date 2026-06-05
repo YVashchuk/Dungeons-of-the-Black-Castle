@@ -111,3 +111,40 @@ adds A-stamina + A-skill + B + C + D in scoped per-paragraph edits with a Node
 entry-effects harness + full regression; (2) a separate small engine change for `luck_sub`
 + the 7 УДАЧА paragraphs; (3) defer §574 (food-string) and §1083 as design calls. Each
 batch validated (harness + "only intended paragraphs changed") before commit; Yuriy pushes.
+
+
+---
+
+## Appendix — salvaged from the deleted reports (productization track, NOT this correctness cycle)
+
+The ChatGPT strategy report (`deep-research-report_chatgpt.md`) and the Gemini
+architecture PDF (`Gemini_data-code-analysis.pdf`) were deleted as non-contributing to
+correctness, and the Gemini art PDF was deleted as out-of-scope + confabulated. A few
+**operational** observations are preserved here for a future productization/QA session
+(the "receiving Claude" chat). **None are correctness bugs; all are out of scope for the
+A–D backlog above.**
+
+**Operational / doc-hygiene backlog (from ChatGPT 5.5):**
+- **Doc drift vs registry.** `README.md` still says `text_corrections.json` is v2.48 / 29
+  groups; `book_text.md` header still says ~v2.40–2.44 with a "Known gaps / deferred"
+  section — both stale vs the real **v2.59 / 31 groups**. Stale docs are what spawn repeat
+  false audits → refresh README + the `book_text.md` header/meta.
+- **Audio description mismatch.** README still calls the sound "Web Audio API / procedural";
+  the engine actually plays OGG files via `<audio>` (the oscillator layer was removed) →
+  update README.
+- **Localization is hard-wired to Russian strings.** `getSpellId()` falls back to Russian
+  substring matching on labels (огн/плав/левит/сил/исцел…) and item gating uses literal
+  Russian item names. EN/FR is therefore a partial **architectural refactor** (stable
+  internal IDs for spells/items/conditions), not just translation.
+- **Runtime baseline undecided.** `file://` + `localStorage` is not guaranteed (MDN:
+  `localStorage` on `file:` URLs is undefined / varies by browser); PWA + service worker
+  need HTTPS or localhost. Pick one supported baseline before release.
+- **QA harnesses not surfaced.** Node regression harnesses exist in practice but there is no
+  `tests/` entrypoint in the repo; consider surfacing them + a Playwright smoke suite.
+
+**Architecture facts worth keeping (from Gemini 3.5 Flash; accurate, cross-checked — not new bugs):**
+- Save key `localStorage['podzch_v5']`; the v4→v5 migration duplicates `luck`→`luckMax` and
+  drops the legacy `luckBoxes` array.
+- Map layers: overworld 1600×1000, castle_exterior 1200×900, castle_interior 1600×1200;
+  `BC_MAP_DEF` ≈ 35 location nodes + 34 encounter markers; `reveal_policy:
+  "show_stub_from_discovered"`.
