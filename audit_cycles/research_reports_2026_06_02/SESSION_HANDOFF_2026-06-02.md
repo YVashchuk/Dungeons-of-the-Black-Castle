@@ -5,8 +5,8 @@
 **Cycle:** ChatGPT (2 reports) + Claude (2 diagnostic audits) + Gemini (1 visual/spatial audit), re-audited through the **canon → code → Node-harness** funnel.
 **Registry:** `assets/text_corrections.json` v2.50, `group_31_research_reports_item_spell_chains_2026_06_02`.
 **Engine change this cycle:** F-1 luck-cap (`766e0d8`), `spell_any` for §402/§614 (`fd729ea`), the R2-3 `combat_mod` system (`c4b01e2`), the §950 in-combat HEALING button (`68b53b3`, first HTML-shell change), the §132 shop sub-features (`c2c69dc`, stateful `S.bagSize` + new purchase fields + `eatFood`), and a non-spoiler spell-selection nudge (`187b72a`, shell-only). Other fixes are data-only.
-**Push:** as of 2026-06-02, commits **through `3eabaf8` are pushed**. **Pending push:** `d686e41` (partial-permissive sweep) and the registry/handoff doc commit closing it (v2.59). Yuriy pushes.
-**dist/ status:** tracked but **stale** — last built at `8ddbf81`, before every src change this cycle. An authoritative `bash build.sh` + dist commit is scheduled for the end-of-cycle cleanup (bash is available at `C:\Program Files\Git\usr\bin\bash.exe`).
+**Push:** as of 2026-06-02, commits **through `3eabaf8` are pushed**. **Pending push:** `d686e41` (partial-permissive sweep), `8017599` (v2.59 docs — backlog cleared), `3e5c85a` (dist rebuild), and this final handoff touch-up. Yuriy pushes.
+**dist/ status:** **REBUILT and committed at `3e5c85a`** (authoritative `bash build.sh`); now reflects every src change this cycle. Verified embedded: «Совет Майлина» nudge, `btn-heal-spell`, `getBagSize`, `eatFood`, `combat_spells_allowed`. (bash is at `C:\Program Files\Git\usr\bin\bash.exe`.)
 
 ---
 
@@ -80,7 +80,9 @@ Four concrete blind spots, each tied to findings above:
 | `187b72a` | **spell-selection nudge** — italic «Совет Майлина» line (shell-only, no counts/names) | deferred item |
 | `3eabaf8` | registry spell-rebalance close (v2.58) + handoff refresh | — |
 | `d686e41` | **partial-permissive sweep** — 8 combat allowlists (§96/§110/§174/§388/§656/§1050→[]; §536/§1096→['COPY']) | deferred item |
-| _(pending)_ | registry partial-permissive close (v2.59) + this handoff refresh | — |
+| `8017599` | registry partial-permissive close (v2.59) + handoff refresh — **backlog cleared** | — |
+| `3e5c85a` | **dist rebuild** — authoritative `bash build.sh` (11.7MB, all cycle changes baked in) | end-of-cycle |
+| _(pending)_ | this final handoff touch-up | — |
 
 **Whole-repo regression after all commits:** `node --check src/game_logic.js` OK; GD parses, 1221 paragraphs contiguous; **2167** choice edges, **0 dangling targets**; BFS reachability **54 → 53** unreachable (only delta: **§249 became reachable** via the §1078 retarget — no new orphan; §132's self-loop purchases added 10 edges and changed no reachability).
 
