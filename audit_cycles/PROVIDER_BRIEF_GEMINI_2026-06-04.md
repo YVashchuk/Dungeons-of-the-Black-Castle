@@ -42,48 +42,48 @@ not let either happen again:**
 ---
 
 ## 2. Your environment & how to get the files — CONFIRM ACCESS FIRST
-You run **in the browser**: **no local-disk access**, and you most likely
-**cannot read the private GitHub repo**. Therefore the human exports the entire
-project folder **`\Dungeons-of-the-Black-Castle\`** to **Google Drive** and adds
-it as a **source** to this Gemini project / notebook.
+You run **in the browser**: **no local-disk access**, and you **cannot read the
+private GitHub repo**. We also do **NOT** use Gemini's "add a code folder / repo"
+import for this project: the full folder busts Gemini's limit (a code folder or
+repo is capped at **5,000 files and 100 MB total**, and the project's art assets
+blow past 100 MB). **A correctness audit does not need the art at all.** So
+instead we hand you a small, **complete** set of text files **attached directly
+to the prompt** — Gemini accepts **up to 10 files per prompt** (≤100 MB each), and
+this set is **8 files, ~2.3 MB**.
+
+### Files to ATTACH directly to this chat — this is the COMPLETE set (8 files)
+Attach them by these **bare names**. Do **not** write a folder path next to an
+attachment — a previous run *ignored* an attached `game_logic.js` because the
+message referred to it as `\src\game_logic.js`. (The parenthetical repo location
+is for your reference only; the attached bare file IS that file.)
+
+| Attach this file (bare name) | What it is (repo location) |
+|---|---|
+| `remake_data.js` | **the actual game data** — `const GD = {…}` keyed by paragraph; **source of truth** for choices / enemies / gold / items / `auto_items` / `inventory_condition` / `gold_cost` / `combat_spells_allowed` / per-enemy `damage` / `spell` / `spell_any` (~978 KB; repo `src/remake_data.js`). Single-line blob — parse it programmatically, do not eyeball it. |
+| `book_text.md` | **full Russian text** of all 1221 paragraphs, corrections applied — your primary text source (~904 KB; repo `assets/book_text.md`). |
+| `text_corrections.json` | the correction registry, **v2.59, 31 groups** (~255 KB; repo `assets/text_corrections.json`). |
+| `game_logic.js` | the engine (~114 KB; repo `src/game_logic.js`). |
+| `game_shell_top.html` | UI shell incl. the character-creation & rules screens (~51 KB; repo `src/game_shell_top.html`). |
+| `map_module.js` | location / encounter map nodes, for structure (~35 KB; repo `src/map_module.js`). |
+| `README.md` | project overview (~13 KB; repo root). |
+| `PROVIDER_BRIEF_GEMINI_2026-06-04.md` | this brief (~15 KB). |
+
+The human has all eight staged together in the folder **`_gemini_upload\`** —
+select all eight and drag them in.
+
+**`fb2_remake.fb2` is deliberately omitted** — it is identical to `book_text.md`
+(see the Canon note below), and all the game *rules* are already quoted verbatim
+in §3 of this brief. So for this upload **`book_text.md` is your authoritative
+text** and **§3 is your authoritative rulebook**. You do **not** need any art /
+audio / base64 files for a correctness audit.
 
 ### ✅ MANDATORY pre-flight (do this before any analysis)
-1. Confirm you can see the **Google Drive folder** `\Dungeons-of-the-Black-Castle\`
-   as a source, **and** that the priming files below are readable.
-2. **Open `src/remake_data.js` and `assets/book_text.md` from the Drive folder
-   and quote one short Russian line from each back to the user as proof of
-   access.**
-3. **If you cannot open them, STOP and tell the user** — do not start the audit,
-   and do not substitute a web search. We would rather restart access than
-   receive another "Captain Nemo" report written without the files.
-
-### Files to ATTACH to this chat for priming (drag them in)
-Attach by these **bare names** (no folder path in the attachment, and do not
-write the path next to the attachment — a previous run *ignored* an attached
-`game_logic.js` because the message referred to it as `\src\game_logic.js`):
-
-| Attach this file (bare name) | What it is |
-|---|---|
-| `book_text.md` | full Russian text, corrections applied (~904 KB) — your primary text source |
-| `text_corrections.json` | the correction registry (~255 KB) |
-| `game_logic.js` | the engine (~114 KB) |
-
-### Where those same files live in the Google Drive folder (so you can match them up)
-The attached bare files are **identical** to these Drive paths — treat them as
-the same file, and read the larger files directly from the Drive folder:
-- `book_text.md` → **`\Dungeons-of-the-Black-Castle\assets\book_text.md`**
-- `text_corrections.json` → **`\Dungeons-of-the-Black-Castle\assets\text_corrections.json`**
-- `game_logic.js` → **`\Dungeons-of-the-Black-Castle\src\game_logic.js`**
-- **`\Dungeons-of-the-Black-Castle\src\remake_data.js`** (~978 KB) — the actual
-  game data (`const GD = {…}`, keyed by paragraph). **Source of truth** for
-  choices/enemies/gold/items/conditions/`combat_spells_allowed`/per-enemy
-  `damage`/`spell`/`spell_any`. Read it from the Drive folder.
-- **`\Dungeons-of-the-Black-Castle\assets\fb2_remake.fb2`** (~904 KB) — canonical
-  FB2 source.
-
-**Do NOT fetch** the base64 art/audio files (`src\mj_art.js`,
-`src\illustrations.js`, `assets\illustrations\…`) — huge and irrelevant to a
-correctness audit; skip them and note the skip.
+1. Confirm **all eight files above actually loaded** and are readable.
+2. **Open `remake_data.js` and `book_text.md` and quote one short Russian line
+   from each back to the user as proof of access.**
+3. **If any file did not load, STOP and tell the user** — do not start the audit,
+   and do not substitute a web search. We would rather re-attach than receive
+   another "Captain Nemo" report written without the files.
 
 ### Canon source note (read carefully)
 - **`assets/fb2_remake.fb2` is identical to `assets/book_text.md`** — the `.md`
