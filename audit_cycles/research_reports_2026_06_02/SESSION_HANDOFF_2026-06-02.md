@@ -160,3 +160,86 @@ The original provider reports (Yuriy's attachments) belong here for provenance:
 - `AUDIT_2026-06-01_diagnostic.md` — Claude diagnostic (draft)
 - `AUDIT_2026-06-01_diagnostic_FINAL.md` — Claude diagnostic (final, + Monte-Carlo)
 - `Gamebook_Audit__Art_Coverage___Map.pdf` — Gemini visual/spatial audit
+
+---
+
+## Brief-preparation checklist for FUTURE research cycles (added 2026-06-04)
+
+Before writing provider briefs for any future audit cycle, capture **all** of the
+following — earlier cycles repeatedly produced weak or wasted reports because one
+of these was missing. The 2026-06-04 cycle briefs
+(`audit_cycles/PROVIDER_BRIEF_{CHATGPT,GEMINI,CLAUDE}_2026-06-04.md`) are the
+reference implementation of this checklist; copy their structure.
+
+1. **Quote the actual game RULES as the verification baseline.** Paste verbatim
+   Russian from the FB2 preface (it is NOT in `book_text.md`, which starts at §1 —
+   extract it from `assets/fb2_remake.fb2` before the first `<title><p>1</p>`):
+   stat determination (МАСТЕРСТВО 1d6+6 / ВЫНОСЛИВОСТЬ 2d6+12 / УДАЧА 1d6+6), the
+   7-step БИТВЫ combat + multi-enemy rule, ПРОВЕРКА УДАЧИ (2d6 ≤ luck, −1 per
+   test), the 8 spells + 10-cast one-time budget, and equipment (15 gold, flask
+   2×+2, backpack 7, food 1 slot). The audit checks the engine *against* these.
+2. **The backpack can be UPGRADED — cite §132** (forest merchant: «не 7, а 9
+   предметов», 7 gold; also fills flask 4/2 gold, sells food). Cap is stateful
+   (`getBagSize()`/`S.bagSize`), not hard-coded 7.
+3. **The book LOCALLY OVERRIDES rules — cite the §240 snakes example** («вычитайте
+   не 2, а 3 ВЫНОСЛИВОСТИ … яд», honoured via per-enemy `damage:3`). Instruct
+   auditors to verify every prose rule-override is encoded in data — this is the
+   recurring bug class.
+4. **Spell use changes ROUTING, not just the current fight** (the
+   partial-permissive `combat_spells_allowed` sweep, `d686e41`): a spell with a
+   paragraph number after it (e.g. «заклятие Силы (286)») is a navigation cast and
+   must be excluded from the in-combat modal.
+5. **Findings come back in ENGLISH with Russian quotes preserved verbatim** — so
+   the downstream regex/substring verifier can match the Russian source. Never let
+   a provider translate quotes/labels/item names.
+6. **Book identity, explicitly:** «Подземелья Чёрного замка» (римейк / новая
+   редакция), Дмитрий Браславский; remake by Александр Морозов (2018); 1221
+   paragraphs; victory §1220; project & text are Russian.
+7. **Per-provider access + the bare-filename ATTACH convention.** Tell the
+   provider to attach files by **bare name** (`game_logic.js`) and give the path
+   **separately** (GitHub `src/game_logic.js`, or Google-Drive
+   `\Dungeons-of-the-Black-Castle\src\game_logic.js`, or local). Reason: an
+   attached `game_logic.js` was once *ignored* because the message text referred
+   to it as `\src\game_logic.js`. Access map: **ChatGPT** = browser + GitHub (no
+   local folder); **Gemini** = browser + a Google-Drive copy of the whole folder
+   (NO private-GitHub access) — Yuriy uploads the folder as a project source;
+   **Claude** = app with local-folder MCP + GitHub.
+8. **Gemini needs a MANDATORY pre-flight access confirmation** (quote one Russian
+   line from `remake_data.js` + `book_text.md` back before analysing; STOP if it
+   can't). A prior Gemini report was pure web-search guesswork ("Captain Nemo")
+   because file access had silently failed and it never said so until the end.
+9. **Claude must cross-reference PROSE vs DATA, not just scan the data.** Two
+   prior Claude audits missed bugs because they only checked *structured*
+   `inventory_condition` gates and never inspected (a) **text-only gates** («если
+   у вас есть X» present in prose but missing the data field) nor (b)
+   **per-paragraph spell tags** (a spell offered in the text but untagged, so the
+   charge isn't spent / routing doesn't fire). State this explicitly.
+10. **Canon-source + registry notes:** `fb2_remake.fb2` ≡ `book_text.md` (1:1
+    prose, corrections applied); the per-paragraph `**Выборы:**` machine-lists in
+    `book_text.md` are STALE (use `remake_data.js` for wiring); read
+    `text_corrections.json` first (already-fixed typos/spelling) and include a
+    do-not-re-flag stop-list summarising all prior groups (currently v2.59, 31
+    groups) so resolved issues/hypotheses aren't re-raised.
+11. **Output + return path:** Claude & ChatGPT → Markdown report; Gemini → PDF.
+    Yuriy returns all reports to the active Claude verification chat for final
+    cross-checking before any commit; that session decides the save folder/name
+    for the incoming reports (suggested: a new `audit_cycles/research_reports_<date>/`).
+
+---
+
+## Cycle launched 2026-06-04 — full implementation-correctness re-audit
+
+Three provider briefs written for a whole-project correctness re-audit
+(**art and audio explicitly out of scope**), targeting the recurring bug classes
+(rule-overrides not honoured, structured + text-only item/spell gating,
+paragraph-arithmetic, gold-signs, passive auto-effects, combat allowlists,
+routing) and re-verifying this session's own fixes (through `group_31`, v2.59):
+- `audit_cycles/PROVIDER_BRIEF_CHATGPT_2026-06-04.md`
+- `audit_cycles/PROVIDER_BRIEF_GEMINI_2026-06-04.md`
+- `audit_cycles/PROVIDER_BRIEF_CLAUDE_2026-06-04.md`
+
+When the three reports come back, save them to a new
+`audit_cycles/research_reports_2026_06_04/` folder (suggested names
+`deep-research-report_chatgpt.md`, `AUDIT_2026-06-04_claude.md`,
+`Gemini_correctness_audit.pdf`) and verify each finding against canon +
+`remake_data.js` + a Node harness before committing anything.
