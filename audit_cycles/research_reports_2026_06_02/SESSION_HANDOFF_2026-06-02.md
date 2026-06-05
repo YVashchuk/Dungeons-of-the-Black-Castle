@@ -197,17 +197,32 @@ reference implementation of this checklist; copy their structure.
    paragraphs; victory §1220; project & text are Russian.
 7. **Per-provider access + the bare-filename ATTACH convention.** Tell the
    provider to attach files by **bare name** (`game_logic.js`) and give the path
-   **separately** (GitHub `src/game_logic.js`, or Google-Drive
-   `\Dungeons-of-the-Black-Castle\src\game_logic.js`, or local). Reason: an
-   attached `game_logic.js` was once *ignored* because the message text referred
-   to it as `\src\game_logic.js`. Access map: **ChatGPT** = browser + GitHub (no
-   local folder); **Gemini** = browser + a Google-Drive copy of the whole folder
-   (NO private-GitHub access) — Yuriy uploads the folder as a project source;
-   **Claude** = app with local-folder MCP + GitHub.
-8. **Gemini needs a MANDATORY pre-flight access confirmation** (quote one Russian
-   line from `remake_data.js` + `book_text.md` back before analysing; STOP if it
-   can't). A prior Gemini report was pure web-search guesswork ("Captain Nemo")
-   because file access had silently failed and it never said so until the end.
+   **separately** (GitHub `src/game_logic.js`, or local). Reason: an attached
+   `game_logic.js` was once *ignored* because the message text referred to it as
+   `\src\game_logic.js`. Access map: **ChatGPT** = browser + GitHub (no local
+   folder); **Gemini** = browser, **direct file attachment ONLY** — do NOT tell it
+   to use a Google-Drive folder import / "add a code folder" / GitHub-repo import.
+   That import is capped at **5,000 files and 100 MB total**, and the project's art
+   assets bust the 100 MB ceiling, so the import silently fails (confirmed
+   2026-06-05, even after deleting `.git` and `assets/illustrations/originals/`).
+   Gemini accepts **up to 10 files per prompt (≤100 MB each)** — plenty for the ~8
+   text files a correctness audit needs (stage them in a scratch folder for an
+   easy multi-select drag-in). Limit reference:
+   https://support.google.com/gemini/answer/14903178 (`p=code_limit`). **Claude** =
+   app with local-folder MCP + GitHub.
+8. **Gemini needs a MANDATORY pre-flight access confirmation** (confirm EVERY
+   attached file loaded, and quote one Russian line from `remake_data.js` and from
+   the canon-text file back before analysing; STOP if any did not load). A prior
+   Gemini report was pure web-search guesswork ("Captain Nemo") because file access
+   had silently failed and it never said so until the end. **Known Gemini quirk
+   (confirmed 2026-06-05): a large `.md` attachment can silently fail to ingest even
+   though it appears in the attachment list** — `book_text.md` (~904 KB) was
+   reported "missing from your attachments" while the other seven files loaded,
+   across two different Gemini models. Mitigation: supply the canon text as the
+   **FB2 (`fb2_remake.fb2`)** and/or rely on the paragraph text embedded in
+   `remake_data.js`; if the canon-text file won't load, re-attach or change format
+   rather than proceeding. The pre-flight is what (correctly) stopped Gemini this
+   cycle instead of letting it confabulate.
 9. **Claude must cross-reference PROSE vs DATA, not just scan the data.** Two
    prior Claude audits missed bugs because they only checked *structured*
    `inventory_condition` gates and never inspected (a) **text-only gates** («если
@@ -243,3 +258,58 @@ When the three reports come back, save them to a new
 `deep-research-report_chatgpt.md`, `AUDIT_2026-06-04_claude.md`,
 `Gemini_correctness_audit.pdf`) and verify each finding against canon +
 `remake_data.js` + a Node harness before committing anything.
+
+---
+
+## Post-cycle learnings (2026-06-05) — what the returned reports actually taught us
+
+The five reports came back and were verified in-chat (saved to
+`audit_cycles/research_reports_2026_06_05/`). **Critical meta-finding: only the
+Claude report performed the requested correctness audit.** Bake these into future
+briefs:
+
+- **Include `fb2_remake.fb2` in the attach/read set for ALL providers — do NOT omit
+  it as "identical to `book_text.md`."** Both Gemini and Claude needed it this cycle:
+  Gemini because `book_text.md` would not ingest (above), and Claude because it is
+  the **final arbiter** when prose and data disagree (it resolved §169 = non-bug and
+  §491 = real bug only by reading the FB2). The 2026-06-04 briefs omitted it; that
+  was a mistake.
+- **ChatGPT went OFF-BRIEF.** Given GitHub access + the correctness brief, ChatGPT
+  5.5 produced a **product/strategy/migration review** (Twine-vs-Ink-vs-Godot,
+  roadmap, team, stakeholder questions) with **zero paragraph-level findings**, and
+  it admitted it only detail-read the four attached files (README, `game_logic.js`,
+  `text_corrections.json`, `book_text.md`) — it **did not read `remake_data.js` or
+  the FB2**. Future ChatGPT briefs must open with an explicit, unmissable scope line:
+  *"This is a paragraph-by-paragraph implementation-correctness audit, NOT a
+  product/architecture/migration review. You MUST programmatically read
+  `src/remake_data.js` and `assets/fb2_remake.fb2` from GitHub; if you cannot access
+  them, say so and stop — do not substitute a high-level review."*
+- **Gemini delivered no verifiable correctness findings.** One Gemini run re-did the
+  **out-of-scope art-coverage audit** (art was explicitly excluded) and **fabricated
+  "verbatim" §-quotes** — e.g. it "quoted" §1 as «…ты отправляешься в путь… обитель
+  злого мага Барлада…», whereas the real §1 is «Вы быстро идете вперед и вскоре
+  оказываетесь в лесу.». The other Gemini run produced a competent **architecture
+  summary** (correct stat/combat/luck math, engine behaviours) but **no
+  paragraph-level audit** and cited only `README.md`. Reinforce: quote ONLY from the
+  loaded file; mark anything else "not determinable from provided files"; and state
+  art/audio are out of scope for a correctness cycle.
+- **Claude wrongly reported "no file access" at first because its Filesystem MCP
+  tools are DEFERRED.** They load on demand via tool-search; an initial pass treated
+  them as unavailable and stopped (it later corrected itself). Future Claude briefs
+  must state: *"Your Filesystem tools are **deferred** and load on demand via
+  tool-search — call tool-search to load them BEFORE concluding you lack file
+  access. Do not stop or ask the user whether files exist; check via MCP yourself."*
+  (This is separate from the prose-vs-data directive in item 9, which Claude executed
+  well — its prose↔data sweep found the headline bug class.)
+- **What the Claude report found (all independently re-verified true this cycle):** a
+  systemic dropped-effect class — **64 paragraphs** whose canon stat-change on entry
+  is narrated but never applied (45 stamina losses incl. §908 −16 which also
+  neutralises the §605 death-check, 5 stamina gains, 7 МАСТЕРСТВО losses, 7 УДАЧА
+  losses); **5 text-only item gates rendered unconditionally** (§608/§893/§430/§592/
+  §787); **uncharged gold / a dropped luck reward** (§442→186 free castle ride, §937
+  missing +1 УДАЧА, §873→767 free water, §825 ungated give-gold options); and the
+  **§491 whistle trade** (item not consumed + 2 gold not charged → duplication via
+  the §725 re-gate). Engine note: `stamina_sub`/`stamina_add`/`skill_sub` handlers
+  exist (pure data gaps) but **`luck_sub` does not exist** — the 7 УДАЧА losses need
+  an engine change too. These are queued for an implementation cycle (Yuriy's call;
+  the `luck_sub` handler is an architectural decision).
