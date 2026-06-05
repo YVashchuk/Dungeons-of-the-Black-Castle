@@ -64,7 +64,8 @@
     "v2.56 -> v2.57": "June 2026 (2026-06-02, same cycle/session, continued) — Spell-economy audit of the deferred 'spell rebalance' item. Measured per-spell opportunity surface and cross-checked ILLUSION's canon mentions vs wired hooks. CONCLUSION: ILLUSION's sparsity (4 opportunities) is genuine — the 5 unwired canon 'иллюзия' paragraphs are all anti-Illusion/immunity text (§134/§283/§481/§723/§1094), NOT missing hooks, so no faithful coverage fix exists (unlike the earlier FIRE hooks). HEALING is anytime-usable, not sparse. The audit surfaced and FIXED one real forbidding-bug: §455 (ДУХ МЕРТВЫХ) showed Copy/Force/Weakness despite §723 saying all spells fail — added combat_spells_allowed:[] (commit b5abc8b, harness 9/9), matching the §994 spirit precedent. The remaining 'rebalance' lever is a character-creation hint = design call, recommended against on faithfulness grounds; left OPEN pending Yuriy. Deferred now: spell-rebalance hint decision (design), partial-permissive combat allowlists (P3 sweep).",
     "v2.57 -> v2.58": "June 2026 (2026-06-02, same cycle/session, continued) — 'Spell rebalance' deferred item CLOSED via Yuriy-chosen Option B: a mild, non-spoiler character-creation nudge. Added one italic «Совет Майлина» line to the spell-selection screen intro (src/game_shell_top.html), top-border-separated, advising «одни заклятия пригодятся вам не раз, другие — лишь в редкие мгновения… не полагайтесь на одно-единственное заклятие» — NO usage counts and NO spell names, so the 1991 blind-pick strategy is preserved while the player is warned against over-investing in one spell. Commit 187b72a; bash build.sh assembles cleanly. Only the partial-permissive combat-allowlist sweep (P3) remains in the deferred queue.",
     "v2.58 -> v2.59": "June 2026 (2026-06-02, same cycle/session, continued) — FINAL deferred item closed: partial-permissive combat-spell allowlist sweep (commit d686e41). Audited all 76 combats through canon. Tightened 8 allowlists: §96/§110/§174/§388/§656/§1050 → [] (no-magic fights / spells dispelled / no time / spell offered only as navigation), and §536/§1096 → ['COPY'] (Copy castable in-modal while Force/Weakness route via bridges or aren't offered). The 43 'mention'-only combats keep the faithful default (a suggestion is not a restriction). §440 (dragon head) and §760 (bats) left DEFAULT and flagged — they offer only Fire(navigation), no double-cast, not spell-immune, so locking them would be inference. Harness 36/36; node --check OK; 2180 edges unchanged; reachability unchanged. The entire audit backlog (ChatGPT + Claude + Gemini, 5 reports) is now cleared.",
-    "v2.59 → v2.60": "June 2026 (2026-06-05) — Batch 1 of the 2026-06-05 correctness re-audit implemented as group_32 (data-only). 64 paragraphs: 45 stamina losses (auto_items.stamina_sub, incl. §908 -16 restoring the §605 death-check), 7 skill losses (skill_sub, 4 with paired stamina_sub), 5 stamina gains (stamina_add), §937 luck reward (luck_add), 2 item gates §608/§893 (inventory_condition), gold gating §442/§873/§825, and the §491 whistle trade (consume_on_use+gold_cost). Node harness 9/9, reachability 1168 unchanged, 0 dangling. Deferred to Yuriy: luck_sub engine handler + 7 УДАЧА losses (batch 2); text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083."
+    "v2.59 → v2.60": "June 2026 (2026-06-05) — Batch 1 of the 2026-06-05 correctness re-audit implemented as group_32 (data-only). 64 paragraphs: 45 stamina losses (auto_items.stamina_sub, incl. §908 -16 restoring the §605 death-check), 7 skill losses (skill_sub, 4 with paired stamina_sub), 5 stamina gains (stamina_add), §937 luck reward (luck_add), 2 item gates §608/§893 (inventory_condition), gold gating §442/§873/§825, and the §491 whistle trade (consume_on_use+gold_cost). Node harness 9/9, reachability 1168 unchanged, 0 dangling. Deferred to Yuriy: luck_sub engine handler + 7 УДАЧА losses (batch 2); text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083.",
+    "v2.60 → v2.61": "June 2026 (2026-06-05) — Batch 2 of the 2026-06-05 re-audit: added the engine luck_sub auto_items handler (game_logic.js, mirrors luck_add, floors at 0) and applied auto_items.luck_sub:1 to the 7 УДАЧА-loss paragraphs deferred from group_32 (§63/§206/§217/§446/§486/§939/§1185). group_33. Node harness 10/10 (incl. a luck_add non-regression check and the §63 gold-merge), reachability 1168 unchanged, 0 dangling. Remaining deferred to Yuriy: text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -2331,6 +2332,53 @@
         "Char-creation + the exactly-10 spell budget; §169 watermelon (FB2: two unconditional choices); per-paragraph spell tags (0 untagged); combat/luck mechanics (§240 damage:3, §36 damage:4, par-on-tie, multi-enemy sum, flee -2); flask/backpack/food incl. §132 7->9; state persistence; g1 gold-signs — all re-confirmed clean this cycle, do not re-open."
       ],
       "verification": "Independent of the Claude report's own self-verification: Python prose↔data sweep over fb2_remake.fb2 (canon mandate present) + remake_data.js (key absent) confirmed 45/45 + 5/5 + 7/7 stat clusters and all gate/gold/whistle fields; item provenance confirmed «Серебряный сосуд»/«Золотая стрела»/«Золотой свисток» are grantable (so §608/§893/§491 safe) and the three §430/§592/§787 items are not (deferred)."
+    },
+    "group_33_audit_2026_06_05_batch2_luck_sub_engine_and_data": {
+      "cluster_description": "Batch 2 of the 2026-06-05 implementation-correctness re-audit (finding #1-D from AUDIT_claude_2026-06-05_FINAL.md). These 7 УДАЧА-loss paragraphs were deferred from batch 1 (group_32) because the engine had NO luck_sub handler — auto_items honoured luck_add only, so adding luck_sub to the data alone would have been a no-op. Yuriy approved the engine change, implemented here together with the data.",
+      "priority": "P2 (УДАЧА drives every ПРОВЕРКА УДАЧИ: 2d6 ≤ luck).",
+      "source": "AUDIT_claude_2026-06-05_FINAL.md #1-D; re-verified against assets/fb2_remake.fb2 + a Node harness driving src/game_logic.js.",
+      "mechanism": "New engine handler in src/game_logic.js (next to luck_add, ~L508): `if(ai.luck_sub){S.luck=Math.max(0,S.luck-ai.luck_sub);statNotifs.push('− '+ai.luck_sub+' удачи');}` — mirrors luck_add, floors at 0 (consistent with doScriptedLuckCheck and stamina_sub). Then auto_items.luck_sub:1 on the 7 paragraphs.",
+      "engine_change": "src/game_logic.js: added ai.luck_sub branch in the first-visit auto_items block. No other engine change.",
+      "items": [
+        {
+          "paragraph": 63,
+          "add": "auto_items.luck_sub:1",
+          "fb2_quote": "«Но вы убили честного человека — потеряйте 1 УДАЧУ.»",
+          "note": "kept its existing auto_items.gold:10 (merged); only the УДАЧА loss was dropped"
+        },
+        {
+          "paragraph": 206,
+          "add": "auto_items.luck_sub:1",
+          "fb2_quote": "«Потеряйте 1 УДАЧУ — 193 .»"
+        },
+        {
+          "paragraph": 217,
+          "add": "auto_items.luck_sub:1",
+          "fb2_quote": "«Потеряйте 1 УДАЧУ.»"
+        },
+        {
+          "paragraph": 446,
+          "add": "auto_items.luck_sub:1",
+          "fb2_quote": "«Потеряйте 1 УДАЧУ.»"
+        },
+        {
+          "paragraph": 486,
+          "add": "auto_items.luck_sub:1",
+          "fb2_quote": "«Потеряйте 1 УДАЧУ.»"
+        },
+        {
+          "paragraph": 939,
+          "add": "auto_items.luck_sub:1",
+          "fb2_quote": "«Потеряйте 1 УДАЧУ.»"
+        },
+        {
+          "paragraph": 1185,
+          "add": "auto_items.luck_sub:1",
+          "fb2_quote": "«Потеряйте 1 УДАЧУ — вы лишили радости детей.»"
+        }
+      ],
+      "status_done": "Closed 2026-06-05 — one combined engine+data+registry commit. Node harness 10/10 PASS: control §25(-2), regression check §937 luck_add still +1 (engine edit didn't break luck_add), §63 luck −1 AND gold +10 (merge), and §206/§217/§446/§486/§939/§1185 each −1 luck. Structural regression: 1221 paragraphs, 0 dangling, BFS reachability 1168 UNCHANGED. node --check OK on game_logic.js and remake_data.js; remake_data.js round-trips byte-identically.",
+      "verification": "Each paragraph's canon mandate («Потеряйте 1 УДАЧУ…») confirmed in fb2_remake.fb2; luck_sub:1 confirmed present in all 7; §63 auto_items now {gold:10, luck_sub:1}."
     }
   },
   "resolved_no_op": {
