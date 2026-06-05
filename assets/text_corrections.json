@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-06-02",
+  "last_updated": "2026-06-05",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -63,7 +63,8 @@
     "v2.55 -> v2.56": "June 2026 (2026-06-02, same cycle/session, continued) — §340 dead-weight items VERIFIED and closed with NO CODE CHANGE. Traced all 6 §340 trinket strings through every canon paragraph and all data gating fields: 4 of 6 (Красивый кусочек дерева, Фигурный ключ, Блестящий кусок металла, Серебряный браслет) are correctly wired with EXACT grant↔consumer string match and real uses (§774/§804/§1208/§1090→§874); the audit confirmed no name-mismatch typos (the real bug risk). The 2 flagged items (Попона для лошади 5g, Золотая устрица 8g) have no consumer and appear ONLY at §340 — they are intentional canon gold-traps (horse blanket useless on foot; golden oyster a decoy), so removing them would be unfaithful. Registry/doc-only change. Remaining deferred: spell rebalance (P3 design), partial-permissive combat allowlists (P3 sweep).",
     "v2.56 -> v2.57": "June 2026 (2026-06-02, same cycle/session, continued) — Spell-economy audit of the deferred 'spell rebalance' item. Measured per-spell opportunity surface and cross-checked ILLUSION's canon mentions vs wired hooks. CONCLUSION: ILLUSION's sparsity (4 opportunities) is genuine — the 5 unwired canon 'иллюзия' paragraphs are all anti-Illusion/immunity text (§134/§283/§481/§723/§1094), NOT missing hooks, so no faithful coverage fix exists (unlike the earlier FIRE hooks). HEALING is anytime-usable, not sparse. The audit surfaced and FIXED one real forbidding-bug: §455 (ДУХ МЕРТВЫХ) showed Copy/Force/Weakness despite §723 saying all spells fail — added combat_spells_allowed:[] (commit b5abc8b, harness 9/9), matching the §994 spirit precedent. The remaining 'rebalance' lever is a character-creation hint = design call, recommended against on faithfulness grounds; left OPEN pending Yuriy. Deferred now: spell-rebalance hint decision (design), partial-permissive combat allowlists (P3 sweep).",
     "v2.57 -> v2.58": "June 2026 (2026-06-02, same cycle/session, continued) — 'Spell rebalance' deferred item CLOSED via Yuriy-chosen Option B: a mild, non-spoiler character-creation nudge. Added one italic «Совет Майлина» line to the spell-selection screen intro (src/game_shell_top.html), top-border-separated, advising «одни заклятия пригодятся вам не раз, другие — лишь в редкие мгновения… не полагайтесь на одно-единственное заклятие» — NO usage counts and NO spell names, so the 1991 blind-pick strategy is preserved while the player is warned against over-investing in one spell. Commit 187b72a; bash build.sh assembles cleanly. Only the partial-permissive combat-allowlist sweep (P3) remains in the deferred queue.",
-    "v2.58 -> v2.59": "June 2026 (2026-06-02, same cycle/session, continued) — FINAL deferred item closed: partial-permissive combat-spell allowlist sweep (commit d686e41). Audited all 76 combats through canon. Tightened 8 allowlists: §96/§110/§174/§388/§656/§1050 → [] (no-magic fights / spells dispelled / no time / spell offered only as navigation), and §536/§1096 → ['COPY'] (Copy castable in-modal while Force/Weakness route via bridges or aren't offered). The 43 'mention'-only combats keep the faithful default (a suggestion is not a restriction). §440 (dragon head) and §760 (bats) left DEFAULT and flagged — they offer only Fire(navigation), no double-cast, not spell-immune, so locking them would be inference. Harness 36/36; node --check OK; 2180 edges unchanged; reachability unchanged. The entire audit backlog (ChatGPT + Claude + Gemini, 5 reports) is now cleared."
+    "v2.58 -> v2.59": "June 2026 (2026-06-02, same cycle/session, continued) — FINAL deferred item closed: partial-permissive combat-spell allowlist sweep (commit d686e41). Audited all 76 combats through canon. Tightened 8 allowlists: §96/§110/§174/§388/§656/§1050 → [] (no-magic fights / spells dispelled / no time / spell offered only as navigation), and §536/§1096 → ['COPY'] (Copy castable in-modal while Force/Weakness route via bridges or aren't offered). The 43 'mention'-only combats keep the faithful default (a suggestion is not a restriction). §440 (dragon head) and §760 (bats) left DEFAULT and flagged — they offer only Fire(navigation), no double-cast, not spell-immune, so locking them would be inference. Harness 36/36; node --check OK; 2180 edges unchanged; reachability unchanged. The entire audit backlog (ChatGPT + Claude + Gemini, 5 reports) is now cleared.",
+    "v2.59 → v2.60": "June 2026 (2026-06-05) — Batch 1 of the 2026-06-05 correctness re-audit implemented as group_32 (data-only). 64 paragraphs: 45 stamina losses (auto_items.stamina_sub, incl. §908 -16 restoring the §605 death-check), 7 skill losses (skill_sub, 4 with paired stamina_sub), 5 stamina gains (stamina_add), §937 luck reward (luck_add), 2 item gates §608/§893 (inventory_condition), gold gating §442/§873/§825, and the §491 whistle trade (consume_on_use+gold_cost). Node harness 9/9, reachability 1168 unchanged, 0 dangling. Deferred to Yuriy: luck_sub engine handler + 7 УДАЧА losses (batch 2); text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -2129,6 +2130,207 @@
         "art_candidates_for_yuriy": "Gemini proposes 6 new colour illustrations (§1 forest portal, §10 hermit hut, §22 castle gates, §105 corridor fork, §210 descent staircase, §1221 finale) with dark-Slavic MJ prompts, explicitly excluding the active-queue items (§449/§1003/§311) and the verified-correct §38/§41. These are net-new art suggestions, not bugs — routed to Yuriy's Midjourney queue alongside the existing art_prompts.",
         "map_ux_deferred": "P3 cosmetic map enhancements (nested transit nodes, dynamic path-intersection highlight at junctions like §105, desaturate-cleared encounter states). Legitimate UX polish, no bug; deferred to Yuriy."
       }
+    },
+    "group_32_audit_2026_06_05_batch1_data_fixes": {
+      "cluster_description": "Batch 1 (data-only) of the verified backlog from the 2026-06-05 implementation-correctness re-audit. That cycle returned five provider reports but ONLY the Claude report (AUDIT_claude_2026-06-05_FINAL.md) performed the requested audit; ChatGPT delivered an off-brief strategy review and both Gemini reports had no verifiable findings (one out-of-scope art audit with a fabricated §1 quote, one architecture summary). Every Claude finding was independently re-verified this session against fb2_remake.fb2 + remake_data.js + a Node harness, then implemented. This group covers the data-only fixes; the luck_sub engine work and the text-only item chains are deferred (see deferred_to_yuriy).",
+      "priority": "P1 (45 dropped stamina losses incl. §908 which restores the §605 death-check; 7 skill losses; 2 strong item gates §608/§893) + P2/P3 (5 stamina gains; §937 luck reward; §442/§873 gold; §825 gold gating; §491 whistle).",
+      "source": "AUDIT_claude_2026-06-05_FINAL.md (audit_cycles/research_reports_2026_06_05/); each finding re-verified independently against assets/fb2_remake.fb2 + src/remake_data.js + a stubbed-DOM Node harness driving src/game_logic.js (controls §25=-2, §1122=-5).",
+      "mechanism": "Entry effects via auto_items keys the engine already honours (stamina_sub, stamina_add, skill_sub, luck_add — applied first-visit in renderGame ~L446). Choice-level gates via existing readers: inventory_condition (gate), consume_on_use (remove on click), gold_condition (show only if affordable) + gold_cost (deduct). No engine change in this batch.",
+      "items": [
+        {
+          "cluster": "45 dropped stamina losses — add auto_items.stamina_sub:N",
+          "paragraphs": {
+            "92": 1,
+            "102": 5,
+            "107": 2,
+            "109": 1,
+            "126": 3,
+            "222": 4,
+            "294": 6,
+            "304": 3,
+            "322": 2,
+            "347": 3,
+            "392": 2,
+            "407": 4,
+            "440": 2,
+            "464": 2,
+            "468": 4,
+            "477": 6,
+            "514": 2,
+            "532": 4,
+            "558": 4,
+            "559": 3,
+            "653": 2,
+            "656": 4,
+            "698": 1,
+            "701": 2,
+            "721": 1,
+            "733": 2,
+            "760": 1,
+            "762": 2,
+            "813": 2,
+            "840": 5,
+            "848": 2,
+            "852": 3,
+            "908": 16,
+            "925": 3,
+            "965": 2,
+            "970": 2,
+            "998": 4,
+            "1024": 7,
+            "1068": 1,
+            "1117": 5,
+            "1118": 2,
+            "1152": 3,
+            "1174": 2,
+            "1194": 2,
+            "1199": 4
+          },
+          "fb2_quotes": {
+            "908": "«Примерно на четвертые сутки все ваши силы иссякают (потеряйте 16 ВЫНОСЛИВОСТЕЙ).»",
+            "477": "«Это растяжение — потеряйте 6 ВЫНОСЛИВОСТЕЙ.»",
+            "1024": "«Потеряйте 7 ВЫНОСЛИВОСТЕЙ за укол волшебным шипом…»",
+            "1117": "«Потом сильно обо что-то ударяетесь и теряете 5 ВЫНОСЛИВОСТЕЙ.»"
+          },
+          "note": "§908's dropped −16 made the §605 death-check unreachable (player always survived to §1007); now restored. §440 kept its existing auto_items.items=['Золотой ключ'] (merged). Magnitudes cross-checked against FB2 for all 45 (0 mismatches)."
+        },
+        {
+          "cluster": "7 skill losses — add auto_items.skill_sub:1 (four carry a paired stamina_sub)",
+          "paragraphs_skill_stamina": {
+            "263": [
+              1,
+              2
+            ],
+            "478": [
+              1,
+              0
+            ],
+            "543": [
+              1,
+              2
+            ],
+            "626": [
+              1,
+              2
+            ],
+            "776": [
+              1,
+              0
+            ],
+            "843": [
+              1,
+              0
+            ],
+            "896": [
+              1,
+              4
+            ]
+          },
+          "fb2_quotes": {
+            "896": "«Потеряйте 1 МАСТЕРСТВО и 4 ВЫНОСЛИВОСТИ.»",
+            "543": "«При падении вывихиваете руку (потеряйте 1 МАСТЕРСТВО и 2 ВЫНОСЛИВОСТИ).»",
+            "776": "«…ваш меч, вырванный из руки нечеловеческой силой (потеряйте 1 МАСТЕРСТВО), отлетает в другой конец комнаты.»",
+            "478": "«Это микстура ужаса. … потеряйте 1 МАСТЕРСТВО.»"
+          },
+          "note": "Engine honours auto_items.skill_sub (game_logic.js L507) but no paragraph used it — pure data gap. СИЛА УДАРА = 2d6 + МАСТЕРСТВО, so each affects every later fight."
+        },
+        {
+          "cluster": "5 forced stamina gains — add auto_items.stamina_add:N",
+          "paragraphs": {
+            "635": 4,
+            "680": 8,
+            "683": 5,
+            "691": 4,
+            "872": 5
+          },
+          "fb2_quotes": {
+            "680": "«Это микстура жизни. Прибавьте себе 8 ВЫНОСЛИВОСТЕЙ…»",
+            "691": "«Вода самая обычная. Восстановите себе 4 ВЫНОСЛИВОСТИ.»",
+            "872": "«Это вино. Добавьте себе 5 ВЫНОСЛИВОСТЕЙ.»"
+          },
+          "note": "Unconditional restorations the player was denied (clamped at staminaMax; harness confirmed +N applies when below cap)."
+        },
+        {
+          "cluster": "§937 dropped luck reward — add auto_items.luck_add:1 (kept existing gold_sub:6)",
+          "paragraph": 937,
+          "fb2_quote": "«Они поражены вашей щедростью и дают один маленький совет … Добавьте себе 1 УДАЧУ.»",
+          "note": "Gold was already charged; only the +1 УДАЧА was missing. Paragraph-arithmetic «вычтете 13…» left untouched (g6/g25 token mechanic)."
+        },
+        {
+          "cluster": "2 text-only item gates — add choice.inventory_condition (items grantable elsewhere, so safe)",
+          "gates": [
+            {
+              "paragraph": 608,
+              "choice": "ch[0] → 728",
+              "inventory_condition": "Серебряный сосуд",
+              "fb2_quote": "«Если у вас есть серебряный сосуд, то 728. Иначе придется биться с ними — 805.»",
+              "note": "Item granted §97/§1084, gated §388/§742/§972/§1210. Was: free escape from two Зелёных рыцаря."
+            },
+            {
+              "paragraph": 893,
+              "choice": "ch[0] → 1079",
+              "inventory_condition": "Золотая стрела",
+              "fb2_quote": "«Если у вас есть золотая стрела, то 1079. Если же нет, тогда вернитесь на 980…»",
+              "note": "Item granted §1193, gated §411. Was: free progress to Barlad's office."
+            }
+          ]
+        },
+        {
+          "cluster": "gold payment gating — add choice.gold_condition (+gold_cost where the paragraph itself must charge)",
+          "items": [
+            {
+              "paragraph": 442,
+              "choice": "ch[0] → 186",
+              "gold_condition": 3,
+              "gold_cost": 3,
+              "fb2_quote": "§442 «…за небольшую плату (3 золотых) … доставить в замок.»; §186 «Вы платите деньги и прячетесь под сеном.»",
+              "note": "Was: free hay-cart ride into the Black Castle (§186 had no gold_sub)."
+            },
+            {
+              "paragraph": 873,
+              "choice": "ch[2] → 767",
+              "gold_condition": 2,
+              "gold_cost": 2,
+              "fb2_quote": "§767 «Вы платите 2 золотых, и он подплывает к вам с пиалой…»",
+              "note": "Was: free water in the Водяной's tavern. P3."
+            },
+            {
+              "paragraphs": 825,
+              "choices": "ch[1]→552 / ch[2]→695 / ch[3]→937",
+              "gold_condition": [
+                1,
+                4,
+                6
+              ],
+              "fb2_quote": "«…дать деньги женам мага. Но сколько: 1 золотой (552), 4 золотых (695), или 6 золотых (937)?»",
+              "note": "Gating only — destinations §552/§695/§937 already deduct via gold_sub. Other choices (→1104 gift, →762 apologise) keep §825 from softlocking. P3."
+            }
+          ]
+        },
+        {
+          "cluster": "§491 whistle trade — add inventory_condition + consume_on_use + gold_condition + gold_cost to ch[0] → 188",
+          "paragraph": 491,
+          "fields": {
+            "inventory_condition": "Золотой свисток",
+            "consume_on_use": "Золотой свисток",
+            "gold_condition": 2,
+            "gold_cost": 2
+          },
+          "fb2_quote": "FB2 §491: «…отдать деньги и свисток ([188]), либо отказаться и уйти — ([354]).»",
+          "note": "Was: accepting the trade kept both the whistle and the 2 gold. The un-consumed «Золотой свисток» (granted §311) still satisfied the later §725→142 gate — item duplication. Now consumed + charged. Mirrors the §226 «Золотой апельсин» consume pattern + §2 gold pattern."
+        }
+      ],
+      "status_done": "Closed 2026-06-05 — one combined data+registry commit (this commit). Node behavioural harness 9/9 PASS: controls §25(-2)/§1122(-5), plus §908(-16), §477(-6), §896(-4 stamina & -1 skill), §543(-1 skill), §680(+8 with headroom), §937(+1 luck with headroom). Structural regression: 1221 paragraphs intact, 0 dangling targets, BFS reachability 1168/1221 UNCHANGED (no new orphan). Programmatic verification: 58/58 auto_items edits + 10/10 choice-field checks. node --check OK on remake_data.js and game_logic.js. remake_data.js round-trips byte-identically, so the diff touches exactly the 64 edited paragraphs.",
+      "deferred_to_yuriy": [
+        "7 УДАЧА losses (§63, §206, §217, §446, §486, §939, §1185): the engine has NO luck_sub handler (auto_items honours luck_add only). Needs a small engine change (add luck_sub, clamping at 0) BEFORE the data — architectural, so deferred to a batch 2.",
+        "Text-only item chains §430 (Водолазный костюм), §592 (Ковер самолет), §787 (Шкура оленя): these gates are real but the items are NEVER granted to inventory anywhere (acquisition is prose-only at §16/§227/§76/§487 etc.). Gating alone would lock the content. Needs a full grant+gate chain per item (like §608/§893's items already have). Batch 3.",
+        "§574 → §154 banana gate: real ungated gate, but the banana is a self-describing food string «Банан (еда: +N)» and inventory_condition uses exact equality — needs substring/food-aware matching, not a drop-in gate.",
+        "§1083 ch[0] → 903: lacks gold_condition:1; harmless (gold clamps at 0). Optional."
+      ],
+      "rejected_or_non_bug": [
+        "Char-creation + the exactly-10 spell budget; §169 watermelon (FB2: two unconditional choices); per-paragraph spell tags (0 untagged); combat/luck mechanics (§240 damage:3, §36 damage:4, par-on-tie, multi-enemy sum, flee -2); flask/backpack/food incl. §132 7->9; state persistence; g1 gold-signs — all re-confirmed clean this cycle, do not re-open."
+      ],
+      "verification": "Independent of the Claude report's own self-verification: Python prose↔data sweep over fb2_remake.fb2 (canon mandate present) + remake_data.js (key absent) confirmed 45/45 + 5/5 + 7/7 stat clusters and all gate/gold/whistle fields; item provenance confirmed «Серебряный сосуд»/«Золотая стрела»/«Золотой свисток» are grantable (so §608/§893/§491 safe) and the three §430/§592/§787 items are not (deferred)."
     }
   },
   "resolved_no_op": {
