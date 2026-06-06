@@ -66,7 +66,8 @@
     "v2.58 -> v2.59": "June 2026 (2026-06-02, same cycle/session, continued) — FINAL deferred item closed: partial-permissive combat-spell allowlist sweep (commit d686e41). Audited all 76 combats through canon. Tightened 8 allowlists: §96/§110/§174/§388/§656/§1050 → [] (no-magic fights / spells dispelled / no time / spell offered only as navigation), and §536/§1096 → ['COPY'] (Copy castable in-modal while Force/Weakness route via bridges or aren't offered). The 43 'mention'-only combats keep the faithful default (a suggestion is not a restriction). §440 (dragon head) and §760 (bats) left DEFAULT and flagged — they offer only Fire(navigation), no double-cast, not spell-immune, so locking them would be inference. Harness 36/36; node --check OK; 2180 edges unchanged; reachability unchanged. The entire audit backlog (ChatGPT + Claude + Gemini, 5 reports) is now cleared.",
     "v2.59 → v2.60": "June 2026 (2026-06-05) — Batch 1 of the 2026-06-05 correctness re-audit implemented as group_32 (data-only). 64 paragraphs: 45 stamina losses (auto_items.stamina_sub, incl. §908 -16 restoring the §605 death-check), 7 skill losses (skill_sub, 4 with paired stamina_sub), 5 stamina gains (stamina_add), §937 luck reward (luck_add), 2 item gates §608/§893 (inventory_condition), gold gating §442/§873/§825, and the §491 whistle trade (consume_on_use+gold_cost). Node harness 9/9, reachability 1168 unchanged, 0 dangling. Deferred to Yuriy: luck_sub engine handler + 7 УДАЧА losses (batch 2); text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083.",
     "v2.60 → v2.61": "June 2026 (2026-06-05) — Batch 2 of the 2026-06-05 re-audit: added the engine luck_sub auto_items handler (game_logic.js, mirrors luck_add, floors at 0) and applied auto_items.luck_sub:1 to the 7 УДАЧА-loss paragraphs deferred from group_32 (§63/§206/§217/§446/§486/§939/§1185). group_33. Node harness 10/10 (incl. a luck_add non-regression check and the §63 gold-merge), reachability 1168 unchanged, 0 dangling. Remaining deferred to Yuriy: text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083.",
-    "v2.61 → v2.62": "June 2026 (2026-06-05) — Batch 3 of the 2026-06-05 re-audit: the three text-only item chains from group_32 wired end-to-end (grant + gate + consume) as group_34. Diving suit (grant §1214 +luck_add:1; gates §16/§182/§391/§430/§951), flying carpet (grant §227; gate+consume §592→653), deer hide (grant §76 + §487-merge; gate+consume §787→660; gate §826→172), plus §16 sibling offers Прекрасный бриллиант/Перо аиста. Content-lock safety verified (every gated item grantable). Node harness 13/13, reachability 1168 unchanged, 0 dangling. Deferred: «Коготь дракона» (own text-only chain), multi-slot occupancy, betting payout, §574, §1083."
+    "v2.61 → v2.62": "June 2026 (2026-06-05) — Batch 3 of the 2026-06-05 re-audit: the three text-only item chains from group_32 wired end-to-end (grant + gate + consume) as group_34. Diving suit (grant §1214 +luck_add:1; gates §16/§182/§391/§430/§951), flying carpet (grant §227; gate+consume §592→653), deer hide (grant §76 + §487-merge; gate+consume §787→660; gate §826→172), plus §16 sibling offers Прекрасный бриллиант/Перо аиста. Content-lock safety verified (every gated item grantable). Node harness 13/13, reachability 1168 unchanged, 0 dangling. Deferred: «Коготь дракона» (own text-only chain), multi-slot occupancy, betting payout, §574, §1083.",
+    "v2.62 → v2.63": "June 2026 (2026-06-05) — Dragon-claw «Коготь дракона» text-only chain (discovered in group_34) wired as group_35: grant at §550 (auto_items.items, kept gold:3) + gate at §16 ch[0]→318. Completes the §16 dragon-offer paragraph (all four offers now item-gated). No consume (dragon leaves without taking it, like the §346 feather). Harness 3/3, reachability 1168 unchanged, 0 dangling. Side-note: §550 still drops the bronze whistle + sealed wine (deferred)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -2501,6 +2502,32 @@
         "Carried over from group_32: §574 food-string gate; §1083 optional gold_condition."
       ],
       "verification": "Independent canon trace: every «если у вас есть X» / «взять X» / acquire for the three items enumerated from fb2_remake.fb2; provenance sweep confirmed claw is ungranted (deferred) while diamond/feather are granted (safe to gate)."
+    },
+    "group_35_audit_2026_06_05_dragon_claw_chain": {
+      "cluster_description": "The dragon-claw «Коготь дракона» text-only chain — discovered during batch 3 (group_34) as the fourth §16 dragon-offer that could NOT be gated then because the claw is never granted to inventory anywhere (gating it would have locked the offer). Traced and wired here: grant at §550 + gate at §16 ch[0]→318. This completes the §16 offer paragraph — all four offers (claw, diamond, suit, feather) are now gated on their items.",
+      "priority": "P2 (free dragon-bypass + would-be locked offer).",
+      "source": "Discovered in group_34; canon trace of every «коготь» reference in fb2_remake.fb2 this session; verified with a Node harness (passesInventoryCheck) + content-lock safety check.",
+      "mechanism": "auto_items.items grant (§550) + choice.inventory_condition gate (§16). No engine change.",
+      "items": [
+        {
+          "role": "grant",
+          "paragraph": 550,
+          "change": "auto_items {gold:3} -> {gold:3, items:['Коготь дракона']}",
+          "fb2_quote": "«В паутине вы находите 3 золотых, коготь дракона, бронзовый свисток и запечатанную бутылку вина… Берите себе все, что захотите…»"
+        },
+        {
+          "role": "gate",
+          "paragraph": 16,
+          "choice": "ch[0]→318",
+          "change": "inventory_condition:'Коготь дракона'",
+          "fb2_quote": "§16 «Коготь дракона? — 318.»; §318 «Вы предлагаете Коготь дракона. Дракон явно удовлетворен вашим выбором: он поднимается в воздух и улетает — 353.»"
+        }
+      ],
+      "consume": "none — like the feather offer (§346), the dragon is satisfied and leaves; the canon never says to cross off the claw. (Confirms the group_34 call that §16's diamond/feather offers are correctly gate-only: §304 the dragon refuses the diamond and attacks, §346/§318 it is appeased and leaves, none taken.)",
+      "status_done": "Closed 2026-06-05 — one combined data+registry commit (no engine change). Node harness 3/3: §16→318 hidden-without-claw / shown-with, fight-fallback (§16→532) always shown, §550 grants the claw. Content-lock SAFETY: «Коготь дракона» now has grant=§550 + gate=§16. Structural regression: 1221 paragraphs, 0 dangling, reachability 1168 UNCHANGED. node --check OK; remake_data.js round-trips byte-identically. 2 paragraphs touched.",
+      "side_observations_for_yuriy": [
+        "§550 also DROPS two other found items: the «Бронзовый свисток» (obtainable elsewhere at §182/§391, so low impact) and the «запечатанная бутылка вина» (+4 ВЫНОСЛИВОСТИ — a takeable food/consumable). Canon «Берите себе все, что захотите» implies all four finds (3 gold + claw + whistle + wine) should be offerable; currently only gold + (now) the claw are granted. A future cleanup could surface the whistle + wine via the take-modal (the wine needs the food-string format)."
+      ]
     }
   },
   "resolved_no_op": {
