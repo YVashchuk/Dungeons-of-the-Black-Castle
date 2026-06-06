@@ -65,7 +65,8 @@
     "v2.57 -> v2.58": "June 2026 (2026-06-02, same cycle/session, continued) — 'Spell rebalance' deferred item CLOSED via Yuriy-chosen Option B: a mild, non-spoiler character-creation nudge. Added one italic «Совет Майлина» line to the spell-selection screen intro (src/game_shell_top.html), top-border-separated, advising «одни заклятия пригодятся вам не раз, другие — лишь в редкие мгновения… не полагайтесь на одно-единственное заклятие» — NO usage counts and NO spell names, so the 1991 blind-pick strategy is preserved while the player is warned against over-investing in one spell. Commit 187b72a; bash build.sh assembles cleanly. Only the partial-permissive combat-allowlist sweep (P3) remains in the deferred queue.",
     "v2.58 -> v2.59": "June 2026 (2026-06-02, same cycle/session, continued) — FINAL deferred item closed: partial-permissive combat-spell allowlist sweep (commit d686e41). Audited all 76 combats through canon. Tightened 8 allowlists: §96/§110/§174/§388/§656/§1050 → [] (no-magic fights / spells dispelled / no time / spell offered only as navigation), and §536/§1096 → ['COPY'] (Copy castable in-modal while Force/Weakness route via bridges or aren't offered). The 43 'mention'-only combats keep the faithful default (a suggestion is not a restriction). §440 (dragon head) and §760 (bats) left DEFAULT and flagged — they offer only Fire(navigation), no double-cast, not spell-immune, so locking them would be inference. Harness 36/36; node --check OK; 2180 edges unchanged; reachability unchanged. The entire audit backlog (ChatGPT + Claude + Gemini, 5 reports) is now cleared.",
     "v2.59 → v2.60": "June 2026 (2026-06-05) — Batch 1 of the 2026-06-05 correctness re-audit implemented as group_32 (data-only). 64 paragraphs: 45 stamina losses (auto_items.stamina_sub, incl. §908 -16 restoring the §605 death-check), 7 skill losses (skill_sub, 4 with paired stamina_sub), 5 stamina gains (stamina_add), §937 luck reward (luck_add), 2 item gates §608/§893 (inventory_condition), gold gating §442/§873/§825, and the §491 whistle trade (consume_on_use+gold_cost). Node harness 9/9, reachability 1168 unchanged, 0 dangling. Deferred to Yuriy: luck_sub engine handler + 7 УДАЧА losses (batch 2); text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083.",
-    "v2.60 → v2.61": "June 2026 (2026-06-05) — Batch 2 of the 2026-06-05 re-audit: added the engine luck_sub auto_items handler (game_logic.js, mirrors luck_add, floors at 0) and applied auto_items.luck_sub:1 to the 7 УДАЧА-loss paragraphs deferred from group_32 (§63/§206/§217/§446/§486/§939/§1185). group_33. Node harness 10/10 (incl. a luck_add non-regression check and the §63 gold-merge), reachability 1168 unchanged, 0 dangling. Remaining deferred to Yuriy: text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083."
+    "v2.60 → v2.61": "June 2026 (2026-06-05) — Batch 2 of the 2026-06-05 re-audit: added the engine luck_sub auto_items handler (game_logic.js, mirrors luck_add, floors at 0) and applied auto_items.luck_sub:1 to the 7 УДАЧА-loss paragraphs deferred from group_32 (§63/§206/§217/§446/§486/§939/§1185). group_33. Node harness 10/10 (incl. a luck_add non-regression check and the §63 gold-merge), reachability 1168 unchanged, 0 dangling. Remaining deferred to Yuriy: text-only item chains §430/§592/§787 (batch 3); §574 food-string; §1083.",
+    "v2.61 → v2.62": "June 2026 (2026-06-05) — Batch 3 of the 2026-06-05 re-audit: the three text-only item chains from group_32 wired end-to-end (grant + gate + consume) as group_34. Diving suit (grant §1214 +luck_add:1; gates §16/§182/§391/§430/§951), flying carpet (grant §227; gate+consume §592→653), deer hide (grant §76 + §487-merge; gate+consume §787→660; gate §826→172), plus §16 sibling offers Прекрасный бриллиант/Перо аиста. Content-lock safety verified (every gated item grantable). Node harness 13/13, reachability 1168 unchanged, 0 dangling. Deferred: «Коготь дракона» (own text-only chain), multi-slot occupancy, betting payout, §574, §1083."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -2379,6 +2380,127 @@
       ],
       "status_done": "Closed 2026-06-05 — one combined engine+data+registry commit. Node harness 10/10 PASS: control §25(-2), regression check §937 luck_add still +1 (engine edit didn't break luck_add), §63 luck −1 AND gold +10 (merge), and §206/§217/§446/§486/§939/§1185 each −1 luck. Structural regression: 1221 paragraphs, 0 dangling, BFS reachability 1168 UNCHANGED. node --check OK on game_logic.js and remake_data.js; remake_data.js round-trips byte-identically.",
       "verification": "Each paragraph's canon mandate («Потеряйте 1 УДАЧУ…») confirmed in fb2_remake.fb2; luck_sub:1 confirmed present in all 7; §63 auto_items now {gold:10, luck_sub:1}."
+    },
+    "group_34_audit_2026_06_05_batch3_text_only_item_chains": {
+      "cluster_description": "Batch 3 of the 2026-06-05 re-audit: the three TEXT-ONLY item chains deferred from group_32 (finding #2: §430 Водолазный костюм, §592 Ковер-самолёт, §787 Шкура оленя). Each item was acquired AND gated entirely in prose — never granted to S.inventory and never carrying inventory_condition — so the gates rendered unconditionally (free bypass) and, had we gated them in batch 1 without first adding a grant, the content would have been LOCKED. This batch traces each chain from fb2_remake.fb2 and wires grant (acquire) + gate (inventory_condition) + consume (give-away) end to end. A built-in content-lock safety check confirmed every gated item has ≥1 reachable grant after the edit. Two discoveries folded in: the §16 dragon-offer paragraph gates three of its four item-offers, and §1214 also dropped a luck reward.",
+      "priority": "P2 (free combat/area bypasses + locked-content risk).",
+      "source": "AUDIT_claude_2026-06-05_FINAL.md #2 (§430/§592/§787) + this session's full canon trace of every acquire/use/gate point; verified with a Node harness driving src/game_logic.js (passesInventoryCheck / applyChoiceConsume / renderGame).",
+      "mechanism": "Grant on acquire: auto_items.items (entry) or choice.acquires (on click). Gate on use: choice.inventory_condition. Consume on give-away: choice.consume_on_use. All four are pre-existing engine readers; no engine change this batch.",
+      "design_decisions_yuriy_approved": [
+        "Multi-slot occupancy NOT encoded: canon says the suit takes 2 slots (§1214) and the carpet 3 (§193/§302); the engine grants 1 item = 1 slot. Granted as normal 1-slot items; true multi-slot is a separate future engine feature.",
+        "Carpet granted ONLY at §227 ch[1]→529 ('take for later'); the ride path (§227→1166) flies you onward and the entangled §193 'stow-after-flying' grant was skipped to avoid a wrong/double grant.",
+        "§16 offers: gated only the three offers whose items are grantable (Прекрасный бриллиант←§311, Водолазный костюм←§1214, Перо аиста←§1193). The claw «Коготь дракона» is NEVER granted anywhere → left ungated (gating it would lock that offer) and logged as its own text-only chain.",
+        "Deer-hide betting (§826→172): gated so you can't stake a hide you lack, but the stake-loss/payout (the §1062 dice game → §1159) is a separate text-only betting mechanic, deferred."
+      ],
+      "items": [
+        {
+          "chain": "Водолазный костюм (diving suit)",
+          "grant": {
+            "paragraph": 1214,
+            "add": "auto_items.items=['Водолазный костюм'] + luck_add:1",
+            "fb2_quote": "«…находите какую-то одежду, похожую на водолазный костюм… костюм займет два места в вашем заплечном мешке, но если вы его берете, то добавьте себе 1 УДАЧУ.»",
+            "note": "luck_add:1 was a second dropped gain discovered here; 2-slot occupancy not encoded (see decisions)."
+          },
+          "gates": [
+            {
+              "paragraph": 16,
+              "choice": "ch→107",
+              "fb2_quote": "«Водолазный костюм? — 107.» (offer to the dragon)"
+            },
+            {
+              "paragraph": 182,
+              "choice": "ch→1004"
+            },
+            {
+              "paragraph": 391,
+              "choice": "ch→1004",
+              "fb2_quote": "«Если у вас есть водолазный костюм, можете воспользоваться им — 1004.»"
+            },
+            {
+              "paragraph": 430,
+              "choice": "ch→396",
+              "fb2_quote": "«Если у вас есть водолазный костюм, то — 396.»"
+            },
+            {
+              "paragraph": 951,
+              "choice": "ch→665",
+              "fb2_quote": "«Если у вас есть водолазный костюм, вы можете надеть его — 665.»"
+            }
+          ],
+          "consume": "none (reusable equipment — §271 «можете снять… костюм»)"
+        },
+        {
+          "chain": "Ковер-самолёт (flying carpet) — registry string 'Ковёр-самолёт'",
+          "grant": {
+            "paragraph": 227,
+            "choice": "ch→529",
+            "add": "acquires:'Ковёр-самолёт'",
+            "fb2_quote": "«Неужели это ковер-самолет…?! … Взять ковёр для другого случая и идти дальше…»"
+          },
+          "gate_and_consume": {
+            "paragraph": 592,
+            "choice": "ch→653",
+            "add": "inventory_condition + consume_on_use 'Ковёр-самолёт'",
+            "fb2_quote": "§592 «Если у вас есть ковер самолет, то 653…»; §653 «…не обнаруживаете ковра-самолета. Он сгорел… Вычеркните ковер из списка.»",
+            "note": "3-slot occupancy not encoded (see decisions); canon spelling varies ковёр/ковер — one field string used for grant+gate."
+          }
+        },
+        {
+          "chain": "Шкура оленя (deer hide)",
+          "grants": [
+            {
+              "paragraph": 76,
+              "choice": "ch→560",
+              "add": "acquires:'Шкура оленя'",
+              "fb2_quote": "«Предмет — шкура оленя. … в замке она может пригодиться.»"
+            },
+            {
+              "paragraph": 487,
+              "add": "auto_items.items merged ['Перстень'] -> ['Перстень','Шкура оленя']",
+              "fb2_quote": "«…отдает вам перстень… взять шкуру оленя и продолжить свой путь… — 560.»",
+              "note": "§487 already granted Перстень but the canon hands you BOTH; deer hide was missing."
+            }
+          ],
+          "gate_and_consume": {
+            "paragraph": 787,
+            "choice": "ch→660",
+            "add": "inventory_condition + consume_on_use 'Шкура оленя'",
+            "fb2_quote": "§787 «Если у вас есть шкура оленя, то 660…»; §660 «Вы просовываете шкуру оленя сквозь решетку и кидаете ее на пол клетки.» (given away → consumed)"
+          },
+          "gate_only": {
+            "paragraph": 826,
+            "choice": "ch→172",
+            "add": "inventory_condition 'Шкура оленя'",
+            "fb2_quote": "«Можете также играть на вещи: шкуру оленя (172)…» (bet — payout deferred)"
+          }
+        },
+        {
+          "chain": "§16 sibling offers (grantable items only)",
+          "gates": [
+            {
+              "paragraph": 16,
+              "choice": "ch→304",
+              "add": "inventory_condition 'Прекрасный бриллиант'",
+              "note": "item granted §311; label says «Бриллиант» but inventory string is «Прекрасный бриллиант»"
+            },
+            {
+              "paragraph": 16,
+              "choice": "ch→346",
+              "add": "inventory_condition 'Перо аиста'",
+              "note": "item granted §1193"
+            }
+          ]
+        }
+      ],
+      "status_done": "Closed 2026-06-05 — one combined data+registry commit (no engine change). Node harness 13/13 PASS: 8 gate tests (hidden without item / shown with), 1 ungated control, 2 consume tests (item removed, unrelated kept), and §1214 luck_add:1 (with headroom). Content-lock SAFETY CHECK passed: every gated item (Водолазный костюм, Ковёр-самолёт, Шкура оленя, Прекрасный бриллиант, Перо аиста) has ≥1 reachable grant post-edit. Structural regression: 1221 paragraphs, 0 dangling, BFS reachability 1168 UNCHANGED. node --check OK; remake_data.js round-trips byte-identically. 12 paragraphs touched.",
+      "deferred_to_yuriy": [
+        "«Коготь дракона» (dragon claw, offered at §16 ch→318): never granted anywhere — its OWN text-only chain. Find the acquire point + add grant before gating, else it locks. Logged for a future batch.",
+        "Multi-slot inventory occupancy (suit=2, carpet=3): needs an engine 'item weight/size' feature; granted as 1-slot for now.",
+        "Deer-hide (and other) betting payout: §826→172→§1062 dice game and §1159 'lose the stake / win шкурка бобра + 2 золотых' — a separate text-only betting mechanic.",
+        "§16 fight-fallback (ch→532) not negative-gated (would need 'show only if you have none of the 4 items'); always shown, which is safe (no softlock).",
+        "Carried over from group_32: §574 food-string gate; §1083 optional gold_condition."
+      ],
+      "verification": "Independent canon trace: every «если у вас есть X» / «взять X» / acquire for the three items enumerated from fb2_remake.fb2; provenance sweep confirmed claw is ungranted (deferred) while diamond/feather are granted (safe to gate)."
     }
   },
   "resolved_no_op": {
