@@ -699,8 +699,13 @@ function passesInventoryCheck(ch){
   if(!ch||!ch.inventory_condition) return true;
   if(!S||!S.inventory) return false;
   const cond=ch.inventory_condition;
-  if(Array.isArray(cond)) return cond.some(name=>S.inventory.includes(name));
-  return S.inventory.includes(cond);
+  // Food-aware match: carried food has a (eda: +N) suffix (see eatFood / para 132),
+  // so an exact compare misses it. Match the exact string OR the base name with
+  // the food suffix stripped, so inventory_condition:'Banan' matches a carried
+  // 'Banan (eda: +3)'. Non-food items are unaffected (the strip is a no-op).
+  const has=name=>S.inventory.some(it=>it===name||it.replace(/\s*\(еда:.*?\)/,'')===name);
+  if(Array.isArray(cond)) return cond.some(has);
+  return has(cond);
 }
 
 // Gold-conditional choice gating (group_16). A choice may carry
@@ -786,7 +791,10 @@ function applyChoiceConsume(ch){
   const list=Array.isArray(ch.consume_on_use)?ch.consume_on_use:[ch.consume_on_use];
   const removed=[];
   for(const name of list){
-    const idx=S.inventory.indexOf(name);
+    // Food-aware: fall back to base-name match so consume_on_use:'Banan'
+    // removes a carried 'Banan (eda: +3)' (the monkey eats it at 154).
+    let idx=S.inventory.indexOf(name);
+    if(idx<0) idx=S.inventory.findIndex(it=>it.replace(/\s*\(еда:.*?\)/,'')===name);
     if(idx>=0){
       S.inventory.splice(idx,1);
       removed.push(name);
