@@ -486,6 +486,27 @@ function renderGame(){
         }
       });
     }
+    // Countable carried-food grant (group_38). Pushes `count` copies of a
+    // self-describing food string «name (еда: +stamina)» into the bag,
+    // bypassing the auto_items.items dedupe so identical food stacks (e.g.
+    // 6 bananas). Bag-capped via getBagSize(); overflow is reported, not
+    // forced. Runs before the items-modal so the modal sees the real free
+    // space. Used by §75 (6 bananas), §471 (2 bananas+milk+honey), §1109 (6).
+    if(ai.food&&ai.food.length>0){
+      let added=0,overflow=0;
+      ai.food.forEach(f=>{
+        const str=f.name+' (еда: +'+f.stamina+')';
+        for(let k=0;k<(f.count||1);k++){
+          if(S.inventory.length<getBagSize()){S.inventory.push(str);added++;}
+          else overflow++;
+        }
+      });
+      if(added>0){
+        notifications.push('+ еда ×'+added);
+        logEvent('gain','+ еда ×'+added, overflow>0?('мешок полон, не взято: '+overflow):('в мешке: '+S.inventory.length+'/'+getBagSize()));
+      }
+      if(overflow>0) notifications.push('мешок полон: '+overflow+' не взято');
+    }
     // Items — show modal if any found
     if(ai.items&&ai.items.length>0){
       const newItems=ai.items.filter(item=>!S.inventory.includes(item));
@@ -703,7 +724,13 @@ function passesInventoryCheck(ch){
   // so an exact compare misses it. Match the exact string OR the base name with
   // the food suffix stripped, so inventory_condition:'Banan' matches a carried
   // 'Banan (eda: +3)'. Non-food items are unaffected (the strip is a no-op).
-  const has=name=>S.inventory.some(it=>it===name||it.replace(/\s*\(еда:.*?\)/,'')===name);
+  const baseEq=(it,name)=>it===name||it.replace(/\s*\(еда:.*?\)/,'')===name;
+  const has=name=>S.inventory.some(it=>baseEq(it,name));
+  // Count form {item:'Banan', count:4} (group_38): require >= count matching
+  // items (food base-name aware). Used by the para 12 / para 625 banana sinks.
+  if(cond&&typeof cond==='object'&&!Array.isArray(cond)&&cond.item){
+    return S.inventory.filter(it=>baseEq(it,cond.item)).length>=(cond.count||1);
+  }
   if(Array.isArray(cond)) return cond.some(has);
   return has(cond);
 }
@@ -788,17 +815,23 @@ function applyChoiceGoldCost(ch){
 // possession in well-formed data, but a defensive check is cheap.
 function applyChoiceConsume(ch){
   if(!ch||!ch.consume_on_use||!S||!S.inventory) return;
-  const list=Array.isArray(ch.consume_on_use)?ch.consume_on_use:[ch.consume_on_use];
+  const cu=ch.consume_on_use;
   const removed=[];
-  for(const name of list){
-    // Food-aware: fall back to base-name match so consume_on_use:'Banan'
-    // removes a carried 'Banan (eda: +3)' (the monkey eats it at 154).
+  // Food-aware single removal: exact match first, then base-name fallback so
+  // consume_on_use:'Banan' removes a carried 'Banan (eda: +3)' (monkey at 154).
+  const removeOne=name=>{
     let idx=S.inventory.indexOf(name);
     if(idx<0) idx=S.inventory.findIndex(it=>it.replace(/\s*\(еда:.*?\)/,'')===name);
-    if(idx>=0){
-      S.inventory.splice(idx,1);
-      removed.push(name);
-    }
+    if(idx>=0){ S.inventory.splice(idx,1); removed.push(name); return true; }
+    return false;
+  };
+  // Count form {item:'Banan', count:4} (group_38): remove N matches (para 12 /
+  // para 625 banana sinks). Stops early if fewer than N are present.
+  if(cu&&typeof cu==='object'&&!Array.isArray(cu)&&cu.item){
+    for(let k=0;k<(cu.count||1);k++){ if(!removeOne(cu.item)) break; }
+  } else {
+    const list=Array.isArray(cu)?cu:[cu];
+    for(const name of list){ removeOne(name); }
   }
   if(removed.length===0) return;
   for(const name of removed){
