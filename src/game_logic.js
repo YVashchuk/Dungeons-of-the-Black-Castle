@@ -438,7 +438,7 @@ function renderGame(){
   document.getElementById('s-area').scrollTop=0;
   // Riddle mechanic dispatch: if paragraph has a riddle field, render the
   // text-input widget instead of standard choice buttons. Per group_18 design.
-  if(sec.riddle){renderRiddle(sec);}else{renderChoices(sec);}
+  if(sec.riddle){renderRiddle(sec);}else if(sec.dice_roll){renderDiceRoll(sec);}else{renderChoices(sec);}
   // Track visited
   const firstVisit=!S.visited.includes(S.section);
   if(firstVisit)S.visited.push(S.section);
@@ -552,8 +552,9 @@ function renderGame(){
   // ordinary navigation choice is visible.
   const inCombatOrLuck=(sec.enemies&&sec.enemies.length>0)||sec.has_luck;
   const hasRiddle=!!sec.riddle;
+  const hasDice=!!sec.dice_roll;
   const visibleChoices=sec.choices.filter(ch=>passesInventoryCheck(ch)&&passesGoldCheck(ch));
-  if(!inCombatOrLuck&&!hasRiddle&&visibleChoices.length===0&&S.section!==617){
+  if(!inCombatOrLuck&&!hasRiddle&&!hasDice&&visibleChoices.length===0&&S.section!==617){
     playSound('death');
     showDeathOverlay({sec:sec,secKey:secKey});
     return;
@@ -1488,6 +1489,44 @@ function promptCanon1175Luck(){
     })},
     {text:'⚔ Продолжить бой без проверки', className:'btn btn-p', onClick:()=>{ cs.special.luckChecked=true; resumeCanonCombat(); }}
   ]);
+}
+
+// Betting dice roll (group_40, Phase B1). The four gambling routers
+// (§793/§887/§910/§1187) carry dice_roll:true and tag each choice with a
+// die_face (1–6). Instead of letting the player pick which face "came up"
+// (the old behaviour — pure cheating), this rolls a real d6 and routes to the
+// matching outcome. §1008 ("die slipped — re-roll") just targets §910 again,
+// which re-renders this widget for a fresh roll. bettingDieTarget is the pure
+// face→target lookup (unit-tested); the forced arg is for tests only —
+// production always rolls via d6().
+function bettingDieTarget(sec, roll){
+  const ch=((sec&&sec.choices)||[]).find(c=>c.die_face===roll);
+  return ch?ch.target:null;
+}
+function renderDiceRoll(sec){
+  const list=document.getElementById('c-list'); if(!list) return;
+  list.innerHTML='';
+  const btn=document.createElement('button');
+  btn.className='choice-btn';
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
+  btn.innerHTML='🎲 Бросить кубик';
+  btn.onclick=()=>{
+    playSound('dice');
+    const roll=d6();
+    const tgt=bettingDieTarget(sec,roll);
+    logEvent('luck','🎲 Кубик: выпало '+roll, tgt?('Параграф '+tgt):'');
+    list.innerHTML='';
+    const res=document.createElement('div');
+    res.style.cssText='text-align:center;font-size:30px;color:var(--gold);margin:14px 0;font-weight:bold;';
+    res.innerHTML='🎲 '+roll;
+    list.appendChild(res);
+    const cont=document.createElement('button');
+    cont.className='choice-btn';
+    cont.textContent='Продолжить';
+    cont.onclick=()=>{ if(tgt!==null&&tgt!==undefined) goTo(tgt); };
+    list.appendChild(cont);
+  };
+  list.appendChild(btn);
 }
 
 function renderChoices(sec){
