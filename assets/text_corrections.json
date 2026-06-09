@@ -69,7 +69,8 @@
     "v2.61 → v2.62": "June 2026 (2026-06-05) — Batch 3 of the 2026-06-05 re-audit: the three text-only item chains from group_32 wired end-to-end (grant + gate + consume) as group_34. Diving suit (grant §1214 +luck_add:1; gates §16/§182/§391/§430/§951), flying carpet (grant §227; gate+consume §592→653), deer hide (grant §76 + §487-merge; gate+consume §787→660; gate §826→172), plus §16 sibling offers Прекрасный бриллиант/Перо аиста. Content-lock safety verified (every gated item grantable). Node harness 13/13, reachability 1168 unchanged, 0 dangling. Deferred: «Коготь дракона» (own text-only chain), multi-slot occupancy, betting payout, §574, §1083.",
     "v2.62 → v2.63": "June 2026 (2026-06-05) — Dragon-claw «Коготь дракона» text-only chain (discovered in group_34) wired as group_35: grant at §550 (auto_items.items, kept gold:3) + gate at §16 ch[0]→318. Completes the §16 dragon-offer paragraph (all four offers now item-gated). No consume (dragon leaves without taking it, like the §346 feather). Harness 3/3, reachability 1168 unchanged, 0 dangling. Side-note: §550 still drops the bronze whistle + sealed wine (deferred).",
     "v2.63 → v2.64": "June 2026 (2026-06-05) — §550 leftovers (group_36), resolving the group_35 side-observation: §550 now grants all four finds — added «Бронзовый свисток» and the carried food item «Бутылка вина (еда: +4)» to auto_items.items (gold:3 + claw kept). Wine is edible via eatFood() for +4 ВЫНОСЛИВОСТИ (capped, removed on use). Node harness 8/8, reachability 1168 unchanged, 0 dangling. Still deferred: multi-slot occupancy, betting payout, §574 food-string gate, §1083.",
-    "v2.64 → v2.65": "June 2026 (2026-06-05) — §574 banana gate + §1083 gold gate (group_37). ENGINE: passesInventoryCheck and applyChoiceConsume are now food-aware (match carried food by base name, stripping the «(еда: +N)» suffix; exact match still wins, so existing gates/consumes are unchanged — 6 regression checks confirm). DATA: §574 ch→154 inventory_condition+consume_on_use 'Банан' (monkey eats it; grantable at §132; fight fallback →38 keeps it softlock-free); §1083 ch→903 gold_condition:1 (§903 deducts via gold_sub:1; stairs →603 unchanged). Node harness 16/16, reachability 1168 unchanged, 0 dangling. Still deferred: betting payout, multi-slot occupancy, other unwired banana sources."
+    "v2.64 → v2.65": "June 2026 (2026-06-05) — §574 banana gate + §1083 gold gate (group_37). ENGINE: passesInventoryCheck and applyChoiceConsume are now food-aware (match carried food by base name, stripping the «(еда: +N)» suffix; exact match still wins, so existing gates/consumes are unchanged — 6 regression checks confirm). DATA: §574 ch→154 inventory_condition+consume_on_use 'Банан' (monkey eats it; grantable at §132; fight fallback →38 keeps it softlock-free); §1083 ch→903 gold_condition:1 (§903 deducts via gold_sub:1; stairs →603 unchanged). Node harness 16/16, reachability 1168 unchanged, 0 dangling. Still deferred: betting payout, multi-slot occupancy, other unwired banana sources.",
+    "v2.65 → v2.66": "June 2026 (2026-06-05) — Option B: 'countable consumables' engine primitive + banana SOURCE wiring (group_38). ENGINE: (1) auto_items.food:[{name,stamina,count}] grants N stacked carried-food copies (bypasses the items dedupe; bag-capped, overflow reported); (2) inventory_condition:{item,count} count-gate; (3) consume_on_use:{item,count} count-consume. All additive — existing string/array gate/consume forms unchanged (7 regression checks). DATA (grants): §75 (6 bananas), §471 (2 bananas + milk +4 + honey +3, merged with existing gold/items), §1109 (6 bananas), §340 (new «взять с собой» banana choice beside the eat-now one), §381 (new banana buy-choice — none existed). Node harness 23/23, reachability 1168 unchanged, 0 dangling. Deferred: banana SINKS §12/§625 (engine ready; need AND-gating for §12's two whistles + per-item payment choices)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -2574,6 +2575,49 @@
       "backward_compatibility": "The food-aware change is additive: exact match is tried first; the «(еда: +N)»-stripped fallback only runs when exact fails. No existing item uses the food suffix as a gate/consume target, so behaviour is identical for all prior data — confirmed by the 6 regression checks.",
       "side_observation_for_yuriy": "Banana is currently grantable ONLY at §132 (grants_food). Other canon banana sources are not wired to actually grant a banana item: §12 (6 bananas), §75 (pick 6 from a palm), §340 (shop), §355→543 (climb a palm), §381 (peasant), §471 (find two more), §625 (pay debt with 4 bananas), §1109 (game winnings — 6 bananas). A future 'banana sources' cleanup could wire these via grants_food so the §574 gate is satisfiable from more paths; not required (the §574 fight fallback prevents any softlock).",
       "still_deferred": "Betting payout (§826→172→§1062→§1159); multi-slot occupancy (suit=2, carpet=3); the unwired banana sources above."
+    },
+    "group_38_audit_2026_06_05_countable_consumables_banana_sources": {
+      "cluster_description": "Option B: a general 'countable consumables' engine primitive plus wiring of every banana SOURCE that gives a CARRIED banana. Motivation: the §574 monkey gate (group_37) could only be satisfied from §132 because carried bananas (the «Банан (еда: +N)» item) were rare — every other canon banana source was either eat-now (grants_stamina, heals immediately, leaves nothing), multi-banana (the auto_items.items grant dedupes identical strings, so 6 identical bananas collapsed to 0–1), or simply had no buy-choice wired. This adds a reusable stackable-food mechanism (not banana-specific) and wires the sources with it.",
+      "priority": "P2 (content reachability + reusable engine flexibility).",
+      "source": "Follow-up to group_37 side-observation; canon §75/§132/§340/§381/§471/§1109 in fb2_remake.fb2; full Node harness (23/23) incl. regression of all pre-existing gate/consume forms.",
+      "mechanism": "ENGINE (src/game_logic.js), three additions forming the 'countable consumables' feature: (1) auto_items.food:[{name,stamina,count}] — first-visit grant that pushes `count` copies of «name (еда: +stamina)» into the bag, BYPASSING the auto_items.items dedupe so identical food stacks; bag-capped via getBagSize() with overflow reported (not forced); runs BEFORE the items-modal so the modal sees real free space. (2) passesInventoryCheck now accepts a count form inventory_condition:{item,count} → true iff ≥count base-name (food-aware) matches. (3) applyChoiceConsume now accepts consume_on_use:{item,count} → removes N base-name matches (stops early if fewer present). All three are additive — the existing string and array forms are untouched (refactored behind a removeOne/baseEq helper but behaviourally identical). DATA: wired the carried-banana SOURCES (grants only this batch).",
+      "engine_change": "auto_items.food handler (countable food grant); passesInventoryCheck {item,count} count-gate; applyChoiceConsume {item,count} count-consume. Existing string/array inventory_condition & consume_on_use semantics unchanged (regression-verified).",
+      "items": [
+        {
+          "paragraph": 75,
+          "add": "auto_items.food:[{Банан,+2,×6}]",
+          "fb2_quote": "§75 «Вы можете сорвать 6 бананов… Один банан прибавит 2 ВЫНОСЛИВОСТИ.»",
+          "note": "Pick 6 bananas. Granted as 6 carried «Банан (еда: +2)»; the player eats any number via the bag eat-button (covers the canon «наесться» eat-now) and keeps the rest. Canon's «if you ate all 6, take 6 more» second batch is NOT re-granted (minor simplification — 6 carried is faithful enough)."
+        },
+        {
+          "paragraph": 471,
+          "add": "auto_items.food:[{Банан,+2,×2},{Молоко,+4,×1},{Мёд,+3,×1}] (merged with existing {gold:8, items:[Медный браслет, Ключ Чёрного замка]})",
+          "fb2_quote": "§471 «Кроме банана, который предлагал проводник, вы находите ещё два… каждый… добавит 2 ВЫНОСЛИВОСТИ… кувшин с молоком (4 ВЫНОСЛИВОСТИ) и горшок мёда (3 ВЫНОСЛИВОСТИ).»",
+          "note": "Food pushed before the braslet/key items-modal, so when the bag overflows the modal correctly forces inventory management — which matches the canon bag-allocation beat at §471."
+        },
+        {
+          "paragraph": 1109,
+          "add": "auto_items.food:[{Банан,+2,×6}]",
+          "fb2_quote": "§1109 «…восполняете её выигрышем: 6 бананами, каждый из которых восстановит вам по 2 ВЫНОСЛИВОСТИ.»",
+          "note": "Game winnings — 6 carried bananas."
+        },
+        {
+          "paragraph": 340,
+          "add": "NEW choice «Купить банан (взять с собой)» {purchase, gold_cost:2, grants_food:{Банан,+2}} inserted after the existing eat-now «Купить банан» (grants_stamina:2)",
+          "fb2_quote": "§340 «…банан (2 золотых — 2 ВЫНОСЛИВОСТИ)…»",
+          "note": "Eat-now ch preserved (no double-dip); take-with-you sibling added, mirroring §132's two-variant pattern. Repeatable (food not tracked in shopBought)."
+        },
+        {
+          "paragraph": 381,
+          "add": "NEW choice «Купить банан (взять с собой)» {purchase, gold_cost:1, grants_food:{Банан,+2}} inserted at index 0",
+          "fb2_quote": "§381 «Продать он ничего не может, кроме банана, который стоит 1 золотой и добавит 2 ВЫНОСЛИВОСТИ.»",
+          "note": "§381 had NO banana buy-choice at all; added one. Purchase loops →381 via renderChoices (does not re-fire the §381 first-visit lunch auto_items)."
+        }
+      ],
+      "status_done": "Closed 2026-06-05 — one engine+data+registry commit. Node harness 23/23: auto_items.food grants ×8 (§75=6, §1109=6, §471 2 bananas+milk+honey+gold23+braslet-deferred, overflow-cap), count-gate {item,count} ×3, count-consume {item,count} ×2, shop carried-banana ×4 (§340/§381), and 7 REGRESSION checks (string/array gate §574/§16→304, string consume §592→653/§574 — all unchanged). Structural regression: 1221 paragraphs, 0 dangling, reachability 1168 UNCHANGED. node --check OK on game_logic.js and remake_data.js; remake_data.js round-trips byte-identically.",
+      "backward_compatibility": "All three engine additions are gated on the new object/array shapes; the pre-existing string and array forms of inventory_condition and consume_on_use take the original code paths (refactored behind baseEq/removeOne but identical) — confirmed by the 7 regression checks. auto_items.food is a brand-new field, inert on every existing paragraph.",
+      "deferred_to_yuriy": "Banana SINKS §12 and §625 are NOT wired this batch. §12 «Что вы ему дадите? Бриллиант — 619 / Два свистка — 220 / Шесть бананов — 111» and §625 «отдать долг… мечом, колодой карт, золотым амулетом, золотым свистком или четырьмя бананами» are ungated give/pay choices. The engine is now READY for the banana option (inventory_condition:{item:'Банан',count:6/4} + consume_on_use:{item:'Банан',count:6/4}), but wiring them coherently also needs: (a) AND-gating for §12's «два свистка» (require BOTH «Золотой свисток» AND «Бронзовый свисток» — current array inventory_condition is OR-semantics), and (b) per-item payment choices for the non-banana options (diamond / sword / cards / amulet / whistle / gold) so the whole payment menu is consistently gated. Recommend a dedicated 'payment-sink wiring + AND-gate' follow-up.",
+      "side_observations_for_yuriy": "§355→§543 is the failed-climb path (§543: −1 МАСТЕРСТВО, −2 ВЫНОСЛИВОСТЬ, retry→75); the banana itself is picked at §75, now wired. §340's sibling fruits (ананас grants_stamina:3 / лимон) are eat-now only — fine as-is, but could get take-with-you variants in a future shop-completeness pass if desired."
     }
   },
   "resolved_no_op": {
