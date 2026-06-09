@@ -41,7 +41,7 @@ Object.defineProperty(window, 'S', {
 function initState(n,sk,st,lu,sp){
   return{name:n||'Герой',section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,
     luck:lu,luckMax:lu,gold:15,flask:2,bagSize:7,
-    inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),pending_combat_buff:null,v:5};
+    inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),pending_combat_buff:null,bet_stake:null,v:5};
 }
 
 // ── RNG ──
@@ -73,6 +73,7 @@ function normalizeSave(s){
   if(typeof s.shopBought!=='object'||s.shopBought===null||Array.isArray(s.shopBought)) s.shopBought={};
   if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
   if(typeof s.sec436_force!=='boolean') s.sec436_force=false; // §436 Force-on-tree round-trip flag
+  if(s.bet_stake===undefined) s.bet_stake=null; // betting Phase B2 — current wager (gold/item) or null
   return s;
 }
 function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const s=JSON.parse(r);return (s.v===5||s.v===4)?normalizeSave(s):null;}catch{return null;}}
@@ -438,7 +439,7 @@ function renderGame(){
   document.getElementById('s-area').scrollTop=0;
   // Riddle mechanic dispatch: if paragraph has a riddle field, render the
   // text-input widget instead of standard choice buttons. Per group_18 design.
-  if(sec.riddle){renderRiddle(sec);}else if(sec.dice_roll){renderDiceRoll(sec);}else{renderChoices(sec);}
+  if(sec.riddle){renderRiddle(sec);}else if(sec.dice_roll){renderDiceRoll(sec);}else if(sec.stake_picker){renderStakePicker(sec);}else{renderChoices(sec);}
   // Track visited
   const firstVisit=!S.visited.includes(S.section);
   if(firstVisit)S.visited.push(S.section);
@@ -530,6 +531,10 @@ function renderGame(){
     if(ai.luck_sub){S.luck=Math.max(0,S.luck-ai.luck_sub);statNotifs.push('− '+ai.luck_sub+' удачи');}
     if(statNotifs.length>0){updateHUD();saveGame();showItemNotification(statNotifs);}
   }
+  // Betting stake-commit + payout (group_41). Runs EVERY visit (not first-visit
+  // auto_items) because the gambling loop is re-entrant — each round must deduct
+  // the stake and pay out again on revisited commit/outcome paragraphs.
+  applyBetting(sec);
   // Check death
   if(S.stamina<=0){
     showDeathOverlay();
@@ -553,8 +558,9 @@ function renderGame(){
   const inCombatOrLuck=(sec.enemies&&sec.enemies.length>0)||sec.has_luck;
   const hasRiddle=!!sec.riddle;
   const hasDice=!!sec.dice_roll;
+  const hasPicker=!!sec.stake_picker;
   const visibleChoices=sec.choices.filter(ch=>passesInventoryCheck(ch)&&passesGoldCheck(ch));
-  if(!inCombatOrLuck&&!hasRiddle&&!hasDice&&visibleChoices.length===0&&S.section!==617){
+  if(!inCombatOrLuck&&!hasRiddle&&!hasDice&&!hasPicker&&visibleChoices.length===0&&S.section!==617){
     playSound('death');
     showDeathOverlay({sec:sec,secKey:secKey});
     return;
@@ -1527,6 +1533,97 @@ function renderDiceRoll(sec){
     list.appendChild(cont);
   };
   list.appendChild(btn);
+}
+
+// Betting Phase B2 (group_41). Stake commit + payout resolution. Runs on EVERY
+// visit (see renderGame) because the gambling loop is re-entrant.
+//   sec.set_stake  = {kind:'gold', amount:N}  -> deduct N gold, remember stake
+//                  | {kind:'item', name:'X'}   -> remove X from bag, remember stake
+//   sec.bet_payout = { stake:'lose'|'keep'|'half'|{multiply:N},
+//                      gold:N, items:[...], food:[{name,stamina,count}], flask_zero:true }
+// Stake resolution (documented interpretation — tweakable per outcome):
+//   lose        -> forfeit (gold already deducted at commit; item already removed)
+//   keep        -> returned (refund gold / put the item back in the bag)
+//   half        -> half the gold stake refunded (floor); item stakes never use this
+//   {multiply:N}-> winnings of N× the gold stake added (stake itself consumed)
+function applyBetting(sec){
+  if(!S||!sec) return;
+  const notifs=[];
+  // 1) Stake commit
+  if(sec.set_stake){
+    const st=sec.set_stake;
+    if(st.kind==='gold'){
+      const amt=st.amount||0;
+      S.gold=Math.max(0,S.gold-amt);
+      S.bet_stake={kind:'gold',amount:amt};
+      notifs.push('ставка: '+amt+' золотых');
+      logEvent('loss','🎲 Ставка: '+amt+' золотых','На кону. Осталось: '+S.gold);
+    } else if(st.kind==='item'){
+      const idx=S.inventory.indexOf(st.name);
+      if(idx>=0) S.inventory.splice(idx,1);
+      S.bet_stake={kind:'item',name:st.name};
+      notifs.push('ставка: '+st.name);
+      logEvent('loss','🎲 Ставка: '+st.name,'На кону.');
+    }
+  }
+  // 2) Payout + stake resolution
+  if(sec.bet_payout){
+    const bp=sec.bet_payout;
+    const stake=S.bet_stake;
+    if(bp.stake!==undefined){
+      if(bp.stake==='keep'){
+        if(stake&&stake.kind==='gold'){ S.gold+=stake.amount; notifs.push('ставка возвращена: +'+stake.amount+' зол.'); logEvent('gain','🎲 Ставка возвращена','+'+stake.amount+' золотых'); }
+        else if(stake&&stake.kind==='item'){ if(S.inventory.length<getBagSize()){ S.inventory.push(stake.name); } notifs.push('ставка возвращена: '+stake.name); logEvent('gain','🎲 Ставка возвращена',stake.name); }
+      } else if(bp.stake==='half'){
+        if(stake&&stake.kind==='gold'){ const back=Math.floor(stake.amount/2); S.gold+=back; notifs.push('возврат половины ставки: +'+back+' зол.'); logEvent('gain','🎲 Половина ставки','+'+back+' золотых'); }
+      } else if(bp.stake&&typeof bp.stake==='object'&&bp.stake.multiply){
+        if(stake&&stake.kind==='gold'){ const win=bp.stake.multiply*stake.amount; S.gold+=win; notifs.push('выигрыш '+bp.stake.multiply+'× ставки: +'+win+' зол.'); logEvent('gain','🎲 Выигрыш '+bp.stake.multiply+'× ставки','+'+win+' золотых'); }
+      } else if(bp.stake==='lose'){
+        notifs.push('ставка проиграна'); logEvent('loss','🎲 Ставка проиграна','');
+      }
+      S.bet_stake=null;
+    }
+    if(bp.gold){ S.gold+=bp.gold; notifs.push('+ '+bp.gold+' золотых'); logEvent('gain','+ '+bp.gold+' золотых','Выигрыш. Всего: '+S.gold); }
+    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.includes(it)&&S.inventory.length<getBagSize()){ S.inventory.push(it); notifs.push('+ '+it); logEvent('gain','+ '+it,'Выигрыш'); } }); }
+    if(bp.food){ let f2=0; bp.food.forEach(f=>{ const str=f.name+' (еда: +'+f.stamina+')'; for(let k=0;k<(f.count||1);k++){ if(S.inventory.length<getBagSize()){ S.inventory.push(str); f2++; } } }); if(f2>0){ notifs.push('+ еда ×'+f2); logEvent('gain','+ еда ×'+f2,'Выигрыш'); } }
+    if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push('фляга потеряна'); logEvent('loss','🥤 Фляга потеряна','Проиграна в игре'); } }
+  }
+  if(notifs.length>0){ playSound('item'); showItemNotification(notifs,'🎲 Игра в кости'); updateHUD(); saveGame(); }
+}
+
+// §1212 stake-any-item picker (group_41). A general inventory-select primitive:
+// any paragraph with stake_picker:true lists each bag item with a wager button.
+// Picking an item records an item stake (S.bet_stake), removes it from the bag,
+// and routes to the item-dice router (stake_roll_target, default §910). The
+// paragraph's own non-roll choices (stake money / leave) render underneath.
+function renderStakePicker(sec){
+  const list=document.getElementById('c-list'); if(!list) return;
+  list.innerHTML='';
+  const items=(S&&S.inventory)?S.inventory:[];
+  const rollTarget=sec.stake_roll_target||910;
+  const hint=document.createElement('div');
+  hint.style.cssText='font-size:14px;color:var(--gold);margin:4px 0 8px;letter-spacing:.06em;';
+  hint.textContent=items.length>0?'ВЫБЕРИТЕ ВЕЩЬ ДЛЯ СТАВКИ:':'В мешке нет вещей для ставки.';
+  list.appendChild(hint);
+  items.forEach(item=>{
+    const b=document.createElement('button'); b.className='choice-btn';
+    b.style.borderColor='var(--gold)';b.style.color='var(--gold)';b.style.background='rgba(212,175,55,.10)';
+    b.textContent='🎲 Поставить: '+item;
+    b.onclick=()=>{
+      S.bet_stake={kind:'item',name:item};
+      const idx=S.inventory.indexOf(item);
+      if(idx>=0) S.inventory.splice(idx,1);
+      logEvent('loss','🎲 Ставка: '+item,'На кону.');
+      updateHUD();saveGame();
+      goTo(rollTarget);
+    };
+    list.appendChild(b);
+  });
+  (sec.choices||[]).forEach((ch,idx)=>{
+    if(ch.target===rollTarget) return; // the roll path is the picker's job
+    if(!passesInventoryCheck(ch)||!passesGoldCheck(ch)) return;
+    list.appendChild(makeChoiceBtn(ch,false,idx));
+  });
 }
 
 function renderChoices(sec){
