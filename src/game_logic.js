@@ -726,10 +726,12 @@ function passesInventoryCheck(ch){
   // 'Banan (eda: +3)'. Non-food items are unaffected (the strip is a no-op).
   const baseEq=(it,name)=>it===name||it.replace(/\s*\(еда:.*?\)/,'')===name;
   const has=name=>S.inventory.some(it=>baseEq(it,name));
-  // Count form {item:'Banan', count:4} (group_38): require >= count matching
-  // items (food base-name aware). Used by the para 12 / para 625 banana sinks.
-  if(cond&&typeof cond==='object'&&!Array.isArray(cond)&&cond.item){
-    return S.inventory.filter(it=>baseEq(it,cond.item)).length>=(cond.count||1);
+  // Object forms: {all:['A','B']} requires ALL present (group_39 AND-gate,
+  // para 12 two-whistles); {item:'X',count:N} requires >= N matches (group_38
+  // count-gate). Both are food base-name aware via baseEq/has.
+  if(cond&&typeof cond==='object'&&!Array.isArray(cond)){
+    if(Array.isArray(cond.all)) return cond.all.every(has);
+    if(cond.item) return S.inventory.filter(it=>baseEq(it,cond.item)).length>=(cond.count||1);
   }
   if(Array.isArray(cond)) return cond.some(has);
   return has(cond);
