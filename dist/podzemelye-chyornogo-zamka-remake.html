@@ -2442,12 +2442,13 @@ let pendingItems=[];
 function showInventoryModal(newItems, extraNotifs){
   pendingItems=newItems.slice();
   const modal=document.getElementById('modal-inventory');
-  const freeSlots=getBagSize()-S.inventory.length;
+  const freeSlots=getBagSize()-getBagUsed();
   
   // Text
   const txt=document.getElementById('inv-modal-text');
-  if(freeSlots<newItems.length){
-    txt.innerHTML=`Найдено ${newItems.length} предметов, но в мешке только ${freeSlots} свободных мест из ${getBagSize()}.<br>Выберите что взять, или выбросьте ненужное.`;
+  const incomingSize=newItems.reduce((s,it)=>s+getItemSize(it),0);
+  if(freeSlots<incomingSize){
+    txt.innerHTML=`Найдено ${newItems.length} предметов (занимают ${incomingSize} мест), но в мешке только ${freeSlots} свободных из ${getBagSize()}.<br>Выберите что взять, или выбросьте ненужное.`;
   } else {
     txt.innerHTML=`Найдено ${newItems.length} предметов. Свободных мест: ${freeSlots}.`;
   }
@@ -2477,7 +2478,7 @@ function showInventoryModal(newItems, extraNotifs){
 
 function renderInvModalCurrent(){
   const cur=document.getElementById('inv-modal-current');
-  cur.innerHTML='<div style="font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;">В МЕШКЕ ('+S.inventory.length+'/'+getBagSize()+'):</div>';
+  cur.innerHTML='<div style="font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;">В МЕШКЕ ('+getBagUsed()+'/'+getBagSize()+'):</div>';
   if(S.inventory.length===0){
     cur.innerHTML+='<div style="font-size:14px;color:var(--muted);opacity:.5;">Пусто</div>';
   } else {
@@ -2497,8 +2498,8 @@ function renderInvModalCurrent(){
     if(!btn)return;
     if(S.inventory.includes(item)){
       btn.textContent='✓ В мешке';btn.disabled=true;btn.style.opacity='.4';
-    } else if(S.inventory.length>=getBagSize()){
-      btn.textContent='Мешок полон';btn.disabled=true;btn.style.opacity='.4';
+    } else if(getBagUsed()+getItemSize(item)>getBagSize()){
+      btn.textContent=getItemSize(item)>1?('Нужно '+getItemSize(item)+' мест'):'Мешок полон';btn.disabled=true;btn.style.opacity='.4';
     } else {
       btn.textContent='+ Взять';btn.disabled=false;btn.style.opacity='1';
     }
@@ -2506,9 +2507,10 @@ function renderInvModalCurrent(){
 }
 
 function takeItem(idx){
-  if(!S||S.inventory.length>=getBagSize())return;
+  if(!S)return;
   const item=pendingItems[idx];
   if(!item||S.inventory.includes(item))return;
+  if(getBagUsed()+getItemSize(item)>getBagSize())return;
   S.inventory.push(item);
   logEvent('gain','+ '+item,'В мешок');
   playSound('item');
@@ -2664,13 +2666,13 @@ function renderGame(){
       ai.food.forEach(f=>{
         const str=f.name+' (еда: +'+f.stamina+')';
         for(let k=0;k<(f.count||1);k++){
-          if(S.inventory.length<getBagSize()){S.inventory.push(str);added++;}
+          if(getBagUsed()+getItemSize(str)<=getBagSize()){S.inventory.push(str);added++;}
           else overflow++;
         }
       });
       if(added>0){
         notifications.push('+ еда ×'+added);
-        logEvent('gain','+ еда ×'+added, overflow>0?('мешок полон, не взято: '+overflow):('в мешке: '+S.inventory.length+'/'+getBagSize()));
+        logEvent('gain','+ еда ×'+added, overflow>0?('мешок полон, не взято: '+overflow):('в мешке: '+getBagUsed()+'/'+getBagSize()));
       }
       if(overflow>0) notifications.push('мешок полон: '+overflow+' не взято');
     }
@@ -2782,7 +2784,7 @@ function updateHUD(){
     const eatBtn=foodM?`<span class="inv-eat" onclick="eatFood(${i})" title="Съесть (+${foodM[1]} вын.)" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">🍴</span>`:'';
     il.innerHTML+=`<div class="inv-item"><span>${item}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i})" title="Выбросить">🗑</span></span></div>`;});}
   else{il.innerHTML='<div class="inv-empty">Мешок пуст</div>';}
-  document.getElementById('inv-count').textContent=`(${S.inventory?S.inventory.length:0}/${getBagSize()})`;
+  document.getElementById('inv-count').textContent=`(${getBagUsed()}/${getBagSize()})`;
   // Notes
   const nta=document.getElementById('notes-ta');if(nta&&S.notes!==undefined)nta.value=S.notes;
 }
@@ -2790,6 +2792,22 @@ function updateHUD(){
 // §132: bag capacity is stateful (7 default, upgradeable to 9). getBagSize()
 // is the single source of truth — every inventory-cap site reads it.
 function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bagSize:7;}
+// Multi-slot inventory occupancy (group_42). Most items occupy ONE bag slot,
+// but two canonical items are bulky: the diving suit (§1214 «костюм займет два
+// места») takes 2 and the flying carpet (§227 «займет… целых три места», also
+// §193/§302) takes 3. getItemSize() returns an item's slot footprint (default 1);
+// getBagUsed() is the summed occupancy that every capacity check uses in place
+// of S.inventory.length. Names match after stripping the food «(еда: +N)» suffix
+// so the lookup is robust (no food item is multi-slot, so this is a no-op there).
+const ITEM_SIZES={'Водолазный костюм':2,'Ковёр-самолёт':3};
+function getItemSize(name){
+  if(!name) return 1;
+  const base=String(name).replace(/\s*\(еда:.*?\)/,'');
+  return ITEM_SIZES[base]||1;
+}
+function getBagUsed(){
+  return (S&&Array.isArray(S.inventory)?S.inventory:[]).reduce((sum,it)=>sum+getItemSize(it),0);
+}
 // §132: eat a carried-food string («Название (еда: +N)») from the bag. Restores
 // N ВЫНОСЛИВОСТЬ (capped), removes the item. Refuses at full stamina so the
 // provision isn't wasted.
@@ -2845,7 +2863,7 @@ function useHealingInCombat(){
 }
 function toggleAddItem(){const a=document.getElementById('add-item-area');a.style.display=a.style.display==='none'?'block':'none';}
 function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.trim();
-  if(!v)return;if(S.inventory.length>=getBagSize()){alert('Мешок полон ('+getBagSize()+' предметов)');return;}
+  if(!v)return;if(getBagUsed()+getItemSize(v)>getBagSize()){alert('Мешок полон ('+getBagSize()+' мест)');return;}
   S.inventory.push(v);inp.value='';updateHUD();saveGame();}
 function removeItem(i){if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+itm,'Выброшено из мешка');S.inventory.splice(i,1);updateHUD();saveGame();}
 
@@ -3189,8 +3207,8 @@ function makePurchaseBtn(ch, choiceIndex){
   //  • grants_food     — carried food string; counts against bag like an item.
   const bagMaxed=ch.grants_bag_size&&getBagSize()>=ch.grants_bag_size;
   const flaskFull=ch.flask_fill&&((S.flask||0)>=2);
-  const foodOverflow=ch.grants_food&&((S.inventory?S.inventory.length:0)>=getBagSize());
-  const wouldOverflow=(grantsItems.length>0)&&((S.inventory?S.inventory.length:0)+grantsItems.filter(n=>!S.inventory.includes(n)).length>getBagSize());
+  const foodOverflow=ch.grants_food&&(getBagUsed()+1>getBagSize());
+  const wouldOverflow=(grantsItems.length>0)&&(getBagUsed()+grantsItems.filter(n=>!S.inventory.includes(n)).reduce((s,n)=>s+getItemSize(n),0)>getBagSize());
   let disabled=false;
   let tooltip='';
   if(isBought){
@@ -3241,7 +3259,7 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   // if the player drops the item later.
   const newItems=grantsItems.filter(n=>!S.inventory.includes(n));
   newItems.forEach(name=>{
-    if(S.inventory.length<getBagSize()){
+    if(getBagUsed()+getItemSize(name)<=getBagSize()){
       S.inventory.push(name);
       notifs.push('+ '+name);
       logEvent('gain','+ '+name,'Куплено (§'+S.section+')');
@@ -3275,7 +3293,7 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   }
   // §132 carried food — deposit a self-describing food string (repeatable,
   // counts against bag capacity, eaten later via eatFood()).
-  if(ch.grants_food&&S.inventory.length<getBagSize()){
+  if(ch.grants_food&&getBagUsed()+1<=getBagSize()){
     const f=ch.grants_food;
     const foodStr=f.name+' (еда: +'+f.stamina+')';
     S.inventory.push(foodStr);
@@ -3739,7 +3757,7 @@ function applyBetting(sec){
     if(bp.stake!==undefined){
       if(bp.stake==='keep'){
         if(stake&&stake.kind==='gold'){ S.gold+=stake.amount; notifs.push('ставка возвращена: +'+stake.amount+' зол.'); logEvent('gain','🎲 Ставка возвращена','+'+stake.amount+' золотых'); }
-        else if(stake&&stake.kind==='item'){ if(S.inventory.length<getBagSize()){ S.inventory.push(stake.name); } notifs.push('ставка возвращена: '+stake.name); logEvent('gain','🎲 Ставка возвращена',stake.name); }
+        else if(stake&&stake.kind==='item'){ if(getBagUsed()+getItemSize(stake.name)<=getBagSize()){ S.inventory.push(stake.name); } notifs.push('ставка возвращена: '+stake.name); logEvent('gain','🎲 Ставка возвращена',stake.name); }
       } else if(bp.stake==='half'){
         if(stake&&stake.kind==='gold'){ const back=Math.floor(stake.amount/2); S.gold+=back; notifs.push('возврат половины ставки: +'+back+' зол.'); logEvent('gain','🎲 Половина ставки','+'+back+' золотых'); }
       } else if(bp.stake&&typeof bp.stake==='object'&&bp.stake.multiply){
@@ -3750,8 +3768,8 @@ function applyBetting(sec){
       S.bet_stake=null;
     }
     if(bp.gold){ S.gold+=bp.gold; notifs.push('+ '+bp.gold+' золотых'); logEvent('gain','+ '+bp.gold+' золотых','Выигрыш. Всего: '+S.gold); }
-    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.includes(it)&&S.inventory.length<getBagSize()){ S.inventory.push(it); notifs.push('+ '+it); logEvent('gain','+ '+it,'Выигрыш'); } }); }
-    if(bp.food){ let f2=0; bp.food.forEach(f=>{ const str=f.name+' (еда: +'+f.stamina+')'; for(let k=0;k<(f.count||1);k++){ if(S.inventory.length<getBagSize()){ S.inventory.push(str); f2++; } } }); if(f2>0){ notifs.push('+ еда ×'+f2); logEvent('gain','+ еда ×'+f2,'Выигрыш'); } }
+    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.includes(it)&&getBagUsed()+getItemSize(it)<=getBagSize()){ S.inventory.push(it); notifs.push('+ '+it); logEvent('gain','+ '+it,'Выигрыш'); } }); }
+    if(bp.food){ let f2=0; bp.food.forEach(f=>{ const str=f.name+' (еда: +'+f.stamina+')'; for(let k=0;k<(f.count||1);k++){ if(getBagUsed()+getItemSize(str)<=getBagSize()){ S.inventory.push(str); f2++; } } }); if(f2>0){ notifs.push('+ еда ×'+f2); logEvent('gain','+ еда ×'+f2,'Выигрыш'); } }
     if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push('фляга потеряна'); logEvent('loss','🥤 Фляга потеряна','Проиграна в игре'); } }
   }
   if(notifs.length>0){ playSound('item'); showItemNotification(notifs,'🎲 Игра в кости'); updateHUD(); saveGame(); }
