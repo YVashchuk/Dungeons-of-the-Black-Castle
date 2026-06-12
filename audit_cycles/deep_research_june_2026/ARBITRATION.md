@@ -52,3 +52,7 @@ The reports supplied the keys («Трое из Эвенло», камердин�
 
 ## 7. Optional web spot-verification shortlist (Deep Research, one pass)
 Liveness + quote-accuracy audit of FOUND claims (NOT needed for the Case-3 wiring — proven internally): thelib.ru …read-2/4/5/7/8/9/10; knijky.ru …?page=57; lib.ru blacktower_game.txt; quest-book.ru topics 386, 342(+/50,/125), read/pdf/2095 & 2094; tesera.ru/article/95286 + user/Jumangee/thought/417299; imaginaria.ru article; gamebooks.ru 5th-edition blog; gamebooks.org/Item/7881.
+
+
+## ADDENDUM — 2026-06-12 (post-arbitration)
+The 1991 original turned out to be LOCAL all along: `assets/pdf_original_1991.pdf` (MyQuest/GameBooks 2011 re-typeset of the 1991 edition, 96 pp). Text extracted to `assets/book_1991_extracted.txt` via the constant **+0x228 font-shift** decode (no OCR needed; whitespace is mangled — search space-insensitively). Consequences: **CASE 1 resolved** — the betting minigame does not exist in 1991 (§887 is remake-era; repair decision pending). **CASE 2 Q2.1 closed by structure** (the debt scene belongs to the non-1991 betting subsystem). **CASE 3 confirmed against 1991** (§135/§455/§292/§503₁₉₉₁; the 1991 offset was −25). Genealogy: 1991 already used secret codes (−13/−25/−40/+49/+50/+60/+140/+169/+217) — the '1995 invention' claim is refuted; the §7 web shortlist is now optional curiosity, not a dependency. Case-3 wiring landed as registry group_55 (v2.82).
