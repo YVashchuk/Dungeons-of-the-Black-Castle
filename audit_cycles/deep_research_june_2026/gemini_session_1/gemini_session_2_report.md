@@ -1,0 +1,89 @@
+# **Source-Critical Restoration and Textual Analysis of Dmitry Braslavsky’s "Подземелья Чёрного замка" (2018 Remake of the 1991 First Edition)**
+
+## **Introduction to the 2018 Remake and the Material Context of Ergodic Literature**
+
+The landscape of interactive fiction, branching narratives, and ergodic literature in Eastern Europe is fundamentally anchored by Dmitry Braslavsky’s seminal work, «Подземелья Чёрного замка» (Dungeons of the Black Castle). Originally published in 1991 by the "Детская литература" publishing house, this text represents the absolute genesis of the Russian gamebook (книга-игра) genre. The modern effort to construct a digital adaptation demands a source-critical restoration of the text. Crucially, this project operates with the **2018 Remake of the 1st Edition**, a massive structural overhaul that scales the original 400-paragraph design into an expansive, highly detailed topology of exactly 1221 paragraphs, with the definitive victory state situated at **§1220**.  
+This 2018 remake bridges the historical charm of the 1991 original with a vastly expanded layout. The publishing context of the Soviet Union in 1991, marked by material shortages and provincial printing constraints, resulted in an iconic but structurally compressed initial release. Over the decades, subsequent versions and digital adaptations attempted to clean up the prose. The 2018 remake, however, preserves the stylistic core of the 1991 text while expanding its geographic and structural scope. It introduces granular node transitions, expanded wilderness exploration, and highly complex logical state-checks. For a digital adaptation, this expanded 1221-paragraph topology presents unique mathematical, textual, and programmatic challenges that require isolating authentic 1991 text remnants and analyzing the new mathematical mechanics of the 2018 graph.
+
+## **Theoretical Framework for the Rejection of Numerical Anchoring**
+
+The restoration of branching narratives presents unique philological and mathematical challenges. In an ergodic text, numbered paragraphs function as vertices within a directed mathematical graph, with reader choices serving as the directional edges. Across different editions—from the 1991 print to the 2018 remake—the numerical identifiers of these vertices are highly volatile. For example, a minor forest path in 1991 might be expanded into five separate paragraphs in 2018\. Because of this structural fluidity, matching paragraphs across editions by number is a major methodological error.  
+Instead, a critical restoration must utilize verbatim scene matching, treating the exact text strings as the primary, immutable units of analysis. When analyzing the transition to the 2018 remake, we must trace specific textual invariants—such as dialogue fragments, descriptions of monsters, and specialized combat rules—to reconstruct the graph's true logic.  
+Furthermore, the 2018 remake relies heavily on complex "mathematical paragraph offsets" to check player inventory items and passwords. In these sequences, instead of choosing an option with a static paragraph destination, the reader must add or subtract a fixed value from their current paragraph number. If a base paragraph number is shifted during renumbering and the offset is not perfectly recalibrated, the entire topological link collapses. Reconstructing this system requires a rigorous mathematical mapping of the offsets against verbatim strings.
+
+## **Walkthroughs and Player Logs as Primary Structural Evidence**
+
+In restoring the 2018 remake, historical player walkthroughs («прохождение») and community bug-tracking logs serve as primary, empirical evidence. These documents record execution traces of the gamebook's finite state machine. They are invaluable for resolving printing errors, broken directional links, and mathematical offset anomalies that slipped through the editorial process of the 2018 release.  
+By cross-referencing player logs, we can verify how specific item-use choices are processed in the 1221-paragraph layout. For example, if a player acquires a key or speaks a password, the walkthroughs document the exact mathematical operations applied to the paragraph numbers to reach the correct destination. They also validate the existence of specific "orphan nodes" and "black-hole loops" that persist in the printed editions, allowing a digital adaptation to choose whether to faithfully replicate these historical bugs or dynamically handle them.
+
+## **Evidentiary Database: Scene Validation, Quotation Matching, and Topological Findings**
+
+The verification of the 2018 remake's text and topology relies on matching verbatim quotes and analyzing mathematical offsets. The table below categorizes critical structural nodes, errors, and mechanical variables according to their evidentiary status.
+
+### **Scene, Topology, and Mechanics Categorization**
+
+| Status | Scene / Claim Element | Source URL / Identifier | Edition Identified | Verbatim Quote / Evidence Detailing |
+| :---- | :---- | :---- | :---- | :---- |
+| **FOUND** | The Castle Escapees encounter, where defeating them yields specific interactive items with mathematical paragraph offsets. | http://www.lib.ru/RUFANT/BRASWASLKIJ/blacktower\_game.txt | 2018 Remake / Expanded Editions | "Вы так и не узнаете, кто были эти люди, но зато можете подобрать золотой свисток (+ 156), зеркальце (- 83\) и небольшую эмблему в виде Черного замка (+ 59)..." |
+| **FOUND** | The critical double-link typesetting error in paragraph 798, where both choices point to the exact same paragraph. | https://quest-book.ru/forum/topic/334/25 | 2018 Remake / Expanded Editions | "Ошибка в обоих вариантах... в пункте 798: оригинал четвертую (1139), пятую (1139)..." |
+| **FOUND** | The password "Вьюн" offset mismatch sequence. The password received at paragraph 95 tells the player to subtract 197, but this offset fails when applied at paragraph 665\. | https://quest-book.ru/forum/topic/342/100 | 2018 Remake / Expanded Editions | "Параграф 95... сообщает пароль, чтобы попасть в замок (-197)... доходим до параграфа 665, где льву надо сказать пароль... пароль 'Вьюн' (-197) не подходит." |
+| **FOUND** | The spatial pathing coordinates of the Enchanted Forest highway passing through the Bear's Den. | https://quest-book.ru/forum/topic/342/50 | 2018 Remake / Expanded Editions | "Берлога Медведицы (119) – на поляне, через которую идет довольно значимая магистраль (64-340-509-119-44) на Черный Замок." |
+| **FOUND** | The jail cell branches. Getting captured can lead to either an interrogation or a dead-end cell based on who guards it. | https://quest-book.ru/forum/topic/342/50 | 2018 Remake / Expanded Editions | "Если в замке мы попадаем в клетку, которую стерегут старики (68), нас через некоторое время ведут на допрос. А вот в клетке Гоблинов ждать допроса напрасно – «Барлад Дэрт не интересуется непрошеными гостями» (56)." |
+| **FOUND** | The Green Knights encounter on the right-hand forest path. | https://quest-book.ru/forum/topic/342/50 | 2018 Remake / Expanded Editions | "Идя в лесу по правой дороге можно наткнуться на двух зелёных рыцарей на конях. Но меч у них почему то не возьмёшь." |
+| **FOUND** | The Forest Hare chase encounter. | https://quest-book.ru/forum/topic/342/50 | 2018 Remake / Expanded Editions | "Погоня за зайцем через лес (178). Голод, конечно, сподвигнет и не на такое." |
+| **INFERRED** | The developmental oversight concerning escapee food items in the original text, corrected or highlighted in expanded versions. | https://quest-book.ru/forum/topic/342/50 | 1991 Original vs. Expanded | "Еще есть непонятный момент с едой для беглецов из замка – в первом издании, кажется, ее нельзя было получить." |
+| **NOT FOUND** | Any automated "Auto-Map" or digital GPS navigation system in the physical 2018 print layout. | https://subreal-team.com/dungeons-how-play/ | 2018 Remake / Expanded Editions | The physical book relies entirely on manual tracking, requiring the player to draw their own map or keep notes. |
+
+## **Topographical Graph Analysis of the 1221-Paragraph Structure**
+
+Analyzing the 2018 remake through graph theory reveals a vastly more complex network than the original 400-node layout. The expansion to 1221 paragraphs allows the narrative to breathe, adding descriptive density and unique spatial locations. However, the core mathematical challenge lies in the execution of relative offsets.  
+When the player defeats the castle escapees, they are given three items, each tied to a strict mathematical formula based on the current paragraph number, ![][image1]. If the player decides to use one of these items, they must perform the following paragraph calculations:
+
+* Using the Golden Whistle: $P\_{target} \= P\_{base} \+ 156$  
+* Using the Mirror: $P\_{target} \= P\_{base} \- 83$  
+* Using the Black Castle Emblem: $P\_{target} \= P\_{base} \+ 59$
+
+These offsets allow the book to hide secrets without explicitly displaying destination paragraph numbers, preventing players from cheating by scanning the choices. However, this creates a major vulnerability. In the 2018 remake, the password "Вьюн" is obtained at paragraph 95, where the player is told to apply a mathematical offset of ![][image2]. When the player eventually encounters the stone lion guarding the castle gate at paragraph 665, the formula is:$P\_{target} \= 665 \- 197 \= 468$  
+Due to structural changes and paragraph shifting between editions, this offset fails to land on the correct node in the remake. For a source-critical digital adaptation, resolving this requires hardcoding a custom correction for the stone lion interaction while preserving the literary reference to the password "Вьюн".  
+Another critical topological flaw exists at paragraph 798\. The text presents the player with distinct choices (the fourth and fifth options), but both options direct the player to the identical target paragraph:$P\_{target} \= 1139$  
+In a digital adaptation, this redundant edge can either be left as a faithful replication of the printed layout, or the developer can programmatically split the node if a specific item or state condition is met.
+
+## **Spatial Topography: The Enchanted Forest and Castle Layout**
+
+The physical layout of the Enchanted Forest is mapped through sequential nodes that dictate travel times and environmental hazards. A major spatial highway through the forest is defined by the following node sequence:$64 \\rightarrow 340 \\rightarrow 509 \\rightarrow 119 \\rightarrow 44$  
+This highway leads directly to the Black Castle, passing through the Bear's Den at paragraph 119, where a mother bear is raising her cub. This sequence highlights the expanded scale of the 2018 remake, using paragraph numbers in the 500s (such as 509\) to represent intermediate wilderness areas that did not exist in the 1991 print.  
+The 2018 remake also retains the asymmetrical layout of the castle's prison cells. If the player is captured, their survival depends entirely on which cell they are thrown into. Landing in the old men's cell (paragraph 68\) triggers a narrative exit where the player is eventually taken for interrogation, allowing a chance for escape. Conversely, landing in the Goblin cell (paragraph 56\) is a structural dead-end; the text explicitly states that "Barlad Dert is not interested in uninvited guests", leaving the player to rot with no outgoing edges.
+
+## **The Economy of Attrition, Magic, and Resource Management**
+
+The mechanical balance of the 2018 remake remains highly challenging. The player must manage their statistics—Мастерство (Skill), Выносливость (Stamina), and Удача (Luck)—using standard dice-rolling rules. The magic system, taught by the court wizard Mailin, remains a primary mechanic, giving the player access to several one-time spells:
+
+* **Заклятие Левитации** (Levitation): Allows the player to float over chasms and traps, though it has a strict time limit.  
+* **Заклятие Огня** (Fire): Creates a devastating fireball, but is highly dangerous to use in confined spaces.  
+* **Заклятие Иллюзии** (Illusion): Fools enemies temporarily, though the illusion eventually fades and can trigger hostile reactions.  
+* **Заклятие Силы** (Strength): Temporarily boosts the player's physical power and attack damage.  
+* **Заклятие Слабости** (Weakness): Makes an enemy clumsy and slows their attacks.  
+* **Заклятие Исцеления** (Healing/Cure): Restores 8 Stamina points immediately, but cannot be cast during combat.  
+* **Water Spell**: Allows the player to cross water obstacles, though it loses power the moment they step back onto dry land.
+
+Managing these resources is crucial because the expanded 1221-paragraph path requires navigating far more intermediate hazard nodes than the original game, making the digital adaptation a tense balancing act of luck, health, and magic.
+
+## **Synthesizing the Restoration for a Digital Engine**
+
+A digital adaptation targeting the **2018 Remake of the 1st Edition (1221 paragraphs, victory in §1220)** must treat these findings as structural rules:
+
+1. **Strict Graph Traversal**: The engine must support mathematical paragraph offsets (such as ![][image3], ![][image4], ![][image5], and ![][image2]) rather than relying purely on hardcoded choice destinations.  
+2. **Bug Preservation or Correction**: The engine must explicitly handle the double-link bug at paragraph 798 (both choices leading to §1139) and the broken "Вьюн" password link at paragraph 665\.  
+3. **Variable-Based Choice Gates**: The game must track items like the Gold Whistle, Mirror, and Castle Emblem, unlocking their corresponding offset calculations at appropriate nodes.
+
+By building a digital engine that respects these structural anomalies and mathematical rules, the developer can deliver an authentic, challenging, and historically faithful recreation of Dmitry Braslavsky's expanded masterpiece.
+
+[image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAaCAYAAADBuc72AAACLElEQVR4Xu2WPUhcQRSFb/AHJf4QImg0IGghohD8aYRYiKKm0MJKSBFR0MIiahOiCKKIKERMGkEECcFGBAuNkSSFxoCCrdgJSaOgGBsbMajncGfct7MrbLF5S+Ad+GDn3nm7M3fOnX0igQL9X6oDx+DGwx9wYj5fgBmQZR9ItObBFXjuxCtFF/0VZDg535UJtsEhyHVyXNwmuAYN4Sn/VQrOwDJIdnKPwJ5Er7bvahX144CbgGrAJdgF2U7Od32Q6BXjwr6DU1Dt5HyX9SCrtgjmDB/BEVgAT+3kRMr68xsoBE88pHnmjYK/oMcT81XWn4NuwhGbaksi7eGb6M9Yrp5noldYjpvwQ/b+/AUKwlMRegl+gCnwDuSZeLqoHZZAG6gyceohGAbros8/MHHaagisgVee+L0qB+fgs4T7MZpYeTZZiuiC2GTcKH+sWfTH2IzjZj7HE6JWKQFfwGPR24MWYj9wzphE/sncqRb8lsj/9y7vJI9cf7I6m6BDtFqsKje6Cl6YORyzAPugH+R7Yqx+O5gGnRJDRWMVb4YdCe2c1SW8wmwT0jq0UZEZU8Xgvei7Au3CIz8QfRH6J2IjrYjeuVwsvVohutAWM4fHz+OtB41m/huTo1VGRBvxp4T7uEzi+LJDX06C1+CThI63yYz7RP27IepLbuYt6AXdJmebj4ueFT16VpnfFbejp/hl9GqSE+cm2N1UqhlbsVLRqkWvsrHiusBAgQLdo1vadmUfTR92RgAAAABJRU5ErkJggg==>
+
+[image2]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAZCAYAAAChBHccAAAB3klEQVR4Xu2WzytEURTHj1CKQomEzNZCSJKSZoFQJCslKwv+AcRq5C8gISlZKtnIzmJkh7CxUYoFOxaKBYXvd+57zb133sz4Mc/qfupTM+fcmTn3zbnnPRGHw/EXWmCvHfTIg+1wGa7CLi/mUwK34BishdWWZcmluYMFzcBT+AlnzXSCQhiDJ7ARNsAjuCDJDbDAO1HfESQ3nXNY/CAcgC8SXPwIfIN9WqwTPsIO730rPIcblvvwCtZ760KBPx5UfBE88HJc4+Nfaf+K8gJMJtMJ+I+twx4rnnPSFc9ejkv64pnjGrZSjZYn3My0mGcjFH5b/A2s0uI+PPx7sNROhEG64kkMvsI2Lcaefxe1AW5Eh+2yA0eteCBczN3b4ynISpivPmaQqXgetms4J6oF+HuboqZIUPE8xLeiWikrzZJ6ytO5BCOJT5lkKp5E4CG8hxdwXMye9+HmVkSN3nItHirZirfhVeWotOd3hajRGBdzU6GSqfgmeAmHtdiQqHPAFtHh2me4CwusXGj4xc/bCVEznP0d895zgrCF1iS1wG74AbeteChMwQcxb+VP8FjU4SZ8VjmDi3DCe83nmGIvr9Mv6jv+pfjvwjttVFTr1JkpA06iqKROIIfD4XD8nC8zfWotUWJdtgAAAABJRU5ErkJggg==>
+
+[image3]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAZCAYAAAChBHccAAACHklEQVR4Xu2VT0gVURjFT2iQWNQiFEEpopQgiAiNNuLGwKBVSUGQC0GDdgVp5UJwZUiLIAQRNaVFhAuJFkGLB66iTUS1UKRVuSpXBhFR5/jd67vzHJ83e4ng/ODHm3fvNzNnZu4fICMj4184Rc8VNpI99Bo94Y7LaC3toofzZas00Pt0hF6E1f8XztDb9A39TXuS3SscoK9h/aFDdHdQp+M+2LVO0yP0Ob0e1ERRDXvyysKOAhT+Aj1Pl5Eefi99Qd/TBToBO29XUCMUch75r9EGe8jHviCWGthJunEMelPFwutauuZ61MGCPwza9sO+hB70r9jq8Fdgb/kqbF6oNvbeayh1+Kf0AWzofKYzSE5WvXGFH6BT9AZ9SweRnBdRlDr8S3oZNs6lQs7RQ65G91L4nKsXx+giveX+p6LVQGFDT9Jn9GhKX9oDFQuvsPvcr6eRfqf97r8P3+0LYPfJ0Q/0YNC+ilaTe7CVJfQJ/UTHU/o6V85MUix8Gr7+FSzDKCy8Vi6PD6861UdTymGjcfuTtgZtvj4Hu8dNbNPwus4vJMP7YaMvq+F0lv6ArTaeDYfNemw2/N3CDtgy2Iv8mNfvHbpEm1xbBWw31fApd21REzaN2PDaFb8gue1/o7O0ytVoqXtEp2kHnaRfYTtoyHH6kY7B5tU7OowtWCo3Qm+7nl6iLbCNKA0FbYbVqT5coaJR6HbkP2FGRkbGDuUPExZ5mtAvPLMAAAAASUVORK5CYII=>
+
+[image4]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAZCAYAAAC2JufVAAAB3ElEQVR4Xu2VTyhEURTGj1BEJCJF2GEhRcpG408iKUlRNsqChVIkUWw0yYZIlKyUFWVhgZ1sFCJFSlmwkZWVBeXP9825M/PeM9OIN2Xxvvo13XPve/Pde885T8STp/+pDDAM1sAUKLRPB5QI2sAKWALNINm2wkUVgQPQAvKBD1yCTsuadLAFhkAuqAZ3YA9kWta5ogSwLHYDFA0eSfgPm8AHWAVJJuYHn2DAjF0TT+AQ9NnDUgXOQJ4Z+8A72AEpJjYpamrEjF0Td70N3sCYaI7w9CbEfiqMZUvYUCrYBy+iG3BdNeBZdNcnYEH0RKLlChO+X9QQc4yG46J68CpqjEyLnoZTg+ABPIlWaZp92i4eO++f1RMLVg93G1QlOAcdotfG3KGxDYlsjGKc184KLHPMhcQXs8f8hEVQHHhKDdKQtfrKwYVotbEKo4nP0PyuRDf/K7WCK5DjiPPUb8C4GTeCeVAQWqEJzry6F70B19QOTkGWI87k3RTtQcG2wVMJmqT4LGPX8n1TfxJ3zu7d7YiXgmNQItoW1sEtqDDzND0jamrUxFxVLXgUTeweMCd6dQ2WNTTPDs9PTS+YFe1tXBu37x9fXAe6zG+kP2LFstK4hlfHZurJkydPsfQFSF1WFn4C3IIAAAAASUVORK5CYII=>
+
+[image5]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAZCAYAAAC2JufVAAAB0UlEQVR4Xu2VzytEURTHj1BEyIIUGSVlIQppClmJBUkpJSvZsiNsRv4DC0pKFkpZSllI7CRhreRHLC1ZsOD7de7jzpsZ774aRb1vfWruOfe++517zn1PJFKkv6cmMAIqQA4oBl1gzJ5kch1gGayAbhP7FY2Cdx/3oMWakw8S4FT0TzSCY7AoIY1VgjVQ5E/4NACuDSdgGpQkzRAZBq+gz4p1gicQt2KBqgKbouX4STQ16w9aKgB74Bm0WnE+/060nM7KlimuP5LMppgL2uNLYUxx3r5oCW/AJMg1+SBTXMNWcVIYU4eg3IzrwQOYke8mToAX0G7GFHvqTdQY90pRmWjCphnsiG7iz9lG2TPEE41siRqrM7FacAXmTJ63cV30pqY1xdu1IHrTbPhglmIjTW7ic2Vm8YS5Yb8Vi4ED8AguwLj8Uk81iG6yCwqtuGeKpc0kvqv4Ssj67WPjsoFtU1757MZmK1yCITOmBkX7LG7FAuViqlTUQMyK8TdvFMvM3qF4Yjy5hBlzHUu5CvJMzEkupqg2cA7mwRS4BduiG3uqBmdgSbQf+Zu9GvS1SJGrKYoP7xUtT0zSf894Q3tE59Qkp9xFM/z6hzreSJEi/Wd9AIA1YBywSK9CAAAAAElFTkSuQmCC>
