@@ -1,28 +1,31 @@
 # §511 "OUTSIDE THE CASTLE" — boundary analysis (addendum to SUMMON_SPEC.md)
-**Date:** 2026-06-12 · Companion to SUMMON_SPEC.md §4.4. **No code/data changed.** This resolves every spec item EXCEPT the castle-boundary mechanism, which is the one remaining fork for Yuriy.
+**Date:** 2026-06-12 · Companion to SUMMON_SPEC.md §4.4. **No code/data changed.**
+**UPDATE 2026-06-12 (post-domination analysis): Yuriy's critique is correct — the flag does NOT save enumeration work. Re-framed recommendation below.**
 
-## What's already settled (implementing now once the fork is picked)
-- **Amulet rename is safe.** The bear amulet «Амулет» appears in GD structure at exactly TWO sites: §84 `acquires:"Амулет"` + its label. Every other amulet reference is the distinct «Золотой амулет» (Golden amulet: §390/§500/§625/§1164), matched by exact string — zero collision. Rename §84 → «Медвежий амулет».
-- **Canon numbers verified verbatim** (§511): Медведица Мастерство 8 / Выносливость 10, «по тем же правилам… Копия», «**Один раз за все путешествие**» (→ `S.summonsUsed`), «в любом бою, но за пределами Чёрного замка. Там амулет бессилен.»
-- **Bell (§612):** Медведь 11/9, anywhere, one use; the bell item is currently NOT granted (only «Медный ключик») — fix: add «Волшебный колокольчик» to §612 auto_items.
-- Engine shape, `useAllyInCombat()`, button wiring, `COMBAT_ALLIES`, harness — all per SUMMON_SPEC.md, unaffected by the fork.
+## Settled and ready (implement once the boundary mechanism is chosen)
+- Amulet rename «Амулет»→«Медвежий амулет» is collision-free (only §84 + its label; all other amulet refs are the distinct «Золотой амулет» §390/§500/§625/§1164).
+- Canon numbers verbatim: Медведица 8/10, «по правилам Копии», «Один раз за все путешествие» (→ `S.summonsUsed`), powerless inside the castle.
+- §612 bell-grant bug (bell never granted, only «Медный ключик») — fix in this feature.
+- Engine shape / `useAllyInCombat()` / button wiring / `COMBAT_ALLIES` / harness — per SUMMON_SPEC.md.
 
-## The fork: how to know a combat is "inside the Black castle"
-Two robust candidates, both analyzed against the data. Prose-only auto-classification was tested and REJECTED (35 of 76 combat paragraphs are "ambiguous" because the fight text rarely restates the location — it was set in the preceding paragraph). So:
+## The boundary problem — RESOLVED in understanding (Yuriy was right)
+Yuriy's point: if the flag needs ALL castle entries/exits/transitions enumerated (incl. exotic routes — a barrel down the river, etc.), it collapses into Option 2's full enumeration. **The graph analysis confirms this exactly:**
 
-### Option 1 — runtime "entered castle" flag (RECOMMENDED)
-Set a persistent `S.enteredCastle=true` the first time the player visits a castle-entry paragraph, and treat the amulet as powerless whenever `S.enteredCastle` is true. Castle entries (threshold prose): **§1145** (courtyard — «проскальзываете во двор замка»), **§888** (climbing the outer wall, 3rd floor), **§722** (flying to the watchtower), **§1150** (watchtower), **§70** (path meets the castle wall → forces the wall/tower route).
-- **Evidence:** blocking those 5 entries makes **14 of 15** unambiguous castle-interior combats unreachable from §1 — i.e. you essentially cannot reach a castle fight without passing an entry. Matches the narrative meaning of "inside the castle" exactly, needs no per-paragraph list, and is future-proof.
-- **Caveat:** §684 (a castle room reachable by a second route) leaks past the 5 entries — add its specific inbound (or §684 itself) to the entry set, OR accept it. One-line fix once confirmed.
-- **Cost:** `S.enteredCastle` in initState + normalizeSave; set it in `goTo`/`renderGame` when `CASTLE_ENTRIES.has(section)`; amulet button checks `!S.enteredCastle`. Tiny.
+1. **No thin neck.** Attempting to dominate the castle interior with a small entry set fails: the interior is reached through a DIFFUSE web of crossing paragraphs (§91→131, §945/954/986→174, §676/1196→266, §1135→1050, §1015/1044/1079→1096, §136→618, §1089→790, §789→1163, §96/298/604/901/971/838→45, …). These are dozens of internal corridor/door/mirror/gas-puzzle transitions, because the Black castle is a dense maze with many doors — not a building with one gate. Making a flag's entry-set *provably complete* would require enumerating essentially all of them = Option 2's work.
+2. **Reachability partition also fails.** Of 76 combat paragraphs, **75 are reachable in the "forest phase"** (without committing to the castle-entry paragraphs); only **§684** is castle-exclusive. The castle interior loops back into the broader graph so thoroughly that forest and castle are NOT graph-separable. So "amulet powerless iff not-forest-reachable" would wrongly free the amulet almost everywhere.
+3. **Exits are clean though.** No castle→forest edges and no "leave the castle" prose exist — the castle is a one-way endgame funnel. So *monotonicity* (once-in-always-in) is safe; the problem is purely entry-set completeness, which is large.
 
-### Option 2 — curated `CASTLE_SECTIONS` Set
-Bake an explicit set of castle-interior paragraphs into the engine; amulet powerless iff `CASTLE_SECTIONS.has(section)`.
-- **Unambiguous interior combats (prose-verified):** §131, §174, §191, §455, §481, §618, §684, §722, §790, §823, §950, §1050, §1096, §1099, §1163.
-- **Plus** the inside-castle subset of the 35 "ambiguous" combats, which must be hand-finalized by reading each one's *preceding* paragraph (e.g. §628/§742/§805/§96/§1150/§1177 read as interior; §260/§440/§532/§448/§456 read as forest). ~20 paragraphs total once finalized.
-- **Downside:** static; must be maintained if routing changes; the hand-finalization of the ambiguous set is a judgment pass with some risk of a wrong call that mis-gates one fight.
+**Conclusion:** an ACCURATE "inside the castle" predicate requires a hand-curated paragraph set (Option 2). The flag is elegant but, here, not cheaper — Yuriy is right.
+
+## Re-framed options (pick one)
+- **Option 2 — curated `CASTLE_SECTIONS` set (now the honest baseline).** Hand-finalize the castle-interior paragraphs (start from the 15 prose-verified interior combats + classify the ~35 ambiguous via each one's preceding paragraph). The amulet checks `CASTLE_SECTIONS.has(section)`. Most accurate; one-time curation cost; must be re-checked if routing changes (rare — data is canon-frozen).
+- **Option 3 — sidestep the boundary entirely (NEW, pragmatic).** Lean on the two facts we already have for free:
+  - the **bell** (Медведь 11/9) works *everywhere by canon*, including the castle — so castle fights already have a summon;
+  - the **amulet** is once-per-game (`summonsUsed`) and the she-bear is the *weaker* ally (8/10).
+  Rather than police the exact castle boundary, gate the amulet on the **handful of castle-exclusive + clearly-interior combats** (a SHORT deny-list: §684 + the 15 prose-verified interior combats + the wizard/endgame rooms — ~18 paragraphs we can name with confidence), and accept that a few deep-interior fights reachable via forest hubs might still allow the weaker amulet. Low effort, canon-faithful in spirit ("the amulet is powerless in the castle's heart"), zero risk of wrongly disabling it in an obvious forest fight.
+- **Option 1 (runtime entry flag) — WITHDRAWN** as a standalone: not provably complete without enumerating the diffuse entry web (= Option 2).
 
 ## Recommendation
-**Option 1 (runtime flag).** It is the most faithful to the canon phrasing ("за пределами замка" = a state you're in once you've entered), the most robust (one near-perfect dominator set, vs. classifying ~20 paragraphs), and the cheapest to maintain. Resolve the §684 leak by including its inbound in `CASTLE_ENTRIES`. If you prefer an explicit auditable list instead, Option 2 with the verified 15 + a finalized ambiguous subset.
+Given the maze has no clean boundary, **Option 2** if we want strict canon accuracy (curate the interior set once — I'll do the per-paragraph classification and you sign off on the list), or **Option 3** if we want minimal effort with a sensible spirit-of-canon deny-list. I lean **Option 2** for a faithfulness-first project: it's a bounded one-time curation (~50 paragraphs to eyeball), fully auditable, and the data is frozen so it won't rot. The curated list will be recorded in the registry and in the future-research instructions (so Gemini/ChatGPT/Claude know the castle-interior set and the item-summon mechanic).
 
-**Decision needed:** Option 1 or Option 2. Everything else in the summon feature is ready to implement immediately on your word.
+**Decision needed:** Option 2 (curated set — I produce the classified list for your approval) or Option 3 (short deny-list, minimal). Then implementation proceeds.
