@@ -2,6 +2,7 @@
 **Read `00_BRIEF.md` first.** Use NORMAL mode (not Deep Research). HEAD 4f59e49 · registry v2.89.
 
 ## Access (IMPORTANT — operational notes)
+- **CONTEXT-WINDOW NOTE (read this):** `src/remake_data.js` is a single ~1 MB line and will likely overflow your context if loaded whole (this is exactly what blocked Gemini). If your tools return only a fragment of it, **do NOT parse the raw file** — instead use the small pre-extracted pack in `audit_cycles/external_review_june_2026/gemini_data/` (despite the name it is model-agnostic): `01_paragraphs_part1..5.jsonl` (the full game, one JSON object per paragraph, in readable shards), `02_graph_facts.json` (precomputed reachability/dangling/combat list/mismatches), `03_combat_paragraphs_for_castle_review.jsonl` (the 76 combat paragraphs with inbound text), `04_art_coverage.json`. The paragraph `text` fields are the FB2 canon text, usable for quoting.
 - **First try connecting to the GitHub repo directly** (github.com/YVashchuk/Dungeons-of-the-Black-Castle). In a previous cycle ChatGPT could NOT reach GitHub; if that is still the case, Yuriy will upload a **ZIP archive exported from GitHub WITHOUT the original images** (the `assets/` art/scan binaries are stripped to keep the archive small — you do not need images for this review). Either way you get the source files that matter: `assets/fb2_remake.fb2`, `src/remake_data.js`, `src/game_logic.js`, `assets/text_corrections.json`, `assets/book_1991_extracted.txt`.
 - If you only have the no-images archive, that is fine: this brief needs **no** image files.
 
