@@ -18,6 +18,28 @@ const SPELLS=[
    full:'С помощью этого заклятия вы сможете переплыть любую водную преграду, которая вам встретится. Но будьте внимательны: как только вы ступите на землю, заклятие утратит свою силу.'},
 ];
 
+// ── Combat summons (item-triggered allies) ──
+// Distinct ally actors with their OWN Skill/Stamina (NOT copies of the player or enemy).
+// They fight "по тем же правилам, по которым сражается Копия" — a self-contained side-fight
+// (СИЛА УДАРА = Мастерство + 2d6 each side, ±2 Выносливость per round) — but parameterised
+// by the ally's own stats. Held as items; usable ONCE per whole journey (S.summonsUsed),
+// the item itself is NOT consumed (canon keeps the bell/amulet in the bag).
+//   §612 bell → Медведь  Мастерство 11 / Выносливость 9  — works ANYWHERE incl. the castle.
+//   §84 amulet → Медведица Мастерство 8 / Выносливость 10 — only OUTSIDE the Black castle
+//                ("в любом бою, но за пределами Чёрного замка. Там амулет бессилен.")
+const COMBAT_ALLIES={
+  'Волшебный колокольчик':{name:'Медведь',   skill:11, stamina:9,  scope:'anywhere',       icon:'🐻', verb:'звоните в колокольчик, и из чащи появляется огромный медведь'},
+  'Медвежий амулет':      {name:'Медведица', skill:8,  stamina:10, scope:'outside_castle', icon:'🐻', verb:'сжимаете амулет, и на зов является медведица'}
+};
+
+// Curated set of combat paragraphs INSIDE the Black castle (Option 2, June 2026).
+// The castle is a dense maze with no thin neck and no clean graph partition (75/76 combat
+// paragraphs are forest-phase-reachable), so an accurate "inside" predicate requires this
+// hand-verified list rather than a runtime flag. Used only to disable the bear-fur amulet
+// (the bell works inside by canon). See audit_cycles/combat_summon_june_2026/.
+const CASTLE_SECTIONS=new Set([43,96,131,174,388,455,481,588,618,628,684,722,742,760,788,790,805,823,915,950,1050,1096,1099,1150,1163,1177]);
+function isInsideCastle(section){ return CASTLE_SECTIONS.has(section); }
+
 // ── Preface Text ──
 const PREFACE_TEXT='В самое обыкновенное сказочное королевство приходит беда. В тихом лесу, на его южных границах, появляется хитрый и коварный волшебник Барлад Дэрт, в совершенстве овладевший искусством черной магии. Никто не знает, из каких земель он пришел. Вскоре окрестные жители начинают сторониться леса, который темные колдовские силы сделали таинственным и непроходимым, с множеством беспощадных ловушек и мерзких глубоких болот. Лес наводнили Гоблины и Орки — уродливые и жестокие воины Барлада Дэрта. А в самом центре леса, который теперь называют не иначе как Зачарованный лес, волшебник воздвиг Черный замок, и никому еще не удалось достичь его и безнаказанно вернуться обратно.\n\nНо волшебник не успокаивается на этом. Узнав, что во дворце живет прекрасная Принцесса — единственная дочь Короля — он посылает к ее отцу черных послов, чтобы просить ее руки. Гордый Король отказывает им, послы появляются еще дважды.\n\nКаждый раз они спускаются с неба на могучих крылатых конях, и только Король может без страха смотреть им в глаза, столь большая и грозная сила исходит от них. Но Король непреклонен, хотя и понимает: Барлад Дэрт так просто не отказывается от своих намерений. И вот, когда послы в третий раз покидают дворец, Принцесса исчезает вместе с ними. Заклятие волшебника переносит ее в Черный замок, но она бесстрашно отказывается стать женой чародея, и тот не в силах сдержать свою злобу, погружает ее в волшебный сон.\n\nПо всему королевству герольды созывают смельчаков, обещая награду тому, кто освободит Принцессу. Один за другим покидают они столицу по Главному Южному тракту и исчезают в Зачарованном лесу. Но ни один не возвращается назад: Черный замок умеет беречь свои тайны.\n\nХотите попытаться миновать западни Зачарованного леса, сразиться с беспощадными воинами Барлада Дэрта, проникнуть в Черный замок и разрушить колдовские чары?\n\nЕсли да, то собирайтесь в путь — книга поможет вам перенестись в сказочное королевство…';
 
@@ -41,7 +63,7 @@ Object.defineProperty(window, 'S', {
 function initState(n,sk,st,lu,sp){
   return{name:n||'Герой',section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,
     luck:lu,luckMax:lu,gold:15,flask:2,bagSize:7,
-    inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),pending_combat_buff:null,bet_stake:null,v:5};
+    inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),pending_combat_buff:null,bet_stake:null,summonsUsed:[],v:5};
 }
 
 // ── RNG ──
@@ -74,6 +96,7 @@ function normalizeSave(s){
   if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
   if(typeof s.sec436_force!=='boolean') s.sec436_force=false; // §436 Force-on-tree round-trip flag
   if(s.bet_stake===undefined) s.bet_stake=null; // betting Phase B2 — current wager (gold/item) or null
+  if(!Array.isArray(s.summonsUsed)) s.summonsUsed=[]; // combat-summon items already spent (once per journey)
   return s;
 }
 function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const s=JSON.parse(r);return (s.v===5||s.v===4)?normalizeSave(s):null;}catch{return null;}}
@@ -1816,6 +1839,26 @@ function startCombat(enemies,sec){
       copyBtn.style.display='none';
     }
   }
+  // Combat-summon ally button (item-triggered; group: combat_summon). One button serves
+  // whichever summon item the player holds and can use here. Reset the per-fight guard
+  // each time combat starts; opt-out via sec.summon_allowed===false (e.g. scripted fights
+  // where Copy is also barred). The bell works anywhere; the amulet only outside the castle.
+  combatState.allyUsedThisFight=false;
+  const allyBtn=document.getElementById('btn-summon-ally');
+  if(allyBtn){
+    let pick=null;
+    if(sec.summon_allowed!==false){
+      for(const key in COMBAT_ALLIES){ if(summonAllyAvailable(key)){ pick=key; break; } }
+    }
+    if(pick){
+      const a=COMBAT_ALLIES[pick];
+      allyBtn.style.display='inline-block';
+      allyBtn.textContent=`${a.icon} Позвать: ${a.name}`;
+      allyBtn.onclick=()=>useAllyInCombat(pick);
+    } else {
+      allyBtn.style.display='none';
+    }
+  }
   const forceBtn=document.getElementById('btn-force-spell');
   const forceRemaining=getSpellRemaining('FORCE');
   if(forceBtn){
@@ -1958,6 +2001,8 @@ function endCombat(won){
   const log=document.getElementById('combat-log');
   const copyBtn=document.getElementById('btn-copy-spell');
   if(copyBtn)copyBtn.style.display='none';
+  const allyBtn=document.getElementById('btn-summon-ally');
+  if(allyBtn)allyBtn.style.display='none';
   const forceBtn=document.getElementById('btn-force-spell');
   if(forceBtn)forceBtn.style.display='none';
   const weakBtn=document.getElementById('btn-weakness-spell');
@@ -2024,6 +2069,85 @@ function useCopyInCombat(){
       copyBtn.style.display='none';
     }
   }
+  if(cs.special&&cs.special.type==='sec1175'){
+    const first=cs.enemies[0];
+    if(first.hp<=0 && !cs.special.firstDeathHandled){
+      cs.special.firstDeathHandled=true;
+      if(!cs.special.reinforcementsJoined){
+        cs.enemies[1].active=true;
+        cs.enemies[2].active=true;
+        cs.special.reinforcementsJoined=true;
+        log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">✦ Первый Орк повержен. Теперь вам придётся сражаться с двумя оставшимися.</div>`;
+        updateCombatEnemyDisplay(cs);
+      }
+      if(!cs.special.luckChecked && cs.enemies[2].hp>0 && !cs.enemies[2].fled){
+        promptCanon1175Luck();
+        updateHUD();
+        log.scrollTop=log.scrollHeight;
+        return;
+      }
+    }
+  }
+  if(getAliveCombatEnemies(cs).length===0){
+    endCombat(true);
+  }
+  updateHUD();
+  log.scrollTop=log.scrollHeight;
+}
+
+// ── Combat summons in combat (item-triggered ally) ──
+// Models useCopyInCombat: a self-contained side-fight against the strongest alive enemy,
+// but the ally rolls 2d6 + ITS OWN skill and has ITS OWN stamina as HP (Copy borrowed the
+// enemy's). Usable once per journey (S.summonsUsed); the item is NOT consumed. The bear-fur
+// amulet's ally (Медведица) is powerless inside the Black castle; the bell's (Медведь) works
+// anywhere. allyKey is the inventory item name (a key of COMBAT_ALLIES).
+function summonAllyAvailable(allyKey){
+  if(!combatState||!S) return false;
+  const a=COMBAT_ALLIES[allyKey];
+  if(!a) return false;
+  if(!Array.isArray(S.inventory)||!S.inventory.includes(allyKey)) return false;
+  if(Array.isArray(S.summonsUsed)&&S.summonsUsed.includes(allyKey)) return false;
+  if(combatState.allyUsedThisFight) return false;
+  if(a.scope==='outside_castle'&&isInsideCastle(S.section)) return false;
+  if(getAliveCombatEnemies(combatState).length===0) return false;
+  return true;
+}
+function useAllyInCombat(allyKey){
+  if(!summonAllyAvailable(allyKey)) return;
+  const a=COMBAT_ALLIES[allyKey];
+  const cs=combatState;
+  const alive=getAliveCombatEnemies(cs);
+  alive.sort((x,y)=>(y.skill*y.hp)-(x.skill*x.hp));
+  const target=alive[0];
+  // mark spent immediately (one summon per fight; once per journey) — item stays in the bag
+  cs.allyUsedThisFight=true;
+  if(!Array.isArray(S.summonsUsed)) S.summonsUsed=[];
+  if(!S.summonsUsed.includes(allyKey)) S.summonsUsed.push(allyKey);
+  cs.ally={name:a.name,skill:a.skill,stamina:a.stamina};
+  const log=document.getElementById('combat-log');
+  log.innerHTML+=`<div style="color:#b8860b;font-weight:bold;margin-top:8px">${a.icon} Вы ${a.verb}!</div>`;
+  log.innerHTML+=`<div style="color:#b8860b;font-size:14px;">${a.name}: Мастерство ${a.skill}, Выносливость ${a.stamina}. Бьётся с ${target.name}.</div>`;
+  let allyHp=a.stamina;
+  let enemyHp=target.hp;
+  let round=0;
+  while(allyHp>0&&enemyHp>0&&round<50){
+    round++;
+    const allyAtk=d6()+d6()+a.skill;
+    const enemyAtk=d6()+d6()+target.skill;
+    if(allyAtk>enemyAtk){enemyHp-=2;}
+    else if(enemyAtk>allyAtk){allyHp-=2;}
+  }
+  if(enemyHp<=0){
+    target.hp=0;
+    log.innerHTML+=`<div class="hit" style="margin-top:4px">${a.icon} ${a.name} повергает ${target.name}!</div>`;
+  } else {
+    target.hp=Math.max(1,enemyHp);
+    log.innerHTML+=`<div class="miss" style="margin-top:4px">${a.icon} ${target.name} одолел ${a.name}, но ослаблен (выносливость: ${target.hp}).</div>`;
+  }
+  updateCombatEnemyDisplay(cs);
+  const allyBtn=document.getElementById('btn-summon-ally');
+  if(allyBtn) allyBtn.style.display='none'; // single use per fight
+  // §1175 milestone re-check (mirror useCopyInCombat)
   if(cs.special&&cs.special.type==='sec1175'){
     const first=cs.enemies[0];
     if(first.hp<=0 && !cs.special.firstDeathHandled){
