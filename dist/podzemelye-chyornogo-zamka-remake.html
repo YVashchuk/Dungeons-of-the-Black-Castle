@@ -993,6 +993,7 @@ body:has(.end-overlay.on) {
       <button class="btn btn-s" id="btn-weakness-spell" style="display:none;border-color:#a76;color:#d96;" onclick="useWeaknessInCombat()">🫀 Заклятие Слабости</button>
       <button class="btn btn-s" id="btn-copy-spell" style="display:none;border-color:#666;color:#999;" onclick="useCopyInCombat()">👤 Заклятие Копии</button>
       <button class="btn btn-s" id="btn-summon-ally" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;">🐻 Позвать союзника</button>
+      <button class="btn btn-s" id="btn-summon-ally2" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;">🐻 Позвать союзника</button>
       <button class="btn btn-s" id="btn-heal-spell" style="display:none;border-color:#2a8;color:#3c9;" onclick="useHealingInCombat()">💚 Заклятие Исцеления</button>
     </div>
   </div>
@@ -4006,24 +4007,27 @@ function startCombat(enemies,sec){
       copyBtn.style.display='none';
     }
   }
-  // Combat-summon ally button (item-triggered; group: combat_summon). One button serves
-  // whichever summon item the player holds and can use here. Reset the per-fight guard
-  // each time combat starts; opt-out via sec.summon_allowed===false (e.g. scripted fights
-  // where Copy is also barred). The bell works anywhere; the amulet only outside the castle.
+  // Combat-summon ally buttons (item-triggered; group: combat_summon). One button PER
+  // available summon the player holds and can use here, so holding BOTH the bell and the
+  // amulet outside the castle lets the player choose which once-per-journey ally to spend.
+  // Reset the per-fight guard each time combat starts; opt-out via sec.summon_allowed===false
+  // (e.g. scripted fights where Copy is also barred). Bell works anywhere; amulet only outside.
   combatState.allyUsedThisFight=false;
-  const allyBtn=document.getElementById('btn-summon-ally');
-  if(allyBtn){
-    let pick=null;
-    if(sec.summon_allowed!==false){
-      for(const key in COMBAT_ALLIES){ if(summonAllyAvailable(key)){ pick=key; break; } }
-    }
-    if(pick){
-      const a=COMBAT_ALLIES[pick];
-      allyBtn.style.display='inline-block';
-      allyBtn.textContent=`${a.icon} Позвать: ${a.name}`;
-      allyBtn.onclick=()=>useAllyInCombat(pick);
-    } else {
-      allyBtn.style.display='none';
+  const allyBtnIds=['btn-summon-ally','btn-summon-ally2'];
+  allyBtnIds.forEach(id=>{const b=document.getElementById(id); if(b) b.style.display='none';});
+  if(sec.summon_allowed!==false){
+    let slot=0;
+    for(const key in COMBAT_ALLIES){
+      if(slot>=allyBtnIds.length) break;
+      if(!summonAllyAvailable(key)) continue;
+      const b=document.getElementById(allyBtnIds[slot]);
+      if(b){
+        const a=COMBAT_ALLIES[key];
+        b.style.display='inline-block';
+        b.textContent=`${a.icon} Позвать: ${a.name}`;
+        b.onclick=()=>useAllyInCombat(key);
+        slot++;
+      }
     }
   }
   const forceBtn=document.getElementById('btn-force-spell');
@@ -4170,6 +4174,8 @@ function endCombat(won){
   if(copyBtn)copyBtn.style.display='none';
   const allyBtn=document.getElementById('btn-summon-ally');
   if(allyBtn)allyBtn.style.display='none';
+  const allyBtn2=document.getElementById('btn-summon-ally2');
+  if(allyBtn2)allyBtn2.style.display='none';
   const forceBtn=document.getElementById('btn-force-spell');
   if(forceBtn)forceBtn.style.display='none';
   const weakBtn=document.getElementById('btn-weakness-spell');
@@ -4314,6 +4320,8 @@ function useAllyInCombat(allyKey){
   updateCombatEnemyDisplay(cs);
   const allyBtn=document.getElementById('btn-summon-ally');
   if(allyBtn) allyBtn.style.display='none'; // single use per fight
+  const allyBtn2=document.getElementById('btn-summon-ally2');
+  if(allyBtn2) allyBtn2.style.display='none'; // hide the other summon too (one ally per fight)
   // §1175 milestone re-check (mirror useCopyInCombat)
   if(cs.special&&cs.special.type==='sec1175'){
     const first=cs.enemies[0];
