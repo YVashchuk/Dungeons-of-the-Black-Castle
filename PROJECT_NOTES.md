@@ -15,6 +15,7 @@ This project is a browser adaptation of **"Подземелья Чёрного �
 | Victory paragraph | **§1220** (NOT §617) |
 | Source file | `assets/fb2_remake.fb2` |
 | Original source material (REFERENCE ONLY) | `assets/pdf_original_1991.pdf` (scanned 1991 print edition, with original illustrations) |
+| 1991 adjudication text | `assets/book_1991_extracted.txt` — 617 sequential paragraphs decoded from the scanned PDF (font-shift +0x228). Settles "what did the original intend?" questions locally; whitespace-mangled, so match space-insensitively. |
 | Markdown export for AI tools | `assets/book_text.md` (full text + corrections log, derived from `fb2_remake.fb2`) |
 
 The remake preserves the original story and mechanics but:
@@ -42,8 +43,9 @@ Dungeons-of-the-Black-Castle/
 ├── assets/                     ← Source texts + reference PDFs + illustrations
 │   ├── fb2_remake.fb2          ← The canonical source (1221 paragraphs)
 │   ├── pdf_original_1991.pdf   ← Scanned 1st-edition PDF (historical reference only)
+│   ├── book_1991_extracted.txt ← Decoded 1991 text (617 paragraphs) — adjudication source
 │   ├── book_text.md            ← Full text + corrections log (for Gemini/AI tools, MD format)
-│   ├── text_corrections.json   ← Authoritative correction registry (v2.48, 29 groups)
+│   ├── text_corrections.json   ← Authoritative correction registry (v2.91, 62 groups)
 │   ├── analytical_report.pdf   ← Design analysis for Windows + Android adaptation
 │   └── illustrations/
 │       ├── originals/          ← 46 Midjourney PNGs, FULL RESOLUTION (kept as source)
@@ -55,7 +57,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── illustrations.js        ← Legacy 1991 b/w scans (fallback when no MJ art)
 │   ├── title_art.js            ← Title-screen lineart
 │   ├── map_module.js           ← Map / fog-of-war panel
-│   ├── game_logic.js           ← Engine: combat, luck, inventory, rendering
+│   ├── game_logic.js           ← Engine: combat, luck, inventory, rendering, ally-summons, post-combat gating
 │   ├── mobile.css              ← (PREPARED, not active) Pixel 7a / iPhone 15 layout + safe-area
 │   └── fonts/                  ← (PREPARED, not active) Self-hosted woff2
 │       ├── fonts.css           ← @font-face declarations (replacement for Google Fonts)
@@ -68,7 +70,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── GRAPH_AUDIT.md          ← Graph & UX audit (Gemini G-2 verified)
 │   └── PWA_IMPLEMENTATION.md   ← PWA activation plan (ChatGPT C-1 verified)
 ├── dist/                       ← Built artifacts
-│   ├── podzemelye-chyornogo-zamka-remake.html  ← BUILT single-file game (~9.3 MB)
+│   ├── podzemelye-chyornogo-zamka-remake.html  ← BUILT single-file game (~11.6 MB)
 │   ├── manifest.webmanifest    ← (PREPARED, not active) PWA install metadata
 │   ├── sw.js                   ← (PREPARED, not active) Service worker
 │   └── icons/                  ← (PREPARED, not active)
@@ -76,6 +78,7 @@ Dungeons-of-the-Black-Castle/
 │       ├── icon-512.png
 │       └── icon-maskable-512.png  ← Android adaptive icon
 ├── scripts/                    ← Git push helpers
+├── audit_cycles/               ← Historical audit archive (per-cycle briefs/reports; tracked)
 ├── _handoff/                   ← (GIT-IGNORED) Briefs for external AI sessions
 ├── build.sh                    ← Concatenate src/* into dist/
 ├── README.md
@@ -160,8 +163,9 @@ Coverage (current, verified against `src/mj_art.js` / `src/illustrations.js`, re
 ## Save format
 
 - localStorage key: `podzch_v5` (map-module may upgrade to v7 automatically)
-- Fields: name, section, skill, stamina, luck, gold, flask, inventory,
-  spells, notes, combatWon, visited
+- Fields: name, section, skill, stamina, luck (+ luckMax), gold, flask, inventory,
+  spells, notes, combatWon, visited, summonsUsed (combat-ally summon, once per journey)
+- `normalizeSave()` backfills any missing field so an old save can't crash a newer build.
 
 ## Build
 
@@ -179,7 +183,7 @@ The script concatenates these files in order:
 7. `game_logic.js` — engine (renders MJ first, ILLUST fallback)
 8. closes `</script></body></html>`
 
-Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~9.3 MB).
+Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~11.6 MB).
 
 > **Note:** the current `build.sh` does NOT yet include `mobile.css`, `fonts/`,
 > `manifest.webmanifest`, `sw.js`, or `icons/`. They will be added when PWA is
@@ -187,15 +191,70 @@ Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~9.3 MB).
 
 ## Why single-file HTML?
 
-The deliverable is one big self-contained `.html` file (~9.3 MB with all MJ
+The deliverable is one big self-contained `.html` file (~11.6 MB with all MJ
 art baked in) so it plays from a local file without a server. Source files
 are kept modular under `src/` for maintainability; `build.sh` concatenates
 them into `dist/podzemelye-chyornogo-zamka-remake.html`.
+
+## Engine features beyond basic Fighting-Fantasy mechanics
+
+These are the non-obvious mechanics a maintainer (or external auditor) must know.
+Authoritative detail lives in `assets/text_corrections.json` (the ledger, v2.91)
+and the per-topic audits under `audit_cycles/`.
+
+### Combat ally summons (item-summoned, NOT the Copy spell)
+Some held ITEMS let the player summon an ally mid-combat. The ally is a DISTINCT
+actor with its OWN Skill/Stamina — it only borrows the **resolution rules** of the
+Copy spell (a self-contained 2d6+Skill side-fight, +/-2 HP per round, ally HP = its
+own Stamina). It is NOT a copy of the enemy.
+- **Волшебный колокольчик** (granted §612) -> summons **Медведь** (Skill 11,
+  Stamina 9), usable **anywhere, including inside the castle**.
+- **Медвежий амулет** (granted §84 via the `acquires` edge to §511) -> summons
+  **Медведица** (Skill 8, Stamina 10), usable **only OUTSIDE the Black Castle**.
+- Once per journey (`S.summonsUsed`); the item is **retained**, not consumed.
+- Engine: `COMBAT_ALLIES` map + `useAllyInCombat()` / `summonAllyAvailable()` +
+  `#btn-summon-ally` / `#btn-summon-ally2` (the 2nd button appears when the player
+  holds both summon items outside the castle).
+- The "inside the castle" predicate is the hand-curated **`CASTLE_SECTIONS`** set of
+  26 interior combat paragraphs (forest/castle phases are NOT graph-separable, so a
+  curated set is used). Only the amulet is disabled inside that set — the bell works
+  inside by canon. This is intended, not a bug.
+
+### Two distinct amulets — keep them apart
+- **Медвежий амулет** (§84) -> summons Медведица (above).
+- **Золотой амулет** (§390/§500/§625/§1164) -> blinds Барлад Дэрт in the finale.
+
+Matched by exact item string; never conflate them.
+
+### post_combat gating
+A choice with `post_combat:true` is **hidden while a fight is pending** and shown
+only **after victory** (`renderChoices`). Post-victory continuations MUST carry this
+flag or they become combat-bypasses (grab the reward without fighting). There are
+116 such flags after the June sweep; any new combat paragraph needs the same
+treatment. PRE-combat choices (cast a spell, show an item, flee, give a password)
+are intentionally left visible.
+
+### Item grants come from SIX mechanisms
+A "gated but never granted" claim is FALSE unless all six are checked:
+`auto_items.items`, `auto_items.food[]`, choice/section `grants_items`, choice
+`grants_food`, `bet_payout.items` (materialised by `applyBetting()`), and `acquires`
+(via `applyChoiceAcquires()`). Example: the bear amulet is granted only via
+`acquires` on §84 — invisible to an `auto_items`-only scan.
+
+### Paragraph-jumping items = static inventory-gated choices (NOT a runtime engine)
+Several items make a later fork's destination `currentParagraph +/- N` in the printed
+book (fish +15, castle key +40, Book +24, ruby ring +401, orange +750, club +50,
+candles +10, bird-guide −50, …). The remake ships these as **static, inventory-gated
+parallel choices** (per-item conditional routing) — there is NO runtime arithmetic
+engine, and one must NOT be added (1221-renumbering puts some offsets out of range;
+each needs its own remap). Full verified table:
+`audit_cycles/dynamic_arithmetic_june_2026/ARITHMETIC_MAP.md` (Section A = wired,
+Section B = data-only backlog).
 
 ## Known gotchas
 
 1. **`src/remake_data.js` is synced from `dist/*.html`.** If you hand-edit `src/remake_data.js` and then rebuild, the edits will survive. But if someone improves the GD inside `dist/*.html` (e.g. ChatGPT polish pass) without updating `src/`, a subsequent rebuild from `src/` will REGRESS those improvements. Keep `src/` as the primary source of truth; re-sync from dist only when drift is detected (see `docs/GRAPH_AUDIT.md` section IV.3 for the procedure).
 
-2. **Bird-guide hint paragraphs** (§106, §151, §178, §277) are not reached by static `choice.target` edges — they are entered via the bird-guide arithmetic mechanic (the engine's conditional `currentParagraph−50`-style jump, implemented). A naive graph BFS reports them as "orphans", but they are reachable in play. See `text_corrections.json` group_29 (full reachability audit: 1167/1221 reachable by static edges; the other 54 are intentional mechanic-only entries).
+2. **Static-unreachable ≠ unreachable in play.** A naive BFS over `choice.target` under-reports reachability, because several paragraphs are entered only via mechanics it cannot see (riddle `valid_targets`/`modifier` jumps, bird-guide −50, inventory-gated parallel exits). The current full audit (`audit_cycles/reachability_audit_june_2026/REACHABILITY_AUDIT.md`) finds **1205 / 1221 reachable**; the remaining **16** are documented Tier B/C "island" paragraphs (success-halves of conditional gates whose parent edge was dropped in the 1991→remaster renumbering) awaiting per-scene 1991 cross-ref before re-wiring — deliberately NOT auto-wired, to avoid mis-parenting twin outcomes.
 
-3. **Dragon §532 and the former "dynamic-math" mechanics are implemented** (this note previously said otherwise — corrected). §532 uses `combat_condition:"wound_2"` (engine routes to §437 after two wounds). The §13 "fish +15" and §140 "gold key +30" arithmetic were replaced by reusable inventory tokens ("Помощь рыбки"; "Золотой ключ" with static §1085 gating) — the renumbering-safe approach. `docs/GRAPH_AUDIT.md` is the original (now historical) Gemini audit; `assets/text_corrections.json` is the authoritative current state (§532 = group_6; §13/§140 = group_6 + commit 4573325).
+3. **Dragon §532 and the "dynamic-math" mechanics are implemented.** §532 uses `combat_condition:"wound_2"` (engine routes to §437 after two wounds). The former "+N arithmetic" items (fish §13, gold key §140, Book, ruby ring, …) ship as static inventory-gated choices — see the *Engine features* section above and `audit_cycles/dynamic_arithmetic_june_2026/ARITHMETIC_MAP.md`. `docs/GRAPH_AUDIT.md` is the original (now historical) Gemini audit; `assets/text_corrections.json` (v2.91) is the authoritative current state.
