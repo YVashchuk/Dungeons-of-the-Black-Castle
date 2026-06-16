@@ -1,0 +1,52 @@
+# SESSION HANDOFF — June 2026 (groups 55-63) → parent chat
+**Date closed:** 2026-06-12 · **Repo:** github.com/YVashchuk/Dungeons-of-the-Black-Castle (private) · **HEAD at close:** cbf17f6 (+ this report) · **Registry:** text_corrections.json **v2.91**, 62 groups · **GD:** 1221 paragraphs, 1205 reachable, 0 dangling, 76 combat paragraphs, 116 post_combat flags.
+
+> Workflow reminder for whoever continues: Claude does all code/data/scripting; **Yuriy performs every `git push` himself** and confirms with push output before Claude proceeds. Claude never pushes. Tools: `windows-mcp:PowerShell` (run `python -X utf8 script.py`) + `Filesystem:*` (write_file/edit_file/read_text_file/create_directory). Per-cycle scratch in `_fix_tmp/` (gitignored, deleted before commits). `remake_data.js` is a single ~1MB line — parse with `json.load`, never grep. `mj_art.js` is ~6.9MB (embeds base64 art).
+
+---
+
+## What this session accomplished (large + important)
+A full pass closing the remake's outstanding **content, reachability, obtainability, and combat-correctness** gaps, plus a **new combat feature** (item-summoned allies), validated by a three-model external review and a final project audit. Nine registry groups (55-63), each: canon-verified → Node harness → dist rebuild → registry, all pushed.
+
+### The 1991 first edition became a usable adjudication source
+`assets/pdf_original_1991.pdf` (present since April) was decoded via a constant +0x228 font-shift into `assets/book_1991_extracted.txt` (617 sequential paragraphs, whitespace-mangled → match space-insensitively with 12-char shingles). This let every "what did the original intend?" question be settled locally. Edition genealogy: **1991 = 617 ¶ → remake = 1221 ¶**, victory §1220.
+
+### Groups shipped
+- **group_55** (v2.82) — Case-3 wiring: §435 ГИЕНА name-riddle, the «Пароль "Трое из Эвенло"» token gating §1080→1045 / §766→731, ivory comb grants.
+- **group_56** (v2.84) — gift/show-list gating (rings, rosary, cards, comb/brooch/rose, oberег) with correct consume vs show semantics.
+- **group_57** (v2.85) — **island-edge restoration**. The June reachability audit found 18 zero-inbound "islands"; **16 proved VESTIGIAL** (1991 intermediate "you-open-the-door" paragraphs the remaster superseded with direct `inventory_condition` gating — re-wiring would duplicate paths). Only 3 carried unique content and were wired: §945→954 (offer-pass branch), **§854→938** (a HARD DEAD-END — empty `choices` array stranded skull-holders), §260→600 (restores Водяной loot Огниво/Свеча/Белая стрела). Reachability 1201→1205. See `reachability_audit_june_2026/TIER_BC_VESTIGIAL_FINDING.md`.
+- **group_58** (v2.86) — Флакончик духов obtainability: granted at §866 (harem hostess gift, was missing `auto_items`), gated+consumed at §1063→773.
+- **group_59** (v2.87, registry-only) — obtainability audit: the "six orphan gates" were ALL FALSE POSITIVES. **Documented the FIVE item-grant mechanisms** (`auto_items.items`, `auto_items.food[]`, `grants_items`, `grants_food`, `bet_payout.items`) — and the external review later flagged **`acquires` as a SIXTH**. Future obtainability scans MUST check all six.
+- **group_60** (v2.88) — remake-bug adjudication: §562 pay-choice label «(562)»→«(315)» (routing was already correct; confirmed via 1991 §186/§456); §339↔425 "loop" REFUTED. Book-wide sweep: §562 was the only label/target mismatch.
+- **group_61** (v2.89) — **COMBAT SUMMONS (Variant C)**: distinct ally actors with their own stats. Bell (§612 → Медведь 11/9, anywhere) and bear-fur amulet (§84/§511 → Медведица 8/10, OUTSIDE the castle only). Fight "по правилам Копии" via `useAllyInCombat()` (self-contained side-fight modeled on `useCopyInCombat`: 2d6+ally.skill vs 2d6+enemy.skill, ±2 HP/round, ally HP = own stamina). Once per journey via `S.summonsUsed` (item NOT consumed). Also FIXED the §612 bell-grant bug (bell was never granted). The "inside castle" predicate is the curated **`CASTLE_SECTIONS`** set of 26 combat paragraphs (the castle has no clean graph boundary — see below).
+- **group_62** (v2.90) — **post-combat bypass fix** (found by ChatGPT, scope-expanded by us). `renderChoices` shows post-victory exits lacking `post_combat:true` DURING a pending fight → players could skip mandatory combat and grab rewards. A full 76-paragraph sweep found **30 affected paragraphs** (not the 6 reported); added `post_combat:true` to 62 exits, kept PRE choices (spell/show-item/flee/password) visible, fixed §388→94 label (94 is the шкаф, not the papers).
+- **group_63** (v2.91) — summon picker (ChatGPT P2): holding both bell+amulet outside the castle now shows one button per available ally (added static `btn-summon-ally2`).
+
+### External review (normal mode, NOT Deep Research)
+`audit_cycles/external_review_june_2026/` — briefs + raw replies (10/11/12_*.md) + `ADJUDICATION.md`. Gemini/ChatGPT/Claude reviewed groups 57-61. **Verdict: our work confirmed.** Reachability 1205/1221 independently reproduced by Claude AND ChatGPT. One genuine new bug (→ group_62). Refuted: ChatGPT P1 (save/reload summon reuse — `summonsUsed` is written before any early-return; `exportSave` saves first) and all of Gemini's Task-1 castle guesses (it hit its context window and inferred from art-mapping). **Lesson: large single-line/base64 files overflow Gemini/ChatGPT context — provide pre-extracted shards** (the method used in the now-deleted `gemini_data/` pack).
+
+---
+
+## KEY ENGINE FACTS (for future sessions & external models)
+1. **Combat in-fight helpers are NOT just the Copy spell.** Allies can be SUMMONED via held ITEMS: bell §612 → Медведь 11/9 (anywhere incl. castle); bear-fur amulet §84/§511 → Медведица 8/10 (only outside the Black castle). Distinct actors, own stats, fight by the Copy RULES, once per journey (`S.summonsUsed`, item retained). Engine: `COMBAT_ALLIES` map + `useAllyInCombat()`/`summonAllyAvailable()` + `#btn-summon-ally`/`#btn-summon-ally2` in startCombat/endCombat.
+2. **`CASTLE_SECTIONS`** (game_logic.js) = the 26 hand-verified castle-interior combat paragraphs: `43,96,131,174,388,455,481,588,618,628,684,722,742,760,788,790,805,823,915,950,1050,1096,1099,1150,1163,1177`. Used ONLY to disable the amulet (bell works inside by canon). Chosen via Option 2 (curation) because the castle has NO thin neck and forest/castle are NOT graph-separable (75 of 76 combat paragraphs are forest-phase-reachable; only §684 is castle-exclusive). Excluded after route-reading: §617 (forest Застава), §191 (forest guide), §456 (forest spider-tree), §197 (forest she-bear den — the very Медведица the amulet summons).
+3. **SIX item-grant mechanisms** (a "gated but never granted" claim is false unless ALL six are checked): `auto_items.items`, `auto_items.food[]`, choice/section `grants_items`, choice `grants_food`, `bet_payout.items` (materialized by `applyBetting()`), and `acquires` (via `applyChoiceAcquires()`).
+4. **`post_combat:true`** on a choice = hidden during a pending fight, shown after victory (`renderChoices`). Post-victory continuations MUST carry it or they become combat-bypasses. After group_62 there are 116 such flags; a future combat paragraph needs the same treatment.
+5. **Two distinct amulets:** «Медвежий амулет» (§84, summons Медведица) vs «Золотой амулет» (§390/§500/§625/§1164, blinds Барлад Дэрт). Matched by exact string — keep them distinct.
+
+---
+
+## REMAINING BACKLOG (nothing blocking; all non-code except art)
+- **Art** (deferred until Midjourney subscription renews; `src/mj_art.js` MJ_MAP is source of truth): §449 `art30_two_headed_dragon` rendered single-headed; §1003 `art47_stone_rats` look organic; art51/art08 AI-text artifacts; `art25_cover_hero_castle` and `art29_beautiful_hostess` are catalogued but mapped to no paragraph (bind art29 to a hostess scene §602/§866, use art25 as cover). 14 B&W scan replacements (prompts B1-B14) documented.
+- **Documentation currency (minor):** root docs (`PROJECT_NOTES.md`, `README.md`, `QUICKSTART.md`, `SMOKE_TEST_PATHS.md`) were last updated April-May 2026 and predate this session's features — accurate on fundamentals (1221/§1220/fb2_remake.fb2) but don't mention summons/post_combat. Refresh when convenient.
+- **Registry nit (cosmetic):** group_43's note still says "revisit after deep-research" though §887 was settled this session (verdict A). Historically accurate as written; no action needed.
+
+## PROJECT AUDIT (this close)
+- Working tree CLEAN; zero untracked/orphan files; `.gitignore` comprehensive.
+- No obsolete source: all 8 `src/*` build inputs used by build.sh; all 8 fonts referenced by fonts.css.
+- `audit_cycles/` is an intentional historical archive (briefs/reports per cycle) — not orphans.
+- Registry v2.91 up to date: 62 groups, 58 with `status_done`, 4 documentation/verification records (group_12/43/47/52) correctly without it; version_history monotonic (93 entries).
+- dist rebuilt and embeds all current features (verified by substring checks each group).
+
+## Commits this session (chronological, all pushed except verify the last)
+group_55: acd235e,f91c8f3,80fdba7 · group_43-close: b7f84c9 · group_56: a360d00,9d33a9e · group_57 audit: 213d468,a0cb4de,ddbbfa4 · group_57: 8bc2f1c,083ba76 · group_58: 00fb878,aab0164 · group_59: 71dc39a · group_60: 351c6a2,c44e301,7d1a451 · summon spec: c6d9fba,a66a187,6b94d71 · group_61: 35b4c9d,2de11aa,4f59e49 · external-review briefs: 4594ae3,5277665 · adjudication: 3da77c8 · group_62: ccdab04,2233da3 · group_63: 70ae139,cbf17f6.
