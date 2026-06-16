@@ -10,7 +10,7 @@
 
 Откройте [`dist/podzemelye-chyornogo-zamka-remake.html`](dist/podzemelye-chyornogo-zamka-remake.html) в браузере (Chrome, Edge или Firefox).
 
-Игра работает **полностью offline** — никаких внешних зависимостей, никаких установок. Один самодостаточный HTML-файл (~9.3 MB).
+Игра работает **полностью offline** — никаких внешних зависимостей, никаких установок. Один самодостаточный HTML-файл (~11.6 MB).
 
 ## ✨ Возможности
 
@@ -21,6 +21,8 @@
 - **Проверка Удачи:** 2d6 ≤ текущей Удачи, −1 после каждой проверки
 - **Бегство из боя:** автоматический штраф −2 выносливости
 - **8 заклятий Майлина:** Огонь, Плавание, Левитация, Иллюзия, Сила, Слабость, Копия, Исцеление
+- **Призыв союзников в бою:** колокольчик (§612 → Медведь 11/9, везде) и медвежий амулет (§84 → Медведица 8/10, только вне замка); дерутся по *правилам* Копии, но это отдельные существа со своими характеристиками; один раз за всё путешествие, предмет не тратится
+- **Обязательные бои:** награды за победу скрыты до конца боя (флаг `post_combat`) — нельзя проскочить бой и забрать добычу
 
 ### UI/UX
 - 🖼 **42 цветных иллюстрации Midjourney** в едином стиле (dark Slavic fantasy), покрывают 107 параграфов
@@ -66,7 +68,7 @@ Dungeons-of-the-Black-Castle/
 ├── build.sh                            # Скрипт сборки src/* → dist/
 │
 ├── dist/                               # 🎮 Играбельный билд
-│   ├── podzemelye-chyornogo-zamka-remake.html   # Single-file игра (~9.3 MB)
+│   ├── podzemelye-chyornogo-zamka-remake.html   # Single-file игра (~11.6 MB)
 │   ├── manifest.webmanifest            # (prepared) PWA install metadata
 │   ├── sw.js                           # (prepared) Service Worker
 │   ├── icons/                          # (prepared) PWA icons
@@ -97,7 +99,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── fb2_remake.fb2                  # Каноничный источник (1221 параграф)
 │   ├── pdf_original_1991.pdf           # Скан 1-го издания (только для справки)
 │   ├── book_text.md                    # Полный текст + corrections log (для Gemini/AI)
-│   ├── text_corrections.json           # Авторитетный реестр правок (v2.48, 29 групп)
+│   ├── text_corrections.json           # Авторитетный реестр правок (v2.91, 62 групп)
 │   ├── analytical_report.pdf           # Аналитический отчёт (Windows + Android)
 │   └── illustrations/
 │       ├── originals/                  # 46 PNG в полном разрешении (НЕ ТРОГАТЬ)
@@ -173,7 +175,7 @@ bash build.sh
 ## 🛠 Технологии
 
 - Vanilla JavaScript (без фреймворков)
-- Single-file HTML5 (~9.3 MB с иллюстрациями)
+- Single-file HTML5 (~11.6 MB с иллюстрациями)
 - CSS3 + CSS Variables
 - SVG для карты и fog-of-war
 - Web Audio API для звуков

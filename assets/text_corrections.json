@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-06-12",
+  "last_updated": "2026-06-16",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -95,7 +95,8 @@
     "v2.87 → v2.88": "June 2026 (2026-06-12) - remake bug-report adjudication (group_60). Label-only (code in 351c6a2): 562 pay-choice label (562)->(315) (routing already correct; 1991 186/456 confirm). 339<->425 loop report REFUTED (425 goes forward; 1991 twin 462 likewise). Book-wide sweep: 562 was the ONLY label/target mismatch; now ZERO. No reachability change (1205). Harness 8/8.",
     "v2.88 → v2.89": "June 2026 (2026-06-12) - combat-summon feature (group_61, Variant C). Item-triggered bear allies with own stats: 612 bell->Medved 11/9 (anywhere; also fixes the missing bell grant), 84/511 amulet->Medveditsa 8/10 (outside castle only). ENGINE: COMBAT_ALLIES map, useAllyInCombat() side-fight modeled on useCopyInCombat (2d6+ally.skill, own stamina HP), once-per-journey via S.summonsUsed (item not consumed), btn-summon-ally wired in startCombat/endCombat, CASTLE_SECTIONS curated 26-para interior set for the amulet's 'powerless inside' rule (Option 2). DATA: 84 Amulet->Medvezhiy amulet. No reachability change (1205). Harness 23/23; code 35b4c9d.",
     "v2.89 → v2.90": "June 2026 (2026-06-12) - post-combat bypass fix (group_62). DATA-ONLY: added post_combat:true to 62 post-victory exits across 30 combat paragraphs (renderChoices showed unflagged post-victory choices DURING the fight, letting players skip combat and take rewards). Found by ChatGPT (external review), scope-expanded via a full 76-paragraph sweep. PRE choices (spells/show-item/flee/password) correctly stay visible. Plus 388->94 label fix (94 is the shkaf/statuette, not the papers). No reachability change (1205); targets unchanged. Harness 63/63.",
-    "v2.90 → v2.91": "June 2026 (2026-06-12) - summon picker (group_63, ChatGPT P2). UI-ONLY: when holding both the bell and the bear-fur amulet outside the castle, render one button per available ally instead of only the first; added static btn-summon-ally2, startCombat fills up to two slots gated by summonAllyAvailable, endCombat/useAllyInCombat hide both. No data/reachability change (1205). Harness 13/13."
+    "v2.90 → v2.91": "June 2026 (2026-06-12) - summon picker (group_63, ChatGPT P2). UI-ONLY: when holding both the bell and the bear-fur amulet outside the castle, render one button per available ally instead of only the first; added static btn-summon-ally2, startCombat fills up to two slots gated by summonAllyAvailable, endCombat/useAllyInCombat hide both. No data/reachability change (1205). Harness 13/13.",
+    "v2.91 → v2.92": "June 2026 (2026-06-16) — Root-doc currency refresh (doc-only). PROJECT_NOTES.md gained an 'Engine features' section (combat summons / two amulets / post_combat / six grant mechanisms / paragraph-jump static gating) and had stale stats corrected (v2.91, reachability 1205/1221, dist 11.6 MB, book_1991_extracted.txt, audit_cycles/). README.md gained summon + post_combat bullets and corrected size/version. QUICKSTART.md lost a phantom data/ line. group_64_2026_06_16_root_docs_refresh. No code/data change."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -2982,6 +2983,20 @@
       "structural_baseline_change": "NONE - no data, no reachability change (1205/1221). Engine/UI only.",
       "status_done": "Closed 2026-06-12 (code 70ae139). Node harness 13/13: both buttons populate distinct allies (Medved/Medveditsa) outside; inside the castle only Medved shows (amulet blocked); amulet-only -> Medveditsa in slot1; none -> both hidden; summon_allowed=false -> both hidden; using one summon hides both buttons, retains the other item in the bag, and blocks it for the rest of that fight. node --check OK.",
       "research_provenance": "ChatGPT finding P2 in audit_cycles/external_review_june_2026 (ADJUDICATION.md, 'DEFERRED' -> now done)."
+    },
+    "group_64_2026_06_16_root_docs_refresh": {
+      "cluster_description": "Documentation currency refresh of the root docs, which predated the June feature work (groups 55-63) and did not mention combat summons or post_combat gating. Doc-only; no code/data change. Flagged in SESSION_HANDOFF_JUNE_2026.md as 'refresh when convenient'.",
+      "priority": "P3 (doc accuracy; root cause of repeat false-positive audits is stale docs)",
+      "changes": {
+        "PROJECT_NOTES.md": "Added an 'Engine features beyond basic Fighting-Fantasy mechanics' section documenting: (a) item-summoned combat allies (bell §612 -> Медведь 11/9 anywhere; Медвежий амулет §84 via acquires -> Медведица 8/10 outside castle; Copy *rules* but distinct actors; once per journey S.summonsUsed, item retained; CASTLE_SECTIONS = 26 curated interior combat paragraphs disabling the amulet only); (b) the two distinct amulets (Медвежий vs Золотой); (c) post_combat:true gating (116 flags); (d) the SIX item-grant mechanisms incl. acquires; (e) paragraph-jumping items as static inventory-gated choices (no runtime arithmetic engine; see ARITHMETIC_MAP.md). Fixed stale facts: registry v2.48->v2.91 / 29->62 groups, reachability gotcha 1167/54 -> 1205/16 (Tier B/C backlog), dist ~9.3->~11.6 MB, added book_1991_extracted.txt and audit_cycles/ to the file tree, save-format fields (luckMax, summonsUsed, normalizeSave backfill).",
+        "README.md": "Added two feature bullets (combat ally summons; mandatory-combat post_combat gating); dist size ~9.3->~11.6 MB (4 sites); registry note v2.48->v2.91.",
+        "QUICKSTART.md": "Removed a phantom 'data/' folder line from the structure block (no such folder)."
+      },
+      "verification": "Atomic asserted string-replacements (each old-string unique). No stale '9.3 MB' / 'v2.48' / '29 groups' markers remain in either doc. .md only; node/data untouched.",
+      "status_done": {
+        "date": "2026-06-16",
+        "note": "root docs brought current with groups 55-63; commit pending push by Yuriy."
+      }
     }
   },
   "resolved_no_op": {
