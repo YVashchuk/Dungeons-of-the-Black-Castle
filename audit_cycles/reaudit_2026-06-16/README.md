@@ -13,7 +13,7 @@ provided sources. Deep Research browses the web → confabulation risk + burns q
   data line and 6.9 MB base64 art overflow Gemini's reader). Built fresh from current sources;
   NOT committed to the repo.
 - **ChatGPT** — paste `CHATGPT_BRIEF.md`; it reads the repo from GitHub (no Gemini folder there).
-- **Claude** — run inside the project; paste `CLAUDE_BRIEF.md` (filesystem + GitHub + PowerShell/Python/node).
+- **Claude** — run as a NEW chat in the **desktop app** (has `windows-mcp` → local files + PowerShell/Python/node); paste `CLAUDE_BRIEF.md`. Do NOT use a claude.ai **web** session: the repo is private (no GitHub connector → 404) and the web container has no disk. No GitHub needed — local files are the repo.
 
 ## Then
 Collect the three reports → fresh Claude verification session (canon→code→harness per claim) →

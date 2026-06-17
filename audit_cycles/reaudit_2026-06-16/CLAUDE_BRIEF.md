@@ -11,12 +11,23 @@ unrelated gamebook info and has previously produced confabulations (an external
 "topology" PDF invented metrics; an earlier Gemini invented characters). Use your
 **strongest reasoning / extended-thinking mode reading ONLY the provided sources.**
 
-## Your environment (most capable session — use it)
-You run in the Claude app **inside the project folder** `C:\Users\I828868\Downloads\Dungeons-of-the-Black-Castle`
-with **filesystem access**, plus **GitHub** access to `YVashchuk/Dungeons-of-the-Black-Castle`,
-and can run **PowerShell / Python (`python -X utf8 script.py`) / `node --check`**. Because you
-have the real files + code execution, **verify your own findings to the standard the downstream
-verifier would** (canon → code → Node harness). A claim you've already checked is worth ten guesses.
+## Your environment — run in the DESKTOP app (not the web session)
+Run this review as a **new chat in the Claude desktop app**, where the **`windows-mcp`**
+(PowerShell + FileSystem) and **`Filesystem`** tools give direct access to the LOCAL project
+folder `C:\Users\I828868\Downloads\Dungeons-of-the-Black-Castle`. **You do NOT need GitHub —
+the local files ARE the repo**, and you can run **PowerShell / Python (`python -X utf8 script.py`)
+/ `node --check`** for self-verification.
+
+> ⚠ A claude.ai **web** session will NOT work for this brief: the repository is **private** (no
+> GitHub connector in this account → 404), and the web container has no local disk. Use the
+> desktop app. (If for some reason you only have a web session, ask Yuriy for the upload pack —
+> `fb2_remake.fb2`, `remake_data.js`, `game_logic.js`, `text_corrections.json`,
+> `closed_work_digest.md` + the paragraph shards — but note you then cannot run the harnesses,
+> so prefer the desktop app for this broad+verify role.)
+
+Because you have the real files + code execution, **verify your own findings to the standard the
+downstream verifier would** (canon → code → Node harness). A claim you've already checked is
+worth ten guesses.
 
 ### Tooling notes (hard-won)
 - Read/grep Cyrillic via **Python `-X utf8` in a `.py` file**; never inline Cyrillic/regex in
