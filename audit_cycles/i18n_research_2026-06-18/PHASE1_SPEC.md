@@ -1,5 +1,5 @@
 # Phase 1 Migration Spec — RU-only, behavior-identical
-**Date:** 2026-06-18 · **Status:** DRAFT FOR REVIEW — no code/data changes yet · See SYNTHESIS.md for the architecture.
+**Date:** 2026-06-18 · **Status:** DRAFT FOR REVIEW — no code/data changes yet · Item table FROZEN (canon spot-check done). See SYNTHESIS.md for the architecture.
 
 ## Goal of Phase 1
 Introduce the **neutral-structure + inline-locale** layering and the **ID key space** **without translating anything and without changing gameplay**. At the end of Phase 1 the game is still 100 % Russian and must be **byte/behaviorally identical** (verified by golden smoke tests + the existing Node-harness pattern). This de-risks everything before any translation work.
@@ -11,8 +11,8 @@ Phase 1 = Phases 1-3 of the detailed study, folded into one RU-only milestone:
 4. `v6` save migration;
 5. move RU text fully out of `GD` into `locale.ru.js`; rename `remake_data.js`->`game_structure.js`.
 
-## A. Item ID table — DRAFT (needs canon spot-check on the ⚠ rows)
-Authoritative item set, generated from the corrected extraction: **82 non-food + 16 food = 98**. Slugs are readable snake_case; every item keeps `legacyRu` forever for the save migration. Near-duplicates are disambiguated (whistles bronze/silver/gold; rings ring/gold_ring/silver_ring; signets signet/signet_ruby/signet_emerald; plaques eagle_plaque/ship_plaque; amulets bear_amulet/gold_amulet/talisman; keys gold_key/black_castle_key/copper_key/figured_key).
+## A. Item ID table — FROZEN (canon spot-check 2026-06-18)
+Authoritative item set from the corrected extraction: **82 non-food + 16 food = 98**. Slugs are readable snake_case; every item keeps `legacyRu` forever for the save migration. Near-duplicates are disambiguated (whistles bronze/silver/gold; rings ring/gold_ring/silver_ring; signets signet/signet_ruby/signet_emerald; plaques eagle_plaque/ship_plaque; amulets bear_amulet/gold_amulet/talisman; keys gold_key/black_castle_key/copper_key/figured_key).
 
 ### Non-food (82)
 | slug | legacyRu | notes |
@@ -31,20 +31,20 @@ Authoritative item set, generated from the corrected extraction: **82 non-food +
 | `caged_bird` | «Птичка в клетке» |  |
 | `candle` | «Свеча» |  |
 | `candlestick` | «Подсвечник» |  |
-| `cards` | «Карты» | ⚠ playing cards vs maps — confirm @97/625/658 |
-| `castle_password` | «Пароль в замок» | ⚠ flag |
+| `card_deck` | «Карты» |  |
+| `castle_password` | «Пароль в замок» | kind:flag (intangible) |
 | `copper_bracelet` | «Медный браслет» |  |
 | `copper_key` | «Медный ключик» |  |
 | `crown` | «Корона» |  |
 | `deer_hide` | «Шкура оленя» |  |
 | `diamond` | «Прекрасный бриллиант» |  |
-| `die` | «Игральная кость» | ⚠ single gambling die |
+| `die` | «Игральная кость» |  |
 | `diving_suit` | «Водолазный костюм» | size 2 |
 | `dragon_claw` | «Коготь дракона» |  |
 | `eagle_plaque` | «Бляха с золотым орлом» |  |
 | `figured_key` | «Фигурный ключ» |  |
 | `fire_extinguisher` | «Огнетушитель» |  |
-| `fish_help` | «Помощь рыбки» | ⚠ intangible ability-flag |
+| `fish_help` | «Помощь рыбки» | kind:flag (intangible) |
 | `flint` | «Огниво» |  |
 | `flying_carpet` | «Ковёр-самолёт» | size 3 |
 | `fox_pelt` | «Шкура лисы» |  |
@@ -55,20 +55,20 @@ Authoritative item set, generated from the corrected extraction: **82 non-food +
 | `gold_oyster` | «Золотая устрица» |  |
 | `gold_ring` | «Золотое кольцо» |  |
 | `gold_whistle` | «Золотой свисток» |  |
-| `golden_orange` | «Золотой апельсин» | ⚠ artifact, NOT the fruit «Апельсин» |
+| `golden_orange` | «Золотой апельсин» |  |
 | `goldfish` | «Золотая рыбка» |  |
 | `hand_mirror` | «Зеркальце» |  |
 | `helmet` | «Шлем» |  |
 | `horse_blanket` | «Попона для лошади» |  |
 | `hourglass` | «Песочные часы» |  |
-| `ivory_comb` | «Гребень из слоновой кости» | ⚠ size? appears in ITEM_SIZES? verify |
+| `ivory_comb` | «Гребень из слоновой кости» |  |
 | `magic_bell` | «Волшебный колокольчик» | ALLY: bear (skill 11, anywhere) |
 | `magic_belt` | «Волшебный пояс» |  |
 | `manuscript` | «Рукопись» |  |
-| `mirror_secret` | «Тайна зеркал» | ⚠ intangible knowledge-flag |
+| `mirror_secret` | «Тайна зеркал» | kind:flag (intangible) |
 | `parchment_scroll` | «Пергаментный свиток» |  |
 | `pass` | «Пропуск» |  |
-| `password_evenlo` | «Пароль «Трое из Эвенло»» | ⚠ flag |
+| `password_evenlo` | «Пароль «Трое из Эвенло»» | kind:flag (intangible) |
 | `peacock_feather` | «Перо павлина» |  |
 | `perfume_vial` | «Флакончик духов» |  |
 | `prayer_beads` | «Чётки» |  |
@@ -91,10 +91,10 @@ Authoritative item set, generated from the corrected extraction: **82 non-food +
 | `stork_feather` | «Перо аиста» |  |
 | `talisman` | «Оберег» |  |
 | `thread_ball` | «Клубочек» |  |
-| `throne_lore` | «Знание о троне» | ⚠ intangible knowledge-flag |
-| `treasure_lore` | «Знание о кладе» | ⚠ intangible knowledge-flag |
+| `throne_lore` | «Знание о троне» | kind:flag (intangible) |
+| `treasure_lore` | «Знание о кладе» | kind:flag (intangible) |
 | `water_flask` | «Фляга с водой» |  |
-| `watermelon` | «Арбуз» | ⚠ item or food? granted via auto_items.items @300, not food |
+| `watermelon` | «Арбуз» |  |
 | `whip` | «Кнут» |  |
 | `white_arrow` | «Белая стрела» |  |
 | `whole_sword` | «Целый меч» |  |
@@ -124,7 +124,11 @@ Authoritative item set, generated from the corrected extraction: **82 non-food +
 
 **Engine-side keys to re-key with the same slugs:** `ITEM_SIZES` (`diving_suit`:2, `flying_carpet`:3) and `COMBAT_ALLIES` (`magic_bell`, `bear_amulet`).
 
-**⚠ rows = confirm against `fb2_remake.fb2` before freezing the slug:** `watermelon` (item vs food), `cards` (playing-cards vs maps), `golden_orange` (artifact, not the fruit), and the four intangible knowledge/flag pseudo-items (`treasure_lore`, `throne_lore`, `mirror_secret`, `fish_help`) + the two passwords.
+### A.1 Canon spot-check (2026-06-18) — the previously-flagged rows, resolved against fb2_remake.fb2 / GD prose
+- **`watermelon` «Арбуз» = ITEM, not food.** §300 the peasant gives it («забирай его себе»); it is granted via `auto_items.items` and is NOT wired to restore stamina anywhere. Kept as a plain carried item (behavior preserved).
+- **`cards` -> renamed `card_deck`.** §97 «По столу разбросана колода карт, в которые они играли»; §658/§625 «колода карт». It is a deck of PLAYING cards (not maps) — slug refined to `card_deck`.
+- **`golden_orange` «Золотой апельсин» = ARTIFACT, distinct from food `orange` «Апельсин».** §74 magic item (+750 paragraph-jump, +1 luck); §226 «Разрезать Золотой апельсин» to wake the Princess. Two different objects; two different slugs.
+- **Six intangible FLAGS** (`treasure_lore` §385->§19 dig; `throne_lore` §688->§741; `mirror_secret` §660->§297; `fish_help` §13->§32/§203; `castle_password` §95->§56; `password_evenlo` §390->§766): each is acquired as knowledge/a spoken password and gates a later choice — not a physical object. Tagged `kind:"flag"`. **Phase 1 keeps them as ordinary size-1 inventory entries gated by `inventory_condition` (identical behavior)**; the `kind` is informational and tells translators these are concepts, not objects. (`treasure_lore`, `throne_lore`, `fish_help`, `golden_orange` are ALSO dynamic-target `+N` items handled separately by the paragraph-arithmetic work — not an i18n concern; only the slug/kind matters here.)
 
 ## B. `items.json` registry (shape)
 ```json
@@ -133,11 +137,14 @@ Authoritative item set, generated from the corrected extraction: **82 non-food +
   "diving_suit":    { "legacyRu": "Водолазный костюм", "kind": "item", "size": 2 },
   "flying_carpet":  { "legacyRu": "Ковёр-самолёт", "kind": "item", "size": 3 },
   "magic_bell":     { "legacyRu": "Волшебный колокольчик", "kind": "item", "ally": "bear" },
+  "card_deck":      { "legacyRu": "Карты", "kind": "item" },
+  "fish_help":      { "legacyRu": "Помощь рыбки", "kind": "flag" },
+  "castle_password":{ "legacyRu": "Пароль в замок", "kind": "flag" },
   "banana":         { "legacyRu": "Банан", "kind": "food", "defaultStamina": 2 },
   "wine_bottle":    { "legacyRu": "Бутылка вина", "kind": "food", "defaultStamina": 4 }
 }
 ```
-`legacyRu` is 1:1 with the current display string, so the inverse map (`RU_ITEM_TO_ID`) is exact and drives the save migration.
+`legacyRu` is 1:1 with the current display string, so the inverse map (`RU_ITEM_TO_ID`) is exact and drives the save migration. `kind` ∈ `item`|`food`|`flag` (flag treated as a size-1 item in Phase 1 — informational only).
 
 ## C. Neutral-structure field additions (replacing the 4 Cyrillic couplings)
 - **Spell:** make `spell:"FIRE"` (or `spell_any:[...]`) universal on every spell choice (already on 103). Delete `SPELL_KEYWORDS` + the `getSpellId()` `/заклят|заклин/` fallback.
