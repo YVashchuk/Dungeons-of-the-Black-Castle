@@ -1222,8 +1222,8 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
     }
   } else {
     btn.textContent=ch.label;
-    // Flee penalty: if clicking a non-spell choice during active combat, apply -2 stamina
-    const isFleeChoice=duringCombat&&/убежать|бежать|отступить|покинуть|сбежать|спастись бегством|бегство/i.test(ch.label);
+    // Flee penalty: choices tagged flee:true incur -2 stamina when clicked during active combat
+    const isFleeChoice=duringCombat&&ch.flee===true;
     if(isFleeChoice){
       btn.onclick=()=>{
         S.stamina=Math.max(0,S.stamina-2);
