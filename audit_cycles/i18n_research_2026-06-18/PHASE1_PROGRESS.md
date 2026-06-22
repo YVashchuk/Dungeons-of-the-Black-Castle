@@ -8,42 +8,58 @@ dist verify) and is committed separately. The RU build stays behaviorally identi
 
 ## Increment roadmap
 1. [DONE] **flee** — data-drive the combat flee penalty (coupling #2).
-2. [ ] **spell** — explicit `spell` on the 6 fallback-reliant choices, then delete the
-   `SPELL_KEYWORDS` + `/заклят|заклин/` label fallback (coupling #1). NOTE: §1088 ch[0] is a
-   `combat_mod` choice (Group A) whose label still says «заклятие Слабости» — the fallback detects
-   WEAKNESS but `combat_mod` precedes it, so it is a FALSE POSITIVE and must NOT be tagged `spell`.
-3. [ ] **scene** — add `scene` to every paragraph (derived once by the current classifier) and make
+2. [DONE] **spell / getSpellId** — explicit `spell` on the one plain fallback-reliant choice; delete
+   `SPELL_KEYWORDS` + the `/заклят|заклин/` label fallback in `getSpellId` (coupling #1, part a).
+3. [ ] **spell / renderChoices filter** — the post-combat-victory branch hides spell choices via
+   `spellChoiceRe=/заклят|заклин/i` on the label (coupling #1, part b). A field-based check is NOT
+   equivalent (6 combat-paragraph choices differ — §131/§1150 post_combat levitation moves have spell
+   fields but no «заклят» label; §174/§994 match the label but have no spell field), so this needs a
+   label-derived `spell_choice:true` flag (like flee) to stay behavior-identical.
+4. [ ] **scene** — add `scene` to every paragraph (derived once by the current classifier) and make
    `setAtmosphericBg` read it instead of scanning Russian text (coupling #4; cosmetic gradient).
-4. [ ] **item-ID registry + inventory/food/save flip** — materialize `items.json` (82 non-food + 16
+5. [ ] **item-ID registry + inventory/food/save flip** — materialize `items.json` (82 non-food + 16
    food, frozen table), re-key data conditions/grants + engine `ITEM_SIZES`/`COMBAT_ALLIES` to slugs,
    convert food to structured form (coupling #3), `S.inventory` holds slugs, `v6` save migration.
-5. [ ] **text extraction + resolvers** — `extract_i18n.py` -> `locale.ru.js`; engine reads via
+6. [ ] **text extraction + resolvers** — `extract_i18n.py` -> `locale.ru.js`; engine reads via
    `t()/pText()/label()/itemName()/enemyName()/spellText()`.
-6. [ ] **rename** `remake_data.js` -> `game_structure.js`; build.sh locale concatenation + modes.
+7. [ ] **rename** `remake_data.js` -> `game_structure.js`; build.sh locale concatenation + modes.
 
 ---
 
 ## Increment 1 — flee penalty data-driven (coupling #2) · 2026-06-18
 **Files:** `src/remake_data.js`, `src/game_logic.js`.
+Tagged `flee:true` on the 18 choices whose label matched the combat flee regex; replaced the engine's
+Cyrillic label test with `duringCombat && ch.flee===true` (gate unchanged). `flee:true` is set iff the
+old regex matched, so behavior is identical. Verified: only 18 paragraphs changed; `node --check` OK;
+1221/1205/0/76/116; flee harness 8/8; Group B regression 21/21; dist verified (18 x `"flee":true`,
+Cyrillic regex gone). Commits: 312b507 (source+log), 6c23fe6 (dist).
 
-**Before:** `makeChoiceBtn()` L1226 applied the -2-stamina flee penalty via
-`duringCombat && /убежать|бежать|отступить|покинуть|сбежать|спастись бегством|бегство/i.test(ch.label)`
-- a Cyrillic-label coupling that would break once labels move to locale files.
+---
+
+## Increment 2 — spell / getSpellId label fallback removed (coupling #1a) · 2026-06-18
+**Files:** `src/remake_data.js`, `src/game_logic.js`.
+
+**Before:** `getSpellId(ch)` returned `ch.spell` if present, else parsed the Russian label
+(`SPELL_KEYWORDS` map gated on `/заклят|заклин/`). `makeChoiceBtn` branch order is
+**spell_any (L1182) -> combat_mod (L1203) -> getSpellId (L1208)**, so `getSpellId` is only reached by
+choices with neither `spell_any` nor `combat_mod`.
+
+**Analysis:** of the 8 choices whose label-fallback differs from `ch.spell`, 7 are bypassed before
+`getSpellId` runs — §160/§192/§286 (`combat_mod:"FORCE"`), §865 (`combat_mod:"ENEMY_PLUS2"`), §1088
+(`combat_mod:"PLAYER_MINUS2"`, the Group A case), §402/§614 (`spell_any`). Only **§526 ch[0]** is a
+plain choice that actually reaches `getSpellId` (old fallback -> FORCE).
 
 **Change:**
-- Tagged `flee:true` on exactly the **18** choices whose label matches that regex
-  (paras 10/74/143/260/340/437/442/455/617/636/689/702/719/769/804/981/1119/1171), byte-identical splice.
-- Engine: replaced the regex test with `const isFleeChoice=duringCombat&&ch.flee===true;` (the
-  `duringCombat` gate is unchanged); updated the adjacent comment.
+- Data: `§526 ch[0] += spell:"FORCE"` (only paragraph changed).
+- Engine: deleted `SPELL_KEYWORDS`; `getSpellId(ch)` is now `return ch.spell||null;` (no label parsing).
 
-**Behavior-identity proof:** `flee:true` is set IFF the label matches the original regex, and the
-`duringCombat` gate is untouched, so `duringCombat && ch.flee===true` is equivalent to
-`duringCombat && regex.test(label)` for every choice. (3 of the 18 are in combat paragraphs -
-260/455/617; the other 15 are inert under the gate, exactly as before.)
+**Behavior-identity proof:** for every choice that *reaches* `getSpellId` (not `spell_any`, not
+`combat_mod`), new `getSpellId` == old `getSpellId`; the 7 bypassed choices never consult it. Verified
+by harness running the new `getSpellId` against the old logic over all 2212 choices.
 
-**Verification:** only those 18 paragraphs changed bytes; `node --check` OK on both files; structural
-baseline unchanged (1221 / 1205 reachable / 0 dangling / 76 combat / 116 post_combat); flee harness 8/8;
-Group B regression harness 21/21 (engine intact); `build.sh` -> dist 11.6 MB; dist verified
-(`ch.flee===true` present, Cyrillic flee regex absent, 18 x `"flee":true`).
+**Verification:** `node --check` OK (both files); 1221/1205/0/76/116; spell harness 12/12; Group B
+regression 21/21; dist verified (`SPELL_KEYWORDS` gone, `getSpellId` returns `ch.spell||null`, §526
+serialization embedded). One `/заклят|заклин/` remains — the `renderChoices` post-combat filter,
+handled in Increment 3.
 
 **Commits:** source+log, then dist.
