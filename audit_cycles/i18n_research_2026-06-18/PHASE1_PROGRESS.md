@@ -134,3 +134,41 @@ food is parsed via the `(еда:` regex. So the remaining Cyrillic in the engine
 strings (+ riddle answer-matching), all handled in later increments.
 
 **Commits:** source+log, then dist.
+
+
+---
+
+## Increment 5a — item registry foundation (coupling #3, part a) \u00b7 2026-06-18
+**File:** `src/registries/items.json` (NEW). Additive — **not** concatenated by `build.sh`
+(`build_shell.py` references it 0 times), so the dist is byte-unchanged and there is **zero** behavior
+change. This is the foundation + safety net for the 5b-5e item/food/save flip.
+
+**What:** materialized the frozen 98-item table as the canonical registry: **82 item/flag + 16 food**.
+Shape — `slug -> { legacyRu, kind, size?, ally?, defaultStamina?, legacyRaw? }`:
+- `kind` \u2208 `item` | `food` | `flag` (6 flags: treasure_lore/throne_lore/mirror_secret/fish_help/
+  castle_password/password_evenlo — intangibles, treated as size-1 items in Phase 1; `kind` is
+  informational).
+- `size` only on `diving_suit`:2, `flying_carpet`:3 (for `ITEM_SIZES`).
+- `ally` only on `magic_bell`:"bear", `bear_amulet`:"she_bear" (for `COMBAT_ALLIES`).
+- Food carries `defaultStamina` where unambiguous; **banana** is intentionally left without one (its
+  per-site stamina varies 2/3 in the data — the grant site governs).
+- The two suffixed foods keep a clean `legacyRu` (`Бутылка вина`/`Печень дракона`) plus `legacyRaw`
+  (`Бутылка вина (еда: +4)` / `Печень дракона (еда: +9)`) so the registry alone maps the exact data
+  string (used by the bijection check and the future save migration).
+- Canon resolutions baked in: `card_deck` (not "cards"), `golden_orange` (artifact) distinct from food
+  `orange`, `watermelon` = item (not food).
+
+**Validation (the safety net):** re-extracted every item string from the live data across all 10
+item-bearing fields (`auto_items.items`/`.food[].name`, section+choice `grants_items`,
+`bet_payout.items`/`.food[].name`, choice `inventory_condition`/`consume_on_use`/`acquires`/
+`grants_food.name`; str | `{all,item}` | list shapes). Result: **98 data strings (82 non-food + 16
+food), every one resolves to exactly one slug; 98 distinct slugs used; 0 registry slugs absent from
+data — bijective.** Plus internal consistency (unique slugs/legacyRu, valid kinds, size/ally only on the
+expected slugs, flag set == the 6). Harness: `_audit_tmp/p1_items_build_validate.py` (a committed
+data↔registry validator will accompany 5b, once the data references slugs).
+
+**Verification:** `items.json` is valid JSON (98 keys, node-parsed); spot-checked; dist unchanged
+(not in build). Single commit (no dist rebuild needed).
+
+**Next (5b):** re-key all data item references RU->slug (all 10 fields), then a committed validator that
+asserts every data slug \u2208 registry.
