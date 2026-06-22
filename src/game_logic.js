@@ -736,19 +736,9 @@ const SPELL_STYLE_BY_ID={
   'COPY':{icon:'👤',border:'#666',color:'#999',bg:'rgba(120,120,120,.12)'},
   'HEALING':{icon:'💚',border:'#2a8',color:'#3c9',bg:'rgba(40,180,100,.12)'},
 };
-const SPELL_KEYWORDS={'огн':'FIRE','плав':'SWIMMING','левит':'LEVITATION',
-  'иллюз':'ILLUSION','сил':'FORCE','слаб':'WEAKNESS','копи':'COPY','исцел':'HEALING'};
-
 function getSpellId(ch){
-  // Use data tag if present
-  if(ch.spell)return ch.spell;
-  // Fallback: detect from label
-  const lo=ch.label.toLowerCase();
-  if(!/заклят|заклин/.test(lo))return null;
-  for(const[key,id] of Object.entries(SPELL_KEYWORDS)){
-    if(lo.includes(key))return id;
-  }
-  return null;
+  // Spell is declared explicitly on the choice (data-driven; no label parsing).
+  return ch.spell||null;
 }
 
 function getSpellRemaining(spellId){
