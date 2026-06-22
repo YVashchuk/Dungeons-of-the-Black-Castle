@@ -1662,7 +1662,6 @@ function renderChoices(sec){
   const hasPendingCombat=sec.enemies&&sec.enemies.length>0&&!combatDone[S.section];
   const combatWon=sec.enemies&&sec.enemies.length>0&&combatDone[S.section];
   const hasPendingLuck=sec.has_luck&&!luckDone[S.section];
-  const spellChoiceRe=/заклят|заклин/i;
 
   if(hasPendingCombat){
     if(renderCanonCombatChoices(sec,list)) return;
@@ -1683,7 +1682,7 @@ function renderChoices(sec){
   if(combatWon){
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
     sec.choices.forEach((ch,idx)=>{
-      if(!spellChoiceRe.test(ch.label) && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch) && passesGoldCheck(ch)){
+      if(!ch.spell_choice && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch) && passesGoldCheck(ch)){
         list.appendChild(makeChoiceBtn(ch, false, idx));
       }
     });

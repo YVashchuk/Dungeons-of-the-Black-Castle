@@ -63,3 +63,37 @@ serialization embedded). One `/заклят|заклин/` remains — the `rend
 handled in Increment 3.
 
 **Commits:** source+log, then dist.
+
+
+---
+
+## Increment 3 — spell / renderChoices post-combat filter data-driven (coupling #1b) · 2026-06-18
+**Files:** `src/remake_data.js`, `src/game_logic.js`.
+
+**Before:** `renderChoices()` combat-won branch hid spell choices via `spellChoiceRe=/заклят|заклин/i`
+tested on `ch.label` (`!spellChoiceRe.test(ch.label)`).
+
+**Why a flag (not the spell fields):** measured in the 76 combat paragraphs — a field-based check
+`(ch.spell||ch.spell_any)` would differ from the regex on 6 choices: §131 ch[2/3/4] and §1150 ch[2]
+are `post_combat` levitation moves that have spell fields but no «заклят» in the label (the regex shows
+them post-victory; a field check would wrongly hide them), and §174/§994 match the label but have no
+spell field. So a label-derived flag is required to stay behavior-identical.
+
+**Change:**
+- Data: tagged `spell_choice:true` on the **112** choices (across 76 paragraphs) whose label matches
+  `/заклят|заклин/` — the same global-equivalence pattern used for `flee`.
+- Engine: removed `const spellChoiceRe=...`; the filter is now `!ch.spell_choice && !ch.luck_type && ...`.
+
+**Behavior-identity proof:** `ch.spell_choice===true` IFF the label matches `/заклят|заклин/`, for every
+choice (harness asserts this globally), so `!ch.spell_choice` ≡ `!spellChoiceRe.test(ch.label)`.
+Spot-checked the 6 distinguishing cases (§131×3 + §1150 stay shown; §174 + §994 stay hidden).
+
+**Verification:** `node --check` OK (both files); 1221/1205/0/76/116; spell-filter harness 11/11; Group
+B regression 21/21; dist verified (`spellChoiceRe` absent, `!ch.spell_choice` present, no
+`/заклят|заклин/` regex, 112 × `"spell_choice":true`).
+
+**Coupling #1 (spell) is now fully removed from engine LOGIC.** The 8 remaining «заклят/заклин» in the
+engine are confirmed UI strings/comments (SPELLS `full:` descriptions, `PREGAME_TEXT`, the "choose 10
+spells" alert, one button label, one comment) — handled in the text-extraction increment, not logic.
+
+**Commits:** source+log, then dist.
