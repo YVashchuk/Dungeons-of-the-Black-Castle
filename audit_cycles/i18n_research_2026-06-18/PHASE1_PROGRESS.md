@@ -126,8 +126,11 @@ the stored scene independently re-derived from the text in the harness).
 (both files); 1221/1205/0/76/116; scene harness 8/8; Group B regression 21/21; dist verified
 (`SCENE_GRADIENTS` present, lookup in `setAtmosphericBg`, `t.includes('лес')` gone, 1221 `"scene":`).
 
-**Milestone:** all four Cyrillic ENGINE couplings are now removed (#2 flee, #1a getSpellId, #1b
-spell-filter, #4 scene). The engine no longer reads Russian *paragraph/label* text in any logic branch;
-the remaining Cyrillic in the engine is UI strings, handled by the text-extraction increment.
+**Milestone:** three of the four Cyrillic engine couplings are now removed — #1 spell (getSpellId +
+post-combat filter), #2 flee, #4 scene. The engine no longer reads Russian *paragraph or label* text in
+any logic branch. The FOURTH coupling, **#3 item/food identity**, is still present and is the big
+Increment 5: `S.inventory` holds Russian item names, `ITEM_SIZES`/`COMBAT_ALLIES` are Russian-keyed, and
+food is parsed via the `(еда:` regex. So the remaining Cyrillic in the engine is item/food logic + UI
+strings (+ riddle answer-matching), all handled in later increments.
 
 **Commits:** source+log, then dist.
