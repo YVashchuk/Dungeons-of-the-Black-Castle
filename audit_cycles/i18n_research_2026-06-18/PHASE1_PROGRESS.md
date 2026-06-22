@@ -10,12 +10,12 @@ dist verify) and is committed separately. The RU build stays behaviorally identi
 1. [DONE] **flee** — data-drive the combat flee penalty (coupling #2).
 2. [DONE] **spell / getSpellId** — explicit `spell` on the one plain fallback-reliant choice; delete
    `SPELL_KEYWORDS` + the `/заклят|заклин/` label fallback in `getSpellId` (coupling #1, part a).
-3. [ ] **spell / renderChoices filter** — the post-combat-victory branch hides spell choices via
+3. [DONE] **spell / renderChoices filter** — the post-combat-victory branch hides spell choices via
    `spellChoiceRe=/заклят|заклин/i` on the label (coupling #1, part b). A field-based check is NOT
    equivalent (6 combat-paragraph choices differ — §131/§1150 post_combat levitation moves have spell
    fields but no «заклят» label; §174/§994 match the label but have no spell field), so this needs a
    label-derived `spell_choice:true` flag (like flee) to stay behavior-identical.
-4. [ ] **scene** — add `scene` to every paragraph (derived once by the current classifier) and make
+4. [DONE] **scene** — add `scene` to every paragraph (derived once by the current classifier) and make
    `setAtmosphericBg` read it instead of scanning Russian text (coupling #4; cosmetic gradient).
 5. [ ] **item-ID registry + inventory/food/save flip** — materialize `items.json` (82 non-food + 16
    food, frozen table), re-key data conditions/grants + engine `ITEM_SIZES`/`COMBAT_ALLIES` to slugs,
@@ -95,5 +95,39 @@ B regression 21/21; dist verified (`spellChoiceRe` absent, `!ch.spell_choice` pr
 **Coupling #1 (spell) is now fully removed from engine LOGIC.** The 8 remaining «заклят/заклин» in the
 engine are confirmed UI strings/comments (SPELLS `full:` descriptions, `PREGAME_TEXT`, the "choose 10
 spells" alert, one button label, one comment) — handled in the text-extraction increment, not logic.
+
+**Commits:** source+log, then dist.
+
+
+---
+
+## Increment 4 — atmospheric scene classifier data-driven (coupling #4) · 2026-06-18
+**Files:** `src/remake_data.js`, `src/game_logic.js`.
+
+**Before:** `setAtmosphericBg(text)` lowercased the paragraph text and chose one of 8 background
+gradients by Russian-substring `includes()` (forest/castle/river/combat/dungeon/field/night/else);
+`generateSceneImage(sec.text)` called it on each section change. Cosmetic only (a `#scene-bg`
+radial-gradient at opacity .25).
+
+**Change:**
+- Data: added `scene` to **every paragraph** (1221), derived once by the engine's exact if/elif over
+  `sec.text` -> one of `forest|castle|river|combat|dungeon|field|night|default`. Written via a verified
+  byte-identical round-trip of the GD blob (each paragraph gains only `scene`). Distribution: default
+  368, forest 346, dungeon 161, combat 141, castle 99, river 83, night 18, field 5.
+- Engine: added a `SCENE_GRADIENTS` table (the 8 gradient strings, extracted verbatim from the old
+  classifier); `setAtmosphericBg(scene)` now does `SCENE_GRADIENTS[scene]`; `generateSceneImage` passes
+  `(GD[S.section]&&GD[S.section].scene)||'default'` (its `!text` / section-change guard unchanged).
+
+**Behavior-identity proof:** for all 1221 paragraphs, `SCENE_GRADIENTS[stored_scene]` equals the
+gradient the old classifier would compute from `sec.text` (checked at the gradient-string level, with
+the stored scene independently re-derived from the text in the harness).
+
+**Verification:** GD round-trips byte-identically; only `scene` added per paragraph; `node --check` OK
+(both files); 1221/1205/0/76/116; scene harness 8/8; Group B regression 21/21; dist verified
+(`SCENE_GRADIENTS` present, lookup in `setAtmosphericBg`, `t.includes('лес')` gone, 1221 `"scene":`).
+
+**Milestone:** all four Cyrillic ENGINE couplings are now removed (#2 flee, #1a getSpellId, #1b
+spell-filter, #4 scene). The engine no longer reads Russian *paragraph/label* text in any logic branch;
+the remaining Cyrillic in the engine is UI strings, handled by the text-extraction increment.
 
 **Commits:** source+log, then dist.

@@ -2314,33 +2314,23 @@ let lastImageSection=null;
 function generateSceneImage(text){
   if(!text||S.section===lastImageSection)return;
   lastImageSection=S.section;
-  setAtmosphericBg(text);
+  setAtmosphericBg((GD[S.section]&&GD[S.section].scene)||'default');
 }
 
-function setAtmosphericBg(text){
+const SCENE_GRADIENTS={
+  forest:'radial-gradient(ellipse at 40% 60%,#0a1a0a 0%,#061208 40%,#040a06 100%)',
+  castle:'radial-gradient(ellipse at 50% 30%,#1a1020 0%,#0a0816 40%,#060410 100%)',
+  river:'radial-gradient(ellipse at 50% 70%,#0a1520 0%,#060e18 40%,#040810 100%)',
+  combat:'radial-gradient(ellipse at 50% 50%,#1a0a0a 0%,#100608 40%,#0a0406 100%)',
+  dungeon:'radial-gradient(ellipse at 50% 50%,#121018 0%,#0a0a12 40%,#06060a 100%)',
+  field:'radial-gradient(ellipse at 50% 40%,#1a1a0a 0%,#121208 40%,#0a0a06 100%)',
+  night:'radial-gradient(ellipse at 50% 50%,#0a0a14 0%,#060610 40%,#04040a 100%)',
+  default:'radial-gradient(ellipse at 50% 50%,#10101a 0%,#0a0a12 40%,#06060a 100%)'
+};
+
+function setAtmosphericBg(scene){
   const bg=document.getElementById('scene-bg');
-  const t=text.toLowerCase();
-  let gradient;
-  
-  if(t.includes('лес')||t.includes('дерев')||t.includes('тропинк')){
-    gradient='radial-gradient(ellipse at 40% 60%,#0a1a0a 0%,#061208 40%,#040a06 100%)';
-  }else if(t.includes('замок')||t.includes('замка')||t.includes('башн')||t.includes('ворот')){
-    gradient='radial-gradient(ellipse at 50% 30%,#1a1020 0%,#0a0816 40%,#060410 100%)';
-  }else if(t.includes('река')||t.includes('озер')||t.includes('вод')||t.includes('мост')){
-    gradient='radial-gradient(ellipse at 50% 70%,#0a1520 0%,#060e18 40%,#040810 100%)';
-  }else if(t.includes('бой')||t.includes('драть')||t.includes('меч')||t.includes('атак')){
-    gradient='radial-gradient(ellipse at 50% 50%,#1a0a0a 0%,#100608 40%,#0a0406 100%)';
-  }else if(t.includes('подземел')||t.includes('коридор')||t.includes('дверь')||t.includes('лестниц')){
-    gradient='radial-gradient(ellipse at 50% 50%,#121018 0%,#0a0a12 40%,#06060a 100%)';
-  }else if(t.includes('поля')||t.includes('полян')||t.includes('солнц')){
-    gradient='radial-gradient(ellipse at 50% 40%,#1a1a0a 0%,#121208 40%,#0a0a06 100%)';
-  }else if(t.includes('ночь')||t.includes('темн')||t.includes('ноч')){
-    gradient='radial-gradient(ellipse at 50% 50%,#0a0a14 0%,#060610 40%,#04040a 100%)';
-  }else{
-    gradient='radial-gradient(ellipse at 50% 50%,#10101a 0%,#0a0a12 40%,#06060a 100%)';
-  }
-  
-  bg.style.background=gradient;
+  bg.style.background=SCENE_GRADIENTS[scene]||SCENE_GRADIENTS.default;
   bg.style.opacity='.25';
 }
 
