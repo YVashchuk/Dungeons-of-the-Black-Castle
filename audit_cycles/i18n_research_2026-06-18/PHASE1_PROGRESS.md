@@ -172,3 +172,38 @@ data↔registry validator will accompany 5b, once the data references slugs).
 
 **Next (5b):** re-key all data item references RU->slug (all 10 fields), then a committed validator that
 asserts every data slug \u2208 registry.
+
+
+---
+
+## Increment 5b — logic-side item normalization via canonItem (coupling #3, part b) \u00b7 2026-06-18
+**Files:** `src/game_logic.js`.
+
+**What:** added the registry infrastructure and routed all item *logic* through it, while data and
+`S.inventory` stay Russian.
+- New (generated from `items.json`): `const RU_TO_SLUG` / `const SLUG_TO_RU` (98 each), `stripFoodSuffix`,
+  `canonItem(x)` (Russian name OR carried-food «name (еда:+N)» string -> slug; idempotent on slugs;
+  passthrough for unknown/hand-typed), `itemName(slug)` (-> Russian display; passthrough), `invDisplay`
+  (inventory entry -> display string, resolves slug + preserves food suffix).
+- Re-keyed `ITEM_SIZES` (`diving_suit`:2, `flying_carpet`:3) and `COMBAT_ALLIES` (`magic_bell`,
+  `bear_amulet`) from Russian names to slugs (values unchanged).
+- Routed all ~14 comparison/size/ally sites through `canonItem`: `getItemSize`, `passesInventoryCheck`
+  `baseEq`, `applyChoiceConsume` removeOne, `applyChoiceAcquires`/auto_items/`takeItem`/grants dedup,
+  the inventory-modal in-bag check, bet stake/payout/stake-picker, the (dead) `auto_items.lose` match,
+  and the summon ally + `summonsUsed` checks.
+
+**Why behavior-identical:** data + `S.inventory` are still Russian, so for every comparison both sides
+go through `canonItem(Russian)` -> the same slug, and the re-keyed tables are looked up by
+`canonItem(name)` -> the same value as the old Russian key. The RU<->slug map is bijective (5a), so no
+two distinct names collide. **Display is intentionally untouched** (inventory is still Russian, so the
+raw strings render exactly as before); display moves to `invDisplay` in 5c, before any slug can enter
+the inventory in 5d.
+
+**Verification:** `node --check` OK. **5b harness 27/27** — incl. `canonItem` bijective+idempotent over
+all 98, `itemName`/`invDisplay`/`getItemSize` correct, tables slug-keyed with values intact, and
+**`passesInventoryCheck` new===old across ~300 (condition, inventory) cases** (string / `{all}` /
+`{item,count}` / array / food-suffixed / custom). **Group B regression 21/21** (loader updated to
+globalize the infra). Structural baseline unchanged (data untouched). dist verified (`canonItem` +
+`RU_TO_SLUG` present, both tables slug-keyed, no Russian-keyed table, no fuzzy match).
+
+**Commits:** source+log, then dist.
