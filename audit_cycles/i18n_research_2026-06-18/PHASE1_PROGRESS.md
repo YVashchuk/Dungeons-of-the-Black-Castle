@@ -235,3 +235,38 @@ baseline unchanged; engine + dist verified (3 inventory spans wrapped, **no raw 
 remains**, `itemName(clean)` present).
 
 **Commits:** source+log, then dist.
+
+
+---
+
+## Increment 5d — flip data item references RU -> slug (coupling #3, part d) \u00b7 2026-06-18
+**Files:** `src/remake_data.js`.
+
+**What:** flipped every item *name* in the data from its Russian string to its registry slug, across all
+ten item-name positions, leaving everything else byte-identical:
+- choice-level: `inventory_condition` (str / `{all:[...]}` / `{item,count}`), `consume_on_use`
+  (str / list / `{item,count}`), `acquires` (str / list), `grants_items` (str), `grants_food.name`.
+- section-level: `auto_items.items` / `auto_items.food[].name`, `bet_payout.items` /
+  `bet_payout.food[].name`, `set_stake.name` (only the one `{kind:'item'}` stake).
+- **307 flips total.** The two food strings that live inside `auto_items.items` keep their suffix:
+  `Печень дракона (еда: +9)` -> `dragon_liver (еда: +9)` (§67), `Бутылка вина (еда: +4)` ->
+  `wine_bottle (еда: +4)` (§550).
+
+**Why behavior-identical:** `canonItem(slug) === canonItem(Russian-name-of-same-item)` for all 98 items
+(proven in 5b), so replacing a condition's Russian name with its slug does not change
+`canonItem(condition)`, and the inventory side is unchanged -> `passesInventoryCheck` is invariant.
+Grants now push slugs into `S.inventory`; `canonItem` normalizes every comparison and `invDisplay`/
+`itemName` (5c) render the Russian name, so both logic and display are unchanged. Old Russian saves keep
+working even before 5e because `canonItem` bridges Russian inventory entries to slug conditions.
+
+**Verification:** the apply step asserts the JSON round-trip is byte-identical *before* writing, that
+every flipped value resolves to a registry slug, and that **no Russian name remains in any item
+position**; structural baseline unchanged (1221/1205/0/76/116). `node --check` OK. **5d harness: 523
+cases, 0 mismatches** -- for every real `inventory_condition`, engine `passesInventoryCheck` on the NEW
+slug condition equals the OLD Russian-string semantics over inventories built from the condition's actual
+items (present / absent / decoy / food-suffixed, and the AND / count / OR shapes). 5b harness 27/27;
+Group B regression 21/21 (its five item-identity assertions were made `canonItem`-robust so they pass
+against slug data and survive future renames). dist verified (slug conditions present, suffixed food
+preserved, no Russian condition value, `SLUG_TO_RU` display map intact).
+
+**Commits:** data+log, then dist.
