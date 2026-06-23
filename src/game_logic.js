@@ -28,8 +28,8 @@ const SPELLS=[
 //   §84 amulet → Медведица Мастерство 8 / Выносливость 10 — only OUTSIDE the Black castle
 //                ("в любом бою, но за пределами Чёрного замка. Там амулет бессилен.")
 const COMBAT_ALLIES={
-  'Волшебный колокольчик':{name:'Медведь',   skill:11, stamina:9,  scope:'anywhere',       icon:'🐻', verb:'звоните в колокольчик, и из чащи появляется огромный медведь'},
-  'Медвежий амулет':      {name:'Медведица', skill:8,  stamina:10, scope:'outside_castle', icon:'🐻', verb:'сжимаете амулет, и на зов является медведица'}
+  magic_bell:{name:'Медведь',   skill:11, stamina:9,  scope:'anywhere',       icon:'🐻', verb:'звоните в колокольчик, и из чащи появляется огромный медведь'},
+  bear_amulet:{name:'Медведица', skill:8,  stamina:10, scope:'outside_castle', icon:'🐻', verb:'сжимаете амулет, и на зов является медведица'}
 };
 
 // Curated set of combat paragraphs INSIDE the Black castle (Option 2, June 2026).
@@ -353,7 +353,7 @@ function renderInvModalCurrent(){
     if(!row)return;
     const btn=row.querySelector('button');
     if(!btn)return;
-    if(S.inventory.includes(item)){
+    if(S.inventory.some(it=>canonItem(it)===canonItem(item))){
       btn.textContent='✓ В мешке';btn.disabled=true;btn.style.opacity='.4';
     } else if(getBagUsed()+getItemSize(item)>getBagSize()){
       btn.textContent=getItemSize(item)>1?('Нужно '+getItemSize(item)+' мест'):'Мешок полон';btn.disabled=true;btn.style.opacity='.4';
@@ -366,7 +366,7 @@ function renderInvModalCurrent(){
 function takeItem(idx){
   if(!S)return;
   const item=pendingItems[idx];
-  if(!item||S.inventory.includes(item))return;
+  if(!item||S.inventory.some(it=>canonItem(it)===canonItem(item)))return;
   if(getBagUsed()+getItemSize(item)>getBagSize())return;
   S.inventory.push(item);
   logEvent('gain','+ '+item,'В мешок');
@@ -505,7 +505,7 @@ function renderGame(){
     // Lose items
     if(ai.lose){
       ai.lose.forEach(item=>{
-        const idx=S.inventory.findIndex(i=>i.toLowerCase().includes(item.toLowerCase().substring(0,5)));
+        const idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(item)); // (auto_items.lose: currently unused in data)
         if(idx>=0){
           notifications.push('− '+S.inventory[idx]);
           S.inventory.splice(idx,1);
@@ -535,7 +535,7 @@ function renderGame(){
     }
     // Items — show modal if any found
     if(ai.items&&ai.items.length>0){
-      const newItems=ai.items.filter(item=>!S.inventory.includes(item));
+      const newItems=ai.items.filter(item=>!S.inventory.some(it=>canonItem(it)===canonItem(item)));
       if(newItems.length>0){
         showInventoryModal(newItems, notifications);
       } else if(notifications.length>0){
@@ -656,11 +656,86 @@ function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bag
 // getBagUsed() is the summed occupancy that every capacity check uses in place
 // of S.inventory.length. Names match after stripping the food «(еда: +N)» suffix
 // so the lookup is robust (no food item is multi-slot, so this is a no-op there).
-const ITEM_SIZES={'Водолазный костюм':2,'Ковёр-самолёт':3};
+// ── Item registry (i18n transition; canonical id space: src/registries/items.json) ──
+// canonItem(): a Russian display name OR a carried-food «name (еда:+N)» string -> its slug,
+// idempotent on slugs, so Russian-named and slug-keyed values compare interchangeably during the
+// RU->slug migration (phase1.5b-5f). itemName(): slug -> Russian display name (passthrough for
+// unknown / hand-typed strings). invDisplay(): an inventory entry -> display string (resolves the
+// slug, preserves any food suffix). RU_TO_SLUG/SLUG_TO_RU are generated from items.json.
+const RU_TO_SLUG={
+  "Яблоко":"apple","Здесь 5 стрел":"arrows_5","Банан":"banana","Медвежий амулет":"bear_amulet",
+  "Шкурка бобра":"beaver_pelt","Клетка для птиц":"birdcage","Здесь 5 чёрных стрел":"black_arrows_5",
+  "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
+  "Бронзовый кувшин":"bronze_jug","Бронзовый свисток":"bronze_whistle","Красивая брошка":"brooch",
+  "Птичка в клетке":"caged_bird","Свеча":"candle","Подсвечник":"candlestick","Карты":"card_deck",
+  "Пароль в замок":"castle_password","Сыр":"cheese","Медный браслет":"copper_bracelet",
+  "Медный ключик":"copper_key","Корона":"crown","Шкура оленя":"deer_hide","Прекрасный бриллиант":"diamond",
+  "Игральная кость":"die","Водолазный костюм":"diving_suit","Коготь дракона":"dragon_claw",
+  "Печень дракона":"dragon_liver","Бляха с золотым орлом":"eagle_plaque","Фигурный ключ":"figured_key",
+  "Огнетушитель":"fire_extinguisher","Помощь рыбки":"fish_help","Огниво":"flint",
+  "Ковёр-самолёт":"flying_carpet","Шкура лисы":"fox_pelt","Золотой амулет":"gold_amulet",
+  "Золотая стрела":"gold_arrow","Золотой ключ":"gold_key","Золотое ожерелье":"gold_necklace",
+  "Золотая устрица":"gold_oyster","Золотое кольцо":"gold_ring","Золотой свисток":"gold_whistle",
+  "Золотой апельсин":"golden_orange","Золотая рыбка":"goldfish","Зеркальце":"hand_mirror","Шлем":"helmet",
+  "Мёд":"honey","Попона для лошади":"horse_blanket","Песочные часы":"hourglass",
+  "Гребень из слоновой кости":"ivory_comb","Лимон":"lemon","Волшебный колокольчик":"magic_bell",
+  "Волшебный пояс":"magic_belt","Рукопись":"manuscript","Мясо":"meat","Молоко":"milk",
+  "Тайна зеркал":"mirror_secret","Мускатное печенье":"nutmeg_biscuit","Апельсин":"orange",
+  "Пергаментный свиток":"parchment_scroll","Пропуск":"pass","Пароль «Трое из Эвенло»":"password_evenlo",
+  "Перо павлина":"peacock_feather","Груша":"pear","Флакончик духов":"perfume_vial","Ананас":"pineapple",
+  "Чётки":"prayer_beads","Кольцо":"ring","Верёвка":"rope","Верёвочная лесенка":"rope_ladder","Роза":"rose",
+  "Рубиновая звезда":"ruby_star","Колбаса":"sausage","Блестящий кусок металла":"shiny_metal",
+  "Бляха с парусным корабликом":"ship_plaque","Перстень":"signet","Перстень с изумрудом":"signet_emerald",
+  "Перстень с рубином":"signet_ruby","Серебряный браслет":"silver_bracelet",
+  "Серебряное кольцо":"silver_ring","Серебряный сосуд":"silver_vessel",
+  "Серебряный свисток":"silver_whistle","Курительная трубка":"smoking_pipe",
+  "Каменный Кентавр":"stone_centaur","Перо аиста":"stork_feather","Оберег":"talisman",
+  "Мандарин":"tangerine","Клубочек":"thread_ball","Знание о троне":"throne_lore",
+  "Знание о кладе":"treasure_lore","Фляга с водой":"water_flask","Арбуз":"watermelon","Кнут":"whip",
+  "Белая стрела":"white_arrow","Целый меч":"whole_sword","Бутылка вина":"wine_bottle",
+  "Красивый кусочек дерева":"wood_piece",
+};
+const SLUG_TO_RU={
+  "apple":"Яблоко","arrows_5":"Здесь 5 стрел","banana":"Банан","bear_amulet":"Медвежий амулет",
+  "beaver_pelt":"Шкурка бобра","birdcage":"Клетка для птиц","black_arrows_5":"Здесь 5 чёрных стрел",
+  "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
+  "bronze_jug":"Бронзовый кувшин","bronze_whistle":"Бронзовый свисток","brooch":"Красивая брошка",
+  "caged_bird":"Птичка в клетке","candle":"Свеча","candlestick":"Подсвечник","card_deck":"Карты",
+  "castle_password":"Пароль в замок","cheese":"Сыр","copper_bracelet":"Медный браслет",
+  "copper_key":"Медный ключик","crown":"Корона","deer_hide":"Шкура оленя","diamond":"Прекрасный бриллиант",
+  "die":"Игральная кость","diving_suit":"Водолазный костюм","dragon_claw":"Коготь дракона",
+  "dragon_liver":"Печень дракона","eagle_plaque":"Бляха с золотым орлом","figured_key":"Фигурный ключ",
+  "fire_extinguisher":"Огнетушитель","fish_help":"Помощь рыбки","flint":"Огниво",
+  "flying_carpet":"Ковёр-самолёт","fox_pelt":"Шкура лисы","gold_amulet":"Золотой амулет",
+  "gold_arrow":"Золотая стрела","gold_key":"Золотой ключ","gold_necklace":"Золотое ожерелье",
+  "gold_oyster":"Золотая устрица","gold_ring":"Золотое кольцо","gold_whistle":"Золотой свисток",
+  "golden_orange":"Золотой апельсин","goldfish":"Золотая рыбка","hand_mirror":"Зеркальце","helmet":"Шлем",
+  "honey":"Мёд","horse_blanket":"Попона для лошади","hourglass":"Песочные часы",
+  "ivory_comb":"Гребень из слоновой кости","lemon":"Лимон","magic_bell":"Волшебный колокольчик",
+  "magic_belt":"Волшебный пояс","manuscript":"Рукопись","meat":"Мясо","milk":"Молоко",
+  "mirror_secret":"Тайна зеркал","nutmeg_biscuit":"Мускатное печенье","orange":"Апельсин",
+  "parchment_scroll":"Пергаментный свиток","pass":"Пропуск","password_evenlo":"Пароль «Трое из Эвенло»",
+  "peacock_feather":"Перо павлина","pear":"Груша","perfume_vial":"Флакончик духов","pineapple":"Ананас",
+  "prayer_beads":"Чётки","ring":"Кольцо","rope":"Верёвка","rope_ladder":"Верёвочная лесенка","rose":"Роза",
+  "ruby_star":"Рубиновая звезда","sausage":"Колбаса","shiny_metal":"Блестящий кусок металла",
+  "ship_plaque":"Бляха с парусным корабликом","signet":"Перстень","signet_emerald":"Перстень с изумрудом",
+  "signet_ruby":"Перстень с рубином","silver_bracelet":"Серебряный браслет",
+  "silver_ring":"Серебряное кольцо","silver_vessel":"Серебряный сосуд",
+  "silver_whistle":"Серебряный свисток","smoking_pipe":"Курительная трубка",
+  "stone_centaur":"Каменный Кентавр","stork_feather":"Перо аиста","talisman":"Оберег",
+  "tangerine":"Мандарин","thread_ball":"Клубочек","throne_lore":"Знание о троне",
+  "treasure_lore":"Знание о кладе","water_flask":"Фляга с водой","watermelon":"Арбуз","whip":"Кнут",
+  "white_arrow":"Белая стрела","whole_sword":"Целый меч","wine_bottle":"Бутылка вина",
+  "wood_piece":"Красивый кусочек дерева",
+};
+function stripFoodSuffix(x){return String(x==null?'':x).replace(/\s*\(еда:.*?\)/,'');}
+function canonItem(x){const b=stripFoodSuffix(x);return RU_TO_SLUG[b]||b;}
+function itemName(x){return SLUG_TO_RU[x]||x;}
+function invDisplay(entry){const s=String(entry==null?'':entry);const m=/(\s*\(еда:.*?\))\s*$/.exec(s);return itemName(stripFoodSuffix(s))+(m?m[1]:'');}
+const ITEM_SIZES={diving_suit:2,flying_carpet:3};
 function getItemSize(name){
   if(!name) return 1;
-  const base=String(name).replace(/\s*\(еда:.*?\)/,'');
-  return ITEM_SIZES[base]||1;
+  return ITEM_SIZES[canonItem(name)]||1;
 }
 function getBagUsed(){
   return (S&&Array.isArray(S.inventory)?S.inventory:[]).reduce((sum,it)=>sum+getItemSize(it),0);
@@ -762,7 +837,7 @@ function passesInventoryCheck(ch){
   // so an exact compare misses it. Match the exact string OR the base name with
   // the food suffix stripped, so inventory_condition:'Banan' matches a carried
   // 'Banan (eda: +3)'. Non-food items are unaffected (the strip is a no-op).
-  const baseEq=(it,name)=>it===name||it.replace(/\s*\(еда:.*?\)/,'')===name;
+  const baseEq=(it,name)=>canonItem(it)===canonItem(name);
   const has=name=>S.inventory.some(it=>baseEq(it,name));
   // Object forms: {all:['A','B']} requires ALL present (group_39 AND-gate,
   // para 12 two-whistles); {item:'X',count:N} requires >= N matches (group_38
@@ -806,7 +881,7 @@ function applyChoiceAcquires(ch, onDone){
   if(!ch||!ch.acquires||!S){if(onDone)onDone();return;}
   if(!S.inventory)S.inventory=[];
   const list=Array.isArray(ch.acquires)?ch.acquires:[ch.acquires];
-  const newItems=list.filter(name=>!S.inventory.includes(name));
+  const newItems=list.filter(name=>!S.inventory.some(it=>canonItem(it)===canonItem(name)));
   if(newItems.length===0){if(onDone)onDone();return;}
   // Hand off to the standard pickup modal so 7-slot overflow logic
   // is shared with auto_items. The modal's Continue button closes
@@ -861,7 +936,7 @@ function applyChoiceConsume(ch){
   // consume_on_use:'Banan' removes a carried 'Banan (eda: +3)' (monkey at 154).
   const removeOne=name=>{
     let idx=S.inventory.indexOf(name);
-    if(idx<0) idx=S.inventory.findIndex(it=>it.replace(/\s*\(еда:.*?\)/,'')===name);
+    if(idx<0) idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(name));
     if(idx>=0){ S.inventory.splice(idx,1); removed.push(name); return true; }
     return false;
   };
@@ -1055,7 +1130,7 @@ function makePurchaseBtn(ch, choiceIndex){
   const bagMaxed=ch.grants_bag_size&&getBagSize()>=ch.grants_bag_size;
   const flaskFull=ch.flask_fill&&((S.flask||0)>=2);
   const foodOverflow=ch.grants_food&&(getBagUsed()+1>getBagSize());
-  const wouldOverflow=(grantsItems.length>0)&&(getBagUsed()+grantsItems.filter(n=>!S.inventory.includes(n)).reduce((s,n)=>s+getItemSize(n),0)>getBagSize());
+  const wouldOverflow=(grantsItems.length>0)&&(getBagUsed()+grantsItems.filter(n=>!S.inventory.some(it=>canonItem(it)===canonItem(n))).reduce((s,n)=>s+getItemSize(n),0)>getBagSize());
   let disabled=false;
   let tooltip='';
   if(isBought){
@@ -1104,7 +1179,7 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   // Items grant. Only items not already owned are deposited; bought-list is
   // marked once the item enters the inventory so a re-buy is blocked even
   // if the player drops the item later.
-  const newItems=grantsItems.filter(n=>!S.inventory.includes(n));
+  const newItems=grantsItems.filter(n=>!S.inventory.some(it=>canonItem(it)===canonItem(n)));
   newItems.forEach(name=>{
     if(getBagUsed()+getItemSize(name)<=getBagSize()){
       S.inventory.push(name);
@@ -1590,7 +1665,7 @@ function applyBetting(sec){
       notifs.push('ставка: '+amt+' золотых');
       logEvent('loss','🎲 Ставка: '+amt+' золотых','На кону. Осталось: '+S.gold);
     } else if(st.kind==='item'){
-      const idx=S.inventory.indexOf(st.name);
+      const idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(st.name));
       if(idx>=0) S.inventory.splice(idx,1);
       S.bet_stake={kind:'item',name:st.name};
       notifs.push('ставка: '+st.name);
@@ -1615,7 +1690,7 @@ function applyBetting(sec){
       S.bet_stake=null;
     }
     if(bp.gold){ S.gold+=bp.gold; notifs.push('+ '+bp.gold+' золотых'); logEvent('gain','+ '+bp.gold+' золотых','Выигрыш. Всего: '+S.gold); }
-    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.includes(it)&&getBagUsed()+getItemSize(it)<=getBagSize()){ S.inventory.push(it); notifs.push('+ '+it); logEvent('gain','+ '+it,'Выигрыш'); } }); }
+    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.some(x=>canonItem(x)===canonItem(it))&&getBagUsed()+getItemSize(it)<=getBagSize()){ S.inventory.push(it); notifs.push('+ '+it); logEvent('gain','+ '+it,'Выигрыш'); } }); }
     if(bp.food){ let f2=0; bp.food.forEach(f=>{ const str=f.name+' (еда: +'+f.stamina+')'; for(let k=0;k<(f.count||1);k++){ if(getBagUsed()+getItemSize(str)<=getBagSize()){ S.inventory.push(str); f2++; } } }); if(f2>0){ notifs.push('+ еда ×'+f2); logEvent('gain','+ еда ×'+f2,'Выигрыш'); } }
     if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push('фляга потеряна'); logEvent('loss','🥤 Фляга потеряна','Проиграна в игре'); } }
   }
@@ -1642,7 +1717,7 @@ function renderStakePicker(sec){
     b.textContent='🎲 Поставить: '+item;
     b.onclick=()=>{
       S.bet_stake={kind:'item',name:item};
-      const idx=S.inventory.indexOf(item);
+      const idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(item));
       if(idx>=0) S.inventory.splice(idx,1);
       logEvent('loss','🎲 Ставка: '+item,'На кону.');
       updateHUD();saveGame();
@@ -2099,8 +2174,8 @@ function summonAllyAvailable(allyKey){
   if(!combatState||!S) return false;
   const a=COMBAT_ALLIES[allyKey];
   if(!a) return false;
-  if(!Array.isArray(S.inventory)||!S.inventory.includes(allyKey)) return false;
-  if(Array.isArray(S.summonsUsed)&&S.summonsUsed.includes(allyKey)) return false;
+  if(!Array.isArray(S.inventory)||!S.inventory.some(it=>canonItem(it)===allyKey)) return false;
+  if(Array.isArray(S.summonsUsed)&&S.summonsUsed.some(k=>canonItem(k)===allyKey)) return false;
   if(combatState.allyUsedThisFight) return false;
   if(a.scope==='outside_castle'&&isInsideCastle(S.section)) return false;
   if(getAliveCombatEnemies(combatState).length===0) return false;
@@ -2116,7 +2191,7 @@ function useAllyInCombat(allyKey){
   // mark spent immediately (one summon per fight; once per journey) — item stays in the bag
   cs.allyUsedThisFight=true;
   if(!Array.isArray(S.summonsUsed)) S.summonsUsed=[];
-  if(!S.summonsUsed.includes(allyKey)) S.summonsUsed.push(allyKey);
+  if(!S.summonsUsed.some(k=>canonItem(k)===allyKey)) S.summonsUsed.push(allyKey);
   cs.ally={name:a.name,skill:a.skill,stamina:a.stamina};
   const log=document.getElementById('combat-log');
   log.innerHTML+=`<div style="color:#b8860b;font-weight:bold;margin-top:8px">${a.icon} Вы ${a.verb}!</div>`;
