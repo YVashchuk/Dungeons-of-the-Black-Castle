@@ -207,3 +207,31 @@ globalize the infra). Structural baseline unchanged (data untouched). dist verif
 `RU_TO_SLUG` present, both tables slug-keyed, no Russian-keyed table, no fuzzy match).
 
 **Commits:** source+log, then dist.
+
+
+---
+
+## Increment 5c — display + notifications via invDisplay/itemName (coupling #3, part c) \u00b7 2026-06-18
+**Files:** `src/game_logic.js`.
+
+**What:** routed all ~22 user-visible item-name sites through `invDisplay()` / `itemName()` so that once
+a slug enters the inventory (5d) it still renders as the Russian display name:
+- Renders: inventory modal row, the HUD bag row, the pickup modal (`showInventoryModal`) found-item row,
+  and the stake-picker button.
+- `eatFood`: the "Съедено" log + notification use `itemName(clean)`.
+- Gain/loss strings: `takeItem`, `dropItemModal`, `removeItem`, `applyChoiceConsume` (log +
+  `showItemNotification`), grants (`+ name`), `grants_food` (`+ foodStr`), the dice-bet stake/return/
+  payout notifs + logs, the stake-picker stake log, and the (dead) `auto_items.lose` notif.
+
+**Why behavior-identical:** `S.inventory` and all data references are still Russian, and
+`invDisplay(x)===x` / `itemName(x)===x` for any string not in `SLUG_TO_RU` (every current entry: Russian
+names, «name (еда:+N)» food strings, hand-typed customs). So every wrapped site renders byte-identically
+today; the wrapping only changes output once slugs appear (5d). `showItemNotification` itself is
+unchanged (it receives already-formatted strings; its callers wrap).
+
+**Verification:** `node --check` OK; 5b harness 27/27 (resolvers intact: `invDisplay`/`itemName`
+passthrough on Russian, slug->RU on slugs); Group B regression 21/21 (gates untouched); structural
+baseline unchanged; engine + dist verified (3 inventory spans wrapped, **no raw `${item}` display span
+remains**, `itemName(clean)` present).
+
+**Commits:** source+log, then dist.
