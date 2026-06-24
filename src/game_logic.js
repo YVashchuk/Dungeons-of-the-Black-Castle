@@ -1,22 +1,5 @@
 // ── Spells ──
-const SPELLS=[
-  {id:'LEVITATION',icon:'🌬️',name:'Левитация',
-   full:'С его помощью вы сможете подняться в воздух и перелететь то препятствие, которое вам встретится. Но будьте осторожны: заклятие действует не слишком долго, и если вы не рассчитаете свои силы, то можете опуститься на землю раньше, чем препятствие или опасность будут позади.'},
-  {id:'FIRE',icon:'🔥',name:'Огонь',
-   full:'Поможет вам в нужный момент создать в воздухе огненный шар и направить его на врагов. Но в закрытых помещениях им надо пользоваться осмотрительно, чтобы не устроить пожар.'},
-  {id:'ILLUSION',icon:'🌀',name:'Иллюзия',
-   full:'Вы создадите у вашего врага необходимую иллюзию и сможете спастись в тех ситуациях, из которых другого выхода не будет. Но заклятие иллюзии — опасное колдовство: ведь иллюзия рассеивается, и враг понимает, что его одурачили.'},
-  {id:'FORCE',icon:'💪',name:'Сила',
-   full:'Прибавит вам силу и увеличит вашу СИЛУ УДАРА в бою.'},
-  {id:'WEAKNESS',icon:'🫀',name:'Слабость',
-   full:'Сделает вашего врага неуклюжим и неповоротливым, ослабит СИЛУ его УДАРА.'},
-  {id:'COPY',icon:'👤',name:'Копия',
-   full:'С его помощью вы сможете создать точную Копию вашего противника, которую вы будете контролировать. Ему придётся драться с собственной Копией. Если Копия сразит противника — заклятие теряет силу и Копия исчезает, а вы продолжаете путь.'},
-  {id:'HEALING',icon:'💚',name:'Исцеление',
-   full:'В любой момент (но не во время сражения) добавит вам 8 ВЫНОСЛИВОСТЕЙ.'},
-  {id:'SWIMMING',icon:'🌊',name:'Плавание',
-   full:'С помощью этого заклятия вы сможете переплыть любую водную преграду, которая вам встретится. Но будьте внимательны: как только вы ступите на землю, заклятие утратит свою силу.'},
-];
+const SPELLS=[{"id":"LEVITATION","icon":"🌬️"},{"id":"FIRE","icon":"🔥"},{"id":"ILLUSION","icon":"🌀"},{"id":"FORCE","icon":"💪"},{"id":"WEAKNESS","icon":"🫀"},{"id":"COPY","icon":"👤"},{"id":"HEALING","icon":"💚"},{"id":"SWIMMING","icon":"🌊"}];
 
 // ── Combat summons (item-triggered allies) ──
 // Distinct ally actors with their OWN Skill/Stamina (NOT copies of the player or enemy).
@@ -27,10 +10,7 @@ const SPELLS=[
 //   §612 bell → Медведь  Мастерство 11 / Выносливость 9  — works ANYWHERE incl. the castle.
 //   §84 amulet → Медведица Мастерство 8 / Выносливость 10 — only OUTSIDE the Black castle
 //                ("в любом бою, но за пределами Чёрного замка. Там амулет бессилен.")
-const COMBAT_ALLIES={
-  magic_bell:{name:'Медведь',   skill:11, stamina:9,  scope:'anywhere',       icon:'🐻', verb:'звоните в колокольчик, и из чащи появляется огромный медведь'},
-  bear_amulet:{name:'Медведица', skill:8,  stamina:10, scope:'outside_castle', icon:'🐻', verb:'сжимаете амулет, и на зов является медведица'}
-};
+const COMBAT_ALLIES={"magic_bell":{"skill":11,"stamina":9,"scope":"anywhere","icon":"🐻"},"bear_amulet":{"skill":8,"stamina":10,"scope":"outside_castle","icon":"🐻"}};
 
 // Curated set of combat paragraphs INSIDE the Black castle (Option 2, June 2026).
 // The castle is a dense maze with no thin neck and no clean graph partition (75/76 combat
@@ -41,9 +21,9 @@ const CASTLE_SECTIONS=new Set([43,96,131,174,388,455,481,588,618,628,684,722,742
 function isInsideCastle(section){ return CASTLE_SECTIONS.has(section); }
 
 // ── Preface Text ──
-const PREFACE_TEXT='В самое обыкновенное сказочное королевство приходит беда. В тихом лесу, на его южных границах, появляется хитрый и коварный волшебник Барлад Дэрт, в совершенстве овладевший искусством черной магии. Никто не знает, из каких земель он пришел. Вскоре окрестные жители начинают сторониться леса, который темные колдовские силы сделали таинственным и непроходимым, с множеством беспощадных ловушек и мерзких глубоких болот. Лес наводнили Гоблины и Орки — уродливые и жестокие воины Барлада Дэрта. А в самом центре леса, который теперь называют не иначе как Зачарованный лес, волшебник воздвиг Черный замок, и никому еще не удалось достичь его и безнаказанно вернуться обратно.\n\nНо волшебник не успокаивается на этом. Узнав, что во дворце живет прекрасная Принцесса — единственная дочь Короля — он посылает к ее отцу черных послов, чтобы просить ее руки. Гордый Король отказывает им, послы появляются еще дважды.\n\nКаждый раз они спускаются с неба на могучих крылатых конях, и только Король может без страха смотреть им в глаза, столь большая и грозная сила исходит от них. Но Король непреклонен, хотя и понимает: Барлад Дэрт так просто не отказывается от своих намерений. И вот, когда послы в третий раз покидают дворец, Принцесса исчезает вместе с ними. Заклятие волшебника переносит ее в Черный замок, но она бесстрашно отказывается стать женой чародея, и тот не в силах сдержать свою злобу, погружает ее в волшебный сон.\n\nПо всему королевству герольды созывают смельчаков, обещая награду тому, кто освободит Принцессу. Один за другим покидают они столицу по Главному Южному тракту и исчезают в Зачарованном лесу. Но ни один не возвращается назад: Черный замок умеет беречь свои тайны.\n\nХотите попытаться миновать западни Зачарованного леса, сразиться с беспощадными воинами Барлада Дэрта, проникнуть в Черный замок и разрушить колдовские чары?\n\nЕсли да, то собирайтесь в путь — книга поможет вам перенестись в сказочное королевство…';
+const PREFACE_TEXT=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.preface)||'';
 
-const PREGAME_TEXT='Майлин дает еще два совета. Во-первых, сориентироваться на запутанных лесных тропинках и в замке, если вы до него доберетесь, вам поможет карта. Рисуйте ее по мере продвижения. Во-вторых, для многих магических таинств необходимы волшебные предметы. Старайтесь в своем путешествии добыть их как можно больше, при случае они помогут вам, но будьте осторожны: коварство врага не знает границ, возможны любые ловушки.\n\nПосле беседы с астрологом вы вновь предстаете перед Королем. Никто не знает, что вам может понадобиться на пути к успеху, поэтому из дворца вы берете с собой только самое необходимое: меч, флягу, заплечный мешок и 15 золотых.\n\nКороль приказывает проводить вас до начала Зачарованного леса, чтобы в пути вы не испытывали нужды ни в еде, ни в питье. По дороге вы спрашиваете герольда, кто такие Гоблины и Орки, о которых вы много слышали во дворце. Он говорит, что Гоблины — это страшные и отвратительные злые духи ростом примерно с человека, которые верой и правдой служат волшебнику. Их мало кто видел. И совсем уж никто и никогда не видел Орков. Говорят только, что они повыше и посильнее. Но и с теми и с другими лучше не встречаться. В пути вы еще раз обдумываете последний совет Майлина: Барлад Дэрт достаточно могущественный волшебник, чтобы даже малой частицы его мастерства, переданной особо доверенным воинам, хватило не только на то, чтобы противостоять вашим заклятиям, но и наложить на вас свои, не менее быстрые и сильные. Будьте осмотрительны!\n\nНо вот королевским владениям приходит конец. Здесь надо спешиться: лес заколдован и не пустит всадника. Герольд прощается с вами, и вскоре лишь далекий стук копыт напоминает, что вы были не один. Черный, таинственный и неподвижный, Зачарованный лес ждет вас.\n\nЕсли вы готовы к тем неожиданностям, с которыми вам придется встретиться, переверните страницу.';
+const PREGAME_TEXT=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.pregame)||'';
 const SAVE_KEY='podzch_v6';
 
 // ── State ──
@@ -194,8 +174,8 @@ function renderSpellSel(){
     c.style.cssText='display:flex;align-items:flex-start;gap:14px;padding:18px 20px;';
     c.innerHTML=`<div class="sp-icon" style="font-size:32px;min-width:38px;text-align:center;margin-top:2px;">${sp.icon}</div>
       <div style="flex:1;min-width:0;">
-        <div class="sp-name" style="font-size:21px;margin-bottom:6px;font-weight:500;">${sp.name}</div>
-        <div class="sp-desc" style="font-size:17px;color:rgba(232,220,196,.78);line-height:1.55;">${_spellDescHtml(sp.full)}</div>
+        <div class="sp-name" style="font-size:21px;margin-bottom:6px;font-weight:500;">${spellText(sp.id).name}</div>
+        <div class="sp-desc" style="font-size:17px;color:rgba(232,220,196,.78);line-height:1.55;">${_spellDescHtml(spellText(sp.id).full)}</div>
       </div>
       <div class="sp-qty" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
         <button class="qty-btn" data-id="${sp.id}" data-d="-1" style="font-size:20px;width:36px;height:36px;">−</button>
@@ -443,6 +423,10 @@ function pText(n){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_
 function label(n,i){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
 function locSec(n){ const s=GD[String(n)]; if(!s) return s; const out=Object.assign({},s,{text:pText(n)}); if(Array.isArray(s.choices)) out.choices=s.choices.map((c,i)=>Object.assign({},c,{label:label(n,i)})); return out; }
 
+// ── Locale resolvers (6b): spell + ally display text live in LOCALE_RU.spells / .allies.
+function spellText(id){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.spells)?LOCALE_RU.spells[id]:null; return e||{name:'',full:''}; }
+function allyText(key){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.allies)?LOCALE_RU.allies[key]:null; return e||{name:'',verb:''}; }
+
 // ── Game Rendering ──
 function renderGame(){
   if(!S)return;updateHUD();
@@ -633,7 +617,7 @@ function updateHUD(){
   // Spells
   const st=document.getElementById('spell-tags');st.innerHTML='';
   if(S.spells)S.spells.forEach(sp=>{if(sp.remaining>0){const def=SPELLS.find(s=>s.id===sp.id);
-    if(def)st.innerHTML+=`<div class="spell-tag"><span class="st-icon">${def.icon}</span><span class="st-name">${def.name}</span><span class="st-count">×${sp.remaining}</span></div>`;}});
+    if(def)st.innerHTML+=`<div class="spell-tag"><span class="st-icon">${def.icon}</span><span class="st-name">${spellText(def.id).name}</span><span class="st-count">×${sp.remaining}</span></div>`;}});
   // Healing button visibility
   const healBtn=document.getElementById('btn-heal');
   if(healBtn){
@@ -869,7 +853,7 @@ function passesGoldCheck(ch){
 function useSpell(spellId){
   if(!S||!S.spells)return;
   const sp=S.spells.find(s=>s.id===spellId);
-  if(sp&&sp.remaining>0){sp.remaining--;const def=SPELLS.find(s=>s.id===spellId);logEvent('gain',def.icon+' Заклятие '+def.name,'Осталось: '+sp.remaining);updateHUD();saveGame();}
+  if(sp&&sp.remaining>0){sp.remaining--;const def=SPELLS.find(s=>s.id===spellId);logEvent('gain',def.icon+' Заклятие '+spellText(def.id).name,'Осталось: '+sp.remaining);updateHUD();saveGame();}
 }
 
 // Per-choice item grant. A choice may carry `acquires: "Item Name"`
@@ -1925,7 +1909,7 @@ function startCombat(enemies,sec){
       if(b){
         const a=COMBAT_ALLIES[key];
         b.style.display='inline-block';
-        b.textContent=`${a.icon} Позвать: ${a.name}`;
+        b.textContent=`${a.icon} Позвать: ${allyText(key).name}`;
         b.onclick=()=>useAllyInCombat(key);
         slot++;
       }
@@ -2197,10 +2181,10 @@ function useAllyInCombat(allyKey){
   cs.allyUsedThisFight=true;
   if(!Array.isArray(S.summonsUsed)) S.summonsUsed=[];
   if(!S.summonsUsed.some(k=>canonItem(k)===allyKey)) S.summonsUsed.push(allyKey);
-  cs.ally={name:a.name,skill:a.skill,stamina:a.stamina};
+  cs.ally={name:allyText(allyKey).name,skill:a.skill,stamina:a.stamina};
   const log=document.getElementById('combat-log');
-  log.innerHTML+=`<div style="color:#b8860b;font-weight:bold;margin-top:8px">${a.icon} Вы ${a.verb}!</div>`;
-  log.innerHTML+=`<div style="color:#b8860b;font-size:14px;">${a.name}: Мастерство ${a.skill}, Выносливость ${a.stamina}. Бьётся с ${target.name}.</div>`;
+  log.innerHTML+=`<div style="color:#b8860b;font-weight:bold;margin-top:8px">${a.icon} Вы ${allyText(allyKey).verb}!</div>`;
+  log.innerHTML+=`<div style="color:#b8860b;font-size:14px;">${allyText(allyKey).name}: Мастерство ${a.skill}, Выносливость ${a.stamina}. Бьётся с ${target.name}.</div>`;
   let allyHp=a.stamina;
   let enemyHp=target.hp;
   let round=0;

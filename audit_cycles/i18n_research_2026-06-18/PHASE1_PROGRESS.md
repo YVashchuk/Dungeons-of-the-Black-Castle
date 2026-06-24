@@ -360,3 +360,39 @@ strings, 6d enemy names + `riddle.fail_target_label`, 6e map strings; then item 
 `remake_data.js`→`game_structure.js` rename.
 
 **Commits:** source (data+locale+engine+build+log), then dist.
+
+
+---
+
+## Increment 6b — extract engine static text (spells/allies/preface/pregame) into locale.ru.js (text extraction, part b) · 2026-06-18
+**Files:** `src/locale.ru.js`, `src/game_logic.js`.
+
+**What:** moved the Russian text that lived inline in the engine into `LOCALE_RU`.
+- **SPELLS:** `name` + `full` (8 spells) → `LOCALE_RU.spells[id] = {name, full}`. The `SPELLS` const is
+  slimmed to `[{id, icon}]` (the emoji icon is language-neutral, kept).
+- **COMBAT_ALLIES:** `name` + `verb` (2 allies) → `LOCALE_RU.allies[key] = {name, verb}`. The const is
+  slimmed to `{skill, stamina, scope, icon}` (structural + emoji).
+- **PREFACE_TEXT / PREGAME_TEXT** → `LOCALE_RU.preface` / `.pregame`. Both engine consts are now
+  locale-sourced (`const PREFACE_TEXT=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.preface)||''`), so their
+  readers (`startGame`, the preface button) are unchanged.
+- **Resolvers:** `spellText(id)` → `{name, full}`, `allyText(key)` → `{name, verb}` (both with safe
+  empty defaults). Repointed the 8 read sites: `renderSpellSel` (name+full), the HUD spell tag and
+  `useSpell` log (name), the combat ally button / `cs.ally` / summon log / fight line (name+verb).
+- `locale.ru.js` reorganized: `spells` / `allies` / `preface` / `pregame` keys precede the per-line `p`
+  block.
+
+**Why behavior-identical:** the locale holds the exact original strings (evaluated from the source via
+Node, so multi-line descriptions, emoji and apostrophes are byte-exact), and the resolvers return them;
+the slim consts keep every structural field (id/icon, skill/stamina/scope/icon) verbatim.
+
+**Verification:** `node --check` engine + locale. **6b harness 16/16** — slim `SPELLS`/`COMBAT_ALLIES`
+equal the originals' structural projection, `spellText` reproduces all 8 names + full descriptions,
+`allyText` reproduces both names + verbs, locale-sourced `PREFACE_TEXT`/`PREGAME_TEXT` equal the
+originals, icons/stats preserved, unknown-key safety. 6a harness 10/10, Group B 21/21, 5f 29/29 (all
+unaffected). dist verified (`LOCALE_RU.spells`/`.allies` blocks present, spell/ally names + preface text
+in the bundle via locale, `SPELLS`/`COMBAT_ALLIES` consts slimmed).
+
+**Remaining text extraction:** 6c engine UI strings (~500), 6d enemy names + `riddle.fail_target_label`,
+6e map strings; then item 7 the `remake_data.js`→`game_structure.js` rename.
+
+**Commits:** source (locale+engine+log), then dist.
