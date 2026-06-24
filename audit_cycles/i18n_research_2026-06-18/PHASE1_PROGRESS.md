@@ -318,3 +318,45 @@ couplings are now removed** (#1 spell, #2 flee, #3 item/food, #4 scene). Phase 1
 text-extraction (locale + resolvers) and the `remake_data.js`→`game_structure.js` rename remaining.
 
 **Commits:** source (data+engine+log), then dist.
+
+
+---
+
+## Increment 6a — extract paragraph text + choice labels into locale.ru.js (text extraction, part a) · 2026-06-18
+**Files:** `src/locale.ru.js` (new), `src/remake_data.js`, `src/game_logic.js`, `build.sh`.
+
+**What:** the first text-extraction step — the Russian display text is split out of the data structure.
+- **New `src/locale.ru.js`:** `const LOCALE_RU = { p: { "N": {t:"<paragraph text>", c:["<labels>"]}, … } }`
+  for all 1221 paragraphs — **1221 paragraph texts + 2212 choice labels** (873 KB), one paragraph-entry
+  per line for readable diffs / future translation.
+- **Slimmed `remake_data.js`:** removed `text` from every paragraph and `label` from every choice. The
+  data file drops 1,035,668 → 160,139 bytes — it is now essentially the language-neutral structure
+  (targets, slugs, scene, enemy stats, riddle logic, flags). (Enemy names and `riddle.fail_target_label`
+  remain for a later sub-step.)
+- **Resolvers in `game_logic.js`:** `pText(n)` → `LOCALE_RU.p[n].t`; `label(n,i)` → `LOCALE_RU.p[n].c[i]`;
+  and `locSec(n)` returns the structural paragraph **hydrated** with its localized text + per-choice
+  labels (`Object.assign` copy, shallow).
+- **Hydration at the two `sec` acquisition points** — `renderGame` and `completePurchase` now do
+  `const sec=locSec(S.section)`. `sec` flows as a parameter into every render path (`renderChoices` →
+  `renderCanonCombatChoices`/`startCombat`→`cs.sec`/`startLuckCheck`, the riddle/dice/picker dispatch,
+  `makeChoiceBtn`/`makePurchaseBtn`, and `showDeathOverlay({sec})`), so **all downstream `sec.text` /
+  `ch.label` reads are unchanged** — no per-read rewrite, no index threading.
+- **build.sh:** `locale.ru.js` added to REQUIRED_FILES and concatenated right after `remake_data.js`.
+
+**Why behavior-identical:** the locale holds the exact original strings (verified byte-for-byte against a
+pre-removal capture), and `locSec` merges them back onto the structure, so the rendered paragraph text
+and every choice label are identical to before. `generateSceneImage(sec.text)` still works (it only uses
+the text as a truthiness guard; the gradient comes from the `scene` field).
+
+**Verification:** `node --check` on data, locale, and engine. **6a harness 10/10** — `pText` reproduces
+all 1221 paragraph texts, `label` all 2212 choice labels, `locSec` reproduces text+labels **and**
+preserves structural fields (target/scene/enemies), plus missing-paragraph safety (empty string, no
+crash). Group B 21/21 (loads the slimmed data fine). 5f harness 29/29 (food unaffected). Structural
+baseline unchanged (1221/1205/0/76/116). dist verified (`LOCALE_RU` + `pText`/`locSec` present, `sec`
+hydrated ×2, §1 prose present in the bundle via the locale, size unchanged).
+
+**Remaining text extraction:** 6b engine static text (SPELLS/COMBAT_ALLIES/PREFACE/PREGAME), 6c engine UI
+strings, 6d enemy names + `riddle.fail_target_label`, 6e map strings; then item 7 the
+`remake_data.js`→`game_structure.js` rename.
+
+**Commits:** source (data+locale+engine+build+log), then dist.

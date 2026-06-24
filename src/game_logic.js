@@ -435,10 +435,18 @@ function showDeathOverlay(opts){
   overlay.classList.add('on');
 }
 
+// ── Locale resolvers (Phase 1 item 6a): paragraph text + choice labels live in
+// LOCALE_RU (locale.ru.js), keyed by paragraph number. locSec(n) returns the
+// structural paragraph hydrated with its localized text + per-choice labels, so
+// all downstream render code reads sec.text / ch.label unchanged.
+function pText(n){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; return (e&&typeof e.t==='string')?e.t:''; }
+function label(n,i){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
+function locSec(n){ const s=GD[String(n)]; if(!s) return s; const out=Object.assign({},s,{text:pText(n)}); if(Array.isArray(s.choices)) out.choices=s.choices.map((c,i)=>Object.assign({},c,{label:label(n,i)})); return out; }
+
 // ── Game Rendering ──
 function renderGame(){
   if(!S)return;updateHUD();
-  const sec=GD[String(S.section)];
+  const sec=locSec(S.section);
   if(!sec){goTo(1);return;}
   document.getElementById('s-num').textContent='§ Параграф '+S.section;
   // Render illustration — priority: Midjourney (color AI art) > legacy b/w scans.
@@ -1225,7 +1233,7 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   // Re-render the current paragraph to refresh shop-button states (bought
   // greys out, no-longer-affordable greys out, etc). Use renderChoices
   // not renderGame to avoid retriggering auto_items.
-  const sec=GD[String(S.section)];
+  const sec=locSec(S.section);
   if(sec)renderChoices(sec);
 }
 
