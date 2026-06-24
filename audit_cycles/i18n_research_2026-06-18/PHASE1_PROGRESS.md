@@ -270,3 +270,51 @@ against slug data and survive future renames). dist verified (slug conditions pr
 preserved, no Russian condition value, `SLUG_TO_RU` display map intact).
 
 **Commits:** data+log, then dist.
+
+
+---
+
+## Increment 5f — structured food objects; drop the (еда:) regex; SAVE_KEY bump (coupling #3, part f) · 2026-06-18
+**Files:** `src/remake_data.js`, `src/game_logic.js`.
+
+**What:** the final flip sub-step — carried food is now a structured object instead of a
+self-describing string, removing the last Cyrillic parsing coupling.
+- **Storage shape:** food inventory entries are `{id, kind:'food', stamina}` objects; non-food items
+  stay slug strings. `S.inventory` is now `(string | {id,kind:'food',stamina})[]`.
+- **Construction (3 sites → objects):** `auto_items.food`, `grants_food`, `bet_payout.food` now push a
+  fresh `{id:f.name, kind:'food', stamina:f.stamina}` per copy (no `(еда:` string built).
+- **Consumption / display / sizing read object fields:** `eatFood` uses `item.stamina`/`item.id`; the HUD
+  shows the eat button on `item.kind==='food'`; `canonItem(foodObj)→id`, `invDisplay(foodObj)→
+  itemName(id)+' (еда: +N)'`, `getItemSize(foodObj)→1`. `passesInventoryCheck`, `applyChoiceConsume`,
+  `getBagUsed`, the pickup modal and stake handling needed no change — they already route through
+  `canonItem`/`getItemSize`/`invDisplay`.
+- **Removed `stripFoodSuffix` and every `(еда:` parsing regex.** The only `(еда: +N)` left in the engine
+  is the *display* string produced by `invDisplay` (localizable later); the only other `еда:` in the
+  bundle is the unrelated word «беда:» in §295 prose.
+- **Data normalization:** moved §67 and §550's suffixed food out of `auto_items.items` into
+  `auto_items.food` as `{name, stamina}`, so *all* food flows through the object path and no `(еда:`
+  string remains in data.
+- **Saves:** bumped `SAVE_KEY` `podzch_v5`→`podzch_v6` (any stale string-food save is simply ignored —
+  fresh start, as intended; there are no saves to preserve) and widened the inner `loadGame` gate from
+  `v4/v5` to `v4–v7`. The gate widening also resolves a pre-existing reload mismatch: the map layer
+  stamps `S.v=7` on save, but the inner gate accepted only v4/v5, so a freshly-saved game could fail to
+  reload. New-format saves now round-trip correctly.
+
+**Why it satisfies the acceptance criterion (save/load on the new code):** food objects serialize to JSON
+and deserialize back as objects; `canonItem`/`invDisplay`/`getItemSize`/`getBagUsed` and the count/AND/OR
+gates all operate correctly on the loaded objects; the widened gate accepts the `v7` the map layer writes.
+
+**Verification:** `node --check` on both files. **5f harness 29/29** — food objects through
+`canonItem`/`invDisplay`/`getItemSize`/`getBagUsed`/`passesInventoryCheck` (single / `{item,count}` incl.
+6-banana / `{all}` / mixed bag), `stripFoodSuffix` gone, and a **save/load JSON round-trip** proving food
+objects survive and stay functional with the `v7` gate. **Group B regression 21/21** (non-food gates
+untouched; its loader updated to drop the removed `stripFoodSuffix`). Structural baseline unchanged
+(1221/1205/0/76/116 — targets untouched). dist verified (`SAVE_KEY=podzch_v6`, gate `v>=4&&v<=7`,
+food-object construction present, `stripFoodSuffix` absent, §67 food moved). (The 5b/5d harnesses are
+string-era proofs for those increments and are not re-run; the object model is covered by the 5f harness.)
+
+**Milestone:** coupling #3 (item/food identity) is complete (5a–5f), so **all four Cyrillic engine
+couplings are now removed** (#1 spell, #2 flee, #3 item/food, #4 scene). Phase 1 still has the
+text-extraction (locale + resolvers) and the `remake_data.js`→`game_structure.js` rename remaining.
+
+**Commits:** source (data+engine+log), then dist.

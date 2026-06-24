@@ -44,7 +44,7 @@ function isInsideCastle(section){ return CASTLE_SECTIONS.has(section); }
 const PREFACE_TEXT='В самое обыкновенное сказочное королевство приходит беда. В тихом лесу, на его южных границах, появляется хитрый и коварный волшебник Барлад Дэрт, в совершенстве овладевший искусством черной магии. Никто не знает, из каких земель он пришел. Вскоре окрестные жители начинают сторониться леса, который темные колдовские силы сделали таинственным и непроходимым, с множеством беспощадных ловушек и мерзких глубоких болот. Лес наводнили Гоблины и Орки — уродливые и жестокие воины Барлада Дэрта. А в самом центре леса, который теперь называют не иначе как Зачарованный лес, волшебник воздвиг Черный замок, и никому еще не удалось достичь его и безнаказанно вернуться обратно.\n\nНо волшебник не успокаивается на этом. Узнав, что во дворце живет прекрасная Принцесса — единственная дочь Короля — он посылает к ее отцу черных послов, чтобы просить ее руки. Гордый Король отказывает им, послы появляются еще дважды.\n\nКаждый раз они спускаются с неба на могучих крылатых конях, и только Король может без страха смотреть им в глаза, столь большая и грозная сила исходит от них. Но Король непреклонен, хотя и понимает: Барлад Дэрт так просто не отказывается от своих намерений. И вот, когда послы в третий раз покидают дворец, Принцесса исчезает вместе с ними. Заклятие волшебника переносит ее в Черный замок, но она бесстрашно отказывается стать женой чародея, и тот не в силах сдержать свою злобу, погружает ее в волшебный сон.\n\nПо всему королевству герольды созывают смельчаков, обещая награду тому, кто освободит Принцессу. Один за другим покидают они столицу по Главному Южному тракту и исчезают в Зачарованном лесу. Но ни один не возвращается назад: Черный замок умеет беречь свои тайны.\n\nХотите попытаться миновать западни Зачарованного леса, сразиться с беспощадными воинами Барлада Дэрта, проникнуть в Черный замок и разрушить колдовские чары?\n\nЕсли да, то собирайтесь в путь — книга поможет вам перенестись в сказочное королевство…';
 
 const PREGAME_TEXT='Майлин дает еще два совета. Во-первых, сориентироваться на запутанных лесных тропинках и в замке, если вы до него доберетесь, вам поможет карта. Рисуйте ее по мере продвижения. Во-вторых, для многих магических таинств необходимы волшебные предметы. Старайтесь в своем путешествии добыть их как можно больше, при случае они помогут вам, но будьте осторожны: коварство врага не знает границ, возможны любые ловушки.\n\nПосле беседы с астрологом вы вновь предстаете перед Королем. Никто не знает, что вам может понадобиться на пути к успеху, поэтому из дворца вы берете с собой только самое необходимое: меч, флягу, заплечный мешок и 15 золотых.\n\nКороль приказывает проводить вас до начала Зачарованного леса, чтобы в пути вы не испытывали нужды ни в еде, ни в питье. По дороге вы спрашиваете герольда, кто такие Гоблины и Орки, о которых вы много слышали во дворце. Он говорит, что Гоблины — это страшные и отвратительные злые духи ростом примерно с человека, которые верой и правдой служат волшебнику. Их мало кто видел. И совсем уж никто и никогда не видел Орков. Говорят только, что они повыше и посильнее. Но и с теми и с другими лучше не встречаться. В пути вы еще раз обдумываете последний совет Майлина: Барлад Дэрт достаточно могущественный волшебник, чтобы даже малой частицы его мастерства, переданной особо доверенным воинам, хватило не только на то, чтобы противостоять вашим заклятиям, но и наложить на вас свои, не менее быстрые и сильные. Будьте осмотрительны!\n\nНо вот королевским владениям приходит конец. Здесь надо спешиться: лес заколдован и не пустит всадника. Герольд прощается с вами, и вскоре лишь далекий стук копыт напоминает, что вы были не один. Черный, таинственный и неподвижный, Зачарованный лес ждет вас.\n\nЕсли вы готовы к тем неожиданностям, с которыми вам придется встретиться, переверните страницу.';
-const SAVE_KEY='podzch_v5';
+const SAVE_KEY='podzch_v6';
 
 // ── State ──
 let S=null;
@@ -99,7 +99,7 @@ function normalizeSave(s){
   if(!Array.isArray(s.summonsUsed)) s.summonsUsed=[]; // combat-summon items already spent (once per journey)
   return s;
 }
-function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const s=JSON.parse(r);return (s.v===5||s.v===4)?normalizeSave(s):null;}catch{return null;}}
+function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const s=JSON.parse(r);return (typeof s.v==='number'&&s.v>=4&&s.v<=7)?normalizeSave(s):null;}catch{return null;}}
 function exportSave(){saveGame();const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='podzch-save.json';a.click();closeModal('overlay-menu');}
 function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const s=JSON.parse(t);
@@ -513,7 +513,7 @@ function renderGame(){
       });
     }
     // Countable carried-food grant (group_38). Pushes `count` copies of a
-    // self-describing food string «name (еда: +stamina)» into the bag,
+    // food object {id, kind:'food', stamina} into the bag,
     // bypassing the auto_items.items dedupe so identical food stacks (e.g.
     // 6 bananas). Bag-capped via getBagSize(); overflow is reported, not
     // forced. Runs before the items-modal so the modal sees the real free
@@ -521,9 +521,9 @@ function renderGame(){
     if(ai.food&&ai.food.length>0){
       let added=0,overflow=0;
       ai.food.forEach(f=>{
-        const str=f.name+' (еда: +'+f.stamina+')';
         for(let k=0;k<(f.count||1);k++){
-          if(getBagUsed()+getItemSize(str)<=getBagSize()){S.inventory.push(str);added++;}
+          const obj={id:f.name,kind:'food',stamina:f.stamina};
+          if(getBagUsed()+getItemSize(obj)<=getBagSize()){S.inventory.push(obj);added++;}
           else overflow++;
         }
       });
@@ -637,8 +637,8 @@ function updateHUD(){
   // Inventory
   const il=document.getElementById('inv-list');il.innerHTML='';
   if(S.inventory&&S.inventory.length>0){S.inventory.forEach((item,i)=>{
-    const foodM=/\(еда:\s*\+(\d+)\)/.exec(item);
-    const eatBtn=foodM?`<span class="inv-eat" onclick="eatFood(${i})" title="Съесть (+${foodM[1]} вын.)" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">🍴</span>`:'';
+    const isFood=item&&typeof item==='object'&&item.kind==='food';
+    const eatBtn=isFood?`<span class="inv-eat" onclick="eatFood(${i})" title="Съесть (+${item.stamina} вын.)" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">🍴</span>`:'';
     il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i})" title="Выбросить">🗑</span></span></div>`;});}
   else{il.innerHTML='<div class="inv-empty">Мешок пуст</div>';}
   document.getElementById('inv-count').textContent=`(${getBagUsed()}/${getBagSize()})`;
@@ -654,10 +654,10 @@ function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bag
 // места») takes 2 and the flying carpet (§227 «займет… целых три места», also
 // §193/§302) takes 3. getItemSize() returns an item's slot footprint (default 1);
 // getBagUsed() is the summed occupancy that every capacity check uses in place
-// of S.inventory.length. Names match after stripping the food «(еда: +N)» suffix
+// of S.inventory.length. Food entries are objects {id, kind:'food', stamina}, matched by id
 // so the lookup is robust (no food item is multi-slot, so this is a no-op there).
 // ── Item registry (i18n transition; canonical id space: src/registries/items.json) ──
-// canonItem(): a Russian display name OR a carried-food «name (еда:+N)» string -> its slug,
+// canonItem(): a Russian display name, a slug, or a food object {kind:'food',id} -> its slug,
 // idempotent on slugs, so Russian-named and slug-keyed values compare interchangeably during the
 // RU->slug migration (phase1.5b-5f). itemName(): slug -> Russian display name (passthrough for
 // unknown / hand-typed strings). invDisplay(): an inventory entry -> display string (resolves the
@@ -728,10 +728,9 @@ const SLUG_TO_RU={
   "white_arrow":"Белая стрела","whole_sword":"Целый меч","wine_bottle":"Бутылка вина",
   "wood_piece":"Красивый кусочек дерева",
 };
-function stripFoodSuffix(x){return String(x==null?'':x).replace(/\s*\(еда:.*?\)/,'');}
-function canonItem(x){const b=stripFoodSuffix(x);return RU_TO_SLUG[b]||b;}
+function canonItem(x){if(x&&typeof x==='object'&&x.kind==='food')return x.id;return RU_TO_SLUG[x]||x;}
 function itemName(x){return SLUG_TO_RU[x]||x;}
-function invDisplay(entry){const s=String(entry==null?'':entry);const m=/(\s*\(еда:.*?\))\s*$/.exec(s);return itemName(stripFoodSuffix(s))+(m?m[1]:'');}
+function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+' (еда: +'+entry.stamina+')';return itemName(entry);}
 const ITEM_SIZES={diving_suit:2,flying_carpet:3};
 function getItemSize(name){
   if(!name) return 1;
@@ -740,21 +739,19 @@ function getItemSize(name){
 function getBagUsed(){
   return (S&&Array.isArray(S.inventory)?S.inventory:[]).reduce((sum,it)=>sum+getItemSize(it),0);
 }
-// §132: eat a carried-food string («Название (еда: +N)») from the bag. Restores
+// §132: eat a carried food object {kind:'food', stamina} from the bag. Restores
 // N ВЫНОСЛИВОСТЬ (capped), removes the item. Refuses at full stamina so the
 // provision isn't wasted.
 function eatFood(i){
   if(!S||!S.inventory)return;
   const item=S.inventory[i];
-  if(!item)return;
-  const m=/\(еда:\s*\+(\d+)\)/.exec(item);
-  if(!m)return;
+  if(!item||typeof item!=='object'||item.kind!=='food')return;
   if(S.stamina>=S.staminaMax){showItemNotification(['Выносливость уже полная']);return;}
-  const amt=parseInt(m[1],10);
+  const amt=item.stamina;
   const before=S.stamina;
   S.stamina=Math.min(S.staminaMax,S.stamina+amt);
   const actual=S.stamina-before;
-  const clean=item.replace(/\s*\(еда:.*?\)/,'');
+  const clean=item.id;
   S.inventory.splice(i,1);
   logEvent('gain','🍴 Съедено: '+itemName(clean),'+'+actual+' выносливости');
   playSound('item');
@@ -1217,10 +1214,10 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   // counts against bag capacity, eaten later via eatFood()).
   if(ch.grants_food&&getBagUsed()+1<=getBagSize()){
     const f=ch.grants_food;
-    const foodStr=f.name+' (еда: +'+f.stamina+')';
-    S.inventory.push(foodStr);
-    notifs.push('+ '+invDisplay(foodStr));
-    logEvent('gain','+ '+invDisplay(foodStr),'Куплено, взято с собой (§'+S.section+')');
+    const foodObj={id:f.name,kind:'food',stamina:f.stamina};
+    S.inventory.push(foodObj);
+    notifs.push('+ '+invDisplay(foodObj));
+    logEvent('gain','+ '+invDisplay(foodObj),'Куплено, взято с собой (§'+S.section+')');
   }
   playSound('item');
   showItemNotification(notifs,'💰 Покупка');
@@ -1691,7 +1688,7 @@ function applyBetting(sec){
     }
     if(bp.gold){ S.gold+=bp.gold; notifs.push('+ '+bp.gold+' золотых'); logEvent('gain','+ '+bp.gold+' золотых','Выигрыш. Всего: '+S.gold); }
     if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.some(x=>canonItem(x)===canonItem(it))&&getBagUsed()+getItemSize(it)<=getBagSize()){ S.inventory.push(it); notifs.push('+ '+invDisplay(it)); logEvent('gain','+ '+invDisplay(it),'Выигрыш'); } }); }
-    if(bp.food){ let f2=0; bp.food.forEach(f=>{ const str=f.name+' (еда: +'+f.stamina+')'; for(let k=0;k<(f.count||1);k++){ if(getBagUsed()+getItemSize(str)<=getBagSize()){ S.inventory.push(str); f2++; } } }); if(f2>0){ notifs.push('+ еда ×'+f2); logEvent('gain','+ еда ×'+f2,'Выигрыш'); } }
+    if(bp.food){ let f2=0; bp.food.forEach(f=>{ for(let k=0;k<(f.count||1);k++){ const obj={id:f.name,kind:'food',stamina:f.stamina}; if(getBagUsed()+getItemSize(obj)<=getBagSize()){ S.inventory.push(obj); f2++; } } }); if(f2>0){ notifs.push('+ еда ×'+f2); logEvent('gain','+ еда ×'+f2,'Выигрыш'); } }
     if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push('фляга потеряна'); logEvent('loss','🥤 Фляга потеряна','Проиграна в игре'); } }
   }
   if(notifs.length>0){ playSound('item'); showItemNotification(notifs,'🎲 Игра в кости'); updateHUD(); saveGame(); }
