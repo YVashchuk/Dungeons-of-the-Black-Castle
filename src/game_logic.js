@@ -106,7 +106,7 @@ function initTitle(){
     document.getElementById('title-rider').innerHTML=`<img src="data:image/jpeg;base64,${TITLE_RIDER}" alt="">`;
   }
   if(typeof TITLE_ART!=='undefined'){
-    document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}" alt="Подземелья Чёрного замка">`;
+    document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}${t('alt_podzemelya_chernogo_zamka')}`;
   } else {
     document.getElementById('title-lettering').innerHTML=t('podzemelya_chernogo_zamka');
   }
@@ -285,9 +285,9 @@ function showInventoryModal(newItems, extraNotifs){
   const txt=document.getElementById('inv-modal-text');
   const incomingSize=newItems.reduce((s,it)=>s+getItemSize(it),0);
   if(freeSlots<incomingSize){
-    txt.innerHTML=`Найдено ${newItems.length} предметов (занимают ${incomingSize} мест), но в мешке только ${freeSlots} свободных из ${getBagSize()}.<br>Выберите что взять, или выбросьте ненужное.`;
+    txt.innerHTML=`${t('naydeno_2')}${newItems.length}${t('predmetov_zanimayut')}${incomingSize}${t('mest_no_v_meshke_tolko')}${freeSlots}${t('svobodnyh_iz')}${getBagSize()}.<br>${t('vyberite_chto_vzyat_ili_vybroste')}`;
   } else {
-    txt.innerHTML=`Найдено ${newItems.length} предметов. Свободных мест: ${freeSlots}.`;
+    txt.innerHTML=`${t('naydeno_2')}${newItems.length}${t('predmetov_svobodnyh_mest')}${freeSlots}.`;
   }
   
   // Found items — each with "Взять" button
@@ -298,7 +298,7 @@ function showInventoryModal(newItems, extraNotifs){
     row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);';
     row.id='inv-found-'+i;
     row.innerHTML=`<span style="font-size:16px;color:var(--parchment);">${invDisplay(item)}</span>
-      <button class="btn btn-s" style="font-size:13px;padding:4px 12px;" onclick="takeItem(${i})">+ Взять</button>`;
+      <button class="btn btn-s" style="font-size:13px;padding:4px 12px;" onclick="takeItem(${i}${t('vzyat_2')}</button>`;
     found.appendChild(row);
   });
   
@@ -323,7 +323,7 @@ function renderInvModalCurrent(){
       const row=document.createElement('div');
       row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);';
       row.innerHTML=`<span style="font-size:15px;color:var(--parchment);">${invDisplay(item)}</span>
-        <button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i})" title="Выбросить">🗑</button>`;
+        <button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i}${t('title_vybrosit')}</button>`;
       cur.appendChild(row);
     });
   }
@@ -450,7 +450,7 @@ function renderGame(){
   if(!illustHtml&&typeof ILLUST_MAP!=='undefined'&&typeof ILLUST_DATA!=='undefined'){
     const imgFile=ILLUST_MAP[secKey];
     if(imgFile&&ILLUST_DATA[imgFile]){
-      illustHtml=`<div class="illustration-container legacy-scan"><img src="data:image/jpeg;base64,${ILLUST_DATA[imgFile]}" onload="this.classList.add('loaded')" alt="Иллюстрация"/></div>`;
+      illustHtml=`<div class="illustration-container legacy-scan"><img src="data:image/jpeg;base64,${ILLUST_DATA[imgFile]}${t('onload_this_classlist_add_loaded')}</div>`;
     }
   }
   document.getElementById('s-text').innerHTML=illustHtml+fmtText(sec.text);
@@ -614,7 +614,7 @@ function updateHUD(){
   // Luck - show current value
   document.getElementById('sb-luck').textContent=S.luck;
   const luckBar=document.getElementById('luck-boxes');
-  if(luckBar)luckBar.innerHTML=`<div style="font-size:12px;color:var(--muted);opacity:.6;margin-top:2px;">Начальная: ${S.luckMax||S.luck}</div>`;
+  if(luckBar)luckBar.innerHTML=`<div style="font-size:12px;color:var(--muted);opacity:.6;margin-top:2px;">${t('nachalnaya')}${S.luckMax||S.luck}</div>`;
   // Spells
   const st=document.getElementById('spell-tags');st.innerHTML='';
   if(S.spells)S.spells.forEach(sp=>{if(sp.remaining>0){const def=SPELLS.find(s=>s.id===sp.id);
@@ -625,14 +625,14 @@ function updateHUD(){
     const healRemaining=getSpellRemaining('HEALING');
     const inCombat=document.getElementById('modal-combat').classList.contains('on');
     healBtn.style.display=(healRemaining>0&&!inCombat&&S.stamina<S.staminaMax)?'block':'none';
-    healBtn.textContent=`💚 Исцеление +8 вын. [${healRemaining}]`;
+    healBtn.textContent=`${t('iscelenie_8_vyn')}${healRemaining}]`;
   }
   // Inventory
   const il=document.getElementById('inv-list');il.innerHTML='';
   if(S.inventory&&S.inventory.length>0){S.inventory.forEach((item,i)=>{
     const isFood=item&&typeof item==='object'&&item.kind==='food';
-    const eatBtn=isFood?`<span class="inv-eat" onclick="eatFood(${i})" title="Съесть (+${item.stamina} вын.)" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">🍴</span>`:'';
-    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i})" title="Выбросить">🗑</span></span></div>`;});}
+    const eatBtn=isFood?`<span class="inv-eat" onclick="eatFood(${i}${t('title_sest')}${item.stamina}${t('vyn_style_color_3c9_cursor_point')}</span>`:'';
+    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i}${t('title_vybrosit')}</span></span></div>`;});}
   else{il.innerHTML=t('meshok_pust');}
   document.getElementById('inv-count').textContent=`(${getBagUsed()}/${getBagSize()})`;
   // Notes
@@ -771,12 +771,12 @@ function useHealingInCombat(){
   if(remaining<=0)return;
   const log=document.getElementById('combat-log');
   if(S.stamina>=S.staminaMax){
-    if(log)log.innerHTML+=`<div style="color:var(--muted);margin:4px 0;">Выносливость уже полная — Исцеление не требуется.</div>`;
+    if(log)log.innerHTML+=`<div style="color:var(--muted);margin:4px 0;">${t('vynoslivost_uzhe_polnaya_iscelen')}</div>`;
     return;
   }
   useSpell('HEALING');
   S.stamina=Math.min(S.staminaMax,S.stamina+8);
-  if(log)log.innerHTML+=`<div style="color:var(--green2);margin:4px 0;">💚 Заклятие Исцеления: +8 выносливости (стало ${S.stamina}/${S.staminaMax}).</div>`;
+  if(log)log.innerHTML+=`<div style="color:var(--green2);margin:4px 0;">${t('zaklyatie_isceleniya_8_vynoslivo')}${S.stamina}/${S.staminaMax}).</div>`;
   logEvent('gain',t('zaklyatie_isceleniya'),t('8_vynoslivosti_v_boyu'));
   const hb=document.getElementById('btn-heal-spell');
   const r2=getSpellRemaining('HEALING');
@@ -1101,7 +1101,7 @@ function makePurchaseBtn(ch, choiceIndex){
   // Auto-append price to label if not already mentioned (skip for free items).
   let displayLabel=ch.label||'';
   if(cost>0&&!/\d\s*золот/i.test(displayLabel)){
-    displayLabel+=` — ${cost} зол.`;
+    displayLabel+=` — ${cost}${t('zol')}`;
   }
   btn.textContent=`💰 ${displayLabel}`;
   btn.style.borderColor='var(--gold)';
@@ -1381,7 +1381,7 @@ function startScriptedLuckCheck(opts){
   scriptedLuckContext=opts||{};
   document.getElementById('luck-result').innerHTML='';
   document.getElementById('luck-choices').innerHTML='';
-  const header=opts&&opts.promptHtml?opts.promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Бросьте два кубика. Если результат ≤ вашей Удачи (${S.luck}) — вам повезло!<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`;
+  const header=opts&&opts.promptHtml?opts.promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('broste_dva_kubika_esli_rezultat')}${S.luck}${t('vam_povezlo')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`;
   document.getElementById('luck-info').innerHTML=header;
   document.getElementById('btn-luck-roll').style.display='inline-block';
   document.getElementById('btn-luck-roll').onclick=doScriptedLuckCheck;
@@ -1430,7 +1430,7 @@ function renderCanonCombatChoices(sec,list){
       btn.style.borderColor='var(--green)';btn.style.color='var(--green2)';btn.style.background='rgba(40,180,100,.12)';
       btn.innerHTML=t('proverit_udachu');
       btn.onclick=()=>startScriptedLuckCheck({
-        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Сначала нужно проверить Удачу: если повезёт, вы сразу перерубите нить и будете драться без штрафа. Если нет — придётся сражаться, вися в воздухе, с штрафом −2 к СИЛЕ УДАРА.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
+        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('snachala_nuzhno_proverit_udachu')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
         successHtml:t('vy_mgnovenno_pererubaete_nit_i_s'),
         failHtml:t('nit_ne_poddalas_srazu_srazhatsya'),
         onLucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, playerMod:0}; },
@@ -1458,7 +1458,7 @@ function renderCanonCombatChoices(sec,list){
       luck.style.borderColor='var(--green)';luck.style.color='var(--green2)';luck.style.background='rgba(40,180,100,.12)';
       luck.innerHTML=t('proverit_udachu_i_popytatsya_ose');
       luck.onclick=()=>startScriptedLuckCheck({
-        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Можно драться стоя на земле со штрафом −1 к СИЛЕ УДАРА, а можно попытаться оседлать коня павшего рыцаря. Если повезёт — будете сражаться на равных, если нет — всё равно придётся драться на земле со штрафом −1.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
+        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('mozhno_dratsya_stoya_na_zemle_so')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
         successHtml:t('vam_udaetsya_osedlat_konya_v_boy'),
         failHtml:t('osedlat_konya_ne_udalos_srazhats'),
         onLucky:()=>{ sectionPrepState[sec.id]={modeSelected:true, playerMod:0}; },
@@ -1502,7 +1502,7 @@ function renderCanonCombatChoices(sec,list){
       btn.style.borderColor='var(--green)';btn.style.color='var(--green2)';btn.style.background='rgba(40,180,100,.12)';
       btn.innerHTML=t('proverit_udachu');
       btn.onclick=()=>startScriptedLuckCheck({
-        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Паук тянет вас к себе. Если повезёт — успеете перерубить лестницу и спрыгнуть на землю, где будете драться на равных. Если нет — паук затянет вас на дерево, и в бою придётся вычитать 1 из СИЛЫ УДАРА.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
+        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('pauk_tyanet_vas_k_sebe_esli_pove')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
         successHtml:t('vy_pererubaete_lestnicu_i_sprygi'),
         failHtml:t('pauk_zatyagivaet_vas_na_derevo_v'),
         onLucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, escaped:true}; },
@@ -1551,7 +1551,7 @@ function handleCanonCombatMilestones(cs){
     cs.enemies[1].active=true;
     cs.enemies[2].active=true;
     cs.special.reinforcementsJoined=true;
-    log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">✦ Через три раунда два остальных Орка бросаются на помощь предводителю!</div>`;
+    log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('cherez_tri_raunda_dva_ostalnyh_o')}</div>`;
     updateCombatEnemyDisplay(cs);
   }
   if(first.hp<=0 && !cs.special.firstDeathHandled){
@@ -1560,7 +1560,7 @@ function handleCanonCombatMilestones(cs){
       cs.enemies[1].active=true;
       cs.enemies[2].active=true;
       cs.special.reinforcementsJoined=true;
-      log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">✦ Первый Орк повержен. Теперь вам придётся сражаться с двумя оставшимися.</div>`;
+      log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('pervyy_ork_poverzhen_teper_vam_p')}</div>`;
       updateCombatEnemyDisplay(cs);
     }
     if(!cs.special.luckChecked && cs.enemies[2].hp>0 && !cs.enemies[2].fled){
@@ -1579,10 +1579,10 @@ function promptCanon1175Luck(){
   const copyBtn=document.getElementById('btn-copy-spell');
   if(roundBtn) roundBtn.style.display='none';
   if(copyBtn) copyBtn.style.display='none';
-  log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">✦ Можете проверить Удачу: если повезёт, третий Орк убежит в лес и останется только один противник.</div>`;
+  log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('mozhete_proverit_udachu_esli_pov')}</div>`;
   setCombatExtraButtons([
     {text:t('proverit_udachu'), className:'btn btn-g', onClick:()=>startScriptedLuckCheck({
-      promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Первый Орк уже повержен. Если Удача с вами, третий Орк не захочет умирать, защищая ворота, и убежит. Если нет — придётся продолжать бой со всеми оставшимися.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
+      promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('pervyy_ork_uzhe_poverzhen_esli_u')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
       successHtml:t('tretiy_ork_predpochitaet_spastis'),
       failHtml:t('tretiy_ork_ne_drognul_boy_prodol'),
       onLucky:()=>{ cs.special.luckChecked=true; cs.enemies[2].active=false; cs.enemies[2].fled=true; updateCombatEnemyDisplay(cs); },
@@ -1842,38 +1842,38 @@ function startCombat(enemies,sec){
   };
   const ce=document.getElementById('combat-enemies');ce.innerHTML='';
   combatState.enemies.forEach(e=>{
-    const dmgNote=e.dmg!==2?` <span style="color:var(--red2);font-size:14px;">(урон: ${e.dmg})</span>`:'';
+    const dmgNote=e.dmg!==2?` <span style="color:var(--red2);font-size:14px;">${t('uron')}${e.dmg})</span>`:'';
     const hpWidth=Math.max(0, Math.min(100, (e.hp/e.stamina)*100));
     ce.innerHTML+=`<div class="combat-enemy">
       <div class="combat-enemy-head">
         <div>
           <div class="combat-enemy-name">${e.name}</div>
-          <div class="combat-status-line"><span class="ce-status ce-status-pill state-active">в бою</span></div>
+          <div class="combat-status-line"><span class="ce-status ce-status-pill state-active">${t('v_boyu')}</span></div>
         </div>
         <div class="combat-enemy-icon">☠</div>
       </div>
       <div class="combat-stats">
-        <div class="combat-stat-pill">Мастерство: <b>${e.skill}</b></div>
-        <div class="combat-stat-pill">Выносливость: <b><span class="ce-hp">${e.hp}</span>/${e.stamina}</b>${dmgNote}</div>
+        <div class="combat-stat-pill">${t('masterstvo')}<b>${e.skill}</b></div>
+        <div class="combat-stat-pill">${t('vynoslivost')}<b><span class="ce-hp">${e.hp}</span>/${e.stamina}</b>${dmgNote}</div>
       </div>
       <div class="combat-hp-wrap">
-        <div class="combat-hp-head"><span>Состояние</span><span class="ce-hp-head">${e.hp}/${e.stamina}</span></div>
+        <div class="combat-hp-head"><span>${t('sostoyanie')}</span><span class="ce-hp-head">${e.hp}/${e.stamina}</span></div>
         <div class="combat-hp-track"><div class="combat-hp-fill" style="width:${hpWidth}%"></div></div>
       </div>
     </div>`;
   });
   document.getElementById('combat-log').innerHTML='';
   if(pModInit!==0){
-    document.getElementById('combat-log').innerHTML=`<div style="color:var(--gold);margin-bottom:8px;">⚠ Модификатор Силы Удара: ${pModInit>0?'+':''}${pModInit}</div>`;
+    document.getElementById('combat-log').innerHTML=`<div style="color:var(--gold);margin-bottom:8px;">${t('modifikator_sily_udara')}${pModInit>0?'+':''}${pModInit}</div>`;
   }
   if(combatState.forceBuff){
-    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">💪 Заклятие Силы действует: СИЛА УДАРА +2 до конца боя.</div>`;
+    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">${t('zaklyatie_sily_deystvuet_sila_ud')}</div>`;
   }
   if(combatState.enemyAttackMod){
-    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--red2);margin-bottom:8px;">⚠ Заклятие обратилось против вас: СИЛА УДАРА врага +${combatState.enemyAttackMod} до конца боя.</div>`;
+    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--red2);margin-bottom:8px;">${t('zaklyatie_obratilos_protiv_vas_s')}${combatState.enemyAttackMod}${t('do_konca_boya')}</div>`;
   }
   if(script==='sec1175_canon_orcs'){
-    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">✦ Сначала вы сражаетесь только с Первым Орком. Остальные вступят в бой позже, если он продержится три раунда.</div>`;
+    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">${t('snachala_vy_srazhaetes_tolko_s_p')}</div>`;
   }
   document.getElementById('btn-combat-round').style.display='inline-block';
   document.getElementById('btn-combat-round').textContent=t('udar');
@@ -1910,7 +1910,7 @@ function startCombat(enemies,sec){
       if(b){
         const a=COMBAT_ALLIES[key];
         b.style.display='inline-block';
-        b.textContent=`${a.icon} Позвать: ${allyText(key).name}`;
+        b.textContent=`${a.icon}${t('pozvat')}${allyText(key).name}`;
         b.onclick=()=>useAllyInCombat(key);
         slot++;
       }
@@ -1967,7 +1967,7 @@ function combatRound(){
       cs.enemies[1].active=true;
       cs.enemies[2].active=true;
       cs.special.reinforcementsJoined=true;
-      log.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">✦ Через три раунда два остальных Орка бросаются на помощь предводителю!</div>`;
+      log.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">${t('cherez_tri_raunda_dva_ostalnyh_o')}</div>`;
       updateCombatEnemyDisplay(cs);
     }
   }
@@ -1979,11 +1979,11 @@ function combatRound(){
   // (e.g. fatigue penalties from §1154/§1182); FORCE stacks additively.
   const pMod=(cs.playerMod||0)+(cs.forceBuff?2:0);
   const pd=d6()+d6();const pStr=pd+S.skill+pMod;
-  log.innerHTML+=`<div>— Раунд ${cs.round} —</div>`;
+  log.innerHTML+=`<div>${t('raund')}${cs.round} —</div>`;
   if(pMod!==0){
-    log.innerHTML+=`<div>Вы: 2к6(${pd}) + ${S.skill} ${pMod>0?'+':''}${pMod} = <b>${pStr}</b></div>`;
+    log.innerHTML+=`<div>${t('vy_2k6')}${pd}) + ${S.skill} ${pMod>0?'+':''}${pMod} = <b>${pStr}</b></div>`;
   } else {
-    log.innerHTML+=`<div>Вы: 2к6(${pd}) + ${S.skill} = <b>${pStr}</b></div>`;
+    log.innerHTML+=`<div>${t('vy_2k6')}${pd}) + ${S.skill} = <b>${pStr}</b></div>`;
   }
 
   // group_19: WEAKNESS spell subtracts 2 from each enemy's attack for whole combat.
@@ -1991,17 +1991,17 @@ function combatRound(){
   alive.forEach((e,i)=>{
     const ed=d6()+d6();const eStr=ed+e.skill+enemyMod;
     if(enemyMod!==0){
-      log.innerHTML+=`<div>${e.name}: 2к6(${ed}) + ${e.skill} ${enemyMod>0?'+':''}${enemyMod} = <b>${eStr}</b></div>`;
+      log.innerHTML+=`<div>${e.name}${t('2k6')}${ed}) + ${e.skill} ${enemyMod>0?'+':''}${enemyMod} = <b>${eStr}</b></div>`;
     } else {
-      log.innerHTML+=`<div>${e.name}: 2к6(${ed}) + ${e.skill} = <b>${eStr}</b></div>`;
+      log.innerHTML+=`<div>${e.name}${t('2k6')}${ed}) + ${e.skill} = <b>${eStr}</b></div>`;
     }
     if(i===0){
-      if(pStr>eStr){playSound('hit');e.hp-=2;cs.wounds++;log.innerHTML+=`<div class="hit">→ Вы ранили ${e.name} (−2 вын., осталось ${Math.max(0,e.hp)})</div>`;}
-      else if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name} ранил вас (−${d} вын., осталось ${Math.max(0,S.stamina)})</div>`;}
-      else{log.innerHTML+=`<div class="draw">→ Ничья с ${e.name}</div>`;}
+      if(pStr>eStr){playSound('hit');e.hp-=2;cs.wounds++;log.innerHTML+=`<div class="hit">${t('vy_ranili')}${e.name}${t('2_vyn_ostalos')}${Math.max(0,e.hp)})</div>`;}
+      else if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name}${t('ranil_vas')}${d}${t('vyn_ostalos')}${Math.max(0,S.stamina)})</div>`;}
+      else{log.innerHTML+=`<div class="draw">${t('nichya_s')}${e.name}</div>`;}
     } else {
-      if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name} тоже ранил вас (−${d} вын., осталось ${Math.max(0,S.stamina)})</div>`;}
-      else{log.innerHTML+=`<div class="draw">→ ${e.name} не смог вас ранить</div>`;}
+      if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name}${t('tozhe_ranil_vas')}${d}${t('vyn_ostalos')}${Math.max(0,S.stamina)})</div>`;}
+      else{log.innerHTML+=`<div class="draw">→ ${e.name}${t('ne_smog_vas_ranit')}</div>`;}
     }
   });
 
@@ -2019,7 +2019,7 @@ function combatRound(){
         cs.enemies[1].active=true;
         cs.enemies[2].active=true;
         cs.special.reinforcementsJoined=true;
-        log.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">✦ Первый Орк повержен. Теперь вам придётся сражаться с двумя оставшимися.</div>`;
+        log.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">${t('pervyy_ork_poverzhen_teper_vam_p')}</div>`;
         updateCombatEnemyDisplay(cs);
       }
       if(!cs.special.luckChecked && cs.enemies[2].hp>0 && !cs.enemies[2].fled){
@@ -2045,7 +2045,7 @@ function combatRound(){
             goTo(ch.target);
           };
           document.getElementById('btn-combat-round').parentElement.appendChild(btn);
-          log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">✦ Вы ранили врага дважды! Можете перейти к ${ch.target}.</div>`;
+          log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('vy_ranili_vraga_dvazhdy_mozhete')}${ch.target}.</div>`;
         }
       }
     });
@@ -2069,14 +2069,14 @@ function endCombat(won){
   if(won){
     playSound('victory');
     logEvent('combat',t('pobeda_v_boyu'),t('raundov')+(combatState?combatState.round:0));
-    log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">✦ Победа!</div>`;
+    log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('pobeda')}</div>`;
     document.getElementById('btn-combat-round').style.display='inline-block';
     document.getElementById('btn-combat-round').textContent=t('prodolzhit');
     document.getElementById('btn-combat-round').onclick=()=>{
       document.getElementById('modal-combat').classList.remove('on');renderGame();
     };
   }else{
-    playSound('death');log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">† Вы погибли в бою…</div>`;
+    playSound('death');log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t('vy_pogibli_v_boyu')}</div>`;
     document.getElementById('btn-combat-round').style.display='inline-block';
     document.getElementById('btn-combat-round').textContent=t('konec');
     document.getElementById('btn-combat-round').onclick=()=>{
@@ -2099,8 +2099,8 @@ function useCopyInCombat(){
   const target=alive[0];
   useSpell('COPY');
   const log=document.getElementById('combat-log');
-  log.innerHTML+=`<div style="color:#999;font-weight:bold;margin-top:8px">👤 Заклятие Копии на ${target.name}!</div>`;
-  log.innerHTML+=`<div style="color:#999;font-size:14px;">Копия: Мастерство ${target.skill}, Выносливость ${target.hp}</div>`;
+  log.innerHTML+=`<div style="color:#999;font-weight:bold;margin-top:8px">${t('zaklyatie_kopii_na')}${target.name}!</div>`;
+  log.innerHTML+=`<div style="color:#999;font-size:14px;">${t('kopiya_masterstvo')}${target.skill}${t('vynoslivost_2')}${target.hp}</div>`;
   let copyHp=target.hp;
   let enemyHp=target.hp;
   let round=0;
@@ -2113,10 +2113,10 @@ function useCopyInCombat(){
   }
   if(enemyHp<=0){
     target.hp=0;
-    log.innerHTML+=`<div class="hit" style="margin-top:4px">👤 Копия победила ${target.name}! Враг повержен.</div>`;
+    log.innerHTML+=`<div class="hit" style="margin-top:4px">${t('kopiya_pobedila')}${target.name}${t('vrag_poverzhen')}</div>`;
   } else {
     target.hp=Math.max(1,enemyHp);
-    log.innerHTML+=`<div class="miss" style="margin-top:4px">👤 ${target.name} победил свою Копию, но ослаблен (выносливость: ${target.hp}).</div>`;
+    log.innerHTML+=`<div class="miss" style="margin-top:4px">👤 ${target.name}${t('pobedil_svoyu_kopiyu_no_oslablen')}${target.hp}).</div>`;
   }
   updateCombatEnemyDisplay(cs);
   const copyBtn=document.getElementById('btn-copy-spell');
@@ -2136,7 +2136,7 @@ function useCopyInCombat(){
         cs.enemies[1].active=true;
         cs.enemies[2].active=true;
         cs.special.reinforcementsJoined=true;
-        log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">✦ Первый Орк повержен. Теперь вам придётся сражаться с двумя оставшимися.</div>`;
+        log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('pervyy_ork_poverzhen_teper_vam_p')}</div>`;
         updateCombatEnemyDisplay(cs);
       }
       if(!cs.special.luckChecked && cs.enemies[2].hp>0 && !cs.enemies[2].fled){
@@ -2184,8 +2184,8 @@ function useAllyInCombat(allyKey){
   if(!S.summonsUsed.some(k=>canonItem(k)===allyKey)) S.summonsUsed.push(allyKey);
   cs.ally={name:allyText(allyKey).name,skill:a.skill,stamina:a.stamina};
   const log=document.getElementById('combat-log');
-  log.innerHTML+=`<div style="color:#b8860b;font-weight:bold;margin-top:8px">${a.icon} Вы ${allyText(allyKey).verb}!</div>`;
-  log.innerHTML+=`<div style="color:#b8860b;font-size:14px;">${allyText(allyKey).name}: Мастерство ${a.skill}, Выносливость ${a.stamina}. Бьётся с ${target.name}.</div>`;
+  log.innerHTML+=`<div style="color:#b8860b;font-weight:bold;margin-top:8px">${a.icon}${t('vy')}${allyText(allyKey).verb}!</div>`;
+  log.innerHTML+=`<div style="color:#b8860b;font-size:14px;">${allyText(allyKey).name}${t('masterstvo_2')}${a.skill}${t('vynoslivost_2')}${a.stamina}${t('betsya_s')}${target.name}.</div>`;
   let allyHp=a.stamina;
   let enemyHp=target.hp;
   let round=0;
@@ -2198,10 +2198,10 @@ function useAllyInCombat(allyKey){
   }
   if(enemyHp<=0){
     target.hp=0;
-    log.innerHTML+=`<div class="hit" style="margin-top:4px">${a.icon} ${a.name} повергает ${target.name}!</div>`;
+    log.innerHTML+=`<div class="hit" style="margin-top:4px">${a.icon} ${a.name}${t('povergaet')}${target.name}!</div>`;
   } else {
     target.hp=Math.max(1,enemyHp);
-    log.innerHTML+=`<div class="miss" style="margin-top:4px">${a.icon} ${target.name} одолел ${a.name}, но ослаблен (выносливость: ${target.hp}).</div>`;
+    log.innerHTML+=`<div class="miss" style="margin-top:4px">${a.icon} ${target.name}${t('odolel')}${a.name}${t('no_oslablen_vynoslivost')}${target.hp}).</div>`;
   }
   updateCombatEnemyDisplay(cs);
   const allyBtn=document.getElementById('btn-summon-ally');
@@ -2217,7 +2217,7 @@ function useAllyInCombat(allyKey){
         cs.enemies[1].active=true;
         cs.enemies[2].active=true;
         cs.special.reinforcementsJoined=true;
-        log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">✦ Первый Орк повержен. Теперь вам придётся сражаться с двумя оставшимися.</div>`;
+        log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('pervyy_ork_poverzhen_teper_vam_p')}</div>`;
         updateCombatEnemyDisplay(cs);
       }
       if(!cs.special.luckChecked && cs.enemies[2].hp>0 && !cs.enemies[2].fled){
@@ -2248,7 +2248,7 @@ function useForceInCombat(){
   useSpell('FORCE');
   combatState.forceBuff=true;
   const log=document.getElementById('combat-log');
-  log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">💪 Заклятие Силы! СИЛА УДАРА +2 до конца боя.</div>`;
+  log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('zaklyatie_sily_sila_udara_2_do_k')}</div>`;
   log.scrollTop=log.scrollHeight;
   // Hide the button — single-cast for this combat
   const forceBtn=document.getElementById('btn-force-spell');
@@ -2273,7 +2273,7 @@ function useWeaknessInCombat(){
   useSpell('WEAKNESS');
   combatState.weaknessDebuff=true;
   const log=document.getElementById('combat-log');
-  log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">🫀 Заклятие Слабости! Атака врагов −2 до конца боя.</div>`;
+  log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('zaklyatie_slabosti_ataka_vragov')}</div>`;
   log.scrollTop=log.scrollHeight;
   const weakBtn=document.getElementById('btn-weakness-spell');
   if(weakBtn)weakBtn.style.display='none';
@@ -2291,8 +2291,8 @@ function formatLuckPanel(roll1,roll2,roll,needed,lucky,extraHtml){
       <div class="luck-die">${roll1}</div>
       <div class="luck-die">${roll2}</div>
     </div>
-    <div class="luck-total">сумма броска: ${roll}</div>
-    <div class="luck-target-note">Нужно было ≤ ${needed} · Удача после броска: ${S.luck}</div>
+    <div class="luck-total">${t('summa_broska')}${roll}</div>
+    <div class="luck-target-note">${t('nuzhno_bylo')}${needed}${t('udacha_posle_broska')}${S.luck}</div>
     <div class="${lucky?'luck-success':'luck-fail'}" style="font-size:30px">${lucky?t('udacha_s_vami'):t('udacha_vas_pokinula')}</div>
     ${extraHtml||''}
   </div>`;
@@ -2301,7 +2301,7 @@ function formatLuckPanel(roll1,roll2,roll,needed,lucky,extraHtml){
 function startLuckCheck(sec){
   document.getElementById('luck-result').innerHTML='';
   document.getElementById('luck-choices').innerHTML='';
-  document.getElementById('luck-info').innerHTML=`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Бросьте два кубика. Если результат ≤ вашей Удачи (${S.luck}) — вам повезло!<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`;
+  document.getElementById('luck-info').innerHTML=`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('broste_dva_kubika_esli_rezultat')}${S.luck}${t('vam_povezlo')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`;
   document.getElementById('btn-luck-roll').style.display='inline-block';
   document.getElementById('btn-luck-roll').onclick=()=>doLuckCheck(sec);
   document.getElementById('modal-luck').classList.add('on');
@@ -2517,8 +2517,8 @@ function ensureVisualDock(){
   const dock=document.createElement('div');
   dock.id='visual-dock';dock.className='visual-dock';
   dock.innerHTML=`
-    <button class="visual-pill" id="vp-amb" type="button">🌫 <span>Атмосфера</span></button>
-    <button class="visual-pill" id="vp-art" type="button">🖼 <span>Иллюстрации</span></button>`;
+    <button class="visual-pill" id="vp-amb" type="button">🌫 <span>${t('atmosfera')}</span></button>
+    <button class="visual-pill" id="vp-art" type="button">🖼 <span>${t('illyustracii')}</span></button>`;
   document.body.appendChild(dock);
   document.getElementById('vp-amb').onclick=toggleAmbience;
   document.getElementById('vp-art').onclick=toggleInlineArt;
