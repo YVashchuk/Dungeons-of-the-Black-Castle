@@ -436,3 +436,42 @@ values), 6d (enemy names + `riddle.fail_target_label`), 6e (map_module.js string
 `remake_data.js`→`game_structure.js` rename.
 
 **Commits:** source (engine+locale+log), then dist.
+
+
+---
+
+## Increment 6c-2 — extract engine UI template quasis into locale.ru.js (text extraction, part c-2) · 2026-06-18
+**Files:** `src/game_logic.js`, `src/locale.ru.js`. Scratch tool: `acorn`.
+
+**What:** completed 6c by moving the Russian text inside **template literals** into `LOCALE_RU.ui`. Re-parsed
+the post-6c-1 engine with acorn (positions had shifted), collected the **79 Cyrillic quasis** (static text
+between `${…}` expressions), split each by HTML tags (`<[^>]*>`), and replaced every Cyrillic **text-run**
+with `${t('key')}` — leaving HTML tags and `${expr}` verbatim. 87 fragment edits (some quasis hold multiple
+text-runs), **68 new keys**; 19 fragments reused 6c-1 keys for identical values (e.g. `' зол.'`). `ui` now
+has **212 keys** total. Covers the combat enemy card, combat-log round lines, the luck panel, dice/luck
+modals, copy/ally summon lines, the orc-fight messages, and the inventory/notification templates.
+
+**Caveat (minor, deferred):** a few values carry tag-syntax fragments where an HTML tag or attribute spans a
+`${}` boundary (e.g. the title `<img … alt="…">`, the `)">+ Взять` button text) — the quasi begins/ends
+mid-tag, so its Cyrillic run includes adjacent markup. Behavior-identical (the value reproduces exactly);
+can be hand-cleaned later if desired.
+
+**Why behavior-identical:** the apply asserts `ui[key] === fragment value` for every edit and reconstructs
+the original source byte-for-byte from the edit ranges + raw fragments before writing (aborting untouched on
+mismatch). Each `${t('key')}` sits inside the same backticks it replaced text in, so the template emits the
+identical string at runtime. (A verification-only off-by-one in the key-slice — `slice(5,-2)` vs `-3` —
+tripped the abort guard on the first run; fixing it to `-3` let the asserts pass. The transform/edits were
+never wrong; the guard did its job.)
+
+**Verification:** `node --check` engine + locale. **6c-2 harness 5/5** — all 68 new keys resolve via
+`t()`; **re-parsing the new engine confirms ZERO Cyrillic quasis remain** (nothing missed, incl. no
+Cyrillic-inside-a-complete-tag cases). 6c-1 8/8 (its ui-length check relaxed to a subset, since ui legitimately
+grows), 6a 10/10, 6b 16/16, Group B 21/21, 5f 29/29. Structural 1205 reachable. dist verified (`${t('…')}`
+interpolations in bundle, combat labels via `t()`, all 68 new key/value pairs serialized).
+
+**6c complete — the engine's UI text is fully externalized into `LOCALE_RU.ui` (212 keys).**
+
+**Remaining text extraction:** 6d (enemy names + `riddle.fail_target_label`, in remake_data.js), 6e
+(map_module.js strings); then item 7 the `remake_data.js`→`game_structure.js` rename.
+
+**Commits:** source (engine+locale+log), then dist.
