@@ -41,7 +41,7 @@ Object.defineProperty(window, 'S', {
 });
 
 function initState(n,sk,st,lu,sp){
-  return{name:n||'Герой',section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,
+  return{name:n||t('geroy'),section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,
     luck:lu,luckMax:lu,gold:15,flask:2,bagSize:7,
     inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),pending_combat_buff:null,bet_stake:null,summonsUsed:[],v:5};
 }
@@ -83,10 +83,10 @@ function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null
 function exportSave(){saveGame();const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='podzch-save.json';a.click();closeModal('overlay-menu');}
 function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const s=JSON.parse(t);
-  if(s.v!==5&&s.v!==4){alert('Несовместимый формат');return;}
+  if(s.v!==5&&s.v!==4){alert(t('nesovmestimyy_format'));return;}
   if(s.v===4){s.v=5;s.luckMax=s.luck;delete s.luckBoxes;}// upgrade v4→v5
   normalizeSave(s);
-  S=s;saveGame();showScr('game');renderGame();closeModal('overlay-menu');}catch{alert('Ошибка загрузки');}});e.target.value='';}
+  S=s;saveGame();showScr('game');renderGame();closeModal('overlay-menu');}catch{alert(t('oshibka_zagruzki'));}});e.target.value='';}
 
 // ── Screens ──
 function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scr-'+id).classList.add('on');const elb=document.getElementById('event-log-btn');if(elb)elb.style.display=(id==='game')?'block':'none';}
@@ -108,7 +108,7 @@ function initTitle(){
   if(typeof TITLE_ART!=='undefined'){
     document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}" alt="Подземелья Чёрного замка">`;
   } else {
-    document.getElementById('title-lettering').innerHTML='<div class="t-main">Подземелья<br>Чёрного замка</div>';
+    document.getElementById('title-lettering').innerHTML=t('podzemelya_chernogo_zamka');
   }
 }
 
@@ -139,7 +139,7 @@ document.getElementById('btn-roll-all').onclick=()=>{
   playSound('dice');cVals.skill=d6()+6; cVals.stamina=d6()+d6()+12; cVals.luck=d6()+6;
   rollAnim('v-skill',cVals.skill);rollAnim('v-stamina',cVals.stamina);rollAnim('v-luck',cVals.luck);
   document.getElementById('btn-roll-all').classList.add('dice-locked');
-  document.getElementById('btn-roll-all').textContent='✓ Судьба определена';
+  document.getElementById('btn-roll-all').textContent=t('sudba_opredelena');
   document.getElementById('btn-to-spells').style.display='inline-block';
 };
 document.getElementById('btn-to-spells').onclick=()=>{if(!diceRolled)return;showScr('spells');renderSpellSel();};
@@ -166,7 +166,7 @@ function _spellDescHtml(text){
 }
 
 function renderSpellSel(){
-  const bar=document.getElementById('slots-bar');bar.innerHTML='';const t=totSp(); const chip=document.getElementById('spell-counter-chip'); if(chip) chip.textContent=t+' из '+MAX_SP+' выбрано';
+  const bar=document.getElementById('slots-bar');bar.innerHTML='';const t=totSp(); const chip=document.getElementById('spell-counter-chip'); if(chip) chip.textContent=t+t('iz')+MAX_SP+t('vybrano');
   for(let i=0;i<MAX_SP;i++){const d=document.createElement('div');d.className='slot-pip'+(i<t?' on':'');d.textContent=i<t?'✦':'·';bar.appendChild(d);}
   const grid=document.getElementById('spell-grid');grid.innerHTML='';
   SPELLS.forEach(sp=>{const q=spQty[sp.id];const c=document.createElement('div');
@@ -202,8 +202,8 @@ function renderSpellSel(){
 }
 
 function startGame(){
-  if(totSp()!==MAX_SP){alert('Выберите ровно 10 заклятий!');return;}
-  const name=document.getElementById('hero-name').value.trim()||'Герой';
+  if(totSp()!==MAX_SP){alert(t('vyberite_rovno_10_zaklyatiy'));return;}
+  const name=document.getElementById('hero-name').value.trim()||t('geroy');
   if(!diceRolled){cVals.skill=d6()+6;cVals.stamina=d6()+d6()+12;cVals.luck=d6()+6;diceRolled=true;}
   const sp=[];SPELLS.forEach(s=>{if(spQty[s.id]>0)sp.push({id:s.id,remaining:spQty[s.id]});});
   S=initState(name,cVals.skill,cVals.stamina,cVals.luck,sp);saveGame();
@@ -240,7 +240,7 @@ function renderEventLog(){
   const list=document.getElementById('event-log-list');
   if(!list||!S||!S.eventLog)return;
   if(S.eventLog.length===0){
-    list.innerHTML='<div style="color:var(--muted);opacity:.5;padding:20px 0;text-align:center;font-size:14px;">Журнал пуст</div>';
+    list.innerHTML=t('zhurnal_pust');
     return;
   }
   // Render newest first
@@ -261,13 +261,13 @@ function toggleEventLog(){
 
 function clearEventLog(){
   if(!S)return;
-  if(confirm('Очистить журнал?')){S.eventLog=[];saveGame();renderEventLog();}
+  if(confirm(t('ochistit_zhurnal'))){S.eventLog=[];saveGame();renderEventLog();}
 }
 
 // ── Item Notification ──
 function showItemNotification(items, title){
   const el=document.createElement('div');el.className='item-notification';
-  el.innerHTML=`<div class="notif-title">${title||'🎒 Мешок'}</div>`+
+  el.innerHTML=`<div class="notif-title">${title||t('meshok')}</div>`+
     items.map(i=>`<div class="notif-item${i.startsWith('−')?' loss':''}">${i}</div>`).join('');
   document.body.appendChild(el);
   setTimeout(()=>{el.style.animation='fadeOut .5s ease-out forwards';
@@ -292,7 +292,7 @@ function showInventoryModal(newItems, extraNotifs){
   
   // Found items — each with "Взять" button
   const found=document.getElementById('inv-modal-found');
-  found.innerHTML='<div style="font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;">НАЙДЕНО:</div>';
+  found.innerHTML=t('naydeno');
   newItems.forEach((item,i)=>{
     const row=document.createElement('div');
     row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);';
@@ -315,9 +315,9 @@ function showInventoryModal(newItems, extraNotifs){
 
 function renderInvModalCurrent(){
   const cur=document.getElementById('inv-modal-current');
-  cur.innerHTML='<div style="font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;">В МЕШКЕ ('+getBagUsed()+'/'+getBagSize()+'):</div>';
+  cur.innerHTML=t('v_meshke')+getBagUsed()+'/'+getBagSize()+'):</div>';
   if(S.inventory.length===0){
-    cur.innerHTML+='<div style="font-size:14px;color:var(--muted);opacity:.5;">Пусто</div>';
+    cur.innerHTML+=t('pusto');
   } else {
     S.inventory.forEach((item,i)=>{
       const row=document.createElement('div');
@@ -334,11 +334,11 @@ function renderInvModalCurrent(){
     const btn=row.querySelector('button');
     if(!btn)return;
     if(S.inventory.some(it=>canonItem(it)===canonItem(item))){
-      btn.textContent='✓ В мешке';btn.disabled=true;btn.style.opacity='.4';
+      btn.textContent=t('v_meshke_2');btn.disabled=true;btn.style.opacity='.4';
     } else if(getBagUsed()+getItemSize(item)>getBagSize()){
-      btn.textContent=getItemSize(item)>1?('Нужно '+getItemSize(item)+' мест'):'Мешок полон';btn.disabled=true;btn.style.opacity='.4';
+      btn.textContent=getItemSize(item)>1?(t('nuzhno')+getItemSize(item)+t('mest')):t('meshok_polon');btn.disabled=true;btn.style.opacity='.4';
     } else {
-      btn.textContent='+ Взять';btn.disabled=false;btn.style.opacity='1';
+      btn.textContent=t('vzyat');btn.disabled=false;btn.style.opacity='1';
     }
   });
 }
@@ -349,7 +349,7 @@ function takeItem(idx){
   if(!item||S.inventory.some(it=>canonItem(it)===canonItem(item)))return;
   if(getBagUsed()+getItemSize(item)>getBagSize())return;
   S.inventory.push(item);
-  logEvent('gain','+ '+invDisplay(item),'В мешок');
+  logEvent('gain','+ '+invDisplay(item),t('v_meshok'));
   playSound('item');
   renderInvModalCurrent();
   updateHUD();saveGame();
@@ -357,7 +357,7 @@ function takeItem(idx){
 
 function dropItemModal(idx){
   if(!S)return;
-  const itm=S.inventory[idx];logEvent('loss','− '+invDisplay(itm),'Выброшено из мешка');
+  const itm=S.inventory[idx];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));
   S.inventory.splice(idx,1);
   renderInvModalCurrent();
   updateHUD();saveGame();
@@ -408,7 +408,7 @@ function showDeathOverlay(opts){
     }
   } else {
     // Combat / stamina-zero death: keep the generic line, hide any image.
-    txt.textContent='Ваше путешествие окончено. Зачарованный лес поглотил ещё одного смельчака…';
+    txt.textContent=t('vashe_puteshestvie_okoncheno_zac');
     img.removeAttribute('src');
     img.style.display='none';
   }
@@ -426,13 +426,14 @@ function locSec(n){ const s=GD[String(n)]; if(!s) return s; const out=Object.ass
 // ── Locale resolvers (6b): spell + ally display text live in LOCALE_RU.spells / .allies.
 function spellText(id){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.spells)?LOCALE_RU.spells[id]:null; return e||{name:'',full:''}; }
 function allyText(key){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.allies)?LOCALE_RU.allies[key]:null; return e||{name:'',verb:''}; }
+function t(k){ return (typeof LOCALE_RU!=='undefined'&&LOCALE_RU.ui&&LOCALE_RU.ui[k]!==undefined)?LOCALE_RU.ui[k]:k; }
 
 // ── Game Rendering ──
 function renderGame(){
   if(!S)return;updateHUD();
   const sec=locSec(S.section);
   if(!sec){goTo(1);return;}
-  document.getElementById('s-num').textContent='§ Параграф '+S.section;
+  document.getElementById('s-num').textContent=t('paragraf')+S.section;
   // Render illustration — priority: Midjourney (color AI art) > legacy b/w scans.
   let illustHtml='';
   const secKey=String(S.section);
@@ -441,7 +442,7 @@ function renderGame(){
     const artId=MJ_MAP[secKey];
     if(artId&&MJ_DATA[artId]){
       const meta=(typeof MJ_META!=='undefined')?MJ_META[artId]:null;
-      const alt=meta?meta.scene.replace(/"/g,'&quot;'):'Иллюстрация';
+      const alt=meta?meta.scene.replace(/"/g,'&quot;'):t('illyustraciya');
       illustHtml=`<div class="illustration-container mj-art" data-art-id="${artId}"><img src="${MJ_DATA[artId]}" onload="this.classList.add('loaded')" alt="${alt}"/></div>`;
     }
   }
@@ -473,26 +474,26 @@ function renderGame(){
       const lostCount=S.inventory.length;
       if(lostCount>0){
         S.inventory=[];
-        notifications.push('− весь инвентарь ('+lostCount+')');
-        logEvent('loss','− весь инвентарь','Предметов потеряно: '+lostCount);
+        notifications.push(t('ves_inventar')+lostCount+')');
+        logEvent('loss',t('ves_inventar_2'),t('predmetov_poteryano')+lostCount);
       }
     }
     if(ai.gold_zero&&S.gold>0){
       const lostGold=S.gold;
       S.gold=0;
-      notifications.push('− '+lostGold+' золотых');
-      logEvent('loss','− '+lostGold+' золотых','Всего: 0');
+      notifications.push('− '+lostGold+t('zolotyh'));
+      logEvent('loss','− '+lostGold+t('zolotyh'),t('vsego_0'));
     }
     // Gold (always auto-add)
     if(ai.gold&&ai.gold>0){
       S.gold+=ai.gold;
-      notifications.push('+ '+ai.gold+' золотых');
-      logEvent('gain','+ '+ai.gold+' золотых','Всего: '+S.gold);
+      notifications.push('+ '+ai.gold+t('zolotyh'));
+      logEvent('gain','+ '+ai.gold+t('zolotyh'),t('vsego')+S.gold);
     }
     if(ai.gold_sub&&ai.gold_sub>0){
       S.gold=Math.max(0,S.gold-ai.gold_sub);
-      notifications.push('− '+ai.gold_sub+' золотых');
-      logEvent('loss','− '+ai.gold_sub+' золотых','Всего: '+S.gold);
+      notifications.push('− '+ai.gold_sub+t('zolotyh'));
+      logEvent('loss','− '+ai.gold_sub+t('zolotyh'),t('vsego')+S.gold);
     }
     // Lose items
     if(ai.lose){
@@ -520,10 +521,10 @@ function renderGame(){
         }
       });
       if(added>0){
-        notifications.push('+ еда ×'+added);
-        logEvent('gain','+ еда ×'+added, overflow>0?('мешок полон, не взято: '+overflow):('в мешке: '+getBagUsed()+'/'+getBagSize()));
+        notifications.push(t('eda')+added);
+        logEvent('gain',t('eda')+added, overflow>0?(t('meshok_polon_ne_vzyato')+overflow):(t('v_meshke_3')+getBagUsed()+'/'+getBagSize()));
       }
-      if(overflow>0) notifications.push('мешок полон: '+overflow+' не взято');
+      if(overflow>0) notifications.push(t('meshok_polon_2')+overflow+t('ne_vzyato'));
     }
     // Items — show modal if any found
     if(ai.items&&ai.items.length>0){
@@ -540,12 +541,12 @@ function renderGame(){
     }
     // Stat changes (auto-apply, no modal needed)
     let statNotifs=[];
-    if(ai.stamina_add){S.stamina=Math.min(S.staminaMax,S.stamina+ai.stamina_add);statNotifs.push('+ '+ai.stamina_add+' выносливости');logEvent('gain','+ '+ai.stamina_add+' выносливости','Теперь: '+S.stamina+'/'+S.staminaMax);}
-    if(ai.stamina_sub){S.stamina=Math.max(0,S.stamina-ai.stamina_sub);statNotifs.push('− '+ai.stamina_sub+' выносливости');logEvent('loss','− '+ai.stamina_sub+' выносливости','Теперь: '+S.stamina+'/'+S.staminaMax);}
-    if(ai.skill_add){S.skill=Math.min(S.skillMax,S.skill+ai.skill_add);statNotifs.push('+ '+ai.skill_add+' мастерства');}
-    if(ai.skill_sub){S.skill=Math.max(1,S.skill-ai.skill_sub);statNotifs.push('− '+ai.skill_sub+' мастерства');}
-    if(ai.luck_add){S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);statNotifs.push('+ '+ai.luck_add+' удачи');}
-    if(ai.luck_sub){S.luck=Math.max(0,S.luck-ai.luck_sub);statNotifs.push('− '+ai.luck_sub+' удачи');}
+    if(ai.stamina_add){S.stamina=Math.min(S.staminaMax,S.stamina+ai.stamina_add);statNotifs.push('+ '+ai.stamina_add+t('vynoslivosti'));logEvent('gain','+ '+ai.stamina_add+t('vynoslivosti'),t('teper')+S.stamina+'/'+S.staminaMax);}
+    if(ai.stamina_sub){S.stamina=Math.max(0,S.stamina-ai.stamina_sub);statNotifs.push('− '+ai.stamina_sub+t('vynoslivosti'));logEvent('loss','− '+ai.stamina_sub+t('vynoslivosti'),t('teper')+S.stamina+'/'+S.staminaMax);}
+    if(ai.skill_add){S.skill=Math.min(S.skillMax,S.skill+ai.skill_add);statNotifs.push('+ '+ai.skill_add+t('masterstva'));}
+    if(ai.skill_sub){S.skill=Math.max(1,S.skill-ai.skill_sub);statNotifs.push('− '+ai.skill_sub+t('masterstva'));}
+    if(ai.luck_add){S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);statNotifs.push('+ '+ai.luck_add+t('udachi'));}
+    if(ai.luck_sub){S.luck=Math.max(0,S.luck-ai.luck_sub);statNotifs.push('− '+ai.luck_sub+t('udachi'));}
     if(statNotifs.length>0){updateHUD();saveGame();showItemNotification(statNotifs);}
   }
   // Betting stake-commit + payout (group_41). Runs EVERY visit (not first-visit
@@ -632,7 +633,7 @@ function updateHUD(){
     const isFood=item&&typeof item==='object'&&item.kind==='food';
     const eatBtn=isFood?`<span class="inv-eat" onclick="eatFood(${i})" title="Съесть (+${item.stamina} вын.)" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">🍴</span>`:'';
     il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i})" title="Выбросить">🗑</span></span></div>`;});}
-  else{il.innerHTML='<div class="inv-empty">Мешок пуст</div>';}
+  else{il.innerHTML=t('meshok_pust');}
   document.getElementById('inv-count').textContent=`(${getBagUsed()}/${getBagSize()})`;
   // Notes
   const nta=document.getElementById('notes-ta');if(nta&&S.notes!==undefined)nta.value=S.notes;
@@ -722,7 +723,7 @@ const SLUG_TO_RU={
 };
 function canonItem(x){if(x&&typeof x==='object'&&x.kind==='food')return x.id;return RU_TO_SLUG[x]||x;}
 function itemName(x){return SLUG_TO_RU[x]||x;}
-function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+' (еда: +'+entry.stamina+')';return itemName(entry);}
+function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';return itemName(entry);}
 const ITEM_SIZES={diving_suit:2,flying_carpet:3};
 function getItemSize(name){
   if(!name) return 1;
@@ -738,28 +739,28 @@ function eatFood(i){
   if(!S||!S.inventory)return;
   const item=S.inventory[i];
   if(!item||typeof item!=='object'||item.kind!=='food')return;
-  if(S.stamina>=S.staminaMax){showItemNotification(['Выносливость уже полная']);return;}
+  if(S.stamina>=S.staminaMax){showItemNotification([t('vynoslivost_uzhe_polnaya')]);return;}
   const amt=item.stamina;
   const before=S.stamina;
   S.stamina=Math.min(S.staminaMax,S.stamina+amt);
   const actual=S.stamina-before;
   const clean=item.id;
   S.inventory.splice(i,1);
-  logEvent('gain','🍴 Съедено: '+itemName(clean),'+'+actual+' выносливости');
+  logEvent('gain',t('sedeno')+itemName(clean),'+'+actual+t('vynoslivosti'));
   playSound('item');
-  showItemNotification(['🍴 '+itemName(clean)+': +'+actual+' вын.']);
+  showItemNotification(['🍴 '+itemName(clean)+': +'+actual+t('vyn')]);
   updateHUD();saveGame();
 }
-function useFlask(){if(!S||S.flask<=0)return;S.flask--;S.stamina=Math.min(S.staminaMax,S.stamina+2);logEvent('gain','🥤 Глоток из фляги','+2 выносливости (осталось глотков: '+S.flask+')');updateHUD();saveGame();}
+function useFlask(){if(!S||S.flask<=0)return;S.flask--;S.stamina=Math.min(S.staminaMax,S.stamina+2);logEvent('gain',t('glotok_iz_flyagi'),t('2_vynoslivosti_ostalos_glotkov')+S.flask+')');updateHUD();saveGame();}
 function useHealing(){
   if(!S)return;
   const remaining=getSpellRemaining('HEALING');
   if(remaining<=0){return;}
   useSpell('HEALING');
   S.stamina=Math.min(S.staminaMax,S.stamina+8);
-  logEvent('gain','💚 Заклятие Исцеления','+8 выносливости');
+  logEvent('gain',t('zaklyatie_isceleniya'),t('8_vynoslivosti'));
   updateHUD();saveGame();
-  showItemNotification(['💚 Исцеление: +8 выносливости']);
+  showItemNotification([t('iscelenie_8_vynoslivosti')]);
 }
 // §950: Healing cast DURING combat (the HUD heal button is hidden behind the
 // combat overlay). Rendered as a combat-modal button when the section's
@@ -776,17 +777,17 @@ function useHealingInCombat(){
   useSpell('HEALING');
   S.stamina=Math.min(S.staminaMax,S.stamina+8);
   if(log)log.innerHTML+=`<div style="color:var(--green2);margin:4px 0;">💚 Заклятие Исцеления: +8 выносливости (стало ${S.stamina}/${S.staminaMax}).</div>`;
-  logEvent('gain','💚 Заклятие Исцеления','+8 выносливости (в бою)');
+  logEvent('gain',t('zaklyatie_isceleniya'),t('8_vynoslivosti_v_boyu'));
   const hb=document.getElementById('btn-heal-spell');
   const r2=getSpellRemaining('HEALING');
-  if(hb){ if(r2>0){ hb.textContent='💚 Заклятие Исцеления +8 ['+r2+']'; } else { hb.style.display='none'; } }
+  if(hb){ if(r2>0){ hb.textContent=t('zaklyatie_isceleniya_8')+r2+']'; } else { hb.style.display='none'; } }
   updateHUD();saveGame();
 }
 function toggleAddItem(){const a=document.getElementById('add-item-area');a.style.display=a.style.display==='none'?'block':'none';}
 function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.trim();
-  if(!v)return;if(getBagUsed()+getItemSize(v)>getBagSize()){alert('Мешок полон ('+getBagSize()+' мест)');return;}
+  if(!v)return;if(getBagUsed()+getItemSize(v)>getBagSize()){alert(t('meshok_polon_3')+getBagSize()+t('mest_2'));return;}
   S.inventory.push(v);inp.value='';updateHUD();saveGame();}
-function removeItem(i){if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),'Выброшено из мешка');S.inventory.splice(i,1);updateHUD();saveGame();}
+function removeItem(i){if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);updateHUD();saveGame();}
 
 // ── Choices ──
 // Spell detection and styling
@@ -853,7 +854,7 @@ function passesGoldCheck(ch){
 function useSpell(spellId){
   if(!S||!S.spells)return;
   const sp=S.spells.find(s=>s.id===spellId);
-  if(sp&&sp.remaining>0){sp.remaining--;const def=SPELLS.find(s=>s.id===spellId);logEvent('gain',def.icon+' Заклятие '+spellText(def.id).name,'Осталось: '+sp.remaining);updateHUD();saveGame();}
+  if(sp&&sp.remaining>0){sp.remaining--;const def=SPELLS.find(s=>s.id===spellId);logEvent('gain',def.icon+t('zaklyatie')+spellText(def.id).name,t('ostalos')+sp.remaining);updateHUD();saveGame();}
 }
 
 // Per-choice item grant. A choice may carry `acquires: "Item Name"`
@@ -900,9 +901,9 @@ function applyChoiceGoldCost(ch){
   const cost=ch.gold_cost;
   if(cost<=0) return;
   S.gold=Math.max(0,(S.gold||0)-cost);
-  logEvent('loss','− '+cost+' золотых','Заплачено за выбор. Осталось: '+S.gold);
+  logEvent('loss','− '+cost+t('zolotyh'),t('zaplacheno_za_vybor_ostalos')+S.gold);
   playSound('item');
-  showItemNotification(['− '+cost+' золотых']);
+  showItemNotification(['− '+cost+t('zolotyh')]);
   updateHUD();saveGame();
 }
 
@@ -939,7 +940,7 @@ function applyChoiceConsume(ch){
   }
   if(removed.length===0) return;
   for(const name of removed){
-    logEvent('loss','− '+invDisplay(name),'Предмет израсходован.');
+    logEvent('loss','− '+invDisplay(name),t('predmet_izrashodovan'));
   }
   playSound('item');
   showItemNotification(removed.map(n=>'− '+invDisplay(n)));
@@ -981,7 +982,7 @@ function applyRiddleAnswer(input,riddleConfig){
   const valid=(riddleConfig.valid_targets||[]).includes(targetId);
   if(valid&&GD[String(targetId)]){
     S.riddle_attempts=0;
-    logEvent('gain','✓ Загадка разгадана','Параграф: '+targetId);
+    logEvent('gain',t('zagadka_razgadana'),t('paragraf_2')+targetId);
     playSound('item');
     goTo(targetId);
   }else{
@@ -995,7 +996,7 @@ function handleRiddleFail(riddleConfig){
   const remaining=maxAttempts-S.riddle_attempts;
   if(remaining<=0){
     S.riddle_attempts=0;
-    logEvent('loss','✗ Загадка не разгадана','Параграф: '+riddleConfig.fail_target);
+    logEvent('loss',t('zagadka_ne_razgadana'),t('paragraf_2')+riddleConfig.fail_target);
     playSound('death');
     goTo(riddleConfig.fail_target);
   }else{
@@ -1036,7 +1037,7 @@ function renderRiddle(sec){
   const inp=document.createElement('input');
   inp.type='text';
   inp.id='riddle-input';
-  inp.placeholder='Ваш ответ (им. падеж, ед. ч.)';
+  inp.placeholder=t('vash_otvet_im_padezh_ed_ch');
   inp.autocomplete='off';
   inp.autocorrect='off';
   inp.spellcheck=false;
@@ -1046,7 +1047,7 @@ function renderRiddle(sec){
   });
   const btn=document.createElement('button');
   btn.className='choice-btn riddle-submit';
-  btn.textContent='Ответить';
+  btn.textContent=t('otvetit');
   function submit(){
     const val=inp.value;
     if(!val||!val.trim())return;
@@ -1060,7 +1061,7 @@ function renderRiddle(sec){
   const fb=document.createElement('div');
   fb.id='riddle-feedback';
   fb.className=used>0?'riddle-feedback':'riddle-feedback hidden';
-  fb.innerHTML='Неверно. Осталось попыток: <span id="riddle-attempts">'+remaining+'</span>';
+  fb.innerHTML=t('neverno_ostalos_popytok')+remaining+'</span>';
   wrap.appendChild(fb);
   // Optional fail-target manual exit (canon-compliant for sec.992 where
   // the spider explicitly says "если не знаете ответа, уходите — 1123").
@@ -1123,17 +1124,17 @@ function makePurchaseBtn(ch, choiceIndex){
   let disabled=false;
   let tooltip='';
   if(isBought){
-    disabled=true;tooltip='Уже куплено';
+    disabled=true;tooltip=t('uzhe_kupleno');
     btn.textContent='✓ '+displayLabel;
   } else if(bagMaxed){
-    disabled=true;tooltip='Мешок уже куплен';
+    disabled=true;tooltip=t('meshok_uzhe_kuplen');
     btn.textContent='✓ '+displayLabel;
   } else if(flaskFull){
-    disabled=true;tooltip='Фляга уже полна';
+    disabled=true;tooltip=t('flyaga_uzhe_polna');
   } else if(!canAfford){
-    disabled=true;tooltip='Не хватает золота ('+S.gold+'/'+cost+')';
+    disabled=true;tooltip=t('ne_hvataet_zolota')+S.gold+'/'+cost+')';
   } else if(wouldOverflow||foodOverflow){
-    disabled=true;tooltip='Мешок полон';
+    disabled=true;tooltip=t('meshok_polon');
   }
   if(disabled){
     btn.style.opacity='.4';btn.style.cursor='not-allowed';
@@ -1152,8 +1153,8 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   S.gold=Math.max(0,S.gold-cost);
   const notifs=[];
   if(cost>0){
-    notifs.push('− '+cost+' золотых');
-    logEvent('loss','− '+cost+' золотых','Покупка (§'+S.section+'). Осталось: '+S.gold);
+    notifs.push('− '+cost+t('zolotyh'));
+    logEvent('loss','− '+cost+t('zolotyh'),t('pokupka')+S.section+t('ostalos_2')+S.gold);
   }
   // Stamina grant (food). Capped at staminaMax.
   if(grantsStamina>0){
@@ -1161,8 +1162,8 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
     S.stamina=Math.min(S.staminaMax,S.stamina+grantsStamina);
     const actual=S.stamina-before;
     if(actual>0){
-      notifs.push('+ '+actual+' выносливости');
-      logEvent('gain','+ '+actual+' выносливости','Теперь: '+S.stamina+'/'+S.staminaMax);
+      notifs.push('+ '+actual+t('vynoslivosti'));
+      logEvent('gain','+ '+actual+t('vynoslivosti'),t('teper')+S.stamina+'/'+S.staminaMax);
     }
   }
   // Items grant. Only items not already owned are deposited; bought-list is
@@ -1173,7 +1174,7 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
     if(getBagUsed()+getItemSize(name)<=getBagSize()){
       S.inventory.push(name);
       notifs.push('+ '+invDisplay(name));
-      logEvent('gain','+ '+invDisplay(name),'Куплено (§'+S.section+')');
+      logEvent('gain','+ '+invDisplay(name),t('kupleno')+S.section+')');
     }
   });
   // Track bought (only for item-grant choices; consumable food unlimited).
@@ -1188,8 +1189,8 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   // §132 bag upgrade — raise capacity (one-time; guarded by the >= check).
   if(ch.grants_bag_size&&getBagSize()<ch.grants_bag_size){
     S.bagSize=ch.grants_bag_size;
-    notifs.push('+ заплечный мешок ('+ch.grants_bag_size+' мест)');
-    logEvent('gain','+ заплечный мешок','Вместимость теперь: '+ch.grants_bag_size);
+    notifs.push(t('zaplechnyy_meshok')+ch.grants_bag_size+t('mest_2'));
+    logEvent('gain',t('zaplechnyy_meshok_2'),t('vmestimost_teper')+ch.grants_bag_size);
   }
   // §132 flask refill — 'full'/'water' top to max (2), 'half' adds one sip.
   if(ch.flask_fill){
@@ -1198,8 +1199,8 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
     else { S.flask=2; }
     const addedF=S.flask-beforeF;
     if(addedF>0){
-      notifs.push('+ фляга ('+S.flask+'/2)');
-      logEvent('gain','🥤 Фляга наполнена','Глотков: '+S.flask+'/2');
+      notifs.push(t('flyaga')+S.flask+'/2)');
+      logEvent('gain',t('flyaga_napolnena'),t('glotkov')+S.flask+'/2');
     }
   }
   // §132 carried food — deposit a self-describing food string (repeatable,
@@ -1209,10 +1210,10 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
     const foodObj={id:f.name,kind:'food',stamina:f.stamina};
     S.inventory.push(foodObj);
     notifs.push('+ '+invDisplay(foodObj));
-    logEvent('gain','+ '+invDisplay(foodObj),'Куплено, взято с собой (§'+S.section+')');
+    logEvent('gain','+ '+invDisplay(foodObj),t('kupleno_vzyato_s_soboy')+S.section+')');
   }
   playSound('item');
-  showItemNotification(notifs,'💰 Покупка');
+  showItemNotification(notifs,t('pokupka_2'));
   updateHUD();saveGame();
   // Re-render the current paragraph to refresh shop-button states (bought
   // greys out, no-longer-affordable greys out, etc). Use renderChoices
@@ -1243,7 +1244,7 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
     if(totalRemaining<=0){
       btn.style.opacity='.35';btn.style.cursor='not-allowed';
       btn.style.borderStyle='dashed';
-      btn.title='Заклятие недоступно';
+      btn.title=t('zaklyatie_nedostupno');
       btn.onclick=(e)=>{e.preventDefault();};
     } else {
       btn.onclick=()=>{const pick=ids.find(id=>getSpellRemaining(id)>0);useSpell(pick);applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
@@ -1269,7 +1270,7 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
     if(remaining<=0){
       btn.style.opacity='.35';btn.style.cursor='not-allowed';
       btn.style.borderStyle='dashed';
-      btn.title='Заклятие недоступно';
+      btn.title=t('zaklyatie_nedostupno');
       btn.onclick=(e)=>{e.preventDefault();};
     } else {
       btn.onclick=()=>{useSpell(spellId);applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
@@ -1282,7 +1283,7 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
       btn.onclick=()=>{
         S.stamina=Math.max(0,S.stamina-2);
         updateHUD();saveGame();
-        showItemNotification(['− 2 выносливости (бегство из боя)']);
+        showItemNotification([t('2_vynoslivosti_begstvo_iz_boya')]);
         applyChoiceGoldCost(ch);
         applyChoiceConsume(ch);
         applyChoiceAcquires(ch,()=>goTo(ch.target));
@@ -1344,11 +1345,11 @@ function updateCombatEnemyDisplay(cs){
     const hpFill=card.querySelector('.combat-hp-fill');
     if(hpFill) hpFill.style.width=Math.max(0, Math.min(100, (Math.max(0,e.hp)/e.stamina)*100))+'%';
     const statusEl=card.querySelector('.ce-status');
-    let status='в бою';
+    let status=t('v_boyu');
     let stateClass='state-active';
-    if(e.fled){ status='убежал'; stateClass='state-fled'; }
-    else if(e.hp<=0){ status='повержен'; stateClass='state-dead'; }
-    else if(e.active===false){ status='ожидает'; stateClass='state-waiting'; }
+    if(e.fled){ status=t('ubezhal'); stateClass='state-fled'; }
+    else if(e.hp<=0){ status=t('poverzhen'); stateClass='state-dead'; }
+    else if(e.active===false){ status=t('ozhidaet'); stateClass='state-waiting'; }
     if(statusEl){
       statusEl.textContent=status;
       statusEl.className='ce-status ce-status-pill '+stateClass;
@@ -1362,7 +1363,7 @@ function resumeCanonCombat(){
   const roundBtn=document.getElementById('btn-combat-round');
   if(roundBtn){
     roundBtn.style.display='inline-block';
-    roundBtn.textContent='Удар!';
+    roundBtn.textContent=t('udar');
     roundBtn.onclick=combatRound;
   }
   const copyBtn=document.getElementById('btn-copy-spell');
@@ -1370,7 +1371,7 @@ function resumeCanonCombat(){
     const remaining=getSpellRemaining('COPY');
     if(remaining>0 && getAliveCombatEnemies(combatState).length>0){
       copyBtn.style.display='inline-block';
-      copyBtn.textContent='👤 Заклятие Копии ['+remaining+']';
+      copyBtn.textContent=t('zaklyatie_kopii')+remaining+']';
     }
   }
   updateCombatEnemyDisplay(combatState);
@@ -1398,11 +1399,11 @@ function doScriptedLuckCheck(){
   if(lucky){
     res.innerHTML=formatLuckPanel(roll1,roll2,roll,needed,true, opts.successHtml?`<div style="color:var(--muted);line-height:1.7">${opts.successHtml}</div>`:'');
     if(typeof opts.onLucky==='function') opts.onLucky();
-    logEvent('luck','🎲 Проверка Удачи: '+roll+' ≤ '+needed,'Удачно! Удача теперь: '+S.luck);
+    logEvent('luck',t('proverka_udachi')+roll+' ≤ '+needed,t('udachno_udacha_teper')+S.luck);
   } else {
     res.innerHTML=formatLuckPanel(roll1,roll2,roll,needed,false, opts.failHtml?`<div style="color:var(--muted);line-height:1.7">${opts.failHtml}</div>`:'');
     if(typeof opts.onUnlucky==='function') opts.onUnlucky();
-    logEvent('luck','🎲 Проверка Удачи: '+roll+' > '+needed,'Неудача. Удача теперь: '+S.luck);
+    logEvent('luck',t('proverka_udachi')+roll+' > '+needed,t('neudacha_udacha_teper')+S.luck);
   }
   document.getElementById('btn-luck-roll').style.display='none';
   updateHUD();saveGame();
@@ -1410,7 +1411,7 @@ function doScriptedLuckCheck(){
   const btn=document.createElement('button');
   btn.className='btn btn-s';
   btn.style.cssText='margin:8px;font-size:18px;padding:12px 24px;';
-  btn.textContent=opts.continueText||'Продолжить';
+  btn.textContent=opts.continueText||t('prodolzhit');
   btn.onclick=()=>{
     document.getElementById('modal-luck').classList.remove('on');
     if(typeof opts.afterClose==='function') opts.afterClose();
@@ -1427,11 +1428,11 @@ function renderCanonCombatChoices(sec,list){
       const btn=document.createElement('button');
       btn.className='choice-btn';
       btn.style.borderColor='var(--green)';btn.style.color='var(--green2)';btn.style.background='rgba(40,180,100,.12)';
-      btn.innerHTML='🎲 Проверить удачу';
+      btn.innerHTML=t('proverit_udachu');
       btn.onclick=()=>startScriptedLuckCheck({
         promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Сначала нужно проверить Удачу: если повезёт, вы сразу перерубите нить и будете драться без штрафа. Если нет — придётся сражаться, вися в воздухе, с штрафом −2 к СИЛЕ УДАРА.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
-        successHtml:'Вы мгновенно перерубаете нить и становитесь на землю. В бою штрафа к СИЛЕ УДАРА не будет.',
-        failHtml:'Нить не поддалась сразу. Сражаться придётся, вися в воздухе, со штрафом −2 к СИЛЕ УДАРА.',
+        successHtml:t('vy_mgnovenno_pererubaete_nit_i_s'),
+        failHtml:t('nit_ne_poddalas_srazu_srazhatsya'),
         onLucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, playerMod:0}; },
         onUnlucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, playerMod:-2}; },
         afterClose:()=>renderGame()
@@ -1441,7 +1442,7 @@ function renderCanonCombatChoices(sec,list){
     }
     const btn=document.createElement('button');btn.className='choice-btn';
     btn.style.borderColor='var(--red)';btn.style.color='var(--red2)';btn.style.background='rgba(180,30,30,.12)';
-    btn.innerHTML='⚔ Вступить в бой';
+    btn.innerHTML=t('vstupit_v_boy');
     btn.onclick=()=>startCombat(sec.enemies,{...sec, player_attack_mod:(st.playerMod??-2)});
     list.appendChild(btn);
     return true;
@@ -1450,16 +1451,16 @@ function renderCanonCombatChoices(sec,list){
     if(!st.modeSelected){
       const ground=document.createElement('button');ground.className='choice-btn';
       ground.style.borderColor='var(--red)';ground.style.color='var(--red2)';ground.style.background='rgba(180,30,30,.12)';
-      ground.innerHTML='⚔ Драться стоя на земле';
+      ground.innerHTML=t('dratsya_stoya_na_zemle');
       ground.onclick=()=>{ sectionPrepState[sec.id]={modeSelected:true, playerMod:-1}; renderGame(); };
       list.appendChild(ground);
       const luck=document.createElement('button');luck.className='choice-btn';
       luck.style.borderColor='var(--green)';luck.style.color='var(--green2)';luck.style.background='rgba(40,180,100,.12)';
-      luck.innerHTML='🎲 Проверить удачу и попытаться оседлать коня';
+      luck.innerHTML=t('proverit_udachu_i_popytatsya_ose');
       luck.onclick=()=>startScriptedLuckCheck({
         promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Можно драться стоя на земле со штрафом −1 к СИЛЕ УДАРА, а можно попытаться оседлать коня павшего рыцаря. Если повезёт — будете сражаться на равных, если нет — всё равно придётся драться на земле со штрафом −1.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
-        successHtml:'Вам удаётся оседлать коня. В бою штрафа к СИЛЕ УДАРА не будет.',
-        failHtml:'Оседлать коня не удалось. Сражаться придётся стоя на земле со штрафом −1 к СИЛЕ УДАРА.',
+        successHtml:t('vam_udaetsya_osedlat_konya_v_boy'),
+        failHtml:t('osedlat_konya_ne_udalos_srazhats'),
         onLucky:()=>{ sectionPrepState[sec.id]={modeSelected:true, playerMod:0}; },
         onUnlucky:()=>{ sectionPrepState[sec.id]={modeSelected:true, playerMod:-1}; },
         afterClose:()=>renderGame()
@@ -1469,7 +1470,7 @@ function renderCanonCombatChoices(sec,list){
     }
     const btn=document.createElement('button');btn.className='choice-btn';
     btn.style.borderColor='var(--red)';btn.style.color='var(--red2)';btn.style.background='rgba(180,30,30,.12)';
-    btn.innerHTML='⚔ Вступить в бой';
+    btn.innerHTML=t('vstupit_v_boy');
     btn.onclick=()=>startCombat(sec.enemies,{...sec, player_attack_mod:(st.playerMod??-1)});
     list.appendChild(btn);
     return true;
@@ -1490,7 +1491,7 @@ function renderCanonCombatChoices(sec,list){
       S.sec436_force=false; saveGame();
       const fightF=document.createElement('button');fightF.className='choice-btn';
       fightF.style.borderColor='var(--gold)';fightF.style.color='var(--gold)';fightF.style.background='rgba(212,175,55,.12)';
-      fightF.innerHTML='⚔ Драться (заклятие Силы: +1 к СИЛЕ УДАРА)';
+      fightF.innerHTML=t('dratsya_zaklyatie_sily_1_k_sile');
       fightF.onclick=()=>startCombat(sec.enemies,{...sec, player_attack_mod:1, combat_spells_allowed:[]});
       list.appendChild(fightF);
       return true;
@@ -1499,11 +1500,11 @@ function renderCanonCombatChoices(sec,list){
       const btn=document.createElement('button');
       btn.className='choice-btn';
       btn.style.borderColor='var(--green)';btn.style.color='var(--green2)';btn.style.background='rgba(40,180,100,.12)';
-      btn.innerHTML='🎲 Проверить удачу';
+      btn.innerHTML=t('proverit_udachu');
       btn.onclick=()=>startScriptedLuckCheck({
         promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Паук тянет вас к себе. Если повезёт — успеете перерубить лестницу и спрыгнуть на землю, где будете драться на равных. Если нет — паук затянет вас на дерево, и в бою придётся вычитать 1 из СИЛЫ УДАРА.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
-        successHtml:'Вы перерубаете лестницу и спрыгиваете на землю — теперь будете драться на равных.',
-        failHtml:'Паук затягивает вас на дерево. В бою вычитайте 1 из СИЛЫ УДАРА.',
+        successHtml:t('vy_pererubaete_lestnicu_i_sprygi'),
+        failHtml:t('pauk_zatyagivaet_vas_na_derevo_v'),
         onLucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, escaped:true}; },
         onUnlucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, escaped:false}; },
         afterClose:()=>{ const s=getSectionPrep(sec.id); if(s.escaped){ goTo(456); } else { renderGame(); } }
@@ -1515,7 +1516,7 @@ function renderCanonCombatChoices(sec,list){
     // Unlucky branch: forced tree fight with −1 (player_attack_mod:-1 in data).
     const fight=document.createElement('button');fight.className='choice-btn';
     fight.style.borderColor='var(--red)';fight.style.color='var(--red2)';fight.style.background='rgba(180,30,30,.12)';
-    fight.innerHTML='⚔ Драться с пауком на дереве';
+    fight.innerHTML=t('dratsya_s_paukom_na_dereve');
     fight.onclick=()=>startCombat(sec.enemies,sec);
     list.appendChild(fight);
     // Canonical navigation spell choices, shown only after the unlucky roll.
@@ -1529,7 +1530,7 @@ function renderCanonCombatChoices(sec,list){
         const stl=SPELL_STYLE_BY_ID['FORCE']||{icon:'✨',border:'#8a4dbd',color:'#b070e0',bg:'rgba(140,70,200,.12)'};
         fb.style.borderColor=stl.border;fb.style.color=stl.color;fb.style.background=stl.bg;
         fb.innerHTML=stl.icon+' '+ch.label+(rem>0?' <span style="opacity:.6;font-size:14px">['+rem+']</span>':'');
-        if(rem<=0){ fb.style.opacity='.35';fb.style.cursor='not-allowed';fb.style.borderStyle='dashed';fb.title='Заклятие недоступно';fb.onclick=(e)=>{e.preventDefault();}; }
+        if(rem<=0){ fb.style.opacity='.35';fb.style.cursor='not-allowed';fb.style.borderStyle='dashed';fb.title=t('zaklyatie_nedostupno');fb.onclick=(e)=>{e.preventDefault();}; }
         else { fb.onclick=()=>{ useSpell('FORCE'); S.sec436_force=true; saveGame(); goTo(ch.target); }; }
         list.appendChild(fb);
       } else {
@@ -1580,15 +1581,15 @@ function promptCanon1175Luck(){
   if(copyBtn) copyBtn.style.display='none';
   log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">✦ Можете проверить Удачу: если повезёт, третий Орк убежит в лес и останется только один противник.</div>`;
   setCombatExtraButtons([
-    {text:'🎲 Проверить удачу', className:'btn btn-g', onClick:()=>startScriptedLuckCheck({
+    {text:t('proverit_udachu'), className:'btn btn-g', onClick:()=>startScriptedLuckCheck({
       promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">Первый Орк уже повержен. Если Удача с вами, третий Орк не захочет умирать, защищая ворота, и убежит. Если нет — придётся продолжать бой со всеми оставшимися.<br><span style="font-size:16px;opacity:.7">После проверки Удача уменьшится на 1.</span></p>`,
-      successHtml:'Третий Орк предпочитает спастись бегством. Вам остаётся только один противник.',
-      failHtml:'Третий Орк не дрогнул. Бой продолжается со всеми оставшимися врагами.',
+      successHtml:t('tretiy_ork_predpochitaet_spastis'),
+      failHtml:t('tretiy_ork_ne_drognul_boy_prodol'),
       onLucky:()=>{ cs.special.luckChecked=true; cs.enemies[2].active=false; cs.enemies[2].fled=true; updateCombatEnemyDisplay(cs); },
       onUnlucky:()=>{ cs.special.luckChecked=true; },
       afterClose:()=>resumeCanonCombat()
     })},
-    {text:'⚔ Продолжить бой без проверки', className:'btn btn-p', onClick:()=>{ cs.special.luckChecked=true; resumeCanonCombat(); }}
+    {text:t('prodolzhit_boy_bez_proverki'), className:'btn btn-p', onClick:()=>{ cs.special.luckChecked=true; resumeCanonCombat(); }}
   ]);
 }
 
@@ -1610,12 +1611,12 @@ function renderDiceRoll(sec){
   const btn=document.createElement('button');
   btn.className='choice-btn';
   btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
-  btn.innerHTML='🎲 Бросить кубик';
+  btn.innerHTML=t('brosit_kubik');
   btn.onclick=()=>{
     playSound('dice');
     const roll=d6();
     const tgt=bettingDieTarget(sec,roll);
-    logEvent('luck','🎲 Кубик: выпало '+roll, tgt?('Параграф '+tgt):'');
+    logEvent('luck',t('kubik_vypalo')+roll, tgt?(t('paragraf_3')+tgt):'');
     list.innerHTML='';
     const res=document.createElement('div');
     res.style.cssText='text-align:center;font-size:30px;color:var(--gold);margin:14px 0;font-weight:bold;';
@@ -1623,7 +1624,7 @@ function renderDiceRoll(sec){
     list.appendChild(res);
     const cont=document.createElement('button');
     cont.className='choice-btn';
-    cont.textContent='Продолжить';
+    cont.textContent=t('prodolzhit');
     cont.onclick=()=>{ if(tgt!==null&&tgt!==undefined) goTo(tgt); };
     list.appendChild(cont);
   };
@@ -1651,14 +1652,14 @@ function applyBetting(sec){
       const amt=st.amount||0;
       S.gold=Math.max(0,S.gold-amt);
       S.bet_stake={kind:'gold',amount:amt};
-      notifs.push('ставка: '+amt+' золотых');
-      logEvent('loss','🎲 Ставка: '+amt+' золотых','На кону. Осталось: '+S.gold);
+      notifs.push(t('stavka')+amt+t('zolotyh'));
+      logEvent('loss',t('stavka_2')+amt+t('zolotyh'),t('na_konu_ostalos')+S.gold);
     } else if(st.kind==='item'){
       const idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(st.name));
       if(idx>=0) S.inventory.splice(idx,1);
       S.bet_stake={kind:'item',name:st.name};
-      notifs.push('ставка: '+invDisplay(st.name));
-      logEvent('loss','🎲 Ставка: '+invDisplay(st.name),'На кону.');
+      notifs.push(t('stavka')+invDisplay(st.name));
+      logEvent('loss',t('stavka_2')+invDisplay(st.name),t('na_konu'));
     }
   }
   // 2) Payout + stake resolution
@@ -1667,23 +1668,23 @@ function applyBetting(sec){
     const stake=S.bet_stake;
     if(bp.stake!==undefined){
       if(bp.stake==='keep'){
-        if(stake&&stake.kind==='gold'){ S.gold+=stake.amount; notifs.push('ставка возвращена: +'+stake.amount+' зол.'); logEvent('gain','🎲 Ставка возвращена','+'+stake.amount+' золотых'); }
-        else if(stake&&stake.kind==='item'){ if(getBagUsed()+getItemSize(stake.name)<=getBagSize()){ S.inventory.push(stake.name); } notifs.push('ставка возвращена: '+invDisplay(stake.name)); logEvent('gain','🎲 Ставка возвращена',invDisplay(stake.name)); }
+        if(stake&&stake.kind==='gold'){ S.gold+=stake.amount; notifs.push(t('stavka_vozvraschena')+stake.amount+t('zol')); logEvent('gain',t('stavka_vozvraschena_2'),'+'+stake.amount+t('zolotyh')); }
+        else if(stake&&stake.kind==='item'){ if(getBagUsed()+getItemSize(stake.name)<=getBagSize()){ S.inventory.push(stake.name); } notifs.push(t('stavka_vozvraschena_3')+invDisplay(stake.name)); logEvent('gain',t('stavka_vozvraschena_2'),invDisplay(stake.name)); }
       } else if(bp.stake==='half'){
-        if(stake&&stake.kind==='gold'){ const back=Math.floor(stake.amount/2); S.gold+=back; notifs.push('возврат половины ставки: +'+back+' зол.'); logEvent('gain','🎲 Половина ставки','+'+back+' золотых'); }
+        if(stake&&stake.kind==='gold'){ const back=Math.floor(stake.amount/2); S.gold+=back; notifs.push(t('vozvrat_poloviny_stavki')+back+t('zol')); logEvent('gain',t('polovina_stavki'),'+'+back+t('zolotyh')); }
       } else if(bp.stake&&typeof bp.stake==='object'&&bp.stake.multiply){
-        if(stake&&stake.kind==='gold'){ const win=bp.stake.multiply*stake.amount; S.gold+=win; notifs.push('выигрыш '+bp.stake.multiply+'× ставки: +'+win+' зол.'); logEvent('gain','🎲 Выигрыш '+bp.stake.multiply+'× ставки','+'+win+' золотых'); }
+        if(stake&&stake.kind==='gold'){ const win=bp.stake.multiply*stake.amount; S.gold+=win; notifs.push(t('vyigrysh')+bp.stake.multiply+t('stavki')+win+t('zol')); logEvent('gain',t('vyigrysh_2')+bp.stake.multiply+t('stavki_2'),'+'+win+t('zolotyh')); }
       } else if(bp.stake==='lose'){
-        notifs.push('ставка проиграна'); logEvent('loss','🎲 Ставка проиграна','');
+        notifs.push(t('stavka_proigrana')); logEvent('loss',t('stavka_proigrana_2'),'');
       }
       S.bet_stake=null;
     }
-    if(bp.gold){ S.gold+=bp.gold; notifs.push('+ '+bp.gold+' золотых'); logEvent('gain','+ '+bp.gold+' золотых','Выигрыш. Всего: '+S.gold); }
-    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.some(x=>canonItem(x)===canonItem(it))&&getBagUsed()+getItemSize(it)<=getBagSize()){ S.inventory.push(it); notifs.push('+ '+invDisplay(it)); logEvent('gain','+ '+invDisplay(it),'Выигрыш'); } }); }
-    if(bp.food){ let f2=0; bp.food.forEach(f=>{ for(let k=0;k<(f.count||1);k++){ const obj={id:f.name,kind:'food',stamina:f.stamina}; if(getBagUsed()+getItemSize(obj)<=getBagSize()){ S.inventory.push(obj); f2++; } } }); if(f2>0){ notifs.push('+ еда ×'+f2); logEvent('gain','+ еда ×'+f2,'Выигрыш'); } }
-    if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push('фляга потеряна'); logEvent('loss','🥤 Фляга потеряна','Проиграна в игре'); } }
+    if(bp.gold){ S.gold+=bp.gold; notifs.push('+ '+bp.gold+t('zolotyh')); logEvent('gain','+ '+bp.gold+t('zolotyh'),t('vyigrysh_vsego')+S.gold); }
+    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.some(x=>canonItem(x)===canonItem(it))&&getBagUsed()+getItemSize(it)<=getBagSize()){ S.inventory.push(it); notifs.push('+ '+invDisplay(it)); logEvent('gain','+ '+invDisplay(it),t('vyigrysh_3')); } }); }
+    if(bp.food){ let f2=0; bp.food.forEach(f=>{ for(let k=0;k<(f.count||1);k++){ const obj={id:f.name,kind:'food',stamina:f.stamina}; if(getBagUsed()+getItemSize(obj)<=getBagSize()){ S.inventory.push(obj); f2++; } } }); if(f2>0){ notifs.push(t('eda')+f2); logEvent('gain',t('eda')+f2,t('vyigrysh_3')); } }
+    if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push(t('flyaga_poteryana')); logEvent('loss',t('flyaga_poteryana_2'),t('proigrana_v_igre')); } }
   }
-  if(notifs.length>0){ playSound('item'); showItemNotification(notifs,'🎲 Игра в кости'); updateHUD(); saveGame(); }
+  if(notifs.length>0){ playSound('item'); showItemNotification(notifs,t('igra_v_kosti')); updateHUD(); saveGame(); }
 }
 
 // §1212 stake-any-item picker (group_41). A general inventory-select primitive:
@@ -1698,17 +1699,17 @@ function renderStakePicker(sec){
   const rollTarget=sec.stake_roll_target||910;
   const hint=document.createElement('div');
   hint.style.cssText='font-size:14px;color:var(--gold);margin:4px 0 8px;letter-spacing:.06em;';
-  hint.textContent=items.length>0?'ВЫБЕРИТЕ ВЕЩЬ ДЛЯ СТАВКИ:':'В мешке нет вещей для ставки.';
+  hint.textContent=items.length>0?t('vyberite_vesch_dlya_stavki'):t('v_meshke_net_veschey_dlya_stavki');
   list.appendChild(hint);
   items.forEach(item=>{
     const b=document.createElement('button'); b.className='choice-btn';
     b.style.borderColor='var(--gold)';b.style.color='var(--gold)';b.style.background='rgba(212,175,55,.10)';
-    b.textContent='🎲 Поставить: '+invDisplay(item);
+    b.textContent=t('postavit')+invDisplay(item);
     b.onclick=()=>{
       S.bet_stake={kind:'item',name:item};
       const idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(item));
       if(idx>=0) S.inventory.splice(idx,1);
-      logEvent('loss','🎲 Ставка: '+invDisplay(item),'На кону.');
+      logEvent('loss',t('stavka_2')+invDisplay(item),t('na_konu'));
       updateHUD();saveGame();
       goTo(rollTarget);
     };
@@ -1732,7 +1733,7 @@ function renderChoices(sec){
     const btn=document.createElement('button');btn.className='choice-btn';
     btn.style.borderColor='var(--red)';btn.style.color='var(--red2)';
     btn.style.background='rgba(180,30,30,.12)';
-    btn.innerHTML='⚔ Вступить в бой';
+    btn.innerHTML=t('vstupit_v_boy');
     btn.onclick=()=>startCombat(sec.enemies,sec);list.appendChild(btn);
     // Show pre-combat choices but NOT post-combat, luck-result, or combat conditions
     sec.choices.forEach((ch,idx)=>{
@@ -1757,7 +1758,7 @@ function renderChoices(sec){
     const btn=document.createElement('button');btn.className='choice-btn';
     btn.style.borderColor='var(--green)';btn.style.color='var(--green2)';
     btn.style.background='rgba(40,180,100,.12)';
-    btn.innerHTML='🎲 Проверить удачу';
+    btn.innerHTML=t('proverit_udachu');
     btn.onclick=()=>startLuckCheck(sec);list.appendChild(btn);
     // Show only true pre-luck alternatives; keep some choices hidden until unlucky combat starts.
     sec.choices.forEach((ch,idx)=>{
@@ -1816,7 +1817,7 @@ let combatState=null;
 
 function startCombat(enemies,sec){
   clearCombatExtraButtons();
-  logEvent('combat','⚔ Бой начался','Враги: '+enemies.map(e=>e.name).join(', '));
+  logEvent('combat',t('boy_nachalsya'),t('vragi')+enemies.map(e=>e.name).join(', '));
   const pMod=sec.player_attack_mod||0;
   const script=sec.combat_script||null;
   // R2-3: a pre-cast "buff bridge" may have queued a whole-fight modifier in
@@ -1875,7 +1876,7 @@ function startCombat(enemies,sec){
     document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">✦ Сначала вы сражаетесь только с Первым Орком. Остальные вступят в бой позже, если он продержится три раунда.</div>`;
   }
   document.getElementById('btn-combat-round').style.display='inline-block';
-  document.getElementById('btn-combat-round').textContent='Удар!';
+  document.getElementById('btn-combat-round').textContent=t('udar');
   document.getElementById('btn-combat-round').onclick=combatRound;
   // group_19: per-paragraph allowlist controls which spell buttons appear.
   // If sec.combat_spells_allowed is set, only listed spell IDs get buttons.
@@ -1887,7 +1888,7 @@ function startCombat(enemies,sec){
   if(copyBtn){
     if(allowedSpells.includes('COPY')&&copyRemaining>0){
       copyBtn.style.display='inline-block';
-      copyBtn.textContent='👤 Заклятие Копии ['+copyRemaining+']';
+      copyBtn.textContent=t('zaklyatie_kopii')+copyRemaining+']';
     } else {
       copyBtn.style.display='none';
     }
@@ -1922,7 +1923,7 @@ function startCombat(enemies,sec){
       forceBtn.style.display='none';  // R2-3: Force already pre-cast via a bridge — no re-cast
     } else if(allowedSpells.includes('FORCE')&&forceRemaining>0){
       forceBtn.style.display='inline-block';
-      forceBtn.textContent='💪 Заклятие Силы ['+forceRemaining+']';
+      forceBtn.textContent=t('zaklyatie_sily')+forceRemaining+']';
     } else {
       forceBtn.style.display='none';
     }
@@ -1932,7 +1933,7 @@ function startCombat(enemies,sec){
   if(weakBtn){
     if(allowedSpells.includes('WEAKNESS')&&weakRemaining>0){
       weakBtn.style.display='inline-block';
-      weakBtn.textContent='🫀 Заклятие Слабости ['+weakRemaining+']';
+      weakBtn.textContent=t('zaklyatie_slabosti')+weakRemaining+']';
     } else {
       weakBtn.style.display='none';
     }
@@ -1945,7 +1946,7 @@ function startCombat(enemies,sec){
   if(healSpellBtn){
     if(allowedSpells.includes('HEALING')&&healSpellRemaining>0){
       healSpellBtn.style.display='inline-block';
-      healSpellBtn.textContent='💚 Заклятие Исцеления +8 ['+healSpellRemaining+']';
+      healSpellBtn.textContent=t('zaklyatie_isceleniya_8')+healSpellRemaining+']';
     } else {
       healSpellBtn.style.display='none';
     }
@@ -2067,17 +2068,17 @@ function endCombat(won){
   if(weakBtn)weakBtn.style.display='none';
   if(won){
     playSound('victory');
-    logEvent('combat','✦ Победа в бою','Раундов: '+(combatState?combatState.round:0));
+    logEvent('combat',t('pobeda_v_boyu'),t('raundov')+(combatState?combatState.round:0));
     log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">✦ Победа!</div>`;
     document.getElementById('btn-combat-round').style.display='inline-block';
-    document.getElementById('btn-combat-round').textContent='Продолжить';
+    document.getElementById('btn-combat-round').textContent=t('prodolzhit');
     document.getElementById('btn-combat-round').onclick=()=>{
       document.getElementById('modal-combat').classList.remove('on');renderGame();
     };
   }else{
     playSound('death');log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">† Вы погибли в бою…</div>`;
     document.getElementById('btn-combat-round').style.display='inline-block';
-    document.getElementById('btn-combat-round').textContent='Конец';
+    document.getElementById('btn-combat-round').textContent=t('konec');
     document.getElementById('btn-combat-round').onclick=()=>{
       document.getElementById('modal-combat').classList.remove('on');
       showDeathOverlay();
@@ -2122,7 +2123,7 @@ function useCopyInCombat(){
   const newRemaining=getSpellRemaining('COPY');
   if(copyBtn){
     if(newRemaining>0&&getAliveCombatEnemies(cs).length>0){
-      copyBtn.textContent='👤 Заклятие Копии ['+newRemaining+']';
+      copyBtn.textContent=t('zaklyatie_kopii')+newRemaining+']';
     } else {
       copyBtn.style.display='none';
     }
@@ -2292,7 +2293,7 @@ function formatLuckPanel(roll1,roll2,roll,needed,lucky,extraHtml){
     </div>
     <div class="luck-total">сумма броска: ${roll}</div>
     <div class="luck-target-note">Нужно было ≤ ${needed} · Удача после броска: ${S.luck}</div>
-    <div class="${lucky?'luck-success':'luck-fail'}" style="font-size:30px">${lucky?'Удача с вами! ✦':'Удача вас покинула… †'}</div>
+    <div class="${lucky?'luck-success':'luck-fail'}" style="font-size:30px">${lucky?t('udacha_s_vami'):t('udacha_vas_pokinula')}</div>
     ${extraHtml||''}
   </div>`;
 }
@@ -2315,10 +2316,10 @@ function doLuckCheck(sec){
   const needed=S.luck+1;
   if(lucky){
     res.innerHTML=formatLuckPanel(roll1,roll2,roll,needed,true);
-    luckResult[S.section]='lucky';logEvent('luck','🎲 Проверка Удачи: '+roll+' ≤ '+needed,'Удачно! Удача теперь: '+S.luck);
+    luckResult[S.section]='lucky';logEvent('luck',t('proverka_udachi')+roll+' ≤ '+needed,t('udachno_udacha_teper')+S.luck);
   }else{
     res.innerHTML=formatLuckPanel(roll1,roll2,roll,needed,false);
-    luckResult[S.section]='unlucky';logEvent('luck','🎲 Проверка Удачи: '+roll+' > '+needed,'Неудача. Удача теперь: '+S.luck);
+    luckResult[S.section]='unlucky';logEvent('luck',t('proverka_udachi')+roll+' > '+needed,t('neudacha_udacha_teper')+S.luck);
   }
   document.getElementById('btn-luck-roll').style.display='none';
   luckDone[S.section]=true;
@@ -2344,14 +2345,14 @@ function doLuckCheck(sec){
       if(lr==='unlucky' && hasLucky && !hasUnlucky){
         const btn=document.createElement('button');btn.className='btn btn-s';
         btn.style.cssText='margin:8px;font-size:18px;padding:12px 24px;';
-        btn.textContent='Конец приключения';
+        btn.textContent=t('konec_priklyucheniya');
         btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');showDeathOverlay();};
         ch.appendChild(btn);
       } else {
         // No tagged luck choices — close modal and show in main view
         const btn=document.createElement('button');btn.className='btn btn-s';
         btn.style.cssText='margin:8px;font-size:18px;padding:12px 24px;';
-        btn.textContent='Продолжить';
+        btn.textContent=t('prodolzhit');
         btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');renderGame();};
         ch.appendChild(btn);
       }
@@ -2359,7 +2360,7 @@ function doLuckCheck(sec){
   } else {
     const btn=document.createElement('button');btn.className='btn btn-s';
     btn.style.cssText='margin:8px;font-size:18px;padding:12px 24px;';
-    btn.textContent='Продолжить';btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');renderGame();};
+    btn.textContent=t('prodolzhit');btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');renderGame();};
     ch.appendChild(btn);
   }
 }
@@ -2405,7 +2406,7 @@ window.onload=()=>{
   if(h&&parseInt(h)>0&&GD[h]){
     const sv=loadGame();
     if(sv){S=sv;S.section=parseInt(h);showScr('game');renderGame();}
-    else{S=initState('Тестер',12,24,12,[{id:'FIRE',remaining:2},{id:'HEALING',remaining:2},{id:'FORCE',remaining:2},{id:'WEAKNESS',remaining:2},{id:'COPY',remaining:1},{id:'SWIMMING',remaining:1}]);S.section=parseInt(h);showScr('game');renderGame();}
+    else{S=initState(t('tester'),12,24,12,[{id:'FIRE',remaining:2},{id:'HEALING',remaining:2},{id:'FORCE',remaining:2},{id:'WEAKNESS',remaining:2},{id:'COPY',remaining:1},{id:'SWIMMING',remaining:1}]);S.section=parseInt(h);showScr('game');renderGame();}
   }
 };
 
