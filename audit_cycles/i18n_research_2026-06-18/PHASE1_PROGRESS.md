@@ -396,3 +396,43 @@ in the bundle via locale, `SPELLS`/`COMBAT_ALLIES` consts slimmed).
 6e map strings; then item 7 the `remake_data.js`→`game_structure.js` rename.
 
 **Commits:** source (locale+engine+log), then dist.
+
+
+---
+
+## Increment 6c-1 — extract engine UI string literals into locale.ru.js (text extraction, part c-1) · 2026-06-18
+**Files:** `src/game_logic.js`, `src/locale.ru.js`. Scratch tool: `acorn` (in `_audit_tmp`, never in the repo).
+
+**What:** moved the **208 Cyrillic UI string literals** (144 distinct) that were inline in the engine into
+`LOCALE_RU.ui`, accessed via a new resolver `t('key')`.
+- **Parser:** the earlier regex tokenizer mis-parsed around JS **regex literals** (a `"`/`'` inside
+  `/.../ ` corrupts string-boundary detection — it reported 169 plain + garbage). Switched to the **acorn**
+  AST parser for accurate string-`Literal` ranges. Each whole literal's source range is spliced → `t('key')`.
+- **Keys:** transliteration-slug of the Russian (HTML stripped for *key derivation* but kept in the value);
+  identical strings share one key (e.g. `' золотых'` ×17 → `t('zolotyh')`); slug collisions between distinct
+  strings get `_2`/`_3` (e.g. `'+ еда ×'`→`eda`, `' (еда: +'`→`eda_2`).
+- **Resolver:** `t(k)` returns `LOCALE_RU.ui[k]`, or the key itself on a miss (visible, not blank).
+- **Excluded (correctly left inline):** `SLUG_TO_RU` values + `RU_TO_SLUG` keys (item locale, generated
+  from items.json in phase 5); `ALPHABET_RU` and the `'Е'` ё→е target (riddle letter-ordinal **logic**,
+  not display); all object **property keys**. Regex Cyrillic (`/[^А-ЯЁ]/g`, `/Ё/g`) is not a string literal
+  so acorn never reported it.
+
+**Why behavior-identical:** the apply script asserts `ui[key] === literal value` for every occurrence, and
+reconstructs the original source byte-for-byte from the edit ranges + raw literals before writing (proving
+only the targeted literals changed) — aborting untouched on any mismatch. `t(key)` returns the exact
+original string at each site.
+
+**Verification:** `node --check` engine + locale. **6c-1 harness 8/8** — `LOCALE_RU.ui` has all 144 keys
+with exact values; `t(key)` reproduces every value; **re-parsing the new engine with acorn confirms the
+only Cyrillic string literals remaining are the intended exclusions** (item maps + the two logic constants),
+i.e. nothing was missed. 6a 10/10, 6b 16/16, Group B 21/21, 5f 29/29 (5f harness updated: provide
+`LOCALE_RU`+`t()` to the eval'd `invDisplay`; the food display suffix `' (еда: +'` is now `t('eda_2')` in
+locale, so the old "suffix is an inline literal" check became "suffix in locale + invDisplay uses t()").
+Structural baseline 1205 reachable / 16 unreachable (remake_data.js untouched). dist verified (`t()`
+resolver + `LOCALE_RU.ui` in bundle, UI strings resolve via `t()`, `ALPHABET_RU` + item names stay inline).
+
+**Remaining text extraction:** 6c-2 (79 template-literal quasis → `${t('key')}`, tag-split for clean
+values), 6d (enemy names + `riddle.fail_target_label`), 6e (map_module.js strings); then item 7 the
+`remake_data.js`→`game_structure.js` rename.
+
+**Commits:** source (engine+locale+log), then dist.
