@@ -421,12 +421,13 @@ function showDeathOverlay(opts){
 // all downstream render code reads sec.text / ch.label unchanged.
 function pText(n){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; return (e&&typeof e.t==='string')?e.t:''; }
 function label(n,i){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
-function locSec(n){ const s=GD[String(n)]; if(!s) return s; const out=Object.assign({},s,{text:pText(n)}); if(Array.isArray(s.choices)) out.choices=s.choices.map((c,i)=>Object.assign({},c,{label:label(n,i)})); return out; }
+function locSec(n){ const s=GD[String(n)]; if(!s) return s; const out=Object.assign({},s,{text:pText(n)}); if(Array.isArray(s.choices)) out.choices=s.choices.map((c,i)=>Object.assign({},c,{label:label(n,i)})); if(s.riddle){ const Lp=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; if(Lp&&Lp.rfl!==undefined) out.riddle=Object.assign({},s.riddle,{fail_target_label:Lp.rfl}); } return out; }
 
 // ── Locale resolvers (6b): spell + ally display text live in LOCALE_RU.spells / .allies.
 function spellText(id){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.spells)?LOCALE_RU.spells[id]:null; return e||{name:'',full:''}; }
 function allyText(key){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.allies)?LOCALE_RU.allies[key]:null; return e||{name:'',verb:''}; }
 function t(k){ return (typeof LOCALE_RU!=='undefined'&&LOCALE_RU.ui&&LOCALE_RU.ui[k]!==undefined)?LOCALE_RU.ui[k]:k; }
+function enemyName(k){ return (typeof LOCALE_RU!=='undefined'&&LOCALE_RU.enemies&&LOCALE_RU.enemies[k]!==undefined)?LOCALE_RU.enemies[k]:k; }
 
 // ── Game Rendering ──
 function renderGame(){
@@ -1817,7 +1818,7 @@ let combatState=null;
 
 function startCombat(enemies,sec){
   clearCombatExtraButtons();
-  logEvent('combat',t('boy_nachalsya'),t('vragi')+enemies.map(e=>e.name).join(', '));
+  logEvent('combat',t('boy_nachalsya'),t('vragi')+enemies.map(e=>enemyName(e.name)).join(', '));
   const pMod=sec.player_attack_mod||0;
   const script=sec.combat_script||null;
   // R2-3: a pre-cast "buff bridge" may have queued a whole-fight modifier in
@@ -1830,7 +1831,7 @@ function startCombat(enemies,sec){
   if(S)S.pending_combat_buff=null;
   const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
   combatState={
-    enemies:enemies.map((e,idx)=>({...e,hp:e.stamina,dmg:e.damage||2,active:!(script==='sec1175_canon_orcs' && idx>0),fled:false})),
+    enemies:enemies.map((e,idx)=>({...e,name:enemyName(e.name),hp:e.stamina,dmg:e.damage||2,active:!(script==='sec1175_canon_orcs' && idx>0),fled:false})),
     round:0,
     wounds:0,
     sec:sec,
