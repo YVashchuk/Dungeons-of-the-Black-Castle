@@ -513,3 +513,39 @@ present, combat resolves via `enemyName`, GD uses slugs with no Cyrillic, 6 `rfl
 quasi values that carry tag-syntax fragments.
 
 **Commits:** source (remake_data+locale+engine+log), then dist.
+
+
+---
+
+## Increment 6e-1 — map data titles into locale.ru.js (text extraction, part e-1) · 2026-06-18
+**Files:** `src/map_module.js`, `src/locale.ru.js`.
+
+**What:** externalized the map's display titles. `BC_MAP_DEF` (the map metadata const) holds **43 distinct
+layer/node/encounter `.title` strings** (e.g. "Внешний мир", "Покои Принцессы"). Moved them to
+`LOCALE_RU.map` as `{slug: "RU"}`; in `map_module.js` each `.title` now holds the slug (targeted
+`"title": "<RU>"` → `"title": "<slug>"` replacement — titles are all unique, so no JSON reformat needed:
+`BC_MAP_DEF` was Python-`json.dumps`-formatted with `": "`/`", "` separators that a Node round-trip
+wouldn't reproduce). A **resolve-at-load IIFE** (inserted right before `BC_MAP_STATE_TEMPLATE`) runs when
+`map_module.js` loads — `locale.ru.js` precedes it in build order, so `LOCALE_RU` is available — and sets
+each `.title = LOCALE_RU.map[slug]` while preserving the slug in `.titleKey` (for future language switching
+/ re-resolution). Titles are **display-only** (read at the status pill, SVG label, layer dropdown, meta and
+note panels; never compared in logic), so resolving them in place is safe and every display site is
+unchanged.
+
+**Dev notes left as-is:** `BC_MAP_DEF.meta.notes` (3 strings) and `BC_MAP_STATE_TEMPLATE.notes` (1) are
+developer metadata, never rendered — left in the data (not translation content). Noted for optional later
+cleanup.
+
+**Why behavior-identical:** the resolve loop restores the exact original RU title at load; display reads
+`.title` unchanged. Per-title replacement asserts each `"title": "<RU>"` occurs exactly once.
+
+**Verification:** `node --check` map + locale. **6e-1 harness 10/10** — `LOCALE_RU.map` complete; all source
+titles are Cyrillic-free slugs present in `LOCALE_RU.map`; **executing the resolve loop restores the exact
+RU titles and sets `.titleKey` to the slug** for every layer/node/encounter; dev notes untouched. 6a 10/10,
+6b 16/16, 6c-1 8/8, 6c-2 5/5, 6d 11/11, Group B 21/21, 5f 29/29. Structural 1205 (remake_data.js untouched).
+dist verified (`LOCALE_RU.map` + resolve loop present, `BC_MAP_DEF` uses slugs, no Cyrillic titles in data).
+
+**Remaining text extraction:** 6e-2 (map UI render strings — 9 quasis + `'Герой'`/save-error literals → `t()`,
+reusing 6c-1 keys where identical); then item 7 the `remake_data.js`→`game_structure.js` rename.
+
+**Commits:** source (map+locale+log), then dist.
