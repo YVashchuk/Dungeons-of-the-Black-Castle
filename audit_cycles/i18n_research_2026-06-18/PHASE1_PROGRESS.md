@@ -475,3 +475,41 @@ interpolations in bundle, combat labels via `t()`, all 68 new key/value pairs se
 (map_module.js strings); then item 7 the `remake_data.js`→`game_structure.js` rename.
 
 **Commits:** source (engine+locale+log), then dist.
+
+
+---
+
+## Increment 6d — enemy names + riddle.fail_target_label into locale.ru.js (text extraction, part d) · 2026-06-18
+**Files:** `src/remake_data.js`, `src/locale.ru.js`, `src/game_logic.js`.
+
+**What:** moved the last Russian text out of the structure file.
+- **Enemy names:** `enemies[].name` (118 occurrences, **65 distinct**, e.g. `ГОБЛИН` ×18) → `LOCALE_RU.enemies`
+  as `{slug: "RU NAME"}` (translit-slug keys, same scheme as 6c). In `remake_data.js`, `enemies[].name` now
+  holds the slug. New resolver `enemyName(slug)`. Names are resolved **at combat-init** (`startCombat`): the
+  raw "Враги: …" log line (`enemies.map(e=>enemyName(e.name))`) and the `combatState` build
+  (`{...e, name:enemyName(e.name), …}`), so `combatState.enemies[].name` carries the resolved RU string and
+  every downstream display site (enemy card, combat-log lines, copy/ally `target.name`) is unchanged. This
+  mirrors 6b, where `cs.ally.name` already stores the resolved RU ally name.
+- **riddle.fail_target_label:** 6 occurrences (¶67, 95, 435, 439, 992, 1113) → `LOCALE_RU.p[n].rfl`; removed
+  from `GD`. `locSec(n)` hydrates it back onto a **copy** of the riddle object
+  (`out.riddle=Object.assign({},s.riddle,{fail_target_label:Lp.rfl})`) only when present, so `renderRiddle`
+  reads `sec.riddle.fail_target_label` unchanged and `GD` is never mutated.
+- **`remake_data.js` is now 100% Cyrillic-free** — a fully language-neutral structure file.
+
+**Why behavior-identical:** the GD JSON round-trip was verified byte-identical to the original *before*
+applying (so the diff is only the slug/label changes, no reformatting); the apply asserts no Cyrillic
+remains in GD and every engine replacement is unique. `enemyName(slug)` returns the exact original name;
+`locSec` hydration reproduces the exact original label.
+
+**Verification:** `node --check` remake_data + locale + engine. **6d harness 11/11** — GD has zero Cyrillic;
+`LOCALE_RU.enemies` has all 65 with exact values and `enemyName` reproduces them; every `GD` enemy slug is
+resolvable; no `fail_target_label` left in GD; `LOCALE_RU.p[n].rfl` present for all 6; `locSec` hydrates the
+label for all 6 **without mutating GD**. 6c-1 8/8, 6c-2 5/5, 6a 10/10, 6b 16/16, Group B 21/21, 5f 29/29.
+Structural baseline 1205 reachable (targets untouched). dist verified (`LOCALE_RU.enemies` + `enemyName`
+present, combat resolves via `enemyName`, GD uses slugs with no Cyrillic, 6 `rfl` entries, labels hydrated).
+
+**Remaining text extraction:** 6e (`map_module.js` strings); then item 7 the
+`remake_data.js`→`game_structure.js` rename. Also pending (deferred, on request): hand-cleaning the few 6c-2
+quasi values that carry tag-syntax fragments.
+
+**Commits:** source (remake_data+locale+engine+log), then dist.
