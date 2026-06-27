@@ -549,3 +549,44 @@ dist verified (`LOCALE_RU.map` + resolve loop present, `BC_MAP_DEF` uses slugs, 
 reusing 6c-1 keys where identical); then item 7 the `remake_data.js`→`game_structure.js` rename.
 
 **Commits:** source (map+locale+log), then dist.
+
+
+---
+
+## Increment 6e-2 — map UI render strings into locale.ru.js (text extraction, part e-2) · 2026-06-18
+**Files:** `src/map_module.js`, `src/locale.ru.js`. Scratch tool: `acorn`.
+
+**What:** moved the map's runtime UI text into `LOCALE_RU.ui` via `t()` (map render runs after game_logic.js
+defines `t()`). 12 edits: **9 template-quasi fragments** (tag-split → `${t('key')}`: "Текущий узел: ",
+" · открыто узлов: ", "Слой: ", "Узел:", "Открыто:", "Слой:", "Текущий узел:", "Открыто узлов:", and the
+fog-of-war legend) → 9 new ui keys; plus **3 literals** (`'Герой'`, `'Несовместимый формат'`,
+`'Ошибка загрузки'`) that **reuse existing 6c-1 keys** by value (no new keys). `ui` now has **221 keys**. The
+`BC_MAP_DEF`/`BC_MAP_STATE_TEMPLATE` ranges are excluded so the dev notes stay untouched.
+
+**Why behavior-identical:** gap-reconstruction from edit ranges is byte-identical to the original;
+`ui[key] === value` asserted per edit; `t()` returns the exact string at each site.
+
+**Verification:** `node --check` map + locale. **6e-2 harness 10/10** — all 9 new keys + the 3 reused-literal
+keys resolve via `t()`; **re-parsing map_module.js confirms ZERO Cyrillic UI string literals (outside the
+data consts) and ZERO Cyrillic quasis remain**; dev notes still present in the data. 6e-1 10/10, 6d 11/11,
+6c-1 8/8, 6c-2 5/5, 6a 10/10, 6b 16/16, Group B 21/21, 5f 29/29. dist verified (`${t('sloy')}` interpolation,
+`t('geroy')` fallback, legend in locale, no bare map UI text).
+
+---
+
+## ✅ Item 6 (text externalization) COMPLETE
+All user-facing Russian text now lives in `src/locale.ru.js`:
+- `p[n].{t,c,rfl}` — paragraph text, choice labels, riddle fail-labels (6a, 6d)
+- `spells`, `allies`, `preface`, `pregame` — engine static text (6b)
+- `ui` (221 keys) — engine + map UI strings via `t()` (6c, 6e-2)
+- `enemies` (65) — combat enemy names via `enemyName()` (6d)
+- `map` (43) — map titles, resolved at load (6e-1)
+
+`remake_data.js` is fully Cyrillic-free. The **only** Cyrillic remaining in the codebase is non-display:
+the 4 `map_module.js` dev-metadata notes and source comments.
+
+**Remaining Phase 1 work:** item 7 — rename `remake_data.js` → `game_structure.js` (+ build.sh wiring; the
+locale header already references the new name). **Deferred (on request):** hand-clean the 6c-2 quasi values
+that carry tag-syntax fragments; optionally relocate the map dev notes.
+
+**Commits:** source (map+locale+log), then dist.

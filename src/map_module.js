@@ -128,10 +128,10 @@ function ensureMapState(){
     const status = document.getElementById('map-topbar-status');
     const layerPill = document.getElementById('map-topbar-layer');
     if(status){
-      status.innerHTML = `Текущий узел: <b>${esc(MAP_NODE_BY_ID[ms.current_node]?.title || '—')}</b> · открыто узлов: <b>${nodes.filter(n=>discovered.has(n.id)).length}/${nodes.length}</b>`;
+      status.innerHTML = `${t('tekuschiy_uzel')}<b>${esc(MAP_NODE_BY_ID[ms.current_node]?.title || '—')}</b>${t('otkryto_uzlov')}<b>${nodes.filter(n=>discovered.has(n.id)).length}/${nodes.length}</b>`;
     }
     if(layerPill){
-      layerPill.textContent = `Слой: ${layer?.title || '—'}`;
+      layerPill.textContent = `${t('sloy')}${layer?.title || '—'}`;
     }
   }
 
@@ -255,10 +255,10 @@ function ensureMapState(){
     updateMapTopbar(layer, nodes, discovered);
     if(mode==='mini'){
       const meta=document.getElementById('map-mini-meta');
-      if(meta) meta.innerHTML = `<div><b>Узел:</b> ${MAP_NODE_BY_ID[ms.current_node]?.title || '—'}</div><div><b>Открыто:</b> ${nodes.filter(n=>discovered.has(n.id)).length} / ${nodes.length}</div>`;
+      if(meta) meta.innerHTML = `<div><b>${t('uzel')}</b> ${MAP_NODE_BY_ID[ms.current_node]?.title || '—'}</div><div><b>${t('otkryto')}</b> ${nodes.filter(n=>discovered.has(n.id)).length} / ${nodes.length}</div>`;
     } else {
       const note=document.getElementById('map-state-note');
-      if(note) note.innerHTML = `<b>Слой:</b> ${layer.title}<br><b>Текущий узел:</b> ${MAP_NODE_BY_ID[ms.current_node]?.title || '—'}<br><b>Открыто узлов:</b> ${nodes.filter(n=>discovered.has(n.id)).length} / ${nodes.length}<br><small style="opacity:.7;margin-top:6px;display:block;line-height:1.4">Золото — пройденные пути. Пунктир — увиденные, но непройденные. Скрещённые сабли — побеждённые враги.</small>`;
+      if(note) note.innerHTML = `<b>${t('sloy_2')}</b> ${layer.title}<br><b>${t('tekuschiy_uzel_2')}</b> ${MAP_NODE_BY_ID[ms.current_node]?.title || '—'}<br><b>${t('otkryto_uzlov_2')}</b> ${nodes.filter(n=>discovered.has(n.id)).length} / ${nodes.length}<br><small style="opacity:.7;margin-top:6px;display:block;line-height:1.4">${t('zoloto_proydennye_puti_punktir_u')}</small>`;
       svg.style.transform = `scale(${gameMapZoom})`;
       svg.style.transformOrigin = 'center center';
     }
@@ -297,7 +297,7 @@ function ensureMapState(){
 
 const oldInitState = window.initState;
   window.initState = function(n,sk,st,lu,sp){
-    const s = oldInitState ? oldInitState(n,sk,st,lu,sp) : {name:n||'Герой',section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,luck:lu,luckMax:lu,gold:15,flask:2,inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),v:5};
+    const s = oldInitState ? oldInitState(n,sk,st,lu,sp) : {name:n||t('geroy'),section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,luck:lu,luckMax:lu,gold:15,flask:2,inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),v:5};
     s.mapState = clone(BC_MAP_STATE_TEMPLATE);
     s.mapState.discovered_nodes = [];
     s.mapState.traversed_edges = [];
@@ -334,7 +334,7 @@ const oldInitState = window.initState;
       f.text().then(t=>{
         try{
           const s=JSON.parse(t);
-          if(![4,5,6,7].includes(s.v)){ alert('Несовместимый формат'); return; }
+          if(![4,5,6,7].includes(s.v)){ alert(t('nesovmestimyy_format')); return; }
           if(s.v===4){ s.v=5; s.luckMax=s.luck; delete s.luckBoxes; }
           if(!s.mapState) s.mapState = clone(BC_MAP_STATE_TEMPLATE);
           if(!Array.isArray(s.mapState.discovered_nodes)) s.mapState.discovered_nodes = [];
@@ -345,7 +345,7 @@ const oldInitState = window.initState;
           s.v = 7;
           if(!s._mapLastSection) s._mapLastSection = null;
           window.S=s; saveGame(); showScr('game'); renderGame(); closeModal('overlay-menu');
-        }catch(err){ alert('Ошибка загрузки'); console.error(err); }
+        }catch(err){ alert(t('oshibka_zagruzki')); console.error(err); }
       });
       if(e && e.target) e.target.value='';
     }
