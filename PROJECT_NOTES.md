@@ -52,7 +52,7 @@ Dungeons-of-the-Black-Castle/
 │       └── web/                ← 46 web-optimised JPEGs (900px, Q82) for runtime
 ├── src/                        ← Game source (JS + HTML shell)
 │   ├── game_shell_top.html     ← HTML frame + CSS (still uses Google Fonts @import)
-│   ├── remake_data.js          ← GD = {1221 paragraph objects}, synced with dist
+│   ├── game_structure.js          ← GD = {1221 paragraph objects}, synced with dist
 │   ├── mj_art.js               ← Midjourney illustrations (base64 + MJ_MAP + MJ_META)
 │   ├── illustrations.js        ← Legacy 1991 b/w scans (fallback when no MJ art)
 │   ├── title_art.js            ← Title-screen lineart
@@ -175,7 +175,7 @@ bash build.sh
 
 The script concatenates these files in order:
 1. `game_shell_top.html` — HTML+CSS frame, opens `<script>`
-2. `remake_data.js` — 1221-paragraph game data
+2. `game_structure.js` — 1221-paragraph game data
 3. `illustrations.js` — legacy 1991 b/w scans (fallback)
 4. `title_art.js` — title-screen lineart
 5. `mj_art.js` — Midjourney illustrations (42 art-ids) + metadata
@@ -253,7 +253,7 @@ Section B = data-only backlog).
 
 ## Known gotchas
 
-1. **`src/remake_data.js` is synced from `dist/*.html`.** If you hand-edit `src/remake_data.js` and then rebuild, the edits will survive. But if someone improves the GD inside `dist/*.html` (e.g. ChatGPT polish pass) without updating `src/`, a subsequent rebuild from `src/` will REGRESS those improvements. Keep `src/` as the primary source of truth; re-sync from dist only when drift is detected (see `docs/GRAPH_AUDIT.md` section IV.3 for the procedure).
+1. **`src/game_structure.js` is synced from `dist/*.html`.** If you hand-edit `src/game_structure.js` and then rebuild, the edits will survive. But if someone improves the GD inside `dist/*.html` (e.g. ChatGPT polish pass) without updating `src/`, a subsequent rebuild from `src/` will REGRESS those improvements. Keep `src/` as the primary source of truth; re-sync from dist only when drift is detected (see `docs/GRAPH_AUDIT.md` section IV.3 for the procedure).
 
 2. **Static-unreachable ≠ unreachable in play.** A naive BFS over `choice.target` under-reports reachability, because several paragraphs are entered only via mechanics it cannot see (riddle `valid_targets`/`modifier` jumps, bird-guide −50, inventory-gated parallel exits). The current full audit (`audit_cycles/reachability_audit_june_2026/REACHABILITY_AUDIT.md`) finds **1205 / 1221 reachable**; the remaining **16** are documented Tier B/C "island" paragraphs (success-halves of conditional gates whose parent edge was dropped in the 1991→remaster renumbering) awaiting per-scene 1991 cross-ref before re-wiring — deliberately NOT auto-wired, to avoid mis-parenting twin outcomes.
 

@@ -590,3 +590,37 @@ locale header already references the new name). **Deferred (on request):** hand-
 that carry tag-syntax fragments; optionally relocate the map dev notes.
 
 **Commits:** source (map+locale+log), then dist.
+
+
+---
+
+## Item 7 — rename `src/remake_data.js` → `src/game_structure.js` · 2026-06-18
+**Files:** `src/remake_data.js`→`src/game_structure.js` (rename), `build.sh`, `src/locale.ru.js`,
+`scripts/find_smoke_paths.py`, `PROJECT_NOTES.md`, `README.md`.
+
+**What:** the final Phase-1 step. After item 6 moved all Russian text to `locale.ru.js`, the data file holds
+only language-independent **structure** (the `GD` object: 1221 paragraph objects with choices, targets,
+conditions, item-grants), so the name now matches its role. Pure rename via `git mv` (zero content change).
+Updated every reference: `build.sh` (REQUIRED_FILES entry, `cat` line, header comment), `locale.ru.js` header
+comment, `scripts/find_smoke_paths.py` (load path L45 + docstrings + the anti-cheat note), `PROJECT_NOTES.md`,
+`README.md`. The `_audit_tmp` harness/structural scripts already pointed at the new name.
+
+**Why safe:** content-identical rename. `node --check` clean on all four `src` `.js` files; full harness suite
+green (6a 10, 6b 16, 6c-1 8, 6c-2 5, 6d 11, 6e-1 10, 6e-2 10, Group B 21, 5f 29); structural baseline holds
+**1205 reachable / 16 unreachable**; `find_smoke_paths.py` runs clean against the renamed file (126 scenarios,
+109 paths). `SMOKE_TEST_PATHS.md` regeneration was reverted — out of scope for the rename.
+
+**Commits:** source (rename + 5 wiring files + log), then dist.
+
+---
+
+## ✅ PHASE 1 COMPLETE
+The build is now language/structure-separated:
+- `src/game_structure.js` — language-independent `GD` (1221 paragraphs, choices, targets, conditions, grants)
+- `src/locale.ru.js` — all Russian display text (paragraphs, labels, riddle fail-labels, spells, allies,
+  preface, pregame, 221 UI keys, 65 enemy names, 43 map titles)
+- `src/game_logic.js` — engine, resolves text via `pText/label/locSec/spellText/allyText/t/enemyName`
+
+A second language can now be added as `src/locale.<lang>.js` with the same shape. Remaining roadmap items
+(language dropdown / live switch, served-PWA + art externalization, engine-feature backlog) are tracked
+separately. Deferred cosmetic cleanup: the 6c-2 quasi values carrying tag-syntax fragments; the 4 map dev notes.
