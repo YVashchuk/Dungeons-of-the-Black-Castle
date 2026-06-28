@@ -13,7 +13,7 @@
 #      mobile-aware on first cold launch (no Google Fonts dependency,
 #      no external dist/fonts/ directory needed).
 #   2. Append the JS modules in fixed order:
-#        remake_data.js → locale.ru.js → illustrations.js → title_art.js → mj_art.js
+#        game_structure.js → locale.ru.js → illustrations.js → title_art.js → mj_art.js
 #        → map_module.js → game_logic.js
 #   3. Close </script>, </body>, </html>.
 #
@@ -30,7 +30,7 @@ echo "🔨 Building Dungeons of the Black Castle..."
 # ── Required source files ──
 REQUIRED_FILES=(
   game_shell_top.html
-  remake_data.js
+  game_structure.js
   locale.ru.js
   illustrations.js
   title_art.js
@@ -61,7 +61,7 @@ fi
 {
   echo ""
   echo "// ═══ DATA: remake 1221 paragraphs ═══"
-  cat "$SRC_DIR/remake_data.js"
+  cat "$SRC_DIR/game_structure.js"
   echo ""
   echo ""
   echo "// ═══ LOCALE: RU text (paragraph prose + choice labels) ═══"

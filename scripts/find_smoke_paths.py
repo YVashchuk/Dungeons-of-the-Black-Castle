@@ -1,6 +1,6 @@
 """Smoke-test path generator.
 
-Reads src/remake_data.js (the GD object), builds a directed graph from
+Reads src/game_structure.js (the GD object), builds a directed graph from
 each paragraph's choices array, and computes BFS-shortest paths from §1
 to a list of target paragraphs that need manual smoke-testing after the
 recent backlog of commits.
@@ -37,17 +37,17 @@ from typing import Optional
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Parsing src/remake_data.js into a Python dict
+# Parsing src/game_structure.js into a Python dict
 # ─────────────────────────────────────────────────────────────────────────────
 
 def load_gd(repo_root: str) -> dict:
-    """Load the GD object from src/remake_data.js."""
-    path = os.path.join(repo_root, 'src', 'remake_data.js')
+    """Load the GD object from src/game_structure.js."""
+    path = os.path.join(repo_root, 'src', 'game_structure.js')
     with open(path, 'r', encoding='utf-8') as f:
         src = f.read()
     m = re.search(r"const\s+GD\s*=\s*(\{.*\})\s*;?\s*$", src, re.DOTALL)
     if not m:
-        raise RuntimeError("Could not extract GD object from src/remake_data.js")
+        raise RuntimeError("Could not extract GD object from src/game_structure.js")
     return json.loads(m.group(1))
 
 
@@ -908,7 +908,7 @@ SCENARIOS = [
     {
         "id": "riddle_anti_cheat_data_inspection",
         "target": 1131,
-        "what_to_check": "Open browser devtools → inspect remake_data.js. sec.1131 should show riddle config with modifier:916 and valid_targets:[992]; sec.992 should show modifier:825 and valid_targets:[932]. NO answer strings ('кладбище', 'смерть') anywhere in remake_data.js or game_logic.js. Confirms anti-cheat-by-design — math sum is one-way; cannot recover answer from data.",
+        "what_to_check": "Open browser devtools → inspect game_structure.js. sec.1131 should show riddle config with modifier:916 and valid_targets:[992]; sec.992 should show modifier:825 and valid_targets:[932]. NO answer strings ('кладбище', 'смерть') anywhere in game_structure.js or game_logic.js. Confirms anti-cheat-by-design — math sum is one-way; cannot recover answer from data.",
         "commit": "group_18_letter_riddle",
     },
     {

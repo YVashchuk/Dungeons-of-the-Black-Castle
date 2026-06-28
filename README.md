@@ -82,7 +82,7 @@ Dungeons-of-the-Black-Castle/
 │
 ├── src/                                # Исходники (собираются в dist)
 │   ├── game_shell_top.html             # HTML+CSS оболочка
-│   ├── remake_data.js                  # GD = 1221 параграф (синк с dist)
+│   ├── game_structure.js                  # GD = 1221 параграф (синк с dist)
 │   ├── mj_art.js                       # 42 Midjourney иллюстрации (base64 + MJ_META)
 │   ├── illustrations.js                # 21 ч/б иллюстрация 1991 (fallback)
 │   ├── title_art.js                    # Lineart титула
