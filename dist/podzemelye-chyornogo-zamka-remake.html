@@ -3827,15 +3827,26 @@ function showDeathOverlay(opts){
 // LOCALE_RU (locale.ru.js), keyed by paragraph number. locSec(n) returns the
 // structural paragraph hydrated with its localized text + per-choice labels, so
 // all downstream render code reads sec.text / ch.label unchanged.
-function pText(n){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; return (e&&typeof e.t==='string')?e.t:''; }
-function label(n,i){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
-function locSec(n){ const s=GD[String(n)]; if(!s) return s; const out=Object.assign({},s,{text:pText(n)}); if(Array.isArray(s.choices)) out.choices=s.choices.map((c,i)=>Object.assign({},c,{label:label(n,i)})); if(s.riddle){ const Lp=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.p)?LOCALE_RU.p[String(n)]:null; if(Lp&&Lp.rfl!==undefined) out.riddle=Object.assign({},s.riddle,{fail_target_label:Lp.rfl}); } return out; }
+// ── i18n locale registry (Phase 2): ACTIVE_LOCALE = current language object; LOCALE_RU = hard fallback. ──
+// To add a language: create src/locale.<code>.js defining LOCALE_<CODE> (same shape as LOCALE_RU), register it
+// in LOCALES below, and add it to build.sh. Any key missing from the active locale falls back to RU, then to the raw key.
+const LOCALES = {};
+(function(){ if(typeof LOCALE_RU!=='undefined') LOCALES.ru=LOCALE_RU; })();
+const DEFAULT_LANG = 'ru';
+let activeLang = DEFAULT_LANG;
+let ACTIVE_LOCALE = LOCALES[DEFAULT_LANG] || (typeof LOCALE_RU!=='undefined'?LOCALE_RU:{});
+function availableLangs(){ return Object.keys(LOCALES); }
+function getLang(){ return activeLang; }
+
+function pText(n){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&typeof e.t==='string')return e.t; e=(F&&F.p)?F.p[String(n)]:null; return (e&&typeof e.t==='string')?e.t:''; }
+function label(n,i){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&e.c&&e.c[i]!=null)return e.c[i]; e=(F&&F.p)?F.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
+function locSec(n){ const s=GD[String(n)]; if(!s) return s; const out=Object.assign({},s,{text:pText(n)}); if(Array.isArray(s.choices)) out.choices=s.choices.map((c,i)=>Object.assign({},c,{label:label(n,i)})); if(s.riddle){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var Lp=(A&&A.p)?A.p[String(n)]:null, rfl=(Lp&&Lp.rfl!==undefined)?Lp.rfl:undefined; if(rfl===undefined){ Lp=(F&&F.p)?F.p[String(n)]:null; if(Lp&&Lp.rfl!==undefined) rfl=Lp.rfl; } if(rfl!==undefined) out.riddle=Object.assign({},s.riddle,{fail_target_label:rfl}); } return out; }
 
 // ── Locale resolvers (6b): spell + ally display text live in LOCALE_RU.spells / .allies.
-function spellText(id){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.spells)?LOCALE_RU.spells[id]:null; return e||{name:'',full:''}; }
-function allyText(key){ const e=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.allies)?LOCALE_RU.allies[key]:null; return e||{name:'',verb:''}; }
-function t(k){ return (typeof LOCALE_RU!=='undefined'&&LOCALE_RU.ui&&LOCALE_RU.ui[k]!==undefined)?LOCALE_RU.ui[k]:k; }
-function enemyName(k){ return (typeof LOCALE_RU!=='undefined'&&LOCALE_RU.enemies&&LOCALE_RU.enemies[k]!==undefined)?LOCALE_RU.enemies[k]:k; }
+function spellText(id){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.spells&&A.spells[id])||(F&&F.spells&&F.spells[id])||null; return e||{name:'',full:''}; }
+function allyText(key){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.allies&&A.allies[key])||(F&&F.allies&&F.allies[key])||null; return e||{name:'',verb:''}; }
+function t(k){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; if(A&&A.ui&&A.ui[k]!==undefined)return A.ui[k]; if(F&&F.ui&&F.ui[k]!==undefined)return F.ui[k]; return k; }
+function enemyName(k){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; if(A&&A.enemies&&A.enemies[k]!==undefined)return A.enemies[k]; if(F&&F.enemies&&F.enemies[k]!==undefined)return F.enemies[k]; return k; }
 
 // ── Game Rendering ──
 function renderGame(){
