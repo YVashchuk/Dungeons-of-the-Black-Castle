@@ -295,6 +295,16 @@ function ensureMapState(){
   window.resetGameMapView = function(){ gameMapZoom = 1; renderGameMap(); };
   window.toggleGameMapFullscreen = function(){ const el=document.getElementById('map-modal-stage'); if(!document.fullscreenElement) el.requestFullscreen?.(); else document.exitFullscreen?.(); };
 
+window.bcRefreshMapLanguage = function(activeLocale){
+    var A=(activeLocale&&activeLocale.map)?activeLocale.map:null;
+    var F=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.map)?LOCALE_RU.map:null;
+    var pick=function(key){ if(A&&A[key]!==undefined)return A[key]; if(F&&F[key]!==undefined)return F[key]; return key; };
+    var R=function(o){ if(o&&o.titleKey!==undefined) o.title=pick(o.titleKey); };
+    Object.values(BC_MAP_DEF.layers||{}).forEach(R);
+    (BC_MAP_DEF.nodes||[]).forEach(R);
+    (BC_MAP_DEF.encounters||[]).forEach(R);
+    try{ var ov=document.getElementById('overlay-map'); if(ov&&ov.classList.contains('on')&&window.S&&window.renderGameMap) window.renderGameMap(); }catch(e){}
+  };
 const oldInitState = window.initState;
   window.initState = function(n,sk,st,lu,sp){
     const s = oldInitState ? oldInitState(n,sk,st,lu,sp) : {name:n||t('geroy'),section:1,skill:sk,skillMax:sk,stamina:st,staminaMax:st,luck:lu,luckMax:lu,gold:15,flask:2,inventory:[],spells:sp,notes:'',visited:[],startTime:Date.now(),v:5};
