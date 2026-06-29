@@ -21,9 +21,9 @@ const CASTLE_SECTIONS=new Set([43,96,131,174,388,455,481,588,618,628,684,722,742
 function isInsideCastle(section){ return CASTLE_SECTIONS.has(section); }
 
 // ── Preface Text ──
-const PREFACE_TEXT=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.preface)||'';
+function prefaceText(){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null; return (A&&A.preface)||((typeof LOCALE_RU!=='undefined'&&LOCALE_RU.preface)||''); }
 
-const PREGAME_TEXT=(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.pregame)||'';
+function pregameText(){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null; return (A&&A.pregame)||((typeof LOCALE_RU!=='undefined'&&LOCALE_RU.pregame)||''); }
 const SAVE_KEY='podzch_v6';
 
 // ── State ──
@@ -208,7 +208,7 @@ function startGame(){
   const sp=[];SPELLS.forEach(s=>{if(spQty[s.id]>0)sp.push({id:s.id,remaining:spQty[s.id]});});
   S=initState(name,cVals.skill,cVals.stamina,cVals.luck,sp);saveGame();
   // Show pregame narrative
-  document.getElementById('pregame-text').innerHTML=PREGAME_TEXT.split('\n\n').map(p=>'<p style="margin-bottom:16px;">'+p+'</p>').join('');
+  renderPregameText();
   showScr('pregame');
 }
 document.getElementById('btn-start').onclick=startGame;
@@ -217,7 +217,7 @@ document.getElementById('btn-enter-forest').onclick=()=>{showScr('game');renderG
 
 // Preface
 document.getElementById('btn-preface')&&(document.getElementById('btn-preface').onclick=()=>{
-  document.getElementById('preface-text').innerHTML=PREFACE_TEXT.split('\n\n').map(p=>'<p style="margin-bottom:16px;">'+p+'</p>').join('');
+  renderPrefaceText();
   showScr('preface');
 });
 
@@ -430,6 +430,40 @@ let ACTIVE_LOCALE = LOCALES[DEFAULT_LANG] || (typeof LOCALE_RU!=='undefined'?LOC
 function availableLangs(){ return Object.keys(LOCALES); }
 function getLang(){ return activeLang; }
 
+// >>> BC_I18N_2B (Phase 2b: language switching, persistence, live re-render) >>>
+const LANG_KEY='blackcastle-lang';
+function getLangName(code){ return (LOCALES[code]&&LOCALES[code].langName)||code; }
+function loadSavedLang(){ try{ var c=localStorage.getItem(LANG_KEY); if(c&&LOCALES[c]) return c; }catch(e){} return DEFAULT_LANG; }
+function renderPregameText(){ var el=document.getElementById('pregame-text'); if(el) el.innerHTML=pregameText().split('\n\n').map(function(p){return '<p style="margin-bottom:16px;">'+p+'</p>';}).join(''); }
+function renderPrefaceText(){ var el=document.getElementById('preface-text'); if(el) el.innerHTML=prefaceText().split('\n\n').map(function(p){return '<p style="margin-bottom:16px;">'+p+'</p>';}).join(''); }
+function repaintAfterLangSwitch(){
+  try{ if(window.bcRefreshMapLanguage) window.bcRefreshMapLanguage(ACTIVE_LOCALE); }catch(e){}
+  try{ renderPregameText(); }catch(e){}
+  try{ renderPrefaceText(); }catch(e){}
+  var sg=document.getElementById('scr-game');
+  var inGame=!!(S && sg && sg.classList && sg.classList.contains('on'));
+  if(inGame){ try{ renderGame({repaint:true}); }catch(e){} }
+  else { try{ updateHUD(); }catch(e){} }
+}
+function applyLang(code, opts){
+  if(!LOCALES[code]) code=DEFAULT_LANG;
+  activeLang=code;
+  ACTIVE_LOCALE=LOCALES[code]||LOCALES[DEFAULT_LANG]||(typeof LOCALE_RU!=='undefined'?LOCALE_RU:{});
+  if(opts&&opts.silent){ try{ if(window.bcRefreshMapLanguage) window.bcRefreshMapLanguage(ACTIVE_LOCALE); }catch(e){} }
+  else { repaintAfterLangSwitch(); }
+}
+function setLanguage(code){
+  if(!LOCALES[code]) return false;
+  applyLang(code,{});
+  try{ localStorage.setItem(LANG_KEY,code); }catch(e){}
+  return true;
+}
+window.setLanguage=setLanguage;
+window.availableLangs=availableLangs;
+window.getLang=getLang;
+window.getLangName=getLangName;
+// <<< BC_I18N_2B <<<
+
 function pText(n){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&typeof e.t==='string')return e.t; e=(F&&F.p)?F.p[String(n)]:null; return (e&&typeof e.t==='string')?e.t:''; }
 function label(n,i){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&e.c&&e.c[i]!=null)return e.c[i]; e=(F&&F.p)?F.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
 function locSec(n){ const s=GD[String(n)]; if(!s) return s; const out=Object.assign({},s,{text:pText(n)}); if(Array.isArray(s.choices)) out.choices=s.choices.map((c,i)=>Object.assign({},c,{label:label(n,i)})); if(s.riddle){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var Lp=(A&&A.p)?A.p[String(n)]:null, rfl=(Lp&&Lp.rfl!==undefined)?Lp.rfl:undefined; if(rfl===undefined){ Lp=(F&&F.p)?F.p[String(n)]:null; if(Lp&&Lp.rfl!==undefined) rfl=Lp.rfl; } if(rfl!==undefined) out.riddle=Object.assign({},s.riddle,{fail_target_label:rfl}); } return out; }
@@ -441,7 +475,7 @@ function t(k){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, 
 function enemyName(k){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; if(A&&A.enemies&&A.enemies[k]!==undefined)return A.enemies[k]; if(F&&F.enemies&&F.enemies[k]!==undefined)return F.enemies[k]; return k; }
 
 // ── Game Rendering ──
-function renderGame(){
+function renderGame(opts){
   if(!S)return;updateHUD();
   const sec=locSec(S.section);
   if(!sec){goTo(1);return;}
@@ -564,7 +598,7 @@ function renderGame(){
   // Betting stake-commit + payout (group_41). Runs EVERY visit (not first-visit
   // auto_items) because the gambling loop is re-entrant — each round must deduct
   // the stake and pay out again on revisited commit/outcome paragraphs.
-  applyBetting(sec);
+  if(!(opts&&opts.repaint)) applyBetting(sec);
   // Check death
   if(S.stamina<=0){
     showDeathOverlay();
@@ -2413,6 +2447,7 @@ function setAtmosphericBg(scene){
 
 // ── Init ──
 window.onload=()=>{
+  applyLang(loadSavedLang(),{silent:true});
   initTitle();renderSpellSel();
   const h=location.hash.substring(1);
   if(h&&parseInt(h)>0&&GD[h]){

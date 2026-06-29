@@ -40,3 +40,50 @@ switch-aware + load saved language on startup. Then 2c — minimal language pick
 redesign). Then 2d — `TRANSLATION_GUIDE.md` + README update.
 
 **Commits:** source (game_logic + log), then dist.
+
+
+---
+
+## Increment 2b — setLanguage + persistence + live re-render · 2026-06-18
+**Files:** `src/game_logic.js`, `src/map_module.js`, `src/locale.ru.js`.
+
+**What:** the actual language-switch machinery on top of 2a's `ACTIVE_LOCALE` indirection.
+- `setLanguage(code)` validates the code against `LOCALES`, swaps `ACTIVE_LOCALE`+`activeLang` (via `applyLang`),
+  persists the choice to `localStorage['blackcastle-lang']`, and live re-renders the current view. Exposed on
+  `window` (with `availableLangs`/`getLang`/`getLangName`) for the upcoming picker.
+- `applyLang(code,opts)` is the internal switch: invalid code → `DEFAULT_LANG`; `opts.silent` re-resolves map
+  titles without a repaint (used at startup).
+- `loadSavedLang()` reads the saved code (falls back to `DEFAULT_LANG` if unset/unregistered). Wired into
+  `window.onload` BEFORE the first render so a saved language is active on load.
+- Live re-render (`repaintAfterLangSwitch`): re-resolves map titles, re-injects preface/pregame, re-renders the
+  current paragraph if in-game (else just the HUD).
+- `PREFACE_TEXT`/`PREGAME_TEXT` consts → `prefaceText()`/`pregameText()` functions (active→RU); the two inject
+  sites now call shared `renderPregameText()`/`renderPrefaceText()` helpers (reused by the repaint path).
+- Map titles: `window.bcRefreshMapLanguage(activeLocale)` added INSIDE the map IIFE (where `BC_MAP_DEF` is
+  closure-scoped) — re-resolves every layer/node/encounter `.title` from `.titleKey` (active→RU→key) and
+  re-renders the map if its overlay is open.
+- Endonym: language display name lives in the locale as `LOCALE_RU.langName="Русский"` (each future locale brings
+  its own); `getLangName(code)` reads `LOCALES[code].langName`. Keeps the engine Cyrillic-free.
+
+**Two correctness points:**
+- `renderGame(opts)` — `applyBetting(sec)` (which runs on EVERY visit, committing stakes / paying out) is now
+  guarded by `if(!(opts&&opts.repaint))`, so a language-switch repaint can't double-charge a gambling paragraph.
+  `auto_items` is already first-visit-gated, so it's safe on repaint.
+- Mid-combat enemy-name switching is NOT supported (combatState stores resolved RU names, slug discarded at
+  startCombat). Moot — the picker (start screen + menu) is unreachable behind the combat overlay. Documented as a
+  known limitation for the 2c rework.
+
+**Verification:** `node --check` both files OK. **2b harness 44/44** (switch/validity/persistence, loadSavedLang
+fallback, synthetic-locale switch + per-key RU fallback, endonym from locale, window exposures, repaint dispatch,
++ structural guards). All regressions green after updating two scratch harnesses for the 2b shape (2a: window
+stubs since its slice now spans the 2b block; 6b: reads the new `prefaceText()`/`pregameText()`): 2a 25, 6a 10,
+6b 16, 6c-1 8, 6c-2 5, 6d 11, 6e-1 10, 6e-2 10, Group B 21, 5f 29. Structural 1205. dist verified
+(setLanguage / bcRefreshMapLanguage / renderGame(opts) / betting-guard / onload-load / langName all present; no LANG_NAMES).
+
+**Known follow-up:** check whether the HTML shell (`game_shell_top.html`) has hardcoded Russian (title-screen
+buttons etc.) outside the locale system — if so it won't language-switch (a Phase-1-completeness gap, not a 2b blocker).
+
+**Next:** 2c — minimal visible language picker (start screen + menu), per option #1, plus a registry TODO that it
+must later be reworked more functionally.
+
+**Commits:** source (game_logic + map_module + locale.ru.js + log), then dist.
