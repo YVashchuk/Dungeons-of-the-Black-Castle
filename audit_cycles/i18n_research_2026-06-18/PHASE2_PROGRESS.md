@@ -87,3 +87,42 @@ buttons etc.) outside the locale system — if so it won't language-switch (a Ph
 must later be reworked more functionally.
 
 **Commits:** source (game_logic + map_module + locale.ru.js + log), then dist.
+
+
+---
+
+## Increment 2c — minimal language picker (start screen + menu) · 2026-06-18
+**Files:** `src/game_logic.js`, `src/game_shell_top.html`, `assets/text_corrections.json`.
+
+**What:** a minimal, visible language picker (per option #1), data-driven from the locale registry.
+- `renderLangPicker(containerId)` (game_logic.js): renders a 🌐 marker + one button per `availableLangs()` code,
+  labelled with `getLangName(code)` (the locale's endonym), highlighting the current language; clicking a
+  non-current language calls `setLanguage(code)` then re-renders. `renderAllLangPickers()` refreshes both
+  pickers. Both exposed on `window`.
+- Two containers in the shell: `#lang-pick-title` in `.t-text-col` (after the start buttons) and
+  `#lang-pick-menu` at the top of `.menu-content`.
+- Hooks: rendered at startup (`window.onload`, after `initTitle`) and refreshed on every switch (added to
+  `repaintAfterLangSwitch`). Auto-populates as locales register — only RU shows today.
+- The picker adds **no new hardcoded Russian**: the marker is a globe glyph (escape, not a literal) and the
+  labels are endonyms from the locale, so the 6c-1 no-Cyrillic-in-engine invariant holds.
+
+**Registry (`group_68_2026_06_18_i18n_phase2c_picker_and_shell`):** two OPEN follow-ups recorded —
+1. `picker_functional_rework` — the picker is intentionally minimal; rework it (dropdown, accessibility,
+   placement, styling) during the UI redesign. Auto-populates as locales register, so no data change needed.
+2. `shell_chrome_i18n_gap` — **discovered during 2c:** `src/game_shell_top.html` still hardcodes ~93 Cyrillic
+   runs of UI chrome (title author/subtitle/description, creation-screen labels + stat descriptions,
+   spell-screen text, sidebar labels, combat/luck/inventory/map/menu modal text, input placeholders, death/win
+   screens). Phase 1 item 6 externalized only the JS (game_logic.js + map_module.js), not the HTML shell. These
+   do NOT language-switch and must be extracted into `LOCALE_RU.ui` (with resolvers / data-i18n hooks applied at
+   render) before any non-RU locale is published. **Recommended next i18n increment.**
+
+**Verification:** `node --check` OK; registry re-parses as valid JSON. **2c harness 30/30** (picker renders globe
++ endonym buttons from availableLangs; current highlighted; two-locale render; click switches language +
+re-highlights + persists; missing-container guard; + structural guards on hooks/containers/registry). All
+regressions green (2a 25, 2b 44, 6a 10, 6b 16, 6c-1 8, 6c-2 5, 6d 11, 6e-1 10, 6e-2 10, Group B 21, 5f 29).
+Structural 1205. dist verified (picker fns + window exposure + both shell containers present).
+
+**Next:** 2d — `TRANSLATION_GUIDE.md` + root README update (documents the finished scheme). The shell-chrome
+extraction (`group_68` item 2) is the recommended increment before publishing a 2nd locale; sequencing is Yuriy's call.
+
+**Commits:** source (game_logic + shell + registry + log), then dist.

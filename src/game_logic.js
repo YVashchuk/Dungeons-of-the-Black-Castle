@@ -440,6 +440,7 @@ function repaintAfterLangSwitch(){
   try{ if(window.bcRefreshMapLanguage) window.bcRefreshMapLanguage(ACTIVE_LOCALE); }catch(e){}
   try{ renderPregameText(); }catch(e){}
   try{ renderPrefaceText(); }catch(e){}
+  try{ renderAllLangPickers(); }catch(e){}
   var sg=document.getElementById('scr-game');
   var inGame=!!(S && sg && sg.classList && sg.classList.contains('on'));
   if(inGame){ try{ renderGame({repaint:true}); }catch(e){} }
@@ -463,6 +464,32 @@ window.availableLangs=availableLangs;
 window.getLang=getLang;
 window.getLangName=getLangName;
 // <<< BC_I18N_2B <<<
+
+// >>> BC_I18N_2C (minimal language picker UI; rework functionally in redesign — see registry group_68) >>>
+function renderLangPicker(containerId){
+  var c=document.getElementById(containerId);
+  if(!c) return;
+  var langs=availableLangs(), cur=getLang();
+  c.innerHTML='';
+  var g=document.createElement('span');
+  g.textContent='\ud83c\udf10';
+  g.style.cssText='font-size:14px;opacity:.55;margin-right:4px;align-self:center;';
+  c.appendChild(g);
+  langs.forEach(function(code){
+    var b=document.createElement('button');
+    b.type='button';
+    b.setAttribute('data-lang',code);
+    b.textContent=getLangName(code);
+    var on=(code===cur);
+    b.style.cssText='font-family:var(--font-ui);font-size:12px;letter-spacing:.04em;cursor:pointer;padding:5px 12px;margin:0 3px;border-radius:2px;transition:all .2s;background:'+(on?'rgba(200,150,42,.18)':'transparent')+';border:1px solid '+(on?'var(--gold)':'var(--border2)')+';color:'+(on?'var(--gold2)':'var(--muted)')+';';
+    b.onclick=function(){ if(code!==getLang()){ setLanguage(code); renderAllLangPickers(); } };
+    c.appendChild(b);
+  });
+}
+function renderAllLangPickers(){ renderLangPicker('lang-pick-title'); renderLangPicker('lang-pick-menu'); }
+window.renderLangPicker=renderLangPicker;
+window.renderAllLangPickers=renderAllLangPickers;
+// <<< BC_I18N_2C <<<
 
 function pText(n){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&typeof e.t==='string')return e.t; e=(F&&F.p)?F.p[String(n)]:null; return (e&&typeof e.t==='string')?e.t:''; }
 function label(n,i){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&e.c&&e.c[i]!=null)return e.c[i]; e=(F&&F.p)?F.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
@@ -2448,7 +2475,7 @@ function setAtmosphericBg(scene){
 // ── Init ──
 window.onload=()=>{
   applyLang(loadSavedLang(),{silent:true});
-  initTitle();renderSpellSel();
+  initTitle();renderSpellSel();renderAllLangPickers();
   const h=location.hash.substring(1);
   if(h&&parseInt(h)>0&&GD[h]){
     const sv=loadGame();
