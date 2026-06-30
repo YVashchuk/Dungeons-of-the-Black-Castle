@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-06-17",
+  "last_updated": "2026-06-18",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -190,6 +190,23 @@
   },
   "pending_corrections": {
     "comment": "Pending items grouped by implementation strategy. Each group is intended as one Claude commit. Items verified against assets/fb2_remake.fb2 with FB2 quotes provided where the citation is the canonical authority. Sources: GPT = ChatGPT 5.5 Research Mode (Apr 2026, three iterations); GEM = Gemini 3.1 Pro graph audit (Apr 2026).",
+    "group_68_2026_06_18_i18n_phase2c_picker_and_shell": {
+      "status": "OPEN",
+      "type": "i18n_roadmap",
+      "summary": "Phase 2c shipped a minimal visible language picker (start screen + menu). Two follow-ups remain before non-RU translations land.",
+      "items": [
+        {
+          "id": "picker_functional_rework",
+          "status": "OPEN",
+          "note": "The Phase 2c picker is intentionally minimal: a globe marker plus endonym buttons rendered from availableLangs() by renderLangPicker() in game_logic.js, placed in #lang-pick-title (start screen) and #lang-pick-menu (menu). Rework it more functionally during the UI redesign (proper dropdown, accessible labels, placement, styling). It auto-populates as locales register, so no data change is needed."
+        },
+        {
+          "id": "shell_chrome_i18n_gap",
+          "status": "OPEN",
+          "note": "Phase 1 item 6 externalized only the JS (game_logic.js + map_module.js). The HTML shell src/game_shell_top.html still hardcodes ~93 Cyrillic runs of UI chrome: title author/subtitle/description, character-creation labels and stat descriptions, spell-selection text, sidebar labels (flask/gold/spells/bag/notes/map), combat/luck/inventory/map/menu modal text, input placeholders, and death/win screens. These do NOT language-switch. Extract them into LOCALE_RU.ui (with resolvers or data-i18n hooks applied at render) before any non-RU locale is published. This is the next i18n increment."
+        }
+      ]
+    },
     "group_1_gold_sign_bugs": {
       "comment": "Pure data fix: paragraphs use auto_items.gold (positive add) instead of auto_items.gold_sub (subtraction). All are scenes where the player gives/throws/spends gold per the text, not receives it. Should be safe single commit.",
       "priority": "P1",
