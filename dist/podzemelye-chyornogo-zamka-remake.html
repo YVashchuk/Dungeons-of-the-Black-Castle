@@ -794,17 +794,17 @@ body:has(.end-overlay.on) {
   <div class="t-content">
     <div class="t-rider-col" id="title-rider"></div>
     <div class="t-text-col">
-      <div class="t-author-top">Дмитрий Браславский</div>
+      <div class="t-author-top" data-i18n="ui_title_author">Дмитрий Браславский</div>
       <div id="title-lettering"></div>
-      <div class="t-sub">Книга-игра</div>
+      <div class="t-sub" data-i18n="ui_title_subtitle">Книга-игра</div>
       <span class="t-orn">⚔ ✦ ⚔</span>
-      <div class="t-desc">Отправьтесь в Зачарованный лес, пройдите через ловушки и опасности, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.</div>
+      <div class="t-desc" data-i18n="ui_title_desc">Отправьтесь в Зачарованный лес, пройдите через ловушки и опасности, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.</div>
       <div class="t-btns">
-        <button class="btn btn-p" id="btn-new">Начать игру</button>
-        <button class="btn btn-s" id="btn-load" style="display:none">Продолжить</button>
+        <button class="btn btn-p" id="btn-new" data-i18n="ui_btn_new">Начать игру</button>
+        <button class="btn btn-s" id="btn-load" style="display:none" data-i18n="ui_btn_load">Продолжить</button>
       </div>
       <div class="lang-pick-row" id="lang-pick-title" style="display:flex;justify-content:center;align-items:center;gap:2px;margin-top:14px;flex-wrap:wrap;"></div>
-      <div class="t-author">1991 · Ремейк 2023</div>
+      <div class="t-author" data-i18n="ui_title_remake">1991 · Ремейк 2023</div>
     </div>
   </div>
 </div>
@@ -812,39 +812,39 @@ body:has(.end-overlay.on) {
 <!-- ═══ CHARACTER CREATION ═══ -->
 <div class="scr" id="scr-create">
   <div class="cr-wrap">
-    <div class="cr-title">Листок путешественника</div>
-    <div class="cr-sub">Бросьте кубики, чтобы определить свою судьбу</div>
+    <div class="cr-title" data-i18n="ui_create_title">Листок путешественника</div>
+    <div class="cr-sub" data-i18n="ui_create_sub">Бросьте кубики, чтобы определить свою судьбу</div>
     <div class="cr-name">
-      <label>Имя героя</label>
-      <input type="text" id="hero-name" placeholder="Герой" maxlength="30">
+      <label data-i18n="ui_create_name_label">Имя героя</label>
+      <input type="text" id="hero-name" placeholder="Герой" maxlength="30" data-i18n-ph="ui_ph_hero_name">
     </div>
     <div class="stat-card" id="sc-skill">
       <div class="stat-val" id="v-skill">—</div>
       <div class="stat-info">
-        <h3>Мастерство</h3>
-        <p>Насколько хорошо вы умеете сражаться.<br>Чем оно выше, тем лучше.</p>
-        <div class="stat-formula">1к6 + 6</div>
+        <h3 data-i18n="ui_stat_skill">Мастерство</h3>
+        <p data-i18n-html="ui_stat_skill_desc">Насколько хорошо вы умеете сражаться.<br>Чем оно выше, тем лучше.</p>
+        <div class="stat-formula" data-i18n="ui_stat_skill_formula">1к6 + 6</div>
       </div>
     </div>
     <div class="stat-card" id="sc-stamina">
       <div class="stat-val" id="v-stamina">—</div>
       <div class="stat-info">
-        <h3>Выносливость</h3>
-        <p>Ваша ловкость, воля к жизни, решительность и пригодность к миссии.<br>При нуле — гибель...</p>
-        <div class="stat-formula">2к6 + 12</div>
+        <h3 data-i18n="ui_stat_stamina">Выносливость</h3>
+        <p data-i18n-html="ui_stat_stamina_desc">Ваша ловкость, воля к жизни, решительность и пригодность к миссии.<br>При нуле — гибель...</p>
+        <div class="stat-formula" data-i18n="ui_stat_stamina_formula">2к6 + 12</div>
       </div>
     </div>
     <div class="stat-card" id="sc-luck">
       <div class="stat-val" id="v-luck">—</div>
       <div class="stat-info">
-        <h3>Удача</h3>
-        <p>Насколько вы от природы удачливы?<br>Каждая проверка расходует удачу.</p>
-        <div class="stat-formula">1к6 + 6</div>
+        <h3 data-i18n="ui_stat_luck">Удача</h3>
+        <p data-i18n-html="ui_stat_luck_desc">Насколько вы от природы удачливы?<br>Каждая проверка расходует удачу.</p>
+        <div class="stat-formula" data-i18n="ui_stat_luck_formula">1к6 + 6</div>
       </div>
     </div>
     <div class="cr-btns">
-      <button class="btn btn-g" id="btn-roll-all">🎲 Бросить кубики</button>
-      <button class="btn btn-p" id="btn-to-spells" style="display:none">Выбрать заклятия →</button>
+      <button class="btn btn-g" id="btn-roll-all" data-i18n="ui_btn_roll">🎲 Бросить кубики</button>
+      <button class="btn btn-p" id="btn-to-spells" style="display:none" data-i18n="ui_btn_to_spells">Выбрать заклятия →</button>
     </div>
   </div>
 </div>
@@ -852,8 +852,8 @@ body:has(.end-overlay.on) {
 <!-- ═══ SPELL SELECTION ═══ -->
 <div class="scr" id="scr-spells">
   <div class="sp-wrap" style="max-width:1400px;">
-    <div class="sp-title">Заклятия Майлина</div>
-    <div class="sp-sub" style="font-size:18px;line-height:1.7;max-width:900px;margin:0 auto 20px;">
+    <div class="sp-title" data-i18n="ui_spells_title">Заклятия Майлина</div>
+    <div class="sp-sub" style="font-size:18px;line-height:1.7;max-width:900px;margin:0 auto 20px;" data-i18n-html="ui_spells_intro">
       <p style="margin:0 0 10px;">Придворный астролог Майлин научил вас самым необходимым заклятиям.</p>
       <p style="margin:0 0 10px;">Ваше Мастерство позволяет воспользоваться ими только <b>10 раз</b>.</p>
       <p style="margin:0;">Выберите любые заклятия в любом количестве, но всего должно быть ровно десять.</p>
@@ -862,9 +862,9 @@ body:has(.end-overlay.on) {
     <div class="slots-bar" id="slots-bar"></div>
     <div class="sp-grid" id="spell-grid" style="grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px;"></div>
     <div class="sp-btns" style="margin-top:20px;">
-      <button class="btn btn-s" id="btn-back-cr">← Назад</button>
-      <button class="btn btn-s" id="btn-preface" onclick="showScr('preface')">📜 Предисловие</button>
-      <button class="btn btn-p" id="btn-start">Отправиться в путь ⚔</button>
+      <button class="btn btn-s" id="btn-back-cr" data-i18n="ui_btn_back">← Назад</button>
+      <button class="btn btn-s" id="btn-preface" onclick="showScr('preface')" data-i18n="ui_btn_preface">📜 Предисловие</button>
+      <button class="btn btn-p" id="btn-start" data-i18n="ui_btn_start">Отправиться в путь ⚔</button>
     </div>
   </div>
 </div>
@@ -872,11 +872,11 @@ body:has(.end-overlay.on) {
 <!-- ═══ PREFACE ═══ -->
 <div class="scr" id="scr-preface" style="overflow-y:auto;">
   <div style="max-width:800px;margin:0 auto;padding:40px 60px;">
-    <div class="cr-title" style="margin-bottom:24px;">📜 Предисловие</div>
+    <div class="cr-title" style="margin-bottom:24px;" data-i18n="ui_preface_title">📜 Предисловие</div>
     <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="preface-text"></div>
     <div style="margin-top:24px;text-align:center;">
       <button class="btn btn-s" onclick="showScr('spells')">← К выбору заклятий</button>
-      <button class="btn btn-p" id="btn-start-from-preface">Начать игру ⚔</button>
+      <button class="btn btn-p" id="btn-start-from-preface" data-i18n="ui_btn_start_preface">Начать игру ⚔</button>
     </div>
   </div>
 </div>
@@ -884,10 +884,10 @@ body:has(.end-overlay.on) {
 <!-- ═══ PRE-GAME NARRATIVE ═══ -->
 <div class="scr" id="scr-pregame" style="overflow-y:auto;">
   <div style="max-width:800px;margin:0 auto;padding:40px 60px;">
-    <div class="cr-title" style="margin-bottom:24px;">⚔ В путь!</div>
+    <div class="cr-title" style="margin-bottom:24px;" data-i18n="ui_pregame_title">⚔ В путь!</div>
     <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="pregame-text"></div>
     <div style="margin-top:24px;text-align:center;">
-      <button class="btn btn-p" id="btn-enter-forest">Войти в Зачарованный лес ⚔</button>
+      <button class="btn btn-p" id="btn-enter-forest" data-i18n="ui_btn_enter_forest">Войти в Зачарованный лес ⚔</button>
     </div>
   </div>
 </div>
@@ -902,59 +902,59 @@ body:has(.end-overlay.on) {
     </div>
     <div class="sb-stats">
       <div class="sb-stat">
-        <span class="sb-stat-label">Мастерство</span>
+        <span class="sb-stat-label" data-i18n="ui_lbl_skill">Мастерство</span>
         <span class="sb-stat-val" id="sb-skill">—</span>
       </div>
       <div class="sb-stat-bar"><div class="sb-stat-fill fill-skill" id="bar-skill"></div></div>
       <div class="sb-stat" style="margin-top:10px">
-        <span class="sb-stat-label">Выносливость</span>
+        <span class="sb-stat-label" data-i18n="ui_lbl_stamina">Выносливость</span>
         <span class="sb-stat-val" id="sb-stamina">—</span>
       </div>
       <div class="sb-stat-bar"><div class="sb-stat-fill fill-stamina" id="bar-stamina"></div></div>
       <div class="sb-stat" style="margin-top:10px">
-        <span class="sb-stat-label">Удача</span>
+        <span class="sb-stat-label" data-i18n="ui_lbl_luck">Удача</span>
         <span class="sb-stat-val" id="sb-luck">—</span>
       </div>
       <div class="luck-boxes" id="luck-boxes"></div>
     </div>
     <div class="sb-flask">
-      <div class="sb-stat-label" style="margin-bottom:6px">Фляга</div>
+      <div class="sb-stat-label" style="margin-bottom:6px" data-i18n="ui_lbl_flask">Фляга</div>
       <div class="flask-row">
         <div class="flask-pip" id="fp0"></div>
         <div class="flask-pip" id="fp1"></div>
-        <button class="flask-btn" id="flask-use" onclick="useFlask()">Выпить (+2 вын.)</button>
+        <button class="flask-btn" id="flask-use" onclick="useFlask()" data-i18n="ui_btn_flask">Выпить (+2 вын.)</button>
       </div>
     </div>
     <div class="sb-gold">
-      <span class="sb-gold-label">Золото</span>
+      <span class="sb-gold-label" data-i18n="ui_lbl_gold">Золото</span>
       <span class="sb-gold-val" id="sb-gold">15</span>
     </div>
     <div class="sb-section" id="sb-spells">
-      <div class="sb-section-title">Заклятия</div>
+      <div class="sb-section-title" data-i18n="ui_lbl_spells">Заклятия</div>
       <div id="spell-tags" style="display:grid;grid-template-columns:1fr 1fr;gap:3px;"></div>
       <button class="btn btn-s" id="btn-heal" onclick="useHealing()" style="display:none;width:100%;margin-top:6px;font-size:12px;padding:6px;background:rgba(40,180,100,.1);border-color:#2a8;color:#3c9;">💚 Исцеление (+8 вын.)</button>
     </div>
     <div class="sb-section" id="sb-inv">
-      <div class="sb-section-title">Заплечный мешок <span style="font-size:10px;opacity:.5" id="inv-count">(0/7)</span></div>
+      <div class="sb-section-title"><span data-i18n="ui_lbl_bag">Заплечный мешок</span> <span style="font-size:10px;opacity:.5" id="inv-count">(0/7)</span></div>
       <div id="inv-list"></div>
-      <span class="inv-add" id="inv-add-btn" onclick="toggleAddItem()" style="font-size:10px;opacity:.25;cursor:pointer" title="Добавить предмет вручную">+</span>
+      <span class="inv-add" id="inv-add-btn" onclick="toggleAddItem()" style="font-size:10px;opacity:.25;cursor:pointer" title="Добавить предмет вручную" data-i18n-title="ui_title_add_item">+</span>
       <div id="add-item-area" style="display:none">
         <div class="add-item-wrap">
-          <input class="add-item-input" id="add-item-input" placeholder="Название предмета" maxlength="40">
+          <input class="add-item-input" id="add-item-input" placeholder="Название предмета" maxlength="40" data-i18n-ph="ui_ph_add_item">
           <button class="add-item-ok" onclick="addItem()">OK</button>
         </div>
       </div>
     </div>
     <div class="sb-section sb-notes">
-      <div class="sb-section-title">Записки</div>
-      <textarea id="notes-ta" placeholder="Ваши заметки…" oninput="if(S)S.notes=this.value"></textarea>
+      <div class="sb-section-title" data-i18n="ui_lbl_notes">Записки</div>
+      <textarea id="notes-ta" placeholder="Ваши заметки…" oninput="if(S)S.notes=this.value" data-i18n-ph="ui_ph_notes"></textarea>
     </div>
     <div class="map-section" id="sb-map" style="display:none">
       <div class="map-section-title">
-        <span>🗺 Карта</span>
-        <button class="map-open-btn" onclick="openMapModal()">Открыть</button>
+        <span data-i18n="ui_lbl_map">🗺 Карта</span>
+        <button class="map-open-btn" onclick="openMapModal()" data-i18n="ui_btn_map_open">Открыть</button>
       </div>
-      <div class="map-mini-card" onclick="openMapModal()" title="Открыть карту (клавиша M)">
+      <div class="map-mini-card" onclick="openMapModal()" title="Открыть карту (клавиша M)" data-i18n-title="ui_title_map_open">
         <svg class="map-mini-svg" id="map-mini-svg" viewBox="0 0 1600 1000" xmlns="http://www.w3.org/2000/svg"></svg>
         <div class="map-mini-meta" id="map-mini-meta">
           <div><b>Текущий узел:</b> —</div>
@@ -964,14 +964,14 @@ body:has(.end-overlay.on) {
       </div>
     </div>
     <div style="padding:12px 20px;margin-top:auto;">
-      <button class="btn btn-s" style="width:100%;font-size:11px;padding:8px" onclick="openMenu()">☰ Меню</button>
+      <button class="btn btn-s" style="width:100%;font-size:11px;padding:8px" onclick="openMenu()" data-i18n="ui_btn_menu">☰ Меню</button>
     </div>
   </div>
 
   <!-- Main area -->
   <div class="main">
     <div class="scene-bg" id="scene-bg"></div>
-    <div class="img-loading" id="img-loading">🎨 Рисую сцену…</div>
+    <div class="img-loading" id="img-loading" data-i18n="ui_img_loading">🎨 Рисую сцену…</div>
     <div class="story-area" id="s-area">
       <div class="s-num" id="s-num">§ 1</div>
       <div class="s-text" id="s-text"></div>
@@ -985,7 +985,7 @@ body:has(.end-overlay.on) {
 <!-- COMBAT MODAL -->
 <div class="modal-overlay" id="modal-combat">
   <div class="modal">
-    <h2>⚔ Бой!</h2>
+    <h2 data-i18n="ui_combat_title">⚔ Бой!</h2>
     <div id="combat-enemies"></div>
     <div class="combat-log" id="combat-log"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="combat-buttons">
@@ -993,8 +993,8 @@ body:has(.end-overlay.on) {
       <button class="btn btn-s" id="btn-force-spell" style="display:none;border-color:#7a5;color:#9d6;" onclick="useForceInCombat()">💪 Заклятие Силы</button>
       <button class="btn btn-s" id="btn-weakness-spell" style="display:none;border-color:#a76;color:#d96;" onclick="useWeaknessInCombat()">🫀 Заклятие Слабости</button>
       <button class="btn btn-s" id="btn-copy-spell" style="display:none;border-color:#666;color:#999;" onclick="useCopyInCombat()">👤 Заклятие Копии</button>
-      <button class="btn btn-s" id="btn-summon-ally" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;">🐻 Позвать союзника</button>
-      <button class="btn btn-s" id="btn-summon-ally2" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;">🐻 Позвать союзника</button>
+      <button class="btn btn-s" id="btn-summon-ally" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;" data-i18n="ui_btn_summon_ally">🐻 Позвать союзника</button>
+      <button class="btn btn-s" id="btn-summon-ally2" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;" data-i18n="ui_btn_summon_ally">🐻 Позвать союзника</button>
       <button class="btn btn-s" id="btn-heal-spell" style="display:none;border-color:#2a8;color:#3c9;" onclick="useHealingInCombat()">💚 Заклятие Исцеления</button>
     </div>
   </div>
@@ -1003,9 +1003,9 @@ body:has(.end-overlay.on) {
 <!-- LUCK MODAL -->
 <div class="modal-overlay" id="modal-luck">
   <div class="modal" style="text-align:center">
-    <h2>🎲 Проверка Удачи</h2>
+    <h2 data-i18n="ui_luck_title">🎲 Проверка Удачи</h2>
     <div id="luck-info"></div>
-    <button class="btn btn-g" id="btn-luck-roll" onclick="doLuckCheck()">Бросить кубик</button>
+    <button class="btn btn-g" id="btn-luck-roll" onclick="doLuckCheck()" data-i18n="ui_btn_luck_roll">Бросить кубик</button>
     <div class="luck-result" id="luck-result"></div>
     <div id="luck-choices" style="margin-top:16px"></div>
   </div>
@@ -1013,25 +1013,25 @@ body:has(.end-overlay.on) {
 
 <!-- DEATH -->
 <div class="end-overlay" id="end-death">
-  <div class="end-title death">† Гибель</div>
+  <div class="end-title death" data-i18n="ui_death_title">† Гибель</div>
   <p class="end-text" id="death-text">Ваше путешествие окончено. Зачарованный лес поглотил ещё одного смельчака…</p>
-  <button class="btn btn-p" onclick="location.reload()">Начать заново</button>
+  <button class="btn btn-p" onclick="location.reload()" data-i18n="ui_btn_restart">Начать заново</button>
 </div>
 
 <!-- WIN -->
 <div class="end-overlay" id="end-win">
-  <div class="end-title win">✦ Победа!</div>
-  <p class="end-text">Барлад Дэрт повержен! Принцесса свободна! Слава вам, герой!</p>
-  <button class="btn btn-p" onclick="location.reload()">Играть снова</button>
+  <div class="end-title win" data-i18n="ui_win_title">✦ Победа!</div>
+  <p class="end-text" data-i18n="ui_win_text">Барлад Дэрт повержен! Принцесса свободна! Слава вам, герой!</p>
+  <button class="btn btn-p" onclick="location.reload()" data-i18n="ui_btn_play_again">Играть снова</button>
 </div>
 
 <!-- EVENT LOG -->
-<button class="event-log-btn" id="event-log-btn" onclick="toggleEventLog()" style="display:none">📜 Журнал</button>
+<button class="event-log-btn" id="event-log-btn" onclick="toggleEventLog()" style="display:none" data-i18n="ui_btn_log">📜 Журнал</button>
 <div class="event-log-panel" id="event-log-panel">
   <div class="event-log-header">
-    <h3>📜 Журнал событий</h3>
+    <h3 data-i18n="ui_log_title">📜 Журнал событий</h3>
     <div>
-      <button class="event-log-clear" onclick="clearEventLog()">Очистить</button>
+      <button class="event-log-clear" onclick="clearEventLog()" data-i18n="ui_btn_clear_log">Очистить</button>
       <button class="event-log-close" onclick="toggleEventLog()">✕</button>
     </div>
   </div>
@@ -1041,12 +1041,12 @@ body:has(.end-overlay.on) {
 <!-- INVENTORY MODAL -->
 <div class="modal-overlay" id="modal-inventory">
   <div class="modal" style="max-width:550px;">
-    <h2>🎒 Найдены предметы!</h2>
+    <h2 data-i18n="ui_inv_title">🎒 Найдены предметы!</h2>
     <div id="inv-modal-text" style="font-size:16px;color:var(--muted);margin-bottom:12px;"></div>
     <div id="inv-modal-found" style="margin-bottom:16px;"></div>
     <div id="inv-modal-current" style="margin-bottom:16px;"></div>
     <div style="text-align:center;">
-      <button class="btn btn-p" id="btn-inv-done" onclick="closeInvModal()">Готово</button>
+      <button class="btn btn-p" id="btn-inv-done" onclick="closeInvModal()" data-i18n="ui_btn_done">Готово</button>
     </div>
   </div>
 </div>
@@ -1056,8 +1056,8 @@ body:has(.end-overlay.on) {
   <div class="modal" style="padding:0;max-width:none;width:auto;">
     <div class="map-modal-shell">
       <div class="map-modal-side">
-        <div class="map-title">🗺 Карта приключения</div>
-        <div class="map-sub">Карта строится в реальном времени: открытые узлы видны, пройденные пути подсвечиваются золотом, непроверенные выходы на развилках показываются короткими пунктирными stub-сегментами.</div>
+        <div class="map-title" data-i18n="ui_map_title">🗺 Карта приключения</div>
+        <div class="map-sub" data-i18n="ui_map_sub">Карта строится в реальном времени: открытые узлы видны, пройденные пути подсвечиваются золотом, непроверенные выходы на развилках показываются короткими пунктирными stub-сегментами.</div>
         <div class="map-controls">
           <select id="map-layer-select"></select>
           <button onclick="zoomGameMap(1)">＋</button>
@@ -1066,12 +1066,12 @@ body:has(.end-overlay.on) {
           <button onclick="toggleGameMapFullscreen()">Fullscreen</button>
         </div>
         <div class="map-legend">
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#7f5f36"></span>перекрёсток / узел</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#8d4b32"></span>дом / деревня</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#2f6e8d"></span>вода / берег</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#444"></span>замок / ворота</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#d2aa2a"></span>пройденный путь</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#fff1a6"></span>победа в бою</div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#7f5f36"></span><span data-i18n="ui_leg_node">перекрёсток / узел</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#8d4b32"></span><span data-i18n="ui_leg_house">дом / деревня</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#2f6e8d"></span><span data-i18n="ui_leg_water">вода / берег</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#444"></span><span data-i18n="ui_leg_castle">замок / ворота</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#d2aa2a"></span><span data-i18n="ui_leg_path">пройденный путь</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#fff1a6"></span><span data-i18n="ui_leg_victory">победа в бою</span></div>
         </div>
         <div class="map-note" id="map-state-note">Загрузка карты…</div>
       </div>
@@ -1080,7 +1080,7 @@ body:has(.end-overlay.on) {
           <div class="map-toolbar-left" id="map-topbar-layer">fog of war · fullscreen · progress</div>
           <div class="map-toolbar-right">
             <span id="map-topbar-status" style="margin-right:12px;"></span>
-            <button onclick="closeModal('overlay-map')">Закрыть (M)</button>
+            <button onclick="closeModal('overlay-map')" data-i18n="ui_btn_map_close">Закрыть (M)</button>
           </div>
         </div>
         <div class="map-stage">
@@ -1096,15 +1096,15 @@ body:has(.end-overlay.on) {
 <!-- MENU -->
 <div class="modal-overlay" id="overlay-menu">
   <div class="menu-content">
-    <h2>Меню</h2>
+    <h2 data-i18n="ui_menu_title">Меню</h2>
     <div class="lang-pick-row" id="lang-pick-menu" style="display:flex;justify-content:center;align-items:center;gap:2px;margin-bottom:18px;flex-wrap:wrap;"></div>
-    <button class="btn btn-s menu-btn" onclick="exportSave()">💾 Экспорт сохранения</button>
+    <button class="btn btn-s menu-btn" onclick="exportSave()" data-i18n="ui_menu_export">💾 Экспорт сохранения</button>
     <label class="btn btn-s menu-btn" style="display:block;cursor:pointer">
-      📂 Импорт сохранения
+      <span data-i18n="ui_menu_import">📂 Импорт сохранения</span>
       <input type="file" accept=".json" style="display:none" onchange="importSave(event)">
     </label>
-    <button class="btn btn-d menu-btn" onclick="if(confirm('Начать новую игру?')){localStorage.removeItem(SAVE_KEY);location.reload();}">🗑 Новая игра</button>
-    <button class="btn btn-s menu-btn" onclick="closeModal('overlay-menu')">← Закрыть</button>
+    <button class="btn btn-d menu-btn" onclick="if(confirm(t('ui_confirm_new_game'))){localStorage.removeItem(SAVE_KEY);location.reload();}" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
+    <button class="btn btn-s menu-btn" onclick="closeModal('overlay-menu')" data-i18n="ui_btn_menu_close">← Закрыть</button>
   </div>
 </div>
 
@@ -1124,7 +1124,7 @@ const LOCALE_RU = {
 "allies": {"magic_bell":{"name":"Медведь","verb":"звоните в колокольчик, и из чащи появляется огромный медведь"},"bear_amulet":{"name":"Медведица","verb":"сжимаете амулет, и на зов является медведица"}},
 "preface": "В самое обыкновенное сказочное королевство приходит беда. В тихом лесу, на его южных границах, появляется хитрый и коварный волшебник Барлад Дэрт, в совершенстве овладевший искусством черной магии. Никто не знает, из каких земель он пришел. Вскоре окрестные жители начинают сторониться леса, который темные колдовские силы сделали таинственным и непроходимым, с множеством беспощадных ловушек и мерзких глубоких болот. Лес наводнили Гоблины и Орки — уродливые и жестокие воины Барлада Дэрта. А в самом центре леса, который теперь называют не иначе как Зачарованный лес, волшебник воздвиг Черный замок, и никому еще не удалось достичь его и безнаказанно вернуться обратно.\n\nНо волшебник не успокаивается на этом. Узнав, что во дворце живет прекрасная Принцесса — единственная дочь Короля — он посылает к ее отцу черных послов, чтобы просить ее руки. Гордый Король отказывает им, послы появляются еще дважды.\n\nКаждый раз они спускаются с неба на могучих крылатых конях, и только Король может без страха смотреть им в глаза, столь большая и грозная сила исходит от них. Но Король непреклонен, хотя и понимает: Барлад Дэрт так просто не отказывается от своих намерений. И вот, когда послы в третий раз покидают дворец, Принцесса исчезает вместе с ними. Заклятие волшебника переносит ее в Черный замок, но она бесстрашно отказывается стать женой чародея, и тот не в силах сдержать свою злобу, погружает ее в волшебный сон.\n\nПо всему королевству герольды созывают смельчаков, обещая награду тому, кто освободит Принцессу. Один за другим покидают они столицу по Главному Южному тракту и исчезают в Зачарованном лесу. Но ни один не возвращается назад: Черный замок умеет беречь свои тайны.\n\nХотите попытаться миновать западни Зачарованного леса, сразиться с беспощадными воинами Барлада Дэрта, проникнуть в Черный замок и разрушить колдовские чары?\n\nЕсли да, то собирайтесь в путь — книга поможет вам перенестись в сказочное королевство…",
 "pregame": "Майлин дает еще два совета. Во-первых, сориентироваться на запутанных лесных тропинках и в замке, если вы до него доберетесь, вам поможет карта. Рисуйте ее по мере продвижения. Во-вторых, для многих магических таинств необходимы волшебные предметы. Старайтесь в своем путешествии добыть их как можно больше, при случае они помогут вам, но будьте осторожны: коварство врага не знает границ, возможны любые ловушки.\n\nПосле беседы с астрологом вы вновь предстаете перед Королем. Никто не знает, что вам может понадобиться на пути к успеху, поэтому из дворца вы берете с собой только самое необходимое: меч, флягу, заплечный мешок и 15 золотых.\n\nКороль приказывает проводить вас до начала Зачарованного леса, чтобы в пути вы не испытывали нужды ни в еде, ни в питье. По дороге вы спрашиваете герольда, кто такие Гоблины и Орки, о которых вы много слышали во дворце. Он говорит, что Гоблины — это страшные и отвратительные злые духи ростом примерно с человека, которые верой и правдой служат волшебнику. Их мало кто видел. И совсем уж никто и никогда не видел Орков. Говорят только, что они повыше и посильнее. Но и с теми и с другими лучше не встречаться. В пути вы еще раз обдумываете последний совет Майлина: Барлад Дэрт достаточно могущественный волшебник, чтобы даже малой частицы его мастерства, переданной особо доверенным воинам, хватило не только на то, чтобы противостоять вашим заклятиям, но и наложить на вас свои, не менее быстрые и сильные. Будьте осмотрительны!\n\nНо вот королевским владениям приходит конец. Здесь надо спешиться: лес заколдован и не пустит всадника. Герольд прощается с вами, и вскоре лишь далекий стук копыт напоминает, что вы были не один. Черный, таинственный и неподвижный, Зачарованный лес ждет вас.\n\nЕсли вы готовы к тем неожиданностям, с которыми вам придется встретиться, переверните страницу.",
-"ui": {"geroy":"Герой","nesovmestimyy_format":"Несовместимый формат","oshibka_zagruzki":"Ошибка загрузки","podzemelya_chernogo_zamka":"<div class=\"t-main\">Подземелья<br>Чёрного замка</div>","sudba_opredelena":"✓ Судьба определена","iz":" из ","vybrano":" выбрано","vyberite_rovno_10_zaklyatiy":"Выберите ровно 10 заклятий!","zhurnal_pust":"<div style=\"color:var(--muted);opacity:.5;padding:20px 0;text-align:center;font-size:14px;\">Журнал пуст</div>","ochistit_zhurnal":"Очистить журнал?","meshok":"🎒 Мешок","naydeno":"<div style=\"font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;\">НАЙДЕНО:</div>","v_meshke":"<div style=\"font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;\">В МЕШКЕ (","pusto":"<div style=\"font-size:14px;color:var(--muted);opacity:.5;\">Пусто</div>","v_meshke_2":"✓ В мешке","nuzhno":"Нужно ","mest":" мест","meshok_polon":"Мешок полон","vzyat":"+ Взять","v_meshok":"В мешок","vybrosheno_iz_meshka":"Выброшено из мешка","vashe_puteshestvie_okoncheno_zac":"Ваше путешествие окончено. Зачарованный лес поглотил ещё одного смельчака…","paragraf":"§ Параграф ","illyustraciya":"Иллюстрация","ves_inventar":"− весь инвентарь (","ves_inventar_2":"− весь инвентарь","predmetov_poteryano":"Предметов потеряно: ","zolotyh":" золотых","vsego_0":"Всего: 0","vsego":"Всего: ","eda":"+ еда ×","meshok_polon_ne_vzyato":"мешок полон, не взято: ","v_meshke_3":"в мешке: ","meshok_polon_2":"мешок полон: ","ne_vzyato":" не взято","vynoslivosti":" выносливости","teper":"Теперь: ","masterstva":" мастерства","udachi":" удачи","meshok_pust":"<div class=\"inv-empty\">Мешок пуст</div>","eda_2":" (еда: +","vynoslivost_uzhe_polnaya":"Выносливость уже полная","sedeno":"🍴 Съедено: ","vyn":" вын.","glotok_iz_flyagi":"🥤 Глоток из фляги","2_vynoslivosti_ostalos_glotkov":"+2 выносливости (осталось глотков: ","zaklyatie_isceleniya":"💚 Заклятие Исцеления","8_vynoslivosti":"+8 выносливости","iscelenie_8_vynoslivosti":"💚 Исцеление: +8 выносливости","8_vynoslivosti_v_boyu":"+8 выносливости (в бою)","zaklyatie_isceleniya_8":"💚 Заклятие Исцеления +8 [","meshok_polon_3":"Мешок полон (","mest_2":" мест)","zaklyatie":" Заклятие ","ostalos":"Осталось: ","zaplacheno_za_vybor_ostalos":"Заплачено за выбор. Осталось: ","predmet_izrashodovan":"Предмет израсходован.","zagadka_razgadana":"✓ Загадка разгадана","paragraf_2":"Параграф: ","zagadka_ne_razgadana":"✗ Загадка не разгадана","vash_otvet_im_padezh_ed_ch":"Ваш ответ (им. падеж, ед. ч.)","otvetit":"Ответить","neverno_ostalos_popytok":"Неверно. Осталось попыток: <span id=\"riddle-attempts\">","uzhe_kupleno":"Уже куплено","meshok_uzhe_kuplen":"Мешок уже куплен","flyaga_uzhe_polna":"Фляга уже полна","ne_hvataet_zolota":"Не хватает золота (","pokupka":"Покупка (§","ostalos_2":"). Осталось: ","kupleno":"Куплено (§","zaplechnyy_meshok":"+ заплечный мешок (","zaplechnyy_meshok_2":"+ заплечный мешок","vmestimost_teper":"Вместимость теперь: ","flyaga":"+ фляга (","flyaga_napolnena":"🥤 Фляга наполнена","glotkov":"Глотков: ","kupleno_vzyato_s_soboy":"Куплено, взято с собой (§","pokupka_2":"💰 Покупка","zaklyatie_nedostupno":"Заклятие недоступно","2_vynoslivosti_begstvo_iz_boya":"− 2 выносливости (бегство из боя)","v_boyu":"в бою","ubezhal":"убежал","poverzhen":"повержен","ozhidaet":"ожидает","udar":"Удар!","zaklyatie_kopii":"👤 Заклятие Копии [","proverka_udachi":"🎲 Проверка Удачи: ","udachno_udacha_teper":"Удачно! Удача теперь: ","neudacha_udacha_teper":"Неудача. Удача теперь: ","prodolzhit":"Продолжить","proverit_udachu":"🎲 Проверить удачу","vy_mgnovenno_pererubaete_nit_i_s":"Вы мгновенно перерубаете нить и становитесь на землю. В бою штрафа к СИЛЕ УДАРА не будет.","nit_ne_poddalas_srazu_srazhatsya":"Нить не поддалась сразу. Сражаться придётся, вися в воздухе, со штрафом −2 к СИЛЕ УДАРА.","vstupit_v_boy":"⚔ Вступить в бой","dratsya_stoya_na_zemle":"⚔ Драться стоя на земле","proverit_udachu_i_popytatsya_ose":"🎲 Проверить удачу и попытаться оседлать коня","vam_udaetsya_osedlat_konya_v_boy":"Вам удаётся оседлать коня. В бою штрафа к СИЛЕ УДАРА не будет.","osedlat_konya_ne_udalos_srazhats":"Оседлать коня не удалось. Сражаться придётся стоя на земле со штрафом −1 к СИЛЕ УДАРА.","dratsya_zaklyatie_sily_1_k_sile":"⚔ Драться (заклятие Силы: +1 к СИЛЕ УДАРА)","vy_pererubaete_lestnicu_i_sprygi":"Вы перерубаете лестницу и спрыгиваете на землю — теперь будете драться на равных.","pauk_zatyagivaet_vas_na_derevo_v":"Паук затягивает вас на дерево. В бою вычитайте 1 из СИЛЫ УДАРА.","dratsya_s_paukom_na_dereve":"⚔ Драться с пауком на дереве","tretiy_ork_predpochitaet_spastis":"Третий Орк предпочитает спастись бегством. Вам остаётся только один противник.","tretiy_ork_ne_drognul_boy_prodol":"Третий Орк не дрогнул. Бой продолжается со всеми оставшимися врагами.","prodolzhit_boy_bez_proverki":"⚔ Продолжить бой без проверки","brosit_kubik":"🎲 Бросить кубик","kubik_vypalo":"🎲 Кубик: выпало ","paragraf_3":"Параграф ","stavka":"ставка: ","stavka_2":"🎲 Ставка: ","na_konu_ostalos":"На кону. Осталось: ","na_konu":"На кону.","stavka_vozvraschena":"ставка возвращена: +","zol":" зол.","stavka_vozvraschena_2":"🎲 Ставка возвращена","stavka_vozvraschena_3":"ставка возвращена: ","vozvrat_poloviny_stavki":"возврат половины ставки: +","polovina_stavki":"🎲 Половина ставки","vyigrysh":"выигрыш ","stavki":"× ставки: +","vyigrysh_2":"🎲 Выигрыш ","stavki_2":"× ставки","stavka_proigrana":"ставка проиграна","stavka_proigrana_2":"🎲 Ставка проиграна","vyigrysh_vsego":"Выигрыш. Всего: ","vyigrysh_3":"Выигрыш","flyaga_poteryana":"фляга потеряна","flyaga_poteryana_2":"🥤 Фляга потеряна","proigrana_v_igre":"Проиграна в игре","igra_v_kosti":"🎲 Игра в кости","vyberite_vesch_dlya_stavki":"ВЫБЕРИТЕ ВЕЩЬ ДЛЯ СТАВКИ:","v_meshke_net_veschey_dlya_stavki":"В мешке нет вещей для ставки.","postavit":"🎲 Поставить: ","boy_nachalsya":"⚔ Бой начался","vragi":"Враги: ","zaklyatie_sily":"💪 Заклятие Силы [","zaklyatie_slabosti":"🫀 Заклятие Слабости [","pobeda_v_boyu":"✦ Победа в бою","raundov":"Раундов: ","konec":"Конец","udacha_s_vami":"Удача с вами! ✦","udacha_vas_pokinula":"Удача вас покинула… †","konec_priklyucheniya":"Конец приключения","tester":"Тестер","alt_podzemelya_chernogo_zamka":"\" alt=\"Подземелья Чёрного замка\">","naydeno_2":"Найдено ","predmetov_zanimayut":" предметов (занимают ","mest_no_v_meshke_tolko":" мест), но в мешке только ","svobodnyh_iz":" свободных из ","vyberite_chto_vzyat_ili_vybroste":"Выберите что взять, или выбросьте ненужное.","predmetov_svobodnyh_mest":" предметов. Свободных мест: ","vzyat_2":")\">+ Взять","title_vybrosit":")\" title=\"Выбросить\">🗑","onload_this_classlist_add_loaded":"\" onload=\"this.classList.add('loaded')\" alt=\"Иллюстрация\"/>","nachalnaya":"Начальная: ","iscelenie_8_vyn":"💚 Исцеление +8 вын. [","title_sest":")\" title=\"Съесть (+","vyn_style_color_3c9_cursor_point":" вын.)\" style=\"color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;\">🍴","vynoslivost_uzhe_polnaya_iscelen":"Выносливость уже полная — Исцеление не требуется.","zaklyatie_isceleniya_8_vynoslivo":"💚 Заклятие Исцеления: +8 выносливости (стало ","broste_dva_kubika_esli_rezultat":"Бросьте два кубика. Если результат ≤ вашей Удачи (","vam_povezlo":") — вам повезло!","posle_proverki_udacha_umenshitsy":"После проверки Удача уменьшится на 1.","snachala_nuzhno_proverit_udachu":"Сначала нужно проверить Удачу: если повезёт, вы сразу перерубите нить и будете драться без штрафа. Если нет — придётся сражаться, вися в воздухе, с штрафом −2 к СИЛЕ УДАРА.","mozhno_dratsya_stoya_na_zemle_so":"Можно драться стоя на земле со штрафом −1 к СИЛЕ УДАРА, а можно попытаться оседлать коня павшего рыцаря. Если повезёт — будете сражаться на равных, если нет — всё равно придётся драться на земле со штрафом −1.","pauk_tyanet_vas_k_sebe_esli_pove":"Паук тянет вас к себе. Если повезёт — успеете перерубить лестницу и спрыгнуть на землю, где будете драться на равных. Если нет — паук затянет вас на дерево, и в бою придётся вычитать 1 из СИЛЫ УДАРА.","cherez_tri_raunda_dva_ostalnyh_o":"✦ Через три раунда два остальных Орка бросаются на помощь предводителю!","pervyy_ork_poverzhen_teper_vam_p":"✦ Первый Орк повержен. Теперь вам придётся сражаться с двумя оставшимися.","mozhete_proverit_udachu_esli_pov":"✦ Можете проверить Удачу: если повезёт, третий Орк убежит в лес и останется только один противник.","pervyy_ork_uzhe_poverzhen_esli_u":"Первый Орк уже повержен. Если Удача с вами, третий Орк не захочет умирать, защищая ворота, и убежит. Если нет — придётся продолжать бой со всеми оставшимися.","uron":"(урон: ","masterstvo":"Мастерство: ","vynoslivost":"Выносливость: ","sostoyanie":"Состояние","modifikator_sily_udara":"⚠ Модификатор Силы Удара: ","zaklyatie_sily_deystvuet_sila_ud":"💪 Заклятие Силы действует: СИЛА УДАРА +2 до конца боя.","zaklyatie_obratilos_protiv_vas_s":"⚠ Заклятие обратилось против вас: СИЛА УДАРА врага +","do_konca_boya":" до конца боя.","snachala_vy_srazhaetes_tolko_s_p":"✦ Сначала вы сражаетесь только с Первым Орком. Остальные вступят в бой позже, если он продержится три раунда.","pozvat":" Позвать: ","raund":"— Раунд ","vy_2k6":"Вы: 2к6(","2k6":": 2к6(","vy_ranili":"→ Вы ранили ","2_vyn_ostalos":" (−2 вын., осталось ","ranil_vas":" ранил вас (−","vyn_ostalos":" вын., осталось ","nichya_s":"→ Ничья с ","tozhe_ranil_vas":" тоже ранил вас (−","ne_smog_vas_ranit":" не смог вас ранить","vy_ranili_vraga_dvazhdy_mozhete":"✦ Вы ранили врага дважды! Можете перейти к ","pobeda":"✦ Победа!","vy_pogibli_v_boyu":"† Вы погибли в бою…","zaklyatie_kopii_na":"👤 Заклятие Копии на ","kopiya_masterstvo":"Копия: Мастерство ","vynoslivost_2":", Выносливость ","kopiya_pobedila":"👤 Копия победила ","vrag_poverzhen":"! Враг повержен.","pobedil_svoyu_kopiyu_no_oslablen":" победил свою Копию, но ослаблен (выносливость: ","vy":" Вы ","masterstvo_2":": Мастерство ","betsya_s":". Бьётся с ","povergaet":" повергает ","odolel":" одолел ","no_oslablen_vynoslivost":", но ослаблен (выносливость: ","zaklyatie_sily_sila_udara_2_do_k":"💪 Заклятие Силы! СИЛА УДАРА +2 до конца боя.","zaklyatie_slabosti_ataka_vragov":"🫀 Заклятие Слабости! Атака врагов −2 до конца боя.","summa_broska":"сумма броска: ","nuzhno_bylo":"Нужно было ≤ ","udacha_posle_broska":" · Удача после броска: ","atmosfera":"Атмосфера","illyustracii":"Иллюстрации","tekuschiy_uzel":"Текущий узел: ","otkryto_uzlov":" · открыто узлов: ","sloy":"Слой: ","uzel":"Узел:","otkryto":"Открыто:","sloy_2":"Слой:","tekuschiy_uzel_2":"Текущий узел:","otkryto_uzlov_2":"Открыто узлов:","zoloto_proydennye_puti_punktir_u":"Золото — пройденные пути. Пунктир — увиденные, но непройденные. Скрещённые сабли — побеждённые враги."},
+"ui": {"ui_title_author":"Дмитрий Браславский","ui_title_subtitle":"Книга-игра","ui_title_desc":"Отправьтесь в Зачарованный лес, пройдите через ловушки и опасности, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.","ui_btn_new":"Начать игру","ui_btn_load":"Продолжить","ui_title_remake":"1991 · Ремейк 2023","ui_create_title":"Листок путешественника","ui_create_sub":"Бросьте кубики, чтобы определить свою судьбу","ui_create_name_label":"Имя героя","ui_ph_hero_name":"Герой","ui_stat_skill":"Мастерство","ui_stat_skill_desc":"Насколько хорошо вы умеете сражаться.<br>Чем оно выше, тем лучше.","ui_stat_skill_formula":"1к6 + 6","ui_stat_stamina":"Выносливость","ui_stat_stamina_desc":"Ваша ловкость, воля к жизни, решительность и пригодность к миссии.<br>При нуле — гибель...","ui_stat_stamina_formula":"2к6 + 12","ui_stat_luck":"Удача","ui_stat_luck_desc":"Насколько вы от природы удачливы?<br>Каждая проверка расходует удачу.","ui_stat_luck_formula":"1к6 + 6","ui_btn_roll":"🎲 Бросить кубики","ui_btn_to_spells":"Выбрать заклятия →","ui_spells_title":"Заклятия Майлина","ui_spells_intro":"<p style=\"margin:0 0 10px;\">Придворный астролог Майлин научил вас самым необходимым заклятиям.</p>\n      <p style=\"margin:0 0 10px;\">Ваше Мастерство позволяет воспользоваться ими только <b>10 раз</b>.</p>\n      <p style=\"margin:0;\">Выберите любые заклятия в любом количестве, но всего должно быть ровно десять.</p>\n      <p style=\"margin:14px 0 0;padding-top:12px;border-top:1px solid var(--border);font-size:16px;font-style:italic;color:var(--gold2);opacity:.85;\">✦ Совет Майлина: одни заклятия пригодятся вам не раз, другие — лишь в редкие мгновения. Выбирайте с умом и не полагайтесь на одно-единственное заклятие.</p>","ui_btn_back":"← Назад","ui_btn_preface":"📜 Предисловие","ui_btn_start":"Отправиться в путь ⚔","ui_preface_title":"📜 Предисловие","ui_btn_start_preface":"Начать игру ⚔","ui_pregame_title":"⚔ В путь!","ui_btn_enter_forest":"Войти в Зачарованный лес ⚔","ui_lbl_skill":"Мастерство","ui_lbl_stamina":"Выносливость","ui_lbl_luck":"Удача","ui_lbl_flask":"Фляга","ui_btn_flask":"Выпить (+2 вын.)","ui_lbl_gold":"Золото","ui_lbl_spells":"Заклятия","ui_lbl_bag":"Заплечный мешок","ui_lbl_notes":"Записки","ui_title_add_item":"Добавить предмет вручную","ui_ph_add_item":"Название предмета","ui_ph_notes":"Ваши заметки…","ui_lbl_map":"🗺 Карта","ui_btn_map_open":"Открыть","ui_title_map_open":"Открыть карту (клавиша M)","ui_img_loading":"🎨 Рисую сцену…","ui_btn_menu":"☰ Меню","ui_btn_summon_ally":"🐻 Позвать союзника","ui_combat_title":"⚔ Бой!","ui_luck_title":"🎲 Проверка Удачи","ui_btn_luck_roll":"Бросить кубик","ui_death_title":"† Гибель","ui_btn_restart":"Начать заново","ui_win_title":"✦ Победа!","ui_win_text":"Барлад Дэрт повержен! Принцесса свободна! Слава вам, герой!","ui_btn_play_again":"Играть снова","ui_btn_log":"📜 Журнал","ui_log_title":"📜 Журнал событий","ui_btn_clear_log":"Очистить","ui_inv_title":"🎒 Найдены предметы!","ui_btn_done":"Готово","ui_map_title":"🗺 Карта приключения","ui_map_sub":"Карта строится в реальном времени: открытые узлы видны, пройденные пути подсвечиваются золотом, непроверенные выходы на развилках показываются короткими пунктирными stub-сегментами.","ui_leg_node":"перекрёсток / узел","ui_leg_house":"дом / деревня","ui_leg_water":"вода / берег","ui_leg_castle":"замок / ворота","ui_leg_path":"пройденный путь","ui_leg_victory":"победа в бою","ui_btn_map_close":"Закрыть (M)","ui_menu_title":"Меню","ui_menu_export":"💾 Экспорт сохранения","ui_menu_import":"📂 Импорт сохранения","ui_confirm_new_game":"Начать новую игру?","ui_menu_new_game":"🗑 Новая игра","ui_btn_menu_close":"← Закрыть","ui_doc_title":"Подземелья Чёрного замка","geroy":"Герой","nesovmestimyy_format":"Несовместимый формат","oshibka_zagruzki":"Ошибка загрузки","podzemelya_chernogo_zamka":"<div class=\"t-main\">Подземелья<br>Чёрного замка</div>","sudba_opredelena":"✓ Судьба определена","iz":" из ","vybrano":" выбрано","vyberite_rovno_10_zaklyatiy":"Выберите ровно 10 заклятий!","zhurnal_pust":"<div style=\"color:var(--muted);opacity:.5;padding:20px 0;text-align:center;font-size:14px;\">Журнал пуст</div>","ochistit_zhurnal":"Очистить журнал?","meshok":"🎒 Мешок","naydeno":"<div style=\"font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;\">НАЙДЕНО:</div>","v_meshke":"<div style=\"font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;\">В МЕШКЕ (","pusto":"<div style=\"font-size:14px;color:var(--muted);opacity:.5;\">Пусто</div>","v_meshke_2":"✓ В мешке","nuzhno":"Нужно ","mest":" мест","meshok_polon":"Мешок полон","vzyat":"+ Взять","v_meshok":"В мешок","vybrosheno_iz_meshka":"Выброшено из мешка","vashe_puteshestvie_okoncheno_zac":"Ваше путешествие окончено. Зачарованный лес поглотил ещё одного смельчака…","paragraf":"§ Параграф ","illyustraciya":"Иллюстрация","ves_inventar":"− весь инвентарь (","ves_inventar_2":"− весь инвентарь","predmetov_poteryano":"Предметов потеряно: ","zolotyh":" золотых","vsego_0":"Всего: 0","vsego":"Всего: ","eda":"+ еда ×","meshok_polon_ne_vzyato":"мешок полон, не взято: ","v_meshke_3":"в мешке: ","meshok_polon_2":"мешок полон: ","ne_vzyato":" не взято","vynoslivosti":" выносливости","teper":"Теперь: ","masterstva":" мастерства","udachi":" удачи","meshok_pust":"<div class=\"inv-empty\">Мешок пуст</div>","eda_2":" (еда: +","vynoslivost_uzhe_polnaya":"Выносливость уже полная","sedeno":"🍴 Съедено: ","vyn":" вын.","glotok_iz_flyagi":"🥤 Глоток из фляги","2_vynoslivosti_ostalos_glotkov":"+2 выносливости (осталось глотков: ","zaklyatie_isceleniya":"💚 Заклятие Исцеления","8_vynoslivosti":"+8 выносливости","iscelenie_8_vynoslivosti":"💚 Исцеление: +8 выносливости","8_vynoslivosti_v_boyu":"+8 выносливости (в бою)","zaklyatie_isceleniya_8":"💚 Заклятие Исцеления +8 [","meshok_polon_3":"Мешок полон (","mest_2":" мест)","zaklyatie":" Заклятие ","ostalos":"Осталось: ","zaplacheno_za_vybor_ostalos":"Заплачено за выбор. Осталось: ","predmet_izrashodovan":"Предмет израсходован.","zagadka_razgadana":"✓ Загадка разгадана","paragraf_2":"Параграф: ","zagadka_ne_razgadana":"✗ Загадка не разгадана","vash_otvet_im_padezh_ed_ch":"Ваш ответ (им. падеж, ед. ч.)","otvetit":"Ответить","neverno_ostalos_popytok":"Неверно. Осталось попыток: <span id=\"riddle-attempts\">","uzhe_kupleno":"Уже куплено","meshok_uzhe_kuplen":"Мешок уже куплен","flyaga_uzhe_polna":"Фляга уже полна","ne_hvataet_zolota":"Не хватает золота (","pokupka":"Покупка (§","ostalos_2":"). Осталось: ","kupleno":"Куплено (§","zaplechnyy_meshok":"+ заплечный мешок (","zaplechnyy_meshok_2":"+ заплечный мешок","vmestimost_teper":"Вместимость теперь: ","flyaga":"+ фляга (","flyaga_napolnena":"🥤 Фляга наполнена","glotkov":"Глотков: ","kupleno_vzyato_s_soboy":"Куплено, взято с собой (§","pokupka_2":"💰 Покупка","zaklyatie_nedostupno":"Заклятие недоступно","2_vynoslivosti_begstvo_iz_boya":"− 2 выносливости (бегство из боя)","v_boyu":"в бою","ubezhal":"убежал","poverzhen":"повержен","ozhidaet":"ожидает","udar":"Удар!","zaklyatie_kopii":"👤 Заклятие Копии [","proverka_udachi":"🎲 Проверка Удачи: ","udachno_udacha_teper":"Удачно! Удача теперь: ","neudacha_udacha_teper":"Неудача. Удача теперь: ","prodolzhit":"Продолжить","proverit_udachu":"🎲 Проверить удачу","vy_mgnovenno_pererubaete_nit_i_s":"Вы мгновенно перерубаете нить и становитесь на землю. В бою штрафа к СИЛЕ УДАРА не будет.","nit_ne_poddalas_srazu_srazhatsya":"Нить не поддалась сразу. Сражаться придётся, вися в воздухе, со штрафом −2 к СИЛЕ УДАРА.","vstupit_v_boy":"⚔ Вступить в бой","dratsya_stoya_na_zemle":"⚔ Драться стоя на земле","proverit_udachu_i_popytatsya_ose":"🎲 Проверить удачу и попытаться оседлать коня","vam_udaetsya_osedlat_konya_v_boy":"Вам удаётся оседлать коня. В бою штрафа к СИЛЕ УДАРА не будет.","osedlat_konya_ne_udalos_srazhats":"Оседлать коня не удалось. Сражаться придётся стоя на земле со штрафом −1 к СИЛЕ УДАРА.","dratsya_zaklyatie_sily_1_k_sile":"⚔ Драться (заклятие Силы: +1 к СИЛЕ УДАРА)","vy_pererubaete_lestnicu_i_sprygi":"Вы перерубаете лестницу и спрыгиваете на землю — теперь будете драться на равных.","pauk_zatyagivaet_vas_na_derevo_v":"Паук затягивает вас на дерево. В бою вычитайте 1 из СИЛЫ УДАРА.","dratsya_s_paukom_na_dereve":"⚔ Драться с пауком на дереве","tretiy_ork_predpochitaet_spastis":"Третий Орк предпочитает спастись бегством. Вам остаётся только один противник.","tretiy_ork_ne_drognul_boy_prodol":"Третий Орк не дрогнул. Бой продолжается со всеми оставшимися врагами.","prodolzhit_boy_bez_proverki":"⚔ Продолжить бой без проверки","brosit_kubik":"🎲 Бросить кубик","kubik_vypalo":"🎲 Кубик: выпало ","paragraf_3":"Параграф ","stavka":"ставка: ","stavka_2":"🎲 Ставка: ","na_konu_ostalos":"На кону. Осталось: ","na_konu":"На кону.","stavka_vozvraschena":"ставка возвращена: +","zol":" зол.","stavka_vozvraschena_2":"🎲 Ставка возвращена","stavka_vozvraschena_3":"ставка возвращена: ","vozvrat_poloviny_stavki":"возврат половины ставки: +","polovina_stavki":"🎲 Половина ставки","vyigrysh":"выигрыш ","stavki":"× ставки: +","vyigrysh_2":"🎲 Выигрыш ","stavki_2":"× ставки","stavka_proigrana":"ставка проиграна","stavka_proigrana_2":"🎲 Ставка проиграна","vyigrysh_vsego":"Выигрыш. Всего: ","vyigrysh_3":"Выигрыш","flyaga_poteryana":"фляга потеряна","flyaga_poteryana_2":"🥤 Фляга потеряна","proigrana_v_igre":"Проиграна в игре","igra_v_kosti":"🎲 Игра в кости","vyberite_vesch_dlya_stavki":"ВЫБЕРИТЕ ВЕЩЬ ДЛЯ СТАВКИ:","v_meshke_net_veschey_dlya_stavki":"В мешке нет вещей для ставки.","postavit":"🎲 Поставить: ","boy_nachalsya":"⚔ Бой начался","vragi":"Враги: ","zaklyatie_sily":"💪 Заклятие Силы [","zaklyatie_slabosti":"🫀 Заклятие Слабости [","pobeda_v_boyu":"✦ Победа в бою","raundov":"Раундов: ","konec":"Конец","udacha_s_vami":"Удача с вами! ✦","udacha_vas_pokinula":"Удача вас покинула… †","konec_priklyucheniya":"Конец приключения","tester":"Тестер","alt_podzemelya_chernogo_zamka":"\" alt=\"Подземелья Чёрного замка\">","naydeno_2":"Найдено ","predmetov_zanimayut":" предметов (занимают ","mest_no_v_meshke_tolko":" мест), но в мешке только ","svobodnyh_iz":" свободных из ","vyberite_chto_vzyat_ili_vybroste":"Выберите что взять, или выбросьте ненужное.","predmetov_svobodnyh_mest":" предметов. Свободных мест: ","vzyat_2":")\">+ Взять","title_vybrosit":")\" title=\"Выбросить\">🗑","onload_this_classlist_add_loaded":"\" onload=\"this.classList.add('loaded')\" alt=\"Иллюстрация\"/>","nachalnaya":"Начальная: ","iscelenie_8_vyn":"💚 Исцеление +8 вын. [","title_sest":")\" title=\"Съесть (+","vyn_style_color_3c9_cursor_point":" вын.)\" style=\"color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;\">🍴","vynoslivost_uzhe_polnaya_iscelen":"Выносливость уже полная — Исцеление не требуется.","zaklyatie_isceleniya_8_vynoslivo":"💚 Заклятие Исцеления: +8 выносливости (стало ","broste_dva_kubika_esli_rezultat":"Бросьте два кубика. Если результат ≤ вашей Удачи (","vam_povezlo":") — вам повезло!","posle_proverki_udacha_umenshitsy":"После проверки Удача уменьшится на 1.","snachala_nuzhno_proverit_udachu":"Сначала нужно проверить Удачу: если повезёт, вы сразу перерубите нить и будете драться без штрафа. Если нет — придётся сражаться, вися в воздухе, с штрафом −2 к СИЛЕ УДАРА.","mozhno_dratsya_stoya_na_zemle_so":"Можно драться стоя на земле со штрафом −1 к СИЛЕ УДАРА, а можно попытаться оседлать коня павшего рыцаря. Если повезёт — будете сражаться на равных, если нет — всё равно придётся драться на земле со штрафом −1.","pauk_tyanet_vas_k_sebe_esli_pove":"Паук тянет вас к себе. Если повезёт — успеете перерубить лестницу и спрыгнуть на землю, где будете драться на равных. Если нет — паук затянет вас на дерево, и в бою придётся вычитать 1 из СИЛЫ УДАРА.","cherez_tri_raunda_dva_ostalnyh_o":"✦ Через три раунда два остальных Орка бросаются на помощь предводителю!","pervyy_ork_poverzhen_teper_vam_p":"✦ Первый Орк повержен. Теперь вам придётся сражаться с двумя оставшимися.","mozhete_proverit_udachu_esli_pov":"✦ Можете проверить Удачу: если повезёт, третий Орк убежит в лес и останется только один противник.","pervyy_ork_uzhe_poverzhen_esli_u":"Первый Орк уже повержен. Если Удача с вами, третий Орк не захочет умирать, защищая ворота, и убежит. Если нет — придётся продолжать бой со всеми оставшимися.","uron":"(урон: ","masterstvo":"Мастерство: ","vynoslivost":"Выносливость: ","sostoyanie":"Состояние","modifikator_sily_udara":"⚠ Модификатор Силы Удара: ","zaklyatie_sily_deystvuet_sila_ud":"💪 Заклятие Силы действует: СИЛА УДАРА +2 до конца боя.","zaklyatie_obratilos_protiv_vas_s":"⚠ Заклятие обратилось против вас: СИЛА УДАРА врага +","do_konca_boya":" до конца боя.","snachala_vy_srazhaetes_tolko_s_p":"✦ Сначала вы сражаетесь только с Первым Орком. Остальные вступят в бой позже, если он продержится три раунда.","pozvat":" Позвать: ","raund":"— Раунд ","vy_2k6":"Вы: 2к6(","2k6":": 2к6(","vy_ranili":"→ Вы ранили ","2_vyn_ostalos":" (−2 вын., осталось ","ranil_vas":" ранил вас (−","vyn_ostalos":" вын., осталось ","nichya_s":"→ Ничья с ","tozhe_ranil_vas":" тоже ранил вас (−","ne_smog_vas_ranit":" не смог вас ранить","vy_ranili_vraga_dvazhdy_mozhete":"✦ Вы ранили врага дважды! Можете перейти к ","pobeda":"✦ Победа!","vy_pogibli_v_boyu":"† Вы погибли в бою…","zaklyatie_kopii_na":"👤 Заклятие Копии на ","kopiya_masterstvo":"Копия: Мастерство ","vynoslivost_2":", Выносливость ","kopiya_pobedila":"👤 Копия победила ","vrag_poverzhen":"! Враг повержен.","pobedil_svoyu_kopiyu_no_oslablen":" победил свою Копию, но ослаблен (выносливость: ","vy":" Вы ","masterstvo_2":": Мастерство ","betsya_s":". Бьётся с ","povergaet":" повергает ","odolel":" одолел ","no_oslablen_vynoslivost":", но ослаблен (выносливость: ","zaklyatie_sily_sila_udara_2_do_k":"💪 Заклятие Силы! СИЛА УДАРА +2 до конца боя.","zaklyatie_slabosti_ataka_vragov":"🫀 Заклятие Слабости! Атака врагов −2 до конца боя.","summa_broska":"сумма броска: ","nuzhno_bylo":"Нужно было ≤ ","udacha_posle_broska":" · Удача после броска: ","atmosfera":"Атмосфера","illyustracii":"Иллюстрации","tekuschiy_uzel":"Текущий узел: ","otkryto_uzlov":" · открыто узлов: ","sloy":"Слой: ","uzel":"Узел:","otkryto":"Открыто:","sloy_2":"Слой:","tekuschiy_uzel_2":"Текущий узел:","otkryto_uzlov_2":"Открыто узлов:","zoloto_proydennye_puti_punktir_u":"Золото — пройденные пути. Пунктир — увиденные, но непройденные. Скрещённые сабли — побеждённые враги."},
 "enemies": {"shpion":"ШПИОН","gigantskiy_pauk":"ГИГАНТСКИЙ ПАУК","torgovec":"ТОРГОВЕЦ","obezyana":"ОБЕЗЬЯНА","pervyy_ork":"ПЕРВЫЙ ОРК","vtoroy_ork":"ВТОРОЙ ОРК","pervyy_zelenyy_rycar":"ПЕРВЫЙ ЗЕЛЕНЫЙ РЫЦАРЬ","vtoroy_zelenyy_rycar":"ВТОРОЙ ЗЕЛЕНЫЙ РЫЦАРЬ","goblin":"ГОБЛИН","tretiy_ork":"ТРЕТИЙ ОРК","pervyy_goblin":"ПЕРВЫЙ ГОБЛИН","vtoroy_goblin":"ВТОРОЙ ГОБЛИН","pervyy_chelovek":"ПЕРВЫЙ ЧЕЛОВЕК","vtoroy_chelovek":"ВТОРОЙ ЧЕЛОВЕК","zelenyy_rycar":"ЗЕЛЕНЫЙ РЫЦАРЬ","pervyy_razboynik":"ПЕРВЫЙ РАЗБОЙНИК","vtoroy_razboynik":"ВТОРОЙ РАЗБОЙНИК","tretiy_razboynik":"ТРЕТИЙ РАЗБОЙНИК","pyatyy_razboynik":"ПЯТЫЙ РАЗБОЙНИК","ruka":"РУКА","lev":"ЛЕВ","lvica":"ЛЬВИЦА","provodnik":"ПРОВОДНИК","medvedica":"МЕДВЕДИЦА","svirepyy_chelovekoobraznyy_zver":"СВИРЕПЫЙ ЧЕЛОВЕКООБРАЗНЫЙ ЗВЕРЬ","pervaya_zmeya":"ПЕРВАЯ ЗМЕЯ","vtoraya_zmeya":"ВТОРАЯ ЗМЕЯ","tretya_zmeya":"ТРЕТЬЯ ЗМЕЯ","chetvertaya_zmeya":"ЧЕТВЕРТАЯ ЗМЕЯ","pyataya_zmeya":"ПЯТАЯ ЗМЕЯ","shestaya_zmeya":"ШЕСТАЯ ЗМЕЯ","vodyanoy":"ВОДЯНОЙ","ork":"ОРК","lesovichok":"ЛЕСОВИЧОК","shestilapyy_zver":"ШЕСТИЛАПЫЙ ЗВЕРЬ","pervyy_rycar":"ПЕРВЫЙ РЫЦАРЬ","vtoroy_rycar":"ВТОРОЙ РЫЦАРЬ","tretiy_rycar":"ТРЕТИЙ РЫЦАРЬ","drakon":"ДРАКОН","duh_mertvyh":"ДУХ МЕРТВЫХ","pauk":"ПАУК","zhenschina_vampir":"ЖЕНЩИНА-ВАМПИР","pervyy_drovosek":"ПЕРВЫЙ ДРОВОСЕК","vtoroy_drovosek":"ВТОРОЙ ДРОВОСЕК","oboroten":"ОБОРОТЕНЬ","ogromnaya_zmeya":"ОГРОМНАЯ ЗМЕЯ","tretiy_goblin":"ТРЕТИЙ ГОБЛИН","chetvertyy_goblin":"ЧЕТВЕРТЫЙ ГОБЛИН","prizrak":"ПРИЗРАК","orel":"ОРЕЛ","kapitan_rycarey":"КАПИТАН РЫЦАРЕЙ","pervaya_letuchaya_mysh":"ПЕРВАЯ ЛЕТУЧАЯ МЫШЬ","vtoraya_letuchaya_mysh":"ВТОРАЯ ЛЕТУЧАЯ МЫШЬ","tretya_letuchaya_mysh":"ТРЕТЬЯ ЛЕТУЧАЯ МЫШЬ","pervyy_lev":"ПЕРВЫЙ ЛЕВ","vtoroy_lev":"ВТОРОЙ ЛЕВ","tretiy_lev":"ТРЕТИЙ ЛЕВ","chetvertyy_lev":"ЧЕТВЕРТЫЙ ЛЕВ","car_lvov":"ЦАРЬ ЛЬВОВ","barlad_dert":"БАРЛАД ДЭРТ","zloy_duh":"ЗЛОЙ ДУХ","troll":"ТРОЛЛЬ","garpiya":"ГАРПИЯ","nachalnik_strazhi":"НАЧАЛЬНИК СТРАЖИ","povar":"ПОВАР"},
 "map": {"vneshniy_mir":"Внешний мир","podhody_k_zamku":"Подходы к замку","vnutrennie_urovni_zamka":"Внутренние уровни замка","startovaya_doroga":"Стартовая дорога","razvilka_u_holma":"Развилка у холма","lesnoy_torgovec":"Лесной торговец","govoryaschiy_domik":"Говорящий Домик","lesnoy_perekrestok":"Лесной перекрёсток","podstupy_k_derevne":"Подступы к деревне","taverna":"Таверна","bolotnaya_tropa":"Болотная тропа","levyy_bereg_reki":"Левый берег реки","ostrov_posredi_reki":"Остров посреди реки","drugoy_bereg":"Другой берег","most_nad_ovragom":"Мост над оврагом","pervyy_vid_na_chernyy_zamok":"Первый вид на Чёрный замок","podhod_k_vorotam":"Подход к воротам","skala_i_obhodnaya_tropa":"Скала и обходная тропа","palmy_i_banany":"Пальмы и бананы","vorota_i_karaul":"Ворота и караул","storozhka":"Сторожка","centralnyy_dvor":"Центральный двор","vysokoe_zdanie":"Высокое здание","nizkoe_zdanie_sprava":"Низкое здание справа","stena_u_reki":"Стена у реки","bolshoy_koridor":"Большой коридор","komnata_nachalnika_strazhi":"Комната Начальника стражи","zal_s_orkami":"Зал с Орками","lift_i_shahta":"Лифт и шахта","biblioteka":"Библиотека","komnata_s_krovatyami_i_zerkalom":"Комната с кроватями и зеркалом","komnata_s_kranami":"Комната с кранами","igralnaya_komnata":"Игральная комната","tyuremnyy_blok":"Тюремный блок","tayniki_i_kladovki":"Тайники и кладовки","pokoi_princessy":"Покои Принцессы","lovushki_dveri_drakon":"Ловушки, двери, Дракон","tron_shkaf_i_zerkalo":"Трон, шкаф и зеркало","lesnoy_starik_goblin":"Лесной старик / гоблин","strazha_u_vorot":"Стража у ворот","orki_u_vorot_zamka":"Орки у ворот замка","orki_v_zale":"Орки в зале","poslednyaya_strazha_pered_prince":"Последняя стража перед Принцессой"},
 "p": {
@@ -3862,6 +3862,7 @@ function repaintAfterLangSwitch(){
   try{ renderPregameText(); }catch(e){}
   try{ renderPrefaceText(); }catch(e){}
   try{ renderAllLangPickers(); }catch(e){}
+  try{ applyStaticI18n(); }catch(e){}
   var sg=document.getElementById('scr-game');
   var inGame=!!(S && sg && sg.classList && sg.classList.contains('on'));
   if(inGame){ try{ renderGame({repaint:true}); }catch(e){} }
@@ -3911,6 +3912,20 @@ function renderAllLangPickers(){ renderLangPicker('lang-pick-title'); renderLang
 window.renderLangPicker=renderLangPicker;
 window.renderAllLangPickers=renderAllLangPickers;
 // <<< BC_I18N_2C <<<
+
+// >>> BC_I18N_2C_SHELL (static UI chrome i18n via data-i18n attributes) >>>
+function applyStaticI18n(){
+  try{
+    document.querySelectorAll('[data-i18n]').forEach(function(el){ var k=el.getAttribute('data-i18n'), v=t(k); if(v!==k) el.textContent=v; });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){ var k=el.getAttribute('data-i18n-html'), v=t(k); if(v!==k) el.innerHTML=v; });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ var k=el.getAttribute('data-i18n-ph'), v=t(k); if(v!==k) el.setAttribute('placeholder',v); });
+    document.querySelectorAll('[data-i18n-title]').forEach(function(el){ var k=el.getAttribute('data-i18n-title'), v=t(k); if(v!==k) el.setAttribute('title',v); });
+    var dt=t('ui_doc_title'); if(dt!=='ui_doc_title') document.title=dt;
+    if(document.documentElement) document.documentElement.setAttribute('lang', getLang());
+  }catch(e){}
+}
+window.applyStaticI18n=applyStaticI18n;
+// <<< BC_I18N_2C_SHELL <<<
 
 function pText(n){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&typeof e.t==='string')return e.t; e=(F&&F.p)?F.p[String(n)]:null; return (e&&typeof e.t==='string')?e.t:''; }
 function label(n,i){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&e.c&&e.c[i]!=null)return e.c[i]; e=(F&&F.p)?F.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
@@ -5896,7 +5911,7 @@ function setAtmosphericBg(scene){
 // ── Init ──
 window.onload=()=>{
   applyLang(loadSavedLang(),{silent:true});
-  initTitle();renderSpellSel();renderAllLangPickers();
+  initTitle();renderSpellSel();renderAllLangPickers();applyStaticI18n();
   const h=location.hash.substring(1);
   if(h&&parseInt(h)>0&&GD[h]){
     const sv=loadGame();
