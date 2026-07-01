@@ -126,3 +126,46 @@ Structural 1205. dist verified (picker fns + window exposure + both shell contai
 extraction (`group_68` item 2) is the recommended increment before publishing a 2nd locale; sequencing is Yuriy's call.
 
 **Commits:** source (game_logic + shell + registry + log), then dist.
+
+
+---
+
+## Increment 2c-shell — static UI-chrome i18n (data-i18n) · 2026-06-18
+**Files:** `src/game_shell_top.html`, `src/locale.ru.js`, `src/game_logic.js`, `assets/text_corrections.json`.
+
+**What:** externalized the hardcoded UI chrome discovered during 2c so it language-switches. Mechanism:
+`data-i18n` attributes resolved by a new `applyStaticI18n()`.
+- **Shell:** 76 hooks across all screens — `data-i18n` (textContent, 67 occurrences / 66 unique keys),
+  `data-i18n-html` (innerHTML for markup: the 3 stat descriptions with `<br>` + the spell-screen intro block, 4),
+  `data-i18n-ph` (placeholders: hero name, add-item, notes, 3), `data-i18n-title` (title attrs: inventory
+  add-item, map-mini-card, 2). RU text is KEPT inline as the fallback; the locale is the source of truth.
+- **locale.ru.js:** 77 new `ui_*` keys under `LOCALE_RU.ui`, **harvested verbatim from the HTML** by the
+  extraction script (so locale == shell — no transcription drift, no mojibake). Includes `ui_doc_title`
+  (browser-tab title), which has no element hook.
+- **game_logic.js (`BC_I18N_2C_SHELL` markers):** `applyStaticI18n()` walks the four attribute families and sets
+  textContent / innerHTML / placeholder / title from `t(key)`, guarded by `v!==k` (a missing key leaves the
+  inline RU fallback); also sets `document.title` from `ui_doc_title` and `documentElement.lang` from `getLang()`.
+  Called at startup (onload, right after `renderAllLangPickers()`) and on every switch (added to
+  `repaintAfterLangSwitch`).
+- **Intentionally NOT hooked** (JS sets them dynamically — verified against game_logic.js): `btn-combat-round`
+  and the combat spell buttons (`btn-force/weakness/copy/heal-spell`), `btn-heal`, `s-num`, `sb-name`,
+  `inv-count`, the map mini-meta / state-note (map module), and `death-text` (per-death message).
+  `btn-summon-ally` / `btn-summon-ally2` share one key (`ui_btn_summon_ally`).
+- The new-game `confirm()` string was converted from a literal to `t('ui_confirm_new_game')`. **No new
+  hardcoded Russian in the engine** — 6c-1 still 8/8.
+
+**Registry:** `group_68` item `shell_chrome_i18n_gap` -> **DONE** (resolution recorded). `picker_functional_rework`
+remains OPEN.
+
+**Verification:** `node --check` OK; locale re-parses (298 ui keys, 77 `ui_`-prefixed). **New 2c-shell harness
+157/157** — every `data-i18n*` key exists in `LOCALE_RU.ui`; the real `applyStaticI18n` (eval'd between its
+markers) round-trips against DOM stubs (text / html / placeholder / title + document.title + documentElement.lang);
+structural guards on the def + window export + both hooks. All regressions green (2a 25, 2b 44, 2c 30, 6a 10,
+6b 16, 6c-1 8, 6c-2 5, 6d 11, 6e-1 10, 6e-2 10, Group B 21, 5f 29). Structural 1205. dist verified (67/4/3/2 attrs
++ `applyStaticI18n` + 77 `ui_` keys + onload hook present).
+
+**Next:** 2d — `TRANSLATION_GUIDE.md` + root README (now that the scheme, including the shell `data-i18n` layer, is
+complete). Then translations (EN/FR/UK): each new `LOCALE_<CODE>` mirrors the RU shape incl. its `langName` and the
+`ui_*` chrome keys, registers in `LOCALES`, and is added to `build.sh`.
+
+**Commits:** source (shell + locale.ru.js + game_logic + registry + log), then dist.
