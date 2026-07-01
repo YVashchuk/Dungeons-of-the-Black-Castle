@@ -441,6 +441,7 @@ function repaintAfterLangSwitch(){
   try{ renderPregameText(); }catch(e){}
   try{ renderPrefaceText(); }catch(e){}
   try{ renderAllLangPickers(); }catch(e){}
+  try{ applyStaticI18n(); }catch(e){}
   var sg=document.getElementById('scr-game');
   var inGame=!!(S && sg && sg.classList && sg.classList.contains('on'));
   if(inGame){ try{ renderGame({repaint:true}); }catch(e){} }
@@ -490,6 +491,20 @@ function renderAllLangPickers(){ renderLangPicker('lang-pick-title'); renderLang
 window.renderLangPicker=renderLangPicker;
 window.renderAllLangPickers=renderAllLangPickers;
 // <<< BC_I18N_2C <<<
+
+// >>> BC_I18N_2C_SHELL (static UI chrome i18n via data-i18n attributes) >>>
+function applyStaticI18n(){
+  try{
+    document.querySelectorAll('[data-i18n]').forEach(function(el){ var k=el.getAttribute('data-i18n'), v=t(k); if(v!==k) el.textContent=v; });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){ var k=el.getAttribute('data-i18n-html'), v=t(k); if(v!==k) el.innerHTML=v; });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ var k=el.getAttribute('data-i18n-ph'), v=t(k); if(v!==k) el.setAttribute('placeholder',v); });
+    document.querySelectorAll('[data-i18n-title]').forEach(function(el){ var k=el.getAttribute('data-i18n-title'), v=t(k); if(v!==k) el.setAttribute('title',v); });
+    var dt=t('ui_doc_title'); if(dt!=='ui_doc_title') document.title=dt;
+    if(document.documentElement) document.documentElement.setAttribute('lang', getLang());
+  }catch(e){}
+}
+window.applyStaticI18n=applyStaticI18n;
+// <<< BC_I18N_2C_SHELL <<<
 
 function pText(n){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&typeof e.t==='string')return e.t; e=(F&&F.p)?F.p[String(n)]:null; return (e&&typeof e.t==='string')?e.t:''; }
 function label(n,i){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; var e=(A&&A.p)?A.p[String(n)]:null; if(e&&e.c&&e.c[i]!=null)return e.c[i]; e=(F&&F.p)?F.p[String(n)]:null; return (e&&e.c&&e.c[i]!=null)?e.c[i]:''; }
@@ -2475,7 +2490,7 @@ function setAtmosphericBg(scene){
 // ── Init ──
 window.onload=()=>{
   applyLang(loadSavedLang(),{silent:true});
-  initTitle();renderSpellSel();renderAllLangPickers();
+  initTitle();renderSpellSel();renderAllLangPickers();applyStaticI18n();
   const h=location.hash.substring(1);
   if(h&&parseInt(h)>0&&GD[h]){
     const sv=loadGame();

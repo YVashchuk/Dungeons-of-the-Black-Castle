@@ -202,7 +202,8 @@
         },
         {
           "id": "shell_chrome_i18n_gap",
-          "status": "OPEN",
+          "status": "DONE",
+          "resolution": "Phase 2c-shell: externalized static UI chrome from src/game_shell_top.html into LOCALE_RU.ui via data-i18n / data-i18n-html / data-i18n-ph / data-i18n-title attributes (76 hooks; 77 ui_ keys harvested verbatim so the locale equals the shell; RU kept inline as fallback). applyStaticI18n() in game_logic.js (BC_I18N_2C_SHELL markers) resolves them through t() at onload and on every language switch, and also sets document.title (ui_doc_title) plus documentElement lang. New 2c-shell harness 157 of 157 (coverage + round-trip + structural); full regression and the 1205-reachable baseline still hold. Combat and HUD elements that JS sets dynamically (btn-combat-round, spell buttons, btn-heal, s-num, sb-name, inv-count, map notes, death-text) are intentionally left unhooked; the picker_functional_rework item remains OPEN.",
           "note": "Phase 1 item 6 externalized only the JS (game_logic.js + map_module.js). The HTML shell src/game_shell_top.html still hardcodes ~93 Cyrillic runs of UI chrome: title author/subtitle/description, character-creation labels and stat descriptions, spell-selection text, sidebar labels (flask/gold/spells/bag/notes/map), combat/luck/inventory/map/menu modal text, input placeholders, and death/win screens. These do NOT language-switch. Extract them into LOCALE_RU.ui (with resolvers or data-i18n hooks applied at render) before any non-RU locale is published. This is the next i18n increment."
         }
       ]

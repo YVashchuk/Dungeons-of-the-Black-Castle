@@ -426,17 +426,17 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
   <div class="t-content">
     <div class="t-rider-col" id="title-rider"></div>
     <div class="t-text-col">
-      <div class="t-author-top">Дмитрий Браславский</div>
+      <div class="t-author-top" data-i18n="ui_title_author">Дмитрий Браславский</div>
       <div id="title-lettering"></div>
-      <div class="t-sub">Книга-игра</div>
+      <div class="t-sub" data-i18n="ui_title_subtitle">Книга-игра</div>
       <span class="t-orn">⚔ ✦ ⚔</span>
-      <div class="t-desc">Отправьтесь в Зачарованный лес, пройдите через ловушки и опасности, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.</div>
+      <div class="t-desc" data-i18n="ui_title_desc">Отправьтесь в Зачарованный лес, пройдите через ловушки и опасности, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.</div>
       <div class="t-btns">
-        <button class="btn btn-p" id="btn-new">Начать игру</button>
-        <button class="btn btn-s" id="btn-load" style="display:none">Продолжить</button>
+        <button class="btn btn-p" id="btn-new" data-i18n="ui_btn_new">Начать игру</button>
+        <button class="btn btn-s" id="btn-load" style="display:none" data-i18n="ui_btn_load">Продолжить</button>
       </div>
       <div class="lang-pick-row" id="lang-pick-title" style="display:flex;justify-content:center;align-items:center;gap:2px;margin-top:14px;flex-wrap:wrap;"></div>
-      <div class="t-author">1991 · Ремейк 2023</div>
+      <div class="t-author" data-i18n="ui_title_remake">1991 · Ремейк 2023</div>
     </div>
   </div>
 </div>
@@ -444,39 +444,39 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 <!-- ═══ CHARACTER CREATION ═══ -->
 <div class="scr" id="scr-create">
   <div class="cr-wrap">
-    <div class="cr-title">Листок путешественника</div>
-    <div class="cr-sub">Бросьте кубики, чтобы определить свою судьбу</div>
+    <div class="cr-title" data-i18n="ui_create_title">Листок путешественника</div>
+    <div class="cr-sub" data-i18n="ui_create_sub">Бросьте кубики, чтобы определить свою судьбу</div>
     <div class="cr-name">
-      <label>Имя героя</label>
-      <input type="text" id="hero-name" placeholder="Герой" maxlength="30">
+      <label data-i18n="ui_create_name_label">Имя героя</label>
+      <input type="text" id="hero-name" placeholder="Герой" maxlength="30" data-i18n-ph="ui_ph_hero_name">
     </div>
     <div class="stat-card" id="sc-skill">
       <div class="stat-val" id="v-skill">—</div>
       <div class="stat-info">
-        <h3>Мастерство</h3>
-        <p>Насколько хорошо вы умеете сражаться.<br>Чем оно выше, тем лучше.</p>
-        <div class="stat-formula">1к6 + 6</div>
+        <h3 data-i18n="ui_stat_skill">Мастерство</h3>
+        <p data-i18n-html="ui_stat_skill_desc">Насколько хорошо вы умеете сражаться.<br>Чем оно выше, тем лучше.</p>
+        <div class="stat-formula" data-i18n="ui_stat_skill_formula">1к6 + 6</div>
       </div>
     </div>
     <div class="stat-card" id="sc-stamina">
       <div class="stat-val" id="v-stamina">—</div>
       <div class="stat-info">
-        <h3>Выносливость</h3>
-        <p>Ваша ловкость, воля к жизни, решительность и пригодность к миссии.<br>При нуле — гибель...</p>
-        <div class="stat-formula">2к6 + 12</div>
+        <h3 data-i18n="ui_stat_stamina">Выносливость</h3>
+        <p data-i18n-html="ui_stat_stamina_desc">Ваша ловкость, воля к жизни, решительность и пригодность к миссии.<br>При нуле — гибель...</p>
+        <div class="stat-formula" data-i18n="ui_stat_stamina_formula">2к6 + 12</div>
       </div>
     </div>
     <div class="stat-card" id="sc-luck">
       <div class="stat-val" id="v-luck">—</div>
       <div class="stat-info">
-        <h3>Удача</h3>
-        <p>Насколько вы от природы удачливы?<br>Каждая проверка расходует удачу.</p>
-        <div class="stat-formula">1к6 + 6</div>
+        <h3 data-i18n="ui_stat_luck">Удача</h3>
+        <p data-i18n-html="ui_stat_luck_desc">Насколько вы от природы удачливы?<br>Каждая проверка расходует удачу.</p>
+        <div class="stat-formula" data-i18n="ui_stat_luck_formula">1к6 + 6</div>
       </div>
     </div>
     <div class="cr-btns">
-      <button class="btn btn-g" id="btn-roll-all">🎲 Бросить кубики</button>
-      <button class="btn btn-p" id="btn-to-spells" style="display:none">Выбрать заклятия →</button>
+      <button class="btn btn-g" id="btn-roll-all" data-i18n="ui_btn_roll">🎲 Бросить кубики</button>
+      <button class="btn btn-p" id="btn-to-spells" style="display:none" data-i18n="ui_btn_to_spells">Выбрать заклятия →</button>
     </div>
   </div>
 </div>
@@ -484,8 +484,8 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 <!-- ═══ SPELL SELECTION ═══ -->
 <div class="scr" id="scr-spells">
   <div class="sp-wrap" style="max-width:1400px;">
-    <div class="sp-title">Заклятия Майлина</div>
-    <div class="sp-sub" style="font-size:18px;line-height:1.7;max-width:900px;margin:0 auto 20px;">
+    <div class="sp-title" data-i18n="ui_spells_title">Заклятия Майлина</div>
+    <div class="sp-sub" style="font-size:18px;line-height:1.7;max-width:900px;margin:0 auto 20px;" data-i18n-html="ui_spells_intro">
       <p style="margin:0 0 10px;">Придворный астролог Майлин научил вас самым необходимым заклятиям.</p>
       <p style="margin:0 0 10px;">Ваше Мастерство позволяет воспользоваться ими только <b>10 раз</b>.</p>
       <p style="margin:0;">Выберите любые заклятия в любом количестве, но всего должно быть ровно десять.</p>
@@ -494,9 +494,9 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
     <div class="slots-bar" id="slots-bar"></div>
     <div class="sp-grid" id="spell-grid" style="grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px;"></div>
     <div class="sp-btns" style="margin-top:20px;">
-      <button class="btn btn-s" id="btn-back-cr">← Назад</button>
-      <button class="btn btn-s" id="btn-preface" onclick="showScr('preface')">📜 Предисловие</button>
-      <button class="btn btn-p" id="btn-start">Отправиться в путь ⚔</button>
+      <button class="btn btn-s" id="btn-back-cr" data-i18n="ui_btn_back">← Назад</button>
+      <button class="btn btn-s" id="btn-preface" onclick="showScr('preface')" data-i18n="ui_btn_preface">📜 Предисловие</button>
+      <button class="btn btn-p" id="btn-start" data-i18n="ui_btn_start">Отправиться в путь ⚔</button>
     </div>
   </div>
 </div>
@@ -504,11 +504,11 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 <!-- ═══ PREFACE ═══ -->
 <div class="scr" id="scr-preface" style="overflow-y:auto;">
   <div style="max-width:800px;margin:0 auto;padding:40px 60px;">
-    <div class="cr-title" style="margin-bottom:24px;">📜 Предисловие</div>
+    <div class="cr-title" style="margin-bottom:24px;" data-i18n="ui_preface_title">📜 Предисловие</div>
     <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="preface-text"></div>
     <div style="margin-top:24px;text-align:center;">
       <button class="btn btn-s" onclick="showScr('spells')">← К выбору заклятий</button>
-      <button class="btn btn-p" id="btn-start-from-preface">Начать игру ⚔</button>
+      <button class="btn btn-p" id="btn-start-from-preface" data-i18n="ui_btn_start_preface">Начать игру ⚔</button>
     </div>
   </div>
 </div>
@@ -516,10 +516,10 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 <!-- ═══ PRE-GAME NARRATIVE ═══ -->
 <div class="scr" id="scr-pregame" style="overflow-y:auto;">
   <div style="max-width:800px;margin:0 auto;padding:40px 60px;">
-    <div class="cr-title" style="margin-bottom:24px;">⚔ В путь!</div>
+    <div class="cr-title" style="margin-bottom:24px;" data-i18n="ui_pregame_title">⚔ В путь!</div>
     <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="pregame-text"></div>
     <div style="margin-top:24px;text-align:center;">
-      <button class="btn btn-p" id="btn-enter-forest">Войти в Зачарованный лес ⚔</button>
+      <button class="btn btn-p" id="btn-enter-forest" data-i18n="ui_btn_enter_forest">Войти в Зачарованный лес ⚔</button>
     </div>
   </div>
 </div>
@@ -534,59 +534,59 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
     </div>
     <div class="sb-stats">
       <div class="sb-stat">
-        <span class="sb-stat-label">Мастерство</span>
+        <span class="sb-stat-label" data-i18n="ui_lbl_skill">Мастерство</span>
         <span class="sb-stat-val" id="sb-skill">—</span>
       </div>
       <div class="sb-stat-bar"><div class="sb-stat-fill fill-skill" id="bar-skill"></div></div>
       <div class="sb-stat" style="margin-top:10px">
-        <span class="sb-stat-label">Выносливость</span>
+        <span class="sb-stat-label" data-i18n="ui_lbl_stamina">Выносливость</span>
         <span class="sb-stat-val" id="sb-stamina">—</span>
       </div>
       <div class="sb-stat-bar"><div class="sb-stat-fill fill-stamina" id="bar-stamina"></div></div>
       <div class="sb-stat" style="margin-top:10px">
-        <span class="sb-stat-label">Удача</span>
+        <span class="sb-stat-label" data-i18n="ui_lbl_luck">Удача</span>
         <span class="sb-stat-val" id="sb-luck">—</span>
       </div>
       <div class="luck-boxes" id="luck-boxes"></div>
     </div>
     <div class="sb-flask">
-      <div class="sb-stat-label" style="margin-bottom:6px">Фляга</div>
+      <div class="sb-stat-label" style="margin-bottom:6px" data-i18n="ui_lbl_flask">Фляга</div>
       <div class="flask-row">
         <div class="flask-pip" id="fp0"></div>
         <div class="flask-pip" id="fp1"></div>
-        <button class="flask-btn" id="flask-use" onclick="useFlask()">Выпить (+2 вын.)</button>
+        <button class="flask-btn" id="flask-use" onclick="useFlask()" data-i18n="ui_btn_flask">Выпить (+2 вын.)</button>
       </div>
     </div>
     <div class="sb-gold">
-      <span class="sb-gold-label">Золото</span>
+      <span class="sb-gold-label" data-i18n="ui_lbl_gold">Золото</span>
       <span class="sb-gold-val" id="sb-gold">15</span>
     </div>
     <div class="sb-section" id="sb-spells">
-      <div class="sb-section-title">Заклятия</div>
+      <div class="sb-section-title" data-i18n="ui_lbl_spells">Заклятия</div>
       <div id="spell-tags" style="display:grid;grid-template-columns:1fr 1fr;gap:3px;"></div>
       <button class="btn btn-s" id="btn-heal" onclick="useHealing()" style="display:none;width:100%;margin-top:6px;font-size:12px;padding:6px;background:rgba(40,180,100,.1);border-color:#2a8;color:#3c9;">💚 Исцеление (+8 вын.)</button>
     </div>
     <div class="sb-section" id="sb-inv">
-      <div class="sb-section-title">Заплечный мешок <span style="font-size:10px;opacity:.5" id="inv-count">(0/7)</span></div>
+      <div class="sb-section-title"><span data-i18n="ui_lbl_bag">Заплечный мешок</span> <span style="font-size:10px;opacity:.5" id="inv-count">(0/7)</span></div>
       <div id="inv-list"></div>
-      <span class="inv-add" id="inv-add-btn" onclick="toggleAddItem()" style="font-size:10px;opacity:.25;cursor:pointer" title="Добавить предмет вручную">+</span>
+      <span class="inv-add" id="inv-add-btn" onclick="toggleAddItem()" style="font-size:10px;opacity:.25;cursor:pointer" title="Добавить предмет вручную" data-i18n-title="ui_title_add_item">+</span>
       <div id="add-item-area" style="display:none">
         <div class="add-item-wrap">
-          <input class="add-item-input" id="add-item-input" placeholder="Название предмета" maxlength="40">
+          <input class="add-item-input" id="add-item-input" placeholder="Название предмета" maxlength="40" data-i18n-ph="ui_ph_add_item">
           <button class="add-item-ok" onclick="addItem()">OK</button>
         </div>
       </div>
     </div>
     <div class="sb-section sb-notes">
-      <div class="sb-section-title">Записки</div>
-      <textarea id="notes-ta" placeholder="Ваши заметки…" oninput="if(S)S.notes=this.value"></textarea>
+      <div class="sb-section-title" data-i18n="ui_lbl_notes">Записки</div>
+      <textarea id="notes-ta" placeholder="Ваши заметки…" oninput="if(S)S.notes=this.value" data-i18n-ph="ui_ph_notes"></textarea>
     </div>
     <div class="map-section" id="sb-map" style="display:none">
       <div class="map-section-title">
-        <span>🗺 Карта</span>
-        <button class="map-open-btn" onclick="openMapModal()">Открыть</button>
+        <span data-i18n="ui_lbl_map">🗺 Карта</span>
+        <button class="map-open-btn" onclick="openMapModal()" data-i18n="ui_btn_map_open">Открыть</button>
       </div>
-      <div class="map-mini-card" onclick="openMapModal()" title="Открыть карту (клавиша M)">
+      <div class="map-mini-card" onclick="openMapModal()" title="Открыть карту (клавиша M)" data-i18n-title="ui_title_map_open">
         <svg class="map-mini-svg" id="map-mini-svg" viewBox="0 0 1600 1000" xmlns="http://www.w3.org/2000/svg"></svg>
         <div class="map-mini-meta" id="map-mini-meta">
           <div><b>Текущий узел:</b> —</div>
@@ -596,14 +596,14 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
       </div>
     </div>
     <div style="padding:12px 20px;margin-top:auto;">
-      <button class="btn btn-s" style="width:100%;font-size:11px;padding:8px" onclick="openMenu()">☰ Меню</button>
+      <button class="btn btn-s" style="width:100%;font-size:11px;padding:8px" onclick="openMenu()" data-i18n="ui_btn_menu">☰ Меню</button>
     </div>
   </div>
 
   <!-- Main area -->
   <div class="main">
     <div class="scene-bg" id="scene-bg"></div>
-    <div class="img-loading" id="img-loading">🎨 Рисую сцену…</div>
+    <div class="img-loading" id="img-loading" data-i18n="ui_img_loading">🎨 Рисую сцену…</div>
     <div class="story-area" id="s-area">
       <div class="s-num" id="s-num">§ 1</div>
       <div class="s-text" id="s-text"></div>
@@ -617,7 +617,7 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 <!-- COMBAT MODAL -->
 <div class="modal-overlay" id="modal-combat">
   <div class="modal">
-    <h2>⚔ Бой!</h2>
+    <h2 data-i18n="ui_combat_title">⚔ Бой!</h2>
     <div id="combat-enemies"></div>
     <div class="combat-log" id="combat-log"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="combat-buttons">
@@ -625,8 +625,8 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
       <button class="btn btn-s" id="btn-force-spell" style="display:none;border-color:#7a5;color:#9d6;" onclick="useForceInCombat()">💪 Заклятие Силы</button>
       <button class="btn btn-s" id="btn-weakness-spell" style="display:none;border-color:#a76;color:#d96;" onclick="useWeaknessInCombat()">🫀 Заклятие Слабости</button>
       <button class="btn btn-s" id="btn-copy-spell" style="display:none;border-color:#666;color:#999;" onclick="useCopyInCombat()">👤 Заклятие Копии</button>
-      <button class="btn btn-s" id="btn-summon-ally" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;">🐻 Позвать союзника</button>
-      <button class="btn btn-s" id="btn-summon-ally2" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;">🐻 Позвать союзника</button>
+      <button class="btn btn-s" id="btn-summon-ally" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;" data-i18n="ui_btn_summon_ally">🐻 Позвать союзника</button>
+      <button class="btn btn-s" id="btn-summon-ally2" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;" data-i18n="ui_btn_summon_ally">🐻 Позвать союзника</button>
       <button class="btn btn-s" id="btn-heal-spell" style="display:none;border-color:#2a8;color:#3c9;" onclick="useHealingInCombat()">💚 Заклятие Исцеления</button>
     </div>
   </div>
@@ -635,9 +635,9 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 <!-- LUCK MODAL -->
 <div class="modal-overlay" id="modal-luck">
   <div class="modal" style="text-align:center">
-    <h2>🎲 Проверка Удачи</h2>
+    <h2 data-i18n="ui_luck_title">🎲 Проверка Удачи</h2>
     <div id="luck-info"></div>
-    <button class="btn btn-g" id="btn-luck-roll" onclick="doLuckCheck()">Бросить кубик</button>
+    <button class="btn btn-g" id="btn-luck-roll" onclick="doLuckCheck()" data-i18n="ui_btn_luck_roll">Бросить кубик</button>
     <div class="luck-result" id="luck-result"></div>
     <div id="luck-choices" style="margin-top:16px"></div>
   </div>
@@ -645,25 +645,25 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 
 <!-- DEATH -->
 <div class="end-overlay" id="end-death">
-  <div class="end-title death">† Гибель</div>
+  <div class="end-title death" data-i18n="ui_death_title">† Гибель</div>
   <p class="end-text" id="death-text">Ваше путешествие окончено. Зачарованный лес поглотил ещё одного смельчака…</p>
-  <button class="btn btn-p" onclick="location.reload()">Начать заново</button>
+  <button class="btn btn-p" onclick="location.reload()" data-i18n="ui_btn_restart">Начать заново</button>
 </div>
 
 <!-- WIN -->
 <div class="end-overlay" id="end-win">
-  <div class="end-title win">✦ Победа!</div>
-  <p class="end-text">Барлад Дэрт повержен! Принцесса свободна! Слава вам, герой!</p>
-  <button class="btn btn-p" onclick="location.reload()">Играть снова</button>
+  <div class="end-title win" data-i18n="ui_win_title">✦ Победа!</div>
+  <p class="end-text" data-i18n="ui_win_text">Барлад Дэрт повержен! Принцесса свободна! Слава вам, герой!</p>
+  <button class="btn btn-p" onclick="location.reload()" data-i18n="ui_btn_play_again">Играть снова</button>
 </div>
 
 <!-- EVENT LOG -->
-<button class="event-log-btn" id="event-log-btn" onclick="toggleEventLog()" style="display:none">📜 Журнал</button>
+<button class="event-log-btn" id="event-log-btn" onclick="toggleEventLog()" style="display:none" data-i18n="ui_btn_log">📜 Журнал</button>
 <div class="event-log-panel" id="event-log-panel">
   <div class="event-log-header">
-    <h3>📜 Журнал событий</h3>
+    <h3 data-i18n="ui_log_title">📜 Журнал событий</h3>
     <div>
-      <button class="event-log-clear" onclick="clearEventLog()">Очистить</button>
+      <button class="event-log-clear" onclick="clearEventLog()" data-i18n="ui_btn_clear_log">Очистить</button>
       <button class="event-log-close" onclick="toggleEventLog()">✕</button>
     </div>
   </div>
@@ -673,12 +673,12 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 <!-- INVENTORY MODAL -->
 <div class="modal-overlay" id="modal-inventory">
   <div class="modal" style="max-width:550px;">
-    <h2>🎒 Найдены предметы!</h2>
+    <h2 data-i18n="ui_inv_title">🎒 Найдены предметы!</h2>
     <div id="inv-modal-text" style="font-size:16px;color:var(--muted);margin-bottom:12px;"></div>
     <div id="inv-modal-found" style="margin-bottom:16px;"></div>
     <div id="inv-modal-current" style="margin-bottom:16px;"></div>
     <div style="text-align:center;">
-      <button class="btn btn-p" id="btn-inv-done" onclick="closeInvModal()">Готово</button>
+      <button class="btn btn-p" id="btn-inv-done" onclick="closeInvModal()" data-i18n="ui_btn_done">Готово</button>
     </div>
   </div>
 </div>
@@ -688,8 +688,8 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
   <div class="modal" style="padding:0;max-width:none;width:auto;">
     <div class="map-modal-shell">
       <div class="map-modal-side">
-        <div class="map-title">🗺 Карта приключения</div>
-        <div class="map-sub">Карта строится в реальном времени: открытые узлы видны, пройденные пути подсвечиваются золотом, непроверенные выходы на развилках показываются короткими пунктирными stub-сегментами.</div>
+        <div class="map-title" data-i18n="ui_map_title">🗺 Карта приключения</div>
+        <div class="map-sub" data-i18n="ui_map_sub">Карта строится в реальном времени: открытые узлы видны, пройденные пути подсвечиваются золотом, непроверенные выходы на развилках показываются короткими пунктирными stub-сегментами.</div>
         <div class="map-controls">
           <select id="map-layer-select"></select>
           <button onclick="zoomGameMap(1)">＋</button>
@@ -698,12 +698,12 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
           <button onclick="toggleGameMapFullscreen()">Fullscreen</button>
         </div>
         <div class="map-legend">
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#7f5f36"></span>перекрёсток / узел</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#8d4b32"></span>дом / деревня</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#2f6e8d"></span>вода / берег</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#444"></span>замок / ворота</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#d2aa2a"></span>пройденный путь</div>
-          <div class="map-legend-item"><span class="map-legend-sw" style="background:#fff1a6"></span>победа в бою</div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#7f5f36"></span><span data-i18n="ui_leg_node">перекрёсток / узел</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#8d4b32"></span><span data-i18n="ui_leg_house">дом / деревня</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#2f6e8d"></span><span data-i18n="ui_leg_water">вода / берег</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#444"></span><span data-i18n="ui_leg_castle">замок / ворота</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#d2aa2a"></span><span data-i18n="ui_leg_path">пройденный путь</span></div>
+          <div class="map-legend-item"><span class="map-legend-sw" style="background:#fff1a6"></span><span data-i18n="ui_leg_victory">победа в бою</span></div>
         </div>
         <div class="map-note" id="map-state-note">Загрузка карты…</div>
       </div>
@@ -712,7 +712,7 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
           <div class="map-toolbar-left" id="map-topbar-layer">fog of war · fullscreen · progress</div>
           <div class="map-toolbar-right">
             <span id="map-topbar-status" style="margin-right:12px;"></span>
-            <button onclick="closeModal('overlay-map')">Закрыть (M)</button>
+            <button onclick="closeModal('overlay-map')" data-i18n="ui_btn_map_close">Закрыть (M)</button>
           </div>
         </div>
         <div class="map-stage">
@@ -728,15 +728,15 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 <!-- MENU -->
 <div class="modal-overlay" id="overlay-menu">
   <div class="menu-content">
-    <h2>Меню</h2>
+    <h2 data-i18n="ui_menu_title">Меню</h2>
     <div class="lang-pick-row" id="lang-pick-menu" style="display:flex;justify-content:center;align-items:center;gap:2px;margin-bottom:18px;flex-wrap:wrap;"></div>
-    <button class="btn btn-s menu-btn" onclick="exportSave()">💾 Экспорт сохранения</button>
+    <button class="btn btn-s menu-btn" onclick="exportSave()" data-i18n="ui_menu_export">💾 Экспорт сохранения</button>
     <label class="btn btn-s menu-btn" style="display:block;cursor:pointer">
-      📂 Импорт сохранения
+      <span data-i18n="ui_menu_import">📂 Импорт сохранения</span>
       <input type="file" accept=".json" style="display:none" onchange="importSave(event)">
     </label>
-    <button class="btn btn-d menu-btn" onclick="if(confirm('Начать новую игру?')){localStorage.removeItem(SAVE_KEY);location.reload();}">🗑 Новая игра</button>
-    <button class="btn btn-s menu-btn" onclick="closeModal('overlay-menu')">← Закрыть</button>
+    <button class="btn btn-d menu-btn" onclick="if(confirm(t('ui_confirm_new_game'))){localStorage.removeItem(SAVE_KEY);location.reload();}" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
+    <button class="btn btn-s menu-btn" onclick="closeModal('overlay-menu')" data-i18n="ui_btn_menu_close">← Закрыть</button>
   </div>
 </div>
 
