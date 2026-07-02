@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-06-18",
+  "last_updated": "2026-07-01",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -99,7 +99,8 @@
     "v2.91 → v2.92": "June 2026 (2026-06-16) — Root-doc currency refresh (doc-only). PROJECT_NOTES.md gained an 'Engine features' section (combat summons / two amulets / post_combat / six grant mechanisms / paragraph-jump static gating) and had stale stats corrected (v2.91, reachability 1205/1221, dist 11.6 MB, book_1991_extracted.txt, audit_cycles/). README.md gained summon + post_combat bullets and corrected size/version. QUICKSTART.md lost a phantom data/ line. group_64_2026_06_16_root_docs_refresh. No code/data change.",
     "v2.92 → v2.93": "June 2026 (2026-06-17) — Group A of the three-model re-audit: 6 data-only edits. §790 add inventory_condition Корона (P1: was skipping the 6-lion fight). §1088 spell:WEAKNESS -> combat_mod:PLAYER_MINUS2 (P1: reflected-Weakness -2 was never applied + double-spent the charge; now mirrors §39/§865). §944 add inventory_condition Водолазный костюм. §343 add inventory_condition Золотой свисток. §1090 add consume_on_use to the 3 gift choices (Перо павлина/Серебряный браслет/Белая стрела). §672 add inventory_condition Перо павлина (cosmetic). node --check OK; harness 21/21; 1221/1205/0/76/116 unchanged. group_65_2026_06_17_remake_bug_reports_groupA.",
     "v2.93 → v2.94": "June 2026 (2026-06-17) — Group B of the three-model re-audit: 3 obtainability/statefulness chains, 5 data-only edits. §457 grant «Чёрная жемчужина» + §468 gate (P2: pearl was unobtainable & the loot-skip ungated). §662 grant «Бляха с золотым орлом» + §1196 gate/consume the eagle door + §871 now consumes «Белая стрела» (P2: plaque unobtainable & both stateful-door gaps). §76->487 +spell_any[8] (P2: ring «Перстень» was free; canon demands «любое заклятие»). node --check OK; harness 21/21; 1221/1205/0/76/116 unchanged. group_66_2026_06_17_remake_bug_reports_groupB.",
-    "v2.94 → v2.95": "June 2026 (2026-06-17) — Group C resolution. group_67: silver whistle obtainability fix (DATA, 3 paragraphs) — §303 ch->54 acquires 'Серебряный свисток' (was narrated but never granted), §819 ch->947 gate (non-lethal §819->1106 fallback), §947 ch->1030 consume on return. Skull family: canon searched in full and documented as an addendum on group_57 — the mechanic is canonical but faithful gating would create unavoidable item-gated deaths (all four gas-traps + the §1003 stone-rats reachable without the skull/sword sources, §1116 pickup unwired), so it is LEFT as-is by deliberate playability choice. node --check OK; harness 7/7; 1221/1205/0/76/116 unchanged."
+    "v2.94 → v2.95": "June 2026 (2026-06-17) — Group C resolution. group_67: silver whistle obtainability fix (DATA, 3 paragraphs) — §303 ch->54 acquires 'Серебряный свисток' (was narrated but never granted), §819 ch->947 gate (non-lethal §819->1106 fallback), §947 ch->1030 consume on return. Skull family: canon searched in full and documented as an addendum on group_57 — the mechanic is canonical but faithful gating would create unavoidable item-gated deaths (all four gas-traps + the §1003 stone-rats reachable without the skull/sword sources, §1116 pickup unwired), so it is LEFT as-is by deliberate playability choice. node --check OK; harness 7/7; 1221/1205/0/76/116 unchanged.",
+    "v2.95 → v2.96": "July 2026 (2026-07-01) — Track-B verification pass: NO code changes required; registry bookkeeping only. (1) P0 luck dead-ends: fatal-unlucky handling confirmed already implemented (renderChoices unlucky-fallback + doLuckCheck both route to showDeathOverlay); real fatal set is {289,377,418,421,1186}, each confirmed canonically fatal in FB2 with data lucky-targets matching canon (289→59, 377→123, 418→179, 421→577, 1186→1174); §203 additionally has the untyped fish-help fallback (→218); §456 is a combat paragraph (giant spider), previously misfiled as a luck dead-end. (2) group_1 gold-signs: §552/686/695/903/937 confirmed correct in GD and FB2-matched; §745 correctly has NO auto_items per the v2.39 supersession (10g lives on §1092 c[2] gold_cost) — a stale-notes re-application was attempted this session, caught, and reverted before commit; superseded note added to the group_1 §745 item to prevent recurrence. (3) group_2 items_v1 (§25/484/513/927/1147): FB2-verified this session, confirmed applied in GD; flags flipped to true."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -228,7 +229,8 @@
         },
         {
           "paragraph": 745,
-          "fix": "auto_items.gold:10 → auto_items.gold_sub:10"
+          "fix": "auto_items.gold:10 → auto_items.gold_sub:10",
+          "superseded": "v2.39 (group_21, 2026-05-28): the 10-gold deduction was moved OFF this paragraph onto the §1092 c[2]→745 choice (gold_cost:10 + gold_condition:10; the ONLY inbound link), charged on click. §745 auto_items must stay EMPTY — re-adding gold_sub:10 would double-charge 20 gold. Re-verified 2026-07-01 against GD + FB2 after a stale-notes near-miss (edit was applied, caught via this registry changelog, reverted before commit)."
         },
         {
           "paragraph": 903,
@@ -254,29 +256,30 @@
         {
           "paragraph": 25,
           "fix": "add auto_items.stamina_sub:2",
-          "verified_against_fb2": false
+          "verified_against_fb2": true
         },
         {
           "paragraph": 484,
           "fix": "add auto_items.stamina_add:2",
-          "verified_against_fb2": false
+          "verified_against_fb2": true
         },
         {
           "paragraph": 513,
           "fix": "add auto_items.stamina_add:3",
-          "verified_against_fb2": false
+          "verified_against_fb2": true
         },
         {
           "paragraph": 927,
           "fix": "add auto_items.stamina_add:8",
-          "verified_against_fb2": false
+          "verified_against_fb2": true
         },
         {
           "paragraph": 1147,
           "fix": "add auto_items.stamina_add:4",
-          "verified_against_fb2": false
+          "verified_against_fb2": true
         }
       ],
+      "items_v1_note": "All five items_v1 fixes (§25 stamina_sub:2, §484 stamina_add:2, §513 stamina_add:3, §927 stamina_add:8, §1147 stamina_add:4) verified against fb2_remake.fb2 on 2026-07-01 (canonical stat-effect wording matches exactly) and confirmed ALREADY APPLIED in src/game_structure.js (stat auto-effects landed with the group_32 batch, v2.60). Flags flipped to true; no code change required.",
       "items_v2": [
         {
           "paragraph": 74,
