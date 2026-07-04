@@ -104,7 +104,8 @@
     "v2.96 → v2.97": "July 2026 (2026-07-01) — Dynamic-target arithmetic cluster: full verification pass registered as group_69. FB2 sweep found 31 canonical add/subtract-N mechanics; GD wiring map shows all 31 accounted for (29 as hand-verified per-item static gates, 5 letter-sum riddles on the riddle engine incl. 95/435 confirmed this pass). Bird-guide subgraph 106/151/178/277 is wired via caged_bird -50 gates. Seven handoff-note offsets were wrong; GD matches canon. No universal runtime-arithmetic engine is needed. Two NEW open items: signet_487_no_consumer (canon adjudication: red herring vs alternative door key) and candle_328_overgrant (canon burns the candle out in-paragraph; proposed data-only removal). No code changes in this pass.",
     "v2.97 → v2.98": "July 2026 (2026-07-01) — group_69 item candle_328_overgrant FIXED (data-only): auto_items removed from par328; candle grants now exactly 600/929/1045 per canon (the candelabrum candle burns out in-paragraph). Registry-first check confirmed no prior supersession. Full battery + 1205 baseline green. signet_487_no_consumer remains OPEN pending canon adjudication.",
     "v2.98 → v2.99": "July 2026 (2026-07-01) — group_69 item signet_487_no_consumer FIXED (Option B, author decision): signet accepted as alternative key at the four castle doors (91/687/694/768) via array inventory_condition (engine OR was already native); copper-corridor doors 851/881 left key-specific per their narratives; four door labels neutralized to key-agnostic wording (6a snapshot updated). group_69 fully closed: both items DONE.",
-    "v2.99 → v2.100": "July 2026 (2026-07-01) — group_70: ART EXTERNALIZED (author directive). 75 binaries (7.58 MB) decoded from embedded base64 into assets/art/{mj,legacy,title} with roundtrip verification; the three art modules became relative-path maps (MJ_META/MJ_MAP/ILLUST_MAP verbatim); 3 data-URI templates trimmed in game_logic; build.sh copies assets/art -> dist/art. dist HTML 11.61 -> 1.49 MB; file:// double-click preserved (<img src> relative paths, no fetch). MJ binaries byte-identical to assets/illustrations/web (45/45). Distribution is now folder-based (HTML + art/)."
+    "v2.99 → v2.100": "July 2026 (2026-07-01) — group_70: ART EXTERNALIZED (author directive). 75 binaries (7.58 MB) decoded from embedded base64 into assets/art/{mj,legacy,title} with roundtrip verification; the three art modules became relative-path maps (MJ_META/MJ_MAP/ILLUST_MAP verbatim); 3 data-URI templates trimmed in game_logic; build.sh copies assets/art -> dist/art. dist HTML 11.61 -> 1.49 MB; file:// double-click preserved (<img src> relative paths, no fetch). MJ binaries byte-identical to assets/illustrations/web (45/45). Distribution is now folder-based (HTML + art/).",
+    "v2.100 → v2.101": "July 2026 (2026-07-04) — group_71: full external-audit adjudication. ChatGPT DR dismissed (wrong canon source - browsed mir-knigi, its par6/11/15/16 do not match fb2_remake); Gemini fruit/missing-source claims = truncation false positives, but 5 Gemini ART findings confirmed -> backlog (688 throne sorcerer, art33 over-map 46/96/112, legacy 56 mis-binding); Claude read-only auditor verified. FIXED: par540 letter signature restored, par1203 lead sentence restored, par884 c2 label door-not-stairs (all FB2-verified; 6a snapshot updated), README stats 2212/155/51 with endings definition. DOCUMENTED: two intentional deviation conventions (ortho-pass x25, imperative tails x14, full lists in group_71) + TRANSLATION_GUIDE 3.3 machine-fragment ui keys. OPEN: ui fragment refactor, art backlog, engine low-pri notes."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -247,6 +248,43 @@
         "date": "2026-07-01",
         "verified": true
       }
+    },
+    "group_71_2026_07_04_full_audit_adjudication": {
+      "comment": "Full external audit 2026-07 (ChatGPT Deep Research + Gemini T1-T3 paste-kit + independent Claude read-only auditor; briefs and reports in _handoff/audit_2026_07, git-ignored). Every finding canon-verified (registry -> FB2 -> code) before action; this group records the adjudication, the fixes and the remaining backlog.",
+      "adjudication": "ChatGPT DR report DISMISSED - wrong canon source: it browsed mir-knigi instead of the repo FB2 (its par6/11/15/16 describe woodcutters / dying-bandit-flask / water-elemental / three-bats, while fb2_remake par6/11/15/16 are levitation-boat / host-farewell / night-rest / item-offer). Neither its findings nor its clean-list are usable. Gemini par300-vs-par574 fruit desync = FALSE POSITIVE (canon gives a watermelon at 300 and demands a banana at 574; banana has six sources: 75 food, 132/340/381 grants_food, 471 food, 1109 bet_payout). Gemini missing-source items = truncation FPs (flying_carpet 227 acquires, eagle_plaque 662 items, mirror_secret 660/923/937/1174). Gemini art findings x5 CONFIRMED (see art_audit_2026_07_backlog). Claude auditor findings verified independently and fixed/registered below; full report: _handoff/audit_2026_07/REPORT_CLAUDE.md.",
+      "items": [
+        {
+          "id": "text_fixes_540_1203_884",
+          "status": "DONE",
+          "resolution": "par540: restored letter signature + closing guillemet ('Sila Demona. Mark».') - FB2-verified; opening guillemet was present, quote now balanced. par1203: restored lost narrative lead 'Vot i pervyj perekrestok.' (imperative tail kept per convention). par884 c[2] label: 'podnyatsya po lestnitse' -> 'vyjti cherez dver obratno' per FB2 (both 884 and 42 speak only of doors). 6a golden snapshot updated for exactly these three entries."
+        },
+        {
+          "id": "deviation_classes_documented",
+          "status": "DONE",
+          "detail": "Full 1221-paragraph diff vs FB2: 1179 exact, 42 deltas. Besides par849 (already registered) and the three fixes above, two INTENTIONAL unregistered classes are hereby documented as project conventions: (1) ORTHO-PASS over FB2 OCR/grammar defects - 25 paragraphs: 26,59,62,161,309,351,395,431,567,632,730,764,794,856,945,980,989,1041,1090,1115,1117,1167,1168,1179,1210 (locale is correct, FB2 is defective: 'iz pod'->'iz-pod', 'ne smotrya'->'nesmotrya', 'tolu'->'stolu', 'ga'->'na', 'drat'->'dratsya', 'tyanutsya' fix). (2) IMPERATIVE REPHRASING of trailing questions into button style - 14 paragraphs: 97,132,171,229,243,248,273,296,302,321,350,884,1071,1202 (option content and targets preserved). Future audits must NOT resurrect these as bugs. Cosmetic outliers inside class 2 (labels 350[0] and 273[0] still carry the FB2 question verbatim) - optional polish, not defects."
+        },
+        {
+          "id": "ui_machine_fragment_keys",
+          "status": "OPEN",
+          "detail": "12 LOCALE_RU.ui values carry HTML/JS fragments from the Phase-1 harvest (worst six: onload_this_classlist_add_loaded, vzyat_2, ostalos_2, title_vybrosit, title_sest, vam_povezlo; plus open-span neverno_ostalos_popytok, attr-tail alt_podzemelya_chernogo_zamka, vyn_style_color_3c9_cursor_point, paired half-keys v_meshke/ves_inventar; self-contained markup: podzemelya_chernogo_zamka, zhurnal_pust, naydeno, pusto, meshok_pust). Works only while RU values stay byte-equal to the original code; translating the fragile ones breaks legacy art, the Take button or riddle feedback. Mitigation DONE: TRANSLATION_GUIDE section 3.3 lists them with a byte-preservation rule. Proper fix (this item): move code fragments back into game_logic templates, leaving only human text in the locale (for onload_... only the alt text; t('illyustraciya') already exists)."
+        },
+        {
+          "id": "readme_stats_synced",
+          "status": "DONE",
+          "resolution": "Choices 2156 -> 2212; auto-effect paragraphs 78 -> 155 with auto_items (105 stat + 50 items/food only); endings 60 -> 51 terminal paragraphs (no choices, no riddle; incl. victory 1220) with the definition now stated in the table. Counts independently recomputed from GD this session, matching the auditor."
+        },
+        {
+          "id": "art_audit_2026_07_backlog",
+          "status": "OPEN",
+          "detail": "Gemini findings verified against MJ_META/MJ_MAP/ILLUST_MAP + FB2 this session: (1) par688 art14_throne scene 'Dark sorcerer on throne' vs canonically EMPTY searched throne -> regenerate without the sorcerer (keep ominous empty black throne). (2) art33_green_knights ('Three green-armored knights blocking path', on foot) over-mapped to 46/96/112: par46 canon = TWO MOUNTED knights (hero at -1 udar), par96 = ONE knight, par112 = dialogue/flee scene with no combat -> recommend unmap 112 (and likely 96) + regen plan for 46 (two mounted). (3) legacy 2_26db374703c7adf02479eb5ce9f8e4f0.jpg (merchant; correct at 36/83) also mapped to par56 orc-gate scene where 'torgovets' is only a bluff line (classic text-grep mis-binding) -> recommend unmap 56. Known backlog reconfirmed by Gemini: 449 two-headed dragon, 1003 stone rats, art09/26 princess duplicate. Regenerations await the Midjourney subscription; unmaps await the author's go-ahead."
+        },
+        {
+          "id": "engine_notes_low_pri",
+          "status": "OPEN",
+          "detail": "Verified auditor notes, no behaviour change needed now: (a) makePurchaseBtn RU-only price heuristic (digit+zolot regex, game_logic ~1191) would duplicate prices on non-RU locales - replace with a language-neutral marker at the next i18n increment; (b) renderGame dead-end check carries vestigial S.section!==617 (unreachable branch; remove on next touch of the function); (c) normalizeSave does not backfill numeric stats - hand-edited saves could NaN combat math; (d) applyBetting kind:item records a stake even if the item is absent (unreachable today: all set_stake entries gold/inventory-gated from 826); (e) dist favicon stays inline (7.3 KB data:image/x-icon) - INTENTIONAL single-request icon for file://, recorded here as a group_70 addendum; (f) version_history mixes arrow styles (v2.10-v2.59 ASCII '->') plus one narrative key - cosmetic, chain verified continuous v1 -> v2.101."
+        }
+      ],
+      "verified": "2026-07-04"
     },
     "group_1_gold_sign_bugs": {
       "comment": "Pure data fix: paragraphs use auto_items.gold (positive add) instead of auto_items.gold_sub (subtraction). All are scenes where the player gives/throws/spends gold per the text, not receives it. Should be safe single commit.",
