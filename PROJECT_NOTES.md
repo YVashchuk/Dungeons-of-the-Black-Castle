@@ -45,21 +45,23 @@ Dungeons-of-the-Black-Castle/
 │   ├── pdf_original_1991.pdf   ← Scanned 1st-edition PDF (historical reference only)
 │   ├── book_1991_extracted.txt ← Decoded 1991 text (617 paragraphs) — adjudication source
 │   ├── book_text.md            ← Full text + corrections log (for Gemini/AI tools, MD format)
-│   ├── text_corrections.json   ← Authoritative correction registry (v2.91, 62 groups)
+│   ├── text_corrections.json   ← Authoritative correction registry (versioned; now v2.100, 70 groups)
 │   ├── analytical_report.pdf   ← Design analysis for Windows + Android adaptation
+│   ├── art/                    ← Canonical runtime art binaries (75 files, 7.6 MB) → copied to dist/art
 │   └── illustrations/
 │       ├── originals/          ← 46 Midjourney PNGs, FULL RESOLUTION (kept as source)
 │       └── web/                ← 46 web-optimised JPEGs (900px, Q82) for runtime
 ├── src/                        ← Game source (JS + HTML shell)
 │   ├── game_shell_top.html     ← HTML frame + CSS (still uses Google Fonts @import)
 │   ├── game_structure.js          ← GD = {1221 paragraph objects}, synced with dist
-│   ├── mj_art.js               ← Midjourney illustrations (base64 + MJ_MAP + MJ_META)
-│   ├── illustrations.js        ← Legacy 1991 b/w scans (fallback when no MJ art)
-│   ├── title_art.js            ← Title-screen lineart
+│   ├── locale.ru.js            ← LOCALE_RU: all game text (1221 paragraphs + labels + UI), reference locale
+│   ├── mj_art.js               ← MJ_META/MJ_MAP + relative-path map (binaries: assets/art/mj)
+│   ├── illustrations.js        ← Path map for legacy 1991 b/w scans (binaries: assets/art/legacy)
+│   ├── title_art.js            ← Title-art paths (binaries: assets/art/title)
 │   ├── map_module.js           ← Map / fog-of-war panel
 │   ├── game_logic.js           ← Engine: combat, luck, inventory, rendering, ally-summons, post-combat gating
-│   ├── mobile.css              ← (PREPARED, not active) Pixel 7a / iPhone 15 layout + safe-area
-│   └── fonts/                  ← (PREPARED, not active) Self-hosted woff2
+│   ├── mobile.css              ← Mobile layout (injected into the shell <style> by the build)
+│   └── fonts/                  ← Self-hosted woff2 (inlined as base64 by the build)
 │       ├── fonts.css           ← @font-face declarations (replacement for Google Fonts)
 │       └── *.woff2             ← 7 files, ~149 KB
 ├── art-pack/
@@ -67,10 +69,10 @@ Dungeons-of-the-Black-Castle/
 │       └── art_catalog.py      ← Programmatic catalog: 45 art entries
 ├── docs/
 │   ├── MIDJOURNEY_PROMPTS.md   ← All Midjourney prompts (incl. Batch 4) + hero --cref URL
-│   ├── GRAPH_AUDIT.md          ← Graph & UX audit (Gemini G-2 verified)
 │   └── PWA_IMPLEMENTATION.md   ← PWA activation plan (ChatGPT C-1 verified)
 ├── dist/                       ← Built artifacts
-│   ├── podzemelye-chyornogo-zamka-remake.html  ← BUILT single-file game (~11.6 MB)
+│   ├── podzemelye-chyornogo-zamka-remake.html  ← BUILT game HTML (~1.5 MB)
+│   ├── art/                    ← Runtime art copied from assets/art (75 files, 7.6 MB)
 │   ├── manifest.webmanifest    ← (PREPARED, not active) PWA install metadata
 │   ├── sw.js                   ← (PREPARED, not active) Service worker
 │   └── icons/                  ← (PREPARED, not active)
@@ -89,15 +91,11 @@ Dungeons-of-the-Black-Castle/
 
 ### "(PREPARED, not active)" files
 
-A set of assets is ready in the repo but not yet wired into the build:
+Still pending activation:
 
-- `src/mobile.css` and `src/fonts/*` — phone layout and self-hosted fonts
 - `dist/manifest.webmanifest`, `dist/sw.js`, `dist/icons/*` — PWA installation layer
 
-These are deliberately not integrated because activation requires:
-1. Modifying `src/game_shell_top.html` (remove Google Fonts @import, add manifest link, register service worker, update viewport tag).
-2. Updating `build.sh` to inline/copy the new assets.
-3. Deploying to an HTTPS origin (local `file://` does not support service workers).
+`src/mobile.css` and `src/fonts/*` are ACTIVE: the build injects `mobile.css` into the shell `<style>` and inlines the woff2 fonts as base64 (no Google Fonts at runtime). PWA remains deliberately unintegrated because activation requires adding the manifest link and service-worker registration to the shell and deploying to an HTTPS origin (`file://` does not support service workers).
 
 See `docs/PWA_IMPLEMENTATION.md` for the step-by-step activation guide.
 
@@ -173,33 +171,37 @@ Coverage (current, verified against `src/mj_art.js` / `src/illustrations.js`, re
 bash build.sh
 `
 
-The script concatenates these files in order:
+The script builds the shell (injecting `mobile.css` + inlined fonts), then concatenates these modules in order:
 1. `game_shell_top.html` — HTML+CSS frame, opens `<script>`
 2. `game_structure.js` — 1221-paragraph game data
-3. `illustrations.js` — legacy 1991 b/w scans (fallback)
-4. `title_art.js` — title-screen lineart
-5. `mj_art.js` — Midjourney illustrations (42 art-ids) + metadata
-6. `map_module.js` — map / fog-of-war panel
-7. `game_logic.js` — engine (renders MJ first, ILLUST fallback)
-8. closes `</script></body></html>`
+3. `locale.ru.js` — LOCALE_RU (all game text; reference locale)
+4. `illustrations.js` — path map for legacy 1991 b/w scans (fallback)
+5. `title_art.js` — title-art paths
+6. `mj_art.js` — MJ_META/MJ_MAP + path map (42 art-ids)
+7. `map_module.js` — map / fog-of-war panel
+8. `game_logic.js` — engine (renders MJ first, ILLUST fallback)
+9. closes `</script></body></html>` and copies `assets/art/` → `dist/art/` (75 files)
 
-Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~11.6 MB).
+Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~1.5 MB) + `dist/art/` (7.6 MB).
 
-> **Note:** the current `build.sh` does NOT yet include `mobile.css`, `fonts/`,
-> `manifest.webmanifest`, `sw.js`, or `icons/`. They will be added when PWA is
-> activated. Until then, `build.sh` produces the same self-contained HTML as before.
+> **Note:** `mobile.css` and `fonts/` ARE included (injected/inlined by the build).
+> `manifest.webmanifest`, `sw.js`, and `icons/` are still NOT wired — they join when
+> PWA is activated (HTTPS origin required).
 
-## Why single-file HTML?
+## Distribution model: lean HTML + art/ folder
 
-The deliverable is one big self-contained `.html` file (~11.6 MB with all MJ
-art baked in) so it plays from a local file without a server. Source files
-are kept modular under `src/` for maintainability; `build.sh` concatenates
-them into `dist/podzemelye-chyornogo-zamka-remake.html`.
+Since 2026-07-01 (registry group_70) the art payloads are NOT baked into the
+HTML. The deliverable is the `dist/` folder: a ~1.5 MB `.html` plus `art/`
+(75 binaries, 7.6 MB) next to it. It still plays from a local file without a
+server — images load through relative `<img src>` paths, which work under
+`file://` (no fetch/CORS involved). Keep `art/` next to the HTML when moving
+or sharing the game (zip the whole `dist/`). Source files stay modular under
+`src/`; `build.sh` assembles the HTML and copies the art.
 
 ## Engine features beyond basic Fighting-Fantasy mechanics
 
 These are the non-obvious mechanics a maintainer (or external auditor) must know.
-Authoritative detail lives in `assets/text_corrections.json` (the ledger, v2.91)
+Authoritative detail lives in `assets/text_corrections.json` (the ledger, v2.100)
 and the per-topic audits under `audit_cycles/`.
 
 ### Combat ally summons (item-summoned, NOT the Copy spell)
@@ -253,8 +255,8 @@ Section B = data-only backlog).
 
 ## Known gotchas
 
-1. **`src/game_structure.js` is synced from `dist/*.html`.** If you hand-edit `src/game_structure.js` and then rebuild, the edits will survive. But if someone improves the GD inside `dist/*.html` (e.g. ChatGPT polish pass) without updating `src/`, a subsequent rebuild from `src/` will REGRESS those improvements. Keep `src/` as the primary source of truth; re-sync from dist only when drift is detected (see `docs/GRAPH_AUDIT.md` section IV.3 for the procedure).
+1. **`src/game_structure.js` is synced from `dist/*.html`.** If you hand-edit `src/game_structure.js` and then rebuild, the edits will survive. But if someone improves the GD inside `dist/*.html` (e.g. ChatGPT polish pass) without updating `src/`, a subsequent rebuild from `src/` will REGRESS those improvements. Keep `src/` as the primary source of truth; re-sync from dist only when drift is detected (see `audit_cycles/archive_2026_04/GRAPH_AUDIT.md` section IV.3 for the procedure).
 
 2. **Static-unreachable ≠ unreachable in play.** A naive BFS over `choice.target` under-reports reachability, because several paragraphs are entered only via mechanics it cannot see (riddle `valid_targets`/`modifier` jumps, bird-guide −50, inventory-gated parallel exits). The current full audit (`audit_cycles/reachability_audit_june_2026/REACHABILITY_AUDIT.md`) finds **1205 / 1221 reachable**; the remaining **16** are documented Tier B/C "island" paragraphs (success-halves of conditional gates whose parent edge was dropped in the 1991→remaster renumbering) awaiting per-scene 1991 cross-ref before re-wiring — deliberately NOT auto-wired, to avoid mis-parenting twin outcomes.
 
-3. **Dragon §532 and the "dynamic-math" mechanics are implemented.** §532 uses `combat_condition:"wound_2"` (engine routes to §437 after two wounds). The former "+N arithmetic" items (fish §13, gold key §140, Book, ruby ring, …) ship as static inventory-gated choices — see the *Engine features* section above and `audit_cycles/dynamic_arithmetic_june_2026/ARITHMETIC_MAP.md`. `docs/GRAPH_AUDIT.md` is the original (now historical) Gemini audit; `assets/text_corrections.json` (v2.91) is the authoritative current state.
+3. **Dragon §532 and the "dynamic-math" mechanics are implemented.** §532 uses `combat_condition:"wound_2"` (engine routes to §437 after two wounds). The former "+N arithmetic" items (fish §13, gold key §140, Book, ruby ring, …) ship as static inventory-gated choices — see the *Engine features* section above and `audit_cycles/dynamic_arithmetic_june_2026/ARITHMETIC_MAP.md`. `audit_cycles/archive_2026_04/GRAPH_AUDIT.md` is the original (now historical) Gemini audit; `assets/text_corrections.json` (v2.100) is the authoritative current state.
