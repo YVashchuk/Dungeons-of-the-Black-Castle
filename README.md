@@ -10,7 +10,7 @@
 
 Откройте [`dist/podzemelye-chyornogo-zamka-remake.html`](dist/podzemelye-chyornogo-zamka-remake.html) в браузере (Chrome, Edge или Firefox).
 
-Игра работает **полностью offline** — никаких внешних зависимостей, никаких установок. Один самодостаточный HTML-файл (~11.6 MB).
+Игра работает **полностью offline** — никаких внешних зависимостей, никаких установок; открывается двойным кликом (`file://`). Дистрибутив — **папка**: HTML (~1.5 MB) + каталог `art/` (75 изображений, 7.6 MB) рядом с ним. Для передачи игры заархивируйте `dist/` целиком.
 
 ## ✨ Возможности
 
@@ -53,7 +53,7 @@
 | Узлов на карте (локаций) | 35 (+34 маркера-встречи) |
 | Цветных MJ-иллюстраций | 42 (45 файлов изображений) |
 | Параграфов покрыто цветным MJ-артом | 107 |
-| Ч/б иллюстраций (1991) | 21 файл (покрывают 56 параграфов) |
+| Ч/б иллюстраций (1991) | 28 файлов в наборе, используется 21 (покрывают 56 параграфов) |
 | Покрыто артом всего (MJ + ч/б) | 132 параграфа |
 
 ## 🏗 Структура репозитория
@@ -69,7 +69,8 @@ Dungeons-of-the-Black-Castle/
 ├── build.sh                            # Скрипт сборки src/* → dist/
 │
 ├── dist/                               # 🎮 Играбельный билд
-│   ├── podzemelye-chyornogo-zamka-remake.html   # Single-file игра (~11.6 MB)
+│   ├── podzemelye-chyornogo-zamka-remake.html   # Игра (HTML ~1.5 MB; арт лежит рядом в art/)
+│   ├── art/                            # 🖼 Внешний арт: mj/ 45 + legacy/ 28 + title/ 2 (75 файлов, 7.6 MB)
 │   ├── manifest.webmanifest            # (prepared) PWA install metadata
 │   ├── sw.js                           # (prepared) Service Worker
 │   ├── icons/                          # (prepared) PWA icons
@@ -84,13 +85,14 @@ Dungeons-of-the-Black-Castle/
 ├── src/                                # Исходники (собираются в dist)
 │   ├── game_shell_top.html             # HTML+CSS оболочка
 │   ├── game_structure.js                  # GD = 1221 параграф (синк с dist)
-│   ├── mj_art.js                       # 42 Midjourney иллюстрации (base64 + MJ_META)
-│   ├── illustrations.js                # 21 ч/б иллюстрация 1991 (fallback)
-│   ├── title_art.js                    # Lineart титула
+│   ├── locale.ru.js                    # LOCALE_RU: весь текст (1221 параграф + подписи + UI) — эталонная локаль
+│   ├── mj_art.js                       # MJ_META/MJ_MAP + карта путей (бинарники: assets/art/mj)
+│   ├── illustrations.js                # Карта путей ч/б сканов 1991 (fallback; бинарники: assets/art/legacy)
+│   ├── title_art.js                    # Пути к титульному арту (assets/art/title)
 │   ├── map_module.js                   # Модуль карты (fog-of-war)
 │   ├── game_logic.js                   # Игровая логика (MJ приоритет над ILLUST)
-│   ├── mobile.css                      # (prepared) Pixel 7a / iPhone 15 + safe-area-inset
-│   └── fonts/                          # (prepared) Self-hosted шрифты (149 KB Latin/Cyrillic + 28 KB Slavic)
+│   ├── mobile.css                      # Мобильная вёрстка (инжектится сборкой в <style>)
+│   └── fonts/                          # Самостоятельные шрифты (инлайнятся сборкой как base64)
 │       ├── fonts.css                   # @font-face: Cinzel, Cormorant, Veles, Cyrillic Old Face
 │       ├── Cinzel-lat.woff2 + CinzelDecorative-lat.woff2 + 4× CormorantGaramond
 │       ├── VelesRedone.woff2           # Slavic ornamental, для drop-caps
@@ -100,8 +102,9 @@ Dungeons-of-the-Black-Castle/
 │   ├── fb2_remake.fb2                  # Каноничный источник (1221 параграф)
 │   ├── pdf_original_1991.pdf           # Скан 1-го издания (только для справки)
 │   ├── book_text.md                    # Полный текст + corrections log (для Gemini/AI)
-│   ├── text_corrections.json           # Авторитетный реестр правок (v2.91, 62 групп)
+│   ├── text_corrections.json           # Авторитетный реестр правок (версионируемый; сейчас v2.100, 70 групп)
 │   ├── analytical_report.pdf           # Аналитический отчёт (Windows + Android)
+│   ├── art/                            # ✅ Канонические рантайм-бинарники арта (75 файлов, 7.6 MB) → dist/art
 │   └── illustrations/
 │       ├── originals/                  # 46 PNG в полном разрешении (НЕ ТРОГАТЬ)
 │       └── web/                        # 46 JPEG 900px Q82 (производные копии)
@@ -112,7 +115,6 @@ Dungeons-of-the-Black-Castle/
 │
 ├── docs/
 │   ├── MIDJOURNEY_PROMPTS.md           # Промпты всех артов (включая Batch 4) + hero --cref
-│   ├── GRAPH_AUDIT.md                  # Граф-аудит 1221 параграфа (от Gemini G-2)
 │   └── PWA_IMPLEMENTATION.md           # План активации PWA (от ChatGPT C-1)
 │
 ├── scripts/                            # Git push helpers
@@ -132,7 +134,7 @@ Dungeons-of-the-Black-Castle/
 bash build.sh
 ```
 
-Склеивает 7 файлов из `src/` в единый HTML в `dist/`. Порядок модулей определён в `build.sh`.
+Собирает оболочку (инжектируя `mobile.css` и шрифты), склеивает **8 модулей** из `src/` в `dist/podzemelye-chyornogo-zamka-remake.html` (~1.5 MB) и копирует `assets/art/` → `dist/art/` (75 файлов). Порядок модулей определён в `build.sh`.
 
 ## 🎨 Иллюстрации
 
@@ -151,7 +153,7 @@ bash build.sh
 
 ## 🧭 Дальше
 
-- [x] Граф-аудит игровой логики (см. [`docs/GRAPH_AUDIT.md`](docs/GRAPH_AUDIT.md))
+- [x] Граф-аудит игровой логики (архив: [`audit_cycles/archive_2026_04/GRAPH_AUDIT.md`](audit_cycles/archive_2026_04/GRAPH_AUDIT.md))
 - [x] Подготовка PWA (см. [`docs/PWA_IMPLEMENTATION.md`](docs/PWA_IMPLEMENTATION.md))
 - [x] Самостоятельные шрифты + 2 славянских шрифта (Veles Redone, Cyrillic Old Face)
 - [x] Sound pack (procedural fallback, 20 OGG в `dist/sounds/`)
@@ -164,6 +166,7 @@ bash build.sh
 - [x] Custom combat conditions (wound_2 для Дракона §532 — реализовано, движок → §437 после 2 ранений)
 - [x] §13 рыбка / §140 Золотой ключ — реализованы через переиспользуемые предметы-токены (renumbering-safe; см. text_corrections.json group_6 + commit 4573325)
 - [x] Схема локализации: реестр локалей, переключатель языка (сохранение + живая перерисовка), пикер, слой `data-i18n` для UI-обвязки — см. [`TRANSLATION_GUIDE.md`](TRANSLATION_GUIDE.md)
+- [x] Арт вынесен из HTML (75 бинарников → `art/`): dist = HTML ~1.5 MB + арт 7.6 MB; `file://` работает (group_70)
 - [ ] Перевод на EN/FR/UK (RU — эталонная локаль; движок готов, нужны сами переводы)
 - [ ] Визуальная проверка всех MJ артов на соответствие сцене (после Batch 4)
 
@@ -185,10 +188,12 @@ bash build.sh
 - **Ч/б иллюстрации 1991:** из сканов 1-го издания
 - **Цветные иллюстрации:** Midjourney v6 (2026), промпты в `docs/MIDJOURNEY_PROMPTS.md`
 
+**Источник истины.** Игровой текст — **русский**; эталон — `src/locale.ru.js`. За ним стоит канон: `assets/fb2_remake.fb2` — ремастер 1-го издания с исправлением ошибок (**1221 параграф**; библиография 1-го издания 1991 г.: <https://fantlab.ru/edition25230>) — и `assets/book_1991_extracted.txt` (текст 1991 г. для адьюдикации). Все **намеренные** правки и отклонения фиксируются в `assets/text_corrections.json`. При любом вопросе или несоответствии «текст ↔ книга» порядок сверки: **реестр → FB2 → 1991**. Расхождение, не отражённое в реестре, — баг данных: заведите запись, не «чините» текст молча.
+
 ## 🛠 Технологии
 
 - Vanilla JavaScript (без фреймворков)
-- Single-file HTML5 (~11.6 MB с иллюстрациями)
+- HTML5: один HTML ~1.5 MB + внешняя папка `art/` (7.6 MB); полностью офлайн с `file://` (относительные `<img src>`)
 - CSS3 + CSS Variables
 - SVG для карты и fog-of-war
 - Web Audio API для звуков
