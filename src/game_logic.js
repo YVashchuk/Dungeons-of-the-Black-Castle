@@ -103,10 +103,10 @@ function initTitle(){
   // handled by CSS (.t-rider-col img and .t-text-col #title-lettering img)
   // so the two-column title layout stays in sync with the responsive grid.
   if(typeof TITLE_RIDER!=='undefined'){
-    document.getElementById('title-rider').innerHTML=`<img src="data:image/jpeg;base64,${TITLE_RIDER}" alt="">`;
+    document.getElementById('title-rider').innerHTML=`<img src="${TITLE_RIDER}" alt="">`;
   }
   if(typeof TITLE_ART!=='undefined'){
-    document.getElementById('title-lettering').innerHTML=`<img src="data:image/png;base64,${TITLE_ART}${t('alt_podzemelya_chernogo_zamka')}`;
+    document.getElementById('title-lettering').innerHTML=`<img src="${TITLE_ART}${t('alt_podzemelya_chernogo_zamka')}`;
   } else {
     document.getElementById('title-lettering').innerHTML=t('podzemelya_chernogo_zamka');
   }
@@ -538,7 +538,7 @@ function renderGame(opts){
   if(!illustHtml&&typeof ILLUST_MAP!=='undefined'&&typeof ILLUST_DATA!=='undefined'){
     const imgFile=ILLUST_MAP[secKey];
     if(imgFile&&ILLUST_DATA[imgFile]){
-      illustHtml=`<div class="illustration-container legacy-scan"><img src="data:image/jpeg;base64,${ILLUST_DATA[imgFile]}${t('onload_this_classlist_add_loaded')}</div>`;
+      illustHtml=`<div class="illustration-container legacy-scan"><img src="${ILLUST_DATA[imgFile]}${t('onload_this_classlist_add_loaded')}</div>`;
     }
   }
   document.getElementById('s-text').innerHTML=illustHtml+fmtText(sec.text);

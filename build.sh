@@ -16,6 +16,7 @@
 #        game_structure.js → locale.ru.js → illustrations.js → title_art.js → mj_art.js
 #        → map_module.js → game_logic.js
 #   3. Close </script>, </body>, </html>.
+#   4. Copy static art assets: assets/art -> dist/art (externalized, group_70).
 #
 # ═══════════════════════════════════════════════════════════════
 
@@ -91,6 +92,18 @@ fi
   echo "</body>"
   echo "</html>"
 } >> "$OUTPUT"
+
+# ── Step 3: static art assets (externalized 2026-07-01, group_70) ──
+if [ -d "assets/art" ]; then
+  mkdir -p "$DIST_DIR/art"
+  cp -r assets/art/. "$DIST_DIR/art/"
+  ART_COUNT=0
+  for f in "$DIST_DIR"/art/*/*; do [ -f "$f" ] && ART_COUNT=$((ART_COUNT+1)); done
+  echo "🖼  Art assets copied: $ART_COUNT files -> $DIST_DIR/art/"
+else
+  echo "❌ Missing assets/art (externalized art payloads)"
+  exit 1
+fi
 
 # ── Sanity: <script>/</script> balance ──
 SCRIPTS_OPEN=$(grep -c "<script>" "$OUTPUT" || true)
