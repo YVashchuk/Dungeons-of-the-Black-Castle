@@ -70,6 +70,14 @@ function normalizeSave(s){
   if(typeof s.flask!=='number')   s.flask=0;
   if(typeof s.bagSize!=='number'||s.bagSize<7) s.bagSize=7; // §132: 9-slot bag upgrade (default 7)
   if(typeof s.section!=='number') s.section=1;
+  // Numeric stats - backfill so hand-edited saves cannot NaN combat math.
+  const num=(v)=>typeof v==='number'&&isFinite(v);
+  if(!num(s.skillMax))   s.skillMax=9;
+  if(!num(s.staminaMax)) s.staminaMax=18;
+  if(!num(s.luckMax))    s.luckMax=9;
+  if(!num(s.skill))   s.skill=s.skillMax;
+  if(!num(s.stamina)) s.stamina=s.staminaMax;
+  if(!num(s.luck))    s.luck=s.luckMax;
   // Runtime-only fields added in later sessions.
   if(!Array.isArray(s.eventLog))  s.eventLog=[];
   if(typeof s.shopBought!=='object'||s.shopBought===null||Array.isArray(s.shopBought)) s.shopBought={};
@@ -666,7 +674,7 @@ function renderGame(opts){
   const hasDice=!!sec.dice_roll;
   const hasPicker=!!sec.stake_picker;
   const visibleChoices=sec.choices.filter(ch=>passesInventoryCheck(ch)&&passesGoldCheck(ch));
-  if(!inCombatOrLuck&&!hasRiddle&&!hasDice&&!hasPicker&&visibleChoices.length===0&&S.section!==617){
+  if(!inCombatOrLuck&&!hasRiddle&&!hasDice&&!hasPicker&&visibleChoices.length===0){
     playSound('death');
     showDeathOverlay({sec:sec,secKey:secKey});
     return;
@@ -1186,9 +1194,10 @@ function makePurchaseBtn(ch, choiceIndex){
   const cost=ch.gold_cost||0;
   const grantsItems=Array.isArray(ch.grants_items)?ch.grants_items:(ch.grants_items?[ch.grants_items]:[]);
   const grantsStamina=ch.grants_stamina||0;
-  // Auto-append price to label if not already mentioned (skip for free items).
+  // Auto-append price if the label doesn't already mention the exact amount
+  // (language-neutral digit check; skip for free items).
   let displayLabel=ch.label||'';
-  if(cost>0&&!/\d\s*золот/i.test(displayLabel)){
+  if(cost>0&&!(new RegExp('\\b'+cost+'\\b').test(displayLabel))){
     displayLabel+=` — ${cost}${t('zol')}`;
   }
   btn.textContent=`💰 ${displayLabel}`;
@@ -1744,10 +1753,12 @@ function applyBetting(sec){
       logEvent('loss',t('stavka_2')+amt+t('zolotyh'),t('na_konu_ostalos')+S.gold);
     } else if(st.kind==='item'){
       const idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(st.name));
-      if(idx>=0) S.inventory.splice(idx,1);
-      S.bet_stake={kind:'item',name:st.name};
-      notifs.push(t('stavka')+invDisplay(st.name));
-      logEvent('loss',t('stavka_2')+invDisplay(st.name),t('na_konu'));
+      if(idx>=0){
+        S.inventory.splice(idx,1);
+        S.bet_stake={kind:'item',name:st.name};
+        notifs.push(t('stavka')+invDisplay(st.name));
+        logEvent('loss',t('stavka_2')+invDisplay(st.name),t('na_konu'));
+      } // defensive: no phantom stake when the item is absent (unreachable today - set_stake entries are gated)
     }
   }
   // 2) Payout + stake resolution
