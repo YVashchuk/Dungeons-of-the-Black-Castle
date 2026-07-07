@@ -2351,6 +2351,21 @@ const LOCALE_RU = {
 "1221":{"t":"ПРОВЕРЬТЕ СВОЮ УДАЧУ. Если вы удачливы, то — 357.\n\nЕсли нет, то один из орков начинает подозревать вас во лжи и говорит, что никакой вы не игрок, а шпион, пытающийся проникнуть в замок. Что ж, в этом случае придется пройти ворота боем — 628.","c":["Удача с вами (357)","Пройти ворота боем (628)"]}
 }
 };
+// ═══ LOCALE: EN skeleton (group_72) ═══
+// LOCALE_EN — English locale skeleton (group_72). Every value falls back to RU until translated.
+// Shape mirrors LOCALE_RU (see TRANSLATION_GUIDE.md). Filled incrementally via the i18n import pipeline;
+// missing keys are SAFE: resolvers use active → RU → key.
+const LOCALE_EN = {"langName":"English","spells":{},"allies":{},"ui":{},"enemies":{},"map":{},"p":{}};
+// ═══ LOCALE: FR skeleton (group_72) ═══
+// LOCALE_FR — French locale skeleton (group_72). Every value falls back to RU until translated.
+// Shape mirrors LOCALE_RU (see TRANSLATION_GUIDE.md). Filled incrementally via the i18n import pipeline;
+// missing keys are SAFE: resolvers use active → RU → key.
+const LOCALE_FR = {"langName":"Français","spells":{},"allies":{},"ui":{},"enemies":{},"map":{},"p":{}};
+// ═══ LOCALE: UK skeleton (group_72) ═══
+// LOCALE_UK — Ukrainian locale skeleton (group_72). Every value falls back to RU until translated.
+// Shape mirrors LOCALE_RU (see TRANSLATION_GUIDE.md). Filled incrementally via the i18n import pipeline;
+// missing keys are SAFE: resolvers use active → RU → key.
+const LOCALE_UK = {"langName":"Українська","spells":{},"allies":{},"ui":{},"enemies":{},"map":{},"p":{}};
 
 
 // ═══ DATA: legacy 1991 b/w scan illustrations (fallback) ═══
@@ -3754,7 +3769,7 @@ function showDeathOverlay(opts){
 // To add a language: create src/locale.<code>.js defining LOCALE_<CODE> (same shape as LOCALE_RU), register it
 // in LOCALES below, and add it to build.sh. Any key missing from the active locale falls back to RU, then to the raw key.
 const LOCALES = {};
-(function(){ if(typeof LOCALE_RU!=='undefined') LOCALES.ru=LOCALE_RU; })();
+(function(){ if(typeof LOCALE_RU!=='undefined') LOCALES.ru=LOCALE_RU; if(typeof LOCALE_EN!=='undefined') LOCALES.en=LOCALE_EN; if(typeof LOCALE_FR!=='undefined') LOCALES.fr=LOCALE_FR; if(typeof LOCALE_UK!=='undefined') LOCALES.uk=LOCALE_UK; })();
 const DEFAULT_LANG = 'ru';
 let activeLang = DEFAULT_LANG;
 let ACTIVE_LOCALE = LOCALES[DEFAULT_LANG] || (typeof LOCALE_RU!=='undefined'?LOCALE_RU:{});
