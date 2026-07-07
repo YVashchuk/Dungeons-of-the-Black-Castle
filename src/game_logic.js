@@ -106,7 +106,7 @@ function initTitle(){
     document.getElementById('title-rider').innerHTML=`<img src="${TITLE_RIDER}" alt="">`;
   }
   if(typeof TITLE_ART!=='undefined'){
-    document.getElementById('title-lettering').innerHTML=`<img src="${TITLE_ART}${t('alt_podzemelya_chernogo_zamka')}`;
+    document.getElementById('title-lettering').innerHTML=`<img src="${TITLE_ART}" alt="${t('alt_title_lettering')}">`;
   } else {
     document.getElementById('title-lettering').innerHTML=t('podzemelya_chernogo_zamka');
   }
@@ -298,7 +298,7 @@ function showInventoryModal(newItems, extraNotifs){
     row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);';
     row.id='inv-found-'+i;
     row.innerHTML=`<span style="font-size:16px;color:var(--parchment);">${invDisplay(item)}</span>
-      <button class="btn btn-s" style="font-size:13px;padding:4px 12px;" onclick="takeItem(${i}${t('vzyat_2')}</button>`;
+      <button class="btn btn-s" style="font-size:13px;padding:4px 12px;" onclick="takeItem(${i})">${t('vzyat')}</button>`;
     found.appendChild(row);
   });
   
@@ -315,7 +315,7 @@ function showInventoryModal(newItems, extraNotifs){
 
 function renderInvModalCurrent(){
   const cur=document.getElementById('inv-modal-current');
-  cur.innerHTML=t('v_meshke')+getBagUsed()+'/'+getBagSize()+'):</div>';
+  cur.innerHTML='<div style="font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;">'+t('v_meshke_lbl')+' ('+getBagUsed()+'/'+getBagSize()+'):</div>';
   if(S.inventory.length===0){
     cur.innerHTML+=t('pusto');
   } else {
@@ -323,7 +323,7 @@ function renderInvModalCurrent(){
       const row=document.createElement('div');
       row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);';
       row.innerHTML=`<span style="font-size:15px;color:var(--parchment);">${invDisplay(item)}</span>
-        <button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i}${t('title_vybrosit')}</button>`;
+        <button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i})" title="${t('vybrosit')}">\uD83D\uDDD1</button>`;
       cur.appendChild(row);
     });
   }
@@ -538,7 +538,7 @@ function renderGame(opts){
   if(!illustHtml&&typeof ILLUST_MAP!=='undefined'&&typeof ILLUST_DATA!=='undefined'){
     const imgFile=ILLUST_MAP[secKey];
     if(imgFile&&ILLUST_DATA[imgFile]){
-      illustHtml=`<div class="illustration-container legacy-scan"><img src="${ILLUST_DATA[imgFile]}${t('onload_this_classlist_add_loaded')}</div>`;
+      illustHtml=`<div class="illustration-container legacy-scan"><img src="${ILLUST_DATA[imgFile]}" onload="this.classList.add('loaded')" alt="${t('illyustraciya')}"/></div>`;
     }
   }
   document.getElementById('s-text').innerHTML=illustHtml+fmtText(sec.text);
@@ -719,8 +719,8 @@ function updateHUD(){
   const il=document.getElementById('inv-list');il.innerHTML='';
   if(S.inventory&&S.inventory.length>0){S.inventory.forEach((item,i)=>{
     const isFood=item&&typeof item==='object'&&item.kind==='food';
-    const eatBtn=isFood?`<span class="inv-eat" onclick="eatFood(${i}${t('title_sest')}${item.stamina}${t('vyn_style_color_3c9_cursor_point')}</span>`:'';
-    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i}${t('title_vybrosit')}</span></span></div>`;});}
+    const eatBtn=isFood?`<span class="inv-eat" onclick="eatFood(${i})" title="${t('syest')} (+${item.stamina}${t('vyn')})" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">\uD83C\uDF74</span>`:'';
+    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i})" title="${t('vybrosit')}">\uD83D\uDDD1</span></span></div>`;});}
   else{il.innerHTML=t('meshok_pust');}
   document.getElementById('inv-count').textContent=`(${getBagUsed()}/${getBagSize()})`;
   // Notes
@@ -1149,7 +1149,7 @@ function renderRiddle(sec){
   const fb=document.createElement('div');
   fb.id='riddle-feedback';
   fb.className=used>0?'riddle-feedback':'riddle-feedback hidden';
-  fb.innerHTML=t('neverno_ostalos_popytok')+remaining+'</span>';
+  fb.innerHTML=t('neverno_ostalos')+'<span id="riddle-attempts">'+remaining+'</span>';
   wrap.appendChild(fb);
   // Optional fail-target manual exit (canon-compliant for sec.992 where
   // the spider explicitly says "если не знаете ответа, уходите — 1123").
