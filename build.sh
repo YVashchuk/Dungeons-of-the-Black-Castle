@@ -13,7 +13,7 @@
 #      mobile-aware on first cold launch (no Google Fonts dependency,
 #      no external dist/fonts/ directory needed).
 #   2. Append the JS modules in fixed order:
-#        game_structure.js → locale.ru.js → illustrations.js → title_art.js → mj_art.js
+#        game_structure.js → locale.ru.js → locale.{en,fr,uk}.js → illustrations.js → title_art.js → mj_art.js
 #        → map_module.js → game_logic.js
 #   3. Close </script>, </body>, </html>.
 #   4. Copy static art assets: assets/art -> dist/art (externalized, group_70).
@@ -33,6 +33,9 @@ REQUIRED_FILES=(
   game_shell_top.html
   game_structure.js
   locale.ru.js
+  locale.en.js
+  locale.fr.js
+  locale.uk.js
   illustrations.js
   title_art.js
   mj_art.js
@@ -67,6 +70,12 @@ fi
   echo ""
   echo "// ═══ LOCALE: RU text (paragraph prose + choice labels) ═══"
   cat "$SRC_DIR/locale.ru.js"
+echo "// ═══ LOCALE: EN skeleton (group_72) ═══"
+cat "$SRC_DIR/locale.en.js"
+echo "// ═══ LOCALE: FR skeleton (group_72) ═══"
+cat "$SRC_DIR/locale.fr.js"
+echo "// ═══ LOCALE: UK skeleton (group_72) ═══"
+cat "$SRC_DIR/locale.uk.js"
   echo ""
   echo ""
   echo "// ═══ DATA: legacy 1991 b/w scan illustrations (fallback) ═══"

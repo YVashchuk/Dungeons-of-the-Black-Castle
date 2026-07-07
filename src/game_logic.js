@@ -431,7 +431,7 @@ function showDeathOverlay(opts){
 // To add a language: create src/locale.<code>.js defining LOCALE_<CODE> (same shape as LOCALE_RU), register it
 // in LOCALES below, and add it to build.sh. Any key missing from the active locale falls back to RU, then to the raw key.
 const LOCALES = {};
-(function(){ if(typeof LOCALE_RU!=='undefined') LOCALES.ru=LOCALE_RU; })();
+(function(){ if(typeof LOCALE_RU!=='undefined') LOCALES.ru=LOCALE_RU; if(typeof LOCALE_EN!=='undefined') LOCALES.en=LOCALE_EN; if(typeof LOCALE_FR!=='undefined') LOCALES.fr=LOCALE_FR; if(typeof LOCALE_UK!=='undefined') LOCALES.uk=LOCALE_UK; })();
 const DEFAULT_LANG = 'ru';
 let activeLang = DEFAULT_LANG;
 let ACTIVE_LOCALE = LOCALES[DEFAULT_LANG] || (typeof LOCALE_RU!=='undefined'?LOCALE_RU:{});

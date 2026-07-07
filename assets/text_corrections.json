@@ -108,7 +108,8 @@
     "v2.100 → v2.101": "July 2026 (2026-07-04) — group_71: full external-audit adjudication. ChatGPT DR dismissed (wrong canon source - browsed mir-knigi, its par6/11/15/16 do not match fb2_remake); Gemini fruit/missing-source claims = truncation false positives, but 5 Gemini ART findings confirmed -> backlog (688 throne sorcerer, art33 over-map 46/96/112, legacy 56 mis-binding); Claude read-only auditor verified. FIXED: par540 letter signature restored, par1203 lead sentence restored, par884 c2 label door-not-stairs (all FB2-verified; 6a snapshot updated), README stats 2212/155/51 with endings definition. DOCUMENTED: two intentional deviation conventions (ortho-pass x25, imperative tails x14, full lists in group_71) + TRANSLATION_GUIDE 3.3 machine-fragment ui keys. OPEN: ui fragment refactor, art backlog, engine low-pri notes.",
     "v2.101 → v2.102": "July 2026 (2026-07-04) — group_71 ui_machine_fragment_keys REFACTORED: 8 DOM-fragment ui values returned to engine templates; locale -8/+5 keys; TRANSLATION_GUIDE 3.3 rewritten (remaining: paired-punctuation text keys + self-contained divs); 6c-1/6c-2 golden manifests synced (-2/-6). Art decision recorded on art_audit_2026_07_backlog: NO unmaps, all five confirmed mismatches queued for Midjourney regeneration (incl. new MJ art for 56 to supersede the legacy mis-binding). ChatGPT re-run brief v2 issued (attached canon + GitHub code access; external book readers banned).",
     "v2.102 → v2.103": "July 2026 (2026-07-04) — ChatGPT v2 re-run adjudicated (group_71): handshake passed (right canon this time), zero findings; its two numeric claims independently confirmed against FB2 + engine (starting gold 15, spell budget MAX_SP=10 with flask:2 bonus match); prose garbles noted; treated as weak corroboration, no actions derived. The 2026-07 external audit cycle is fully closed.",
-    "v2.103 → v2.104": "July 2026 (2026-07-05) — group_71 engine_notes_low_pri CLOSED (hygiene batch): language-neutral price check (RU regex gone), S.section!==617 vestige removed (GD 617 verified combat), normalizeSave numeric backfill (13/13 functional harness), applyBetting phantom-stake guard; favicon + changelog arrows recorded as no-action. Sibling deferred: fmtText Cyrillic [A-Ya] sentence-break class -> first translation increment. group_71 now has a single OPEN item: art_audit_2026_07_backlog (awaits Midjourney)."
+    "v2.103 → v2.104": "July 2026 (2026-07-05) — group_71 engine_notes_low_pri CLOSED (hygiene batch): language-neutral price check (RU regex gone), S.section!==617 vestige removed (GD 617 verified combat), normalizeSave numeric backfill (13/13 functional harness), applyBetting phantom-stake guard; favicon + changelog arrows recorded as no-action. Sibling deferred: fmtText Cyrillic [A-Ya] sentence-break class -> first translation increment. group_71 now has a single OPEN item: art_audit_2026_07_backlog (awaits Midjourney).",
+    "v2.104 → v2.105": "July 2026 (2026-07-05) — group_72: EN/FR/UK translation programme launched. Infrastructure DONE: minimal locale skeletons + LOCALES registration + build.sh (picker now offers 4 languages, all falling back to RU); i18n_ru_fallback smoke scenario added for Agent Mode; scripts/i18n_export.py shipped and run (3433 units -> 67 chunks); translation brief with trilingual glossary and per-assignee protocols (ChatGPT EN + FR, Gemini UK paste-only, Claude UI layer + validator). OPEN: 3 UI layers, 3 prose sets, import validator, fmtText sentence-break class."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -292,6 +293,72 @@
         }
       ],
       "verified": "2026-07-04"
+    },
+    "group_72_2026_07_05_translations_en_fr_uk": {
+      "comment": "Translation programme EN/FR/UK (author directive 2026-07-05). RU stays the reference locale; fallback active->RU->key makes partial translations fully playable. Division of labour: prose (1221 paragraphs + 2212 labels = 3433 units) -> external LLMs via the @@-marker chunk pipeline; the whole UI layer (ui keys, enemies, map, spells, allies, preface, pregame) -> Claude in-session; validation/import -> Claude.",
+      "items": [
+        {
+          "id": "infrastructure_skeletons",
+          "status": "DONE",
+          "resolution": "src/locale.{en,fr,uk}.js minimal skeletons (langName + empty sections; resolvers are guarded, everything falls back to RU); registered in the LOCALES IIFE; build.sh REQUIRED_FILES + concat updated (order: locale.ru -> en -> fr -> uk); picker now offers 4 languages. Full battery 15/15, baseline 1205, dist carries 3 consts + 3 registrations."
+        },
+        {
+          "id": "smoke_i18n_ru_fallback",
+          "status": "DONE",
+          "resolution": "Scenario i18n_ru_fallback_non_russian_lang added to scripts/find_smoke_paths.py and regenerated into SMOKE_TEST_PATHS.md (for ChatGPT Agent Mode): switch to any non-RU locale and verify the whole game renders in Russian via fallback, no raw key names, document.title set, live switch back."
+        },
+        {
+          "id": "export_pipeline",
+          "status": "DONE",
+          "resolution": "scripts/i18n_export.py ships in the repo; exported 3433 units into 67 chunks (<=8000 chars, unit never split) at _handoff/translate_2026_07/src_p with INDEX.md. Chunk format: @@CHUNK header, @@pN.t / @@pN.cK unit markers, @@ENDCHUNK footer with unit count and first/last ids - machine-validatable round trip."
+        },
+        {
+          "id": "translation_brief",
+          "status": "DONE",
+          "resolution": "_handoff/translate_2026_07/BRIEF_TRANSLATION.md: hard format rules (markers untouched, (N) targets preserved, blank lines kept, one chunk per reply), trilingual glossary (stats, 8 spells, proper nouns, key items), per-assignee protocols: ChatGPT chat 1 = EN, chat 2 = FR (attachments, 3-5 chunks per message), Gemini = UK (paste-only, echo-handshake per chunk due to known truncation), returns collected in out_<lang>/."
+        },
+        {
+          "id": "ui_layer_claude_en",
+          "status": "OPEN",
+          "detail": "Claude translates the EN meta layer (ui ~295 keys, enemies 65, map 43, spells 8x2, allies 2x2, preface, pregame) and splices into locale.en.js."
+        },
+        {
+          "id": "ui_layer_claude_fr",
+          "status": "OPEN",
+          "detail": "Same for FR."
+        },
+        {
+          "id": "ui_layer_claude_uk",
+          "status": "OPEN",
+          "detail": "Same for UK."
+        },
+        {
+          "id": "import_validator",
+          "status": "OPEN",
+          "detail": "scripts/i18n_import.py: parse returned chunks, validate unit coverage / marker integrity / (N) preservation / glossary spot-checks, splice into locale.<lang>.js p-section, report gaps for re-issue. Build when the first translated batch arrives."
+        },
+        {
+          "id": "prose_en",
+          "status": "OPEN",
+          "detail": "67 chunks via ChatGPT chat 1."
+        },
+        {
+          "id": "prose_fr",
+          "status": "OPEN",
+          "detail": "67 chunks via ChatGPT chat 2."
+        },
+        {
+          "id": "prose_uk",
+          "status": "OPEN",
+          "detail": "67 chunks via Gemini paste protocol."
+        },
+        {
+          "id": "fmttext_sentence_break",
+          "status": "OPEN",
+          "detail": "fmtText <br> insertion uses a Cyrillic [A-Ya] lookahead (deferred from group_71): extend the class to target alphabets or make it locale-driven before non-RU prose lands."
+        }
+      ],
+      "verified": "2026-07-05"
     },
     "group_1_gold_sign_bugs": {
       "comment": "Pure data fix: paragraphs use auto_items.gold (positive add) instead of auto_items.gold_sub (subtraction). All are scenes where the player gives/throws/spends gold per the text, not receives it. Should be safe single commit.",

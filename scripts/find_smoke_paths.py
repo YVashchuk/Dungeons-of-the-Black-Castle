@@ -181,6 +181,13 @@ def _bfs_one(graph: dict, start: int, goal: int) -> Optional[list[tuple[int, str
 #   commit: which commit introduced the change being verified
 
 SCENARIOS = [
+    # ── i18n / localization ──
+    {
+        "id": "i18n_ru_fallback_non_russian_lang",
+        "target": 1,
+        "what_to_check": "Switch language via the picker (title screen or menu) to ANY non-Russian locale (EN/FR/UK skeletons). Verify the WHOLE game still renders in Russian via the active->RU fallback: title chrome, sidebar labels, buttons, paragraph prose, choice labels, combat/HUD, modals; NO raw key names (latin snake_case) anywhere; document.title stays set; switching back to RU repaints live. For Agent Mode: also spot-check one combat and the inventory modal while a non-RU locale is active.",
+        "commit": "group_72",
+    },
     # ── Illustrations ────────────────────────────────────────────────────
     {
         "id": "art54_cold_open",
