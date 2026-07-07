@@ -96,10 +96,12 @@
 
 При харвесте Phase 1 в локаль попали **фрагменты разметки и JS-вызовов** (артефакт извлечения; работает, пока значения побайтно равны исходному коду). Правило: в значениях этих ключей менять можно ТОЛЬКО русские кусочки; всё не-русское — скобки, кавычки, `\">`, имена атрибутов/классов, `<span id=…>` — сохранять **побайтно**. До рефакторинга (реестр: group_71, `ui_machine_fragment_keys`) лучше не трогать вовсе.
 
-- **Опасные фрагменты кода (6 самых критичных):** `onload_this_classlist_add_loaded`, `vzyat_2`, `ostalos_2`, `title_vybrosit`, `title_sest`, `vam_povezlo`; плюс разорванная разметка `neverno_ostalos_popytok` (открывает `<span id="riddle-attempts">`), хвост атрибутов `alt_podzemelya_chernogo_zamka`, `vyn_style_color_3c9_cursor_point`, парные полу-ключи `v_meshke` / `ves_inventar`.
-- **Самодостаточная разметка (текст внутри переводить, теги сохранять):** `podzemelya_chernogo_zamka`, `zhurnal_pust`, `naydeno`, `pusto`, `meshok_pust`.
+**Обновление (group_71, рефакторинг выполнен):** DOM-опасные фрагменты возвращены в код движка; ключи `onload_this_classlist_add_loaded`, `vzyat_2`, `title_vybrosit`, `title_sest`, `vyn_style_color_3c9_cursor_point`, `neverno_ostalos_popytok`, `alt_podzemelya_chernogo_zamka`, `v_meshke` **удалены** из локали (вместо них — чистые `vybrosit`, `syest`, `neverno_ostalos`, `alt_title_lettering`, `v_meshke_lbl`).
 
-Перевод любого из «опасных» ключей без соблюдения правила ломает legacy-арт, кнопку «Взять» или фидбек загадки.
+Остаются два класса, требующие аккуратности:
+
+- **Парная пунктуация между ключами (текст, DOM не ломает):** `pokupka` открывает скобку, которую закрывает `ostalos_2` (`"). Осталось: "`); `broste_dva_kubika_esli_rezultat` открывает скобку для `vam_povezlo` (`") — вам повезло!"`); `ves_inventar` (`"− весь инвентарь ("`) закрывается кодом. При переводе сохраняйте скобки/тире на своих местах.
+- **Самодостаточная разметка (текст внутри переводить, теги сохранять):** `podzemelya_chernogo_zamka`, `zhurnal_pust`, `naydeno`, `pusto`, `meshok_pust`, плюс 4 ключа `data-i18n-html` из §3.2.
 
 ---
 
