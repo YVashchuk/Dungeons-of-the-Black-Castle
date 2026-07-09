@@ -55,6 +55,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── game_shell_top.html     ← HTML frame + CSS (still uses Google Fonts @import)
 │   ├── game_structure.js          ← GD = {1221 paragraph objects}, synced with dist
 │   ├── locale.ru.js            ← LOCALE_RU: all game text (1221 paragraphs + labels + UI), reference locale
+│   ├── locale.en/fr/uk.js       — full EN/FR/UK locales (prose + UI + riddle hashes; group_72)
 │   ├── mj_art.js               ← MJ_META/MJ_MAP + relative-path map (binaries: assets/art/mj)
 │   ├── illustrations.js        ← Path map for legacy 1991 b/w scans (binaries: assets/art/legacy)
 │   ├── title_art.js            ← Title-art paths (binaries: assets/art/title)
@@ -71,7 +72,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── MIDJOURNEY_PROMPTS.md   ← All Midjourney prompts (incl. Batch 4) + hero --cref URL
 │   └── PWA_IMPLEMENTATION.md   ← PWA activation plan (ChatGPT C-1 verified)
 ├── dist/                       ← Built artifacts
-│   ├── podzemelye-chyornogo-zamka-remake.html  ← BUILT game HTML (~1.5 MB)
+│   ├── podzemelye-chyornogo-zamka-remake.html  ← BUILT game HTML (~3.5 MB, 4 languages)
 │   ├── art/                    ← Runtime art copied from assets/art (75 files, 7.6 MB)
 │   ├── manifest.webmanifest    ← (PREPARED, not active) PWA install metadata
 │   ├── sw.js                   ← (PREPARED, not active) Service worker
@@ -174,7 +175,7 @@ bash build.sh
 The script builds the shell (injecting `mobile.css` + inlined fonts), then concatenates these modules in order:
 1. `game_shell_top.html` — HTML+CSS frame, opens `<script>`
 2. `game_structure.js` — 1221-paragraph game data
-3. `locale.ru.js` — LOCALE_RU (all game text; reference locale)
+3. `locale.ru.js` — LOCALE_RU (all game text; reference locale), then `locale.en/fr/uk.js` (full EN/FR/UK locales)
 4. `illustrations.js` — path map for legacy 1991 b/w scans (fallback)
 5. `title_art.js` — title-art paths
 6. `mj_art.js` — MJ_META/MJ_MAP + path map (42 art-ids)
@@ -182,7 +183,15 @@ The script builds the shell (injecting `mobile.css` + inlined fonts), then conca
 8. `game_logic.js` — engine (renders MJ first, ILLUST fallback)
 9. closes `</script></body></html>` and copies `assets/art/` → `dist/art/` (75 files)
 
-Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~1.5 MB) + `dist/art/` (7.6 MB).
+Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~3.5 MB, 4 languages) + `dist/art/` (7.6 MB).
+
+### Localization (group_72, July 2026)
+Four full languages ship in one HTML: Russian (reference), English, French, Ukrainian.
+Pipeline: `scripts/i18n_export.py` (@@-marker chunks) → external LLM translation →
+`scripts/i18n_import.py` (validation: unit coverage, number-multiset integrity, per-language
+glossary heuristics; merge-based write) + `scripts/i18n_merge_meta.py` (interface layer) +
+`scripts/i18n_riddle_hash.py` (language-agnostic riddle answers stored as djb2 hashes —
+no plaintext answers in the repo). Any missing key falls back to Russian at runtime.
 
 > **Note:** `mobile.css` and `fonts/` ARE included (injected/inlined by the build).
 > `manifest.webmanifest`, `sw.js`, and `icons/` are still NOT wired — they join when
@@ -191,7 +200,7 @@ Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~1.5 MB) + `dist/art/` (7
 ## Distribution model: lean HTML + art/ folder
 
 Since 2026-07-01 (registry group_70) the art payloads are NOT baked into the
-HTML. The deliverable is the `dist/` folder: a ~1.5 MB `.html` plus `art/`
+HTML. The deliverable is the `dist/` folder: a ~3.5 MB `.html` plus `art/`
 (75 binaries, 7.6 MB) next to it. It still plays from a local file without a
 server — images load through relative `<img src>` paths, which work under
 `file://` (no fetch/CORS involved). Keep `art/` next to the HTML when moving

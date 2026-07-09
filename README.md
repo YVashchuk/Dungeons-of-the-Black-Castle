@@ -69,7 +69,7 @@ Dungeons-of-the-Black-Castle/
 ├── build.sh                            # Скрипт сборки src/* → dist/
 │
 ├── dist/                               # 🎮 Играбельный билд
-│   ├── podzemelye-chyornogo-zamka-remake.html   # Игра (HTML ~1.5 MB; арт лежит рядом в art/)
+│   ├── podzemelye-chyornogo-zamka-remake.html   # Игра (HTML ~3.5 MB, 4 языка; арт лежит рядом в art/)
 │   ├── art/                            # 🖼 Внешний арт: mj/ 45 + legacy/ 28 + title/ 2 (75 файлов, 7.6 MB)
 │   ├── manifest.webmanifest            # (prepared) PWA install metadata
 │   ├── sw.js                           # (prepared) Service Worker
@@ -86,6 +86,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── game_shell_top.html             # HTML+CSS оболочка
 │   ├── game_structure.js                  # GD = 1221 параграф (синк с dist)
 │   ├── locale.ru.js                    # LOCALE_RU: весь текст (1221 параграф + подписи + UI) — эталонная локаль
+│   ├── locale.en.js / .fr.js / .uk.js  — полные EN/FR/UK локали (проза + интерфейс + хэши загадок; group_72)
 │   ├── mj_art.js                       # MJ_META/MJ_MAP + карта путей (бинарники: assets/art/mj)
 │   ├── illustrations.js                # Карта путей ч/б сканов 1991 (fallback; бинарники: assets/art/legacy)
 │   ├── title_art.js                    # Пути к титульному арту (assets/art/title)
@@ -134,7 +135,7 @@ Dungeons-of-the-Black-Castle/
 bash build.sh
 ```
 
-Собирает оболочку (инжектируя `mobile.css` и шрифты), склеивает **8 модулей** из `src/` в `dist/podzemelye-chyornogo-zamka-remake.html` (~1.5 MB) и копирует `assets/art/` → `dist/art/` (75 файлов). Порядок модулей определён в `build.sh`.
+Собирает оболочку (инжектируя `mobile.css` и шрифты), склеивает **11 модулей** из `src/` в `dist/podzemelye-chyornogo-zamka-remake.html` (~3.5 MB, 4 языка) и копирует `assets/art/` → `dist/art/` (75 файлов). Порядок модулей определён в `build.sh`.
 
 ## 🎨 Иллюстрации
 
@@ -166,8 +167,8 @@ bash build.sh
 - [x] Custom combat conditions (wound_2 для Дракона §532 — реализовано, движок → §437 после 2 ранений)
 - [x] §13 рыбка / §140 Золотой ключ — реализованы через переиспользуемые предметы-токены (renumbering-safe; см. text_corrections.json group_6 + commit 4573325)
 - [x] Схема локализации: реестр локалей, переключатель языка (сохранение + живая перерисовка), пикер, слой `data-i18n` для UI-обвязки — см. [`TRANSLATION_GUIDE.md`](TRANSLATION_GUIDE.md)
-- [x] Арт вынесен из HTML (75 бинарников → `art/`): dist = HTML ~1.5 MB + арт 7.6 MB; `file://` работает (group_70)
-- [ ] Перевод на EN/FR/UK (RU — эталонная локаль; движок готов, нужны сами переводы)
+- [x] Арт вынесен из HTML (75 бинарников → `art/`): dist = HTML ~1.5 MB (RU-only на тот момент) + арт 7.6 MB; `file://` работает (group_70)
+- [x] Перевод на EN / FR / UK — ЗАВЕРШЁН (group_72, июль 2026): проза 1221×3 + интерфейс + преамбулы + языконезависимые загадки; dist ~3.5 МБ с четырьмя языками
 - [ ] Визуальная проверка всех MJ артов на соответствие сцене (после Batch 4)
 
 ## 🌍 Локализация (i18n)
@@ -178,6 +179,8 @@ bash build.sh
 - Реестр `LOCALES`, резолверы и переключатель (`setLanguage`, сохранение выбора в `localStorage` под ключом `blackcastle-lang`, живая перерисовка) — в `src/game_logic.js`.
 - Пикер языка на стартовом экране и в меню (минимальный, строится из `availableLangs()`).
 - Статическая UI-обвязка оболочки локализуется через атрибуты `data-i18n*` + `applyStaticI18n()`.
+
+**Статус (июль 2026): EN / FR / UK переведены полностью** — проза (1221 параграф ×3), весь интерфейс, преамбулы; загадки принимают ответы на языке локали (хэш-списки, см. гайд §3.4). Любые пропуски падают на русский эталон.
 
 Как добавить язык (EN / FR / UK) и требования к переводу — в [`TRANSLATION_GUIDE.md`](TRANSLATION_GUIDE.md).
 
