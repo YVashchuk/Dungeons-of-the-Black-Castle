@@ -1055,8 +1055,46 @@ function applyChoiceConsume(ch){
 // indexOf return the correct 1-based position for letters.
 const ALPHABET_RU='*АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
 
+// ── Riddle i18n (group_72) ──
+// Per-locale answer lists store ONLY djb2 hashes of normalised words, so the
+// no-plaintext-answers property above holds for every language. Adding a new
+// language: pick answer words, run scripts/i18n_riddle_hash.py --gen, merge the
+// payload via scripts/i18n_merge_meta.py (see TRANSLATION_GUIDE). Normalisation
+// must match the tool exactly: NFD -> strip combining marks -> uppercase ->
+// keep cased letters only. The classic Cyrillic letter-sum below stays as the
+// universal fallback, so Russian answers keep working in every locale.
+function riddleNorm(s){
+  const folded=String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+  let out='';
+  for(const ch of folded){ if(ch.toLowerCase()!==ch.toUpperCase()) out+=ch; }
+  return out;
+}
+function riddleHash(s){
+  let h=5381;
+  for(const ch of riddleNorm(s)){ h=(((h<<5)+h)+ch.codePointAt(0))>>>0; }
+  return h;
+}
+function localeRiddleTarget(input){
+  const pid=String(S.section);
+  const A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null;
+  const list=(A&&A.riddles&&A.riddles[pid])||(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.riddles&&LOCALE_RU.riddles[pid])||null;
+  if(!list)return null;
+  const h=riddleHash(input);
+  for(const e of list){ if(e&&e.h===h&&GD[String(e.target)])return e.target; }
+  return null;
+}
+
 function applyRiddleAnswer(input,riddleConfig){
   if(!input||!riddleConfig)return;
+  // Locale answer-list path (any language) — checked before the classic sum.
+  const locTarget=localeRiddleTarget(input);
+  if(locTarget){
+    S.riddle_attempts=0;
+    logEvent('gain',t('zagadka_razgadana'),t('paragraf_2')+locTarget);
+    playSound('item');
+    goTo(locTarget);
+    return;
+  }
   // Normalise: uppercase, strip everything except Cyrillic letters.
   let cleaned=input.toUpperCase().replace(/[^А-ЯЁ]/g,'');
   // Optional ё→е equivalence (per-riddle config). When alphabet_mode is

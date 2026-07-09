@@ -1,4 +1,3 @@
-// LOCALE_FR — French locale skeleton (group_72). Every value falls back to RU until translated.
-// Shape mirrors LOCALE_RU (see TRANSLATION_GUIDE.md). Filled incrementally via the i18n import pipeline;
-// missing keys are SAFE: resolvers use active → RU → key.
-const LOCALE_FR = {"langName":"Français","spells":{},"allies":{},"ui":{},"enemies":{},"map":{},"p":{}};
+// LOCALE_FR — generated/merged by scripts/i18n_import.py + i18n_merge_meta.py (group_72).
+// Do not hand-edit the const line; missing keys are SAFE (resolvers fall back to RU).
+const LOCALE_FR = {"langName":"Français","spells":{},"allies":{},"ui":{},"enemies":{},"map":{},"p":{},"riddles":{"439":[{"h":2892924416,"target":67}],"67":[{"h":4262792954,"target":95}],"95":[{"h":3382907679,"target":163}],"435":[{"h":1917352112,"target":66}],"992":[{"h":2089329575,"target":932},{"h":3186286964,"target":932}],"1113":[{"h":236690690,"target":1131},{"h":3530455042,"target":1131}],"1131":[{"h":2613399004,"target":992}]}};

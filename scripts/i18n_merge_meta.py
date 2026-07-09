@@ -55,12 +55,19 @@ def main():
                 if f in v: check_str(sec, k + '.' + f, RU[sec][k].get(f, ''), v[f])
     for k in ('preface', 'pregame'):
         if k in pay: check_str('root', k, RU.get(k, ''), pay[k])
+    for k, v in pay.get('riddles', {}).items():
+        if not re.match(r'^\d+$', k): errs.append('riddles.%s: pid not numeric' % k)
+        if not isinstance(v, list) or not v: errs.append('riddles.%s: empty' % k); continue
+        for e in v:
+            if not (isinstance(e, dict) and isinstance(e.get('h'), int) and isinstance(e.get('target'), int)):
+                errs.append('riddles.%s: bad entry' % k)
     if errs:
         print('VALIDATION FAILED (%d):' % len(errs)); [print('  -', e) for e in errs[:60]]; sys.exit(1)
     for w in warns: print('  warn:', w)
     cov = []
     for sec in ('ui', 'enemies', 'map', 'spells', 'allies'):
         cov.append('%s %d/%d' % (sec, len(pay.get(sec, {})), len(RU[sec])))
+    cov.append('riddles %d' % len(pay.get('riddles', {})))
     cov.append('preface %s' % ('yes' if 'preface' in pay else 'no'))
     cov.append('pregame %s' % ('yes' if 'pregame' in pay else 'no'))
     print('validation OK · coverage: ' + ' · '.join(cov))
@@ -72,6 +79,8 @@ def main():
             L.setdefault(sec, {}).setdefault(k, {}).update(v)
     for k in ('preface', 'pregame'):
         if k in pay: L[k] = pay[k]
+    for k, v in pay.get('riddles', {}).items():
+        L.setdefault('riddles', {})[k] = v
     head = ('// %s \u2014 generated/merged by scripts/i18n_import.py + i18n_merge_meta.py (group_72).\n'
             '// Do not hand-edit the const line; missing keys are SAFE (resolvers fall back to RU).\n') % var
     out = head + 'const %s = %s;\n' % (var, json.dumps(L, ensure_ascii=False, separators=(',', ':')))
