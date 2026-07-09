@@ -1,4 +1,3 @@
-// LOCALE_UK — Ukrainian locale skeleton (group_72). Every value falls back to RU until translated.
-// Shape mirrors LOCALE_RU (see TRANSLATION_GUIDE.md). Filled incrementally via the i18n import pipeline;
-// missing keys are SAFE: resolvers use active → RU → key.
-const LOCALE_UK = {"langName":"Українська","spells":{},"allies":{},"ui":{},"enemies":{},"map":{},"p":{}};
+// LOCALE_UK — generated/merged by scripts/i18n_import.py + i18n_merge_meta.py (group_72).
+// Do not hand-edit the const line; missing keys are SAFE (resolvers fall back to RU).
+const LOCALE_UK = {"langName":"Українська","spells":{},"allies":{},"ui":{},"enemies":{},"map":{},"p":{},"riddles":{"439":[{"h":3625587230,"target":67}],"67":[{"h":4037681081,"target":95}],"95":[{"h":3212862827,"target":163},{"h":1227946543,"target":163}],"435":[{"h":2124663179,"target":66}],"992":[{"h":4129790021,"target":932}],"1113":[{"h":2741453072,"target":1131},{"h":273639660,"target":1131}],"1131":[{"h":863485572,"target":992},{"h":618585924,"target":992}]}};
