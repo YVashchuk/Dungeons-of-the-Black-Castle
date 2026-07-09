@@ -22,7 +22,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UNIT_RE = re.compile(r'^@@(p\d+\.(?:t|c\d+))\s*$')
 CTRL_RE = re.compile(r'^@@(CHUNK|ENDCHUNK)\b')
 SAMPLE_UIDS = ['p1.t', 'p14.t', 'p203.t', 'p540.t', 'p688.t', 'p884.c2', 'p1203.t', 'p1220.t', 'p91.c0', 'p372.t']
-GLOSS = [('УДАЧ', 'LUCK'), ('МАСТЕРСТВ', 'SKILL'), ('ВЫНОСЛИВОСТ', 'STAMINA')]
+GLOSS_BY_LANG = {
+    'en': [('УДАЧ', 'LUCK'), ('МАСТЕРСТВ', 'SKILL'), ('ВЫНОСЛИВОСТ', 'STAMINA')],
+    'fr': [('УДАЧ', 'CHANCE'), ('МАСТЕРСТВ', 'HABILET'), ('ВЫНОСЛИВОСТ', 'ENDURANCE')],
+    'uk': [('УДАЧ', 'УДАЧ'), ('МАСТЕРСТВ', 'МАЙСТЕРН'), ('ВЫНОСЛИВОСТ', 'ВИТРИВАЛ')],
+}
 
 def parse_dir(d):
     units, order = {}, []
@@ -72,7 +76,7 @@ def main():
         if not t.strip(): empty.append(u); continue
         if re.search(r'[\u0400-\u04FF]', t) and lang not in ('uk', 'ru'): cyr.append(u)
         if nums(s) != nums(t): bad_nums.append(u)
-        for rk, tk in GLOSS:
+        for rk, tk in GLOSS_BY_LANG.get(lang, []):
             if rk in s.upper() and tk not in t.upper(): gloss_w.append('%s (%s)' % (u, tk))
         if u.endswith('.t') and abs(s.count('\n\n') - t.count('\n\n')) > 1: shape_w.append(u)
     hard_fail = set(missing) | set(bad_nums) | set(cyr) | set(empty)
