@@ -64,6 +64,7 @@ Dungeons-of-the-Black-Castle/
 ├── PROJECT_NOTES.md                    # Контекст: ремейк 1991 / 1221 параграф
 ├── QUICKSTART.md                       # Быстрый старт для разработчика
 ├── TRANSLATION_GUIDE.md                # Локализация: как добавить язык (i18n)
+├── tests/               — батарея верификации (node tests/run_all.js)
 ├── LICENSE                             # Лицензия
 ├── .gitignore
 ├── build.sh                            # Скрипт сборки src/* → dist/

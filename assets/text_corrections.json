@@ -114,7 +114,8 @@
     "v2.106 → v2.107": "July 2026 (2026-07-08) — group_72: EN INTERFACE LAYER COMPLETE (Claude). ui 295/295, enemies 65/65, map 43/43, spells 8/8, allies 2/2 merged via new scripts/i18n_merge_meta.py (tag-sequence, bracket-parity, edge-space and Cyrillic validations - clean first pass). Preface/pregame recognised as book prose and routed through the external prose pipeline (src_meta/chunk_meta_001.txt exported; new OPEN item preface_pregame_prose for EN/FR/UK). Known limitation recorded: riddle answers stay Russian (letter-sum engine) until a dedicated riddle-i18n increment. locale.en.js 542 KB; dist 2.07 MB; battery 15/15; baseline 1205.",
     "v2.107 → v2.108": "July 2026 (2026-07-08) — group_72: RIDDLE I18N (language-agnostic) + EN preface/pregame landed. Riddles: per-locale hash-only answer lists (djb2 over NFD-folded uppercase letters) checked before the classic Cyrillic letter-sum fallback; the no-plaintext-answers property is preserved for every language; tools i18n_riddle_hash.py + merge-tool riddles section; 7 riddles canon-verified and populated for EN/FR/UK with synonyms; adding any future language needs zero engine changes (TRANSLATION_GUIDE 3.4). EN preface + pregame imported from the prose pipeline (chunk_meta_001). New riddle-i18n harness 15/15; battery 15/15; baseline 1205; dist 2.08 MB.",
     "v2.108 → v2.109": "July 2026 (2026-07-09) — group_72: FRENCH COMPLETE. Prose 3433/3433 after adjudication (4 real number-integrity defects fixed pre-import incl. par992 canon revert to le cimetiere + modifier 825; 1 label substitution restored; 11 glossary warns benign; import validator gained per-language glossaries). Claude FR interface layer 295/295 ui + harvest-aligned enemies + map/spells/allies; FR preface + pregame imported from the prose pipeline. locale.fr.js 623 KB; dist 2.70 MB; battery 16/16; baseline 1205. Remaining open in group_72: UK prose/meta/preface, fmttext visual verdict.",
-    "v2.109 → v2.110": "July 2026 (2026-07-09) — group_72: UKRAINIAN COMPLETE - the EN/FR/UK translation programme prose+meta is FINISHED. UK prose: Gemini partial (16 chunks, archived) superseded by the uniform ChatGPT 5.5 HI set - 3433/3433 importable, zero hard fails, 9 benign glossary warns; literary quality high incl. vocative case. Claude UK interface layer 295/295 + harvest-aligned enemies (LYTSAR, KAZHAN, VODIANYK, DROVORUB, KUKHAR) + map/spells/allies; UK preface + pregame imported; preface_pregame_prose item CLOSED for all three languages. locale.uk.js 865 KB; dist 3.48 MB; battery 16/16; baseline 1205. group_72 now has a single OPEN item: fmttext_sentence_break (awaiting the author visual verdict RU vs EN/FR/UK)."
+    "v2.109 → v2.110": "July 2026 (2026-07-09) — group_72: UKRAINIAN COMPLETE - the EN/FR/UK translation programme prose+meta is FINISHED. UK prose: Gemini partial (16 chunks, archived) superseded by the uniform ChatGPT 5.5 HI set - 3433/3433 importable, zero hard fails, 9 benign glossary warns; literary quality high incl. vocative case. Claude UK interface layer 295/295 + harvest-aligned enemies (LYTSAR, KAZHAN, VODIANYK, DROVORUB, KUKHAR) + map/spells/allies; UK preface + pregame imported; preface_pregame_prose item CLOSED for all three languages. locale.uk.js 865 KB; dist 3.48 MB; battery 16/16; baseline 1205. group_72 now has a single OPEN item: fmttext_sentence_break (awaiting the author visual verdict RU vs EN/FR/UK).",
+    "v2.110 → v2.111": "July 2026 (2026-07-09) — group_73: verification battery migrated into the repo as tests/ (16 harnesses + 6 dist checks + goldens + verify_reach3 + regen_fixtures + run_all runner; repo-relative paths; acorn pinned via tests/package.json). Battery ALL GREEN before and after removing the external _audit_tmp; auditor scratch archived under _handoff. Sweep incident (4 goldens lost, recovered same day) recorded with the new full-battery-before-and-after rule."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -373,6 +374,22 @@
         }
       ],
       "verified": "2026-07-05"
+    },
+    "group_73_2026_07_09_tests_migration": {
+      "comment": "Verification battery migrated from the external C:/Users/.../Downloads/_audit_tmp scratch folder into the repo as tests/ (author directive 2026-07-09) - version-controlled and portable.",
+      "items": [
+        {
+          "id": "battery_migration",
+          "status": "DONE",
+          "resolution": "tests/ now holds the 16 active harnesses, 6 dist spot-checks, 7 golden fixtures (goldens/), verify_reach3.py, regen_fixtures.js and a run_all.js runner (16 harnesses + reachability baseline in one command). All absolute paths rewritten to repo-relative (require('path').resolve(__dirname,'..') / os.path based); the only npm dependency (acorn, for the AST harnesses) is pinned in tests/package.json with node_modules git-ignored. Battery verified ALL GREEN from tests/ both BEFORE and AFTER deleting _audit_tmp. The Claude-auditor read-only scratch moved to _handoff/audit_2026_07/scratch_readonly_audit; _audit_tmp removed entirely. Docs: tests/ added to the README/PROJECT_NOTES trees, TRANSLATION_GUIDE battery mention retargeted."
+        },
+        {
+          "id": "sweep_incident_2026_07_09",
+          "status": "DONE",
+          "resolution": "Recorded for posterity: the housekeeping sweep earlier the same day deleted four golden fixtures (6b/6d/6e1/6e2) because the keep-pattern was incomplete, and the post-sweep sanity ran only three harnesses. Recovered by reconstructing the fixture shapes from the harness sources and regenerating from current verified state (tests/regen_fixtures.js). Process rule adopted: run the FULL battery before AND after any sweep; goldens are enumerated in tests/README.md."
+        }
+      ],
+      "verified": "2026-07-09"
     },
     "group_1_gold_sign_bugs": {
       "comment": "Pure data fix: paragraphs use auto_items.gold (positive add) instead of auto_items.gold_sub (subtraction). All are scenes where the player gives/throws/spends gold per the text, not receives it. Should be safe single commit.",
