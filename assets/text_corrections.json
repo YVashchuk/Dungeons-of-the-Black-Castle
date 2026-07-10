@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-07-01",
+  "last_updated": "2026-07-10",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -116,7 +116,8 @@
     "v2.108 → v2.109": "July 2026 (2026-07-09) — group_72: FRENCH COMPLETE. Prose 3433/3433 after adjudication (4 real number-integrity defects fixed pre-import incl. par992 canon revert to le cimetiere + modifier 825; 1 label substitution restored; 11 glossary warns benign; import validator gained per-language glossaries). Claude FR interface layer 295/295 ui + harvest-aligned enemies + map/spells/allies; FR preface + pregame imported from the prose pipeline. locale.fr.js 623 KB; dist 2.70 MB; battery 16/16; baseline 1205. Remaining open in group_72: UK prose/meta/preface, fmttext visual verdict.",
     "v2.109 → v2.110": "July 2026 (2026-07-09) — group_72: UKRAINIAN COMPLETE - the EN/FR/UK translation programme prose+meta is FINISHED. UK prose: Gemini partial (16 chunks, archived) superseded by the uniform ChatGPT 5.5 HI set - 3433/3433 importable, zero hard fails, 9 benign glossary warns; literary quality high incl. vocative case. Claude UK interface layer 295/295 + harvest-aligned enemies (LYTSAR, KAZHAN, VODIANYK, DROVORUB, KUKHAR) + map/spells/allies; UK preface + pregame imported; preface_pregame_prose item CLOSED for all three languages. locale.uk.js 865 KB; dist 3.48 MB; battery 16/16; baseline 1205. group_72 now has a single OPEN item: fmttext_sentence_break (awaiting the author visual verdict RU vs EN/FR/UK).",
     "v2.110 → v2.111": "July 2026 (2026-07-09) — group_73: verification battery migrated into the repo as tests/ (16 harnesses + 6 dist checks + goldens + verify_reach3 + regen_fixtures + run_all runner; repo-relative paths; acorn pinned via tests/package.json). Battery ALL GREEN before and after removing the external _audit_tmp; auditor scratch archived under _handoff. Sweep incident (4 goldens lost, recovered same day) recorded with the new full-battery-before-and-after rule.",
-    "v2.111 → v2.112": "July 2026 (2026-07-10) — group_71 support: MIDJOURNEY_PROMPTS.md revised to v2, synced to MJ_MAP truth (45 generated arts incl. July additions art53/54; stale Batch 4 PENDING statuses corrected). Regeneration queue hardened (art30 exactly-two-heads + negatives; art47 stone-golem rats + no-fur), retouch notes (art51/art08 text artifacts), five replacement arts specced with remap plan (art55 empty throne p688, art56 two mounted knights p46, art57 single knight p96, art58 corridor flight p112, art59 castle gate p56), Batch 5 legacy replacement authored (12 NEW prompts for legacy-only scenes + 8 retire-with-variant decisions + 7 unbound legacy files for author review), META-vs-MAP mismatch table (9 arts) queued for the art increment. Full-recheck brief for ChatGPT 5.6 Sol prepared in _handoff/audit_2026_07 (blocks A-F: cross-language integrity, riddles, GD invariants + BFS, terminology harvest, registry/docs recount, literary sampling; handshake protocol; adjudicated exclusion list)."
+    "v2.111 → v2.112": "July 2026 (2026-07-10) — group_71 support: MIDJOURNEY_PROMPTS.md revised to v2, synced to MJ_MAP truth (45 generated arts incl. July additions art53/54; stale Batch 4 PENDING statuses corrected). Regeneration queue hardened (art30 exactly-two-heads + negatives; art47 stone-golem rats + no-fur), retouch notes (art51/art08 text artifacts), five replacement arts specced with remap plan (art55 empty throne p688, art56 two mounted knights p46, art57 single knight p96, art58 corridor flight p112, art59 castle gate p56), Batch 5 legacy replacement authored (12 NEW prompts for legacy-only scenes + 8 retire-with-variant decisions + 7 unbound legacy files for author review), META-vs-MAP mismatch table (9 arts) queued for the art increment. Full-recheck brief for ChatGPT 5.6 Sol prepared in _handoff/audit_2026_07 (blocks A-F: cross-language integrity, riddles, GD invariants + BFS, terminology harvest, registry/docs recount, literary sampling; handshake protocol; adjudicated exclusion list).",
+    "v2.112 -> v2.113": "July 2026 - ChatGPT 5.6 Sol Max Effort full-recheck REPORT adjudicated (new group_74; report archived in audit_cycles/chatgpt56_full_recheck_2026_07_10/). Both P0 findings CONFIRMED against FB2 and fixed in this commit. C-01: sec.100 was missing the canonical FOURTH ROBBER 8/6 (FB2 and all four locale prose blocks list five bandits; GD modelled four) - added to GD plus new enemies-dict key chetvertyy_razboynik in all four locales (65 -> 66; p1_6d updated, goldens regenerated). C-02: sec.131 was missing the sentry Eagle 7/7 that canonically joins the Goblin after 4 attack rounds - implemented via new staged combat_script sec131_eagle_joins reusing the sec1175_canon_orcs machinery (eagle shown as waiting, joins at round 5 or immediately when the Goblin falls earlier, so the canonical both-guards exit condition always holds); reuses the existing enemy slug orel (same 7/7 stats as GD[722]); two new ui keys per locale for the staged intro/join combat-log lines (295 -> 297). Remaining 14 report findings (D-01..F-06) registered as OPEN hypotheses in group_74; E-04 additionally CONFIRMED by the pre-commit baseline (both stale dist spot-checks already failing with exit 0). Dist rebuilt."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -391,6 +392,110 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_74_2026_07_10_chatgpt56_full_recheck": {
+      "comment": "Adjudication of the ChatGPT 5.6 Sol Max Effort full-recheck REPORT (2026-07-10, corpus = GitHub main zip at v2.112). 16 findings: 2 P0 + 7 P1 + 7 P2. Truth order applied: registry -> fb2_remake.fb2 -> book_1991_extracted.txt. Report archived in audit_cycles/chatgpt56_full_recheck_2026_07_10/REPORT.md. P0 pair verified against FB2 and fixed in this commit; remaining findings recorded as OPEN hypotheses for batch adjudication.",
+      "source": "chatgpt_5_6_sol_max_effort_2026_07_10",
+      "items": [
+        {
+          "id": "C-01_sec100_fourth_robber",
+          "severity": "P0",
+          "status": "DONE",
+          "resolution": "CONFIRMED against FB2: sec.100 lists five bandit stat-blocks (FOURTH ROBBER Mastery 8 / Stamina 6) and all four locale prose blocks carry all five; GD[100].enemies had only 1st/2nd/3rd/5th, and the registry contained no decision authorizing the omission. Fix: chetvertyy_razboynik 8/6 inserted into GD[100].enemies between tretiy and pyatyy; enemies dict gained chetvertyy_razboynik in RU/EN/FR/UK (65 -> 66). Simultaneous five-on-one combat semantics unchanged (engine: first alive enemy trades blows, the rest wound-on-win). p1_6d expectation updated to 66, goldens regenerated, spot-check added."
+        },
+        {
+          "id": "C-02_sec131_sentry_eagle",
+          "severity": "P0",
+          "status": "DONE",
+          "resolution": "CONFIRMED against FB2: sec.131 canon states the sentry Eagle (Mastery 7 / Stamina 7) joins the Goblin after 4 attack rounds and the exits require defeating BOTH guards; GD[131] modelled only the Goblin. Fix: orel 7/7 appended to GD[131].enemies (reuses the existing slug, same stats as its GD[722] occurrence) + new combat_script sec131_eagle_joins. Engine: startCombat stages idx>0 enemies as waiting for this script (shares the sec1175_canon_orcs machinery and the existing waiting-pill UI); combatRound activates the eagle at round 5 (after 4 full rounds, mirroring sec1175's N+1 convention) OR immediately if the Goblin falls earlier, so the canonical both-guards condition always holds. Two new ui keys in all four locales for the staged intro/join combat-log lines: snachala_vy_srazhaetes_tolko_s_g, orel_chasovoy_vyletaet_iz_nishi (ui 295 -> 297)."
+        },
+        {
+          "id": "D-01_en_stat_block_case",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "EN sec.823/915/942/950/994/1050/1096/1099 combat blocks use Skill/Stamina instead of canonical SKILL/STAMINA."
+        },
+        {
+          "id": "D-02_en_enemy_name_mismatch",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "EN sec.417 FEROCIOUS vs FIERCE and sec.790 KING OF THE LIONS vs KING OF LIONS diverge between enemies dict and prose; stats match."
+        },
+        {
+          "id": "D-03_fr_enemy_name_mismatch",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "FR sec.46/73/417/742/805: SECOND vs DEUXIEME in four ordinal blocks plus word-order divergence in the sec.417 beast name."
+        },
+        {
+          "id": "D-04_uk_apostrophe",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "UK enemies dict uses ASCII apostrophe while prose uses the typographic one (pyatyy_razboynik, pyataya_zmeya). Decide layer-wide convention before touching (ui layer currently also uses ASCII apostrophes in all locales)."
+        },
+        {
+          "id": "E-01_readme_stale_size",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "README lines ~13 and ~200 still say ~1.5 MB; actual dist is 3.477 MiB and other sections already say ~3.5 MB."
+        },
+        {
+          "id": "E-02_smoke_impossible_ordered_segments",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "9 manual smoke scenarios have acquisition->target must_visit segments unreachable even in the choices+riddles graph (sec.688->535, sec.13->32/203/699, sec.612->851/881, sec.791->637, sec.612->851 consume, sec.479->74). Need state-setup fixtures or resequencing; stop calling them click-paths."
+        },
+        {
+          "id": "E-03_tests_path_portability",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "tests use backslash string concatenation; POSIX-native run fails 17/17 before assertions. Fix via path.join everywhere (harnesses + regen_fixtures + runner) and verify on both separators."
+        },
+        {
+          "id": "E-04_stale_dist_spot_checks",
+          "severity": "P2",
+          "status": "CONFIRMED_OPEN",
+          "hypothesis": "_dist_fr_check.js expects the old 'Barlad Dert apparait' word order; _dist_ui_check.js expects one drop-title render site but source has two.",
+          "note": "CONFIRMED 2026-07-10 baseline run before this commit: _dist_fr_check prints FAIL preface (8 passed 1 failed), _dist_ui_check prints FAIL drop title count=2 (14 passed 1 failed) - and BOTH exit 0, so the fix must also propagate a non-zero exit code. Pre-existing, unrelated to the C-01/C-02 changes."
+        },
+        {
+          "id": "F-01_sec372_unnatural_construction",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "EN/FR/UK sec.372 calque 'take on the cause of its foul mood'; FR/UK additionally break 'If you want. You may...' into a sentence fragment."
+        },
+        {
+          "id": "F-02_en_sec688_adverb",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "EN sec.688 'by absolutely accidentally pressing the right spot' is ungrammatical; fix adverb without touching the White Arrow find or transitions."
+        },
+        {
+          "id": "F-03_sec1123_doors_calque",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "EN/FR/UK sec.1123 'two doors lead from the platform' calqued in all three languages; keep targets 394/975."
+        },
+        {
+          "id": "F-04_uk_sec796_tense",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "UK sec.796 jumps tenses (present -> future-perfective -> past); unify to the game's present tense."
+        },
+        {
+          "id": "F-05_uk_sec992_lowercase",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "UK sec.992: sentence after '825.' starts lowercase."
+        },
+        {
+          "id": "F-06_fr_punct_space",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "FR sec.636 '(507)?' and sec.688 '(816);' missing the (narrow) no-break space before high punctuation; guillemet spacing is fine."
+        }
+      ],
+      "verified": "2026-07-10"
     },
     "group_1_gold_sign_bugs": {
       "comment": "Pure data fix: paragraphs use auto_items.gold (positive add) instead of auto_items.gold_sub (subtraction). All are scenes where the player gives/throws/spends gold per the text, not receives it. Should be safe single commit.",

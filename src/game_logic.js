@@ -1967,7 +1967,7 @@ function startCombat(enemies,sec){
   if(S)S.pending_combat_buff=null;
   const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
   combatState={
-    enemies:enemies.map((e,idx)=>({...e,name:enemyName(e.name),hp:e.stamina,dmg:e.damage||2,active:!(script==='sec1175_canon_orcs' && idx>0),fled:false})),
+    enemies:enemies.map((e,idx)=>({...e,name:enemyName(e.name),hp:e.stamina,dmg:e.damage||2,active:!((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0),fled:false})),
     round:0,
     wounds:0,
     sec:sec,
@@ -1975,7 +1975,7 @@ function startCombat(enemies,sec){
     forceBuff:(pendingBuff==='FORCE'),  // group_19 FORCE whole-combat +2; R2-3 may pre-set via bridge
     weaknessDebuff:false,  // group_19: WEAKNESS spell active for whole combat (-2 enemy attack)
     enemyAttackMod:(pendingBuff==='ENEMY_PLUS2'?2:0),  // R2-3 §865 Force-backfire: enemy +2 whole combat
-    special:script==='sec1175_canon_orcs'?{type:'sec1175',reinforcementsJoined:false,firstDeathHandled:false,luckChecked:false}:null
+    special:script==='sec1175_canon_orcs'?{type:'sec1175',reinforcementsJoined:false,firstDeathHandled:false,luckChecked:false}:(script==='sec131_eagle_joins'?{type:'sec131',reinforcementsJoined:false}:null)
   };
   const ce=document.getElementById('combat-enemies');ce.innerHTML='';
   combatState.enemies.forEach(e=>{
@@ -2011,6 +2011,9 @@ function startCombat(enemies,sec){
   }
   if(script==='sec1175_canon_orcs'){
     document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">${t('snachala_vy_srazhaetes_tolko_s_p')}</div>`;
+  }
+  if(script==='sec131_eagle_joins'){
+    document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">${t('snachala_vy_srazhaetes_tolko_s_g')}</div>`;
   }
   document.getElementById('btn-combat-round').style.display='inline-block';
   document.getElementById('btn-combat-round').textContent=t('udar');
@@ -2109,6 +2112,16 @@ function combatRound(){
     }
   }
 
+  if(cs.special&&cs.special.type==='sec131'){
+    const first=cs.enemies[0];
+    if(cs.round===5 && first.hp>0 && !cs.special.reinforcementsJoined){
+      cs.enemies[1].active=true;
+      cs.special.reinforcementsJoined=true;
+      log.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">${t('orel_chasovoy_vyletaet_iz_nishi')}</div>`;
+      updateCombatEnemyDisplay(cs);
+    }
+  }
+
   const alive=getAliveCombatEnemies(cs);
   if(alive.length===0){endCombat(true);return;}
   // group_19: FORCE spell adds +2 to player attack for whole combat duration.
@@ -2147,6 +2160,16 @@ function combatRound(){
   log.scrollTop=log.scrollHeight;
 
   if(S.stamina<=0){endCombat(false);return;}
+
+  if(cs.special&&cs.special.type==='sec131'){
+    const first=cs.enemies[0];
+    if(first.hp<=0 && !cs.special.reinforcementsJoined){
+      cs.enemies[1].active=true;
+      cs.special.reinforcementsJoined=true;
+      log.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">${t('orel_chasovoy_vyletaet_iz_nishi')}</div>`;
+      updateCombatEnemyDisplay(cs);
+    }
+  }
 
   if(cs.special&&cs.special.type==='sec1175'){
     const first=cs.enemies[0];

@@ -18,9 +18,9 @@ function gfn(n){const s=gl.indexOf('function '+n+'(');return brace(s).replace('f
 ck('game_structure.js GD has ZERO Cyrillic', !CYR.test(JSON.stringify(GD)));
 
 // 2. enemies locale complete + resolver
-ck('LOCALE_RU.enemies has all 65 keys with exact values', Object.keys(data.enemies).every(k=>LOCALE_RU.enemies[k]===data.enemies[k]) && Object.keys(LOCALE_RU.enemies).length===65);
+ck('LOCALE_RU.enemies has all 66 keys with exact values', Object.keys(data.enemies).every(k=>LOCALE_RU.enemies[k]===data.enemies[k]) && Object.keys(LOCALE_RU.enemies).length===66);
 let emis=0; for(const k in data.enemies){ if(enemyName(k)!==data.enemies[k]) emis++; }
-ck('enemyName(slug) reproduces all 65 names (mismatch '+emis+')', emis===0);
+ck('enemyName(slug) reproduces all 66 names (mismatch '+emis+')', emis===0);
 ck('enemyName(unknown) safe', enemyName('__no__')==='__no__');
 
 // 3. every GD enemy slug resolves to a known RU name
@@ -42,6 +42,11 @@ ck('locSec does not mutate GD riddle object', before===after && JSON.parse(befor
 // 5. spot
 ck("enemyName('goblin')==='ГОБЛИН'", enemyName('goblin')==='\u0413\u041e\u0411\u041b\u0418\u041d');
 ck('¶67 riddle exit label hydrated', locSec(67).riddle.fail_target_label===data.rfl['67']);
+
+// 6. group_74 (ChatGPT 5.6 audit C-01/C-02): canonical combat rosters restored
+ck('GD[100] five bandits incl. chetvertyy 8/6', GD['100'].enemies.length===5 && GD['100'].enemies.some(e=>e.name==='chetvertyy_razboynik'&&e.skill===8&&e.stamina===6));
+ck('GD[131] goblin + waiting orel, staged script', GD['131'].enemies.length===2 && GD['131'].enemies[1].name==='orel' && GD['131'].enemies[1].skill===7 && GD['131'].enemies[1].stamina===7 && GD['131'].combat_script==='sec131_eagle_joins');
+ck('ui sec131 staged keys present (RU)', typeof LOCALE_RU.ui['snachala_vy_srazhaetes_tolko_s_g']==='string' && typeof LOCALE_RU.ui['orel_chasovoy_vyletaet_iz_nishi']==='string');
 
 console.log(`\n6d HARNESS: ${pass} passed, ${fail} failed`);
 process.exit(fail?1:0);
