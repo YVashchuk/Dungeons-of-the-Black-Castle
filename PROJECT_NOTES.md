@@ -81,6 +81,7 @@ Dungeons-of-the-Black-Castle/
 │       ├── icon-512.png
 │       └── icon-maskable-512.png  ← Android adaptive icon
 ├── scripts/                    ← Git push helpers
+├── tests/       — verification battery (16 harnesses + goldens + runner; node tests/run_all.js)
 ├── audit_cycles/               ← Historical audit archive (per-cycle briefs/reports; tracked)
 ├── _handoff/                   ← (GIT-IGNORED) Briefs for external AI sessions
 ├── build.sh                    ← Concatenate src/* into dist/
