@@ -117,7 +117,8 @@
     "v2.109 → v2.110": "July 2026 (2026-07-09) — group_72: UKRAINIAN COMPLETE - the EN/FR/UK translation programme prose+meta is FINISHED. UK prose: Gemini partial (16 chunks, archived) superseded by the uniform ChatGPT 5.5 HI set - 3433/3433 importable, zero hard fails, 9 benign glossary warns; literary quality high incl. vocative case. Claude UK interface layer 295/295 + harvest-aligned enemies (LYTSAR, KAZHAN, VODIANYK, DROVORUB, KUKHAR) + map/spells/allies; UK preface + pregame imported; preface_pregame_prose item CLOSED for all three languages. locale.uk.js 865 KB; dist 3.48 MB; battery 16/16; baseline 1205. group_72 now has a single OPEN item: fmttext_sentence_break (awaiting the author visual verdict RU vs EN/FR/UK).",
     "v2.110 → v2.111": "July 2026 (2026-07-09) — group_73: verification battery migrated into the repo as tests/ (16 harnesses + 6 dist checks + goldens + verify_reach3 + regen_fixtures + run_all runner; repo-relative paths; acorn pinned via tests/package.json). Battery ALL GREEN before and after removing the external _audit_tmp; auditor scratch archived under _handoff. Sweep incident (4 goldens lost, recovered same day) recorded with the new full-battery-before-and-after rule.",
     "v2.111 → v2.112": "July 2026 (2026-07-10) — group_71 support: MIDJOURNEY_PROMPTS.md revised to v2, synced to MJ_MAP truth (45 generated arts incl. July additions art53/54; stale Batch 4 PENDING statuses corrected). Regeneration queue hardened (art30 exactly-two-heads + negatives; art47 stone-golem rats + no-fur), retouch notes (art51/art08 text artifacts), five replacement arts specced with remap plan (art55 empty throne p688, art56 two mounted knights p46, art57 single knight p96, art58 corridor flight p112, art59 castle gate p56), Batch 5 legacy replacement authored (12 NEW prompts for legacy-only scenes + 8 retire-with-variant decisions + 7 unbound legacy files for author review), META-vs-MAP mismatch table (9 arts) queued for the art increment. Full-recheck brief for ChatGPT 5.6 Sol prepared in _handoff/audit_2026_07 (blocks A-F: cross-language integrity, riddles, GD invariants + BFS, terminology harvest, registry/docs recount, literary sampling; handshake protocol; adjudicated exclusion list).",
-    "v2.112 -> v2.113": "July 2026 - ChatGPT 5.6 Sol Max Effort full-recheck REPORT adjudicated (new group_74; report archived in audit_cycles/chatgpt56_full_recheck_2026_07_10/). Both P0 findings CONFIRMED against FB2 and fixed in this commit. C-01: sec.100 was missing the canonical FOURTH ROBBER 8/6 (FB2 and all four locale prose blocks list five bandits; GD modelled four) - added to GD plus new enemies-dict key chetvertyy_razboynik in all four locales (65 -> 66; p1_6d updated, goldens regenerated). C-02: sec.131 was missing the sentry Eagle 7/7 that canonically joins the Goblin after 4 attack rounds - implemented via new staged combat_script sec131_eagle_joins reusing the sec1175_canon_orcs machinery (eagle shown as waiting, joins at round 5 or immediately when the Goblin falls earlier, so the canonical both-guards exit condition always holds); reuses the existing enemy slug orel (same 7/7 stats as GD[722]); two new ui keys per locale for the staged intro/join combat-log lines (295 -> 297). Remaining 14 report findings (D-01..F-06) registered as OPEN hypotheses in group_74; E-04 additionally CONFIRMED by the pre-commit baseline (both stale dist spot-checks already failing with exit 0). Dist rebuilt."
+    "v2.112 -> v2.113": "July 2026 - ChatGPT 5.6 Sol Max Effort full-recheck REPORT adjudicated (new group_74; report archived in audit_cycles/chatgpt56_full_recheck_2026_07_10/). Both P0 findings CONFIRMED against FB2 and fixed in this commit. C-01: sec.100 was missing the canonical FOURTH ROBBER 8/6 (FB2 and all four locale prose blocks list five bandits; GD modelled four) - added to GD plus new enemies-dict key chetvertyy_razboynik in all four locales (65 -> 66; p1_6d updated, goldens regenerated). C-02: sec.131 was missing the sentry Eagle 7/7 that canonically joins the Goblin after 4 attack rounds - implemented via new staged combat_script sec131_eagle_joins reusing the sec1175_canon_orcs machinery (eagle shown as waiting, joins at round 5 or immediately when the Goblin falls earlier, so the canonical both-guards exit condition always holds); reuses the existing enemy slug orel (same 7/7 stats as GD[722]); two new ui keys per locale for the staged intro/join combat-log lines (295 -> 297). Remaining 14 report findings (D-01..F-06) registered as OPEN hypotheses in group_74; E-04 additionally CONFIRMED by the pre-commit baseline (both stale dist spot-checks already failing with exit 0). Dist rebuilt.",
+    "v2.113 -> v2.114": "July 2026 - group_74 P1 text batch (7 findings CONFIRMED and fixed, RU canon untouched): D-01 eight EN stat blocks unified to SKILL/STAMINA caps (823/915/942/950/994/1050/1096/1099); D-02 EN sec.417 FIERCE->FEROCIOUS and sec.790 KING OF LIONS->KING OF THE LIONS aligned to the enemies dict; D-03 FR prose aligned to the dict's second-of-two vs deuxieme-of-more system (46/73 -> SECOND, 742/805 -> DEUXIEME) and sec.417 beast renamed BETE HUMANOIDE FEROCE in dict+prose; F-01 sec.372 accept-the-consequences wording preserving the RU prinyat-x2 pun in EN/FR/UK plus FR/UK fragment joined by comma; F-02 EN sec.688 'purely by accident'; F-03 sec.1123 natural door phrasing in EN/FR/UK plus restored FR reflexive 'vous vous retrouvez'; F-04 UK sec.796 present-tense unification (zakhriaskuiutsia typo fix, opyniaietesia). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -412,20 +413,23 @@
         {
           "id": "D-01_en_stat_block_case",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "EN sec.823/915/942/950/994/1050/1096/1099 combat blocks use Skill/Stamina instead of canonical SKILL/STAMINA."
+          "status": "DONE",
+          "hypothesis": "EN sec.823/915/942/950/994/1050/1096/1099 combat blocks use Skill/Stamina instead of canonical SKILL/STAMINA.",
+          "resolution": "CONFIRMED and fixed: the eight EN stat blocks now use the SKILL/STAMINA caps convention of the other ~140 EN blocks (sec.823 13/13, 915 9/16, 942 8/5, 950 10/7, 994 10/6, 1050 9/15, 1096 10/12, 1099 9/6). Note: RU canon itself prints Title case (Masterstvo/Vynoslivost), mirrored by UK; caps is the deliberate EN/FR layer convention, so this is an intra-EN consistency fix."
         },
         {
           "id": "D-02_en_enemy_name_mismatch",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "EN sec.417 FEROCIOUS vs FIERCE and sec.790 KING OF THE LIONS vs KING OF LIONS diverge between enemies dict and prose; stats match."
+          "status": "DONE",
+          "hypothesis": "EN sec.417 FEROCIOUS vs FIERCE and sec.790 KING OF THE LIONS vs KING OF LIONS diverge between enemies dict and prose; stats match.",
+          "resolution": "CONFIRMED and fixed by aligning prose to the enemies dict (dict untouched, stats already identical): sec.417 FIERCE HUMANOID BEAST -> FEROCIOUS HUMANOID BEAST; sec.790 KING OF LIONS -> KING OF THE LIONS."
         },
         {
           "id": "D-03_fr_enemy_name_mismatch",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "FR sec.46/73/417/742/805: SECOND vs DEUXIEME in four ordinal blocks plus word-order divergence in the sec.417 beast name."
+          "status": "DONE",
+          "hypothesis": "FR sec.46/73/417/742/805: SECOND vs DEUXIEME in four ordinal blocks plus word-order divergence in the sec.417 beast name.",
+          "resolution": "CONFIRMED and fixed. The FR dict deliberately follows the classical second-of-two vs deuxieme-of-more distinction (SECOND CHEVALIER VERT / SECOND HOMME / SECOND BUCHERON for pairs vs DEUXIEME elsewhere), so prose was aligned to the dict: sec.46 DEUXIEME CHEVALIER VERT -> SECOND CHEVALIER VERT; sec.73 DEUXIEME HOMME -> SECOND HOMME; sec.742 and sec.805 SECOND CHEVALIER -> DEUXIEME CHEVALIER (three knights fight at 742; slug vtoroy_rycar is shared with 805). sec.417 beast name normalized to natural French adjective order BETE HUMANOIDE FEROCE in BOTH dict and prose (dict had FEROCE BETE HUMANOIDE, prose had BETE FEROCE HUMANOIDE)."
         },
         {
           "id": "D-04_uk_apostrophe",
@@ -461,26 +465,30 @@
         {
           "id": "F-01_sec372_unnatural_construction",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "EN/FR/UK sec.372 calque 'take on the cause of its foul mood'; FR/UK additionally break 'If you want. You may...' into a sentence fragment."
+          "status": "DONE",
+          "hypothesis": "EN/FR/UK sec.372 calque 'take on the cause of its foul mood'; FR/UK additionally break 'If you want. You may...' into a sentence fragment.",
+          "resolution": "CONFIRMED and fixed in all three translations while preserving the RU pun prinyat/prinyat (RU canon keeps its quirky construction untouched): EN 'take on the cause of its foul mood' -> 'accept the consequences of its foul mood' (accept x2); FR 'endosser la cause de sa mauvaise humeur' -> 'accepter les consequences de sa mauvaise humeur' (accepter x2; 'c.-a-d.' kept as the mirror of RU 't. e.'); UK 'pryinyaty na sebe prychynu' -> 'pryinyaty na sebe naslidky' (pryinyaty x2). FR/UK sentence fragment 'Si vous le voulez. Vous pouvez...' / 'Yakshcho khochete. Mozhete...' joined with a comma, matching what EN already did."
         },
         {
           "id": "F-02_en_sec688_adverb",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "EN sec.688 'by absolutely accidentally pressing the right spot' is ungrammatical; fix adverb without touching the White Arrow find or transitions."
+          "status": "DONE",
+          "hypothesis": "EN sec.688 'by absolutely accidentally pressing the right spot' is ungrammatical; fix adverb without touching the White Arrow find or transitions.",
+          "resolution": "CONFIRMED and fixed: EN sec.688 'by absolutely accidentally pressing the right spot' -> 'by pressing the right spot purely by accident'. White Arrow find and all transitions untouched."
         },
         {
           "id": "F-03_sec1123_doors_calque",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "EN/FR/UK sec.1123 'two doors lead from the platform' calqued in all three languages; keep targets 394/975."
+          "status": "DONE",
+          "hypothesis": "EN/FR/UK sec.1123 'two doors lead from the platform' calqued in all three languages; keep targets 394/975.",
+          "resolution": "CONFIRMED and fixed: EN 'a narrow landing from which two doors lead' -> 'a narrow landing with two doors'; FR 'vous retrouvez sur un etroit palier d'ou partent deux portes' -> 'vous vous retrouvez sur un etroit palier ou s'ouvrent deux portes' (also restores the missing reflexive vous); UK 'maidanchyk, z yakogo vedut dvoie dverei' -> 'maidanchyk, de dvoie dverei'. Targets 394/975 and captions untouched."
         },
         {
           "id": "F-04_uk_sec796_tense",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "UK sec.796 jumps tenses (present -> future-perfective -> past); unify to the game's present tense."
+          "status": "DONE",
+          "hypothesis": "UK sec.796 jumps tenses (present -> future-perfective -> past); unify to the game's present tense.",
+          "resolution": "CONFIRMED and fixed: UK sec.796 unified to narrative present - 'zakhriasuiutsia' (misspelling missing k) -> 'zakhriaskuiutsia' (present of zakhriaskuvatysia) and 'Vy opynylysia' -> 'Vy opyniaietesia'. The later perfective-past verbs (dogoriv, zgas, otochyla) mirror the RU original and stay."
         },
         {
           "id": "F-05_uk_sec992_lowercase",
