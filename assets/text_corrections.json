@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-07-10",
+  "last_updated": "2026-07-12",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -123,7 +123,8 @@
     "v2.115 -> v2.116": "July 2026 - group_74 D-04 closed per user decision (Option A): typographic apostrophe (U+2019) unified across ALL FR and UK text layers via a whole-file letter-adjacent sweep (FR 1630 replacements incl. the previously mixed prose chunk sec.177-219+ and the 65 ui / 5 map strings; UK 10 incl. both flagged enemies-dict entries and 6 ui strings). Zero ASCII apostrophes remain in FR/UK locale objects; riddle hashes, digits, caption counts untouched; RU/EN not in scope. Dist rebuilt; battery ALL GREEN.",
     "v2.116 -> v2.117": "July 2026 - group_74 tests batch part 1: E-03 battery made path-portable (path.join across 16 harnesses + 6 dist checks + regen_fixtures, os.path.join in verify_reach3.py, python->python3 ENOENT fallback in run_all.js; regex/escape backslashes whitelisted and untouched); E-04 dist spot-checks synced with reality (_dist_fr_check preface phrase updated to the current word order; _dist_ui_check drop-title expected count 2 confirmed by source - inventory modal + sidebar are both by design) and all four silently-exiting checks now propagate non-zero exit codes. All six dist checks now pass cleanly. No src or dist changes in this commit.",
     "v2.117 -> v2.118": "July 2026 - D-04 follow-up per user order: the EN locale swept to typographic apostrophes as well (9 replacements - 7 ui strings and 2 map names, all plain possessives/contractions between letters; new item D-04b). All four locales now carry zero ASCII apostrophes in their text layers. Dist rebuilt; battery ALL GREEN.",
-    "v2.118 -> v2.119": "July 2026 - group_74 CLOSED: final item E-02 resolved. The nine smoke scenarios with impossible ordered must_visit segments are now state-routed (find_smoke_paths.py gained a state_route field emitting exact hash-navigation procedures; the engine autosaves on every paragraph render and applies first-visit auto_items on render, so #N + reload is a deterministic state setup - verified against game_logic.js this session), and riddle transitions were added to the fallback full graph, resolving the other 8 previously manual scenarios exactly as the report predicted. SMOKE_TEST_PATHS.md regenerated: 118/127 path scenarios + 9 state-routed, zero manual-routing failures. With E-02 done, all 16 findings of the ChatGPT 5.6 full-recheck report are resolved (2 P0 + 7 P1 + 7 P2) plus the D-04b EN follow-up; group_74 carries a closed marker."
+    "v2.118 -> v2.119": "July 2026 - group_74 CLOSED: final item E-02 resolved. The nine smoke scenarios with impossible ordered must_visit segments are now state-routed (find_smoke_paths.py gained a state_route field emitting exact hash-navigation procedures; the engine autosaves on every paragraph render and applies first-visit auto_items on render, so #N + reload is a deterministic state setup - verified against game_logic.js this session), and riddle transitions were added to the fallback full graph, resolving the other 8 previously manual scenarios exactly as the report predicted. SMOKE_TEST_PATHS.md regenerated: 118/127 path scenarios + 9 state-routed, zero manual-routing failures. With E-02 done, all 16 findings of the ChatGPT 5.6 full-recheck report are resolved (2 P0 + 7 P1 + 7 P2) plus the D-04b EN follow-up; group_74 carries a closed marker.",
+    "v2.119 -> v2.120": "July 2026 - group_75 spell-economy completion (P0 backlog item closed). Verified the whole May-2026 spell audit against the live engine: 104 spell hooks now in GD, group_19 combat modal defaults COPY/FORCE/WEAKNESS with 21 per-paragraph allowlists; all 26 deferred combat-modal paragraphs are covered. Fixed the five real remaining gaps, each FB2-verified: sec.235 modal restricted to COPY (Fire/Force/Weakness are canonical nav transitions 338/404/417, sec.536 precedent); sec.250 and sec.474 no-time-to-cast ambushes get empty allowlists; sec.260 Vodyanoy COPY ban enforced via [FORCE,WEAKNESS]; sec.528 one-handed on-branch penalty modelled as player_attack_mod -1 (GD[3]/GD[240] adjacent math verified already correct). p1_6d gains 4 spot-checks (14 -> 18). The 50-60-missing-hooks memory claim is obsolete. Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -398,6 +399,43 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_75_2026_07_12_spell_economy_completion": {
+      "comment": "Spell-economy completion pass closing the audit_cycles/spell_economy_may_2026 backlog. Census at v2.119: 104 spell hooks in GD (LEVITATION 32, FIRE 21, FORCE 15, WEAKNESS 14, SWIMMING 12, COPY 5, ILLUSION 4, HEALING 1) vs 66 at the May classification; the group_19 combat-modal engine defaults COPY/FORCE/WEAKNESS in every combat, restricted per paragraph via combat_spells_allowed (21 allowlists before this pass). All 26 May-deferred combat-modal paragraphs adjudicated against the live engine: covered by the default or by existing allowlists (506 COPY-only, 950 FORCE+HEALING, 1096 COPY-only, 436 scripted [], 536 COPY-only + nav FORCE/WEAKNESS), except sec.235 fixed here. A fresh systematic scan of all combats WITHOUT an allowlist whose RU text mentions spells (35 paragraphs) surfaced two canonical no-time-to-cast bans outside the deferred list (250, 474) and the unenforced Vodyanoy COPY ban (260). Adjacent combat-math checks: GD[3] player_attack_mod -2 (spy's Weakness) and GD[240] damage 3 (snake venom) already modelled; GD[528] on-tree -1 was missing and is fixed here. Upstream failed-cast wiring verified: 388->911, 656->514, 468->273, 273/468->39 all carry spell fields. The stale memory-tracker claim of ~50-60 missing spell hooks (P0) is obsolete: groups 17+19 plus this pass close the economy; real remaining gaps were exactly the four allowlists and one attack-mod fixed here.",
+      "source": "claude_completion_pass_2026_07_12",
+      "items": [
+        {
+          "id": "sec235_modal_copy_only",
+          "severity": "P1",
+          "status": "DONE",
+          "resolution": "FB2: 'Vo vremya boya mozhete vospolzovatsya zaklyatiyami Kopii, Ognya (338), Sily (404), Slabosti (417) ili dratsya bez nikh.' Fire/Force/Weakness are canonical numbered NAV transitions (targets 338/404/417, already wired with spell + spell_choice fields); only COPY is an in-combat cast. The engine default additionally offered modal FORCE/WEAKNESS, letting the player bypass the canonical cast paragraphs 404/417. combat_spells_allowed [\"COPY\"] added, matching the sec.536 precedent (same pattern: nav FORCE/WEAKNESS + modal COPY)."
+        },
+        {
+          "id": "sec250_no_time_ban",
+          "severity": "P1",
+          "status": "DONE",
+          "resolution": "FB2: 'Zaklyatiyami vospolzovatsya uzhe ne uspeete.' The ambush denies all casting, but the paragraph had no allowlist, so the engine default offered COPY/FORCE/WEAKNESS. combat_spells_allowed [] added."
+        },
+        {
+          "id": "sec260_vodyanoy_copy_ban",
+          "severity": "P1",
+          "status": "DONE",
+          "resolution": "FB2: 'Vospolzovatsya zhe zaklyatiem Kopii vam ne udastsya: Vodyanoy etogo ne dopustit.' Only COPY is banned; Force/Weakness are not restricted by canon. combat_spells_allowed [\"FORCE\",\"WEAKNESS\"] added. This closes the D-category note from the May classification (Vodyanoi ban was recorded as description but the engine default silently violated it once group_19 landed)."
+        },
+        {
+          "id": "sec474_no_time_ban",
+          "severity": "P1",
+          "status": "DONE",
+          "resolution": "FB2: 'Nalozhit kakoe-libo zaklyatie uzhe nekogda.' Giant-spider ambush denies casting; combat_spells_allowed [] added (paragraph was on the engine default)."
+        },
+        {
+          "id": "sec528_on_tree_penalty",
+          "severity": "P1",
+          "status": "DONE",
+          "resolution": "RU canon (FB2-verified corpus): 'Vo vremya boya umenshayte vashu SILU UDARA na 1, t.k. vam prikhoditsya odnoy rukoy derzhatsya za suk...' - the one-handed on-branch fight penalty was not modelled. player_attack_mod -1 added (semantics match GD[3] -2; the sec.436 scripted tree fight models its own penalty inside sec436_pre_luck). The spell side of 528 (COPY/FORCE/WEAKNESS offered, FIRE warned off narratively) is exactly the engine default - FIRE is not a combat-modal spell, so no allowlist is needed."
+        }
+      ],
+      "verified": "2026-07-12"
     },
     "group_74_2026_07_10_chatgpt56_full_recheck": {
       "comment": "Adjudication of the ChatGPT 5.6 Sol Max Effort full-recheck REPORT (2026-07-10, corpus = GitHub main zip at v2.112). 16 findings: 2 P0 + 7 P1 + 7 P2. Truth order applied: registry -> fb2_remake.fb2 -> book_1991_extracted.txt. Report archived in audit_cycles/chatgpt56_full_recheck_2026_07_10/REPORT.md. P0 pair verified against FB2 and fixed in this commit; remaining findings recorded as OPEN hypotheses for batch adjudication.",

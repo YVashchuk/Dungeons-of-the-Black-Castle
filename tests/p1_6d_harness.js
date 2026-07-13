@@ -49,5 +49,11 @@ ck('GD[100] five bandits incl. chetvertyy 8/6', GD['100'].enemies.length===5 && 
 ck('GD[131] goblin + waiting orel, staged script', GD['131'].enemies.length===2 && GD['131'].enemies[1].name==='orel' && GD['131'].enemies[1].skill===7 && GD['131'].enemies[1].stamina===7 && GD['131'].combat_script==='sec131_eagle_joins');
 ck('ui sec131 staged keys present (RU)', typeof LOCALE_RU.ui['snachala_vy_srazhaetes_tolko_s_g']==='string' && typeof LOCALE_RU.ui['orel_chasovoy_vyletaet_iz_nishi']==='string');
 
+// 7. group_75 spell-economy completion: canonical combat-spell bans + on-tree penalty
+ck('GD[250]/[474] all combat spells banned (no time to cast)', JSON.stringify(GD['250'].combat_spells_allowed)==='[]' && JSON.stringify(GD['474'].combat_spells_allowed)==='[]');
+ck('GD[260] Vodyanoy bans COPY only', JSON.stringify(GD['260'].combat_spells_allowed)==='["FORCE","WEAKNESS"]');
+ck('GD[235] modal restricted to COPY, nav spells kept', JSON.stringify(GD['235'].combat_spells_allowed)==='["COPY"]' && GD['235'].choices.filter(c=>c.spell).length===3);
+ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
+
 console.log(`\n6d HARNESS: ${pass} passed, ${fail} failed`);
 process.exit(fail?1:0);
