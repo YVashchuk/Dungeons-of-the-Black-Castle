@@ -1,9 +1,10 @@
 // 6d harness — enemy names + riddle labels resolve; game_structure.js fully Cyrillic-free.
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const remakeSrc=fs.readFileSync(REPO+'\\src\\game_structure.js','utf8');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
-const localeSrc=fs.readFileSync(REPO+'\\src\\locale.ru.js','utf8');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const remakeSrc=fs.readFileSync(path.join(REPO,'src','game_structure.js'),'utf8');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+const localeSrc=fs.readFileSync(path.join(REPO,'src','locale.ru.js'),'utf8');
 const data=JSON.parse(fs.readFileSync(require('path').join(__dirname,'goldens','_6d_data.json'),'utf8'));
 let pass=0,fail=0; const ck=(d,c)=>{ if(c)pass++; else {fail++;console.log('  FAIL:',d);} };
 const CYR=/[\u0400-\u04FF]/;

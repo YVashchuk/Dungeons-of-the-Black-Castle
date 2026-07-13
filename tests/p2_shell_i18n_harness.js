@@ -1,8 +1,9 @@
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const shell=fs.readFileSync(REPO+'\\src\\game_shell_top.html','utf8');
-const locSrc=fs.readFileSync(REPO+'\\src\\locale.ru.js','utf8');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const shell=fs.readFileSync(path.join(REPO,'src','game_shell_top.html'),'utf8');
+const locSrc=fs.readFileSync(path.join(REPO,'src','locale.ru.js'),'utf8');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
 const LOCALE_RU=JSON.parse(locSrc.match(/const\s+LOCALE_RU\s*=\s*(\{[\s\S]*\})\s*;\s*$/)[1]);
 const ui=LOCALE_RU.ui;
 let pass=0, fail=0;

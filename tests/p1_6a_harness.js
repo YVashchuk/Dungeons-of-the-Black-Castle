@@ -1,9 +1,10 @@
 // PHASE 1 / Increment 6a harness — locale resolvers reproduce original text + labels exactly.
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
-const localeSrc=fs.readFileSync(REPO+'\\src\\locale.ru.js','utf8');
-const dataSrc=fs.readFileSync(REPO+'\\src\\game_structure.js','utf8');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+const localeSrc=fs.readFileSync(path.join(REPO,'src','locale.ru.js'),'utf8');
+const dataSrc=fs.readFileSync(path.join(REPO,'src','game_structure.js'),'utf8');
 const orig=JSON.parse(fs.readFileSync(require('path').join(__dirname,'goldens','_6a_orig.json'),'utf8'));
 let pass=0,fail=0; const ck=(d,c)=>{ if(c)pass++; else {fail++;console.log('  FAIL:',d);} };
 

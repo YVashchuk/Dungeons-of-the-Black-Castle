@@ -1,9 +1,10 @@
 // 2a harness — ACTIVE_LOCALE indirection: RU-default identity + per-key RU fallback.
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
-const gsSrc=fs.readFileSync(REPO+'\\src\\game_structure.js','utf8');
-const localeSrc=fs.readFileSync(REPO+'\\src\\locale.ru.js','utf8');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+const gsSrc=fs.readFileSync(path.join(REPO,'src','game_structure.js'),'utf8');
+const localeSrc=fs.readFileSync(path.join(REPO,'src','locale.ru.js'),'utf8');
 let pass=0,fail=0; const ck=(d,c)=>{ if(c)pass++; else {fail++;console.log('  FAIL:',d);} };
 
 globalThis.GD=JSON.parse(gsSrc.match(/const\s+GD\s*=\s*(\{[\s\S]*\})\s*;\s*$/)[1]);

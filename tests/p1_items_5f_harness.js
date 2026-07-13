@@ -1,13 +1,14 @@
 // PHASE 1 / Increment 5f harness — structured food objects {id,kind:'food',stamina}.
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
-const reg=JSON.parse(fs.readFileSync(REPO+'\\src\\registries\\items.json','utf8'));
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+const reg=JSON.parse(fs.readFileSync(path.join(REPO,'src','registries','items.json'),'utf8'));
 let pass=0,fail=0; const ck=(d,c)=>{ if(c)pass++; else {fail++;console.log('  FAIL:',d);} };
 function brace(s){let i=gl.indexOf('{',s),d=0,j=i;for(;j<gl.length;j++){if(gl[j]==='{')d++;else if(gl[j]==='}'){d--;if(d===0){j++;break;}}}return gl.slice(s,j);}
 function gconst(n){const s=gl.indexOf('const '+n+'=');return brace(s).replace('const '+n+'=','globalThis.'+n+'=')+';';}
 function gfn(n){const s=gl.indexOf('function '+n+'(');return brace(s).replace('function '+n+'(','globalThis.'+n+'=function(');}
-globalThis.LOCALE_RU=JSON.parse(fs.readFileSync(REPO+'\\src\\locale.ru.js','utf8').match(/const\s+LOCALE_RU\s*=\s*(\{[\s\S]*\})\s*;\s*$/)[1]);
+globalThis.LOCALE_RU=JSON.parse(fs.readFileSync(path.join(REPO,'src','locale.ru.js'),'utf8').match(/const\s+LOCALE_RU\s*=\s*(\{[\s\S]*\})\s*;\s*$/)[1]);
 [gconst('RU_TO_SLUG'),gconst('SLUG_TO_RU'),gconst('ITEM_SIZES'),
  gfn('canonItem'),gfn('itemName'),gfn('invDisplay'),gfn('getItemSize'),gfn('getBagUsed'),gfn('passesInventoryCheck'),gfn('t')
 ].forEach(c=>eval(c));
