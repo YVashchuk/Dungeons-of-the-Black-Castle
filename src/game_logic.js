@@ -474,26 +474,40 @@ window.getLang=getLang;
 window.getLangName=getLangName;
 // <<< BC_I18N_2B <<<
 
-// >>> BC_I18N_2C (minimal language picker UI; rework functionally in redesign — see registry group_68) >>>
+// >>> BC_I18N_2C (language picker: accessible native-select dropdown; group_68 closed 2026-07-12) >>>
 function renderLangPicker(containerId){
   var c=document.getElementById(containerId);
   if(!c) return;
   var langs=availableLangs(), cur=getLang();
   c.innerHTML='';
+  var lbl=t('yazyk'); if(lbl==='yazyk') lbl='Language';
+  var label=document.createElement('label');
+  label.setAttribute('for',containerId+'-select');
+  label.style.cssText='display:inline-flex;align-items:center;gap:7px;cursor:pointer;';
   var g=document.createElement('span');
   g.textContent='\ud83c\udf10';
-  g.style.cssText='font-size:14px;opacity:.55;margin-right:4px;align-self:center;';
-  c.appendChild(g);
+  g.setAttribute('aria-hidden','true');
+  g.style.cssText='font-size:14px;opacity:.55;';
+  var sr=document.createElement('span');
+  sr.textContent=lbl;
+  sr.style.cssText='position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;';
+  var sel=document.createElement('select');
+  sel.id=containerId+'-select';
+  sel.setAttribute('data-lang-picker','1');
+  sel.title=lbl;
+  sel.style.cssText='font-family:var(--font-ui);font-size:12px;letter-spacing:.06em;cursor:pointer;padding:6px 12px;border-radius:2px;background:var(--bg2);border:1px solid var(--border2);color:var(--gold2);transition:border-color .2s,box-shadow .2s;';
   langs.forEach(function(code){
-    var b=document.createElement('button');
-    b.type='button';
-    b.setAttribute('data-lang',code);
-    b.textContent=getLangName(code);
-    var on=(code===cur);
-    b.style.cssText='font-family:var(--font-ui);font-size:12px;letter-spacing:.04em;cursor:pointer;padding:5px 12px;margin:0 3px;border-radius:2px;transition:all .2s;background:'+(on?'rgba(200,150,42,.18)':'transparent')+';border:1px solid '+(on?'var(--gold)':'var(--border2)')+';color:'+(on?'var(--gold2)':'var(--muted)')+';';
-    b.onclick=function(){ if(code!==getLang()){ setLanguage(code); renderAllLangPickers(); } };
-    c.appendChild(b);
+    var o=document.createElement('option');
+    o.value=code;
+    o.textContent=getLangName(code);
+    if(code===cur) o.selected=true;
+    sel.appendChild(o);
   });
+  sel.onchange=function(){ var code=sel.value; if(code!==getLang()){ setLanguage(code); renderAllLangPickers(); } };
+  sel.onfocus=function(){ sel.style.borderColor='var(--gold)'; sel.style.boxShadow='0 0 0 2px var(--glow)'; };
+  sel.onblur=function(){ sel.style.borderColor='var(--border2)'; sel.style.boxShadow='none'; };
+  label.appendChild(g); label.appendChild(sr); label.appendChild(sel);
+  c.appendChild(label);
 }
 function renderAllLangPickers(){ renderLangPicker('lang-pick-title'); renderLangPicker('lang-pick-menu'); }
 window.renderLangPicker=renderLangPicker;

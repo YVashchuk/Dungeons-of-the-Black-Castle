@@ -40,40 +40,51 @@ eval(regBlock+"\n"+extract('prefaceText')+"\n"+extract('pregameText')+"\n"+extra
 const RU=globalThis.LOCALE_RU;
 const ENDONYM_RU='\u0420\u0443\u0441\u0441\u043a\u0438\u0439'; // Русский
 const GLOBE='\ud83c\udf10';
-const btns=el=>el.children.filter(c=>c._attrs && c._attrs['data-lang']!==undefined);
+const opts=sel=>sel.children;
 
-// ---- 1. default (ru only): globe + one endonym button, highlighted ----
+// ---- 1. default (ru only): label-wrapped accessible select with one endonym option ----
 setLanguage('ru');
 renderLangPicker('lang-pick-title');
 const t1=containers['lang-pick-title'];
-ck('title picker: globe + 1 button (2 children)', t1.children.length===2);
-ck('first child is globe marker', t1.children[0]._text===GLOBE);
-ck('lang button text is RU endonym', btns(t1)[0]._text===ENDONYM_RU);
-ck('current lang button highlighted (gold border)', /var\(--gold\)/.test(btns(t1)[0].style.cssText));
-ck("button carries data-lang='ru'", btns(t1)[0]._attrs['data-lang']==='ru');
+const label1=t1.children[0];
+ck('title picker: single label wrapper', t1.children.length===1 && !!label1);
+ck('label bound to select (for=<id>-select)', label1._attrs['for']==='lang-pick-title-select');
+ck('label children: globe + sr-label + select', label1.children.length===3);
+ck('globe glyph is aria-hidden', label1.children[0]._text===GLOBE && label1.children[0]._attrs['aria-hidden']==='true');
+ck('visually-hidden label localized via t(yazyk)', label1.children[1]._text===RU.ui.yazyk && /width:1px/.test(label1.children[1].style.cssText));
+const sel1=label1.children[2];
+ck('select carries id + data-lang-picker + title tooltip', sel1.id==='lang-pick-title-select' && sel1._attrs['data-lang-picker']==='1' && sel1.title===RU.ui.yazyk);
+ck('one option: RU endonym, value ru, selected', opts(sel1).length===1 && opts(sel1)[0]._text===ENDONYM_RU && opts(sel1)[0].value==='ru' && opts(sel1)[0].selected===true);
 
-// ---- 2. two locales: both buttons, only current highlighted ----
+// ---- 2. two locales: both options, only current selected ----
 LOCALES.en={langName:'English', ui:{}, p:{}, spells:{}, allies:{}, enemies:{}, map:{}};
 renderAllLangPickers();
 const t2=containers['lang-pick-title'], m2=containers['lang-pick-menu'];
-ck('title picker now has 2 lang buttons', btns(t2).length===2);
-ck('menu picker also rendered (2 lang buttons)', btns(m2).length===2);
-const ruBtn=btns(t2).find(b=>b._attrs['data-lang']==='ru');
-const enBtn=btns(t2).find(b=>b._attrs['data-lang']==='en');
-ck('ru button present with endonym', ruBtn && ruBtn._text===ENDONYM_RU);
-ck('en button present with endonym', enBtn && enBtn._text==='English');
-ck('current (ru) highlighted', /var\(--gold\)/.test(ruBtn.style.cssText));
-ck('non-current (en) NOT highlighted', !/border:1px solid var\(--gold\)/.test(enBtn.style.cssText));
+const sel2=t2.children[0].children[2], selm=m2.children[0].children[2];
+ck('title select now has 2 options', opts(sel2).length===2);
+ck('menu select also rendered (2 options)', opts(selm).length===2);
+const ruOpt=opts(sel2).find(o=>o.value==='ru');
+const enOpt=opts(sel2).find(o=>o.value==='en');
+ck('ru option present with endonym', !!ruOpt && ruOpt._text===ENDONYM_RU);
+ck('en option present with endonym', !!enOpt && enOpt._text==='English');
+ck('current (ru) option selected', ruOpt.selected===true);
+ck('non-current (en) option not selected', !enOpt.selected);
 
-// ---- 3. click en button -> switches language + re-highlights ----
-enBtn.onclick();
-ck("click en -> getLang()==='en'", getLang()==='en');
+// ---- 3. change select to en -> switches language, re-renders, persists ----
+sel2.value='en';
+sel2.onchange();
+ck("change to en -> getLang()==='en'", getLang()==='en');
 ck('localStorage persisted en', localStorage.getItem('blackcastle-lang')==='en');
-const t3=containers['lang-pick-title'];
-const enBtn3=btns(t3).find(b=>b._attrs['data-lang']==='en');
-const ruBtn3=btns(t3).find(b=>b._attrs['data-lang']==='ru');
-ck('after click: en now highlighted', /var\(--gold\)/.test(enBtn3.style.cssText));
-ck('after click: ru no longer highlighted', !/border:1px solid var\(--gold\)/.test(ruBtn3.style.cssText));
+const sel3=containers['lang-pick-title'].children[0].children[2];
+const enOpt3=opts(sel3).find(o=>o.value==='en');
+const ruOpt3=opts(sel3).find(o=>o.value==='ru');
+ck('after change: en option selected', enOpt3.selected===true);
+ck('after change: ru option not selected', !ruOpt3.selected);
+ck('after change: sr-label still non-empty (locale fallback)', containers['lang-pick-title'].children[0].children[1]._text.length>0);
+sel3.onfocus();
+ck('focus styling applies gold border', sel3.style.borderColor==='var(--gold)');
+sel3.onblur();
+ck('blur restores border', sel3.style.borderColor==='var(--border2)');
 
 // ---- 4. missing container is a no-op (guard) ----
 let threw=false; try{ renderLangPicker('__null__'); }catch(e){ threw=true; }
