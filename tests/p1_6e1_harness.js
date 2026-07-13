@@ -1,8 +1,9 @@
 // 6e-1 harness — map titles slugged in source; resolve-at-load loop restores RU; dev notes untouched.
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const mapSrc=fs.readFileSync(REPO+'\\src\\map_module.js','utf8');
-const localeSrc=fs.readFileSync(REPO+'\\src\\locale.ru.js','utf8');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const mapSrc=fs.readFileSync(path.join(REPO,'src','map_module.js'),'utf8');
+const localeSrc=fs.readFileSync(path.join(REPO,'src','locale.ru.js'),'utf8');
 const mapLoc=JSON.parse(fs.readFileSync(require('path').join(__dirname,'goldens','_6e1_map.json'),'utf8'));
 let pass=0,fail=0; const ck=(d,c)=>{ if(c)pass++; else {fail++;console.log('  FAIL:',d);} };
 const CYR=/[\u0400-\u04FF]/;

@@ -1,6 +1,7 @@
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
 const fn=gl.match(/function passesInventoryCheck\([\s\S]*?\n\}/)[0];
 const canonItem=x=>x;
 let S=null;
@@ -15,7 +16,7 @@ S={inventory:['copper_key']};             ok(passesInventoryCheck(CH)===false, '
 S={inventory:[]};                         ok(passesInventoryCheck(CH)===false, 'empty blocked');
 S={inventory:['signet']};                 ok(passesInventoryCheck({inventory_condition:'black_castle_key'})===false, 'string cond unaffected');
 // live GD: the 4 doors have array conds; 851/881 untouched strings
-const src=fs.readFileSync(REPO+'\\src\\game_structure.js','utf8');
+const src=fs.readFileSync(path.join(REPO,'src','game_structure.js'),'utf8');
 const GD=(new Function('window',src+'\n; return (typeof GD!=="undefined")?GD:(window&&window.GD);'))({});
 [[91,131],[687,727],[694,734],[768,808]].forEach(([p,t])=>{
   const c=GD[String(p)].choices[0];

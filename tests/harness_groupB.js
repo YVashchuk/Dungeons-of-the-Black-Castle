@@ -1,9 +1,10 @@
 // Group B harness — real passesInventoryCheck + getSpellRemaining from game_logic.js.
 // Item-identity assertions compare via canonItem so they are robust to the RU->slug data flip (5d).
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
-const GD=JSON.parse(fs.readFileSync(REPO+'\\src\\game_structure.js','utf8').replace(/^\s*const GD\s*=\s*/,'').replace(/;\s*$/,''));
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+const GD=JSON.parse(fs.readFileSync(path.join(REPO,'src','game_structure.js'),'utf8').replace(/^\s*const GD\s*=\s*/,'').replace(/;\s*$/,''));
 function extract(name){const s=gl.indexOf('function '+name+'(');let i=gl.indexOf('{',s),d=0,j=i;for(;j<gl.length;j++){if(gl[j]==='{')d++;else if(gl[j]==='}'){d--;if(d===0){j++;break;}}}return gl.slice(s,j);}
 function extractConst(name){const s=gl.indexOf('const '+name+'=');let i=gl.indexOf('{',s),d=0,j=i;for(;j<gl.length;j++){if(gl[j]==='{')d++;else if(gl[j]==='}'){d--;if(d===0){j++;break;}}}return gl.slice(s,j)+';';}
 var S=null;

@@ -3,7 +3,7 @@ import io, sys, json, re, os
 from collections import deque, defaultdict
 sys.stdout.reconfigure(encoding='utf-8')
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-raw = io.open(REPO + r"\src\game_structure.js", encoding="utf-8").read()
+raw = io.open(os.path.join(REPO, "src", "game_structure.js"), encoding="utf-8").read()
 GD = json.loads(re.match(r"\s*const\s+GD\s*=\s*(\{.*\})\s*;?\s*$", raw, re.S).group(1))
 V = set(int(k) for k in GD)
 edges = defaultdict(set)

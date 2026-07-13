@@ -1,8 +1,9 @@
 // PHASE 1 / Increment 6b harness — spell/ally/preface/pregame text reproduced from LOCALE_RU.
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
-const localeSrc=fs.readFileSync(REPO+'\\src\\locale.ru.js','utf8');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+const localeSrc=fs.readFileSync(path.join(REPO,'src','locale.ru.js'),'utf8');
 const orig=JSON.parse(fs.readFileSync(require('path').join(__dirname,'goldens','_6b_orig.json'),'utf8'));
 let pass=0,fail=0; const ck=(d,c)=>{ if(c)pass++; else {fail++;console.log('  FAIL:',d);} };
 

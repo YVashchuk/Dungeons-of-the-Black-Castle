@@ -1,15 +1,16 @@
 const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
 let pass=0,fail=0; const ok=(c,m)=>{ if(c)pass++; else {fail++; console.log('  FAIL: '+m);} };
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
 // extract helpers and eval
 const normSrc=gl.match(/function riddleNorm\(s\)\{[\s\S]*?\n\}/)[0];
 const hashSrc=gl.match(/function riddleHash\(s\)\{[\s\S]*?\n\}/)[0];
 eval(normSrc); eval(hashSrc);
 // locales
-const load=(f,v)=>JSON.parse(fs.readFileSync(REPO+'\\src\\'+f,'utf8').match(new RegExp('const\\s+'+v+'\\s*=\\s*(\\{[\\s\\S]*\\})\\s*;'))[1]);
+const load=(f,v)=>JSON.parse(fs.readFileSync(path.join(REPO,'src',f),'utf8').match(new RegExp('const\\s+'+v+'\\s*=\\s*(\\{[\\s\\S]*\\})\\s*;'))[1]);
 const EN=load('locale.en.js','LOCALE_EN'), FR=load('locale.fr.js','LOCALE_FR'), UK=load('locale.uk.js','LOCALE_UK');
-const gsrc=fs.readFileSync(REPO+'\\src\\game_structure.js','utf8');
+const gsrc=fs.readFileSync(path.join(REPO,'src','game_structure.js'),'utf8');
 const GD=(new Function('window',gsrc+'\n; return (typeof GD!=="undefined")?GD:(window&&window.GD);'))({});
 const hasWord=(L,pid,word)=>{ const h=riddleHash(word); return (L.riddles[pid]||[]).some(e=>e.h===h); };
 // structural

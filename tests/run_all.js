@@ -10,7 +10,8 @@ for(const h of HARNESSES){
   console.log((ok?'PASS ':'FAIL ')+h.padEnd(30)+last);
   if(!ok){fails++; if(r.stderr)console.log(r.stderr.split('\n').slice(0,4).map(s=>'      '+s).join('\n'));}
 }
-const py=spawnSync('python',['-X','utf8',path.join(T,'verify_reach3.py')],{encoding:'utf8'});
+let py=spawnSync('python',['-X','utf8',path.join(T,'verify_reach3.py')],{encoding:'utf8'});
+if(py.error&&py.error.code==='ENOENT'){py=spawnSync('python3',['-X','utf8',path.join(T,'verify_reach3.py')],{encoding:'utf8'});}
 const line=(((py.stdout||'')+(py.stderr||'')).split('\n').find(l=>/True|False/.test(l))||'(no output)').trim();
 const okB=/True/.test(line);
 console.log((okB?'PASS ':'FAIL ')+'verify_reach3.py'.padEnd(30)+line); if(!okB)fails++;

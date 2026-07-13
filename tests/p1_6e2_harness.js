@@ -1,9 +1,10 @@
 // 6e-2 harness — map UI strings resolve via t(); only dev-note Cyrillic remains in map_module.js.
 const acorn=require('acorn'); const fs=require('fs');
-const REPO=require('path').resolve(__dirname,'..');
-const mapSrc=fs.readFileSync(REPO+'\\src\\map_module.js','utf8');
-const gl=fs.readFileSync(REPO+'\\src\\game_logic.js','utf8');
-const localeSrc=fs.readFileSync(REPO+'\\src\\locale.ru.js','utf8');
+const path=require('path');
+const REPO=path.resolve(__dirname,'..');
+const mapSrc=fs.readFileSync(path.join(REPO,'src','map_module.js'),'utf8');
+const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+const localeSrc=fs.readFileSync(path.join(REPO,'src','locale.ru.js'),'utf8');
 const newKeys=JSON.parse(fs.readFileSync(require('path').join(__dirname,'goldens','_6e2_newkeys.json'),'utf8'));
 let pass=0,fail=0; const ck=(d,c)=>{ if(c)pass++; else {fail++;console.log('  FAIL:',d);} };
 const CYR=/[\u0400-\u04FF]/;
