@@ -16,6 +16,14 @@ Conventions:
   - Some target paragraphs need the player to engage in a fight or fail
     a luck roll to reach the verification state — those steps are
     described in the 'what to check' line, not in the click list.
+  - 'State route' scenarios have no click path at all: the acquisition
+    branch never reconnects to the consumer in the choices graph
+    (paragraph-arithmetic mechanics modelled as inventory gates). They
+    are still fully testable: the engine autosaves on every paragraph
+    render and applies first-visit auto_items on render, so appending
+    #N to the URL and reloading (F5) restores the save at that
+    paragraph with all entry grants applied. Each such scenario lists
+    its exact hash-hops in place of a click list.
 
 ## i18n_ru_fallback_non_russian_lang
 
@@ -608,7 +616,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §535 via §688
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #688 (append to the URL, press F5): 'Белая стрела' is granted on entry via first-visit auto_items, and the game autosaves.
+  2) Hash-load #535.
+  3) Verify the 'Белую стрелу (2)' offer button as described above.
 
 ---
 
@@ -1702,7 +1714,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §32 via §13
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #13 and click the only nav choice 'Теперь обратите внимание на местность (639)': 'Помощь рыбки' is granted on that click (acquires field), and the game autosaves.
+  2) Hash-load #32.
+  3) Verify the single fish button (47) as described above.
 
 ---
 
@@ -1760,7 +1776,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §203 via §13
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #13 and click the only nav choice to sec.639: 'Помощь рыбки' granted on click.
+  2) Hash-load #203.
+  3) Verify BOTH buttons (luck roll + fish 218) as described above.
 
 ---
 
@@ -1776,7 +1796,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §699 via §13
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #13 and click the only nav choice to sec.639: 'Помощь рыбки' granted on click.
+  2) Hash-load #699.
+  3) Verify the fish button (714) as described above.
 
 ---
 
@@ -2570,7 +2594,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §851 via §612
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #612: 'Медный ключик' is granted on entry via auto_items (autosave).
+  2) Hash-load #851.
+  3) Verify the key option (891) alongside the fallback (881) as described above.
 
 ---
 
@@ -2586,7 +2614,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §881 via §612
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #612: 'Медный ключик' granted on entry.
+  2) Hash-load #881.
+  3) Verify the key option (921) alongside the fallback (1123) as described above.
 
 ---
 
@@ -2961,7 +2993,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §637 via §791
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #791: 'Рубиновая звезда' is granted on entry via auto_items.
+  2) Hash-load #637.
+  3) Verify the star-hint button (708) as described above.
 
 ---
 
@@ -3589,7 +3625,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §851 via §612
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #612: 'Медный ключик' granted on entry.
+  2) Hash-load #851 and click 'Отпереть дверь Медным ключиком (891)'.
+  3) Verify the navigation to sec.891 AND that 'Медный ключик' disappeared from the inventory (consume_on_use), with the notification and the event-log line, as described above.
 
 ---
 
@@ -3767,7 +3807,11 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §226 via §479, §74, §1071
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #479 ('Перстень с изумрудом' granted on entry), then #74 ('Золотой апельсин'), then #1071 ('Перстень с рубином') - each hop autosaves.
+  2) Hash-load #226.
+  3) Verify FIVE buttons as described above.
 
 ---
 
@@ -4040,7 +4084,35 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §1131
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 1145 → §1145'
+     9. From §1145: click '→ 885 → §885'
+    10. From §885: click '→ 590 → §590'
+    11. From §590: click '→ 915 → §915'
+    12. From §915: click '→ 833 → §833'
+    13. From §833: click '→ 654 → §654'
+    14. From §654: click '→ 742 → §742'
+    15. From §742: click '→ 1160 → §1160'
+    16. From §1160: click '→ 1078 → §1078'
+    17. From §1078: click '→ 249 → §249'
+    18. From §249: click '→ 799 → §799'
+    19. From §799: click '→ 851 → §851'
+    20. From §851: click '→ 881 → §881'
+    21. From §881: click '→ 921 → §921'
+    22. From §921: click '→ 1155 → §1155'
+    23. From §1155: click '→ 1179 → §1179'
+    24. From §1179: click '→ 1113 → §1113'
+    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+```
+  (25 clicks total, graph: full)
 
 ---
 
@@ -4056,7 +4128,36 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §992 via §1131
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 1145 → §1145'
+     9. From §1145: click '→ 885 → §885'
+    10. From §885: click '→ 590 → §590'
+    11. From §590: click '→ 915 → §915'
+    12. From §915: click '→ 833 → §833'
+    13. From §833: click '→ 654 → §654'
+    14. From §654: click '→ 742 → §742'
+    15. From §742: click '→ 1160 → §1160'
+    16. From §1160: click '→ 1078 → §1078'
+    17. From §1078: click '→ 249 → §249'
+    18. From §249: click '→ 799 → §799'
+    19. From §799: click '→ 851 → §851'
+    20. From §851: click '→ 881 → §881'
+    21. From §881: click '→ 921 → §921'
+    22. From §921: click '→ 1155 → §1155'
+    23. From §1155: click '→ 1179 → §1179'
+    24. From §1179: click '→ 1113 → §1113'
+    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+    26. From §1131: click '[riddle: answer §1131 correctly] → §992'
+```
+  (26 clicks total, graph: full)
 
 ---
 
@@ -4070,7 +4171,35 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §1131
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 1145 → §1145'
+     9. From §1145: click '→ 885 → §885'
+    10. From §885: click '→ 590 → §590'
+    11. From §590: click '→ 915 → §915'
+    12. From §915: click '→ 833 → §833'
+    13. From §833: click '→ 654 → §654'
+    14. From §654: click '→ 742 → §742'
+    15. From §742: click '→ 1160 → §1160'
+    16. From §1160: click '→ 1078 → §1078'
+    17. From §1078: click '→ 249 → §249'
+    18. From §249: click '→ 799 → §799'
+    19. From §799: click '→ 851 → §851'
+    20. From §851: click '→ 881 → §881'
+    21. From §881: click '→ 921 → §921'
+    22. From §921: click '→ 1155 → §1155'
+    23. From §1155: click '→ 1179 → §1179'
+    24. From §1179: click '→ 1113 → §1113'
+    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+```
+  (25 clicks total, graph: full)
 
 ---
 
@@ -4084,7 +4213,35 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §1131
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 1145 → §1145'
+     9. From §1145: click '→ 885 → §885'
+    10. From §885: click '→ 590 → §590'
+    11. From §590: click '→ 915 → §915'
+    12. From §915: click '→ 833 → §833'
+    13. From §833: click '→ 654 → §654'
+    14. From §654: click '→ 742 → §742'
+    15. From §742: click '→ 1160 → §1160'
+    16. From §1160: click '→ 1078 → §1078'
+    17. From §1078: click '→ 249 → §249'
+    18. From §249: click '→ 799 → §799'
+    19. From §799: click '→ 851 → §851'
+    20. From §851: click '→ 881 → §881'
+    21. From §881: click '→ 921 → §921'
+    22. From §921: click '→ 1155 → §1155'
+    23. From §1155: click '→ 1179 → §1179'
+    24. From §1179: click '→ 1113 → §1113'
+    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+```
+  (25 clicks total, graph: full)
 
 ---
 
@@ -4098,7 +4255,35 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §1131
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 1145 → §1145'
+     9. From §1145: click '→ 885 → §885'
+    10. From §885: click '→ 590 → §590'
+    11. From §590: click '→ 915 → §915'
+    12. From §915: click '→ 833 → §833'
+    13. From §833: click '→ 654 → §654'
+    14. From §654: click '→ 742 → §742'
+    15. From §742: click '→ 1160 → §1160'
+    16. From §1160: click '→ 1078 → §1078'
+    17. From §1078: click '→ 249 → §249'
+    18. From §249: click '→ 799 → §799'
+    19. From §799: click '→ 851 → §851'
+    20. From §851: click '→ 881 → §881'
+    21. From §881: click '→ 921 → §921'
+    22. From §921: click '→ 1155 → §1155'
+    23. From §1155: click '→ 1179 → §1179'
+    24. From §1179: click '→ 1113 → §1113'
+    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+```
+  (25 clicks total, graph: full)
 
 ---
 
@@ -4112,7 +4297,35 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §1131
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 1145 → §1145'
+     9. From §1145: click '→ 885 → §885'
+    10. From §885: click '→ 590 → §590'
+    11. From §590: click '→ 915 → §915'
+    12. From §915: click '→ 833 → §833'
+    13. From §833: click '→ 654 → §654'
+    14. From §654: click '→ 742 → §742'
+    15. From §742: click '→ 1160 → §1160'
+    16. From §1160: click '→ 1078 → §1078'
+    17. From §1078: click '→ 249 → §249'
+    18. From §249: click '→ 799 → §799'
+    19. From §799: click '→ 851 → §851'
+    20. From §851: click '→ 881 → §881'
+    21. From §881: click '→ 921 → §921'
+    22. From §921: click '→ 1155 → §1155'
+    23. From §1155: click '→ 1179 → §1179'
+    24. From §1179: click '→ 1113 → §1113'
+    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+```
+  (25 clicks total, graph: full)
 
 ---
 
@@ -4126,7 +4339,36 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §992
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 1145 → §1145'
+     9. From §1145: click '→ 885 → §885'
+    10. From §885: click '→ 590 → §590'
+    11. From §590: click '→ 915 → §915'
+    12. From §915: click '→ 833 → §833'
+    13. From §833: click '→ 654 → §654'
+    14. From §654: click '→ 742 → §742'
+    15. From §742: click '→ 1160 → §1160'
+    16. From §1160: click '→ 1078 → §1078'
+    17. From §1078: click '→ 249 → §249'
+    18. From §249: click '→ 799 → §799'
+    19. From §799: click '→ 851 → §851'
+    20. From §851: click '→ 881 → §881'
+    21. From §881: click '→ 921 → §921'
+    22. From §921: click '→ 1155 → §1155'
+    23. From §1155: click '→ 1179 → §1179'
+    24. From §1179: click '→ 1113 → §1113'
+    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+    26. From §1131: click '[riddle: answer §1131 correctly] → §992'
+```
+  (26 clicks total, graph: full)
 
 ---
 
@@ -4140,7 +4382,36 @@ Conventions:
 
 **Path:**
 
-  ❌ NO PATH FOUND from §1 to §992
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 1145 → §1145'
+     9. From §1145: click '→ 885 → §885'
+    10. From §885: click '→ 590 → §590'
+    11. From §590: click '→ 915 → §915'
+    12. From §915: click '→ 833 → §833'
+    13. From §833: click '→ 654 → §654'
+    14. From §654: click '→ 742 → §742'
+    15. From §742: click '→ 1160 → §1160'
+    16. From §1160: click '→ 1078 → §1078'
+    17. From §1078: click '→ 249 → §249'
+    18. From §249: click '→ 799 → §799'
+    19. From §799: click '→ 851 → §851'
+    20. From §851: click '→ 881 → §881'
+    21. From §881: click '→ 921 → §921'
+    22. From §921: click '→ 1155 → §1155'
+    23. From §1155: click '→ 1179 → §1179'
+    24. From §1179: click '→ 1113 → §1113'
+    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+    26. From §1131: click '[riddle: answer §1131 correctly] → §992'
+```
+  (26 clicks total, graph: full)
 
 ---
 
@@ -4637,10 +4908,11 @@ Conventions:
 
 ## Summary
 
-- Scenarios with paths found: **110 / 127**
-- Scenarios needing manual route discovery: **17**
+- Scenarios with paths found: **118 / 127**
+- Scenarios with state routes (hash-navigation setup): **9**
+- Scenarios needing manual route discovery: **0**
 
-### Manual routing required for:
+### State-routed (no click path by design):
 
   - white_arrow_offer_§535_WITH_arrow: §1 → §535 via [688]
   - fish_help_sec32_WITH_token: §1 → §32 via [13]
@@ -4651,13 +4923,3 @@ Conventions:
   - ruby_star_sec637_WITH_star: §1 → §637 via [791]
   - consume_on_use_sec891_breaks_key: §1 → §851 via [612]
   - emerald_ring_sec226_WITH_all_three_items: §1 → §226 via [479, 74, 1071]
-  - riddle1_acquisition_sec1131: §1 → §1131
-  - riddle2_chain_sec992: §1 → §992 via [1131]
-  - riddle_anti_cheat_data_inspection: §1 → §1131
-  - riddle_mobile_no_zoom: §1 → §1131
-  - riddle1_kladbishche_success: §1 → §1131
-  - riddle1_wrong_answer_attempts: §1 → §1131
-  - riddle2_smert_success: §1 → §992
-  - riddle2_manual_exit: §1 → §992
-
-These targets are unreachable from §1 via BFS through ordinary (non-luck, non-combat-conditional, non-inventory-conditional, non-post-combat) choices. They typically need either: combat victory at an intermediate paragraph, a successful luck roll, or passage through a paragraph-arithmetic branch (the §13 fish, §140 key, etc. — see group_6 in text_corrections.json). Manual route discovery via the FB2 source is needed for these.

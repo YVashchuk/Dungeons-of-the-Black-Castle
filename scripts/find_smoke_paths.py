@@ -110,6 +110,19 @@ def build_full_graph(gd: dict) -> dict[int, list[tuple[int, str, dict]]]:
                 'post_combat'
             )}
             edges.append((int(target), short, cond))
+        r = sec.get('riddle')
+        if isinstance(r, dict):
+            vt = r.get('valid_targets')
+            rts = []
+            if isinstance(vt, list):
+                rts = [t for t in vt if isinstance(t, int)]
+            elif isinstance(vt, dict):
+                rts = [t for t in vt.values() if isinstance(t, int)]
+            for rt in rts:
+                edges.append((int(rt), f"[riddle: answer §{paragraph} correctly]", {'riddle': True}))
+            ft = r.get('fail_target')
+            if isinstance(ft, int):
+                edges.append((int(ft), f"[riddle: 3 wrong answers at §{paragraph}]", {'riddle': True}))
         graph[paragraph] = edges
     return graph
 
@@ -306,6 +319,7 @@ SCENARIOS = [
         "must_visit": [688],
         "what_to_check": "After §688 (white arrow grant), §535 shows the 'Белую стрелу (2)' offer button.",
         "commit": "87a58d2",
+        "state_route": "1) Hash-load #688 (append to the URL, press F5): 'Белая стрела' is granted on entry via first-visit auto_items, and the game autosaves.\n2) Hash-load #535.\n3) Verify the 'Белую стрелу (2)' offer button as described above.",
     },
     {
         "id": "white_arrow_door_§1196",
@@ -502,6 +516,7 @@ SCENARIOS = [
         "must_visit": [13],
         "what_to_check": "After visiting sec.13 (where 'Помощь рыбки' is granted on click of the navigation choice), sec.32 should show one button: 'Позвать на помощь Золотую рыбку (47)'. Click → sec.47 → sec.717 rescue.",
         "commit": "group_6_fish_help",
+        "state_route": "1) Hash-load #13 and click the only nav choice 'Теперь обратите внимание на местность (639)': 'Помощь рыбки' is granted on that click (acquires field), and the game autosaves.\n2) Hash-load #32.\n3) Verify the single fish button (47) as described above.",
     },
     {
         "id": "fish_help_sec203_NO_token",
@@ -515,6 +530,7 @@ SCENARIOS = [
         "must_visit": [13],
         "what_to_check": "With 'Помощь рыбки', sec.203 should show TWO buttons: 'Проверить удачу' AND 'Позвать на помощь Золотую рыбку (218)'. Player can bypass the luck check entirely. Click the fish button → sec.218 → sec.62.",
         "commit": "group_6_fish_help",
+        "state_route": "1) Hash-load #13 and click the only nav choice to sec.639: 'Помощь рыбки' granted on click.\n2) Hash-load #203.\n3) Verify BOTH buttons (luck roll + fish 218) as described above.",
     },
     {
         "id": "fish_help_sec699_WITH_token",
@@ -522,6 +538,7 @@ SCENARIOS = [
         "must_visit": [13],
         "what_to_check": "With 'Помощь рыбки', sec.699 (carnivorous fish lake) should show 'Позвать на помощь Золотую рыбку (714)'. Click → sec.714 → sec.58.",
         "commit": "group_6_fish_help",
+        "state_route": "1) Hash-load #13 and click the only nav choice to sec.639: 'Помощь рыбки' granted on click.\n2) Hash-load #699.\n3) Verify the fish button (714) as described above.",
     },
     # ── Group 6: candle_lamp (item 3 of 13) — +10 light-source mechanic ─
     {
@@ -643,6 +660,7 @@ SCENARIOS = [
         "must_visit": [612],
         "what_to_check": "After visiting sec.612, sec.851 (long polutemniy corridor with a door) should show 'Отпереть дверь Медным ключиком (891)' alongside the existing fallback (sec.881). Click the key option → sec.891 jamming-narrative.",
         "commit": "group_6_bear_key",
+        "state_route": "1) Hash-load #612: 'Медный ключик' is granted on entry via auto_items (autosave).\n2) Hash-load #851.\n3) Verify the key option (891) alongside the fallback (881) as described above.",
     },
     {
         "id": "bear_key_sec881_WITH_key",
@@ -650,6 +668,7 @@ SCENARIOS = [
         "must_visit": [612],
         "what_to_check": "After visiting sec.612, sec.881 (corridor branching from sec.851) should show 'Отпереть дверь Медным ключиком (921)' alongside the existing fallback (sec.1123). Click the key option → sec.921 tomb-entrance narrative. This restores an orphan-target — sec.921 was unreachable in remake prior to this commit.",
         "commit": "group_6_bear_key",
+        "state_route": "1) Hash-load #612: 'Медный ключик' granted on entry.\n2) Hash-load #881.\n3) Verify the key option (921) alongside the fallback (1123) as described above.",
     },
     # ── Group 6: thread_ball (item 8 of 13) — Klubochek crossroads +50 mechanic ─
     {
@@ -718,6 +737,7 @@ SCENARIOS = [
         "must_visit": [791],
         "what_to_check": "After visiting sec.791, sec.637 (corridor fork sec.1105 right / sec.676 left) should show THREE buttons including the new gated 'Прочитать подсказку Рубиновой звезды (708)'. Click the star button → sec.708 'У правого прохода звезда сияет ярче, чем у левого'.",
         "commit": "group_6_ruby_star",
+        "state_route": "1) Hash-load #791: 'Рубиновая звезда' is granted on entry via auto_items.\n2) Hash-load #637.\n3) Verify the star-hint button (708) as described above.",
     },
     {
         "id": "ruby_star_sec846_WITH_star",
@@ -823,6 +843,7 @@ SCENARIOS = [
         "must_visit": [612],
         "what_to_check": "After visiting sec.612 (bear-gift acquisition), enter sec.851 and click the gated 'Отпереть дверь Медным ключиком (891)' button. Two state changes expected: (1) navigation to sec.891 jamming-narrative; (2) 'Медный ключик' REMOVED from S.inventory via the new consume_on_use field. Verify inventory after the click — the copper key should be gone. The notification panel should show '− Медный ключик'. The event log should record 'Предмет израсходован.'",
         "commit": "group_6_post_audit_consume_on_use",
+        "state_route": "1) Hash-load #612: 'Медный ключик' granted on entry.\n2) Hash-load #851 and click 'Отпереть дверь Медным ключиком (891)'.\n3) Verify the navigation to sec.891 AND that 'Медный ключик' disappeared from the inventory (consume_on_use), with the notification and the event-log line, as described above.",
     },
     {
         "id": "consume_on_use_sec976_cuts_orange",
@@ -851,6 +872,7 @@ SCENARIOS = [
         "must_visit": [479, 74, 1071],
         "what_to_check": "After visiting all three ring/orange acquisition paragraphs, sec.226 shows FIVE buttons: gated ruby_ring → sec.627, gated golden_orange → sec.976, gated emerald → sec.86 (fail-feedback), plus two fallbacks. The player has full diagnostic feedback for any item choice. Canonical victory route via ruby or orange remains the success path.",
         "commit": "group_6_emerald_ring",
+        "state_route": "1) Hash-load #479 ('Перстень с изумрудом' granted on entry), then #74 ('Золотой апельсин'), then #1071 ('Перстень с рубином') - each hop autosaves.\n2) Hash-load #226.\n3) Verify FIVE buttons as described above.",
     },
     # ── Group 6 extension: bandit_tip (item 15, +910 treasure-tip) ─
     {
@@ -1103,10 +1125,19 @@ def main() -> int:
         "  - Some target paragraphs need the player to engage in a fight or fail",
         "    a luck roll to reach the verification state — those steps are",
         "    described in the 'what to check' line, not in the click list.",
+        "  - 'State route' scenarios have no click path at all: the acquisition",
+        "    branch never reconnects to the consumer in the choices graph",
+        "    (paragraph-arithmetic mechanics modelled as inventory gates). They",
+        "    are still fully testable: the engine autosaves on every paragraph",
+        "    render and applies first-visit auto_items on render, so appending",
+        "    #N to the URL and reloading (F5) restores the save at that",
+        "    paragraph with all entry grants applied. Each such scenario lists",
+        "    its exact hash-hops in place of a click list.",
         "",
     ]
 
     failures: list[str] = []
+    state_routed: list[str] = []
     success_count = 0
 
     for sc in SCENARIOS:
@@ -1135,7 +1166,14 @@ def main() -> int:
         out_lines.append("")
         out_lines.append("**Path:**")
         out_lines.append("")
-        if path is None:
+        if path is None and sc.get("state_route"):
+            out_lines.append("  >> STATE ROUTE (no click path exists — see Conventions):")
+            out_lines.append("")
+            for step in sc["state_route"].split("\n"):
+                out_lines.append("  " + step)
+            state_routed.append(f"{sid}: §1 → §{target}" + (
+                f" via {must_visit}" if must_visit else ""))
+        elif path is None:
             out_lines.append(f"  ❌ NO PATH FOUND from §1 to §{target}" + (
                 f" via " + ", ".join(f"§{w}" for w in must_visit) if must_visit else ""))
             failures.append(f"{sid}: §1 → §{target}" + (
@@ -1154,7 +1192,15 @@ def main() -> int:
     out_lines.append("## Summary")
     out_lines.append("")
     out_lines.append(f"- Scenarios with paths found: **{success_count} / {len(SCENARIOS)}**")
+    out_lines.append(f"- Scenarios with state routes (hash-navigation setup): **{len(state_routed)}**")
     out_lines.append(f"- Scenarios needing manual route discovery: **{len(failures)}**")
+    if state_routed:
+        out_lines.append("")
+        out_lines.append("### State-routed (no click path by design):")
+        out_lines.append("")
+        for f in state_routed:
+            out_lines.append(f"  - {f}")
+        out_lines.append("")
     if failures:
         out_lines.append("")
         out_lines.append("### Manual routing required for:")
