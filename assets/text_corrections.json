@@ -124,7 +124,8 @@
     "v2.116 -> v2.117": "July 2026 - group_74 tests batch part 1: E-03 battery made path-portable (path.join across 16 harnesses + 6 dist checks + regen_fixtures, os.path.join in verify_reach3.py, python->python3 ENOENT fallback in run_all.js; regex/escape backslashes whitelisted and untouched); E-04 dist spot-checks synced with reality (_dist_fr_check preface phrase updated to the current word order; _dist_ui_check drop-title expected count 2 confirmed by source - inventory modal + sidebar are both by design) and all four silently-exiting checks now propagate non-zero exit codes. All six dist checks now pass cleanly. No src or dist changes in this commit.",
     "v2.117 -> v2.118": "July 2026 - D-04 follow-up per user order: the EN locale swept to typographic apostrophes as well (9 replacements - 7 ui strings and 2 map names, all plain possessives/contractions between letters; new item D-04b). All four locales now carry zero ASCII apostrophes in their text layers. Dist rebuilt; battery ALL GREEN.",
     "v2.118 -> v2.119": "July 2026 - group_74 CLOSED: final item E-02 resolved. The nine smoke scenarios with impossible ordered must_visit segments are now state-routed (find_smoke_paths.py gained a state_route field emitting exact hash-navigation procedures; the engine autosaves on every paragraph render and applies first-visit auto_items on render, so #N + reload is a deterministic state setup - verified against game_logic.js this session), and riddle transitions were added to the fallback full graph, resolving the other 8 previously manual scenarios exactly as the report predicted. SMOKE_TEST_PATHS.md regenerated: 118/127 path scenarios + 9 state-routed, zero manual-routing failures. With E-02 done, all 16 findings of the ChatGPT 5.6 full-recheck report are resolved (2 P0 + 7 P1 + 7 P2) plus the D-04b EN follow-up; group_74 carries a closed marker.",
-    "v2.119 -> v2.120": "July 2026 - group_75 spell-economy completion (P0 backlog item closed). Verified the whole May-2026 spell audit against the live engine: 104 spell hooks now in GD, group_19 combat modal defaults COPY/FORCE/WEAKNESS with 21 per-paragraph allowlists; all 26 deferred combat-modal paragraphs are covered. Fixed the five real remaining gaps, each FB2-verified: sec.235 modal restricted to COPY (Fire/Force/Weakness are canonical nav transitions 338/404/417, sec.536 precedent); sec.250 and sec.474 no-time-to-cast ambushes get empty allowlists; sec.260 Vodyanoy COPY ban enforced via [FORCE,WEAKNESS]; sec.528 one-handed on-branch penalty modelled as player_attack_mod -1 (GD[3]/GD[240] adjacent math verified already correct). p1_6d gains 4 spot-checks (14 -> 18). The 50-60-missing-hooks memory claim is obsolete. Dist rebuilt; battery ALL GREEN."
+    "v2.119 -> v2.120": "July 2026 - group_75 spell-economy completion (P0 backlog item closed). Verified the whole May-2026 spell audit against the live engine: 104 spell hooks now in GD, group_19 combat modal defaults COPY/FORCE/WEAKNESS with 21 per-paragraph allowlists; all 26 deferred combat-modal paragraphs are covered. Fixed the five real remaining gaps, each FB2-verified: sec.235 modal restricted to COPY (Fire/Force/Weakness are canonical nav transitions 338/404/417, sec.536 precedent); sec.250 and sec.474 no-time-to-cast ambushes get empty allowlists; sec.260 Vodyanoy COPY ban enforced via [FORCE,WEAKNESS]; sec.528 one-handed on-branch penalty modelled as player_attack_mod -1 (GD[3]/GD[240] adjacent math verified already correct). p1_6d gains 4 spot-checks (14 -> 18). The 50-60-missing-hooks memory claim is obsolete. Dist rebuilt; battery ALL GREEN.",
+    "v2.120 -> v2.121": "July 2026 - group_76 stale-backlog verification sweep: all ~11 'open P0/P1' claims carried by the session memory tracker re-verified against live GD, engine, RU locale and FB2 - ZERO remaining code gaps. Highlights: the gold-sign six are complete (sec.745 is charged upstream at sec.1092 via gold_condition+gold_cost 10, so no gold_sub belongs at 745); all five passive stamina effects present; sec.688 text complete with the +400 throne note; Vodyanoy paradox and sec.570 arrows resolved by earlier groups; magic belt and all item-offer gates wired; sec.13/140/532 spurious items were removed back in v1->v2. New adjudication: one-sided luck paragraphs 418/421/1186 verified canonically fatal (FB2) and already covered by the generic fatal-unlucky death-overlay handler; a p1_6d regression guard now pins the adjudicated seven [203,289,377,418,421,436,1186] (18 -> 19 assertions). No src or dist changes."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -399,6 +400,73 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_76_2026_07_12_stale_backlog_verification_sweep": {
+      "comment": "Stale-backlog verification sweep. The session memory tracker carried ~11 'open P0/P1' claims inherited from May-June audits; every one was re-verified against the live GD, engine, RU locale and FB2 canon. Verdict: ZERO remaining code gaps - all were resolved by earlier groups (1, 3-8, 14-21, 32-41, group_6 series) or were never bugs. The only durable output is a regression guard in p1_6d pinning the adjudicated one-sided luck set. This group exists so future sessions and external audits do not re-chase the same ghosts.",
+      "source": "claude_verification_sweep_2026_07_12",
+      "items": [
+        {
+          "id": "gold_sign_six",
+          "severity": "P0-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "sec.552/686/695/903/937 all carry auto_items gold_sub (1/1/4/1/6); sec.937 additionally has the luck_add:1 and the mirror_secret token. sec.745 is NOT missing gold_sub:10 - the deduction canonically happens upstream: GD[1092] choice 'Desyat zolotykh? - 745' carries gold_condition:10 + gold_cost:10, so adding gold_sub at 745 would double-charge. All six FB2-checked."
+        },
+        {
+          "id": "passive_effects_five",
+          "severity": "P1-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "sec.25 stamina_sub:2, sec.484 stamina_add:2, sec.513 stamina_add:3, sec.927 stamina_add:8, sec.1147 stamina_add:4 - all present in auto_items and FB2-matched."
+        },
+        {
+          "id": "sec688_text_truncation",
+          "severity": "P1-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "RU sec.688 is complete: contains the white-arrow discovery line AND the '+400 throne' arithmetic note, matching FB2; auto_items grants white_arrow + throne_lore (group_6_white_arrow_navigation)."
+        },
+        {
+          "id": "vodyanoy_paradox",
+          "severity": "P1-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "sec.642 auto_items clear_inventory + gold_zero (engine applies wholesale loss before other mutations); sec.873 water purchase carries gold_condition:2 + gold_cost:2. Matches FB2."
+        },
+        {
+          "id": "sec570_infinite_arrows",
+          "severity": "P1-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "Resolved by the group_8 design decision: single inventory entry black_arrows_5 ('Zdes 5 chyornykh strel') granted via auto_items; no per-arrow quantity UI. Smoke scenario black_arrows_sec570 covers it."
+        },
+        {
+          "id": "magic_belt_timing",
+          "severity": "P1-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "sec.575 grants magic_belt + luck_add:1 and has NO wrong-time choice; the mole-summon choice to 1148 lives exactly at sec.244 gated by inventory_condition magic_belt, per FB2 'Kogda vy uvidite zamok, obratites k paragrafu 1148'."
+        },
+        {
+          "id": "item_offer_gates_16_810_972",
+          "severity": "P1-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "All offers inventory-gated: sec.16 (dragon_claw/diamond/diving_suit/stork_feather + fallback 532), sec.810 (hand_mirror/bronze_whistle/gold_ring + fallback 96), sec.972 (candle/candlestick/peacock_feather/silver_vessel/gold_necklace with consume_on_use on the four consumables + fallback 1121)."
+        },
+        {
+          "id": "sec166_green_sword_set",
+          "severity": "P1-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "Canonical set 1003/166/633/1101 wired (gates at 1003 and 135 check the sword; smoke scenarios sword_gate_* cover both states); sec.166 itself is effect-free prose -> 1101, matching FB2 (no stat effects in canon)."
+        },
+        {
+          "id": "one_sided_luck_adjudication",
+          "severity": "P1",
+          "status": "DONE",
+          "resolution": "Systematic scan found exactly seven one-sided luck paragraphs. 203/289/377 were the known group_5 fatal set; 436 resolves its unlucky branch inside the sec436_pre_luck script. NEW this sweep: 418 (boulder trap - 'poslednee, chto vy uvidite v etoy zhizni'), 421 (Khishchnaya ruka vampire - 'mertvogo obeskrovlennogo tela'), 1186 (spike pit - 'po dnu yamy rastekaetsya krov') verified against FB2 as canonically fatal, and the generic fatal-unlucky handler ('any other paragraph where a failed luck roll is canonically fatal') already routes them to the death overlay - no data change needed. A p1_6d regression guard now pins the set to [203,289,377,418,421,436,1186]; any future one-sided luck paragraph will fail the battery until adjudicated."
+        },
+        {
+          "id": "registry_spurious_13_140_532",
+          "severity": "P2-claimed",
+          "status": "VERIFIED_RESOLVED",
+          "resolution": "The three spurious pending items (sec.13 stamina+15, sec.140 gold+30, sec.532 wound_2) were already removed in the v1 -> v2 reconciliation (Apr 2026) and re-confirmed DONE across book_text.md / PROJECT_NOTES.md / README sync passes (v2.45+). Nothing left to clean."
+        }
+      ],
+      "verified": "2026-07-12"
     },
     "group_75_2026_07_12_spell_economy_completion": {
       "comment": "Spell-economy completion pass closing the audit_cycles/spell_economy_may_2026 backlog. Census at v2.119: 104 spell hooks in GD (LEVITATION 32, FIRE 21, FORCE 15, WEAKNESS 14, SWIMMING 12, COPY 5, ILLUSION 4, HEALING 1) vs 66 at the May classification; the group_19 combat-modal engine defaults COPY/FORCE/WEAKNESS in every combat, restricted per paragraph via combat_spells_allowed (21 allowlists before this pass). All 26 May-deferred combat-modal paragraphs adjudicated against the live engine: covered by the default or by existing allowlists (506 COPY-only, 950 FORCE+HEALING, 1096 COPY-only, 436 scripted [], 536 COPY-only + nav FORCE/WEAKNESS), except sec.235 fixed here. A fresh systematic scan of all combats WITHOUT an allowlist whose RU text mentions spells (35 paragraphs) surfaced two canonical no-time-to-cast bans outside the deferred list (250, 474) and the unenforced Vodyanoy COPY ban (260). Adjacent combat-math checks: GD[3] player_attack_mod -2 (spy's Weakness) and GD[240] damage 3 (snake venom) already modelled; GD[528] on-tree -1 was missing and is fixed here. Upstream failed-cast wiring verified: 388->911, 656->514, 468->273, 273/468->39 all carry spell fields. The stale memory-tracker claim of ~50-60 missing spell hooks (P0) is obsolete: groups 17+19 plus this pass close the economy; real remaining gaps were exactly the four allowlists and one attack-mod fixed here.",

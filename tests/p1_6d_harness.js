@@ -55,5 +55,11 @@ ck('GD[260] Vodyanoy bans COPY only', JSON.stringify(GD['260'].combat_spells_all
 ck('GD[235] modal restricted to COPY, nav spells kept', JSON.stringify(GD['235'].combat_spells_allowed)==='["COPY"]' && GD['235'].choices.filter(c=>c.spell).length===3);
 ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 
+// 8. group_76 stale-backlog sweep: one-sided luck paragraphs are a closed adjudicated set
+// (203/289/377/418/421/1186 canonically fatal via the generic death-overlay handler; 436 scripted).
+// If this fails, a new one-sided luck paragraph entered GD and needs FB2 adjudication.
+const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
+ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
+
 console.log(`\n6d HARNESS: ${pass} passed, ${fail} failed`);
 process.exit(fail?1:0);
