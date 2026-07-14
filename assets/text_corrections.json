@@ -129,7 +129,8 @@
     "v2.121 -> v2.122": "July 2026 - group_72 CLOSED: the last open item fmttext_sentence_break resolved with no code change. The current fmtText is already locale-agnostic (the Cyrillic lookahead was removed in an interim rewrite), and the user's visual adjudication (four sec.1 screenshots, RU/EN/FR/UK side by side) confirms identical paragraph rendering across all four locales. All translation-cycle groups (68/71/72 items except the Midjourney-blocked art backlog) now carry final verdicts.",
     "v2.122 -> v2.123": "July 2026 - group_68 CLOSED: the language picker reworked from a minimal button row into an accessible native-select dropdown (label-for binding, aria-hidden glyph, visually-hidden localized label via new JS-layer ui key yazyk x4 locales, endonym options, current language pre-selected, gold-theme focus styling, self-localizing after switch). Auto-population from availableLangs() preserved. With this, every i18n-cycle group (68/72) carries a final verdict; the only OPEN registry items left are the Midjourney-blocked art backlog (group_71). Dist rebuilt; battery ALL GREEN.",
     "v2.123 -> v2.124": "July 2026 - group_77 optional enhancements: (1) FR high-punctuation spacing normalized to the French typographic standard - NNBSP before ?!; (1033 conversions) and NBSP before : (539), whole-file sweep across all locale.fr.js text layers with census-verified safety (structural JSON untouched, ?! compound intact, digits/captions/riddle hashes/boundary parity preserved); follows up the note left in group_74 F-06. (2) The POSIX-native battery run recommended by E-03 was attempted via three routes (GitHub fetch into the Linux sandbox, MCP file bridge, WSL) - all environmentally blocked (private repo / degraded bridge after the server restart / no WSL on the corporate workstation); recorded as ATTEMPTED_BLOCKED with a standing recipe. Dist rebuilt; battery ALL GREEN.",
-    "v2.124 -> v2.125": "July 2026 - group_77 completed: the POSIX-native battery run EXECUTED after the user attached the staged smoke zip to the chat (uploads land in the Linux sandbox - the route earlier attempts missed). Native Linux 6.18.5 / node v22.22.2 / Python 3.12.3: BATTERY ALL GREEN (16 harnesses, 429 assertions, baseline 1205) twice - normal run AND with the python binary hidden, proving the run_all ENOENT python3 fallback in action; five dist checks clean with exit 0 (art check stays Windows-verified, slim zip excluded the binaries). E-03's follow-up closed: the battery is portable on both separators. Registry-only change."
+    "v2.124 -> v2.125": "July 2026 - group_77 completed: the POSIX-native battery run EXECUTED after the user attached the staged smoke zip to the chat (uploads land in the Linux sandbox - the route earlier attempts missed). Native Linux 6.18.5 / node v22.22.2 / Python 3.12.3: BATTERY ALL GREEN (16 harnesses, 429 assertions, baseline 1205) twice - normal run AND with the python binary hidden, proving the run_all ENOENT python3 fallback in action; five dist checks clean with exit 0 (art check stays Windows-verified, slim zip excluded the binaries). E-03's follow-up closed: the battery is portable on both separators. Registry-only change.",
+    "v2.125 -> v2.126": "July 2026 - full-audit cycle 2026-07-14 findings registered. The ChatGPT REPORT (2 P0 + 11 P1 + 3 P2, block-G gameplay fidelity dominant) archived verbatim with SHA-256 and opened as group_78 with 16 OPEN hypotheses - headline items: round-deadline routing (G-02 P0), mandatory dice resolvers incl. the sec.932 larvae counter-evidence to group_18 (G-11 P0), per-round enemy target selection per the FB2 base rule (G-05), seven more staged combats (G-03), WEAKNESS carry-over bridges (G-06), claimed double-spend regression at sec.526 vs the v2.36->v2.37 record (G-07), 16 missing stat effects (G-08), equipment/potion statuses (G-09/G-10), pickups/food and gold/loot batches (G-12/G-13). The companion UI/UX audit (1 P0 + 6 P1 + 5 P2; verdict: no restyle needed, architecture first) archived and opened as group_79 with 12 OPEN design hypotheses led by the sec.132 25-button choices-scroll blocker (UI-01). Registry-only change; adjudication batches follow."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -406,6 +407,188 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_79_2026_07_14_ui_ux_audit": {
+      "comment": "UI/UX audit companion for cycle 2026-07-14 (received via chat 2026-07-14, SHA-256 1cb78719a211395167bd6366d7e885d7f8a76d471f29cffca95106781e740175, archived verbatim in audit_cycles/full_audit_2026_07_14/UI_AUDIT.md). Static DOM/CSS analysis (no live render was possible for the auditor). Overall verdict: the visual system needs no restyle; the risk is interface architecture. 1 P0 + 6 P1 + 5 P2. These are DESIGN decisions pending user review; the report proposes a three-stage rollout (blockers -> mobile IA -> visual polish) and a six-viewport acceptance matrix.",
+      "source": "chatgpt_ui_audit_2026_07_14",
+      "items": [
+        {
+          "id": "UI-01_choices_scroll_architecture",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": ".main is overflow:hidden and .choices-area has no scroll/max-height; sec.132 renders 25 choice buttons (sec.340: 15; 42 paragraphs have >=5), so bottom purchases/exits can be unreachable on desktop and mobile. Preferred fix: one vertical scroll-flow for text+art+choices with fixed HUD; quick fix: dvh cap + overflow-y:auto; shops may deserve a grouped scrollable catalog with an always-visible exit."
+        },
+        {
+          "id": "UI-02_unstyled_components",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "JS builds .visual-dock/.visual-pill and toggles body.hide-inline-art, and combat DOM uses .combat-enemy-head/.ce-status-pill/.state-*/.combat-stat-pill/.combat-hp-track/.combat-hp-fill - none of these selectors have CSS in src or dist, so the art toggle cannot hide illustrations and the combat HP bar/status pills render unstyled. Either finish the component CSS to the DOM contract or remove the dead elements; add a selector-presence test."
+        },
+        {
+          "id": "UI-03_mobile_information_architecture",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "At <=700px the sidebar becomes a 38vh scroll container competing with the 62vh story scroll while choices sit in a non-scrolling bottom and the floating log FAB can cover the last button. Proposal: compact 56-72px sticky HUD (stats+gold+menu) with spells/bag/notes/map in bottom sheets and the log docked in the HUD."
+        },
+        {
+          "id": "UI-04_keyboard_screenreader",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "37 shell buttons carry no role/aria-*; overlays lack dialog semantics, focus trap, Escape and focus return; .btn{outline:none} with no :focus-visible; mini-map is a clickable div and several controls are spans; no live-regions for notifications/combat log; the name label is not bound via for. Proposal: shared dialog controller + real buttons + gold focus ring + aria-live/log + axe-core pass."
+        },
+        {
+          "id": "UI-05_contrast_touch_targets",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "--muted (3.85:1) and --red2 (3.48:1) are used on 10-14px text (42 small-size declarations); several touch controls are 32x32 or smaller despite the 44x44 comment. Proposal: raise muted to ~#8a7a9e and red to ~#d6574b, introduce a --tap:44px token, keep interactive text >=16px."
+        },
+        {
+          "id": "UI-06_responsive_viewport_safearea",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Fixed title screen can overflow on landscape phones (no height/orientation breakpoints); preface/pregame keep inline 40/60px padding on mobile; 100vh instead of dvh; safe-area padding sits on body while screens are position:fixed; no viewport-fit=cover. Proposal: dvh + clamp padding + safe-area on the fixed shell + landscape testing."
+        },
+        {
+          "id": "UI-07_cyrillic_display_font",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Cinzel/Cinzel Decorative ship Latin-only unicode-range with bare serif fallback, so RU/UK headings render in system serif while EN/FR get Cinzel - identity varies by language/OS. Minimum: add Cormorant Garamond (already bundled with Cyrillic) as the explicit ui/title fallback; ideally a licensed Cyrillic display face metrically compatible with Cinzel."
+        },
+        {
+          "id": "UI-08_spell_picker_feedback",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Spell selection shows ten pips but no X/10 text counter (JS looks for a missing #spell-counter-chip); +/- lack accessible names, no real disabled at bounds. Proposal: live 'Selected X of 10', aria-labels, disabled, 44px targets; keep pips decorative."
+        },
+        {
+          "id": "UI-09_map_localization_a11y",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Map toolbar hardcodes English Reset/Fullscreen (initial fog-of-war line too); +/- have no labels; mini-map is pointer-only; mobile side panel takes up to 30vh before a dense 1600x1000 SVG. Proposal: localize the toolbar, add aria/titles, keyboard mini-map, mobile-first location/percentage summary, persist zoom/layer."
+        },
+        {
+          "id": "UI-10_motion_feedback",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Six keyframes and 18 transitions with no prefers-reduced-motion; almost no :active states for touch; frequent autosave with no saved-state indicator; alert/confirm for import/new game break the theme. Proposal: reduced-motion mode, pressed states, 'Autosaved - secN - time' in the menu, themed dialogs with undo/double-confirm for destructive actions."
+        },
+        {
+          "id": "UI-11_reading_rhythm",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Story container allows ~1100px line length on wide screens; choices are permanently separated from the text by a bordered fixed block, weakening the read-then-decide rhythm. Proposal: cap #s-text/#c-list at ~68-74ch centered inside a full-width scroll container; place choices right after the text under a 'Your choice' heading."
+        },
+        {
+          "id": "UI-12_icon_and_theming_debt",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "The launcher icon's fine detail muddies at 32-64px (keep the illustration for splash; make a simple mark for favicon/launcher); 58 inline style attributes + 18 cssText + ~140 direct style ops hinder unified responsive/a11y patches - gradually extract to classes and tokens (surface/text/accent/danger/tap/focus/motion)."
+        }
+      ],
+      "verified": "2026-07-14"
+    },
+    "group_78_2026_07_14_full_audit_adjudication": {
+      "comment": "Adjudication of the ChatGPT full-audit REPORT for cycle 2026-07-14 (corpus = no-art archive of commit 3e2bf29, registry v2.125; report received via chat 2026-07-14, SHA-256 c96532b9e0f081dd08b46b88c6646588256f7d65bbf410ba50fe6b9d6ab28825, archived verbatim in audit_cycles/full_audit_2026_07_14/REPORT.md). 16 findings: 2 P0 + 11 P1 + 3 P2, dominated by the new block G (gameplay-mechanics fidelity). All items below are OPEN hypotheses pending verification against fb2_remake.fb2 and the ledger; three findings (G-07 sec.526, G-11 sec.932, G-12 sec.482) claim concrete counter-evidence to previously closed decisions (v2.36->v2.37, group_18, group_56) and must be adjudicated against those records first.",
+      "source": "chatgpt_full_audit_2026_07_14",
+      "items": [
+        {
+          "id": "G-01_missing_attack_mods",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "RU/FB2 explicitly order 'reduce your SILA UDARA by 1' in four fights lacking player_attack_mod: sec.46 (must coexist with the paragraph's other combat modifier), sec.448 (weakened spider stats do not replace the player penalty), sec.656, sec.722. Census currently holds only 3/21/65/368/436/528."
+        },
+        {
+          "id": "G-02_round_deadline_routing",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "Canon routes outcomes by round count: sec.43 beat both by round 10 -> 1082 else 1016; sec.261 win in 2-3 rounds -> 520 else 8; sec.737 within 5 rounds -> 391 else 182; sec.1099 within 3 rounds -> 894 else death. GD models the first three as freely chosen post_combat pairs and lets sec.1099 fight indefinitely. Needs a round counter/deadline resolver with boundary tests."
+        },
+        {
+          "id": "G-03_staged_joins_seven",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "FB2 sequences enemy entry at seven paragraphs currently activating everyone at once: 177 lion->lioness; 388 third enemy after 10 rounds; 588 second goblin after the first; 617 orc->goblin with flee to 165 only in phase two; 628 one enemy then two more after three rounds or his death; 742 two, third after six rounds, captain after both die; 790 five then a sixth. The sec1175/sec131 staged machinery is the modelling precedent."
+        },
+        {
+          "id": "G-04_early_exit_conditions",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "sec.46: canon allows leaving to 98 after defeating ONE of the two knights, but post_combat opens only when all die. sec.994: exit to 118 after inflicting two wounds, while the enemy's STAMINA 6 currently requires three; sec.532 already models this pattern via combat_condition wound_2."
+        },
+        {
+          "id": "G-05_target_selection_rule",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "FB2 base rule for simultaneous combat: before each round the player CHOOSES which enemy to strike (attack strengths compared against all, but only the chosen target can be wounded). The engine hardcodes the first alive enemy (alive.forEach with i===0 as the trade target) with no selection UI; affects all 24 multi-enemy configs."
+        },
+        {
+          "id": "G-06_weakness_bridges",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "A successful WEAKNESS cast at 208/536/700 should carry a one-shot enemy SKILL -2 into the следующий бой, but bridges 116->1175 and 655->628 pass a plain combat, and 470 instead carries spell:FORCE (spending a Force charge without weakening anyone) on the way to 536."
+        },
+        {
+          "id": "G-07_double_charge_spend",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "One canonical cast costs two charges on three chains: 436->526 (FORCE - claimed REGRESSION counter-evidence: v2.36->v2.37 history records removing spell:FORCE from 526 to fix exactly this, yet the field is present in current GD), 449->1183 (WEAKNESS), 951->1021 (SWIMMING). Verify each downstream tag against FB2 and the v2.36-37 record before removal."
+        },
+        {
+          "id": "G-08_missing_stat_effects_16",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "RU/FB2 prescribe direct stat changes absent from GD at 16 pids (in order): 123 STAMINA-5, 199 -9, 219 -2, 230 -8, 254 +8, 273 -4, 278 -2, 522 LUCK+1, 525 STAMINA-1, 561 -1, 606 +6, 864 LUCK+1, 959 STAMINA+3, 981 +7, 1036 SKILL-1 with STAMINA-2 (double transaction), 1061 STAMINA+7. Each needs individual FB2 verification (wording, sign, cap/death rules)."
+        },
+        {
+          "id": "G-09_equipment_effects",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Unmodelled equipment mechanics: sec.35 Green Knight sword raises SKILL by 1 even above initial (GD grants only the helmet effect); sec.542 the same sword grants +1 SKILL in every fight; sec.71 'Death of Orcs' kills one orc before it can defend (no pre-combat action); sec.1213 shield +1 SKILL even at unchanged initial. group_57's whole_sword delivery solved availability, not the bonus."
+        },
+        {
+          "id": "G-10_dragon_strength_potion",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "sec.1130 potion grants +5 SKILL until the hero kills three opponents; GD has no temporary status, kill counter or removal - the effect is lost entirely. Adjudication must define whether ally/Copy kills count."
+        },
+        {
+          "id": "G-11_dice_resolvers",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "Three mandatory dice mechanics are unmodelled: sec.725 repeat 2d6 until double-1 or double-6, losing 1 STAMINA per failed attempt with the option to stop (GD offers free success); sec.781 2d6 sum >=10 -> 863 else 126 (GD offers both as free choices); sec.932 d6 determines 1-6 larvae, each occupies a slot and once instantly kills an enemy (no roll, count or consumable effect). sec.932 is claimed counter-evidence to group_18 which states larvae are granted by roll while current GD has only a plain transition to 1123."
+        },
+        {
+          "id": "G-12_missing_pickups_food",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Canonical pickups/consumptions absent from GD: 159 bronze whistle + 3 gold + copper bracelet; 389 first melon +4 STAMINA; 482 peacock feather (claimed counter-evidence to group_56 whose evidence lists the feather but the implementation added only the rose - 7 gold and rose ARE present); 582 up to three of each of five fruits at +2; 585 two coconuts +3; 724 trackable rope and gold arrow (their consumers are gated); 801 buns +2; 1140 wine +3, food +2, silver whistle. Voluntary pickups must stay choices, not auto-grants."
+        },
+        {
+          "id": "G-13_gold_loot_transactions",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Gold/loot gaps: 63 grants +10 and LUCK-1 correctly but canon also allows taking one unsold item free, while the repeat shop at 132 still charges; 486 misses +1 gold; 510 allows taking up to 85 coins with no transaction/amount picker; 675 deducts 2 with clamp and heals 5, but entry 812 is not gold-gated (free food at 0 gold); 770 misses +4; the fish branch 873->922 neither deducts 1 gold nor grants +2 STAMINA (adjacent water is correctly charged upstream). sec.381 guide payment verified NOT a false positive (charged later at 562->315)."
+        },
+        {
+          "id": "E-01_tests_readme_commands",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "tests/README.md mixes working directories: after cd tests the documented node tests/run_all.js path breaks, and the wildcard node tests/_dist_*.js feeds several files to one Node process executing only the first. Runners themselves are fine; the defect is documentation-only."
+        },
+        {
+          "id": "E-02_stale_docs_numbers",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "README claims damage 'snakes x3, orcs x1' (census: six snakes x3 + merchant sec.36 x4, no orc), 78 auto-inventory vs actual 155, and describes first-enemy-only attack as the book rule (contradicts the target-selection rule, see G-05). GAME_RULES.md sec.6 names the runtime field gold_add instead of gold and carries pre-group-69 carrier arithmetic (thread ball -50 vs adjudicated +50 etc.); regenerate quantitative fragments from the live census and group_69."
+        },
+        {
+          "id": "F-01_editorial_sample",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Editorial hypotheses from the 80-text sample: EN sec.417 'If you killed it' in a present-tense condition; EN sec.178 'strains out of its cage toward...'; UK sec.131 tense switch 'Vy vyishly nazovni'; UK sec.1123 'Vybyraite odni z nykh' -> 'Vyberit odni z nykh'; RU sec.1113 and sec.1131 punctuation inherited from FB2 (RU changes only via a new ledger decision)."
+        }
+      ],
+      "verified": "2026-07-14"
     },
     "group_77_2026_07_13_optional_enhancements": {
       "comment": "Optional-enhancements pass per user order 2026-07-13, executed after every tracked backlog item reached a final verdict. Two enhancements from earlier resolutions' notes: the FR high-punctuation spacing normalization flagged as a possible follow-up in group_74 F-06, and the native POSIX battery run recommended in group_74 E-03.",
