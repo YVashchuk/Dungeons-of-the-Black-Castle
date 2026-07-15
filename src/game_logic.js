@@ -567,7 +567,7 @@ function renderGame(opts){
   document.getElementById('s-area').scrollTop=0;
   // Riddle mechanic dispatch: if paragraph has a riddle field, render the
   // text-input widget instead of standard choice buttons. Per group_18 design.
-  if(sec.riddle){renderRiddle(sec);}else if(sec.dice_roll){renderDiceRoll(sec);}else if(sec.stake_picker){renderStakePicker(sec);}else{renderChoices(sec);}
+  if(sec.riddle){renderRiddle(sec);}else if(sec.dice_roll){renderDiceRoll(sec);}else if(sec.dice_check){renderDiceCheck(sec);}else if(sec.dice_loot){renderDiceLoot(sec);}else if(sec.stake_picker){renderStakePicker(sec);}else{renderChoices(sec);}
   // Track visited
   const firstVisit=!S.visited.includes(S.section);
   if(firstVisit)S.visited.push(S.section);
@@ -685,7 +685,7 @@ function renderGame(opts){
   // ordinary navigation choice is visible.
   const inCombatOrLuck=(sec.enemies&&sec.enemies.length>0)||sec.has_luck;
   const hasRiddle=!!sec.riddle;
-  const hasDice=!!sec.dice_roll;
+  const hasDice=!!sec.dice_roll||!!sec.dice_check||!!sec.dice_loot;
   const hasPicker=!!sec.stake_picker;
   const visibleChoices=sec.choices.filter(ch=>passesInventoryCheck(ch)&&passesGoldCheck(ch));
   if(!inCombatOrLuck&&!hasRiddle&&!hasDice&&!hasPicker&&visibleChoices.length===0){
@@ -765,7 +765,7 @@ function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bag
 // RU->slug migration (phase1.5b-5f). itemName(): slug -> Russian display name (passthrough for
 // unknown / hand-typed strings). invDisplay(): an inventory entry -> display string (resolves the
 // slug, preserves any food suffix). RU_TO_SLUG/SLUG_TO_RU are generated from items.json.
-const RU_TO_SLUG={
+const RU_TO_SLUG={"Личинка паука":"spider_larva",
   "Яблоко":"apple","Здесь 5 стрел":"arrows_5","Банан":"banana","Медвежий амулет":"bear_amulet",
   "Шкурка бобра":"beaver_pelt","Клетка для птиц":"birdcage","Здесь 5 чёрных стрел":"black_arrows_5",
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
@@ -798,7 +798,7 @@ const RU_TO_SLUG={
   "Белая стрела":"white_arrow","Целый меч":"whole_sword","Бутылка вина":"wine_bottle",
   "Красивый кусочек дерева":"wood_piece",
 };
-const SLUG_TO_RU={
+const SLUG_TO_RU={spider_larva:"Личинка паука",
   "apple":"Яблоко","arrows_5":"Здесь 5 стрел","banana":"Банан","bear_amulet":"Медвежий амулет",
   "beaver_pelt":"Шкурка бобра","birdcage":"Клетка для птиц","black_arrows_5":"Здесь 5 чёрных стрел",
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
@@ -1371,12 +1371,32 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   if(sec)renderChoices(sec);
 }
 
+function makeBashBtn(ch){
+  const btn=document.createElement('button');btn.className='choice-btn';
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';
+  btn.innerHTML=t('vylomat_dver_plechom');
+  btn.onclick=()=>{
+    playSound('dice');
+    const a=d6(),b=d6();
+    S.stamina=Math.max(0,S.stamina-((ch.dice_bash&&ch.dice_bash.cost_stamina)||1));
+    logEvent('loss','\u2212 1'+t('vynoslivosti'),'\ud83c\udfb2 '+a+'\u00b7'+b);
+    updateHUD();saveGame();
+    if(S.stamina<=0){showDeathOverlay();return;}
+    if(a===b&&(a===1||a===6)){ goTo(ch.target); return; }
+    btn.innerHTML='\ud83c\udfb2 '+a+'\u00b7'+b+' \u2014 '+t('dver_ne_poddayotsya');
+  };
+  return btn;
+}
+
 function makeChoiceBtn(ch, duringCombat, choiceIndex){
   // Purchase choice (group_14 shop engine) — render as transaction
   // button via makePurchaseBtn instead of navigation button. The shop
   // path lives entirely in that helper.
   if(ch&&ch.purchase===true){
     return makePurchaseBtn(ch, choiceIndex);
+  }
+  if(ch&&ch.dice_bash){
+    return makeBashBtn(ch);
   }
   const btn=document.createElement('button');btn.className='choice-btn';
   // spell_any: one destination reachable by ANY of several spells (canon
@@ -1780,6 +1800,79 @@ function renderDiceRoll(sec){
   list.appendChild(btn);
 }
 
+function renderDiceCheck(sec){
+  const list=document.getElementById('c-list'); if(!list) return;
+  list.innerHTML='';
+  const dc=sec.dice_check;
+  const btn=document.createElement('button');
+  btn.className='choice-btn';
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
+  btn.innerHTML=t('brosit_kubik');
+  btn.onclick=()=>{
+    playSound('dice');
+    const a=d6(),b=d6(),sum=a+b;
+    const ok=sum>=dc.gte;
+    const tgt=ok?dc.win:dc.lose;
+    logEvent('luck',t('kubik_vypalo')+a+'+'+b+'='+sum,t('paragraf_3')+tgt);
+    list.innerHTML='';
+    const res=document.createElement('div');
+    res.style.cssText='text-align:center;font-size:30px;color:'+(ok?'var(--gold)':'var(--red2)')+';margin:14px 0;font-weight:bold;';
+    res.innerHTML='\ud83c\udfb2 '+a+' + '+b+' = '+sum;
+    list.appendChild(res);
+    const cont=document.createElement('button');
+    cont.className='choice-btn';
+    cont.textContent=t('prodolzhit');
+    cont.onclick=()=>{ goTo(tgt); };
+    list.appendChild(cont);
+  };
+  list.appendChild(btn);
+}
+
+function renderDiceLoot(sec){
+  const list=document.getElementById('c-list'); if(!list) return;
+  list.innerHTML='';
+  const dl=sec.dice_loot;
+  const renderExit=()=>{
+    const cont=document.createElement('button');
+    cont.className='choice-btn';
+    cont.textContent=t('prodolzhit');
+    cont.onclick=()=>{ goTo(dl.target); };
+    list.appendChild(cont);
+  };
+  if(S.diceLootDone&&S.diceLootDone[S.section]){ renderExit(); return; }
+  const btn=document.createElement('button');
+  btn.className='choice-btn';
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
+  btn.innerHTML=t('brosit_kubik');
+  btn.onclick=()=>{
+    playSound('dice');
+    const n=d6();
+    logEvent('luck',t('kubik_vypalo')+n,'');
+    list.innerHTML='';
+    const res=document.createElement('div');
+    res.style.cssText='text-align:center;font-size:30px;color:var(--gold);margin:14px 0;font-weight:bold;';
+    res.innerHTML='\ud83c\udfb2 '+n;
+    list.appendChild(res);
+    const pick=document.createElement('button');
+    pick.className='choice-btn';
+    pick.textContent=t('podobrat_lichinok')+n+')';
+    pick.onclick=()=>{
+      const free=getBagSize()-getBagUsed();
+      const take=Math.max(0,Math.min(n,free));
+      for(let i=0;i<take;i++)S.inventory.push(dl.item);
+      S.diceLootDone=S.diceLootDone||{};S.diceLootDone[S.section]=true;
+      const msgs=['+ '+take+' \u00d7 '+itemName(dl.item)];
+      if(take<n)msgs.push(t('meshok_polon_2')+(n-take)+t('ne_vzyato'));
+      logEvent('gain',msgs[0],msgs[1]||'');
+      updateHUD();saveGame();playSound('item');showItemNotification(msgs);
+      pick.remove();
+    };
+    list.appendChild(pick);
+    renderExit();
+  };
+  list.appendChild(btn);
+}
+
 // Betting Phase B2 (group_41). Stake commit + payout resolution. Runs on EVERY
 // visit (see renderGame) because the gambling loop is re-entrant.
 //   sec.set_stake  = {kind:'gold', amount:N}  -> deduct N gold, remember stake
@@ -2092,6 +2185,12 @@ function startCombat(enemies,sec){
       weakBtn.style.display='none';
     }
   }
+  const larvaBtn=document.getElementById('btn-larva');
+  if(larvaBtn){
+    const larvaCount=(S&&S.inventory?S.inventory.filter(it=>canonItem(it)==='spider_larva').length:0);
+    if(larvaCount>0){larvaBtn.style.display='inline-block';larvaBtn.textContent=t('razlomit_lichinku')+larvaCount+']';}
+    else larvaBtn.style.display='none';
+  }
   // §950: HEALING usable in combat where canon permits (self-cast, invisible).
   // Shown whenever the allowlist includes HEALING and a charge remains; the
   // handler caps at staminaMax. The HUD heal button stays hidden (overlay).
@@ -2251,6 +2350,8 @@ function endCombat(won){
   if(forceBtn)forceBtn.style.display='none';
   const weakBtn=document.getElementById('btn-weakness-spell');
   if(weakBtn)weakBtn.style.display='none';
+  const larvaBtnEnd=document.getElementById('btn-larva');
+  if(larvaBtnEnd)larvaBtnEnd.style.display='none';
   if(won){
     playSound('victory');
     logEvent('combat',t('pobeda_v_boyu'),t('raundov')+(combatState?combatState.round:0));
@@ -2286,13 +2387,34 @@ function endCombatRouted(target,msgKey){
   combatDone[S.section]=true;
   clearCombatExtraButtons();
   const log=document.getElementById('combat-log');
-  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
+  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
   log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t(msgKey)}</div>`;
   logEvent('combat',t(msgKey),t('raundov')+(combatState?combatState.round:0));
   const b=document.getElementById('btn-combat-round');
   b.style.display='inline-block';
   b.textContent=t('prodolzhit');
   b.onclick=()=>{ document.getElementById('modal-combat').classList.remove('on'); goTo(target); };
+}
+
+function useLarvaInCombat(){
+  if(!combatState||!S)return;
+  const idx=(S.inventory||[]).findIndex(it=>canonItem(it)==='spider_larva');
+  if(idx<0)return;
+  const cs=combatState;
+  const alive=getAliveCombatEnemies(cs);
+  if(alive.length===0)return;
+  const target=alive[0];
+  S.inventory.splice(idx,1);
+  target.hp=0;
+  playSound('combat_death_enemy');
+  const log=document.getElementById('combat-log');
+  log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('vy_razlamyvaete_lichinku')}${target.name}${t('padaet_zamertvo')}</div>`;
+  logEvent('combat',t('vy_razlamyvaete_lichinku')+target.name,t('padaet_zamertvo'));
+  updateHUD();updateCombatEnemyDisplay(cs);saveGame();
+  const btn=document.getElementById('btn-larva');
+  const left=(S.inventory||[]).filter(it=>canonItem(it)==='spider_larva').length;
+  if(btn){ if(left>0){btn.textContent=t('razlomit_lichinku')+left+']';} else {btn.style.display='none';} }
+  if(cs.enemies.every(e=>e.hp<=0||e.fled)){ endCombat(true); }
 }
 
 // ── Copy Spell in Combat ──
