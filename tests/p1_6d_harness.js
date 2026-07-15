@@ -61,6 +61,10 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9a. group_78 G-01/G-04: attack mods + early combat exits
+ck('player_attack_mod -1 at 46/448/656/722', GD['46'].player_attack_mod===-1 && GD['448'].player_attack_mod===-1 && GD['656'].player_attack_mod===-1 && GD['722'].player_attack_mod===-1);
+ck('early-exit conditions: 46 enemy_defeated_1, 994 wound_2, 532 intact', JSON.stringify(GD['46'].choices[0])==='{"target":98,"combat_condition":"enemy_defeated_1"}' && JSON.stringify(GD['994'].choices[1])==='{"target":118,"combat_condition":"wound_2"}' && JSON.stringify(GD['532'].choices[0])==='{"target":437,"combat_condition":"wound_2"}');
+
 // 9b. group_78 G-11: dice resolvers (781/725/932)
 ck('dice_check 781 exact', JSON.stringify(GD['781'].dice_check)==='{"dice":2,"gte":10,"win":863,"lose":126}');
 ck('dice_bash on 725 choice to 1215', JSON.stringify(GD['725'].choices[1])==='{"target":1215,"dice_bash":{"cost_stamina":1}}');

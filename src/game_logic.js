@@ -1991,7 +1991,7 @@ function renderChoices(sec){
   if(combatWon){
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
     sec.choices.forEach((ch,idx)=>{
-      if(!ch.spell_choice && !ch.luck_type && !ch.combat_condition && passesInventoryCheck(ch) && passesGoldCheck(ch)){
+      if(!ch.spell_choice && !ch.luck_type && (!ch.combat_condition || (S.combatCondMet&&S.combatCondMet[S.section])) && passesInventoryCheck(ch) && passesGoldCheck(ch)){
         list.appendChild(makeChoiceBtn(ch, false, idx));
       }
     });
@@ -2317,7 +2317,7 @@ function combatRound(){
 
   if(cs.sec&&cs.sec.choices){
     cs.sec.choices.forEach(ch=>{
-      if(ch.combat_condition==='wound_2'&&cs.wounds>=2){
+      if(ch.combat_condition&&combatCondMet(ch.combat_condition,cs)){
         const existing=document.getElementById('combat-condition-btn');
         if(!existing){
           const btn=document.createElement('button');btn.id='combat-condition-btn';
@@ -2354,6 +2354,14 @@ function endCombat(won){
   if(larvaBtnEnd)larvaBtnEnd.style.display='none';
   if(won){
     playSound('victory');
+    const _csec=GD[S.section];
+    if(_csec&&_csec.choices&&combatState){
+      _csec.choices.forEach(ch=>{
+        if(ch.combat_condition&&combatCondMet(ch.combat_condition,combatState)){
+          S.combatCondMet=S.combatCondMet||{};S.combatCondMet[S.section]=true;
+        }
+      });
+    }
     logEvent('combat',t('pobeda_v_boyu'),t('raundov')+(combatState?combatState.round:0));
     log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('pobeda')}</div>`;
     document.getElementById('btn-combat-round').style.display='inline-block';
@@ -2381,6 +2389,13 @@ function endCombat(won){
       showDeathOverlay();
     };
   }
+}
+
+function combatCondMet(cond,cs){
+  if(!cs)return false;
+  if(cond==='wound_2')return cs.wounds>=2;
+  if(cond==='enemy_defeated_1')return cs.enemies.filter(e=>e.hp<=0).length>=1;
+  return false;
 }
 
 function endCombatRouted(target,msgKey){
