@@ -72,6 +72,9 @@ body {
   .choices-area {
     padding: 12px 16px calc(16px + var(--safe-bottom));
     max-width: none;
+    overflow-y: auto;
+    max-height: 34vh;
+    max-height: 34dvh;
   }
   .choice-btn {
     font-size: 20px;
@@ -183,6 +186,9 @@ body {
 
   .choices-area {
     padding: 10px 20px calc(14px + var(--safe-bottom));
+    overflow-y: auto;
+    max-height: 44vh;
+    max-height: 44dvh;
   }
   .choice-btn {
     font-size: 18px;

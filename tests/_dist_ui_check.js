@@ -10,6 +10,7 @@ const snips=[
  ['riddle span', "t('neverno_ostalos')+'<span id=\"riddle-attempts\">'"],
  ['title alt', 'alt="${t(\'alt_title_lettering\')}">'],
  ['vmeshke', "t('v_meshke_lbl')+' ('+getBagUsed()"],
+ ['choices scroll cap (UI-01)', 'max-height:52dvh;overscroll-behavior:contain', 1],
 ];
 let ok=0,bad=0;
 snips.forEach(([n,s,exp])=>{ const e=exp||1; const c=d.split(s).length-1; if(c===e)ok++; else {bad++; console.log('FAIL '+n+' count='+c+' expected='+e);} });
