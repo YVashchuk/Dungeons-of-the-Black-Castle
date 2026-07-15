@@ -2115,6 +2115,17 @@ function combatRound(){
   const cs=combatState;cs.round++;
   const log=document.getElementById('combat-log');
 
+  const _dl=GD[S.section]&&GD[S.section].round_deadline;
+  if(_dl && cs.round>_dl.rounds && getAliveCombatEnemies(cs).length>0){
+    if(_dl.lose==='death'){
+      log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t('vremya_vyshlo_boy_zatyanulsya')}</div>`;
+      endCombat(false);
+      return;
+    }
+    endCombatRouted(_dl.lose,'vremya_vyshlo_boy_zatyanulsya');
+    return;
+  }
+
   if(cs.special&&cs.special.type==='sec1175'){
     const first=cs.enemies[0];
     if(cs.round===4 && first.hp>0 && !cs.special.reinforcementsJoined){
@@ -2246,9 +2257,20 @@ function endCombat(won){
     log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('pobeda')}</div>`;
     document.getElementById('btn-combat-round').style.display='inline-block';
     document.getElementById('btn-combat-round').textContent=t('prodolzhit');
-    document.getElementById('btn-combat-round').onclick=()=>{
-      document.getElementById('modal-combat').classList.remove('on');renderGame();
-    };
+    const _dl=GD[S.section]&&GD[S.section].round_deadline;
+    if(_dl){
+      const met=combatState&&combatState.round<=_dl.rounds;
+      const tgt=met?_dl.win:_dl.lose;
+      log.innerHTML+=`<div style="color:${met?'var(--gold)':'var(--red2)'};margin-top:4px">${t(met?'vy_ulozhilis_v_otvedennye_raund':'vremya_vyshlo_boy_zatyanulsya')}</div>`;
+      document.getElementById('btn-combat-round').onclick=()=>{
+        document.getElementById('modal-combat').classList.remove('on');
+        if(tgt==='death'){ showDeathOverlay(); } else { goTo(tgt); }
+      };
+    } else {
+      document.getElementById('btn-combat-round').onclick=()=>{
+        document.getElementById('modal-combat').classList.remove('on');renderGame();
+      };
+    }
   }else{
     playSound('death');log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t('vy_pogibli_v_boyu')}</div>`;
     document.getElementById('btn-combat-round').style.display='inline-block';
@@ -2260,6 +2282,18 @@ function endCombat(won){
   }
 }
 
+function endCombatRouted(target,msgKey){
+  combatDone[S.section]=true;
+  clearCombatExtraButtons();
+  const log=document.getElementById('combat-log');
+  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
+  log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t(msgKey)}</div>`;
+  logEvent('combat',t(msgKey),t('raundov')+(combatState?combatState.round:0));
+  const b=document.getElementById('btn-combat-round');
+  b.style.display='inline-block';
+  b.textContent=t('prodolzhit');
+  b.onclick=()=>{ document.getElementById('modal-combat').classList.remove('on'); goTo(target); };
+}
 
 // ── Copy Spell in Combat ──
 function useCopyInCombat(){
