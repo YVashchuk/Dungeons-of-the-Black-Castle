@@ -1501,8 +1501,20 @@ function getAliveCombatEnemies(cs){
   return cs.enemies.filter(e=>e.hp>0 && e.active!==false && !e.fled);
 }
 
+function getCombatTarget(cs){
+  if(!cs)return null;
+  const alive=getAliveCombatEnemies(cs);
+  if(alive.length===0)return null;
+  const sel=(cs.targetIdx!==undefined&&cs.targetIdx!==null)?cs.enemies[cs.targetIdx]:null;
+  if(sel&&sel.hp>0&&sel.active!==false&&!sel.fled)return sel;
+  cs.targetIdx=cs.enemies.indexOf(alive[0]);
+  return alive[0];
+}
+
 function updateCombatEnemyDisplay(cs){
   if(!cs) return;
+  getCombatTarget(cs);
+  const multiTarget=getAliveCombatEnemies(cs).length>1;
   const cards=document.querySelectorAll('.combat-enemy');
   cs.enemies.forEach((e,i)=>{
     const card=cards[i];
@@ -1524,6 +1536,12 @@ function updateCombatEnemyDisplay(cs){
       statusEl.className='ce-status ce-status-pill '+stateClass;
     }
     card.style.opacity=(e.active===false && !e.fled && e.hp>0)?'0.55':'1';
+    const isTargetable=(e.hp>0&&e.active!==false&&!e.fled);
+    const isSel=(cs.targetIdx===i)&&isTargetable&&multiTarget;
+    card.style.outline=isSel?'2px solid var(--gold)':'none';
+    card.style.outlineOffset=isSel?'2px':'0';
+    card.style.cursor=(isTargetable&&multiTarget)?'pointer':'default';
+    card.onclick=(isTargetable&&multiTarget)?()=>{cs.targetIdx=i;updateCombatEnemyDisplay(cs);}:null;
   });
 }
 
@@ -2261,6 +2279,8 @@ function combatRound(){
     log.innerHTML+=`<div>${t('vy_2k6')}${pd}) + ${S.skill} = <b>${pStr}</b></div>`;
   }
 
+  const tgtEnemy=getCombatTarget(cs);
+  if(alive.length>1&&tgtEnemy){log.innerHTML+=`<div style="color:var(--gold);opacity:.85">${t('cel_boya')}${tgtEnemy.name}</div>`;}
   // group_19: WEAKNESS spell subtracts 2 from each enemy's attack for whole combat.
   const enemyMod=(cs.weaknessDebuff?-2:0)+(cs.enemyAttackMod||0);
   alive.forEach((e,i)=>{
@@ -2270,7 +2290,7 @@ function combatRound(){
     } else {
       log.innerHTML+=`<div>${e.name}${t('2k6')}${ed}) + ${e.skill} = <b>${eStr}</b></div>`;
     }
-    if(i===0){
+    if(e===tgtEnemy){
       if(pStr>eStr){playSound('hit');e.hp-=2;cs.wounds++;log.innerHTML+=`<div class="hit">${t('vy_ranili')}${e.name}${t('2_vyn_ostalos')}${Math.max(0,e.hp)})</div>`;}
       else if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name}${t('ranil_vas')}${d}${t('vyn_ostalos')}${Math.max(0,S.stamina)})</div>`;}
       else{log.innerHTML+=`<div class="draw">${t('nichya_s')}${e.name}</div>`;}
@@ -2443,7 +2463,7 @@ function useLarvaInCombat(){
   const cs=combatState;
   const alive=getAliveCombatEnemies(cs);
   if(alive.length===0)return;
-  const target=alive[0];
+  const target=getCombatTarget(cs)||alive[0];
   S.inventory.splice(idx,1);
   target.hp=0;
   playSound('combat_death_enemy');
