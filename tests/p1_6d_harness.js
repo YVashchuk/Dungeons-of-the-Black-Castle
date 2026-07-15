@@ -61,6 +61,10 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9c. group_78 G-03: seven staged combats (declarative joins)
+ck('staged joins exact at 177/388/588/617/628/742/790', JSON.stringify(GD['177'].enemies[1].joins)==='{"after_death":0}' && JSON.stringify(GD['388'].enemies[2].joins)==='{"round":11}' && JSON.stringify(GD['588'].enemies[1].joins)==='{"after_death":0}' && JSON.stringify(GD['617'].enemies[1].joins)==='{"after_death":0}' && JSON.stringify(GD['628'].enemies[1].joins)==='{"round":4,"after_death":0}' && JSON.stringify(GD['628'].enemies[2].joins)==='{"round":4,"after_death":0}' && JSON.stringify(GD['742'].enemies[2].joins)==='{"round":7}' && JSON.stringify(GD['742'].enemies[3].joins)==='{"after_deaths":2}' && JSON.stringify(GD['790'].enemies[5].joins)==='{"after_deaths":5}');
+ck('617 flee gated to phase 2', JSON.stringify(GD['617'].choices[0])==='{"target":165,"flee":true,"combat_condition":"enemy_active_1"}');
+
 // 9a. group_78 G-01/G-04: attack mods + early combat exits
 ck('player_attack_mod -1 at 46/448/656/722', GD['46'].player_attack_mod===-1 && GD['448'].player_attack_mod===-1 && GD['656'].player_attack_mod===-1 && GD['722'].player_attack_mod===-1);
 ck('early-exit conditions: 46 enemy_defeated_1, 994 wound_2, 532 intact', JSON.stringify(GD['46'].choices[0])==='{"target":98,"combat_condition":"enemy_defeated_1"}' && JSON.stringify(GD['994'].choices[1])==='{"target":118,"combat_condition":"wound_2"}' && JSON.stringify(GD['532'].choices[0])==='{"target":437,"combat_condition":"wound_2"}');

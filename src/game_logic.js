@@ -2074,7 +2074,7 @@ function startCombat(enemies,sec){
   if(S)S.pending_combat_buff=null;
   const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
   combatState={
-    enemies:enemies.map((e,idx)=>({...e,name:enemyName(e.name),hp:e.stamina,dmg:e.damage||2,active:!((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0),fled:false})),
+    enemies:enemies.map((e,idx)=>({...e,name:enemyName(e.name),hp:e.stamina,dmg:e.damage||2,active:!(((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0) || e.joins!==undefined),fled:false})),
     round:0,
     wounds:0,
     sec:sec,
@@ -2246,6 +2246,7 @@ function combatRound(){
     }
   }
 
+  activateStagedJoins(cs);
   const alive=getAliveCombatEnemies(cs);
   if(alive.length===0){endCombat(true);return;}
   // group_19: FORCE spell adds +2 to player attack for whole combat duration.
@@ -2313,6 +2314,7 @@ function combatRound(){
     }
   }
 
+  activateStagedJoins(cs);
   if(getAliveCombatEnemies(cs).length===0){endCombat(true);return;}
 
   if(cs.sec&&cs.sec.choices){
@@ -2324,12 +2326,14 @@ function combatRound(){
           btn.className='btn btn-g';btn.style.cssText='margin-top:10px;font-size:17px;';
           btn.textContent='✦ '+ch.label;
           btn.onclick=()=>{
+            if(ch.flee){S.stamina=Math.max(0,S.stamina-2);updateHUD();saveGame();showItemNotification([t('2_vynoslivosti_begstvo_iz_boya')]);}
             document.getElementById('modal-combat').classList.remove('on');
             combatDone[S.section]=true;
             goTo(ch.target);
           };
           document.getElementById('btn-combat-round').parentElement.appendChild(btn);
-          log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('vy_ranili_vraga_dvazhdy_mozhete')}${ch.target}.</div>`;
+          const _condMsgKey=(ch.combat_condition==='wound_2')?'vy_ranili_vraga_dvazhdy_mozhete':(ch.combat_condition==='enemy_defeated_1'?'vy_srazili_odnogo_protivnika':null);
+          if(_condMsgKey)log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t(_condMsgKey)}${ch.target}.</div>`;
         }
       }
     });
@@ -2357,7 +2361,7 @@ function endCombat(won){
     const _csec=GD[S.section];
     if(_csec&&_csec.choices&&combatState){
       _csec.choices.forEach(ch=>{
-        if(ch.combat_condition&&combatCondMet(ch.combat_condition,combatState)){
+        if(ch.combat_condition&&!ch.flee&&combatCondMet(ch.combat_condition,combatState)){
           S.combatCondMet=S.combatCondMet||{};S.combatCondMet[S.section]=true;
         }
       });
@@ -2391,10 +2395,31 @@ function endCombat(won){
   }
 }
 
+function activateStagedJoins(cs){
+  if(!cs||!cs.enemies)return false;
+  let joined=false;
+  const deadCount=cs.enemies.filter(x=>x.hp<=0).length;
+  cs.enemies.forEach(e=>{
+    if(e.active!==false||e.fled||e.hp<=0||!e.joins)return;
+    const j=e.joins;
+    const byRound=(j.round!==undefined)&&cs.round>=j.round;
+    const byDeath=(j.after_death!==undefined)&&cs.enemies[j.after_death]&&cs.enemies[j.after_death].hp<=0;
+    const byCount=(j.after_deaths!==undefined)&&deadCount>=j.after_deaths;
+    if(byRound||byDeath||byCount){
+      e.active=true;joined=true;
+      const log=document.getElementById('combat-log');
+      if(log)log.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">${t('v_boy_vstupaet')}${e.name}!</div>`;
+    }
+  });
+  if(joined)updateCombatEnemyDisplay(cs);
+  return joined;
+}
+
 function combatCondMet(cond,cs){
   if(!cs)return false;
   if(cond==='wound_2')return cs.wounds>=2;
   if(cond==='enemy_defeated_1')return cs.enemies.filter(e=>e.hp<=0).length>=1;
+  if(cond==='enemy_active_1')return !!(cs.enemies[1]&&cs.enemies[1].active===true&&cs.enemies[1].hp>0&&!cs.enemies[1].fled);
   return false;
 }
 
@@ -2429,6 +2454,7 @@ function useLarvaInCombat(){
   const btn=document.getElementById('btn-larva');
   const left=(S.inventory||[]).filter(it=>canonItem(it)==='spider_larva').length;
   if(btn){ if(left>0){btn.textContent=t('razlomit_lichinku')+left+']';} else {btn.style.display='none';} }
+  activateStagedJoins(cs);
   if(cs.enemies.every(e=>e.hp<=0||e.fled)){ endCombat(true); }
 }
 
