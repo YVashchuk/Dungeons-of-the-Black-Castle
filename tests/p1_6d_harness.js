@@ -61,6 +61,11 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9b. group_78 G-11: dice resolvers (781/725/932)
+ck('dice_check 781 exact', JSON.stringify(GD['781'].dice_check)==='{"dice":2,"gte":10,"win":863,"lose":126}');
+ck('dice_bash on 725 choice to 1215', JSON.stringify(GD['725'].choices[1])==='{"target":1215,"dice_bash":{"cost_stamina":1}}');
+ck('dice_loot 932 exact', JSON.stringify(GD['932'].dice_loot)==='{"item":"spider_larva","target":1123}');
+
 // 9. group_78 G-02: canonical round-deadline routing (43/261/737/1099)
 ck('round_deadline configs exact', JSON.stringify(GD['43'].round_deadline)==='{"rounds":10,"win":1082,"lose":1016}' && JSON.stringify(GD['261'].round_deadline)==='{"rounds":3,"win":520,"lose":8}' && JSON.stringify(GD['737'].round_deadline)==='{"rounds":5,"win":391,"lose":182}' && JSON.stringify(GD['1099'].round_deadline)==='{"rounds":3,"win":894,"lose":"death"}');
 
