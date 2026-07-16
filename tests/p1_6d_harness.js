@@ -61,6 +61,10 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9d. group_78 G-06/G-07: weakness bridges + double-spend fixes
+ck('double-spend tags stripped at 526/1183/1021', JSON.stringify(GD['526'].choices)==='[{"target":436}]' && JSON.stringify(GD['1183'].choices)==='[{"target":532}]' && JSON.stringify(GD['1021'].choices)==='[{"target":715}]');
+ck('weakness bridges carry ENEMY_WEAK_PICK at 470/116/655', GD['470'].choices[0].combat_mod==='ENEMY_WEAK_PICK' && GD['470'].choices[0].spell===undefined && GD['116'].choices[0].combat_mod==='ENEMY_WEAK_PICK' && GD['655'].choices[0].combat_mod==='ENEMY_WEAK_PICK');
+
 // 9c. group_78 G-03: seven staged combats (declarative joins)
 ck('staged joins exact at 177/388/588/617/628/742/790', JSON.stringify(GD['177'].enemies[1].joins)==='{"after_death":0}' && JSON.stringify(GD['388'].enemies[2].joins)==='{"round":11}' && JSON.stringify(GD['588'].enemies[1].joins)==='{"after_death":0}' && JSON.stringify(GD['617'].enemies[1].joins)==='{"after_death":0}' && JSON.stringify(GD['628'].enemies[1].joins)==='{"round":4,"after_death":0}' && JSON.stringify(GD['628'].enemies[2].joins)==='{"round":4,"after_death":0}' && JSON.stringify(GD['742'].enemies[2].joins)==='{"round":7}' && JSON.stringify(GD['742'].enemies[3].joins)==='{"after_deaths":2}' && JSON.stringify(GD['790'].enemies[5].joins)==='{"after_deaths":5}');
 ck('617 flee gated to phase 2', JSON.stringify(GD['617'].choices[0])==='{"target":165,"flee":true,"combat_condition":"enemy_active_1"}');
