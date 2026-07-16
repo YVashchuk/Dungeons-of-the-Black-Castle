@@ -2100,6 +2100,7 @@ function startCombat(enemies,sec){
     forceBuff:(pendingBuff==='FORCE'),  // group_19 FORCE whole-combat +2; R2-3 may pre-set via bridge
     weaknessDebuff:false,  // group_19: WEAKNESS spell active for whole combat (-2 enemy attack)
     enemyAttackMod:(pendingBuff==='ENEMY_PLUS2'?2:0),  // R2-3 §865 Force-backfire: enemy +2 whole combat
+    pendingWeakPick:(pendingBuff==='ENEMY_WEAK_PICK'),  // G-06: targeted -2, lands on the selected enemy at round 1
     special:script==='sec1175_canon_orcs'?{type:'sec1175',reinforcementsJoined:false,firstDeathHandled:false,luckChecked:false}:(script==='sec131_eagle_joins'?{type:'sec131',reinforcementsJoined:false}:null)
   };
   const ce=document.getElementById('combat-enemies');ce.innerHTML='';
@@ -2281,12 +2282,17 @@ function combatRound(){
 
   const tgtEnemy=getCombatTarget(cs);
   if(alive.length>1&&tgtEnemy){log.innerHTML+=`<div style="color:var(--gold);opacity:.85">${t('cel_boya')}${tgtEnemy.name}</div>`;}
+  if(cs.pendingWeakPick&&tgtEnemy){
+    tgtEnemy.weakDebuff=-2;cs.pendingWeakPick=false;
+    log.innerHTML+=`<div style="color:var(--gold);font-weight:bold">${t('zaklyatie_slabosti_cel')}${tgtEnemy.name} (−2)</div>`;
+  }
   // group_19: WEAKNESS spell subtracts 2 from each enemy's attack for whole combat.
   const enemyMod=(cs.weaknessDebuff?-2:0)+(cs.enemyAttackMod||0);
   alive.forEach((e,i)=>{
-    const ed=d6()+d6();const eStr=ed+e.skill+enemyMod;
-    if(enemyMod!==0){
-      log.innerHTML+=`<div>${e.name}${t('2k6')}${ed}) + ${e.skill} ${enemyMod>0?'+':''}${enemyMod} = <b>${eStr}</b></div>`;
+    const perMod=enemyMod+(e.weakDebuff||0);
+    const ed=d6()+d6();const eStr=ed+e.skill+perMod;
+    if(perMod!==0){
+      log.innerHTML+=`<div>${e.name}${t('2k6')}${ed}) + ${e.skill} ${perMod>0?'+':''}${perMod} = <b>${eStr}</b></div>`;
     } else {
       log.innerHTML+=`<div>${e.name}${t('2k6')}${ed}) + ${e.skill} = <b>${eStr}</b></div>`;
     }
