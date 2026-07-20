@@ -656,6 +656,7 @@ function renderGame(opts){
     if(ai.skill_add){S.skill=Math.min(S.skillMax,S.skill+ai.skill_add);statNotifs.push('+ '+ai.skill_add+t('masterstva'));}
     if(ai.skill_sub){S.skill=Math.max(1,S.skill-ai.skill_sub);statNotifs.push('− '+ai.skill_sub+t('masterstva'));}
     if(ai.luck_add){S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);statNotifs.push('+ '+ai.luck_add+t('udachi'));}
+    if(ai.dragon_strength){S.dragonKillsLeft=3;statNotifs.push('+ 5'+t('masterstva')+' ('+t('sila_drakona')+')');logEvent('gain','+ 5'+t('masterstva'),t('sila_drakona'));}
     if(ai.luck_sub){S.luck=Math.max(0,S.luck-ai.luck_sub);statNotifs.push('− '+ai.luck_sub+t('udachi'));}
     if(statNotifs.length>0){updateHUD();saveGame();showItemNotification(statNotifs);}
   }
@@ -765,7 +766,7 @@ function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bag
 // RU->slug migration (phase1.5b-5f). itemName(): slug -> Russian display name (passthrough for
 // unknown / hand-typed strings). invDisplay(): an inventory entry -> display string (resolves the
 // slug, preserves any food suffix). RU_TO_SLUG/SLUG_TO_RU are generated from items.json.
-const RU_TO_SLUG={"Личинка паука":"spider_larva",
+const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield",
   "Яблоко":"apple","Здесь 5 стрел":"arrows_5","Банан":"banana","Медвежий амулет":"bear_amulet",
   "Шкурка бобра":"beaver_pelt","Клетка для птиц":"birdcage","Здесь 5 чёрных стрел":"black_arrows_5",
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
@@ -798,7 +799,7 @@ const RU_TO_SLUG={"Личинка паука":"spider_larva",
   "Белая стрела":"white_arrow","Целый меч":"whole_sword","Бутылка вина":"wine_bottle",
   "Красивый кусочек дерева":"wood_piece",
 };
-const SLUG_TO_RU={spider_larva:"Личинка паука",
+const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",
   "apple":"Яблоко","arrows_5":"Здесь 5 стрел","banana":"Банан","bear_amulet":"Медвежий амулет",
   "beaver_pelt":"Шкурка бобра","birdcage":"Клетка для птиц","black_arrows_5":"Здесь 5 чёрных стрел",
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
@@ -2223,8 +2224,46 @@ function startCombat(enemies,sec){
       healSpellBtn.style.display='none';
     }
   }
+  if(S&&S.inventory&&S.inventory.some(it=>canonItem(it)==='death_of_orcs')){
+    const orkIdx=enemies.findIndex((e,i2)=>/ork/.test(e.name)&&combatState.enemies[i2].active!==false&&combatState.enemies[i2].hp>0);
+    if(orkIdx>=0){
+      const victim=combatState.enemies[orkIdx];
+      victim.hp=0;
+      const log=document.getElementById('combat-log');
+      if(log)log.innerHTML+=`<div style="color:var(--gold);font-weight:bold">${t('mech_smert_orkov_srabatyvaet')}${victim.name}${t('padaet_zamertvo')}</div>`;
+      dragonKillTick();
+      activateStagedJoins(combatState);
+      if(getAliveCombatEnemies(combatState).length===0&&combatState.enemies.every(e=>e.hp<=0||e.fled)){
+        updateCombatEnemyDisplay(combatState);
+        document.getElementById('modal-combat').classList.add('on');
+        endCombat(true);
+        return;
+      }
+    }
+  }
   updateCombatEnemyDisplay(combatState);
   document.getElementById('modal-combat').classList.add('on');
+}
+
+function playerEquipMod(){
+  let m=0;
+  if(S&&S.inventory){
+    if(S.inventory.some(it=>canonItem(it)==='whole_sword'))m+=1;
+    if(S.inventory.some(it=>canonItem(it)==='knight_shield'))m+=1;
+  }
+  if(S&&S.dragonKillsLeft>0)m+=5;
+  return m;
+}
+
+function dragonKillTick(){
+  if(!S||!(S.dragonKillsLeft>0))return;
+  S.dragonKillsLeft--;
+  if(S.dragonKillsLeft===0){
+    const log=document.getElementById('combat-log');
+    if(log)log.innerHTML+=`<div style="color:var(--muted)">${t('zele_poteryalo_silu')}</div>`;
+    showItemNotification([t('zele_poteryalo_silu')]);
+  }
+  updateHUD();
 }
 
 function combatRound(){
@@ -2271,7 +2310,7 @@ function combatRound(){
   // group_19: FORCE spell adds +2 to player attack for whole combat duration.
   // playerMod already accumulates external modifiers from sec.player_attack_mod
   // (e.g. fatigue penalties from §1154/§1182); FORCE stacks additively.
-  const pMod=(cs.playerMod||0)+(cs.forceBuff?2:0);
+  const pMod=(cs.playerMod||0)+(cs.forceBuff?2:0)+playerEquipMod();
   const pd=d6()+d6();const pStr=pd+S.skill+pMod;
   log.innerHTML+=`<div>${t('raund')}${cs.round} —</div>`;
   if(pMod!==0){
@@ -2297,7 +2336,7 @@ function combatRound(){
       log.innerHTML+=`<div>${e.name}${t('2k6')}${ed}) + ${e.skill} = <b>${eStr}</b></div>`;
     }
     if(e===tgtEnemy){
-      if(pStr>eStr){playSound('hit');e.hp-=2;cs.wounds++;log.innerHTML+=`<div class="hit">${t('vy_ranili')}${e.name}${t('2_vyn_ostalos')}${Math.max(0,e.hp)})</div>`;}
+      if(pStr>eStr){playSound('hit');e.hp-=2;cs.wounds++;log.innerHTML+=`<div class="hit">${t('vy_ranili')}${e.name}${t('2_vyn_ostalos')}${Math.max(0,e.hp)})</div>`;if(e.hp<=0)dragonKillTick();}
       else if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name}${t('ranil_vas')}${d}${t('vyn_ostalos')}${Math.max(0,S.stamina)})</div>`;}
       else{log.innerHTML+=`<div class="draw">${t('nichya_s')}${e.name}</div>`;}
     } else {
@@ -2472,6 +2511,7 @@ function useLarvaInCombat(){
   const target=getCombatTarget(cs)||alive[0];
   S.inventory.splice(idx,1);
   target.hp=0;
+  dragonKillTick();
   playSound('combat_death_enemy');
   const log=document.getElementById('combat-log');
   log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('vy_razlamyvaete_lichinku')}${target.name}${t('padaet_zamertvo')}</div>`;

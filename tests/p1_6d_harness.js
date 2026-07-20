@@ -61,6 +61,9 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9f. group_78 G-09/G-10: equipment + dragon potion
+ck('G-09/G-10 data shapes exact', JSON.stringify(GD['35'].choices)==='[{"target":546},{"target":546,"acquires":"whole_sword"}]' && JSON.stringify(GD['71'].auto_items)==='{"items":["death_of_orcs"]}' && JSON.stringify(GD['1213'].auto_items)==='{"items":["knight_shield"]}' && JSON.stringify(GD['1130'].auto_items)==='{"dragon_strength":true}');
+
 // 9e. group_78 G-08: sixteen stat effects (auto_items)
 ck('G-08 sixteen auto_items exact', JSON.stringify(GD['123'].auto_items)==='{"stamina_sub":5}' && JSON.stringify(GD['199'].auto_items)==='{"stamina_sub":9}' && JSON.stringify(GD['219'].auto_items)==='{"stamina_sub":2}' && JSON.stringify(GD['230'].auto_items)==='{"stamina_sub":8}' && JSON.stringify(GD['254'].auto_items)==='{"stamina_add":8}' && JSON.stringify(GD['273'].auto_items)==='{"stamina_sub":4}' && JSON.stringify(GD['278'].auto_items)==='{"stamina_sub":2}' && JSON.stringify(GD['522'].auto_items)==='{"luck_add":1}' && JSON.stringify(GD['525'].auto_items)==='{"stamina_sub":1}' && JSON.stringify(GD['561'].auto_items)==='{"stamina_sub":1}' && JSON.stringify(GD['606'].auto_items)==='{"stamina_add":6}' && JSON.stringify(GD['864'].auto_items)==='{"luck_add":1}' && JSON.stringify(GD['959'].auto_items)==='{"stamina_add":3}' && JSON.stringify(GD['981'].auto_items)==='{"stamina_add":7}' && JSON.stringify(GD['1036'].auto_items)==='{"skill_sub":1,"stamina_sub":2}' && JSON.stringify(GD['1061'].auto_items)==='{"stamina_add":7}');
 
