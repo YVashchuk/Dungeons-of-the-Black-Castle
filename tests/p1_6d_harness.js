@@ -61,6 +61,9 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9h. group_78 G-13: gold and loot
+ck('G-13 shapes exact', JSON.stringify(GD['486'].auto_items)==='{"gold":1,"luck_sub":1}' && JSON.stringify(GD['510'].auto_items)==='{"gold":85}' && JSON.stringify(GD['812'].choices[1])==='{"target":675,"gold_condition":2}' && JSON.stringify(GD['770'].auto_items)==='{"gold":4}' && JSON.stringify(GD['873'].choices[1])==='{"target":922,"gold_condition":1,"gold_cost":1}' && JSON.stringify(GD['922'].auto_items)==='{"stamina_add":2}');
+
 // 9g. group_78 G-12: pickups and food
 ck('G-12 shapes exact', JSON.stringify(GD['159'].auto_items)==='{"items":["bronze_whistle","copper_bracelet"],"gold":3}' && JSON.stringify(GD['389'].auto_items)==='{"items":[{"food":"melon","stamina":4}]}' && JSON.stringify(GD['482'].auto_items.items)==='["rose","peacock_feather"]' && GD['582'].choices[0].pickup_batch.length===15 && GD['585'].choices[0].pickup_batch.length===2 && JSON.stringify(GD['724'].choices[0].pickup_batch)==='["rope","gold_arrow"]' && GD['801'].choices[0].pickup_batch.length===2 && GD['1140'].choices[0].pickup_batch.length===3);
 
