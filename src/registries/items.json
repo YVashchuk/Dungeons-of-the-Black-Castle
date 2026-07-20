@@ -1,4 +1,8 @@
 {
+  "melon": {"legacyRu":"Арбуз","kind":"food","defaultStamina":4},
+  "coconut": {"legacyRu":"Кокос","kind":"food","defaultStamina":3},
+  "bun": {"legacyRu":"Булочка","kind":"food","defaultStamina":2},
+  "provisions": {"legacyRu":"Немного еды","kind":"food","defaultStamina":2},
   "death_of_orcs": {"legacyRu":"Меч «Смерть Орков»","kind":"item"},
   "knight_shield": {"legacyRu":"Рыцарский щит","kind":"item"},
   "apple": {"legacyRu":"Яблоко","kind":"food","defaultStamina":2},

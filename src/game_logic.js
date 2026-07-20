@@ -1372,6 +1372,31 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   if(sec)renderChoices(sec);
 }
 
+function makeBatchBtn(ch, choiceIndex){
+  const key=S.section+':'+choiceIndex;
+  const done=S.batchPicked&&S.batchPicked[key];
+  const btn=document.createElement('button');btn.className='choice-btn';
+  if(done){btn.disabled=true;btn.style.opacity='0.5';btn.innerHTML='\u2713 '+t('sobrano');return btn;}
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';
+  btn.innerHTML=ch.label;
+  btn.onclick=()=>{
+    let free=getBagSize()-getBagUsed();
+    const taken=[];let skipped=0;
+    (ch.pickup_batch||[]).forEach(ent=>{
+      const v=(typeof ent==='object'&&ent.food)?{kind:'food',id:ent.food,stamina:ent.stamina}:ent;
+      if(free>=getItemSize(v)){S.inventory.push(v);free-=getItemSize(v);taken.push('+ '+invDisplay(v));}
+      else skipped++;
+    });
+    S.batchPicked=S.batchPicked||{};S.batchPicked[key]=true;
+    const msgs=taken.length?taken.slice():[t('meshok_polon_2')+(ch.pickup_batch||[]).length+t('ne_vzyato')];
+    if(skipped&&taken.length)msgs.push(t('meshok_polon_2')+skipped+t('ne_vzyato'));
+    logEvent('gain',t('sobrano')+' ('+taken.length+')','');
+    playSound('item');showItemNotification(msgs);updateHUD();saveGame();
+    btn.disabled=true;btn.style.opacity='0.5';btn.innerHTML='\u2713 '+t('sobrano');
+  };
+  return btn;
+}
+
 function makeBashBtn(ch){
   const btn=document.createElement('button');btn.className='choice-btn';
   btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';
@@ -1398,6 +1423,9 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
   }
   if(ch&&ch.dice_bash){
     return makeBashBtn(ch);
+  }
+  if(ch&&ch.pickup_batch){
+    return makeBatchBtn(ch, choiceIndex);
   }
   const btn=document.createElement('button');btn.className='choice-btn';
   // spell_any: one destination reachable by ANY of several spells (canon
