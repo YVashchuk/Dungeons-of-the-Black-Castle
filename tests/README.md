@@ -3,11 +3,17 @@
 Portable, version-controlled battery for the remake. Everything resolves paths
 relative to the repo, so it works from any clone location.
 
-## Run
-    cd tests && npm install     # once (acorn for the AST-based harnesses)
-    node tests/run_all.js       # 16 harnesses + reachability baseline (expect ALL GREEN, 1205 reachable)
+## Run (from the repo root)
+    npm --prefix tests install          # once (acorn for the AST-based harnesses)
+    node tests/run_all.js               # 16 harnesses + reachability baseline (expect ALL GREEN, 1205 reachable)
 
-Dist spot-checks (run after `bash build.sh` when relevant): `node tests/_dist_*.js`.
+Dist spot-checks (run after `bash build.sh` when relevant), each exits 0:
+    for f in tests/_dist_*_check.js; do node "$f"; done                              # POSIX shells
+    foreach ($f in Get-ChildItem tests\_dist_*_check.js) { node $f.FullName }        # PowerShell
+
+Alternative from inside `tests/`: `cd tests && npm install && node run_all.js` - note the
+runner path has no `tests/` prefix there, and the `_dist_` checks must be run one file per
+`node` invocation (a glob passed to a single `node` executes only the first script).
 
 ## Layout
 - `*_harness.js` — 16 active harnesses (i18n phases, items, signet, engine hygiene, riddle i18n, ...)
