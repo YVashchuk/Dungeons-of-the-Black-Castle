@@ -1,4 +1,6 @@
 {
+  "death_of_orcs": {"legacyRu":"Меч «Смерть Орков»","kind":"item"},
+  "knight_shield": {"legacyRu":"Рыцарский щит","kind":"item"},
   "apple": {"legacyRu":"Яблоко","kind":"food","defaultStamina":2},
   "arrows_5": {"legacyRu":"Здесь 5 стрел","kind":"item"},
   "banana": {"legacyRu":"Банан","kind":"food"},
