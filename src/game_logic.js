@@ -305,8 +305,10 @@ function showInventoryModal(newItems, extraNotifs){
     const row=document.createElement('div');
     row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);';
     row.id='inv-found-'+i;
+    const isFood=item&&typeof item==='object'&&item.kind==='food';
+    const eatNow=isFood?`<button class="btn btn-s inv-eatnow-btn" id="inv-eatnow-${i}" style="font-size:13px;padding:4px 10px;margin-right:6px;border-color:#2a8;color:#3c9;" onclick="eatFoundItem(${i})">🍴 ${t('syest_srazu')}</button>`:'';
     row.innerHTML=`<span style="font-size:16px;color:var(--parchment);">${invDisplay(item)}</span>
-      <button class="btn btn-s" style="font-size:13px;padding:4px 12px;" onclick="takeItem(${i})">${t('vzyat')}</button>`;
+      <span style="flex-shrink:0;display:flex;align-items:center;">${eatNow}<button class="btn btn-s inv-take-btn" style="font-size:13px;padding:4px 12px;" onclick="takeItem(${i})">${t('vzyat')}</button></span>`;
     found.appendChild(row);
   });
   
@@ -339,8 +341,14 @@ function renderInvModalCurrent(){
   pendingItems.forEach((item,i)=>{
     const row=document.getElementById('inv-found-'+i);
     if(!row)return;
-    const btn=row.querySelector('button');
+    const btn=row.querySelector('.inv-take-btn')||row.querySelector('button');
     if(!btn)return;
+    if(item&&item._eaten){
+      const eb=document.getElementById('inv-eatnow-'+i);
+      if(eb){eb.disabled=true;eb.style.opacity='.4';}
+      btn.textContent='🍴';btn.disabled=true;btn.style.opacity='.4';
+      return;
+    }
     if(S.inventory.some(it=>canonItem(it)===canonItem(item))){
       btn.textContent=t('v_meshke_2');btn.disabled=true;btn.style.opacity='.4';
     } else if(getBagUsed()+getItemSize(item)>getBagSize()){
@@ -351,10 +359,26 @@ function renderInvModalCurrent(){
   });
 }
 
+function eatFoundItem(idx){
+  if(!S)return;
+  const item=pendingItems[idx];
+  if(!item||typeof item!=='object'||item.kind!=='food'||item._eaten)return;
+  if(S.stamina>=S.staminaMax){showItemNotification([t('vynoslivost_uzhe_polnaya')]);return;}
+  const before=S.stamina;
+  S.stamina=Math.min(S.staminaMax,S.stamina+item.stamina);
+  const actual=S.stamina-before;
+  item._eaten=true;
+  logEvent('gain',t('sedeno')+itemName(item.id),'+'+actual+t('vynoslivosti'));
+  playSound('item');
+  showItemNotification(['🍴 '+itemName(item.id)+': +'+actual+t('vyn')]);
+  renderInvModalCurrent();
+  updateHUD();saveGame();
+}
+
 function takeItem(idx){
   if(!S)return;
   const item=pendingItems[idx];
-  if(!item||S.inventory.some(it=>canonItem(it)===canonItem(item)))return;
+  if(!item||item._eaten||S.inventory.some(it=>canonItem(it)===canonItem(item)))return;
   if(getBagUsed()+getItemSize(item)>getBagSize())return;
   S.inventory.push(item);
   logEvent('gain','+ '+invDisplay(item),t('v_meshok'));
@@ -638,7 +662,8 @@ function renderGame(opts){
     }
     // Items — show modal if any found
     if(ai.items&&ai.items.length>0){
-      const newItems=ai.items.filter(item=>!S.inventory.some(it=>canonItem(it)===canonItem(item)));
+      const offered=ai.items.map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v);
+      const newItems=offered.filter(item=>!S.inventory.some(it=>canonItem(it)===canonItem(item)));
       if(newItems.length>0){
         showInventoryModal(newItems, notifications);
       } else if(notifications.length>0){
@@ -766,7 +791,7 @@ function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bag
 // RU->slug migration (phase1.5b-5f). itemName(): slug -> Russian display name (passthrough for
 // unknown / hand-typed strings). invDisplay(): an inventory entry -> display string (resolves the
 // slug, preserves any food suffix). RU_TO_SLUG/SLUG_TO_RU are generated from items.json.
-const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield",
+const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield","Арбуз":"melon","Кокос":"coconut","Булочка":"bun","Немного еды":"provisions",
   "Яблоко":"apple","Здесь 5 стрел":"arrows_5","Банан":"banana","Медвежий амулет":"bear_amulet",
   "Шкурка бобра":"beaver_pelt","Клетка для птиц":"birdcage","Здесь 5 чёрных стрел":"black_arrows_5",
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
@@ -799,7 +824,7 @@ const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смер�
   "Белая стрела":"white_arrow","Целый меч":"whole_sword","Бутылка вина":"wine_bottle",
   "Красивый кусочек дерева":"wood_piece",
 };
-const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",
+const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",melon:"Арбуз",coconut:"Кокос",bun:"Булочка",provisions:"Немного еды",
   "apple":"Яблоко","arrows_5":"Здесь 5 стрел","banana":"Банан","bear_amulet":"Медвежий амулет",
   "beaver_pelt":"Шкурка бобра","birdcage":"Клетка для птиц","black_arrows_5":"Здесь 5 чёрных стрел",
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
