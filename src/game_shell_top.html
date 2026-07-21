@@ -229,6 +229,26 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
   padding:3px 12px;margin:6px 0;font-family:var(--font-ui);font-size:17px;color:var(--red2);letter-spacing:.04em;}
 
 /* Choices area — mirrors .story-area for centred-but-edge-to-edge layout */
+/* ── UI-02 (group_79): combat component contract + visual dock ── */
+.combat-enemy-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.combat-enemy-icon{font-size:22px;opacity:.45;line-height:1;}
+.combat-status-line{margin-top:4px;}
+.ce-status-pill{display:inline-block;padding:2px 10px;border:1px solid var(--border2);border-radius:999px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:rgba(0,0,0,.25);}
+.ce-status-pill.state-active{color:var(--green2);border-color:var(--green);}
+.ce-status-pill.state-dead{color:var(--red2);border-color:var(--red);opacity:.75;}
+.ce-status-pill.state-waiting{color:var(--gold2);border-color:var(--gold3);}
+.ce-status-pill.state-fled{color:var(--muted);border-color:var(--border);font-style:italic;}
+.combat-stats{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0;}
+.combat-stat-pill{padding:4px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);font-size:13px;color:var(--parchment2);}
+.combat-stat-pill b{color:var(--gold2);margin-left:6px;}
+.combat-hp-wrap{margin-top:8px;}
+.combat-hp-head{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;}
+.combat-hp-track{height:8px;border-radius:999px;background:var(--bg);border:1px solid var(--border);overflow:hidden;}
+.combat-hp-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red2));border-radius:999px;transition:width .35s ease;}
+.visual-dock{position:fixed;left:12px;bottom:calc(12px + var(--safe-bottom,0px));z-index:60;display:flex;gap:8px;}
+.visual-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--border2);background:rgba(17,15,30,.88);color:var(--muted);font-family:var(--font-ui);font-size:12px;cursor:pointer;}
+.visual-pill.on{color:var(--gold2);border-color:var(--gold3);box-shadow:0 0 8px var(--glow);}
+body.hide-inline-art .illustration-container{display:none!important;}
 .choices-area{position:relative;z-index:1;padding:20px max(20px,calc((100% - 1100px) / 2)) clamp(24px,4vw,36px);
   border-top:1px solid var(--border);
   overflow-y:auto;max-height:52vh;max-height:52dvh;overscroll-behavior:contain;}
