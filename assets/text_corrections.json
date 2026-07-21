@@ -146,7 +146,8 @@
     "v2.138 -> v2.139": "July 2026 - group_78 batch 12 (P2 editorial, FINAL): F-01. Four editorial fixes (EN 417 present-tense condition, EN 178 idiomatic 'strains against its cage', UK 131 present narration, UK 1123 + twin 772 perfective imperative); RU 1113/1131 punctuation adjudicated FB2-faithful no-change per the ledger's FB2-first principle - the explicit decision the report requested. Digit multisets verified. GROUP_78 IS NOW FULLY CLOSED: all 16 findings of the 2026-07-14 mechanics audit carry final verdicts (13 gameplay + 2 docs + 1 editorial; the single open sub-point - sec.63's free repeat-shop pick - is deferred into the group_68 picker family). Dist rebuilt; battery ALL GREEN.",
     "v2.139 -> v2.140": "July 2026 - group_79 stage A batch 1: UI-02 component CSS. The unstyled combat contract (twelve selectors incl. the invisible HP bar and four status-pill states) and the visual dock are now styled on the existing token palette; body.hide-inline-art actually hides .illustration-container so the Illustrations toggle works. Three selector-presence asserts in _dist_ui_check (16 -> 19). CSS-only; dist rebuilt; battery ALL GREEN.",
     "v2.140 -> v2.141": "July 2026 - group_79 stage A batch 2: UI-08 spell picker feedback. Latent t-shadowing crash fixed (renderSpellSel local renamed to tot); the live 'X iz 10 vybrano' counter chip finally exists (aria-live, gold, next to the now-decorative aria-hidden pips - the iz/vybrano keys had been waiting in all four locales); +/- get localized aria-labels, real disabled at both bounds and 44x44 targets. Two ui keys x4 (316), _dist_ui_check 19 -> 21. Dist rebuilt; battery ALL GREEN.",
-    "v2.141 -> v2.142": "July 2026 - group_79 stage A batch 3: UI-05 contrast + touch tokens. --muted and --red2 raised to the audit's values (#8a7a9e / #d6574b) for consistent small-text contrast; new --tap:44px token replaces the mobile touch block's 32px minimums (which sat under a 44x44 WCAG comment) and the list widens to include .inv-eat and map-control buttons; .qty-btn base rule moves to the token. The >=16px interactive-text sweep folds into UI-12's tokenization debt by design. Two asserts in _dist_ui_check (21 -> 23). CSS-only; dist rebuilt; battery ALL GREEN."
+    "v2.141 -> v2.142": "July 2026 - group_79 stage A batch 3: UI-05 contrast + touch tokens. --muted and --red2 raised to the audit's values (#8a7a9e / #d6574b) for consistent small-text contrast; new --tap:44px token replaces the mobile touch block's 32px minimums (which sat under a 44x44 WCAG comment) and the list widens to include .inv-eat and map-control buttons; .qty-btn base rule moves to the token. The >=16px interactive-text sweep folds into UI-12's tokenization debt by design. Two asserts in _dist_ui_check (21 -> 23). CSS-only; dist rebuilt; battery ALL GREEN.",
+    "v2.142 -> v2.143": "July 2026 - recheck cycle 2026-07-20 report received and archived (SHA-256 55a0bd35...). group_80 opened with 12 OPEN findings (7 P0 + 3 P1 + 2 P2): the food-object pipeline gap the G-12 risk note predicted, mandatory-grant silent skips, staged Weakness targeting, dice persistence, joins x non-round kills, the condition-button leak into the next combat, the reopened wound_2 dead-end for instant kills, the sec.436 reload window, the FB2 weightless-weapons rule, the lost choice index double-charge, the four missing food slug map entries and the GAME_RULES version label. Adjudication to follow in P0 batches."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -423,6 +424,85 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_80_2026_07_20_recheck": {
+      "comment": "Verification-cycle audit companion (brief audit_cycles/recheck_2026_07_20/BRIEF.md). Report received via chat 2026-07-20, SHA-256 55a0bd358a78779f1ca6053300fb2a9509b848430829a81e5e04040f4f8fc262, archived verbatim as audit_cycles/recheck_2026_07_20/REPORT.md (the user places the exact received file; the SHA is verified by apply_group80.js before commit). Report audited main @ 2179619 / v2.139; HEAD at group creation is b64167b (v2.142) - the three intervening commits are group_79 UI CSS batches that do not touch the mechanics under adjudication. Auditor scope: 16/16 group_78 resolutions verified (8 clean), 60 deterministic interaction scenarios, 13/13 mandatory pair families, G2 reverse search 109/109 stat candidates explained, full A-F regression green. Findings: 7 P0 + 3 P1 + 2 P2 - dominated by interaction/lifecycle defects the shape harnesses do not execute. Each item is a hypothesis pending FB2/resolution adjudication.",
+      "source": "chatgpt_recheck_2026_07_20",
+      "items": [
+        {
+          "id": "V-01_food_object_pipeline",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "sec.389 auto_items food-object {food,stamina}: the offer modal renders NAYDENO:[object Object], the taken entry stays a raw {food:...} object (HUD [object Object], no eat button) - the engine only recognizes {kind:'food',id,...}. Also FB2 grants 'mozhete syest srazu': with a full bag the modal only offers a disabled Take, so immediate eating is impossible even after fixing the shape. Fix: normalize {food,stamina} -> {kind:'food',id,stamina} before dedupe/modal; add a slot-free 'Eat now' action for food offers respecting the stamina cap."
+        },
+        {
+          "id": "V-02_mandatory_grant_swap",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "sec.71 / sec.1213: both imperative grants ride the CLOSABLE voluntary showInventoryModal - closing without Take (or a full bag disabling the button) leaves inventory=[] and routes to 755, silently skipping Death-of-Orcs / knight_shield. With whole_sword already carried, sec.71 does not remove the old sword: both swords and both benefits coexist, against FB2 'Ostavte svoy mech v kladovoy vmesto togo, kotoryy berete'. Fix: an atomic mandatory acquisition/swap operation - sec.71 removes the current sword and grants death_of_orcs with no silent skip; sec.1213 guarantees the shield."
+        },
+        {
+          "id": "V-03_weak_pick_staged_targets",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "ENEMY_WEAK_PICK x staged bridges (116->1175, 655->628): before round 1 only the leader is active, clicks on the two waiting cards are ignored and the targetIdx validator resets to 0 - the -2 weakDebuff ALWAYS lands on the leader, contradicting FB2 'lyubogo iz Orkov'. The non-staged control 470->536 works. Fix: during pendingWeakPick before the first strike, make ALL alive cards selectable (decouple pick-targetability from active-targetability), record the chosen index, then restore the normal rule."
+        },
+        {
+          "id": "V-04_dice_persistence",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "sec.781 / sec.932: the roll result is not committed before showing the outcome. 932: after rolling, Continue without picking leaves diceLootDone unset - hash/revisit offers the roll again; F5 after a roll rerolls. 781: after a shown failure the save carries no result - reload re-offers the mandatory check until success. sec.725 by contrast persists every stamina loss. Fix: persist a resolved record for each at roll time; 781 restores the single resolved target on reload; 932 restores the same n and unfinished pickup, and Continue explicitly commits done."
+        },
+        {
+          "id": "X-01_joins_nonround_kills_victory",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "Copy/ally kill paths and the victory checks use getAliveCombatEnemies (waiting excluded) and skip activateStagedJoins: sec.177 Copy kills the lion -> lioness stays hp=8 active=false but combatDone=true with Continue; useAllyInCombat has the same gap; sec.388 with both active knights dead and the third waiting, combatRound() ends in victory before round 11. Fix: a single combatResolved(cs) spanning ALL non-fled enemies used by every kill/victory path; call activateStagedJoins after Copy/ally kills; with round-only waiting and no active enemies keep the fight open with an explicit Wait action."
+        },
+        {
+          "id": "X-02_condition_btn_leak",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "#combat-condition-btn is not removed by clearCombatExtraButtons: after full victory it remains next to Continue, and after starting the NEXT combat (e.g. sec.43) it persists with the stale sec.617->165 handler - clicking can charge 2 STAMINA, mark the new fight resolved and route to the wrong paragraph. Also with death_of_orcs the goblin activates before round 1 but the flee button only appears after another full round. Fix: manage condition buttons in one container cleared on start/end/routed-end/navigation, recompute after ANY hp/active change (sword, larva, Copy, ally, join), bind handlers to an immutable section/combat instance."
+        },
+        {
+          "id": "X-03_wound2_instant_kills",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "Instant kills (larva at sec.532/sec.994; Copy/ally paths) produce wounds=0 and call endCombat(true) without setting the Met flag - after Continue visibleChoices=[] and the exact dead-end G-04 fixed is reopened for non-trade kills. Fix: on full victory treat all non-flee combat_condition exits as available (enemy_dead => wound_2 satisfied for navigation), applied before post-combat render regardless of kill method."
+        },
+        {
+          "id": "X-04_sec436_reload_window",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "The sec.436 return branch performs S.sec436_force=false; saveGame() at RENDER time, before the Fight click. The net modifier on click is correct (+1 script +2 equipment), but F5 between render and click loses the already-paid Force and reverts to the pre-luck flow. Fix: consume the persisted flag in the atomic fight-start onclick (or store a committed combat setup restorable after reload)."
+        },
+        {
+          "id": "G2-01_weightless_weapons",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "NEW FB2 evidence (intro section): 'dengi i oruzhie v zaplechnyy meshok ne kladutsya' - yet whole_sword and death_of_orcs sit in S.inventory and getBagUsed() counts each as a slot (a two-sword trace gives bagUsed=2). Not documented as a simplification in G-09/GAME_RULES; can block canonical pickups. Fix: registry slotCost:0 / kind:'weapon', size taken from the registry instead of the incomplete ITEM_SIZES; migrate both swords; keep the V-02 atomic swap separate."
+        },
+        {
+          "id": "R-01_choice_index_lost",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Final renderChoices branches call makeChoiceBtn(ch) WITHOUT the source index: buying one-shot wood_piece at sec.340 stores shopBought:{'340':[null]} - after reload the button is active again and charges gold twice; pickup_batch stores the key '585:undefined' (works while one batch per paragraph, two would collide). Fix: pass the original sec.choices index through every render branch; add save round-trip tests for purchases and batches; migrate legacy [null]/:undefined saves."
+        },
+        {
+          "id": "R-02_food_slug_maps",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "The four new food slugs (melon/coconut/bun/provisions) are registered in items.json (105/20) but MISSING from both runtime maps SLUG_TO_RU/RU_TO_SLUG (101 entries): after a batch the HUD shows 'coconut (eda: +3)' etc. instead of RU names; melon joins the same path once V-01 lands. Fix: add the four entries to both maps (or generate the display map from items.json) plus a registry==runtime keys guard."
+        },
+        {
+          "id": "R-03_game_rules_version_label",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "assets/GAME_RULES.md status line still says v2.138 while version_history ends v2.138 -> v2.139 (the file was written before the F-01 bump). Mechanic numbers are current; metadata defect. Fix: update the status to the current registry version (and ideally derive/check it from the last version_history transition)."
+        }
+      ],
+      "verified": "2026-07-20"
     },
     "group_79_2026_07_14_ui_ux_audit": {
       "comment": "UI/UX audit companion for cycle 2026-07-14 (received via chat 2026-07-14, SHA-256 1cb78719a211395167bd6366d7e885d7f8a76d471f29cffca95106781e740175, archived verbatim in audit_cycles/full_audit_2026_07_14/UI_AUDIT.md). Static DOM/CSS analysis (no live render was possible for the auditor). Overall verdict: the visual system needs no restyle; the risk is interface architecture. 1 P0 + 6 P1 + 5 P2. These are DESIGN decisions pending user review; the report proposes a three-stage rollout (blockers -> mobile IA -> visual polish) and a six-viewport acceptance matrix.",
