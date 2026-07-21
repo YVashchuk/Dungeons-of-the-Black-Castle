@@ -174,11 +174,11 @@ function _spellDescHtml(text){
 }
 
 function renderSpellSel(){
-  const bar=document.getElementById('slots-bar');bar.innerHTML='';const t=totSp(); const chip=document.getElementById('spell-counter-chip'); if(chip) chip.textContent=t+t('iz')+MAX_SP+t('vybrano');
-  for(let i=0;i<MAX_SP;i++){const d=document.createElement('div');d.className='slot-pip'+(i<t?' on':'');d.textContent=i<t?'✦':'·';bar.appendChild(d);}
+  const bar=document.getElementById('slots-bar');bar.innerHTML='';const tot=totSp(); const chip=document.getElementById('spell-counter-chip'); if(chip) chip.textContent=tot+t('iz')+MAX_SP+t('vybrano');
+  for(let i=0;i<MAX_SP;i++){const d=document.createElement('div');d.className='slot-pip'+(i<tot?' on':'');d.textContent=i<tot?'✦':'·';bar.appendChild(d);}
   const grid=document.getElementById('spell-grid');grid.innerHTML='';
   SPELLS.forEach(sp=>{const q=spQty[sp.id];const c=document.createElement('div');
-    c.className='sp-card'+(q>0?' sel':'')+(t>=MAX_SP&&q===0?' maxed':'');
+    c.className='sp-card'+(q>0?' sel':'')+(tot>=MAX_SP&&q===0?' maxed':'');
     c.style.cssText='display:flex;align-items:flex-start;gap:14px;padding:18px 20px;';
     c.innerHTML=`<div class="sp-icon" style="font-size:32px;min-width:38px;text-align:center;margin-top:2px;">${sp.icon}</div>
       <div style="flex:1;min-width:0;">
@@ -186,9 +186,9 @@ function renderSpellSel(){
         <div class="sp-desc" style="font-size:17px;color:rgba(232,220,196,.78);line-height:1.55;">${_spellDescHtml(spellText(sp.id).full)}</div>
       </div>
       <div class="sp-qty" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-        <button class="qty-btn" data-id="${sp.id}" data-d="-1" style="font-size:20px;width:36px;height:36px;">−</button>
+        <button class="qty-btn" data-id="${sp.id}" data-d="-1" aria-label="${t('aria_ubrat')}${spellText(sp.id).name}" ${q<=0?'disabled':''} style="font-size:20px;width:44px;height:44px;">−</button>
         <span class="qty-num" style="font-size:22px;min-width:30px;text-align:center;">${q}</span>
-        <button class="qty-btn" data-id="${sp.id}" data-d="1" style="font-size:20px;width:36px;height:36px;">+</button>
+        <button class="qty-btn" data-id="${sp.id}" data-d="1" aria-label="${t('aria_dobavit')}${spellText(sp.id).name}" ${(tot>=MAX_SP)?'disabled':''} style="font-size:20px;width:44px;height:44px;">+</button>
       </div>`;
     grid.appendChild(c);
   });
@@ -200,7 +200,7 @@ function renderSpellSel(){
   // Update start button state
   const startBtn=document.getElementById('btn-start');
   const startBtn2=document.getElementById('btn-start-from-preface');
-  if(t===MAX_SP){
+  if(tot===MAX_SP){
     startBtn.disabled=false;startBtn.style.opacity='1';
     if(startBtn2){startBtn2.disabled=false;startBtn2.style.opacity='1';}
   }else{

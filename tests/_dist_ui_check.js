@@ -14,6 +14,8 @@ const snips=[
  ['combat hp track styled (UI-02)', '.combat-hp-track{height:8px', 1],
  ['status pills styled (UI-02)', '.ce-status-pill.state-waiting{color:var(--gold2)', 1],
  ['art toggle wired (UI-02)', 'body.hide-inline-art .illustration-container{display:none', 1],
+ ['spell counter chip present (UI-08)', 'id="spell-counter-chip"', 1],
+ ['qty disabled styling (UI-08)', '.qty-btn:disabled{opacity', 1],
 ];
 let ok=0,bad=0;
 snips.forEach(([n,s,exp])=>{ const e=exp||1; const c=d.split(s).length-1; if(c===e)ok++; else {bad++; console.log('FAIL '+n+' count='+c+' expected='+e);} });
