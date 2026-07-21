@@ -220,10 +220,12 @@ body {
 
   /* Make small icons/buttons tappable (44×44 WCAG target). */
   .inv-remove,
+  .inv-eat,
   .event-log-close,
+  .map-controls button,
   .qty-btn {
-    min-width: 32px;
-    min-height: 32px;
+    min-width: var(--tap, 44px);
+    min-height: var(--tap, 44px);
     padding: 6px;
   }
 

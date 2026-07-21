@@ -10,10 +10,11 @@
   --bg:#0a0810;--bg2:#110f1e;--bg3:#1a1730;
   --parchment:#e8dcc4;--parchment2:#d4c8a8;--ink:#1a1208;
   --gold:#c8962a;--gold2:#e8b84b;--gold3:#a07820;
-  --red:#8b1a1a;--red2:#c0392b;--red-glow:rgba(139,26,26,.4);
+  --red:#8b1a1a;--red2:#d6574b;--red-glow:rgba(139,26,26,.4);
   --green:#2e7d52;--green2:#4caf50;
-  --border:#2a2540;--border2:#3a3555;--muted:#7a6a8e;
+  --border:#2a2540;--border2:#3a3555;--muted:#8a7a9e;
   --shadow:rgba(0,0,0,.85);--glow:rgba(200,150,42,.25);
+  --tap:44px;
   --font-title:'Cinzel Decorative',serif;
   --font-ui:'Cinzel',serif;
   --font-text:'Cormorant Garamond',Georgia,serif;
@@ -133,7 +134,7 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .sp-name{font-family:var(--font-ui);color:var(--gold);font-size:17px;letter-spacing:.04em;margin-bottom:4px;}
 .sp-desc{font-size:15px;color:var(--muted);line-height:1.4;margin-bottom:10px;}
 .sp-qty{display:flex;align-items:center;gap:8px;}
-.qty-btn{width:30px;height:30px;background:var(--bg3);border:1px solid var(--border2);color:var(--parchment);
+.qty-btn{width:var(--tap);height:var(--tap);background:var(--bg3);border:1px solid var(--border2);color:var(--parchment);
   font-size:16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
 .qty-btn:hover{border-color:var(--gold);color:var(--gold);}
 .qty-num{font-family:var(--font-ui);font-size:18px;min-width:24px;text-align:center;}
@@ -784,10 +785,12 @@ body {
 
   /* Make small icons/buttons tappable (44×44 WCAG target). */
   .inv-remove,
+  .inv-eat,
   .event-log-close,
+  .map-controls button,
   .qty-btn {
-    min-width: 32px;
-    min-height: 32px;
+    min-width: var(--tap, 44px);
+    min-height: var(--tap, 44px);
     padding: 6px;
   }
 
