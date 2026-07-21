@@ -660,6 +660,23 @@ function renderGame(opts){
       }
       if(overflow>0) notifications.push(t('meshok_polon_2')+overflow+t('ne_vzyato'));
     }
+    // group_80 V-02: mandatory equip/swap - imperative canon grants bypass the voluntary offer modal.
+    if(ai.equip){
+      const eq=ai.equip;
+      if(eq.swap_out){
+        const oi=S.inventory.findIndex(it=>canonItem(it)===eq.swap_out);
+        if(oi>=0){
+          const old=S.inventory.splice(oi,1)[0];
+          notifications.push('− '+invDisplay(old)+t('ostavlen_vzamen'));
+          logEvent('loss','− '+invDisplay(old),t('ostavlen_vzamen_2'));
+        }
+      }
+      if(!S.inventory.some(it=>canonItem(it)===eq.item)){
+        S.inventory.push(eq.item);
+        notifications.push('+ '+itemName(eq.item));
+        logEvent('gain','+ '+itemName(eq.item),t('vzyato_v_ruki'));
+      }
+    }
     // Items — show modal if any found
     if(ai.items&&ai.items.length>0){
       const offered=ai.items.map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v);
@@ -860,7 +877,7 @@ const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч
 function canonItem(x){if(x&&typeof x==='object'&&x.kind==='food')return x.id;return RU_TO_SLUG[x]||x;}
 function itemName(x){return SLUG_TO_RU[x]||x;}
 function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';return itemName(entry);}
-const ITEM_SIZES={diving_suit:2,flying_carpet:3};
+const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0};
 function getItemSize(name){
   if(!name) return 1;
   return ITEM_SIZES[canonItem(name)]||1;

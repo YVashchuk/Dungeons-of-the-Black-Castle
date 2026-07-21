@@ -61,6 +61,17 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9j. group_80 V-02/G2-01: mandatory equip + weightless weapons
+(function(){
+  const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+  const ijr=JSON.parse(fs.readFileSync(path.join(REPO,'src','registries','items.json'),'utf8'));
+  const zi=glSrc.indexOf('const ITEM_SIZES={');
+  const sizes=glSrc.slice(zi,glSrc.indexOf('};',zi));
+  const weapons=Object.keys(ijr).filter(k=>ijr[k].kind==='weapon');
+  const weaponsZero=weapons.length===3 && weapons.every(k=>ijr[k].slotCost===0 && sizes.includes(k+':0'));
+  ck('V-02/G2-01 equip shapes + weightless weapons parity', JSON.stringify(GD['71'].auto_items)==='{"equip":{"item":"death_of_orcs","swap_out":"whole_sword"}}' && JSON.stringify(GD['1213'].auto_items)==='{"equip":{"item":"knight_shield"}}' && weaponsZero && glSrc.includes('if(ai.equip){'));
+})();
+
 // 9i. group_80 V-01/R-02: food pipeline + slug map parity
 (function(){
   const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
@@ -81,7 +92,7 @@ ck('G-13 shapes exact', JSON.stringify(GD['486'].auto_items)==='{"gold":1,"luck_
 ck('G-12 shapes exact', JSON.stringify(GD['159'].auto_items)==='{"items":["bronze_whistle","copper_bracelet"],"gold":3}' && JSON.stringify(GD['389'].auto_items)==='{"items":[{"food":"melon","stamina":4}]}' && JSON.stringify(GD['482'].auto_items.items)==='["rose","peacock_feather"]' && GD['582'].choices[0].pickup_batch.length===15 && GD['585'].choices[0].pickup_batch.length===2 && JSON.stringify(GD['724'].choices[0].pickup_batch)==='["rope","gold_arrow"]' && GD['801'].choices[0].pickup_batch.length===2 && GD['1140'].choices[0].pickup_batch.length===3);
 
 // 9f. group_78 G-09/G-10: equipment + dragon potion
-ck('G-09/G-10 data shapes exact', JSON.stringify(GD['35'].choices)==='[{"target":546},{"target":546,"acquires":"whole_sword"}]' && JSON.stringify(GD['71'].auto_items)==='{"items":["death_of_orcs"]}' && JSON.stringify(GD['1213'].auto_items)==='{"items":["knight_shield"]}' && JSON.stringify(GD['1130'].auto_items)==='{"dragon_strength":true}');
+ck('G-09/G-10 data shapes exact', JSON.stringify(GD['35'].choices)==='[{"target":546},{"target":546,"acquires":"whole_sword"}]' && JSON.stringify(GD['71'].auto_items)==='{"equip":{"item":"death_of_orcs","swap_out":"whole_sword"}}' && JSON.stringify(GD['1213'].auto_items)==='{"equip":{"item":"knight_shield"}}' && JSON.stringify(GD['1130'].auto_items)==='{"dragon_strength":true}');
 
 // 9e. group_78 G-08: sixteen stat effects (auto_items)
 ck('G-08 sixteen auto_items exact', JSON.stringify(GD['123'].auto_items)==='{"stamina_sub":5}' && JSON.stringify(GD['199'].auto_items)==='{"stamina_sub":9}' && JSON.stringify(GD['219'].auto_items)==='{"stamina_sub":2}' && JSON.stringify(GD['230'].auto_items)==='{"stamina_sub":8}' && JSON.stringify(GD['254'].auto_items)==='{"stamina_add":8}' && JSON.stringify(GD['273'].auto_items)==='{"stamina_sub":4}' && JSON.stringify(GD['278'].auto_items)==='{"stamina_sub":2}' && JSON.stringify(GD['522'].auto_items)==='{"luck_add":1}' && JSON.stringify(GD['525'].auto_items)==='{"stamina_sub":1}' && JSON.stringify(GD['561'].auto_items)==='{"stamina_sub":1}' && JSON.stringify(GD['606'].auto_items)==='{"stamina_add":6}' && JSON.stringify(GD['864'].auto_items)==='{"luck_add":1}' && JSON.stringify(GD['959'].auto_items)==='{"stamina_add":3}' && JSON.stringify(GD['981'].auto_items)==='{"stamina_add":7}' && JSON.stringify(GD['1036'].auto_items)==='{"skill_sub":1,"stamina_sub":2}' && JSON.stringify(GD['1061'].auto_items)==='{"stamina_add":7}');
