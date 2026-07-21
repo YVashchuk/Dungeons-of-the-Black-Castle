@@ -1610,11 +1610,19 @@ function updateCombatEnemyDisplay(cs){
     }
     card.style.opacity=(e.active===false && !e.fled && e.hp>0)?'0.55':'1';
     const isTargetable=(e.hp>0&&e.active!==false&&!e.fled);
+    // group_80 V-03: during the pre-round-1 Weakness pick window ALL alive cards
+    // (incl. staged waiters) are selectable for the debuff - canon 'lyubogo iz nih'.
+    const isPickable=(cs.pendingWeakPick&&e.hp>0&&!e.fled);
     const isSel=(cs.targetIdx===i)&&isTargetable&&multiTarget;
-    card.style.outline=isSel?'2px solid var(--gold)':'none';
-    card.style.outlineOffset=isSel?'2px':'0';
-    card.style.cursor=(isTargetable&&multiTarget)?'pointer':'default';
-    card.onclick=(isTargetable&&multiTarget)?()=>{cs.targetIdx=i;updateCombatEnemyDisplay(cs);}:null;
+    const isWeakSel=(cs.pendingWeakPick&&cs.weakPickIdx===i);
+    card.style.outline=isWeakSel?'2px solid var(--red2)':(isSel?'2px solid var(--gold)':'none');
+    card.style.outlineOffset=(isWeakSel||isSel)?'2px':'0';
+    card.style.cursor=((isTargetable&&multiTarget)||isPickable)?'pointer':'default';
+    card.onclick=((isTargetable&&multiTarget)||isPickable)?()=>{
+      if(cs.pendingWeakPick)cs.weakPickIdx=i;
+      if(e.hp>0&&e.active!==false&&!e.fled)cs.targetIdx=i;
+      updateCombatEnemyDisplay(cs);
+    }:null;
   });
 }
 
@@ -2430,9 +2438,13 @@ function combatRound(){
 
   const tgtEnemy=getCombatTarget(cs);
   if(alive.length>1&&tgtEnemy){log.innerHTML+=`<div style="color:var(--gold);opacity:.85">${t('cel_boya')}${tgtEnemy.name}</div>`;}
-  if(cs.pendingWeakPick&&tgtEnemy){
-    tgtEnemy.weakDebuff=-2;cs.pendingWeakPick=false;
-    log.innerHTML+=`<div style="color:var(--gold);font-weight:bold">${t('zaklyatie_slabosti_cel')}${tgtEnemy.name} (−2)</div>`;
+  if(cs.pendingWeakPick){
+    const wp=(cs.weakPickIdx!==undefined&&cs.enemies[cs.weakPickIdx]&&cs.enemies[cs.weakPickIdx].hp>0&&!cs.enemies[cs.weakPickIdx].fled)?cs.enemies[cs.weakPickIdx]:tgtEnemy;
+    if(wp){
+      wp.weakDebuff=-2;cs.pendingWeakPick=false;
+      log.innerHTML+=`<div style="color:var(--gold);font-weight:bold">${t('zaklyatie_slabosti_cel')}${wp.name} (−2)</div>`;
+      updateCombatEnemyDisplay(cs);
+    }
   }
   // group_19: WEAKNESS spell subtracts 2 from each enemy's attack for whole combat.
   const enemyMod=(cs.weaknessDebuff?-2:0)+(cs.enemyAttackMod||0);

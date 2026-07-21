@@ -61,6 +61,12 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9l. group_80 V-03: weak-pick may target staged waiters
+(function(){
+  const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+  ck('V-03 staged weak-pick: pickable waiters + weakPickIdx consumption', glSrc.includes('const isPickable=(cs.pendingWeakPick&&e.hp>0&&!e.fled)') && glSrc.split('weakPickIdx').length-1>=4 && glSrc.includes('cs.enemies[cs.weakPickIdx]:tgtEnemy'));
+})();
+
 // 9k. group_80 X-01/X-02/X-03: combat lifecycle cluster
 (function(){
   const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
