@@ -16,6 +16,8 @@ const snips=[
  ['art toggle wired (UI-02)', 'body.hide-inline-art .illustration-container{display:none', 1],
  ['spell counter chip present (UI-08)', 'id="spell-counter-chip"', 1],
  ['qty disabled styling (UI-08)', '.qty-btn:disabled{opacity', 1],
+ ['tap token (UI-05)', '--tap:44px', 1],
+ ['muted contrast bump (UI-05)', '--muted:#8a7a9e', 1],
 ];
 let ok=0,bad=0;
 snips.forEach(([n,s,exp])=>{ const e=exp||1; const c=d.split(s).length-1; if(c===e)ok++; else {bad++; console.log('FAIL '+n+' count='+c+' expected='+e);} });
