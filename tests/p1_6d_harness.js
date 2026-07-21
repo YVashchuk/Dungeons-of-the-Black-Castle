@@ -1,4 +1,4 @@
-// 6d harness — enemy names + riddle labels resolve; game_structure.js fully Cyrillic-free.
+﻿// 6d harness â€” enemy names + riddle labels resolve; game_structure.js fully Cyrillic-free.
 const fs=require('fs');
 const path=require('path');
 const REPO=path.resolve(__dirname,'..');
@@ -41,8 +41,8 @@ const before=JSON.stringify(GD['67'].riddle); locSec(67); const after=JSON.strin
 ck('locSec does not mutate GD riddle object', before===after && JSON.parse(before).fail_target_label===undefined);
 
 // 5. spot
-ck("enemyName('goblin')==='ГОБЛИН'", enemyName('goblin')==='\u0413\u041e\u0411\u041b\u0418\u041d');
-ck('¶67 riddle exit label hydrated', locSec(67).riddle.fail_target_label===data.rfl['67']);
+ck("enemyName('goblin')==='Ð“ÐžÐ‘Ð›Ð˜Ð'", enemyName('goblin')==='\u0413\u041e\u0411\u041b\u0418\u041d');
+ck('Â¶67 riddle exit label hydrated', locSec(67).riddle.fail_target_label===data.rfl['67']);
 
 // 6. group_74 (ChatGPT 5.6 audit C-01/C-02): canonical combat rosters restored
 ck('GD[100] five bandits incl. chetvertyy 8/6', GD['100'].enemies.length===5 && GD['100'].enemies.some(e=>e.name==='chetvertyy_razboynik'&&e.skill===8&&e.stamina===6));
@@ -60,6 +60,19 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 // If this fails, a new one-sided luck paragraph entered GD and needs FB2 adjudication.
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
+
+// 9i. group_80 V-01/R-02: food pipeline + slug map parity
+(function(){
+  const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+  const ijr=JSON.parse(fs.readFileSync(path.join(REPO,'src','registries','items.json'),'utf8'));
+  const a=glSrc.indexOf('const SLUG_TO_RU={');
+  const s2r=glSrc.slice(a,glSrc.indexOf('};',a));
+  const b=glSrc.indexOf('const RU_TO_SLUG={');
+  const r2s=glSrc.slice(b,glSrc.indexOf('};',b));
+  const keysOk=Object.keys(ijr).every(k=>s2r.includes(k+':')||s2r.includes('"'+k+'":'));
+  const namesOk=Object.keys(ijr).every(k=>r2s.includes(JSON.stringify(ijr[k].legacyRu)));
+  ck('V-01/R-02 registry==runtime slug maps + normalization + eat-now', keysOk && namesOk && glSrc.includes("v.food)?{kind:'food',id:v.food,stamina:v.stamina}") && glSrc.includes('function eatFoundItem'));
+})();
 
 // 9h. group_78 G-13: gold and loot
 ck('G-13 shapes exact', JSON.stringify(GD['486'].auto_items)==='{"gold":1,"luck_sub":1}' && JSON.stringify(GD['510'].auto_items)==='{"gold":85}' && JSON.stringify(GD['812'].choices[1])==='{"target":675,"gold_condition":2}' && JSON.stringify(GD['770'].auto_items)==='{"gold":4}' && JSON.stringify(GD['873'].choices[1])==='{"target":922,"gold_condition":1,"gold_cost":1}' && JSON.stringify(GD['922'].auto_items)==='{"stamina_add":2}');
