@@ -61,6 +61,16 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9k. group_80 X-01/X-02/X-03: combat lifecycle cluster
+(function(){
+  const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+  const resolved=glSrc.includes('function combatResolved')&&glSrc.split('combatResolved(').length-1>=7;
+  const condBtn=glSrc.includes('function updateCombatConditionButtons')&&glSrc.includes("const cond=document.getElementById('combat-condition-btn')");
+  const metFix=glSrc.includes('if(ch.combat_condition&&!ch.flee){')&&!glSrc.includes('&&!ch.flee&&combatCondMet(');
+  const joinsEverywhere=glSrc.split('activateStagedJoins(cs);').length-1>=5;
+  ck('X-01/02/03 lifecycle: resolved+condBtn+metFix+joins', resolved&&condBtn&&metFix&&joinsEverywhere);
+})();
+
 // 9j. group_80 V-02/G2-01: mandatory equip + weightless weapons
 (function(){
   const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');

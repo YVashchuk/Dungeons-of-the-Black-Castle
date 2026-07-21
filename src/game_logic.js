@@ -1547,6 +1547,8 @@ function getSectionPrep(sectionId){
 function clearCombatExtraButtons(){
   const extra=document.getElementById('combat-buttons-extra');
   if(extra) extra.remove();
+  const cond=document.getElementById('combat-condition-btn');
+  if(cond) cond.remove();
 }
 
 function setCombatExtraButtons(buttons){
@@ -2303,7 +2305,8 @@ function startCombat(enemies,sec){
       if(log)log.innerHTML+=`<div style="color:var(--gold);font-weight:bold">${t('mech_smert_orkov_srabatyvaet')}${victim.name}${t('padaet_zamertvo')}</div>`;
       dragonKillTick();
       activateStagedJoins(combatState);
-      if(getAliveCombatEnemies(combatState).length===0&&combatState.enemies.every(e=>e.hp<=0||e.fled)){
+      updateCombatConditionButtons(combatState);
+      if(combatResolved(combatState)){
         updateCombatEnemyDisplay(combatState);
         document.getElementById('modal-combat').classList.add('on');
         endCombat(true);
@@ -2334,6 +2337,35 @@ function dragonKillTick(){
     showItemNotification([t('zele_poteryalo_silu')]);
   }
   updateHUD();
+}
+
+function updateCombatConditionButtons(cs){
+  const old=document.getElementById('combat-condition-btn');
+  if(old)old.remove();
+  if(!cs||!combatState||cs!==combatState)return;
+  if(combatResolved(cs))return;
+  if(!cs.sec||!cs.sec.choices)return;
+  const log=document.getElementById('combat-log');
+  cs.sec.choices.forEach(ch=>{
+    if(ch.combat_condition&&combatCondMet(ch.combat_condition,cs)){
+      if(document.getElementById('combat-condition-btn'))return;
+      const btn=document.createElement('button');btn.id='combat-condition-btn';
+      btn.className='btn btn-g';btn.style.cssText='margin-top:10px;font-size:17px;';
+      btn.textContent='✦ '+ch.label;
+      const _bsec=S.section,_bcs=cs;
+      btn.onclick=()=>{
+        if(S.section!==_bsec||combatState!==_bcs)return;
+        if(ch.flee){S.stamina=Math.max(0,S.stamina-2);updateHUD();saveGame();showItemNotification([t('2_vynoslivosti_begstvo_iz_boya')]);}
+        document.getElementById('modal-combat').classList.remove('on');
+        combatDone[S.section]=true;
+        goTo(ch.target);
+      };
+      document.getElementById('btn-combat-round').parentElement.appendChild(btn);
+      if(!cs.condMsgShown)cs.condMsgShown={};
+      const _condMsgKey=(ch.combat_condition==='wound_2')?'vy_ranili_vraga_dvazhdy_mozhete':(ch.combat_condition==='enemy_defeated_1'?'vy_srazili_odnogo_protivnika':null);
+      if(_condMsgKey&&!cs.condMsgShown[ch.combat_condition]&&log){cs.condMsgShown[ch.combat_condition]=true;log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t(_condMsgKey)}${ch.target}.</div>`;}
+    }
+  });
 }
 
 function combatRound(){
@@ -2376,7 +2408,14 @@ function combatRound(){
 
   activateStagedJoins(cs);
   const alive=getAliveCombatEnemies(cs);
-  if(alive.length===0){endCombat(true);return;}
+  if(alive.length===0){
+    if(combatResolved(cs)){endCombat(true);}
+    else{
+      log.innerHTML+=`<div style="color:var(--muted);margin-top:6px">${t('protivniki_vyzhidayut')}</div>`;
+      updateCombatEnemyDisplay(cs);
+    }
+    return;
+  }
   // group_19: FORCE spell adds +2 to player attack for whole combat duration.
   // playerMod already accumulates external modifiers from sec.player_attack_mod
   // (e.g. fatigue penalties from §1154/§1182); FORCE stacks additively.
@@ -2450,29 +2489,15 @@ function combatRound(){
   }
 
   activateStagedJoins(cs);
-  if(getAliveCombatEnemies(cs).length===0){endCombat(true);return;}
-
-  if(cs.sec&&cs.sec.choices){
-    cs.sec.choices.forEach(ch=>{
-      if(ch.combat_condition&&combatCondMet(ch.combat_condition,cs)){
-        const existing=document.getElementById('combat-condition-btn');
-        if(!existing){
-          const btn=document.createElement('button');btn.id='combat-condition-btn';
-          btn.className='btn btn-g';btn.style.cssText='margin-top:10px;font-size:17px;';
-          btn.textContent='✦ '+ch.label;
-          btn.onclick=()=>{
-            if(ch.flee){S.stamina=Math.max(0,S.stamina-2);updateHUD();saveGame();showItemNotification([t('2_vynoslivosti_begstvo_iz_boya')]);}
-            document.getElementById('modal-combat').classList.remove('on');
-            combatDone[S.section]=true;
-            goTo(ch.target);
-          };
-          document.getElementById('btn-combat-round').parentElement.appendChild(btn);
-          const _condMsgKey=(ch.combat_condition==='wound_2')?'vy_ranili_vraga_dvazhdy_mozhete':(ch.combat_condition==='enemy_defeated_1'?'vy_srazili_odnogo_protivnika':null);
-          if(_condMsgKey)log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t(_condMsgKey)}${ch.target}.</div>`;
-        }
-      }
-    });
+  if(getAliveCombatEnemies(cs).length===0){
+    if(combatResolved(cs)){endCombat(true);return;}
+    log.innerHTML+=`<div style="color:var(--muted);margin-top:6px">${t('protivniki_vyzhidayut')}</div>`;
+    updateCombatEnemyDisplay(cs);
+    updateCombatConditionButtons(cs);
+    return;
   }
+
+  updateCombatConditionButtons(cs);
 }
 
 function endCombat(won){
@@ -2496,7 +2521,7 @@ function endCombat(won){
     const _csec=GD[S.section];
     if(_csec&&_csec.choices&&combatState){
       _csec.choices.forEach(ch=>{
-        if(ch.combat_condition&&!ch.flee&&combatCondMet(ch.combat_condition,combatState)){
+        if(ch.combat_condition&&!ch.flee){
           S.combatCondMet=S.combatCondMet||{};S.combatCondMet[S.section]=true;
         }
       });
@@ -2550,6 +2575,10 @@ function activateStagedJoins(cs){
   return joined;
 }
 
+function combatResolved(cs){
+  return !!(cs&&cs.enemies&&cs.enemies.length&&cs.enemies.every(e=>e.hp<=0||e.fled));
+}
+
 function combatCondMet(cond,cs){
   if(!cs)return false;
   if(cond==='wound_2')return cs.wounds>=2;
@@ -2591,7 +2620,8 @@ function useLarvaInCombat(){
   const left=(S.inventory||[]).filter(it=>canonItem(it)==='spider_larva').length;
   if(btn){ if(left>0){btn.textContent=t('razlomit_lichinku')+left+']';} else {btn.style.display='none';} }
   activateStagedJoins(cs);
-  if(cs.enemies.every(e=>e.hp<=0||e.fled)){ endCombat(true); }
+  if(combatResolved(cs)){ endCombat(true); }
+  else { updateCombatConditionButtons(cs); }
 }
 
 // ── Copy Spell in Combat ──
@@ -2654,8 +2684,15 @@ function useCopyInCombat(){
       }
     }
   }
-  if(getAliveCombatEnemies(cs).length===0){
+  activateStagedJoins(cs);
+  if(combatResolved(cs)){
     endCombat(true);
+  } else {
+    if(getAliveCombatEnemies(cs).length===0){
+      log.innerHTML+=`<div style="color:var(--muted);margin-top:6px">${t('protivniki_vyzhidayut')}</div>`;
+    }
+    updateCombatEnemyDisplay(cs);
+    updateCombatConditionButtons(cs);
   }
   updateHUD();
   log.scrollTop=log.scrollHeight;
@@ -2735,8 +2772,15 @@ function useAllyInCombat(allyKey){
       }
     }
   }
-  if(getAliveCombatEnemies(cs).length===0){
+  activateStagedJoins(cs);
+  if(combatResolved(cs)){
     endCombat(true);
+  } else {
+    if(getAliveCombatEnemies(cs).length===0){
+      log.innerHTML+=`<div style="color:var(--muted);margin-top:6px">${t('protivniki_vyzhidayut')}</div>`;
+    }
+    updateCombatEnemyDisplay(cs);
+    updateCombatConditionButtons(cs);
   }
   updateHUD();
   log.scrollTop=log.scrollHeight;
