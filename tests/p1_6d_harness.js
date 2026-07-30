@@ -61,6 +61,12 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9m. group_80 V-04: dice persistence
+(function(){
+  const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
+  ck('V-04 dice persistence: check record + loot roll + refusal commit', glSrc.split('diceCheckDone').length-1>=3 && glSrc.split('diceLootRoll').length-1>=4 && glSrc.includes('leaving without picking commits the refusal'));
+})();
+
 // 9l. group_80 V-03: weak-pick may target staged waiters
 (function(){
   const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');

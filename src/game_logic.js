@@ -1903,6 +1903,21 @@ function renderDiceCheck(sec){
   const list=document.getElementById('c-list'); if(!list) return;
   list.innerHTML='';
   const dc=sec.dice_check;
+  // group_80 V-04: the roll is committed BEFORE its outcome is shown and survives
+  // reload/revisit - a mandatory check cannot be rerolled to success.
+  const showResolved=(a,b,ok,tgt)=>{
+    const res=document.createElement('div');
+    res.style.cssText='text-align:center;font-size:30px;color:'+(ok?'var(--gold)':'var(--red2)')+';margin:14px 0;font-weight:bold;';
+    res.innerHTML='\ud83c\udfb2 '+a+' + '+b+' = '+(a+b);
+    list.appendChild(res);
+    const cont=document.createElement('button');
+    cont.className='choice-btn';
+    cont.textContent=t('prodolzhit');
+    cont.onclick=()=>{ goTo(tgt); };
+    list.appendChild(cont);
+  };
+  const rec=S.diceCheckDone&&S.diceCheckDone[S.section];
+  if(rec){ showResolved(rec.a,rec.b,rec.ok,rec.tgt); return; }
   const btn=document.createElement('button');
   btn.className='choice-btn';
   btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
@@ -1912,17 +1927,11 @@ function renderDiceCheck(sec){
     const a=d6(),b=d6(),sum=a+b;
     const ok=sum>=dc.gte;
     const tgt=ok?dc.win:dc.lose;
+    S.diceCheckDone=S.diceCheckDone||{};S.diceCheckDone[S.section]={a:a,b:b,ok:ok,tgt:tgt};
+    saveGame();
     logEvent('luck',t('kubik_vypalo')+a+'+'+b+'='+sum,t('paragraf_3')+tgt);
     list.innerHTML='';
-    const res=document.createElement('div');
-    res.style.cssText='text-align:center;font-size:30px;color:'+(ok?'var(--gold)':'var(--red2)')+';margin:14px 0;font-weight:bold;';
-    res.innerHTML='\ud83c\udfb2 '+a+' + '+b+' = '+sum;
-    list.appendChild(res);
-    const cont=document.createElement('button');
-    cont.className='choice-btn';
-    cont.textContent=t('prodolzhit');
-    cont.onclick=()=>{ goTo(tgt); };
-    list.appendChild(cont);
+    showResolved(a,b,ok,tgt);
   };
   list.appendChild(btn);
 }
@@ -1935,18 +1944,19 @@ function renderDiceLoot(sec){
     const cont=document.createElement('button');
     cont.className='choice-btn';
     cont.textContent=t('prodolzhit');
-    cont.onclick=()=>{ goTo(dl.target); };
+    cont.onclick=()=>{
+      // group_80 V-04: leaving without picking commits the refusal.
+      if(S.diceLootRoll&&S.diceLootRoll[S.section]&&!(S.diceLootDone&&S.diceLootDone[S.section])){
+        S.diceLootDone=S.diceLootDone||{};S.diceLootDone[S.section]=true;saveGame();
+      }
+      goTo(dl.target);
+    };
     list.appendChild(cont);
   };
   if(S.diceLootDone&&S.diceLootDone[S.section]){ renderExit(); return; }
-  const btn=document.createElement('button');
-  btn.className='choice-btn';
-  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
-  btn.innerHTML=t('brosit_kubik');
-  btn.onclick=()=>{
-    playSound('dice');
-    const n=d6();
-    logEvent('luck',t('kubik_vypalo')+n,'');
+  // group_80 V-04: the roll is committed at roll time; reload/revisit restores the
+  // same n and the unfinished pickup instead of offering a fresh roll.
+  const showRolled=(n)=>{
     list.innerHTML='';
     const res=document.createElement('div');
     res.style.cssText='text-align:center;font-size:30px;color:var(--gold);margin:14px 0;font-weight:bold;';
@@ -1968,6 +1978,20 @@ function renderDiceLoot(sec){
     };
     list.appendChild(pick);
     renderExit();
+  };
+  const rolled=S.diceLootRoll&&S.diceLootRoll[S.section];
+  if(rolled){ showRolled(rolled.n); return; }
+  const btn=document.createElement('button');
+  btn.className='choice-btn';
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
+  btn.innerHTML=t('brosit_kubik');
+  btn.onclick=()=>{
+    playSound('dice');
+    const n=d6();
+    S.diceLootRoll=S.diceLootRoll||{};S.diceLootRoll[S.section]={n:n};
+    saveGame();
+    logEvent('luck',t('kubik_vypalo')+n,'');
+    showRolled(n);
   };
   list.appendChild(btn);
 }
