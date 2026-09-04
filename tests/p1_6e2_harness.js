@@ -1,5 +1,6 @@
 // 6e-2 harness — map UI strings resolve via t(); only dev-note Cyrillic remains in map_module.js.
-const acorn=require('acorn'); const fs=require('fs');
+let acorn; try{ acorn=require('acorn'); }catch(e){ acorn=require('./vendor/acorn.js'); } // vendored fallback: the battery must run from a bare archive without npm (group_81 follow-up)
+const fs=require('fs');
 const path=require('path');
 const REPO=path.resolve(__dirname,'..');
 const mapSrc=fs.readFileSync(path.join(REPO,'src','map_module.js'),'utf8');

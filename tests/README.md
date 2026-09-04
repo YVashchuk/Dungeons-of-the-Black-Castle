@@ -4,7 +4,7 @@ Portable, version-controlled battery for the remake. Everything resolves paths
 relative to the repo, so it works from any clone location.
 
 ## Run (from the repo root)
-    npm --prefix tests install          # once (acorn for the AST-based harnesses)
+    npm --prefix tests install          # optional: acorn for the AST-based harnesses (tests/vendor/acorn.js is the offline fallback, so a bare archive runs the battery without npm)
     node tests/run_all.js               # 16 harnesses + reachability baseline (expect ALL GREEN, 1205 reachable)
 
 Dist spot-checks (run after `bash build.sh` when relevant), each exits 0:
