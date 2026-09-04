@@ -50,7 +50,11 @@ function initState(n,sk,st,lu,sp){
 function d6(){const a=new Uint32Array(1);crypto.getRandomValues(a);return(a[0]%6)+1;}
 
 // ── Save/Load ──
-function saveGame(){if(!S)return;localStorage.setItem(SAVE_KEY,JSON.stringify(S));}
+var lastAutosaveAt=null; // UI-10 (group_79): timestamp of the last successful autosave, shown in the menu
+function saveGame(){if(!S)return;localStorage.setItem(SAVE_KEY,JSON.stringify(S));lastAutosaveAt=Date.now();renderAutosaveNote();}
+// UI-10 (group_79): "Autosaved: sec.N - HH:MM" line in the menu overlay. Reads the
+// persisted timestamp (not "now"), so an unsaved session shows nothing.
+function renderAutosaveNote(){ try{ var el=document.getElementById('autosave-note'); if(!el) return; if(!S||!lastAutosaveAt){ el.textContent=''; return; } var d=new Date(lastAutosaveAt); var hh=String(d.getHours()).padStart(2,'0'), mm=String(d.getMinutes()).padStart(2,'0'); el.textContent=t('ui_autosave_note')+' \u00a7'+S.section+' \u00b7 '+hh+':'+mm; }catch(e){} }
 // Defensive structural normalization for any loaded save (localStorage,
 // imported file, or deep-link). Every read site in the engine is already
 // individually guarded, but normalizing once at load time guarantees a
@@ -110,7 +114,7 @@ function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(t=>{
 // ── Screens ──
 function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scr-'+id).classList.add('on');const elb=document.getElementById('event-log-btn');if(elb)elb.style.display=(id==='game')?'block':'none';}
 function closeModal(id){document.getElementById(id).classList.remove('on');}
-function openMenu(){document.getElementById('overlay-menu').classList.add('on');}
+function openMenu(){renderAutosaveNote();document.getElementById('overlay-menu').classList.add('on');}
 
 // ── Title ──
 function initTitle(){
@@ -480,11 +484,14 @@ function loadSavedLang(){ try{ var c=localStorage.getItem(LANG_KEY); if(c&&LOCAL
 function renderPregameText(){ var el=document.getElementById('pregame-text'); if(el) el.innerHTML=pregameText().split('\n\n').map(function(p){return '<p style="margin-bottom:16px;">'+p+'</p>';}).join(''); }
 function renderPrefaceText(){ var el=document.getElementById('preface-text'); if(el) el.innerHTML=prefaceText().split('\n\n').map(function(p){return '<p style="margin-bottom:16px;">'+p+'</p>';}).join(''); }
 function repaintAfterLangSwitch(){
-  try{ if(window.bcRefreshMapLanguage) window.bcRefreshMapLanguage(ACTIVE_LOCALE); }catch(e){}
   try{ renderPregameText(); }catch(e){}
   try{ renderPrefaceText(); }catch(e){}
   try{ renderAllLangPickers(); }catch(e){}
   try{ applyStaticI18n(); }catch(e){}
+  // UI-09 (group_79): the map refresh runs AFTER the static shell pass so the
+  // localized topbar placeholder is overwritten by the live layer line when
+  // the map overlay is open during a language switch.
+  try{ if(window.bcRefreshMapLanguage) window.bcRefreshMapLanguage(ACTIVE_LOCALE); }catch(e){}
   var sg=document.getElementById('scr-game');
   var inGame=!!(S && sg && sg.classList && sg.classList.contains('on'));
   if(inGame){ try{ renderGame({repaint:true}); }catch(e){} }
@@ -556,6 +563,7 @@ function applyStaticI18n(){
     document.querySelectorAll('[data-i18n-html]').forEach(function(el){ var k=el.getAttribute('data-i18n-html'), v=t(k); if(v!==k) el.innerHTML=v; });
     document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ var k=el.getAttribute('data-i18n-ph'), v=t(k); if(v!==k) el.setAttribute('placeholder',v); });
     document.querySelectorAll('[data-i18n-title]').forEach(function(el){ var k=el.getAttribute('data-i18n-title'), v=t(k); if(v!==k) el.setAttribute('title',v); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function(el){ var k=el.getAttribute('data-i18n-aria'), v=t(k); if(v!==k) el.setAttribute('aria-label',v); });
     var dt=t('ui_doc_title'); if(dt!=='ui_doc_title') document.title=dt;
     if(document.documentElement) document.documentElement.setAttribute('lang', getLang());
   }catch(e){}
