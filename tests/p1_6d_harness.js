@@ -61,6 +61,30 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9o. group_81 batch 2 (B-01 / B-03 / B-07 / CA-01): weightless armament, scripted joins after non-round kills, persisted luck rolls, riddle container
+(function(){
+  try{
+    globalThis.canonItem=globalThis.canonItem||function(x){return x;};
+    eval(gl.match(/const ITEM_SIZES=\{[^\n]*\};/)[0].replace('const ITEM_SIZES','globalThis.ITEM_SIZES'));
+    eval(gfn('getItemSize'));
+    ck('B-01 getItemSize returns 0 for the three weapons, 2/3 for suit/carpet, 1 otherwise', getItemSize('whole_sword')===0&&getItemSize('death_of_orcs')===0&&getItemSize('knight_shield')===0&&getItemSize('diving_suit')===2&&getItemSize('flying_carpet')===3&&getItemSize('apple')===1);
+  }catch(e){ ck('B-01 getItemSize eval: '+e.message,false); }
+  try{
+    globalThis.document=globalThis.document||{getElementById:function(){return null;}};
+    globalThis.t=globalThis.t||function(k){return k;};
+    globalThis.updateCombatEnemyDisplay=function(){};
+    eval(gfn('activateStagedJoins'));
+    const cs={round:1,enemies:[{hp:0,active:true},{hp:7,active:false}],special:{type:'sec131',reinforcementsJoined:false}};
+    const j=activateStagedJoins(cs);
+    ck('B-03 sec131: eagle wakes when the goblin is dead regardless of the kill path', j===true&&cs.enemies[1].active===true&&cs.special.reinforcementsJoined===true);
+    const cs2={round:1,enemies:[{hp:0,active:true},{hp:9,active:false},{hp:9,active:false}],special:{type:'sec1175',reinforcementsJoined:false,firstDeathHandled:false,luckChecked:false}};
+    activateStagedJoins(cs2);
+    ck('B-03 sec1175: orcs 2-3 wake, firstDeathHandled left for the luck prompt', cs2.enemies[1].active===true&&cs2.enemies[2].active===true&&cs2.special.firstDeathHandled===false);
+  }catch(e){ ck('B-03 activateStagedJoins eval: '+e.message,false); }
+  ck('B-07 luck roll persisted at roll time and restored in renderChoices', gl.includes("S.luckChecks[String(S.section)]={a:roll1,b:roll2,lucky:lucky};")&&gl.includes("luckResult[S.section]=S.luckChecks[String(S.section)].lucky?'lucky':'unlucky';"));
+  ck('CA-01 renderRiddle renders into #c-list (no dead #choices container)', !gl.includes("getElementById('choices')")&&/function renderRiddle\(sec\)\{[\s\S]{0,400}getElementById\('c-list'\)/.test(gl));
+})();
+
 // 9n. group_80 X-04/R-01/R-03: closing batch (atomic sec436 spend, index plumbing, label sync)
 (function(){
   ck('X-04 sec436_force consumed only in the fight onclick',

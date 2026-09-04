@@ -162,7 +162,8 @@
     "v2.154 -> v2.155": "September 2026 - registry-only: memory-backlog reconciliation. The 'engine backlog' carried by session memory and HANDOFF_2026-07-20 s.4 (spell decrement P0, paragraph arithmetic + bird guide, Vodyanoy, infinite arrows, sec.688, gold signs, passive effects, luck dead-ends, Green Sword, Gold Key, offer/text gates, Magic Belt, stat list) verified as already resolved in the registry and GD - graveyard entry memory_backlog_reconciliation_2026_09_04 added to resolved_no_op so no future session re-queues it. Open work is now: group_71 art (Midjourney), UI-12 (deferred), group_68 sec.63 (deliberately deferred). GAME_RULES.md label 2.154 -> 2.155 (R-03 guard). No code change; battery ALL GREEN.",
     "v2.155 -> v2.156": "September 2026 - registry-only: recheck cycle 2026-09 opened. Gemini 3.1 Pro Track A report archived (SHA-256 d437b031354c...) - four hypotheses recorded as group_81 (UA-01 dialog stack by DOM order P1, UA-02 inventory spans not keyboard-operable P1, UA-03 no live combat-round status P2, UA-04 emoji in HUD aria names P2). The combined A+B run (SHA-256 bc5e456d890f...) is discarded per the accuracy guard; its three Track B claims (sec.1096 harpy flee, sec.300/574 fruit mismatch, sec.96/112 art) were checked against canon and rejected into resolved_no_op. GAME_RULES.md label 2.155 -> 2.156 (R-03 guard). No code change; battery ALL GREEN.",
     "v2.156 -> v2.157": "September 2026 - group_81 batch 1 (P1+P1+P2+P2, Gemini track A): UA-02 inventory eat/drop controls are real buttons with aria-labels (keyboard-operable), UA-01 the dialog controller keeps an open-order stack and raises the newest dialog's z-index (paint order == Escape/Tab order), UA-03 screen-reader combat-round status via a diffing mirror of #combat-log, UA-04 emoji-free aria keys for the HUD map/log/menu buttons (3 ui keys x4, 331 -> 334). _dist_ui_check +4 asserts, MANUAL_SMOKE_CHECKS C17. group_81 4/4 DONE. GAME_RULES.md label 2.156 -> 2.157 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.157 -> v2.158": "September 2026 - registry-only: recheck cycle 2026-09, Claude (Fable 5.1 via Windows MCP) reports archived - track B (SHA-256 0f70efa864e4...; 8 findings incl. P0 B-01 weapons not weightless because ITEM_SIZES[...]||1 and P0 B-03 sec.131 eagle never wakes after a non-round goblin kill) and track A (SHA-256 cde40411b9ed...; 18 findings incl. P0 CA-01 renderRiddle writes into a container that never existed, so the letter-riddle engine was unreachable in-game). 26 hypotheses taken into group_81 (now 30 items, 4 DONE) with maintainer adjudication notes. GAME_RULES.md label 2.157 -> 2.158 (R-03 guard). No code change; battery ALL GREEN."
+    "v2.157 -> v2.158": "September 2026 - registry-only: recheck cycle 2026-09, Claude (Fable 5.1 via Windows MCP) reports archived - track B (SHA-256 0f70efa864e4...; 8 findings incl. P0 B-01 weapons not weightless because ITEM_SIZES[...]||1 and P0 B-03 sec.131 eagle never wakes after a non-round goblin kill) and track A (SHA-256 cde40411b9ed...; 18 findings incl. P0 CA-01 renderRiddle writes into a container that never existed, so the letter-riddle engine was unreachable in-game). 26 hypotheses taken into group_81 (now 30 items, 4 DONE) with maintainer adjudication notes. GAME_RULES.md label 2.157 -> 2.158 (R-03 guard). No code change; battery ALL GREEN.",
+    "v2.158 -> v2.159": "September 2026 - group_81 batch 2 (P0+P0+P0+P1+P1+P1+P1, Claude tracks A+B): B-01 getItemSize numeric lookup (weapons truly weightless), B-03 script-managed reinforcements wake after non-round kills inside activateStagedJoins (sec.131 soft-lock closed), CA-01 renderRiddle targets #c-list (letter riddles reachable in-game for the first time), B-02 take-then-eat double serving closed, B-07 luck rolls persisted at roll time and restored on reload, CA-02 combat cards keyboard-operable with aria-pressed, CA-03 focus fallback to the first choice after a dialog closes. p1_6d 42 -> 47, MANUAL_SMOKE_CHECKS C18. GAME_RULES.md label 2.158 -> 2.159 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -476,23 +477,26 @@
         {
           "id": "B-01_weapons_not_weightless",
           "severity": "P0",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "getItemSize(): `return ITEM_SIZES[canonItem(name)]||1;` - the three armament entries are 0 and 0||1 is 1, so whole_sword / death_of_orcs / knight_shield each occupy one bag slot; getBagUsed() counts them and the offer modal's Take button is disabled at a full bag. Contradicts the G2-01 resolution ('both swords and the shield now occupy zero of the seven slots') and V-02 ('can never be blocked by a full bag'). The 6d guard 9j only asserts the ITEM_SIZES literal, never the function's return. Side effect: the equip branch pushes unconditionally, so at a full bag sec.71/sec.1213 push the bag to 8/7.",
-          "note": "Maintainer adjudication: CONFIRMED P0 by reading the two lines. Fix: numeric-typed lookup + a 6d guard that calls getItemSize() on the three weapons."
+          "note": "Maintainer adjudication: CONFIRMED P0 by reading the two lines. Fix: numeric-typed lookup + a 6d guard that calls getItemSize() on the three weapons.",
+          "resolution": "CONFIRMED P0. getItemSize now does a numeric-typed lookup (`const v=ITEM_SIZES[canonItem(name)]; return (typeof v==='number')?v:1;`), so the slotCost:0 armament really weighs nothing: getBagUsed ignores the two swords and the shield, the offer modal's Take button and applyChoiceAcquires no longer starve on a full bag, and the unconditional equip push is harmless by design. 6d gains a behavioural guard that calls getItemSize() on the three weapons (expect 0), the suit (2), the carpet (3) and an unknown item (1) instead of grepping the literal."
         },
         {
           "id": "B-02_take_then_eat_double_serving",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Offer modal: the 'already in bag' branch of renderInvModalCurrent disables only the Take button; #inv-eatnow-N stays enabled and eatFoundItem() checks only kind/_eaten, not bag presence; takeItem() pushes the same object reference. Sequence Take -> 'Eat now' grants +stamina AND leaves the food in the bag (with _eaten:true persisted), after which eatFood() from the bag grants it again - one canon serving becomes two. The V-01 resolution only promised no eat-then-take duplicate.",
-          "note": "Maintainer adjudication: CONFIRMED P1 by code reading."
+          "note": "Maintainer adjudication: CONFIRMED P1 by code reading.",
+          "resolution": "CONFIRMED P1. The 'already in bag' branch of renderInvModalCurrent now disables the Eat-now button as well, and eatFoundItem refuses an item that is already carried (canonItem match) - one canon serving is one serving in either order. takeItem keeps pushing the same object; eat-then-take was already blocked."
         },
         {
           "id": "B-03_sec131_script_nonround_kill_softlock",
           "severity": "P0",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.131 (goblin + eagle sentry) is script-managed (eagle active:false, no joins). Its activation sites are the top-of-round block (round 5 while the goblin lives) and the after-strike block, which sits after the early return `if(alive.length===0){ if(combatResolved(cs)){endCombat(true);} else { ...protivniki_vyzhidayut...; } return; }`. None of useCopyInCombat / useLarvaInCombat / useAllyInCombat carries a sec131 block and activateStagedJoins ignores enemies without joins. When the goblin falls to a non-round kill (Copy side-fight, sec.932 larva - path sec.1123 -> ... -> sec.131 exists, or the bell's bear) combatResolved is false (eagle hp 7), every further Udar returns at the waiting branch, the eagle never activates and the fight can neither be won nor left (no flee at sec.131). Before v2.146 the same sequence ended in a premature victory; the X-01 fix turned it into a soft-lock. Canon: 'Cherez 4 raunda ataki k nemu prisoedinyaetsya Orel-chasovoy ... Esli vy pobedili oboih strazhey'. The same shape exists at sec.1175 for the larva path and Death-of-Orcs at open (unreachable in play per BFS). handleCanonCombatMilestones(cs) is defined but never called.",
-          "note": "Maintainer adjudication: CONFIRMED P0 by code reading (line order of the early return vs the after-strike block). Fix: script-aware first-death activation inside activateStagedJoins, which already runs before the alive check and from every non-round kill path."
+          "note": "Maintainer adjudication: CONFIRMED P0 by code reading (line order of the early return vs the after-strike block). Fix: script-aware first-death activation inside activateStagedJoins, which already runs before the alive check and from every non-round kill path.",
+          "resolution": "CONFIRMED P0. activateStagedJoins - which already runs at the top of every round before the alive check and from every non-round kill path (Copy, larva, ally, Death of Orcs) - now also wakes script-managed reinforcements: when cs.special.type is sec131 or sec1175 and the first enemy is dead with reinforcementsJoined still false, the alive enemies 1..n are activated, the canon log line is appended (orel_chasovoy_vyletaet_iz_nishi / pervyy_ork_poverzhen_teper_vam_p) and the display refreshes. combatRound's own top-of-round and after-strike blocks stay as idempotent fallbacks; firstDeathHandled is left untouched so the sec.1175 luck prompt still fires from the after-strike block one round later. The eagle at sec.131 therefore joins immediately after a Copy / larva / bear kill of the goblin and the waiting branch can no longer spin forever. handleCanonCombatMilestones stays unused (dead code, untouched in this batch). 6d gains two behavioural guards (sec131 and sec1175 scenarios)."
         },
         {
           "id": "B-04_fr_autosave_nbsp",
@@ -518,9 +522,10 @@
         {
           "id": "B-07_luck_check_f5_reroll",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "doLuckCheck saves the luck decrement but keeps the outcome only in the runtime globals luckResult/luckDone, which goTo and every reload reset; after an unlucky roll the death is applied only when the modal's button is clicked, so an F5 before that click re-renders the paragraph with hasPendingLuck true and offers the check again (one luck point per attempt) - the reroll-to-success class the V-04 resolution treated as P0 for sec.781, left open for ordinary luck checks (sec.203/289/377/418/421/1186).",
-          "note": "Maintainer adjudication: CONFIRMED P1 by code reading (luckResult/luckDone are `let` globals). Fix: persist the resolved roll in S at roll time, restore it in renderChoices, clear it on goTo so revisit semantics stay unchanged."
+          "note": "Maintainer adjudication: CONFIRMED P1 by code reading (luckResult/luckDone are `let` globals). Fix: persist the resolved roll in S at roll time, restore it in renderChoices, clear it on goTo so revisit semantics stay unchanged.",
+          "resolution": "CONFIRMED P1. doLuckCheck persists the resolved roll before anything renders (S.luckChecks[section]={a,b,lucky}, written by the existing saveGame), renderChoices restores a persisted record into the runtime luckDone / luckResult maps before computing hasPendingLuck, goTo clears S.luckChecks so revisit semantics stay exactly as before (a revisit rolls again), and normalizeSave backfills the object. An F5 between the roll and the choice now lands on the resolved outcome: the fatal-unlucky paragraphs route to the death overlay through the existing fatal branch, the lucky ones show their lucky choices."
         },
         {
           "id": "B-08_combat_not_persisted_design",
@@ -532,23 +537,26 @@
         {
           "id": "CA-01_render_riddle_dead_container",
           "severity": "P0",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "renderRiddle: `const cont=document.getElementById('choices'); if(!cont)return;` - no element with id 'choices' exists in the shell (the reading column is #c-area/#c-list) nor in any commit of the history; the other five renderers use #c-list. renderGame dispatches renderRiddle for the seven riddle paragraphs (sec.439/67/95/1113/1131/992/435), which returns before clearing #c-list, so the previous paragraph's buttons stay on screen and no input / answer / exit button is rendered. Reproduced on the built dist in jsdom for all seven paragraphs. No harness references renderRiddle.",
-          "note": "Maintainer adjudication: CONFIRMED P0 (the whole letter-riddle engine has been unreachable in-game since its introduction). Fix: render into #c-list and add a renderer-target guard."
+          "note": "Maintainer adjudication: CONFIRMED P0 (the whole letter-riddle engine has been unreachable in-game since its introduction). Fix: render into #c-list and add a renderer-target guard.",
+          "resolution": "CONFIRMED P0. renderRiddle now renders into #c-list like the other five renderers (the 'choices' id never existed in any commit), so the seven riddle paragraphs (sec.439/67/95/1113/1131/992/435) finally show the input, the answer button and the exit; the reading-flow heading sits above the widget. 6d gains a guard that the renderer targets #c-list and that no getElementById('choices') survives; MANUAL_SMOKE_CHECKS C18 covers sec.1131."
         },
         {
           "id": "CA-02_combat_cards_keyboard",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Combat enemy cards are <div class=\"combat-enemy\"> with card.onclick and selection shown only by an inline outline; no tabindex, role, keydown or aria-pressed - per-round target selection (G-05) and the V-03 Weakness pick are pointer-only on the primary combat flow (WCAG 2.1.1), and screen readers get no selected state.",
-          "note": "Maintainer adjudication: CONFIRMED P1 by code reading. Fix: role=button + tabindex=0 + Enter/Space + aria-pressed on clickable cards; selection via class instead of outline."
+          "note": "Maintainer adjudication: CONFIRMED P1 by code reading. Fix: role=button + tabindex=0 + Enter/Space + aria-pressed on clickable cards; selection via class instead of outline.",
+          "resolution": "CONFIRMED P1. In updateCombatEnemyDisplay a clickable card (targetable in a multi-enemy fight, or pickable during the Weakness window) gets role=button, tabindex=0, aria-pressed reflecting the round-target / Weakness selection, an aria-label of name + status, and Enter/Space that invoke the same onclick; non-clickable cards drop those attributes. Selection moved from the inline outline to a box-shadow ring so :focus-visible keeps the outline for keyboard focus."
         },
         {
           "id": "CA-03_focus_return_after_combat",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "_bcDialogClosed restores focus only if the opener is still in the document; the combat opener ('Vstupit v boy') is destroyed synchronously by renderGame() before the MutationObserver microtask delivers the close, so after every combat (and after luck dialogs -> goTo -> renderGame) focus falls to <body> and keyboard users restart the Tab order from the first sidebar control instead of the post-combat choices.",
-          "note": "Maintainer adjudication: CONFIRMED P1 by event-ordering reasoning. Fix: fallback focus to the first #c-list button, else #s-area with tabindex=-1."
+          "note": "Maintainer adjudication: CONFIRMED P1 by event-ordering reasoning. Fix: fallback focus to the first #c-list button, else #s-area with tabindex=-1.",
+          "resolution": "CONFIRMED P1. _bcDialogClosed now falls back when the opener is gone or hidden: unless another dialog is still open, it focuses the first enabled #c-list button (the post-combat / post-luck choices), else #s-area with tabindex=-1 - keyboard users continue from the choices instead of the document top after every combat and luck dialog."
         },
         {
           "id": "CA-04_toast_live_region_timing",
