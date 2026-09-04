@@ -164,7 +164,8 @@
     "v2.156 -> v2.157": "September 2026 - group_81 batch 1 (P1+P1+P2+P2, Gemini track A): UA-02 inventory eat/drop controls are real buttons with aria-labels (keyboard-operable), UA-01 the dialog controller keeps an open-order stack and raises the newest dialog's z-index (paint order == Escape/Tab order), UA-03 screen-reader combat-round status via a diffing mirror of #combat-log, UA-04 emoji-free aria keys for the HUD map/log/menu buttons (3 ui keys x4, 331 -> 334). _dist_ui_check +4 asserts, MANUAL_SMOKE_CHECKS C17. group_81 4/4 DONE. GAME_RULES.md label 2.156 -> 2.157 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.157 -> v2.158": "September 2026 - registry-only: recheck cycle 2026-09, Claude (Fable 5.1 via Windows MCP) reports archived - track B (SHA-256 0f70efa864e4...; 8 findings incl. P0 B-01 weapons not weightless because ITEM_SIZES[...]||1 and P0 B-03 sec.131 eagle never wakes after a non-round goblin kill) and track A (SHA-256 cde40411b9ed...; 18 findings incl. P0 CA-01 renderRiddle writes into a container that never existed, so the letter-riddle engine was unreachable in-game). 26 hypotheses taken into group_81 (now 30 items, 4 DONE) with maintainer adjudication notes. GAME_RULES.md label 2.157 -> 2.158 (R-03 guard). No code change; battery ALL GREEN.",
     "v2.158 -> v2.159": "September 2026 - group_81 batch 2 (P0+P0+P0+P1+P1+P1+P1, Claude tracks A+B): B-01 getItemSize numeric lookup (weapons truly weightless), B-03 script-managed reinforcements wake after non-round kills inside activateStagedJoins (sec.131 soft-lock closed), CA-01 renderRiddle targets #c-list (letter riddles reachable in-game for the first time), B-02 take-then-eat double serving closed, B-07 luck rolls persisted at roll time and restored on reload, CA-02 combat cards keyboard-operable with aria-pressed, CA-03 focus fallback to the first choice after a dialog closes. p1_6d 42 -> 47, MANUAL_SMOKE_CHECKS C18. GAME_RULES.md label 2.158 -> 2.159 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.159 -> v2.160": "September 2026 - group_81 batch 3 (P2 a11y cluster, Claude track A): CA-04 persistent live region + bcAnnounce for notifications, CA-05 dice results announced and focus moved to Continue, CA-06 combat-status reset hook from startCombat, CA-07 keyboard-reachable save import, CA-08 accessible names/states (item names in eat/drop labels, close/add-item labels, HUD chip labels, aria-disabled on greyed spells, aria-pressed on visual pills), CA-09 focus kept after list rebuilds, CA-18 riddle input focus ring. _dist_ui_check assert swapped + 2 added (46 -> 48). GAME_RULES.md label 2.159 -> 2.160 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.159 -> v2.160": "September 2026 - group_81 batch 3 (P2 a11y cluster, Claude track A): CA-04 persistent live region + bcAnnounce for notifications, CA-05 dice results announced and focus moved to Continue, CA-06 combat-status reset hook from startCombat, CA-07 keyboard-reachable save import, CA-08 accessible names/states (item names in eat/drop labels, close/add-item labels, HUD chip labels, aria-disabled on greyed spells, aria-pressed on visual pills), CA-09 focus kept after list rebuilds, CA-18 riddle input focus ring. _dist_ui_check assert swapped + 2 added (46 -> 48). GAME_RULES.md label 2.159 -> 2.160 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.160 -> v2.161": "September 2026 - group_81 batch 4 (P2 responsive / fonts / i18n / data / docs, Claude tracks A+B): CA-10 safe-area on the event-log panel, FAB, modal cap and visual dock + the panel as a dialog (focus in, Escape out), CA-11 phone-landscape bounds 900 -> 960px, CA-12 HUD chip line-height, CA-13 sheet nodes restored in reverse order, CA-14 OFL.txt with all three copyright notices, CA-15 regular-weight headings (no synthetic bold for Forum), CA-16/B-04 FR NBSP + UK 'мапа' aria keys, CA-17 sidebar mini-map shown + layout-independent gated M hotkey, B-05 distinct legacyRu for the sec.300 watermelon + no-duplicate guard (6d 47 -> 48), B-06 GAME_RULES.md refreshed (armament, combat persistence, script joins, weakPickIdx, luck persistence) + brief errata, B-08 documented. group_81 30/30 DONE - recheck cycle 2026-09 closed except Track C. MANUAL_SMOKE_CHECKS C19. GAME_RULES.md label 2.160 -> 2.161 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -502,23 +503,26 @@
         {
           "id": "B-04_fr_autosave_nbsp",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "FR ui_autosave_note is 'Sauvegarde auto :' with U+0020 before the colon; the house convention (group_77) and every other FR colon key use NBSP U+00A0.",
-          "note": "Maintainer adjudication: CONFIRMED (codepoints 20 3a). Merged with CA-16."
+          "note": "Maintainer adjudication: CONFIRMED (codepoints 20 3a). Merged with CA-16.",
+          "resolution": "CONFIRMED DONE - see CA-16."
         },
         {
           "id": "B-05_duplicate_legacyru_arbuz",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "items.json: melon (food, sec.389) and watermelon (item, sec.300) share legacyRu 'Arbuz'; the generated RU_TO_SLUG literal therefore contains the key twice (lines 947 and 976) and the later wins, so canonItem('Arbuz') -> watermelon; a legacy RU 'Arbuz' string never dedupes against the sec.389 food object and both display identically. The R-02 parity guard cannot see duplicate keys.",
-          "note": "Maintainer adjudication: CONFIRMED by reading items.json and the literal. Fix: distinct legacyRu for the sec.300 item + a no-duplicate-legacyRu guard."
+          "note": "Maintainer adjudication: CONFIRMED by reading items.json and the literal. Fix: distinct legacyRu for the sec.300 item + a no-duplicate-legacyRu guard.",
+          "resolution": "CONFIRMED DONE. The sec.300 item is now legacyRu 'Арбуз с бахчи' in items.json and both slug maps (RU display 'Арбуз с бахчи'; the sec.389 food keeps 'Арбуз'), so canonItem('Арбуз') resolves to the food and the RU_TO_SLUG literal has no duplicate key; 6d gains a no-duplicate-legacyRu guard over items.json."
         },
         {
           "id": "B-06_game_rules_stale_sentences",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "GAME_RULES.md s3.7 lists joins activation sites without the Copy/ally kills added in v2.146; s3.8 says targeted Weakness lands on the current target, while since v2.147 it lands on cs.weakPickIdx (staged waiters selectable) with the round target as fallback; s1/s6 do not mention the slotCost:0 armament class. The brief's census 'gold_cost 58' is a typo (data and GAME_RULES: 59).",
-          "note": "Maintainer adjudication: CONFIRMED (docs)."
+          "note": "Maintainer adjudication: CONFIRMED (docs).",
+          "resolution": "CONFIRMED DONE. GAME_RULES.md: s1 documents the weightless armament class (slotCost:0, canon 'деньги и оружие в заплечный мешок не кладутся'); s2 gains the combat-persistence rule (B-08); s3.3 and s3.7 describe the script-managed reinforcements waking on any first-enemy death (B-03) and the Copy/ally activation paths; s3.8 describes cs.weakPickIdx (V-03); s9 notes the persisted luck roll (B-07). The brief's 'gold_cost 58' typo is recorded as errata in LAUNCH_CARDS.md (data and GAME_RULES: 59)."
         },
         {
           "id": "B-07_luck_check_f5_reroll",
@@ -531,9 +535,10 @@
         {
           "id": "B-08_combat_not_persisted_design",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Combat state is never persisted; an F5 mid-fight restarts the paragraph with full enemy HP, but the hero's stamina is persisted only when something else saved during the fight (useSpell, larva, healing, a language switch), so after a Force/Weakness cast the reload keeps the wounds and loses the charge, while without a cast it restores pre-fight stamina (a free retry). At sec.436 an F5 during the +1 fight lands on the pre-luck flow with the paid Force gone.",
-          "note": "Maintainer adjudication: ACCEPTED as a design note - document the rule (no combat persistence; mid-fight saves are side effects) in GAME_RULES s2 and a MANUAL_SMOKE_CHECKS note; snapshotting combatState is out of scope for this cycle."
+          "note": "Maintainer adjudication: ACCEPTED as a design note - document the rule (no combat persistence; mid-fight saves are side effects) in GAME_RULES s2 and a MANUAL_SMOKE_CHECKS note; snapshotting combatState is out of scope for this cycle.",
+          "resolution": "ACCEPTED (design) DONE. Documented in GAME_RULES.md s2: combat state is not persisted - an F5 during a fight restarts the paragraph with full enemy stamina; the hero's stamina survives only when something saved mid-fight (spell, larva, healing, language switch); pre-paid effects such as the sec.436 Force are committed at fight start. MANUAL_SMOKE_CHECKS C19 records the expected behaviour; snapshotting combatState remains out of scope."
         },
         {
           "id": "CA-01_render_riddle_dead_container",
@@ -610,58 +615,66 @@
         {
           "id": "CA-10_fixed_layers_safe_area",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "(a) .event-log-panel has no safe-area padding and on phones is a full-width layer without dialog semantics; (b) the FAB inset rule lives only inside the <=700px block where the FAB is hidden, so at 701-900px landscape it shows without inset; (c) .modal{max-height:100dvh} inside an overlay whose content box is 100dvh minus the top inset overflows under the notch; (d) .visual-dock{left:12px} has no left inset.",
-          "note": "Maintainer adjudication: ACCEPTED P2 (effective only where env() insets are non-zero)."
+          "note": "Maintainer adjudication: ACCEPTED P2 (effective only where env() insets are non-zero).",
+          "resolution": "ACCEPTED P2 DONE. .event-log-panel gets top/bottom/right safe-area padding, role=dialog + aria-labelledby, focus moves to its close button when it opens and returns to the FAB / HUD log button when it closes, and Escape closes it when no modal dialog is open; the FAB inset moved to the base rule (bottom/right + insets) and the dead phone-only rule was removed; the mobile .modal cap is calc(100dvh - top - bottom insets); the visual dock gets a left inset."
         },
         {
           "id": "CA-11_landscape_915_breakpoint",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "mobile.css targets 'Pixel 7a ... 915 landscape' but the landscape sidebar rule and the touch block stop at 900px, so a 915px-wide landscape phone gets the desktop layout.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: raise the bounds to 960px."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: raise the bounds to 960px.",
+          "resolution": "ACCEPTED P2 DONE. The landscape, tablet-portrait and touch-target blocks now stop at 960px, so a 915px-wide landscape phone (Pixel 7a, the file's own target) gets the sidebar layout and the 44px targets instead of the desktop layout; the dist assert follows."
         },
         {
           "id": "CA-12_hud_height_budget",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "HUD bar height by arithmetic: padding 5+6, border 1, chip row ~26px (13px text x inherited line-height 1.7), gap 4, buttons 36 -> ~78px against the resolution's ~70px and the audit's 56-72px target.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: line-height 1.2 on the chip row."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: line-height 1.2 on the chip row.",
+          "resolution": "ACCEPTED P2 DONE. line-height 1.2 on .hud-name and .hud-chip trims the chip row to ~20px; the bar lands at ~70px without touching the 36px buttons."
         },
         {
           "id": "CA-13_sheet_return_adjacent_nodes",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "returnSheetSection: if a moved node's recorded next sibling is another node moved in the same call, ref resolves to null and the node is appended at the end of the sidebar. Latent (current pairs are not adjacent).",
-          "note": "Maintainer adjudication: ACCEPTED P2 (latent). Fix: restore in reverse order of removal."
+          "note": "Maintainer adjudication: ACCEPTED P2 (latent). Fix: restore in reverse order of removal.",
+          "resolution": "ACCEPTED P2 DONE. returnSheetSection restores the nodes in reverse order of removal, so a moved node whose recorded next sibling was also moved finds it back in place; the current non-adjacent pairs keep their exact order."
         },
         {
           "id": "CA-14_ofl_missing_notices",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "src/fonts/OFL.txt carries only Forum's copyright / Reserved Font Name header; OFL s1 requires each font's copyright notice to accompany redistributed copies - Cinzel and Cormorant Garamond notices are missing although fonts.css says the file covers all three.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: prepend the two upstream notices."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: prepend the two upstream notices.",
+          "resolution": "ACCEPTED P2 DONE. src/fonts/OFL.txt now opens with the three copyright notices (The Cinzel Project Authors 2020, the Cormorant Project Authors 2015, Denis Masharov 2011 with Reserved Font Name Forum - taken from the upstream google/fonts OFL.txt files) above the single OFL 1.1 body."
         },
         {
           "id": "CA-15_forum_faux_bold",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Forum is declared once with font-weight 400 while h2/h3 keep the UA default bold, so Cyrillic headings render Forum with synthetic bold next to real Cinzel 600-700 for Latin.",
-          "note": "Maintainer adjudication: ACCEPTED P2 (cosmetic, pending the author's C14 eyes). Fix: font-weight 400 on the three heading selectors."
+          "note": "Maintainer adjudication: ACCEPTED P2 (cosmetic, pending the author's C14 eyes). Fix: font-weight 400 on the three heading selectors.",
+          "resolution": "ACCEPTED P2 DONE. .modal h2, .stat-info h3 and .event-log-header h3 render at font-weight 400, so RU/UK headings in Forum (regular only) and EN/FR headings in Cinzel share one real weight - no synthetic bold. Pending the author's C14 eyes."
         },
         {
           "id": "CA-16_fr_nbsp_uk_map_term",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "FR ui_autosave_note space before colon (see B-04); UK mixes 'mapa' (visible ui_lbl_map, ui_title_map_open) with 'karta' in the new aria keys.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: NBSP + align UK aria keys to 'mapa'."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: NBSP + align UK aria keys to 'mapa'.",
+          "resolution": "ACCEPTED P2 DONE (with B-04). FR ui_autosave_note uses NBSP before the colon; the four UK map aria keys now say 'мапа' like the visible UK strings (Мапа / Шар мапи / Наблизити мапу / Віддалити мапу)."
         },
         {
           "id": "CA-17_sidebar_map_hidden_hotkey",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "#sb-map has been display:none since the shell's first commit and no code shows it, so the sidebar mini-map card and its Open button are never displayed; on desktop the only entry to the map is the hotkey, which tests ev.key.toLowerCase()==='m' (layout-dependent: a Russian layout yields 'ь') and is not gated on the game screen or on open dialogs.",
-          "note": "Maintainer adjudication: CONFIRMED by grep (no code references 'sb-map'). Fix: show the section, key the hotkey on ev.code, gate it on the game screen and on no other dialog being open."
+          "note": "Maintainer adjudication: CONFIRMED by grep (no code references 'sb-map'). Fix: show the section, key the hotkey on ev.code, gate it on the game screen and on no other dialog being open.",
+          "resolution": "ACCEPTED P2 DONE. #sb-map is shown (the sidebar mini-map card and its Open button appear on desktop/tablet for the first time; the mini SVG was already rendered every paragraph); the M hotkey keys on ev.code==='KeyM' (any layout) with ev.key as fallback, ignores modifier combos, works only while the game screen is on and never opens the map over another open dialog (toggling the map itself stays allowed)."
         },
         {
           "id": "CA-18_riddle_input_outline",

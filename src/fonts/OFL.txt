@@ -1,3 +1,10 @@
+SIL Open Font License notices for every font family bundled in src/fonts/
+(Cinzel, Cormorant Garamond, Forum). The license text below applies to all three.
+
+Copyright 2020 The Cinzel Project Authors (https://github.com/NDISCOVER/Cinzel)
+
+Copyright 2015 the Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)
+
 Copyright (c) 2011, Denis Masharov <denis.masharov@gmail.com>,
 with Reserved Font Name "Forum".
 

@@ -172,7 +172,8 @@ function _bcCloseTopDialog(){
     }
   }).observe(document.body,{attributes:true,attributeFilter:['class'],subtree:true});
   document.addEventListener('keydown',function(ev){
-    var top=_bcTopDialog(); if(!top) return;
+    var top=_bcTopDialog();
+    if(!top){ if(ev.key==='Escape'){ var lp=document.getElementById('event-log-panel'); if(lp&&lp.classList.contains('on')&&typeof toggleEventLog==='function'){ toggleEventLog(); ev.preventDefault(); } } return; } // group_81 CA-10: Escape also closes the event-log panel
     if(ev.key==='Escape'){ if(_bcCloseTopDialog()) ev.preventDefault(); return; }
     if(ev.key!=='Tab') return;
     var f=_bcFocusables(top); if(!f.length){ ev.preventDefault(); return; }
@@ -204,7 +205,9 @@ function openSheet(kind){
 }
 function returnSheetSection(){
   var home=_bcSheetHome; _bcSheetHome=[];
-  home.forEach(function(h){ if(!h.parent) return; var ref=(h.next&&h.next.parentNode===h.parent)?h.next:null; h.parent.insertBefore(h.node,ref); });
+  // group_81 CA-13: restore in reverse order of removal so a recorded next sibling that was
+  // itself moved is already back in place when its predecessor returns.
+  home.slice().reverse().forEach(function(h){ if(!h.parent) return; var ref=(h.next&&h.next.parentNode===h.parent)?h.next:null; h.parent.insertBefore(h.node,ref); });
 }
 (function(){
   if(typeof updateHUD==='function'){ var _o=updateHUD; updateHUD=function(){ var r=_o.apply(this,arguments); syncHudBar(); return r; }; }
@@ -403,7 +406,9 @@ function renderEventLog(){
 function toggleEventLog(){
   const panel=document.getElementById('event-log-panel');
   panel.classList.toggle('on');
-  if(panel.classList.contains('on'))renderEventLog();
+  // group_81 CA-10: the panel behaves like a dialog - focus in on open, back to the log button on close.
+  if(panel.classList.contains('on')){ renderEventLog(); const cb=panel.querySelector('.event-log-close'); if(cb) cb.focus({preventScroll:true}); }
+  else { const fab=document.getElementById('event-log-btn'); const hb=document.querySelector('.hud-btn[onclick="toggleEventLog()"]'); const back=(fab&&fab.offsetParent!==null)?fab:((hb&&hb.offsetParent!==null)?hb:null); if(back) back.focus({preventScroll:true}); }
 }
 
 function clearEventLog(){
@@ -987,7 +992,7 @@ const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смер�
   "Серебряный свисток":"silver_whistle","Курительная трубка":"smoking_pipe",
   "Каменный Кентавр":"stone_centaur","Перо аиста":"stork_feather","Оберег":"talisman",
   "Мандарин":"tangerine","Клубочек":"thread_ball","Знание о троне":"throne_lore",
-  "Знание о кладе":"treasure_lore","Фляга с водой":"water_flask","Арбуз":"watermelon","Кнут":"whip",
+  "Знание о кладе":"treasure_lore","Фляга с водой":"water_flask","Арбуз с бахчи":"watermelon","Кнут":"whip",
   "Белая стрела":"white_arrow","Целый меч":"whole_sword","Бутылка вина":"wine_bottle",
   "Красивый кусочек дерева":"wood_piece",
 };
@@ -1020,7 +1025,7 @@ const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч
   "silver_whistle":"Серебряный свисток","smoking_pipe":"Курительная трубка",
   "stone_centaur":"Каменный Кентавр","stork_feather":"Перо аиста","talisman":"Оберег",
   "tangerine":"Мандарин","thread_ball":"Клубочек","throne_lore":"Знание о троне",
-  "treasure_lore":"Знание о кладе","water_flask":"Фляга с водой","watermelon":"Арбуз","whip":"Кнут",
+  "treasure_lore":"Знание о кладе","water_flask":"Фляга с водой","watermelon":"Арбуз с бахчи","whip":"Кнут",
   "white_arrow":"Белая стрела","whole_sword":"Целый меч","wine_bottle":"Бутылка вина",
   "wood_piece":"Красивый кусочек дерева",
 };

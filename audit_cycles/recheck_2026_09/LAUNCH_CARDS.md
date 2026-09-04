@@ -21,6 +21,8 @@
 | 2026-09-04 | Gemini Deep Research | C | **не запущен** — лимит Deep Research; повторить после сброса квоты |
 | — | Claude Fable 5.1 через Windows MCP | B (обязательно), A (второе мнение) | см. карточку 2a |
 
+Errata брифа (Claude track B, B-06): census `gold_cost 58` — опечатка; в данных и `GAME_RULES.md` — 59.
+
 Урок: у Gemini большие вложения могут **тихо обрезаться** (155 KB `game_structure.js` дошёл до §848). Для трека B нужен провайдер с полным доступом к репозиторию — Claude через MCP.
 
 ---
