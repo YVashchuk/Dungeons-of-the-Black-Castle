@@ -303,6 +303,9 @@ window.bcRefreshMapLanguage = function(activeLocale){
     Object.values(BC_MAP_DEF.layers||{}).forEach(R);
     (BC_MAP_DEF.nodes||[]).forEach(R);
     (BC_MAP_DEF.encounters||[]).forEach(R);
+    // group_82 CU-09: existing <option> labels of the layer select are re-localized too
+    // (initMapUi returns early once the options exist).
+    try{ var sel=document.getElementById('map-layer-select'); if(sel){ Array.prototype.forEach.call(sel.options,function(o){ var lyr=BC_MAP_DEF.layers&&BC_MAP_DEF.layers[o.value]; if(lyr&&lyr.title) o.textContent=lyr.title; }); } }catch(e){}
     try{ var ov=document.getElementById('overlay-map'); if(ov&&ov.classList.contains('on')&&window.S&&window.renderGameMap) window.renderGameMap(); }catch(e){}
   };
 const oldInitState = window.initState;
@@ -408,7 +411,7 @@ const oldInitState = window.initState;
       if(tag==='input' || tag==='textarea') return;
       // group_81 CA-17: physical key (layout-independent), only on the game screen, and
       // never over another open dialog (toggling the map itself stays allowed).
-      const isM=(ev.code==='KeyM')||(ev.key && ev.key.toLowerCase()==='m');
+      const k=ev.key||''; const isM=(k.toLowerCase()==='m')||(ev.code==='KeyM'&&!/^[\x20-\x7e]$/.test(k)); // group_82 CU-10: letter first; physical key only for non-ASCII layouts (Cyrillic), so AZERTY keeps one shortcut
       if(isM && window.S && !ev.ctrlKey && !ev.altKey && !ev.metaKey){
         const sg=document.getElementById('scr-game'); if(!sg||!sg.classList.contains('on')) return;
         const open = document.getElementById('overlay-map')?.classList.contains('on');

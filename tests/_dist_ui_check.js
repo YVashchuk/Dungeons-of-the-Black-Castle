@@ -43,9 +43,13 @@ const snips=[
  ['combat status reset hook (CA-06)', 'window._bcCombatStatusReset=function', 1],
  ['forum cyrillic display (UI-07)', "font-family: 'Forum';", 1],
  ['font chain with Forum (UI-07)', "--font-ui:'Cinzel','Forum','Cormorant Garamond',serif", 1],
+ ['menu heading regular weight (CU-08)', '.menu-content h2{font-family:var(--font-ui);color:var(--gold);font-weight:400;', 1],
+ ['single M shortcut per layout (CU-10)', "const k=ev.key||''; const isM=(k.toLowerCase()==='m')||(ev.code==='KeyM'&&!/^[\\x20-\\x7e]$/.test(k));", 1],
 ];
 let ok=0,bad=0;
 snips.forEach(([n,s,exp])=>{ const e=exp||1; const c=d.split(s).length-1; if(c===e)ok++; else {bad++; console.log('FAIL '+n+' count='+c+' expected='+e);} });
 ['vzyat_2','onload_this_classlist_add_loaded','title_vybrosit','title_sest','vyn_style_color_3c9','neverno_ostalos_popytok','alt_podzemelya_chernogo_zamka','"v_meshke"','Veles Redone','Cyrillic Old Face'].forEach(k=>{ if(d.includes(k)){bad++; console.log('FAIL removed key present: '+k);} else ok++; });
+// group_82 CU-07: the font license travels with the built artifact
+try{ const ofl=fs.readFileSync(require('path').join(__dirname,'..','dist','OFL.txt'),'utf8'); if(ofl.includes('Cinzel Project Authors')&&ofl.includes('Cormorant Project Authors')&&ofl.includes('Reserved Font Name')&&ofl.includes('SIL OPEN FONT LICENSE')) ok++; else {bad++; console.log('FAIL dist/OFL.txt notices');} }catch(e){ bad++; console.log('FAIL dist/OFL.txt missing'); }
 console.log('DIST REFACTOR CHECK: '+ok+' passed, '+bad+' failed');
 process.exit(bad?1:0);

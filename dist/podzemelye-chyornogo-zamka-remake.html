@@ -298,7 +298,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
 /* MENU OVERLAY */
 #overlay-menu{background:rgba(0,0,0,.9);}
 .menu-content{max-width:400px;width:90%;text-align:center;}
-.menu-content h2{font-family:var(--font-ui);color:var(--gold);margin-bottom:24px;}
+.menu-content h2{font-family:var(--font-ui);color:var(--gold);font-weight:400;margin-bottom:24px;}
 .autosave-note{font-family:var(--font-ui);font-size:13px;color:var(--muted);text-align:center;min-height:1.3em;margin:-12px 0 16px;letter-spacing:.02em;}
 .menu-btn{display:block;width:100%;margin-bottom:10px;}
 
@@ -470,6 +470,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
    outline for mouse users; :focus-visible restores a gold ring for keyboard
    navigation without touching pointer interaction. */
 button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold2);outline-offset:3px;}
+.menu-btn:focus-within{outline:2px solid var(--gold2);outline-offset:3px;} /* group_82 CU-06: the sr-only import input inside its label */
 /* UI-10 (group_79): honour the OS reduced-motion preference - collapses the
    keyframe animations and transitions to near-zero without touching layout. */
 @media (prefers-reduced-motion: reduce){
@@ -3296,6 +3297,9 @@ window.bcRefreshMapLanguage = function(activeLocale){
     Object.values(BC_MAP_DEF.layers||{}).forEach(R);
     (BC_MAP_DEF.nodes||[]).forEach(R);
     (BC_MAP_DEF.encounters||[]).forEach(R);
+    // group_82 CU-09: existing <option> labels of the layer select are re-localized too
+    // (initMapUi returns early once the options exist).
+    try{ var sel=document.getElementById('map-layer-select'); if(sel){ Array.prototype.forEach.call(sel.options,function(o){ var lyr=BC_MAP_DEF.layers&&BC_MAP_DEF.layers[o.value]; if(lyr&&lyr.title) o.textContent=lyr.title; }); } }catch(e){}
     try{ var ov=document.getElementById('overlay-map'); if(ov&&ov.classList.contains('on')&&window.S&&window.renderGameMap) window.renderGameMap(); }catch(e){}
   };
 const oldInitState = window.initState;
@@ -3401,7 +3405,7 @@ const oldInitState = window.initState;
       if(tag==='input' || tag==='textarea') return;
       // group_81 CA-17: physical key (layout-independent), only on the game screen, and
       // never over another open dialog (toggling the map itself stays allowed).
-      const isM=(ev.code==='KeyM')||(ev.key && ev.key.toLowerCase()==='m');
+      const k=ev.key||''; const isM=(k.toLowerCase()==='m')||(ev.code==='KeyM'&&!/^[\x20-\x7e]$/.test(k)); // group_82 CU-10: letter first; physical key only for non-ASCII layouts (Cyrillic), so AZERTY keeps one shortcut
       if(isM && window.S && !ev.ctrlKey && !ev.altKey && !ev.metaKey){
         const sg=document.getElementById('scr-game'); if(!sg||!sg.classList.contains('on')) return;
         const open = document.getElementById('overlay-map')?.classList.contains('on');
@@ -3488,6 +3492,8 @@ function normalizeSave(s){
   if(!s||typeof s!=='object') return s;
   // Core fields from initState() — backfill if missing or wrong type.
   if(!Array.isArray(s.inventory)) s.inventory=[];
+  // group_82 CB-05: a pre-slug raw «Арбуз» string is the sec.300 ITEM (the sec.389 food is a structured object).
+  s.inventory=s.inventory.map(it=>(typeof it==='string'&&it.trim()===SLUG_TO_RU['melon'] /* the legacy RU name */)?'watermelon':it);
   if(!Array.isArray(s.spells))    s.spells=[];
   if(!Array.isArray(s.visited))   s.visited=[];
   if(typeof s.notes!=='string')   s.notes='';
@@ -3546,7 +3552,7 @@ function openMenu(){renderAutosaveNote();document.getElementById('overlay-menu')
 // mutations keeps every existing open/close call site untouched.
 var _bcDialogOpener=new WeakMap();
 var _bcDialogStack=[]; // UA-01 (group_81): open-order stack - paint order == Escape/Tab order
-function _bcIsDialog(el){ return !!(el&&el.classList&&(el.classList.contains('modal-overlay')||el.classList.contains('end-overlay'))); }
+function _bcIsDialog(el){ return !!(el&&el.classList&&(el.classList.contains('modal-overlay')||el.classList.contains('end-overlay')||(el.id==='event-log-panel'&&typeof isMobileHud==='function'&&isMobileHud()))); } // group_82 CU-03: the phone-width event-log panel is a dialog too
 function _bcFocusables(root){ return Array.prototype.filter.call(root.querySelectorAll('button,select,input,textarea,a[href],[tabindex]'), function(el){ return !el.disabled&&el.tabIndex>=0&&el.getAttribute('aria-hidden')!=='true'&&el.offsetParent!==null; }); }
 function _bcTopDialog(){
   for(var i=_bcDialogStack.length-1;i>=0;i--){ var d=_bcDialogStack[i]; if(d&&d.classList&&d.classList.contains('on')&&document.body.contains(d)) return d; }
@@ -3578,6 +3584,7 @@ function _bcDialogClosed(el){
 }
 function _bcCloseTopDialog(){
   var top=_bcTopDialog(); if(!top) return false;
+  if(top.id==='event-log-panel'){ if(typeof toggleEventLog==='function') toggleEventLog(); return true; } // group_82 CU-03
   var closer=top.querySelector('[onclick*="closeModal("]'); if(!closer) return false;
   closer.click(); return true;
 }
@@ -3650,7 +3657,7 @@ function returnSheetSection(){
   var log=document.getElementById('combat-log'), st=document.getElementById('combat-round-status');
   if(!log||!st) return;
   var seen=0;
-  window._bcCombatStatusReset=function(){ seen=0; }; // CA-06: startCombat clears the log synchronously - a count-only heuristic misses equal-length intros
+  window._bcCombatStatusReset=function(){ seen=0; st.textContent=''; }; // CA-06: startCombat clears the log synchronously - a count-only heuristic misses equal-length intros
   new MutationObserver(function(){
     var kids=log.children, n=kids.length;
     if(n<seen) seen=0;
@@ -5582,6 +5589,7 @@ function renderDiceLoot(sec){
       logEvent('gain',msgs[0],msgs[1]||'');
       updateHUD();saveGame();playSound('item');showItemNotification(msgs);
       pick.remove();
+      const cb2=list.querySelector('button'); if(cb2) cb2.focus({preventScroll:true}); // group_82 CU-04
     };
     list.appendChild(pick);
     renderExit();
