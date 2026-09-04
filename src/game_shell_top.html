@@ -213,17 +213,16 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .scene-bg::after{content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,var(--bg) 0%,transparent 20%,transparent 70%,var(--bg) 100%);}
 
-/* Story text area
- * NOTE: padding-inline uses `max(20px, (100% - 1100px) / 2)` instead of
- * the older `max-width:1200px; margin:0 auto`. That older approach put
- * the vertical scrollbar INSIDE a centred 1200 px column, which left
- * large empty wings on FullHD and made the scrollbar feel attached to
- * a narrow strip. With the math approach, .story-area stretches edge
- * to edge of .main — the scrollbar lives on the actual screen edge —
- * while text is still constrained to a comfortable ~85ch line length
- * (≤ 1100 px) by the inline padding. mobile.css overrides this for
- * ≤ 700 px viewports. */
-.story-area{flex:1;overflow-y:auto;position:relative;z-index:1;padding:clamp(24px,4vw,48px) max(20px,calc((100% - 1100px) / 2)) 24px;}
+/* Story text area (group_79 UI-11 A)
+ * The scroll container stretches edge to edge of .main so the scrollbar
+ * lives on the screen edge; the reading column itself (.reader = .s-num,
+ * .s-text and the in-flow .choices-area) is capped at 72ch of the 25px body
+ * face - roughly 70 characters per line, the long-form reading optimum -
+ * and centred with auto margins. Choices sit right after the text inside the
+ * same scroll flow (read, then decide), so the old separate bottom block and
+ * its UI-01 scroll cap are gone. mobile.css tightens the paddings. */
+.story-area{flex:1;overflow-y:auto;position:relative;z-index:1;padding:clamp(24px,4vw,48px) clamp(20px,4vw,48px) calc(32px + var(--safe-bottom,0px));}
+.reader{max-width:72ch;margin:0 auto;font-family:var(--font-text);font-size:25px;}
 .s-num{font-family:var(--font-ui);font-size:14px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:20px;opacity:.7;}
 .s-text{font-family:var(--font-text);font-size:25px;line-height:1.8;color:var(--parchment);
   text-shadow:0 1px 3px rgba(0,0,0,.5);}
@@ -252,9 +251,8 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .visual-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--border2);background:rgba(17,15,30,.88);color:var(--muted);font-family:var(--font-ui);font-size:12px;cursor:pointer;}
 .visual-pill.on{color:var(--gold2);border-color:var(--gold3);box-shadow:0 0 8px var(--glow);}
 body.hide-inline-art .illustration-container{display:none!important;}
-.choices-area{position:relative;z-index:1;padding:20px max(20px,calc((100% - 1100px) / 2)) clamp(24px,4vw,36px);
-  border-top:1px solid var(--border);
-  overflow-y:auto;max-height:52vh;max-height:52dvh;overscroll-behavior:contain;}
+.choices-area{position:relative;z-index:1;margin-top:28px;padding:22px 0 8px;border-top:1px solid var(--border);}
+.choices-title{font-family:var(--font-ui);font-size:13px;color:var(--gold);letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin-bottom:14px;}
 .choice-btn{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--border);
   color:var(--parchment);padding:18px 28px;margin-bottom:10px;font-family:var(--font-text);font-size:23px;
   font-weight:500;cursor:pointer;transition:all .2s;line-height:1.5;}
@@ -642,11 +640,14 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
     <div class="scene-bg" id="scene-bg"></div>
     <div class="img-loading" id="img-loading" data-i18n="ui_img_loading">🎨 Рисую сцену…</div>
     <div class="story-area" id="s-area">
-      <div class="s-num" id="s-num">§ 1</div>
-      <div class="s-text" id="s-text"></div>
-    </div>
-    <div class="choices-area" id="c-area">
-      <div id="c-list"></div>
+      <div class="reader">
+        <div class="s-num" id="s-num">§ 1</div>
+        <div class="s-text" id="s-text"></div>
+        <div class="choices-area" id="c-area">
+          <div class="choices-title" data-i18n="ui_your_choice">Ваш выбор</div>
+          <div id="c-list"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
