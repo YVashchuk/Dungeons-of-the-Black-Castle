@@ -78,11 +78,7 @@
     max-height: 34vh;
   }
 
-  /* Event-log FAB respects safe-area-bottom. */
-  .event-log-btn {
-    right: 12px;
-    bottom: calc(12px + var(--safe-bottom));
-  }
+  /* (event-log FAB: hidden on phones - its safe-area inset lives on the base rule, group_81 CA-10) */
   .event-log-panel {
     width: 100%;
     right: -100%;
@@ -130,7 +126,7 @@
   /* Combat modal: cover screen, no wasted margins. */
   .modal {
     max-height: 100vh;
-    max-height: 100dvh;
+    max-height: calc(100dvh - var(--safe-top,0px) - var(--safe-bottom,0px));
     padding: 20px 16px;
     width: 100%;
     max-width: none;
@@ -157,7 +153,7 @@
 }
 
 /* ─── Phone landscape (≤900px wide, landscape orientation) ─── */
-@media (min-width: 701px) and (max-width: 900px) and (orientation: landscape) {
+@media (min-width: 701px) and (max-width: 960px) and (orientation: landscape) {
 
   #scr-game {
     flex-direction: row;
@@ -192,7 +188,7 @@
 }
 
 /* ─── Tablet portrait (701-900px) — intermediate tweaks ─── */
-@media (min-width: 701px) and (max-width: 900px) and (orientation: portrait) {
+@media (min-width: 701px) and (max-width: 960px) and (orientation: portrait) {
 
   .sidebar {
     width: 260px;
@@ -207,7 +203,7 @@
 }
 
 /* ─── Global touch-target improvements (all narrow viewports) ─── */
-@media (max-width: 900px) {
+@media (max-width: 960px) {
 
   /* Make small icons/buttons tappable (44×44 WCAG target). */
   .inv-remove,

@@ -61,6 +61,17 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9p. group_81 batch 4 (B-05): items.json legacyRu values are unique (a duplicate key silently collapses the RU_TO_SLUG literal)
+(function(){
+  try{
+    const reg=JSON.parse(fs.readFileSync(path.join(REPO,'src','registries','items.json'),'utf8'));
+    const entries=Array.isArray(reg)?reg:(reg.items||reg);
+    const names=(Array.isArray(entries)?entries:Object.values(entries)).map(x=>x&&x.legacyRu);
+    const dup=names.filter((n,i)=>n&&names.indexOf(n)!==i);
+    ck('B-05 items.json legacyRu unique (dups: '+dup.length+')', dup.length===0);
+  }catch(e){ ck('B-05 items.json parse: '+e.message,false); }
+})();
+
 // 9o. group_81 batch 2 (B-01 / B-03 / B-07 / CA-01): weightless armament, scripted joins after non-round kills, persisted luck rolls, riddle container
 (function(){
   try{

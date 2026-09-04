@@ -406,8 +406,14 @@ const oldInitState = window.initState;
     document.addEventListener('keydown', (ev) => {
       const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
       if(tag==='input' || tag==='textarea') return;
-      if(ev.key && ev.key.toLowerCase()==='m' && window.S){
+      // group_81 CA-17: physical key (layout-independent), only on the game screen, and
+      // never over another open dialog (toggling the map itself stays allowed).
+      const isM=(ev.code==='KeyM')||(ev.key && ev.key.toLowerCase()==='m');
+      if(isM && window.S && !ev.ctrlKey && !ev.altKey && !ev.metaKey){
+        const sg=document.getElementById('scr-game'); if(!sg||!sg.classList.contains('on')) return;
         const open = document.getElementById('overlay-map')?.classList.contains('on');
+        const top=(typeof _bcTopDialog==='function')?_bcTopDialog():null;
+        if(top&&!open) return;
         if(open) closeModal('overlay-map'); else openMapModal();
       }
     });
