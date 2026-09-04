@@ -159,7 +159,8 @@
     "v2.151 -> v2.152": "September 2026 - group_79 stage B, batch 1 (P1): UI-07 Cyrillic display font per decision B - Forum (OFL) bundled for the Cyrillic range, font chains Cinzel / Cinzel Decorative -> Forum -> Cormorant Garamond -> serif, OFL.txt added, the unused Veles Redone and Cyrillic Old Face removed from fonts.css / src/fonts / README (dead base64 payload gone from dist), _dist_ui_check asserts for the new face and for the absence of the removed ones, MANUAL_SMOKE_CHECKS C14. Stage-B decisions recorded as author_decision: UI-03 A, UI-11 A, UI-12 B (deferred to the Midjourney art backlog). GAME_RULES.md label 2.151 -> 2.152 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.152 -> v2.153": "September 2026 - group_79 stage B, batch 2 (P2, decision A): UI-11 reading rhythm - 72ch reading column (.reader) centred in the edge-to-edge scroll container, choices placed right after the text under a 'Your choice' heading in the same scroll flow (UI-01's separate capped block retired), mobile.css caps removed, ui_your_choice x4 locales, dist asserts swapped, MANUAL_SMOKE_CHECKS C15. GAME_RULES.md label 2.152 -> 2.153 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.153 -> v2.154": "September 2026 - group_79 stage B, batch 3 (P1, decision A): UI-03 mobile information architecture - the sidebar is replaced on phones by a compact HUD bar (stats/gold chips + spells/bag/notes/map/log/menu buttons), sidebar sections are served as bottom sheets that reparent the live DOM nodes (BC_MOBILE_SHEETS), the log FAB is docked into the HUD, the landscape sidebar rule is scoped to 701-900px. 2 ui keys x4 (329 -> 331), dist asserts +4 (dialog roles 8), MANUAL_SMOKE_CHECKS C16. group_79 11/12 - only UI-12 (deferred to the Midjourney art backlog) remains open. GAME_RULES.md label 2.153 -> 2.154 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.154 -> v2.155": "September 2026 - registry-only: memory-backlog reconciliation. The 'engine backlog' carried by session memory and HANDOFF_2026-07-20 s.4 (spell decrement P0, paragraph arithmetic + bird guide, Vodyanoy, infinite arrows, sec.688, gold signs, passive effects, luck dead-ends, Green Sword, Gold Key, offer/text gates, Magic Belt, stat list) verified as already resolved in the registry and GD - graveyard entry memory_backlog_reconciliation_2026_09_04 added to resolved_no_op so no future session re-queues it. Open work is now: group_71 art (Midjourney), UI-12 (deferred), group_68 sec.63 (deliberately deferred). GAME_RULES.md label 2.154 -> 2.155 (R-03 guard). No code change; battery ALL GREEN."
+    "v2.154 -> v2.155": "September 2026 - registry-only: memory-backlog reconciliation. The 'engine backlog' carried by session memory and HANDOFF_2026-07-20 s.4 (spell decrement P0, paragraph arithmetic + bird guide, Vodyanoy, infinite arrows, sec.688, gold signs, passive effects, luck dead-ends, Green Sword, Gold Key, offer/text gates, Magic Belt, stat list) verified as already resolved in the registry and GD - graveyard entry memory_backlog_reconciliation_2026_09_04 added to resolved_no_op so no future session re-queues it. Open work is now: group_71 art (Midjourney), UI-12 (deferred), group_68 sec.63 (deliberately deferred). GAME_RULES.md label 2.154 -> 2.155 (R-03 guard). No code change; battery ALL GREEN.",
+    "v2.155 -> v2.156": "September 2026 - registry-only: recheck cycle 2026-09 opened. Gemini 3.1 Pro Track A report archived (SHA-256 d437b031354c...) - four hypotheses recorded as group_81 (UA-01 dialog stack by DOM order P1, UA-02 inventory spans not keyboard-operable P1, UA-03 no live combat-round status P2, UA-04 emoji in HUD aria names P2). The combined A+B run (SHA-256 bc5e456d890f...) is discarded per the accuracy guard; its three Track B claims (sec.1096 harpy flee, sec.300/574 fruit mismatch, sec.96/112 art) were checked against canon and rejected into resolved_no_op. GAME_RULES.md label 2.155 -> 2.156 (R-03 guard). No code change; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -436,6 +437,37 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_81_2026_09_04_recheck": {
+      "comment": "Recheck cycle 2026-09 (brief audit_cycles/recheck_2026_09/BRIEF.md; audited state main @ a051c30 / v2.155). Auditor: Gemini 3.1 Pro, normal chat, no Deep Research. Track A report archived verbatim as REPORT_gemini_trackA.md (SHA-256 d437b031354c2e1c02550f8b9354760415e1ea78518989a089336d1191218641): pre-flight proofs correct, 9/9 blocks reviewed, 4 findings (2 P1 + 2 P2). Track B could not run as a clean 10-file set (game_structure.js arrived truncated at paragraph 848 and the model correctly stopped per the pre-flight rule); the second, combined A+B attempt (REPORT_gemini_trackB_combined.md, SHA-256 bc5e456d890fdbf27038a90908bffc76e8eeebee642f9e0b1a25a6cfb7e93659) repeated the four Track A findings and added three Track B findings, but its pre-flight mis-stated the first heading of REGISTRY_EXCERPT.md (claimed UI-01, actual V-01) and its findings cite fields and assets that do not exist in the project (pre_combat_exits / post_combat_exits, combat_paragraphs.jsonl, art30_three_knights) - per the brief's accuracy guard the Track B part is discarded; its three findings were nevertheless checked against canon and rejected (see resolved_no_op). Track B is to be re-run with full repository access and a real battery run (Claude via Windows MCP); Track C (standards, Deep Research) is deferred until the provider quota resets. Each item below is a hypothesis pending adjudication.",
+      "source": "gemini_3_1_pro_2026_09_04 (recheck cycle 2026-09, track A)",
+      "verified": "2026-09-04",
+      "items": [
+        {
+          "id": "UA-01_dialog_stack_dom_order",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "_bcTopDialog() returns the LAST '.modal-overlay.on, .end-overlay.on' element in DOM order, not the most recently opened dialog. #overlay-sheet sits at the end of <body>, after #overlay-map, so opening the map while a bottom sheet is open makes Escape and the Tab trap operate on the sheet instead of the map. Suggested fix: keep an explicit open-order stack (push in _bcDialogOpened, pop in _bcDialogClosed) and return its top."
+        },
+        {
+          "id": "UA-02_inventory_spans_keyboard",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "In the sidebar inventory renderer the eat-food (.inv-eat) and drop-item (.inv-remove) controls are <span onclick> elements with no tabindex, role or keydown handler, so keyboard and screen-reader users cannot eat or drop items - WCAG 2.1.1 on a primary gameplay flow. Suggested fix: render them as <button type=\"button\"> (or add role=button + tabindex=0 + Enter/Space handling)."
+        },
+        {
+          "id": "UA-03_combat_round_live_status",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "#combat-log deliberately has no aria-live (innerHTML rebuilds), but nothing else announces a combat round's outcome, so screen-reader users get no feedback on dice rolls and stamina changes. Suggested fix: a visually hidden role=status aria-live=polite region filled with a concise per-round summary."
+        },
+        {
+          "id": "UA-04_hud_aria_emoji_keys",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "HUD icon buttons reuse content keys as accessible names (ui_lbl_map = '\\ud83d\\uddfa ?????', ui_btn_log = '\\ud83d\\udcdc ??????', ui_btn_menu = '\\u2630 ????'), so screen readers announce the emoji before the label. Suggested fix: dedicated emoji-free aria keys in all locales."
+        }
+      ]
     },
     "group_80_2026_07_20_recheck": {
       "comment": "Verification-cycle audit companion (brief audit_cycles/recheck_2026_07_20/BRIEF.md). Report received via chat 2026-07-20, SHA-256 55a0bd358a78779f1ca6053300fb2a9509b848430829a81e5e04040f4f8fc262, archived verbatim as audit_cycles/recheck_2026_07_20/REPORT.md (the user places the exact received file; the SHA is verified by apply_group80.js before commit). Report audited main @ 2179619 / v2.139; HEAD at group creation is b64167b (v2.142) - the three intervening commits are group_79 UI CSS batches that do not touch the mechanics under adjudication. Auditor scope: 16/16 group_78 resolutions verified (8 clean), 60 deterministic interaction scenarios, 13/13 mandatory pair families, G2 reverse search 109/109 stat candidates explained, full A-F regression green. Findings: 7 P0 + 3 P1 + 2 P2 - dominated by interaction/lifecycle defects the shape harnesses do not execute. Each item is a hypothesis pending FB2/resolution adjudication.",
@@ -3949,6 +3981,27 @@
         "verdict": "already_resolved",
         "reason": "Reconciled 2026-09-04 against the registry and the live GD data: every item is either VERIFIED_RESOLVED in pending_corrections (gold_sign_six, passive_effects_five, vodyanoy_paradox, sec570_infinite_arrows, sec688_text_truncation, registry_spurious_13_140_532, sec166_green_sword_set, item_offer_gates_16_810_972, magic_belt_timing, one_sided_luck_adjudication) or implemented in shipped data/engine: the single-spell choice branch spends the charge on click (useSpell(spellId) before applyChoiceAcquires -> goTo); the June 2026 ARITHMETIC_MAP batches 1-6 are all wired as inventory_condition choices (caged_bird on sec.156/201/228/327, ruby_star on all eight sites, mirror_secret on sec.297/677, gold_amulet on sec.1164 and sec.625, book/treasure_lore/pass/candle/thread_ball/castle_password singles, letter riddles as engine riddle fields on sec.1113/67/1131/992/435, combat summons via groups 61/63); inventory_condition gates exist on sec.412/464/1208; gold_key is granted at sec.440/1172 and checked at sec.1085; all seven stat effects are present as auto_items. The list went stale in June (groups 54-67) and must not be re-queued.",
         "source": "session reconciliation 2026-09-04 (Claude), verified against assets/text_corrections.json + src/game_structure.js"
+      },
+      {
+        "id": "UB-01_sec1096_harpy_flee_rejected",
+        "previously_claimed": "Gemini combined run 2026-09-04: sec.1096 (Harpy) sets both pre_combat_exits (fleeing) and post_combat_exits (victory) to 1164, so fleeing bypasses the fight without penalty; suggested a retreat node sec.1170.",
+        "verdict": "rejected",
+        "reason": "Canon sec.1096: ??? ?????? ????? ?????????? ?? ??????, ????? ?? ????????? (????? ??, ???? ??? ? ??? ????). ... ???? ?? ???? ?????? ????????? ??? ????? ??, ?? 1164?. GD encodes exactly that: choice 0 -> 1164 gated on hand_mirror (a pre-combat alternative, not a flee), choice 1 -> 1164 post_combat, combat_spells_allowed ['COPY'] per group_31. There is no flee choice on sec.1096, and no field named pre_combat_exits / post_combat_exits and no file combat_paragraphs.jsonl exist in the project - the finding is confabulated.",
+        "source": "gemini_3_1_pro_2026_09_04 (combined A+B run, discarded)"
+      },
+      {
+        "id": "UB-02_sec300_watermelon_vs_sec574_banana_rejected",
+        "previously_claimed": "Gemini combined run 2026-09-04: sec.300 grants watermelon but sec.574 gates on banana - item id mismatch.",
+        "verdict": "rejected",
+        "reason": "Two different fruits by canon. sec.300: ???? ?????? ?? ?? ?????, ??????? ??? ????? - the field owner lets you keep the watermelon (GD auto_items watermelon). sec.574: ????? ? ??? ???? ?????, ????? ???????????? ????????, ?? 154? - the monkey wants a banana (GD inventory_condition banana). Bananas are granted in the palm grove (sec.75 / sec.543) and also gate sec.625 (four bananas). Not a mismatch.",
+        "source": "gemini_3_1_pro_2026_09_04 (combined A+B run, discarded)"
+      },
+      {
+        "id": "UB-03_sec96_sec112_art_rejected",
+        "previously_claimed": "Gemini combined run 2026-09-04: sec.96 (single Green Knight) is assigned art30_three_knights and the dialogue sec.112 is assigned combat artwork.",
+        "verdict": "rejected",
+        "reason": "art30_three_knights does not exist (art30 is the two-headed dragon); sec.96 and sec.112 both map to art33_green_knights in src/mj_art.js, which is the intended pair (the Green Knight fight and the dialogue that follows it). Art quality is out of scope of this cycle by the brief.",
+        "source": "gemini_3_1_pro_2026_09_04 (combined A+B run, discarded)"
       }
     ]
   }
