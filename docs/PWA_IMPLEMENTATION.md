@@ -108,7 +108,7 @@ cp src/fonts/*.woff2 dist/fonts/
 Deploy the contents of `dist/` to your chosen HTTPS host:
 ```
 dist/
-├── podzemelye-chyornogo-zamka-remake.html
+├── dungeons-of-the-black-castle.html
 ├── manifest.webmanifest
 ├── sw.js
 ├── icons/

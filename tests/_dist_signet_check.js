@@ -1,7 +1,7 @@
 const fs=require('fs');
 const path=require('path');
 const REPO=path.resolve(__dirname,'..');
-const d=fs.readFileSync(path.join(REPO,'dist','podzemelye-chyornogo-zamka-remake.html'),'utf8');
+const d=fs.readFileSync(path.join(REPO,'dist','dungeons-of-the-black-castle.html'),'utf8');
 let ok=0, bad=0;
 const ck=(c,m)=>{ if(c)ok++; else {bad++; console.log('  FAIL: '+m);} };
 [131,727,734,808].forEach(t=>ck(d.split('"target":'+t+',"inventory_condition":["black_castle_key","signet"]').length-1===1,'array cond '+t));

@@ -1,7 +1,7 @@
 const fs=require('fs');
 const path=require('path');
 const REPO=path.resolve(__dirname,'..');
-const H=path.join(REPO,'dist','podzemelye-chyornogo-zamka-remake.html');
+const H=path.join(REPO,'dist','dungeons-of-the-black-castle.html');
 const d=fs.readFileSync(H,'utf8');
 let ok=0,bad=0; const ck=(c,m)=>{ if(c)ok++; else {bad++; console.log('  FAIL: '+m);} };
 console.log('dist html size: '+(fs.statSync(H).size/1048576).toFixed(2)+' MB');

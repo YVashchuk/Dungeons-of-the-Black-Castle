@@ -99,14 +99,14 @@ git push origin main
 Приватный репо → GitHub Pages не работает для приватных.
 
 **Варианты:**
-1. Скачать `dist/podzemelye-chyornogo-zamka-remake.html` и отправить файлом
+1. Скачать `dist/dungeons-of-the-black-castle.html` и отправить файлом
 2. Сделать репо публичным — тогда работает raw URL:
    ```
-   https://raw.githubusercontent.com/YVashchuk/Dungeons-of-the-Black-Castle/main/dist/podzemelye-chyornogo-zamka-remake.html
+   https://raw.githubusercontent.com/YVashchuk/Dungeons-of-the-Black-Castle/main/dist/dungeons-of-the-black-castle.html
    ```
 3. Использовать GitHub Pages (нужен публичный репо):
    ```
-   https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/podzemelye-chyornogo-zamka-remake.html
+   https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/dungeons-of-the-black-castle.html
    ```
 
 ---

@@ -24,7 +24,7 @@ set -e
 
 SRC_DIR="src"
 DIST_DIR="dist"
-OUTPUT="$DIST_DIR/podzemelye-chyornogo-zamka-remake.html"
+OUTPUT="$DIST_DIR/dungeons-of-the-black-castle.html"
 
 echo "🔨 Building Dungeons of the Black Castle..."
 

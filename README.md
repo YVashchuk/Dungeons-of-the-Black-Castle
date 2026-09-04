@@ -8,7 +8,7 @@
 
 ## 🎮 Играть
 
-Откройте [`dist/podzemelye-chyornogo-zamka-remake.html`](dist/podzemelye-chyornogo-zamka-remake.html) в браузере (Chrome, Edge или Firefox).
+Откройте [`dist/dungeons-of-the-black-castle.html`](dist/dungeons-of-the-black-castle.html) в браузере (Chrome, Edge или Firefox).
 
 Игра работает **полностью offline** — никаких внешних зависимостей, никаких установок; открывается двойным кликом (`file://`). Дистрибутив — **папка**: HTML (~3.5 MB) + каталог `art/` (75 изображений, 7.6 MB) рядом с ним. Для передачи игры заархивируйте `dist/` целиком.
 
@@ -70,7 +70,7 @@ Dungeons-of-the-Black-Castle/
 ├── build.sh                            # Скрипт сборки src/* → dist/
 │
 ├── dist/                               # 🎮 Играбельный билд
-│   ├── podzemelye-chyornogo-zamka-remake.html   # Игра (HTML ~3.5 MB, 4 языка; арт лежит рядом в art/)
+│   ├── dungeons-of-the-black-castle.html   # Игра (HTML ~3.5 MB, 4 языка; арт лежит рядом в art/)
 │   ├── art/                            # 🖼 Внешний арт: mj/ 45 + legacy/ 28 + title/ 2 (75 файлов, 7.6 MB)
 │   ├── manifest.webmanifest            # (prepared) PWA install metadata
 │   ├── sw.js                           # (prepared) Service Worker
@@ -136,7 +136,7 @@ Dungeons-of-the-Black-Castle/
 bash build.sh
 ```
 
-Собирает оболочку (инжектируя `mobile.css` и шрифты), склеивает **11 модулей** из `src/` в `dist/podzemelye-chyornogo-zamka-remake.html` (~3.5 MB, 4 языка) и копирует `assets/art/` → `dist/art/` (75 файлов). Порядок модулей определён в `build.sh`.
+Собирает оболочку (инжектируя `mobile.css` и шрифты), склеивает **11 модулей** из `src/` в `dist/dungeons-of-the-black-castle.html` (~3.5 MB, 4 языка) и копирует `assets/art/` → `dist/art/` (75 файлов). Порядок модулей определён в `build.sh`.
 
 ## 🎨 Иллюстрации
 
