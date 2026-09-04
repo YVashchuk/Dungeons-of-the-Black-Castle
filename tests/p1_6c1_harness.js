@@ -1,5 +1,6 @@
 // 6c-1 harness — every UI literal resolves via t(); only intended Cyrillic literals remain.
-const acorn=require('acorn'); const fs=require('fs');
+let acorn; try{ acorn=require('acorn'); }catch(e){ acorn=require('./vendor/acorn.js'); } // vendored fallback: the battery must run from a bare archive without npm (group_81 follow-up)
+const fs=require('fs');
 const path=require('path');
 const REPO=path.resolve(__dirname,'..');
 const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
