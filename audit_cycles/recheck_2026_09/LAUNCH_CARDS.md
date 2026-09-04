@@ -130,6 +130,44 @@ The attached ZIP is the repository archive of the audited commit (the root folde
 
 ---
 
+## 5. Смоук-тесты через ChatGPT (живая приёмка в браузере)
+
+Смоук-чеки (`MANUAL_SMOKE_CHECKS.md`, 41 проверка) требуют настоящего браузера: раскладка, шрифты, фокус, F5. В песочнице ChatGPT браузера нет (Track A это зафиксировал: Playwright без Chromium, jsdom нет), поэтому два режима:
+
+- **Режим A — агент с браузером** (если в твоём плане есть ChatGPT Agent / режим с управлением браузером): агент сам открывает сборку по публичному URL, выполняет проверки, делает скриншоты и пишет отчёт.
+- **Режим B — оценщик скриншотов**: ты проходишь чек-лист сам (десктоп + телефон), делаешь скриншот на каждый пункт, а ChatGPT сверяет их с ожиданиями и оформляет отчёт. Мобильные пункты (B5, C16, половина C17) в режиме A всё равно будут `BLOCKED` — их закрывает только телефон.
+
+Бриф: **`audit_cycles/recheck_2026_09/SMOKE_BRIEF_chatgpt.md`** (EN, с точными русскими подписями кнопок, глоссарием интерфейса, сигнатурами сборки и таблицами C/B/A).
+
+### Шаг 0 — публичный URL сборки (нужен для режима A и для телефона в режиме B)
+GitHub → репозиторий → **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main`, folder `/ (root)` → Save.** Через 1–2 минуты сборка доступна по адресу:
+`https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/podzemelye-chyornogo-zamka-remake.html`
+(арт подгружается из соседней `dist/art/`, путь относительный). Открой сам, убедись, что титул рендерится, и проверь сигнатуры сборки из §2 брифа: `#1131` показывает поле загадки и «Ответить»; на `#1` в сайдбаре есть карточка мини-карты с «Открыть»; в меню есть строка «Автосохранение: § 1 · HH:MM». Репозиторий и так публичный — Pages ничего нового не раскрывает.
+
+### Режим A — запуск агента
+1. Новый чат (Temporary), модель 5.6 Sol, **режим агента / управление браузером включён**, исполнение кода не нужно.
+2. Прикрепить `SMOKE_BRIEF_chatgpt.md` (или дать ссылку на raw-файл в репозитории).
+3. Первое сообщение:
+
+```
+Read the attached SMOKE_BRIEF_chatgpt.md in full. Mode A: you drive the browser yourself. The build under test is https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/podzemelye-chyornogo-zamka-remake.html - stay on that URL and its #N anchors only. Do the pre-flight (section 2) and stop if a build signature is missing. Then run Block C (C1-C19) first, Block B, and Block A as time permits; one screenshot per check; mark anything you cannot perform as BLOCKED with the reason. Deliver SMOKE_REPORT.md in the format of section 7 (offer it for download and print it in the chat). No other web use.
+```
+
+4. После прогона скачать `SMOKE_REPORT.md` и скриншоты в `_handoff\audit_2026_09_chatgpt\smoke\`.
+
+### Режим B — ты проходишь, ChatGPT оценивает
+1. Открой сборку (локально `dist\…remake.html` или по URL Pages; телефон — только по URL) и иди по таблицам брифа: на каждый пункт — скриншот в решающий момент, имя файла = id (`C18.png`, для F5-проверок `C10-before.png`/`C10-after.png`). Для мобильных пунктов — скриншоты с телефона.
+2. Новый чат, модель 5.6 Sol, прикрепить `SMOKE_BRIEF_chatgpt.md` и скриншоты (пачками по блокам).
+3. Первое сообщение:
+
+```
+Read the attached SMOKE_BRIEF_chatgpt.md in full. Mode B: the human performed the checks and attached the screenshots named by check id. For every id in sections 4-6 judge the screenshot against the expected column and fill the report table of section 7 (PASS / FAIL / BLOCKED / UNCLEAR with what the screenshot shows, quoting Russian UI text verbatim); when a screenshot cannot prove an expectation, say UNCLEAR and name the screenshot that would settle it. Deliver SMOKE_REPORT.md (download + print). No web use.
+```
+
+### Приёмка
+Отчёт → `_handoff\audit_2026_09_chatgpt\smoke\SMOKE_REPORT.md` (+ скриншоты). Я записываю прогон в журнал `MANUAL_SMOKE_CHECKS.md` (дата, билд, что прогнано, итог), а каждую аномалию / FAIL адьюдицирую как обычно (канон ↔ резолюция ↔ код → группа реестра).
+
+
 ## 4. Приёмка (что делаю я)
 
 1. Сохраняю отчёт как `audit_cycles/recheck_2026_09/REPORT_<provider>_<track>.md`, считаю SHA-256, записываю в реестр.
