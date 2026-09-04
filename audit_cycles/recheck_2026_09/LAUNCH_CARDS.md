@@ -140,6 +140,8 @@ The attached ZIP is the repository archive of the audited commit (the root folde
 Бриф: **`audit_cycles/recheck_2026_09/SMOKE_BRIEF_chatgpt.md`** (EN, с точными русскими подписями кнопок, глоссарием интерфейса, сигнатурами сборки и таблицами C/B/A).
 
 ### Шаг 0 — публичный URL сборки (нужен для режима A и для телефона в режиме B)
+
+**Статус 2026-09-04:** Pages включён, сборка жива по адресу выше (корень сайта редиректит на игру через `index.html`, `.nojekyll` отключает Jekyll). Авто-смоук `tests/smoke/smoke_run.js` против публичного URL: 24/24 PASS — агент увидит ту же сборку.
 GitHub → репозиторий → **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main`, folder `/ (root)` → Save.** Через 1–2 минуты сборка доступна по адресу:
 `https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/podzemelye-chyornogo-zamka-remake.html`
 (арт подгружается из соседней `dist/art/`, путь относительный). Открой сам, убедись, что титул рендерится, и проверь сигнатуры сборки из §2 брифа: `#1131` показывает поле загадки и «Ответить»; на `#1` в сайдбаре есть карточка мини-карты с «Открыть»; в меню есть строка «Автосохранение: § 1 · HH:MM». Репозиторий и так публичный — Pages ничего нового не раскрывает.
