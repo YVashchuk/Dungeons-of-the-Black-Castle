@@ -161,7 +161,8 @@
     "v2.153 -> v2.154": "September 2026 - group_79 stage B, batch 3 (P1, decision A): UI-03 mobile information architecture - the sidebar is replaced on phones by a compact HUD bar (stats/gold chips + spells/bag/notes/map/log/menu buttons), sidebar sections are served as bottom sheets that reparent the live DOM nodes (BC_MOBILE_SHEETS), the log FAB is docked into the HUD, the landscape sidebar rule is scoped to 701-900px. 2 ui keys x4 (329 -> 331), dist asserts +4 (dialog roles 8), MANUAL_SMOKE_CHECKS C16. group_79 11/12 - only UI-12 (deferred to the Midjourney art backlog) remains open. GAME_RULES.md label 2.153 -> 2.154 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.154 -> v2.155": "September 2026 - registry-only: memory-backlog reconciliation. The 'engine backlog' carried by session memory and HANDOFF_2026-07-20 s.4 (spell decrement P0, paragraph arithmetic + bird guide, Vodyanoy, infinite arrows, sec.688, gold signs, passive effects, luck dead-ends, Green Sword, Gold Key, offer/text gates, Magic Belt, stat list) verified as already resolved in the registry and GD - graveyard entry memory_backlog_reconciliation_2026_09_04 added to resolved_no_op so no future session re-queues it. Open work is now: group_71 art (Midjourney), UI-12 (deferred), group_68 sec.63 (deliberately deferred). GAME_RULES.md label 2.154 -> 2.155 (R-03 guard). No code change; battery ALL GREEN.",
     "v2.155 -> v2.156": "September 2026 - registry-only: recheck cycle 2026-09 opened. Gemini 3.1 Pro Track A report archived (SHA-256 d437b031354c...) - four hypotheses recorded as group_81 (UA-01 dialog stack by DOM order P1, UA-02 inventory spans not keyboard-operable P1, UA-03 no live combat-round status P2, UA-04 emoji in HUD aria names P2). The combined A+B run (SHA-256 bc5e456d890f...) is discarded per the accuracy guard; its three Track B claims (sec.1096 harpy flee, sec.300/574 fruit mismatch, sec.96/112 art) were checked against canon and rejected into resolved_no_op. GAME_RULES.md label 2.155 -> 2.156 (R-03 guard). No code change; battery ALL GREEN.",
-    "v2.156 -> v2.157": "September 2026 - group_81 batch 1 (P1+P1+P2+P2, Gemini track A): UA-02 inventory eat/drop controls are real buttons with aria-labels (keyboard-operable), UA-01 the dialog controller keeps an open-order stack and raises the newest dialog's z-index (paint order == Escape/Tab order), UA-03 screen-reader combat-round status via a diffing mirror of #combat-log, UA-04 emoji-free aria keys for the HUD map/log/menu buttons (3 ui keys x4, 331 -> 334). _dist_ui_check +4 asserts, MANUAL_SMOKE_CHECKS C17. group_81 4/4 DONE. GAME_RULES.md label 2.156 -> 2.157 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.156 -> v2.157": "September 2026 - group_81 batch 1 (P1+P1+P2+P2, Gemini track A): UA-02 inventory eat/drop controls are real buttons with aria-labels (keyboard-operable), UA-01 the dialog controller keeps an open-order stack and raises the newest dialog's z-index (paint order == Escape/Tab order), UA-03 screen-reader combat-round status via a diffing mirror of #combat-log, UA-04 emoji-free aria keys for the HUD map/log/menu buttons (3 ui keys x4, 331 -> 334). _dist_ui_check +4 asserts, MANUAL_SMOKE_CHECKS C17. group_81 4/4 DONE. GAME_RULES.md label 2.156 -> 2.157 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.157 -> v2.158": "September 2026 - registry-only: recheck cycle 2026-09, Claude (Fable 5.1 via Windows MCP) reports archived - track B (SHA-256 0f70efa864e4...; 8 findings incl. P0 B-01 weapons not weightless because ITEM_SIZES[...]||1 and P0 B-03 sec.131 eagle never wakes after a non-round goblin kill) and track A (SHA-256 cde40411b9ed...; 18 findings incl. P0 CA-01 renderRiddle writes into a container that never existed, so the letter-riddle engine was unreachable in-game). 26 hypotheses taken into group_81 (now 30 items, 4 DONE) with maintainer adjudication notes. GAME_RULES.md label 2.157 -> 2.158 (R-03 guard). No code change; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -440,7 +441,7 @@
       "verified": "2026-07-09"
     },
     "group_81_2026_09_04_recheck": {
-      "comment": "Recheck cycle 2026-09 (brief audit_cycles/recheck_2026_09/BRIEF.md; audited state main @ a051c30 / v2.155). Auditor: Gemini 3.1 Pro, normal chat, no Deep Research. Track A report archived verbatim as REPORT_gemini_trackA.md (SHA-256 d437b031354c2e1c02550f8b9354760415e1ea78518989a089336d1191218641): pre-flight proofs correct, 9/9 blocks reviewed, 4 findings (2 P1 + 2 P2). Track B could not run as a clean 10-file set (game_structure.js arrived truncated at paragraph 848 and the model correctly stopped per the pre-flight rule); the second, combined A+B attempt (REPORT_gemini_trackB_combined.md, SHA-256 bc5e456d890fdbf27038a90908bffc76e8eeebee642f9e0b1a25a6cfb7e93659) repeated the four Track A findings and added three Track B findings, but its pre-flight mis-stated the first heading of REGISTRY_EXCERPT.md (claimed UI-01, actual V-01) and its findings cite fields and assets that do not exist in the project (pre_combat_exits / post_combat_exits, combat_paragraphs.jsonl, art30_three_knights) - per the brief's accuracy guard the Track B part is discarded; its three findings were nevertheless checked against canon and rejected (see resolved_no_op). Track B is to be re-run with full repository access and a real battery run (Claude via Windows MCP); Track C (standards, Deep Research) is deferred until the provider quota resets. Each item below is a hypothesis pending adjudication.",
+      "comment": "Recheck cycle 2026-09 (brief audit_cycles/recheck_2026_09/BRIEF.md; audited state main @ a051c30 / v2.155). Auditor: Gemini 3.1 Pro, normal chat, no Deep Research. Track A report archived verbatim as REPORT_gemini_trackA.md (SHA-256 d437b031354c2e1c02550f8b9354760415e1ea78518989a089336d1191218641): pre-flight proofs correct, 9/9 blocks reviewed, 4 findings (2 P1 + 2 P2). Track B could not run as a clean 10-file set (game_structure.js arrived truncated at paragraph 848 and the model correctly stopped per the pre-flight rule); the second, combined A+B attempt (REPORT_gemini_trackB_combined.md, SHA-256 bc5e456d890fdbf27038a90908bffc76e8eeebee642f9e0b1a25a6cfb7e93659) repeated the four Track A findings and added three Track B findings, but its pre-flight mis-stated the first heading of REGISTRY_EXCERPT.md (claimed UI-01, actual V-01) and its findings cite fields and assets that do not exist in the project (pre_combat_exits / post_combat_exits, combat_paragraphs.jsonl, art30_three_knights) - per the brief's accuracy guard the Track B part is discarded; its three findings were nevertheless checked against canon and rejected (see resolved_no_op). Track B is to be re-run with full repository access and a real battery run (Claude via Windows MCP); Track C (standards, Deep Research) is deferred until the provider quota resets. Second auditor: Claude Fable 5.1 via Windows MCP (full repository access, read-only, battery run by the auditor: ALL GREEN at 79124a5): REPORT_claude_trackB.md (SHA-256 0f70efa864e41ac9bc09c15161b9d5d747aba66dcfd84514be554a945f5d55d9) - 8 findings (2 P0 + 2 P1 + 4 P2); REPORT_claude_trackA.md (SHA-256 cde40411b9edaf3a089cfededde735de4cf384ba21f255dc6e12472cd247c129) - 18 findings (1 P0 + 2 P1 + 15 P2); both pre-flights correct, both reports accepted for adjudication and taken in as items B-01..B-08 / CA-01..CA-18 with the maintainer's adjudication in each note. Each item below is a hypothesis pending adjudication.",
       "source": "gemini_3_1_pro_2026_09_04 (recheck cycle 2026-09, track A)",
       "verified": "2026-09-04",
       "items": [
@@ -471,6 +472,188 @@
           "status": "DONE",
           "hypothesis": "HUD icon buttons reuse content keys as accessible names (ui_lbl_map = '\\ud83d\\uddfa ?????', ui_btn_log = '\\ud83d\\udcdc ??????', ui_btn_menu = '\\u2630 ????'), so screen readers announce the emoji before the label. Suggested fix: dedicated emoji-free aria keys in all locales.",
           "resolution": "CONFIRMED (P2). Three emoji-free keys (ui_aria_map, ui_aria_log, ui_aria_menu) added x4 locales (331 -> 334); the HUD map / log / menu buttons use them for both aria-label and title."
+        },
+        {
+          "id": "B-01_weapons_not_weightless",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "getItemSize(): `return ITEM_SIZES[canonItem(name)]||1;` - the three armament entries are 0 and 0||1 is 1, so whole_sword / death_of_orcs / knight_shield each occupy one bag slot; getBagUsed() counts them and the offer modal's Take button is disabled at a full bag. Contradicts the G2-01 resolution ('both swords and the shield now occupy zero of the seven slots') and V-02 ('can never be blocked by a full bag'). The 6d guard 9j only asserts the ITEM_SIZES literal, never the function's return. Side effect: the equip branch pushes unconditionally, so at a full bag sec.71/sec.1213 push the bag to 8/7.",
+          "note": "Maintainer adjudication: CONFIRMED P0 by reading the two lines. Fix: numeric-typed lookup + a 6d guard that calls getItemSize() on the three weapons."
+        },
+        {
+          "id": "B-02_take_then_eat_double_serving",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Offer modal: the 'already in bag' branch of renderInvModalCurrent disables only the Take button; #inv-eatnow-N stays enabled and eatFoundItem() checks only kind/_eaten, not bag presence; takeItem() pushes the same object reference. Sequence Take -> 'Eat now' grants +stamina AND leaves the food in the bag (with _eaten:true persisted), after which eatFood() from the bag grants it again - one canon serving becomes two. The V-01 resolution only promised no eat-then-take duplicate.",
+          "note": "Maintainer adjudication: CONFIRMED P1 by code reading."
+        },
+        {
+          "id": "B-03_sec131_script_nonround_kill_softlock",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "sec.131 (goblin + eagle sentry) is script-managed (eagle active:false, no joins). Its activation sites are the top-of-round block (round 5 while the goblin lives) and the after-strike block, which sits after the early return `if(alive.length===0){ if(combatResolved(cs)){endCombat(true);} else { ...protivniki_vyzhidayut...; } return; }`. None of useCopyInCombat / useLarvaInCombat / useAllyInCombat carries a sec131 block and activateStagedJoins ignores enemies without joins. When the goblin falls to a non-round kill (Copy side-fight, sec.932 larva - path sec.1123 -> ... -> sec.131 exists, or the bell's bear) combatResolved is false (eagle hp 7), every further Udar returns at the waiting branch, the eagle never activates and the fight can neither be won nor left (no flee at sec.131). Before v2.146 the same sequence ended in a premature victory; the X-01 fix turned it into a soft-lock. Canon: 'Cherez 4 raunda ataki k nemu prisoedinyaetsya Orel-chasovoy ... Esli vy pobedili oboih strazhey'. The same shape exists at sec.1175 for the larva path and Death-of-Orcs at open (unreachable in play per BFS). handleCanonCombatMilestones(cs) is defined but never called.",
+          "note": "Maintainer adjudication: CONFIRMED P0 by code reading (line order of the early return vs the after-strike block). Fix: script-aware first-death activation inside activateStagedJoins, which already runs before the alive check and from every non-round kill path."
+        },
+        {
+          "id": "B-04_fr_autosave_nbsp",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "FR ui_autosave_note is 'Sauvegarde auto :' with U+0020 before the colon; the house convention (group_77) and every other FR colon key use NBSP U+00A0.",
+          "note": "Maintainer adjudication: CONFIRMED (codepoints 20 3a). Merged with CA-16."
+        },
+        {
+          "id": "B-05_duplicate_legacyru_arbuz",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "items.json: melon (food, sec.389) and watermelon (item, sec.300) share legacyRu 'Arbuz'; the generated RU_TO_SLUG literal therefore contains the key twice (lines 947 and 976) and the later wins, so canonItem('Arbuz') -> watermelon; a legacy RU 'Arbuz' string never dedupes against the sec.389 food object and both display identically. The R-02 parity guard cannot see duplicate keys.",
+          "note": "Maintainer adjudication: CONFIRMED by reading items.json and the literal. Fix: distinct legacyRu for the sec.300 item + a no-duplicate-legacyRu guard."
+        },
+        {
+          "id": "B-06_game_rules_stale_sentences",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "GAME_RULES.md s3.7 lists joins activation sites without the Copy/ally kills added in v2.146; s3.8 says targeted Weakness lands on the current target, while since v2.147 it lands on cs.weakPickIdx (staged waiters selectable) with the round target as fallback; s1/s6 do not mention the slotCost:0 armament class. The brief's census 'gold_cost 58' is a typo (data and GAME_RULES: 59).",
+          "note": "Maintainer adjudication: CONFIRMED (docs)."
+        },
+        {
+          "id": "B-07_luck_check_f5_reroll",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "doLuckCheck saves the luck decrement but keeps the outcome only in the runtime globals luckResult/luckDone, which goTo and every reload reset; after an unlucky roll the death is applied only when the modal's button is clicked, so an F5 before that click re-renders the paragraph with hasPendingLuck true and offers the check again (one luck point per attempt) - the reroll-to-success class the V-04 resolution treated as P0 for sec.781, left open for ordinary luck checks (sec.203/289/377/418/421/1186).",
+          "note": "Maintainer adjudication: CONFIRMED P1 by code reading (luckResult/luckDone are `let` globals). Fix: persist the resolved roll in S at roll time, restore it in renderChoices, clear it on goTo so revisit semantics stay unchanged."
+        },
+        {
+          "id": "B-08_combat_not_persisted_design",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Combat state is never persisted; an F5 mid-fight restarts the paragraph with full enemy HP, but the hero's stamina is persisted only when something else saved during the fight (useSpell, larva, healing, a language switch), so after a Force/Weakness cast the reload keeps the wounds and loses the charge, while without a cast it restores pre-fight stamina (a free retry). At sec.436 an F5 during the +1 fight lands on the pre-luck flow with the paid Force gone.",
+          "note": "Maintainer adjudication: ACCEPTED as a design note - document the rule (no combat persistence; mid-fight saves are side effects) in GAME_RULES s2 and a MANUAL_SMOKE_CHECKS note; snapshotting combatState is out of scope for this cycle."
+        },
+        {
+          "id": "CA-01_render_riddle_dead_container",
+          "severity": "P0",
+          "status": "OPEN",
+          "hypothesis": "renderRiddle: `const cont=document.getElementById('choices'); if(!cont)return;` - no element with id 'choices' exists in the shell (the reading column is #c-area/#c-list) nor in any commit of the history; the other five renderers use #c-list. renderGame dispatches renderRiddle for the seven riddle paragraphs (sec.439/67/95/1113/1131/992/435), which returns before clearing #c-list, so the previous paragraph's buttons stay on screen and no input / answer / exit button is rendered. Reproduced on the built dist in jsdom for all seven paragraphs. No harness references renderRiddle.",
+          "note": "Maintainer adjudication: CONFIRMED P0 (the whole letter-riddle engine has been unreachable in-game since its introduction). Fix: render into #c-list and add a renderer-target guard."
+        },
+        {
+          "id": "CA-02_combat_cards_keyboard",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Combat enemy cards are <div class=\"combat-enemy\"> with card.onclick and selection shown only by an inline outline; no tabindex, role, keydown or aria-pressed - per-round target selection (G-05) and the V-03 Weakness pick are pointer-only on the primary combat flow (WCAG 2.1.1), and screen readers get no selected state.",
+          "note": "Maintainer adjudication: CONFIRMED P1 by code reading. Fix: role=button + tabindex=0 + Enter/Space + aria-pressed on clickable cards; selection via class instead of outline."
+        },
+        {
+          "id": "CA-03_focus_return_after_combat",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "_bcDialogClosed restores focus only if the opener is still in the document; the combat opener ('Vstupit v boy') is destroyed synchronously by renderGame() before the MutationObserver microtask delivers the close, so after every combat (and after luck dialogs -> goTo -> renderGame) focus falls to <body> and keyboard users restart the Tab order from the first sidebar control instead of the post-combat choices.",
+          "note": "Maintainer adjudication: CONFIRMED P1 by event-ordering reasoning. Fix: fallback focus to the first #c-list button, else #s-area with tabindex=-1."
+        },
+        {
+          "id": "CA-04_toast_live_region_timing",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "showItemNotification creates the toast with role=status/aria-live and inserts it into the DOM already populated; screen readers announce changes to an existing live region, so pre-filled regions inserted afresh are announced inconsistently - stat/gold/food notifications may be silent.",
+          "note": "Maintainer adjudication: ACCEPTED P2 (AT-dependent). Fix: a persistent sr-only live region written via setTimeout 0."
+        },
+        {
+          "id": "CA-05_dice_result_live_focus",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "renderDiceRoll/Check/Loot: the roll button does list.innerHTML='' and appends a plain result div (no live region, unlike #luck-result) plus Continue; the activated button is destroyed, so focus drops to body.",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: role=status on the result and focus the Continue button."
+        },
+        {
+          "id": "CA-06_combat_status_reset_edge",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "BC_COMBAT_STATUS reset heuristic `if(n<seen) seen=0;` fails when a new fight's synchronous intro batch has at least as many lines as the previous fight's final count; the intro lines are then never announced (simulated on dist).",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: explicit reset hook called from startCombat after the log is cleared."
+        },
+        {
+          "id": "CA-07_import_input_keyboard",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Menu import: the file input is display:none (not focusable) and its label has no tabindex, so save import is unreachable by keyboard; the menu Tab trap cycles select -> export -> new game -> close.",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: sr-only input instead of display:none."
+        },
+        {
+          "id": "CA-08_accessible_names_states",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Accessible-name/state quality: offer-modal drop button named by its emoji content (title is not a name); event-log close button named by its glyph; #inv-add-btn named '+'; sidebar eat/drop aria-labels identical for every row (no item name); HUD chips labelled only by title, so a screen reader hears unlabeled numbers; greyed spell choices carry no aria-disabled; visual-dock pills carry no aria-pressed.",
+          "note": "Maintainer adjudication: ACCEPTED P2."
+        },
+        {
+          "id": "CA-09_focus_loss_after_rebuilds",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "renderSpellSel, updateHUD's inventory list and renderInvModalCurrent rebuild their containers with innerHTML on activation (spell +/- clicks, eat/drop), destroying the focused control; focus falls to body after each action (inside a dialog the Tab trap recovers at the first control).",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: refocus the equivalent control after each rebuild."
+        },
+        {
+          "id": "CA-10_fixed_layers_safe_area",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "(a) .event-log-panel has no safe-area padding and on phones is a full-width layer without dialog semantics; (b) the FAB inset rule lives only inside the <=700px block where the FAB is hidden, so at 701-900px landscape it shows without inset; (c) .modal{max-height:100dvh} inside an overlay whose content box is 100dvh minus the top inset overflows under the notch; (d) .visual-dock{left:12px} has no left inset.",
+          "note": "Maintainer adjudication: ACCEPTED P2 (effective only where env() insets are non-zero)."
+        },
+        {
+          "id": "CA-11_landscape_915_breakpoint",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "mobile.css targets 'Pixel 7a ... 915 landscape' but the landscape sidebar rule and the touch block stop at 900px, so a 915px-wide landscape phone gets the desktop layout.",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: raise the bounds to 960px."
+        },
+        {
+          "id": "CA-12_hud_height_budget",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "HUD bar height by arithmetic: padding 5+6, border 1, chip row ~26px (13px text x inherited line-height 1.7), gap 4, buttons 36 -> ~78px against the resolution's ~70px and the audit's 56-72px target.",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: line-height 1.2 on the chip row."
+        },
+        {
+          "id": "CA-13_sheet_return_adjacent_nodes",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "returnSheetSection: if a moved node's recorded next sibling is another node moved in the same call, ref resolves to null and the node is appended at the end of the sidebar. Latent (current pairs are not adjacent).",
+          "note": "Maintainer adjudication: ACCEPTED P2 (latent). Fix: restore in reverse order of removal."
+        },
+        {
+          "id": "CA-14_ofl_missing_notices",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "src/fonts/OFL.txt carries only Forum's copyright / Reserved Font Name header; OFL s1 requires each font's copyright notice to accompany redistributed copies - Cinzel and Cormorant Garamond notices are missing although fonts.css says the file covers all three.",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: prepend the two upstream notices."
+        },
+        {
+          "id": "CA-15_forum_faux_bold",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Forum is declared once with font-weight 400 while h2/h3 keep the UA default bold, so Cyrillic headings render Forum with synthetic bold next to real Cinzel 600-700 for Latin.",
+          "note": "Maintainer adjudication: ACCEPTED P2 (cosmetic, pending the author's C14 eyes). Fix: font-weight 400 on the three heading selectors."
+        },
+        {
+          "id": "CA-16_fr_nbsp_uk_map_term",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "FR ui_autosave_note space before colon (see B-04); UK mixes 'mapa' (visible ui_lbl_map, ui_title_map_open) with 'karta' in the new aria keys.",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: NBSP + align UK aria keys to 'mapa'."
+        },
+        {
+          "id": "CA-17_sidebar_map_hidden_hotkey",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "#sb-map has been display:none since the shell's first commit and no code shows it, so the sidebar mini-map card and its Open button are never displayed; on desktop the only entry to the map is the hotkey, which tests ev.key.toLowerCase()==='m' (layout-dependent: a Russian layout yields 'ь') and is not gated on the game screen or on open dialogs.",
+          "note": "Maintainer adjudication: CONFIRMED by grep (no code references 'sb-map'). Fix: show the section, key the hotkey on ev.code, gate it on the game screen and on no other dialog being open."
+        },
+        {
+          "id": "CA-18_riddle_input_outline",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "#riddle-input{outline:none} (1,0,0) beats input:focus-visible (0,1,1), so the gold ring never applies to the riddle field.",
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: drop the outline reset."
         }
       ]
     },
