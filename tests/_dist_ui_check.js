@@ -28,9 +28,11 @@ const snips=[
  ['dialog roles (UI-04)', 'role="dialog" aria-modal="true"', 7],
  ['dialog controller (UI-04)', 'BC_A11Y_DIALOGS', 2],
  ['notification live region (UI-04)', "el.setAttribute('aria-live','polite')", 1],
+ ['forum cyrillic display (UI-07)', "font-family: 'Forum';", 1],
+ ['font chain with Forum (UI-07)', "--font-ui:'Cinzel','Forum','Cormorant Garamond',serif", 1],
 ];
 let ok=0,bad=0;
 snips.forEach(([n,s,exp])=>{ const e=exp||1; const c=d.split(s).length-1; if(c===e)ok++; else {bad++; console.log('FAIL '+n+' count='+c+' expected='+e);} });
-['vzyat_2','onload_this_classlist_add_loaded','title_vybrosit','title_sest','vyn_style_color_3c9','neverno_ostalos_popytok','alt_podzemelya_chernogo_zamka','"v_meshke"'].forEach(k=>{ if(d.includes(k)){bad++; console.log('FAIL removed key present: '+k);} else ok++; });
+['vzyat_2','onload_this_classlist_add_loaded','title_vybrosit','title_sest','vyn_style_color_3c9','neverno_ostalos_popytok','alt_podzemelya_chernogo_zamka','"v_meshke"','Veles Redone','Cyrillic Old Face'].forEach(k=>{ if(d.includes(k)){bad++; console.log('FAIL removed key present: '+k);} else ok++; });
 console.log('DIST REFACTOR CHECK: '+ok+' passed, '+bad+' failed');
 process.exit(bad?1:0);

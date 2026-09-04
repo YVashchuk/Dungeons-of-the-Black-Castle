@@ -95,10 +95,10 @@ Dungeons-of-the-Black-Castle/
 │   ├── game_logic.js                   # Игровая логика (MJ приоритет над ILLUST)
 │   ├── mobile.css                      # Мобильная вёрстка (инжектится сборкой в <style>)
 │   └── fonts/                          # Самостоятельные шрифты (инлайнятся сборкой как base64)
-│       ├── fonts.css                   # @font-face: Cinzel, Cormorant, Veles, Cyrillic Old Face
+│       ├── fonts.css                   # @font-face: Cinzel, Cormorant Garamond, Forum (SIL OFL 1.1)
 │       ├── Cinzel-lat.woff2 + CinzelDecorative-lat.woff2 + 4× CormorantGaramond
-│       ├── VelesRedone.woff2           # Slavic ornamental, для drop-caps
-│       └── CyrillicOldFace.woff2       # Slavic-flavoured body text alternative
+│       ├── Forum-cyr.woff2             # Кириллический display-шрифт для заголовков и UI (group_79 UI-07)
+│       └── OFL.txt                     # SIL Open Font License 1.1 (Cinzel, Cormorant Garamond, Forum)
 │
 ├── assets/                             # Источники (текст + PDF + арт)
 │   ├── fb2_remake.fb2                  # Каноничный источник (1221 параграф)
@@ -157,7 +157,7 @@ bash build.sh
 
 - [x] Граф-аудит игровой логики (архив: [`audit_cycles/archive_2026_04/GRAPH_AUDIT.md`](audit_cycles/archive_2026_04/GRAPH_AUDIT.md))
 - [x] Подготовка PWA (см. [`docs/PWA_IMPLEMENTATION.md`](docs/PWA_IMPLEMENTATION.md))
-- [x] Самостоятельные шрифты + 2 славянских шрифта (Veles Redone, Cyrillic Old Face)
+- [x] Самостоятельные шрифты — Cinzel, Cormorant Garamond, Forum (кириллический display для заголовков); все SIL OFL 1.1
 - [x] Sound pack (procedural fallback, 20 OGG в `dist/sounds/`)
 - [x] Markdown-экспорт текста книги для Gemini Project (`assets/book_text.md`)
 - [x] Орфография в Midjourney промптах + явная славянская внешность для не-нежити персонажей
