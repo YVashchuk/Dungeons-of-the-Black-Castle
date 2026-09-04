@@ -152,7 +152,8 @@
     "v2.144 -> v2.145": "July 2026 - group_80 batch 2 (P0+P1): V-02 + G2-01. Imperative canon grants get a mandatory auto_items.equip branch that bypasses the closable offer modal: sec.71 atomically swaps the carried Green Knight sword for Death of Orcs, sec.1213 guarantees the shield; three ui keys x4 (320). The FB2 intro weightless-weapons rule lands as an armament class - whole_sword/death_of_orcs/knight_shield are kind:'weapon' slotCost:0 in the registry and zero-sized in ITEM_SIZES with a p1_6d two-way parity guard (34 -> 35). Dist rebuilt; battery ALL GREEN.",
     "v2.145 -> v2.146": "July 2026 - group_80 batch 3 (P0): the combat lifecycle cluster X-01+X-02+X-03. One victory primitive (combatResolved over ALL non-fled enemies) now rules every kill path; staged joins fire after Copy/ally side-fights; active-wipe with round-only waiters keeps the fight open with an explicit bide-their-time beat (one ui key x4, 321). The condition button becomes a single idempotent recomputed component cleared by clearCombatExtraButtons at every boundary (start/round/end/routed) with instance-bound handlers - the stale-handler leak into the next fight is dead, and the sword-activated sec.617 goblin shows the flee exit immediately. endCombat records ALL non-flee condition exits on full victory (enemy_dead => wound_2 satisfied), closing the reopened sec.532/sec.994 dead-end for instant kills. p1_6d 35 -> 36. Dist rebuilt; battery ALL GREEN.",
     "v2.146 -> v2.147": "July 2026 - group_80 batch 4 (P0): V-03 staged Weakness targeting. cs.weakPickIdx decouples the pre-round-1 Weakness pick from the round target: all alive cards (staged waiters included) are clickable with a red outline while the pick is open, round-1 consumption prefers the pick with the old default as fallback, and the per-enemy debuff rides a waiter into activation - FB2's 'any of them' honoured on sec.1175 and sec.628 bridges. p1_6d 36 -> 37. Dist rebuilt; battery ALL GREEN.",
-    "v2.147 -> v2.148": "July 2026 - group_80 batch 5 (P0, the last P0): V-04 dice persistence. Both fate rolls commit persisted records BEFORE showing their outcome: sec.781 restores the same faces and single resolved target on F5/revisit (no reroll-to-success), sec.932 restores the same n and unfinished pickup, and Continue without picking explicitly commits the refusal into diceLootDone. MANUAL_SMOKE_CHECKS C10/C11 added per convention. p1_6d 37 -> 38. Dist rebuilt; battery ALL GREEN."
+    "v2.147 -> v2.148": "July 2026 - group_80 batch 5 (P0, the last P0): V-04 dice persistence. Both fate rolls commit persisted records BEFORE showing their outcome: sec.781 restores the same faces and single resolved target on F5/revisit (no reroll-to-success), sec.932 restores the same n and unfinished pickup, and Continue without picking explicitly commits the refusal into diceLootDone. MANUAL_SMOKE_CHECKS C10/C11 added per convention. p1_6d 37 -> 38. Dist rebuilt; battery ALL GREEN.",
+    "v2.148 -> v2.149": "September 2026 - group_80 closing batch (P1+P1+P2): X-04 atomic sec.436 Force spend (flag consumed in the fight onclick, not at render - F5 no longer burns the paid cast), R-01 choice-index plumbing through the four post-luck renderChoices branches (withIdx map; shopBought/batchPicked keyed by real indices; normalizeSave prunes legacy [null] / ':undefined' markers) and R-03 GAME_RULES.md label sync with a standing 6d guard (label == last version_history transition). MANUAL_SMOKE_CHECKS C12/C13 added. group_80 12/12 DONE - verification cycle closed. p1_6d 38 -> 42. Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -486,8 +487,9 @@
         {
           "id": "X-04_sec436_reload_window",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "The sec.436 return branch performs S.sec436_force=false; saveGame() at RENDER time, before the Fight click. The net modifier on click is correct (+1 script +2 equipment), but F5 between render and click loses the already-paid Force and reverts to the pre-luck flow. Fix: consume the persisted flag in the atomic fight-start onclick (or store a committed combat setup restorable after reload)."
+          "status": "DONE",
+          "hypothesis": "The sec.436 return branch performs S.sec436_force=false; saveGame() at RENDER time, before the Fight click. The net modifier on click is correct (+1 script +2 equipment), but F5 between render and click loses the already-paid Force and reverts to the pre-luck flow. Fix: consume the persisted flag in the atomic fight-start onclick (or store a committed combat setup restorable after reload).",
+          "resolution": "CONFIRMED - render-time consumption opened a paid-cast loss window. The sec.436 Force-return branch no longer clears the flag while drawing the button: S.sec436_force=false + saveGame() moved into the Fight-at-+1 onclick, immediately before startCombat, so the spend commits atomically with the fight it pays for. F5 between render and click now reloads back onto the same +1 branch with the flag intact; the pre-luck flow stays unreachable until the fight actually starts. sec.526 round-trip otherwise unchanged (set at cast, cleared at fight start). MANUAL_SMOKE_CHECKS C12 added per convention."
         },
         {
           "id": "G2-01_weightless_weapons",
@@ -499,8 +501,9 @@
         {
           "id": "R-01_choice_index_lost",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "Final renderChoices branches call makeChoiceBtn(ch) WITHOUT the source index: buying one-shot wood_piece at sec.340 stores shopBought:{'340':[null]} - after reload the button is active again and charges gold twice; pickup_batch stores the key '585:undefined' (works while one batch per paragraph, two would collide). Fix: pass the original sec.choices index through every render branch; add save round-trip tests for purchases and batches; migrate legacy [null]/:undefined saves."
+          "status": "DONE",
+          "hypothesis": "Final renderChoices branches call makeChoiceBtn(ch) WITHOUT the source index: buying one-shot wood_piece at sec.340 stores shopBought:{'340':[null]} - after reload the button is active again and charges gold twice; pickup_batch stores the key '585:undefined' (works while one batch per paragraph, two would collide). Fix: pass the original sec.choices index through every render branch; add save round-trip tests for purchases and batches; migrate legacy [null]/:undefined saves.",
+          "resolution": "CONFIRMED - the four post-luck renderChoices branches (lucky / unlucky / nonLuck x2) filtered sec.choices into fresh arrays and called makeChoiceBtn(ch) with no source index: makePurchaseBtn keyed shopBought with undefined (serializes as [null]; includes(undefined) is false after reload, so the sec.340 one-shot re-armed and charged gold twice) and makeBatchBtn keyed batchPicked as '585:undefined'. Fix: withIdx=sec.choices.map((ch,idx)=>({ch,idx})) feeds all three luck filters and every branch calls makeChoiceBtn(e.ch,false,e.idx), matching the other five call sites - original indices survive filtering. Legacy-save migration in normalizeSave: shopBought values must be arrays (others dropped) and are pruned to finite numbers ([null] gone); batchPicked backfilled and keys not matching ^\\d+:\\d+$ deleted. Lenient by design: an unknowable marker unlocks the offer again (symmetric pay-and-receive) instead of locking it out forever. p1_6d gains a source-shape guard plus a normalizeSave round-trip check; MANUAL_SMOKE_CHECKS C13 added."
         },
         {
           "id": "R-02_food_slug_maps",
@@ -512,8 +515,9 @@
         {
           "id": "R-03_game_rules_version_label",
           "severity": "P2",
-          "status": "OPEN",
-          "hypothesis": "assets/GAME_RULES.md status line still says v2.138 while version_history ends v2.138 -> v2.139 (the file was written before the F-01 bump). Mechanic numbers are current; metadata defect. Fix: update the status to the current registry version (and ideally derive/check it from the last version_history transition)."
+          "status": "DONE",
+          "hypothesis": "assets/GAME_RULES.md status line still says v2.138 while version_history ends v2.138 -> v2.139 (the file was written before the F-01 bump). Mechanic numbers are current; metadata defect. Fix: update the status to the current registry version (and ideally derive/check it from the last version_history transition).",
+          "resolution": "CONFIRMED - metadata drift only. Status label bumped v2.138 -> v2.149 in the same batch that creates the v2.149 transition, and p1_6d gains a standing guard: the **vX.Y** label in assets/GAME_RULES.md must equal the target of the last version_history transition, so any future registry bump without a label touch fails the battery. The frozen audit-cycle copy under audit_cycles/full_audit_2026_07_14/ is untouched by design."
         }
       ],
       "verified": "2026-07-20"
