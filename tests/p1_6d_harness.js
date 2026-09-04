@@ -61,6 +61,17 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9r. group_82 batch 6 (CB-05 / CU-03 / CU-05): legacy Arbuz migration, phone event-log panel as a dialog, status reset clears text
+(function(){
+  try{
+    globalThis.SLUG_TO_RU=globalThis.SLUG_TO_RU||{melon:'Арбуз'}; // the legacy RU name used by the CB-05 migration
+    eval(gfn('normalizeSave'));
+    const mig=normalizeSave({v:5,inventory:['Арбуз',{kind:'food',id:'melon',stamina:4},'apple']});
+    ck('CB-05 legacy raw Arbuz string becomes the sec.300 watermelon item, food object untouched', mig.inventory[0]==='watermelon'&&mig.inventory[1]&&mig.inventory[1].id==='melon'&&mig.inventory[2]==='apple');
+  }catch(e){ ck('CB-05 migration eval: '+e.message,false); }
+  ck('CU-03/CU-05 phone panel in the dialog controller, reset clears the status text', gl.includes("el.id==='event-log-panel'&&typeof isMobileHud==='function'&&isMobileHud()")&&gl.includes("if(top.id==='event-log-panel'){")&&gl.includes("window._bcCombatStatusReset=function(){ seen=0; st.textContent=''; };"));
+})();
+
 // 9q. group_82 batch 5 (CB-02 / CB-03 / CB-04 / CU-01 / CU-02 / CU-12): scripted luck persistence, summon save, hash luck clear, focus guards, riddle status
 (function(){
   ck('CB-02 scripted luck persisted with prep and restored in getSectionPrep', gl.includes('scripted:true,prep:JSON.parse(JSON.stringify(prep))')&&gl.includes('rec&&rec.scripted&&rec.prep')&&gl.includes("S.luckChecks[String(S.section)].scripted){ luckDone[S.section]=true;"));

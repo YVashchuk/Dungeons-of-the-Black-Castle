@@ -167,7 +167,8 @@
     "v2.159 -> v2.160": "September 2026 - group_81 batch 3 (P2 a11y cluster, Claude track A): CA-04 persistent live region + bcAnnounce for notifications, CA-05 dice results announced and focus moved to Continue, CA-06 combat-status reset hook from startCombat, CA-07 keyboard-reachable save import, CA-08 accessible names/states (item names in eat/drop labels, close/add-item labels, HUD chip labels, aria-disabled on greyed spells, aria-pressed on visual pills), CA-09 focus kept after list rebuilds, CA-18 riddle input focus ring. _dist_ui_check assert swapped + 2 added (46 -> 48). GAME_RULES.md label 2.159 -> 2.160 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.160 -> v2.161": "September 2026 - group_81 batch 4 (P2 responsive / fonts / i18n / data / docs, Claude tracks A+B): CA-10 safe-area on the event-log panel, FAB, modal cap and visual dock + the panel as a dialog (focus in, Escape out), CA-11 phone-landscape bounds 900 -> 960px, CA-12 HUD chip line-height, CA-13 sheet nodes restored in reverse order, CA-14 OFL.txt with all three copyright notices, CA-15 regular-weight headings (no synthetic bold for Forum), CA-16/B-04 FR NBSP + UK 'мапа' aria keys, CA-17 sidebar mini-map shown + layout-independent gated M hotkey, B-05 distinct legacyRu for the sec.300 watermelon + no-duplicate guard (6d 47 -> 48), B-06 GAME_RULES.md refreshed (armament, combat persistence, script joins, weakPickIdx, luck persistence) + brief errata, B-08 documented. group_81 30/30 DONE - recheck cycle 2026-09 closed except Track C. MANUAL_SMOKE_CHECKS C19. GAME_RULES.md label 2.160 -> 2.161 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.161 -> v2.162": "September 2026 - registry-only: recheck cycle 2026-09, third auditor (ChatGPT 5.6 Sol on the full 69e6be2 archive with code execution): REPORT_chatgpt_trackB.md (SHA-256 ff2a16e353df...; 62-probe verification of group_81/group_80, 5 findings incl. P0 CB-01 - the B-03 resolution's one-round luck delay at sec.1175 contradicts canon - and P1 CB-02 scripted luck not persisted, CB-03 summon not saved, CB-04 hash entry keeps a stale luck record) and REPORT_chatgpt_trackA.md (SHA-256 1f85993e343a...; 22/22 UI resolutions matched by executed probes, 12 findings incl. P0 CU-01 riddle input focus stealing from the offer dialog at sec.95, P1 CU-02 keyboard navigation focus loss on every goTo, P1 CU-12 riddle feedback not live). 17 hypotheses taken into group_82 with maintainer adjudication notes. GAME_RULES.md label 2.161 -> 2.162 (R-03 guard). No code change; battery ALL GREEN.",
-    "v2.162 -> v2.163": "September 2026 - group_82 batch 5 (P0+P0+P1+P1+P1+P1+P1+P2, ChatGPT tracks A+B): CB-01 sec.1175 luck offered immediately after any first-orc death (B-03 resolution amended), CB-02 scripted luck outcomes (sec.21/368/436) persisted and restored, CB-03 summon commit saved mid-fight, CB-04 hash entry drops a stale luck record, CU-01 riddle focus never pulls behind a dialog, CU-02 keyboard navigation lands on the paragraph marker, CU-11 locale repaint keeps scroll, CU-12 riddle feedback is a live status. p1_6d 48 -> 54. GAME_RULES.md label 2.162 -> 2.163 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.162 -> v2.163": "September 2026 - group_82 batch 5 (P0+P0+P1+P1+P1+P1+P1+P2, ChatGPT tracks A+B): CB-01 sec.1175 luck offered immediately after any first-orc death (B-03 resolution amended), CB-02 scripted luck outcomes (sec.21/368/436) persisted and restored, CB-03 summon commit saved mid-fight, CB-04 hash entry drops a stale luck record, CU-01 riddle focus never pulls behind a dialog, CU-02 keyboard navigation lands on the paragraph marker, CU-11 locale repaint keeps scroll, CU-12 riddle feedback is a live status. p1_6d 48 -> 54. GAME_RULES.md label 2.162 -> 2.163 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.163 -> v2.164": "September 2026 - group_82 batch 6 (P2 x9, ChatGPT tracks A+B): CB-05 legacy «Арбуз» string migrates to the sec.300 item, CU-03 phone event-log panel joins the dialog controller, CU-04 focus after larva pickup, CU-05 combat status cleared on reset, CU-06 import label focus ring, CU-07 dist/OFL.txt shipped + asserted, CU-08 menu heading weight 400, CU-09 map layer select re-localized, CU-10 single M shortcut per layout. group_82 17/17 DONE - the third-auditor pass is closed; only Track C (standards) remains open in the cycle. p1_6d 54 -> 56, _dist_ui_check 50 -> 53. GAME_RULES.md label 2.163 -> 2.164 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -485,9 +486,10 @@
         {
           "id": "CB-05_legacy_arbuz_string_maps_to_food",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "normalizeSave keeps a raw pre-slug inventory string «Арбуз», and after the B-05 rename RU_TO_SLUG maps it to the food melon (sec.389), although the pre-slug specification defined «Арбуз» as the sec.300 ITEM («забирай его себе»); the sec.389 structured food came later. Old saves therefore misidentify the item, suppress the sec.389 offer by dedupe and fail to dedupe a later watermelon.",
-          "note": "Maintainer adjudication: CONFIRMED P2. Fix: normalizeSave converts a raw inventory string exactly equal to «Арбуз» to the slug watermelon (structured food entries untouched) + a 6d migration assert."
+          "note": "Maintainer adjudication: CONFIRMED P2. Fix: normalizeSave converts a raw inventory string exactly equal to «Арбуз» to the slug watermelon (structured food entries untouched) + a 6d migration assert.",
+          "resolution": "CONFIRMED P2 DONE. normalizeSave maps a raw inventory string equal to «Арбуз» to the slug watermelon (the sec.300 item); structured food entries are untouched; 6d asserts the migration."
         },
         {
           "id": "CU-01_riddle_focus_steals_from_dialog",
@@ -508,58 +510,66 @@
         {
           "id": "CU-03_phone_event_panel_not_trapped",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "On phones the event-log panel is role=dialog and full-width but neither aria-modal nor recognized by _bcIsDialog, so the shared Tab trap never treats it as the top dialog; a keyboard user can Tab from the visually full-screen panel into obscured page/dock controls.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: on phones (isMobileHud) the panel joins the dialog controller (_bcIsDialog + Escape via toggleEventLog); desktop stays a non-modal side panel."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: on phones (isMobileHud) the panel joins the dialog controller (_bcIsDialog + Escape via toggleEventLog); desktop stays a non-modal side panel.",
+          "resolution": "ACCEPTED P2 DONE. On phones (isMobileHud) #event-log-panel is a member of the dialog controller: _bcIsDialog recognizes it, so the Tab trap, initial focus, focus return and aria-modal apply, and _bcCloseTopDialog closes it through toggleEventLog on Escape; on desktop it remains the non-modal side panel of CA-10."
         },
         {
           "id": "CU-04_dice_loot_pick_focus",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "renderDiceLoot: activating the pickup button executes pick.remove() with no subsequent focus call, so the second keyboard step recreates the focus-loss pattern CA-05 fixed for the first.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: focus the remaining Continue button after the removal."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: focus the remaining Continue button after the removal.",
+          "resolution": "ACCEPTED P2 DONE. After the larva pickup button removes itself, focus moves to the remaining Continue button."
         },
         {
           "id": "CU-05_combat_status_stale_text",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "window._bcCombatStatusReset resets only the diff counter; startCombat clears #combat-log but a fight without an intro line appends nothing, so the live node keeps the previous fight's final round text inside the newly opened combat dialog until the first new round.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: the reset hook also clears the status node's text."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: the reset hook also clears the status node's text.",
+          "resolution": "ACCEPTED P2 DONE. _bcCombatStatusReset clears the status node's text as well as the diff counter."
         },
         {
           "id": "CU-06_import_label_focus_visible",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "CA-07 made the file input reachable, but .sr-only clips it to 1px and the focus ring lands on that clipped input; the visible label has no :focus-within rule, so there is no visible focus treatment on the import control.",
-          "note": "Maintainer adjudication: ACCEPTED P2 (suspected visible-focus failure). Fix: gold :focus-within ring on .menu-btn."
+          "note": "Maintainer adjudication: ACCEPTED P2 (suspected visible-focus failure). Fix: gold :focus-within ring on .menu-btn.",
+          "resolution": "ACCEPTED P2 DONE. .menu-btn:focus-within draws the gold ring on the visible import label while the sr-only input holds focus."
         },
         {
           "id": "CU-07_dist_missing_ofl",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "The built dist/ folder (103 files) contains no OFL/license file although the embedded font CSS comment points to ./OFL.txt and build.sh does not copy one; a distribution consisting of dist/ points to a nonexistent license.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: build.sh copies src/fonts/OFL.txt to dist/OFL.txt; _dist_ui_check asserts the three notices."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: build.sh copies src/fonts/OFL.txt to dist/OFL.txt; _dist_ui_check asserts the three notices.",
+          "resolution": "ACCEPTED P2 DONE. build.sh copies src/fonts/OFL.txt to dist/OFL.txt (tracked with the artifact) and _dist_ui_check asserts the three notices + the license body."
         },
         {
           "id": "CU-08_menu_h2_faux_bold",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "CA-15 set weight 400 on three heading selectors, but .menu-content h2 (#menu-modal-title, an h2 outside .modal) keeps the UA bold default - the fourth Cyrillic UI heading still renders Forum with synthetic bold.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: font-weight:400 on .menu-content h2 + dist assert."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: font-weight:400 on .menu-content h2 + dist assert.",
+          "resolution": "ACCEPTED P2 DONE. .menu-content h2 renders at weight 400 (pinned by a dist assert), closing the last synthetic-bold Cyrillic heading."
         },
         {
           "id": "CU-09_map_layer_select_not_relocalized",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "initMapUi returns early once #map-layer-select has options and bcRefreshMapLanguage updates the layer objects but never the existing option text; executing the map module produced Russian option labels that stayed Russian after refreshing to EN. A saved non-RU startup is affected too because the map's DOMContentLoaded init precedes window.onload's saved-language application.",
-          "note": "Maintainer adjudication: CONFIRMED P2 (a real i18n bug, executed). Fix: bcRefreshMapLanguage syncs each existing option's text by value."
+          "note": "Maintainer adjudication: CONFIRMED P2 (a real i18n bug, executed). Fix: bcRefreshMapLanguage syncs each existing option's text by value.",
+          "resolution": "CONFIRMED P2 DONE. bcRefreshMapLanguage re-labels the existing #map-layer-select options from the re-resolved layer titles, so a language switch (and a saved non-RU startup) updates the select."
         },
         {
           "id": "CU-10_azerty_double_shortcut",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "The M hotkey accepts ev.code==='KeyM' OR ev.key==='m', so on a physical AZERTY keyboard both the comma position (code KeyM) and the letter M (code Semicolon) toggle the map while the UI advertises only «клавиша M».",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: ev.key letter first; fall back to the physical code only when ev.key is not a printable ASCII character (Cyrillic layouts)."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: ev.key letter first; fall back to the physical code only when ev.key is not a printable ASCII character (Cyrillic layouts).",
+          "resolution": "ACCEPTED P2 DONE. The M hotkey matches the letter first (ev.key 'm' / 'M') and falls back to the physical KeyM only when ev.key is not a printable ASCII character (Cyrillic layouts) - AZERTY keeps a single shortcut on its letter M."
         },
         {
           "id": "CU-11_locale_repaint_resets_scroll",

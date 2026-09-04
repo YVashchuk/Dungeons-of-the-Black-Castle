@@ -299,7 +299,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
 /* MENU OVERLAY */
 #overlay-menu{background:rgba(0,0,0,.9);}
 .menu-content{max-width:400px;width:90%;text-align:center;}
-.menu-content h2{font-family:var(--font-ui);color:var(--gold);margin-bottom:24px;}
+.menu-content h2{font-family:var(--font-ui);color:var(--gold);font-weight:400;margin-bottom:24px;}
 .autosave-note{font-family:var(--font-ui);font-size:13px;color:var(--muted);text-align:center;min-height:1.3em;margin:-12px 0 16px;letter-spacing:.02em;}
 .menu-btn{display:block;width:100%;margin-bottom:10px;}
 
@@ -471,6 +471,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
    outline for mouse users; :focus-visible restores a gold ring for keyboard
    navigation without touching pointer interaction. */
 button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold2);outline-offset:3px;}
+.menu-btn:focus-within{outline:2px solid var(--gold2);outline-offset:3px;} /* group_82 CU-06: the sr-only import input inside its label */
 /* UI-10 (group_79): honour the OS reduced-motion preference - collapses the
    keyframe animations and transitions to near-zero without touching layout. */
 @media (prefers-reduced-motion: reduce){

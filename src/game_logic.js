@@ -67,6 +67,8 @@ function normalizeSave(s){
   if(!s||typeof s!=='object') return s;
   // Core fields from initState() — backfill if missing or wrong type.
   if(!Array.isArray(s.inventory)) s.inventory=[];
+  // group_82 CB-05: a pre-slug raw «Арбуз» string is the sec.300 ITEM (the sec.389 food is a structured object).
+  s.inventory=s.inventory.map(it=>(typeof it==='string'&&it.trim()===SLUG_TO_RU['melon'] /* the legacy RU name */)?'watermelon':it);
   if(!Array.isArray(s.spells))    s.spells=[];
   if(!Array.isArray(s.visited))   s.visited=[];
   if(typeof s.notes!=='string')   s.notes='';
@@ -125,7 +127,7 @@ function openMenu(){renderAutosaveNote();document.getElementById('overlay-menu')
 // mutations keeps every existing open/close call site untouched.
 var _bcDialogOpener=new WeakMap();
 var _bcDialogStack=[]; // UA-01 (group_81): open-order stack - paint order == Escape/Tab order
-function _bcIsDialog(el){ return !!(el&&el.classList&&(el.classList.contains('modal-overlay')||el.classList.contains('end-overlay'))); }
+function _bcIsDialog(el){ return !!(el&&el.classList&&(el.classList.contains('modal-overlay')||el.classList.contains('end-overlay')||(el.id==='event-log-panel'&&typeof isMobileHud==='function'&&isMobileHud()))); } // group_82 CU-03: the phone-width event-log panel is a dialog too
 function _bcFocusables(root){ return Array.prototype.filter.call(root.querySelectorAll('button,select,input,textarea,a[href],[tabindex]'), function(el){ return !el.disabled&&el.tabIndex>=0&&el.getAttribute('aria-hidden')!=='true'&&el.offsetParent!==null; }); }
 function _bcTopDialog(){
   for(var i=_bcDialogStack.length-1;i>=0;i--){ var d=_bcDialogStack[i]; if(d&&d.classList&&d.classList.contains('on')&&document.body.contains(d)) return d; }
@@ -157,6 +159,7 @@ function _bcDialogClosed(el){
 }
 function _bcCloseTopDialog(){
   var top=_bcTopDialog(); if(!top) return false;
+  if(top.id==='event-log-panel'){ if(typeof toggleEventLog==='function') toggleEventLog(); return true; } // group_82 CU-03
   var closer=top.querySelector('[onclick*="closeModal("]'); if(!closer) return false;
   closer.click(); return true;
 }
@@ -229,7 +232,7 @@ function returnSheetSection(){
   var log=document.getElementById('combat-log'), st=document.getElementById('combat-round-status');
   if(!log||!st) return;
   var seen=0;
-  window._bcCombatStatusReset=function(){ seen=0; }; // CA-06: startCombat clears the log synchronously - a count-only heuristic misses equal-length intros
+  window._bcCombatStatusReset=function(){ seen=0; st.textContent=''; }; // CA-06: startCombat clears the log synchronously - a count-only heuristic misses equal-length intros
   new MutationObserver(function(){
     var kids=log.children, n=kids.length;
     if(n<seen) seen=0;
@@ -2161,6 +2164,7 @@ function renderDiceLoot(sec){
       logEvent('gain',msgs[0],msgs[1]||'');
       updateHUD();saveGame();playSound('item');showItemNotification(msgs);
       pick.remove();
+      const cb2=list.querySelector('button'); if(cb2) cb2.focus({preventScroll:true}); // group_82 CU-04
     };
     list.appendChild(pick);
     renderExit();
