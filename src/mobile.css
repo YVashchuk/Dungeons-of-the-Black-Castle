@@ -59,7 +59,7 @@
 
   /* Story text: reduced paddings, slightly smaller base size. */
   .story-area {
-    padding: 18px 16px 12px;
+    padding: 18px 16px calc(24px + var(--safe-bottom));
     max-width: none;
   }
   .s-text {
@@ -67,13 +67,9 @@
     line-height: 1.65;
   }
 
-  /* Choices take full width with bottom safe-area buffer. */
+  /* Choices sit inside the reading flow (UI-11 A): no cap, no side padding. */
   .choices-area {
-    padding: 12px 16px calc(16px + var(--safe-bottom));
-    max-width: none;
-    overflow-y: auto;
-    max-height: 34vh;
-    max-height: 34dvh;
+    padding: 16px 0 0;
   }
   .choice-btn {
     font-size: 20px;
@@ -178,7 +174,7 @@
   }
 
   .story-area {
-    padding: 14px 20px 10px;
+    padding: 14px 20px calc(20px + var(--safe-bottom));
   }
   .s-text {
     font-size: 19px;
@@ -186,10 +182,7 @@
   }
 
   .choices-area {
-    padding: 10px 20px calc(14px + var(--safe-bottom));
-    overflow-y: auto;
-    max-height: 44vh;
-    max-height: 44dvh;
+    padding: 12px 0 0;
   }
   .choice-btn {
     font-size: 18px;
@@ -209,10 +202,10 @@
     min-width: 260px;
   }
   .story-area {
-    padding: 30px 32px 16px;
+    padding: 30px 32px calc(28px + var(--safe-bottom));
   }
   .choices-area {
-    padding: 14px 32px calc(24px + var(--safe-bottom));
+    padding: 16px 0 0;
   }
 }
 
