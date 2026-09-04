@@ -116,6 +116,61 @@ function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.re
 function closeModal(id){document.getElementById(id).classList.remove('on');}
 function openMenu(){renderAutosaveNote();document.getElementById('overlay-menu').classList.add('on');}
 
+// >>> BC_A11Y_DIALOGS (UI-04, group_79): shared dialog controller >>>
+// Every overlay toggled through the 'on' class (.modal-overlay / .end-overlay,
+// static or created at runtime) gets dialog semantics, an accessible name from
+// its first heading, initial focus, focus return on close, Escape (only when the
+// dialog offers an explicit closeModal control) and a Tab trap. Observing class
+// mutations keeps every existing open/close call site untouched.
+var _bcDialogOpener=new WeakMap();
+function _bcIsDialog(el){ return !!(el&&el.classList&&(el.classList.contains('modal-overlay')||el.classList.contains('end-overlay'))); }
+function _bcFocusables(root){ return Array.prototype.filter.call(root.querySelectorAll('button,select,input,textarea,a[href],[tabindex]'), function(el){ return !el.disabled&&el.tabIndex>=0&&el.getAttribute('aria-hidden')!=='true'&&el.offsetParent!==null; }); }
+function _bcTopDialog(){ var all=document.querySelectorAll('.modal-overlay.on,.end-overlay.on'); return all.length?all[all.length-1]:null; }
+function _bcDialogOpened(el){
+  if(!el.getAttribute('role')) el.setAttribute('role','dialog');
+  el.setAttribute('aria-modal','true');
+  if(!el.hasAttribute('aria-labelledby')&&!el.hasAttribute('aria-label')){
+    var h=el.querySelector('h1,h2,h3,.modal-title,.map-title,.end-title');
+    if(h){ if(!h.id) h.id=(el.id||'bc-dialog')+'-title'; el.setAttribute('aria-labelledby',h.id); }
+  }
+  var prev=document.activeElement;
+  if(prev&&prev!==document.body&&!el.contains(prev)) _bcDialogOpener.set(el,prev);
+  var f=_bcFocusables(el), target=f.length?f[0]:el;
+  if(target===el&&!el.hasAttribute('tabindex')) el.setAttribute('tabindex','-1');
+  setTimeout(function(){ try{ if(el.classList.contains('on')&&!el.contains(document.activeElement)) target.focus({preventScroll:true}); }catch(e){} },0);
+}
+function _bcDialogClosed(el){
+  var prev=_bcDialogOpener.get(el); _bcDialogOpener.delete(el);
+  if(prev&&document.body.contains(prev)&&prev.offsetParent!==null){ try{ prev.focus({preventScroll:true}); }catch(e){} }
+}
+function _bcCloseTopDialog(){
+  var top=_bcTopDialog(); if(!top) return false;
+  var closer=top.querySelector('[onclick*="closeModal("]'); if(!closer) return false;
+  closer.click(); return true;
+}
+(function(){
+  if(typeof MutationObserver==='undefined'||!document.body) return;
+  var was=new WeakMap();
+  new MutationObserver(function(recs){
+    for(var i=0;i<recs.length;i++){
+      var el=recs[i].target; if(!_bcIsDialog(el)) continue;
+      var on=el.classList.contains('on'), before=!!was.get(el);
+      if(on&&!before) _bcDialogOpened(el); else if(!on&&before) _bcDialogClosed(el);
+      was.set(el,on);
+    }
+  }).observe(document.body,{attributes:true,attributeFilter:['class'],subtree:true});
+  document.addEventListener('keydown',function(ev){
+    var top=_bcTopDialog(); if(!top) return;
+    if(ev.key==='Escape'){ if(_bcCloseTopDialog()) ev.preventDefault(); return; }
+    if(ev.key!=='Tab') return;
+    var f=_bcFocusables(top); if(!f.length){ ev.preventDefault(); return; }
+    var first=f[0], last=f[f.length-1], a=document.activeElement;
+    if(ev.shiftKey){ if(a===first||!top.contains(a)){ last.focus(); ev.preventDefault(); } }
+    else if(a===last||!top.contains(a)){ first.focus(); ev.preventDefault(); }
+  });
+})();
+// <<< BC_A11Y_DIALOGS <<<
+
 // ── Title ──
 function initTitle(){
   const sv=loadGame();const bl=document.getElementById('btn-load');
@@ -289,7 +344,7 @@ function clearEventLog(){
 
 // ── Item Notification ──
 function showItemNotification(items, title){
-  const el=document.createElement('div');el.className='item-notification';
+  const el=document.createElement('div');el.className='item-notification';el.setAttribute('role','status');el.setAttribute('aria-live','polite');
   el.innerHTML=`<div class="notif-title">${title||t('meshok')}</div>`+
     items.map(i=>`<div class="notif-item${i.startsWith('−')?' loss':''}">${i}</div>`).join('');
   document.body.appendChild(el);

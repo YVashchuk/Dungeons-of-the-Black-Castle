@@ -26,14 +26,13 @@
   --safe-left:   env(safe-area-inset-left, 0px);
 }
 
-/* Body respects device safe areas (notches, rounded corners, bottom bar). */
-body {
-  padding:
-    var(--safe-top)
-    var(--safe-right)
-    var(--safe-bottom)
-    var(--safe-left);
-}
+/* UI-06 (group_79): safe-area insets live on the fixed shell layers, not on
+   body - every screen and overlay is position:fixed;inset:0, so body padding
+   never reached them. The bottom inset stays with the components that already
+   add it (choices-area, event-log FAB) to avoid a double buffer. The
+   end-overlay keeps its 40px base padding on top of the insets. */
+.scr,.modal-overlay{padding-top:var(--safe-top);padding-right:var(--safe-right);padding-left:var(--safe-left);}
+.end-overlay{padding-top:calc(40px + var(--safe-top));padding-right:calc(40px + var(--safe-right));padding-left:calc(40px + var(--safe-left));}
 
 /* ─── Phone portrait (≤700px wide) ─── */
 @media (max-width: 700px) {
@@ -138,6 +137,7 @@ body {
   /* Combat modal: cover screen, no wasted margins. */
   .modal {
     max-height: 100vh;
+    max-height: 100dvh;
     padding: 20px 16px;
     width: 100%;
     max-width: none;
@@ -150,6 +150,7 @@ body {
     max-width: 100%;
     width: 100%;
     height: 100vh;
+    height: 100dvh;
     min-height: 0;
   }
   .map-modal-side {
@@ -243,6 +244,17 @@ body {
   .modal {
     -webkit-overflow-scrolling: touch;
   }
+}
+
+/* UI-06 (group_79): short viewports (landscape phones, <=600px tall) - the
+   title screen may not fit; centre with auto margins so overflow scrolls
+   instead of being clipped by justify-content:center. */
+@media (max-height: 600px) {
+  #scr-title { justify-content: flex-start; overflow-y: auto; }
+  #scr-title .t-content { margin: auto; padding: 16px 20px; gap: 12px; }
+  #scr-title .t-rider-col img { max-height: 52vh; max-height: 52dvh; }
+  #scr-title .t-orn { margin: 6px 0; font-size: 22px; }
+  #scr-title .t-desc { margin-bottom: 10px; line-height: 1.5; }
 }
 
 /* ─── Prevent body scroll bleed on iOS when modals are open ─── */

@@ -18,6 +18,16 @@ const snips=[
  ['qty disabled styling (UI-08)', '.qty-btn:disabled{opacity', 1],
  ['tap token (UI-05)', '--tap:44px', 1],
  ['muted contrast bump (UI-05)', '--muted:#8a7a9e', 1],
+ ['aria channel (UI-09)', "querySelectorAll('[data-i18n-aria]')", 1],
+ ['autosave note (UI-10)', 'id="autosave-note"', 1],
+ ['reduced motion (UI-10)', 'prefers-reduced-motion: reduce', 1],
+ ['viewport-fit (UI-06)', 'viewport-fit=cover', 1],
+ ['safe-area on fixed shell (UI-06)', '.scr,.modal-overlay{padding-top:var(--safe-top);', 1],
+ ['title short-viewport rule (UI-06)', '#scr-title .t-content { margin: auto;', 1],
+ ['focus ring (UI-04)', ':focus-visible{outline:2px solid var(--gold2)', 1],
+ ['dialog roles (UI-04)', 'role="dialog" aria-modal="true"', 7],
+ ['dialog controller (UI-04)', 'BC_A11Y_DIALOGS', 2],
+ ['notification live region (UI-04)', "el.setAttribute('aria-live','polite')", 1],
 ];
 let ok=0,bad=0;
 snips.forEach(([n,s,exp])=>{ const e=exp||1; const c=d.split(s).length-1; if(c===e)ok++; else {bad++; console.log('FAIL '+n+' count='+c+' expected='+e);} });
