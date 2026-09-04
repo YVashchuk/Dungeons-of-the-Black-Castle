@@ -128,7 +128,10 @@ function openMenu(){renderAutosaveNote();document.getElementById('overlay-menu')
 var _bcDialogOpener=new WeakMap();
 var _bcDialogStack=[]; // UA-01 (group_81): open-order stack - paint order == Escape/Tab order
 function _bcIsDialog(el){ return !!(el&&el.classList&&(el.classList.contains('modal-overlay')||el.classList.contains('end-overlay')||(el.id==='event-log-panel'&&typeof isMobileHud==='function'&&isMobileHud()))); } // group_82 CU-03: the phone-width event-log panel is a dialog too
-function _bcFocusables(root){ return Array.prototype.filter.call(root.querySelectorAll('button,select,input,textarea,a[href],[tabindex]'), function(el){ return !el.disabled&&el.tabIndex>=0&&el.getAttribute('aria-hidden')!=='true'&&el.offsetParent!==null; }); }
+// group_82 SM-01: offsetParent is null for position:fixed elements (the event-log FAB, the dock), so it is not a
+// visibility test; a rendered box that is not visibility:hidden is.
+function _bcVisible(el){ return !!(el&&el.getClientRects&&el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden'); }
+function _bcFocusables(root){ return Array.prototype.filter.call(root.querySelectorAll('button,select,input,textarea,a[href],[tabindex]'), function(el){ return !el.disabled&&el.tabIndex>=0&&el.getAttribute('aria-hidden')!=='true'&&_bcVisible(el); }); }
 function _bcTopDialog(){
   for(var i=_bcDialogStack.length-1;i>=0;i--){ var d=_bcDialogStack[i]; if(d&&d.classList&&d.classList.contains('on')&&document.body.contains(d)) return d; }
   var all=document.querySelectorAll('.modal-overlay.on,.end-overlay.on'); return all.length?all[all.length-1]:null;
@@ -152,10 +155,10 @@ function _bcDialogClosed(el){
   var prev=_bcDialogOpener.get(el); _bcDialogOpener.delete(el);
   var si=_bcDialogStack.indexOf(el); if(si>=0) _bcDialogStack.splice(si,1);
   if(el.classList.contains('modal-overlay')) el.style.zIndex='';
-  if(prev&&document.body.contains(prev)&&prev.offsetParent!==null){ try{ prev.focus({preventScroll:true}); }catch(e){} return; }
+  if(prev&&document.body.contains(prev)&&_bcVisible(prev)){ try{ prev.focus({preventScroll:true}); }catch(e){} return; }
   // group_81 CA-03: the opener is often destroyed by the re-render that closed the
   // dialog (combat / luck -> renderGame). Land on the first choice, else the story.
-  setTimeout(function(){ try{ if(_bcTopDialog()) return; var b=document.querySelector('#c-list button:not([disabled])'); if(b&&b.offsetParent!==null){ b.focus({preventScroll:true}); return; } var sa=document.getElementById('s-area'); if(sa){ if(!sa.hasAttribute('tabindex')) sa.setAttribute('tabindex','-1'); sa.focus({preventScroll:true}); } }catch(e){} },0);
+  setTimeout(function(){ try{ if(_bcTopDialog()) return; var b=document.querySelector('#c-list button:not([disabled])'); if(b&&_bcVisible(b)){ b.focus({preventScroll:true}); return; } var sa=document.getElementById('s-area'); if(sa){ if(!sa.hasAttribute('tabindex')) sa.setAttribute('tabindex','-1'); sa.focus({preventScroll:true}); } }catch(e){} },0);
 }
 function _bcCloseTopDialog(){
   var top=_bcTopDialog(); if(!top) return false;
@@ -411,7 +414,7 @@ function toggleEventLog(){
   panel.classList.toggle('on');
   // group_81 CA-10: the panel behaves like a dialog - focus in on open, back to the log button on close.
   if(panel.classList.contains('on')){ renderEventLog(); const cb=panel.querySelector('.event-log-close'); if(cb) cb.focus({preventScroll:true}); }
-  else { const fab=document.getElementById('event-log-btn'); const hb=document.querySelector('.hud-btn[onclick="toggleEventLog()"]'); const back=(fab&&fab.offsetParent!==null)?fab:((hb&&hb.offsetParent!==null)?hb:null); if(back) back.focus({preventScroll:true}); }
+  else { const fab=document.getElementById('event-log-btn'); const hb=document.querySelector('.hud-btn[onclick="toggleEventLog()"]'); const back=(fab&&_bcVisible(fab))?fab:((hb&&_bcVisible(hb))?hb:null); if(back) back.focus({preventScroll:true}); }
 }
 
 function clearEventLog(){
