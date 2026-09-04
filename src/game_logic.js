@@ -112,8 +112,8 @@ function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(t=>{
   S=s;saveGame();showScr('game');renderGame();closeModal('overlay-menu');}catch{alert(t('oshibka_zagruzki'));}});e.target.value='';}
 
 // ── Screens ──
-function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scr-'+id).classList.add('on');const elb=document.getElementById('event-log-btn');if(elb)elb.style.display=(id==='game')?'block':'none';}
-function closeModal(id){document.getElementById(id).classList.remove('on');}
+function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scr-'+id).classList.add('on');const elb=document.getElementById('event-log-btn');if(elb)elb.style.display=(id==='game'&&!isMobileHud())?'block':'none';}
+function closeModal(id){document.getElementById(id).classList.remove('on');if(id==='overlay-sheet')returnSheetSection();}
 function openMenu(){renderAutosaveNote();document.getElementById('overlay-menu').classList.add('on');}
 
 // >>> BC_A11Y_DIALOGS (UI-04, group_79): shared dialog controller >>>
@@ -170,6 +170,39 @@ function _bcCloseTopDialog(){
   });
 })();
 // <<< BC_A11Y_DIALOGS <<<
+
+// >>> BC_MOBILE_SHEETS (UI-03 A, group_79): phone HUD bar + bottom sheets >>>
+// On viewports <=700px the sidebar is hidden; the HUD bar mirrors the stat
+// cells and opens sidebar sections inside a bottom sheet by MOVING the live
+// DOM nodes (no duplicated rendering - updateHUD, inventory, spells and notes
+// keep writing to the same ids). Closing the sheet returns the nodes home.
+var HUD_MQ=(typeof matchMedia==='function')?matchMedia('(max-width:700px)'):null;
+function isMobileHud(){ return !!(HUD_MQ&&HUD_MQ.matches); }
+var _bcSheetHome=[];
+var SHEET_SECTIONS={spells:['sb-spells'],inv:['sb-flask','sb-inv'],notes:['sb-notes']};
+function syncHudBar(){ try{ [['sb-name','hb-name'],['sb-skill','hb-skill'],['sb-stamina','hb-stamina'],['sb-luck','hb-luck'],['sb-gold','hb-gold']].forEach(function(p){ var a=document.getElementById(p[0]), b=document.getElementById(p[1]); if(a&&b) b.textContent=a.textContent; }); }catch(e){} }
+function openSheet(kind){
+  var ids=SHEET_SECTIONS[kind]; if(!ids) return;
+  var ov=document.getElementById('overlay-sheet'), body=document.getElementById('sheet-body'), ttl=document.getElementById('sheet-title');
+  if(!ov||!body||!ttl) return;
+  returnSheetSection();
+  var title='';
+  ids.forEach(function(id){ var n=document.getElementById(id); if(!n) return; _bcSheetHome.push({node:n,parent:n.parentNode,next:n.nextSibling}); var t=n.querySelector('.sb-section-title'); if(t&&!title) title=t.textContent.replace(/\s+/g,' ').trim(); body.appendChild(n); });
+  ttl.textContent=title; ov.classList.add('on');
+}
+function returnSheetSection(){
+  var home=_bcSheetHome; _bcSheetHome=[];
+  home.forEach(function(h){ if(!h.parent) return; var ref=(h.next&&h.next.parentNode===h.parent)?h.next:null; h.parent.insertBefore(h.node,ref); });
+}
+(function(){
+  if(typeof updateHUD==='function'){ var _o=updateHUD; updateHUD=function(){ var r=_o.apply(this,arguments); syncHudBar(); return r; }; }
+  if(HUD_MQ&&HUD_MQ.addEventListener){ HUD_MQ.addEventListener('change',function(){
+    var ov=document.getElementById('overlay-sheet'); if(!HUD_MQ.matches&&ov&&ov.classList.contains('on')) closeModal('overlay-sheet');
+    var elb=document.getElementById('event-log-btn'), sg=document.getElementById('scr-game');
+    if(elb&&sg&&sg.classList.contains('on')) elb.style.display=HUD_MQ.matches?'none':'block';
+  }); }
+})();
+// <<< BC_MOBILE_SHEETS <<<
 
 // ── Title ──
 function initTitle(){

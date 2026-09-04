@@ -42,14 +42,11 @@
     flex-direction: column;
   }
 
-  /* Sidebar collapses to a compact top sheet (~38vh of the phone height). */
-  .sidebar {
-    width: 100%;
-    min-width: 0;
-    max-height: 38vh;
-    border-right: 0;
-    border-bottom: 1px solid var(--border);
-  }
+  /* UI-03 A: the sidebar gives way to the compact HUD bar; its sections open
+     as bottom sheets (mobile sheets block in game_logic.js). The FAB is docked in
+     the HUD (showScr hides the floating button on phones). */
+  .sidebar { display: none; }
+  .hud-bar { display: flex; }
 
   /* Main scroll area fills remaining height. */
   .main {
@@ -160,7 +157,7 @@
 }
 
 /* ─── Phone landscape (≤900px wide, landscape orientation) ─── */
-@media (max-width: 900px) and (orientation: landscape) {
+@media (min-width: 701px) and (max-width: 900px) and (orientation: landscape) {
 
   #scr-game {
     flex-direction: row;
