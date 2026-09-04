@@ -12,10 +12,11 @@ function ok(c,m){ if(c){pass++;} else {fail++; console.log('  FAIL: '+m);} }
 // 1. extract shell keys per attr ('data-i18n="' won't match 'data-i18n-html="' since next char is '-')
 function keys(attr){ const re=new RegExp(attr+'="([^"]+)"','g'); const s=new Set(); let m; while(m=re.exec(shell)) s.add(m[1]); return s; }
 const kText=keys('data-i18n'), kHtml=keys('data-i18n-html'), kPh=keys('data-i18n-ph'), kTitle=keys('data-i18n-title');
-console.log('  shell keys: text='+kText.size+' html='+kHtml.size+' ph='+kPh.size+' title='+kTitle.size);
+const kAria=keys('data-i18n-aria'); // UI-09 (group_79): aria-label channel
+console.log('  shell keys: text='+kText.size+' html='+kHtml.size+' ph='+kPh.size+' title='+kTitle.size+' aria='+kAria.size);
 
 // 2. coverage: every shell key exists in LOCALE_RU.ui
-[['data-i18n',kText],['data-i18n-html',kHtml],['data-i18n-ph',kPh],['data-i18n-title',kTitle]].forEach(function(p){
+[['data-i18n',kText],['data-i18n-html',kHtml],['data-i18n-ph',kPh],['data-i18n-title',kTitle],['data-i18n-aria',kAria]].forEach(function(p){
   p[1].forEach(function(k){ ok(ui[k]!==undefined, p[0]+' key missing in ui: '+k); });
 });
 ok(ui['ui_doc_title']!==undefined,'ui_doc_title missing in ui');
@@ -34,6 +35,7 @@ const elText=[...kText].map(function(k){return mk('data-i18n',k);});
 const elHtml=[...kHtml].map(function(k){return mk('data-i18n-html',k);});
 const elPh=[...kPh].map(function(k){return mk('data-i18n-ph',k);});
 const elTitle=[...kTitle].map(function(k){return mk('data-i18n-title',k);});
+const elAria=[...kAria].map(function(k){return mk('data-i18n-aria',k);});
 const t=function(k){ return ui[k]!==undefined?ui[k]:k; };
 const getLang=function(){ return 'ru'; };
 const document={ _t:'', set title(v){this._t=v;}, get title(){return this._t;},
@@ -43,6 +45,7 @@ const document={ _t:'', set title(v){this._t=v;}, get title(){return this._t;},
     if(sel==='[data-i18n-html]') return elHtml;
     if(sel==='[data-i18n-ph]') return elPh;
     if(sel==='[data-i18n-title]') return elTitle;
+    if(sel==='[data-i18n-aria]') return elAria;
     return [];
   } };
 eval(block+'\napplyStaticI18n();');
@@ -50,6 +53,7 @@ elText.forEach(function(e){ ok(e.textContent===ui[e._k], 'text roundtrip '+e._k)
 elHtml.forEach(function(e){ ok(e.innerHTML===ui[e._k], 'html roundtrip '+e._k); });
 elPh.forEach(function(e){ ok(e.a.placeholder===ui[e._k], 'ph roundtrip '+e._k); });
 elTitle.forEach(function(e){ ok(e.a.title===ui[e._k], 'title roundtrip '+e._k); });
+elAria.forEach(function(e){ ok(e.a['aria-label']===ui[e._k], 'aria roundtrip '+e._k); });
 ok(document.title===ui['ui_doc_title'],'document.title set');
 ok(document.documentElement.lang==='ru','documentElement.lang set');
 

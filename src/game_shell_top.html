@@ -300,6 +300,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
 #overlay-menu{background:rgba(0,0,0,.9);}
 .menu-content{max-width:400px;width:90%;text-align:center;}
 .menu-content h2{font-family:var(--font-ui);color:var(--gold);margin-bottom:24px;}
+.autosave-note{font-family:var(--font-ui);font-size:13px;color:var(--muted);text-align:center;min-height:1.3em;margin:-12px 0 16px;letter-spacing:.02em;}
 .menu-btn{display:block;width:100%;margin-bottom:10px;}
 
 /* Image gen indicator */
@@ -440,6 +441,13 @@ body.hide-inline-art .illustration-container{display:none!important;}
   40%,60%{transform:translateX(6px);}
 }
 
+/* UI-10 (group_79): honour the OS reduced-motion preference - collapses the
+   keyframe animations and transitions to near-zero without touching layout. */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+}
+/* UI-10 (group_79): pressed feedback for touch/mouse on the main button families. */
+.btn:active,.choice-btn:active,.map-controls button:active{filter:brightness(.82);}
 </style>
 </head>
 <body>
@@ -717,11 +725,11 @@ body.hide-inline-art .illustration-container{display:none!important;}
         <div class="map-title" data-i18n="ui_map_title">🗺 Карта приключения</div>
         <div class="map-sub" data-i18n="ui_map_sub">Карта строится в реальном времени: открытые узлы видны, пройденные пути подсвечиваются золотом, непроверенные выходы на развилках показываются короткими пунктирными stub-сегментами.</div>
         <div class="map-controls">
-          <select id="map-layer-select"></select>
-          <button onclick="zoomGameMap(1)">＋</button>
-          <button onclick="zoomGameMap(-1)">－</button>
-          <button onclick="resetGameMapView()">Reset</button>
-          <button onclick="toggleGameMapFullscreen()">Fullscreen</button>
+          <select id="map-layer-select" aria-label="Слой карты" data-i18n-aria="ui_aria_map_layer"></select>
+          <button type="button" onclick="zoomGameMap(1)" aria-label="Приблизить карту" title="Приблизить карту" data-i18n-aria="ui_aria_map_zoom_in" data-i18n-title="ui_aria_map_zoom_in">＋</button>
+          <button type="button" onclick="zoomGameMap(-1)" aria-label="Отдалить карту" title="Отдалить карту" data-i18n-aria="ui_aria_map_zoom_out" data-i18n-title="ui_aria_map_zoom_out">－</button>
+          <button type="button" onclick="resetGameMapView()" data-i18n="ui_btn_map_reset">Сброс</button>
+          <button type="button" onclick="toggleGameMapFullscreen()" data-i18n="ui_btn_map_fullscreen">Во весь экран</button>
         </div>
         <div class="map-legend">
           <div class="map-legend-item"><span class="map-legend-sw" style="background:#7f5f36"></span><span data-i18n="ui_leg_node">перекрёсток / узел</span></div>
@@ -735,7 +743,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
       </div>
       <div class="map-modal-main" id="map-modal-stage">
         <div class="map-toolbar">
-          <div class="map-toolbar-left" id="map-topbar-layer">fog of war · fullscreen · progress</div>
+          <div class="map-toolbar-left" id="map-topbar-layer" data-i18n="ui_map_topbar_hint">туман войны · полный экран · прогресс</div>
           <div class="map-toolbar-right">
             <span id="map-topbar-status" style="margin-right:12px;"></span>
             <button onclick="closeModal('overlay-map')" data-i18n="ui_btn_map_close">Закрыть (M)</button>
@@ -755,6 +763,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
 <div class="modal-overlay" id="overlay-menu">
   <div class="menu-content">
     <h2 data-i18n="ui_menu_title">Меню</h2>
+    <div class="autosave-note" id="autosave-note" aria-live="polite"></div>
     <div class="lang-pick-row" id="lang-pick-menu" style="display:flex;justify-content:center;align-items:center;gap:2px;margin-bottom:18px;flex-wrap:wrap;"></div>
     <button class="btn btn-s menu-btn" onclick="exportSave()" data-i18n="ui_menu_export">💾 Экспорт сохранения</button>
     <label class="btn btn-s menu-btn" style="display:block;cursor:pointer">
