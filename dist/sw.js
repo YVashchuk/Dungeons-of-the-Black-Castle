@@ -16,9 +16,9 @@
 // IMPORTANT: bump VERSION on every release to force cache invalidation.
 // ═══════════════════════════════════════════════════════════════
 
-const VERSION = '2026-04-24-001';
+const VERSION = '2026-09-04-001';
 const CACHE_NAME = `black-castle-${VERSION}`;
-const APP_HTML = './podzemelye-chyornogo-zamka-remake.html';
+const APP_HTML = './dungeons-of-the-black-castle.html';
 
 const PRECACHE = [
   './',

@@ -4,7 +4,7 @@
   "short_name": "Чёрный замок",
   "description": "Книга-игра Дмитрия Браславского (ремейк 1991 г., 1221 параграф). Отправьтесь в Зачарованный лес, проникните в Чёрный замок и спасите Принцессу из лап злого волшебника Барлада Дэрта.",
   "lang": "ru",
-  "start_url": "./podzemelye-chyornogo-zamka-remake.html",
+  "start_url": "./dungeons-of-the-black-castle.html",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "fullscreen"],

@@ -4,7 +4,7 @@
 **What this is.** `MANUAL_SMOKE_CHECKS.md` in the repository is the human acceptance checklist of the JS gamebook remake «Подземелья Чёрного замка»: 41 live checks (A1–A17 combat mechanics, B1–B5 interface, C1–C19 verification cycle) that no automated harness covers because they need a real browser (layout, fonts, focus, reloads). Your job is to **perform** them (Mode A) or **judge** them from screenshots (Mode B) and deliver `SMOKE_REPORT.md`. You do not change anything; you observe and report. Findings are hypotheses; the maintainer adjudicates.
 
 **Build under test:** the `main` branch build hosted on GitHub Pages:
-`https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/podzemelye-chyornogo-zamka-remake.html`
+`https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/dungeons-of-the-black-castle.html`
 (the human will confirm the exact URL in the first message). The game is one HTML page; art loads from `dist/art/` next to it.
 
 **Rules.** Stay on that URL (plus its `#N` anchors); no other web use. Report only what you saw; if a step cannot be performed in your environment, mark the check `BLOCKED` with the reason — never guess. One screenshot per check at the decisive moment (two if the check has a before/after). Keep the interface in Russian unless a check says otherwise (C14 switches languages).

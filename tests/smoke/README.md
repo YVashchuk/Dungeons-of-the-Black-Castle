@@ -11,7 +11,7 @@ bash build.sh
 python -m http.server 8001
 # 3. once: playwright-core next to the script (needs network; Chrome must be installed)
 cd tests\smoke; npm init -y; npm i playwright-core; cd ..\..
-# 4. run (default URL http://localhost:8001/dist/podzemelye-chyornogo-zamka-remake.html)
+# 4. run (default URL http://localhost:8001/dist/dungeons-of-the-black-castle.html)
 node tests\smoke\smoke_run.js [url]
 ```
 

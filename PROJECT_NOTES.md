@@ -72,7 +72,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── MIDJOURNEY_PROMPTS.md   ← All Midjourney prompts (incl. Batch 4) + hero --cref URL
 │   └── PWA_IMPLEMENTATION.md   ← PWA activation plan (ChatGPT C-1 verified)
 ├── dist/                       ← Built artifacts
-│   ├── podzemelye-chyornogo-zamka-remake.html  ← BUILT game HTML (~3.5 MB, 4 languages)
+│   ├── dungeons-of-the-black-castle.html  ← BUILT game HTML (~3.5 MB, 4 languages)
 │   ├── art/                    ← Runtime art copied from assets/art (75 files, 7.6 MB)
 │   ├── manifest.webmanifest    ← (PREPARED, not active) PWA install metadata
 │   ├── sw.js                   ← (PREPARED, not active) Service worker
@@ -184,7 +184,7 @@ The script builds the shell (injecting `mobile.css` + inlined fonts), then conca
 8. `game_logic.js` — engine (renders MJ first, ILLUST fallback)
 9. closes `</script></body></html>` and copies `assets/art/` → `dist/art/` (75 files)
 
-Output: `dist/podzemelye-chyornogo-zamka-remake.html` (~3.5 MB, 4 languages) + `dist/art/` (7.6 MB).
+Output: `dist/dungeons-of-the-black-castle.html` (~3.5 MB, 4 languages) + `dist/art/` (7.6 MB).
 
 ### Localization (group_72, July 2026)
 Four full languages ship in one HTML: Russian (reference), English, French, Ukrainian.

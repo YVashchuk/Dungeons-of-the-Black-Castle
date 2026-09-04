@@ -1,7 +1,7 @@
 const fs=require('fs');
 const path=require('path');
 const REPO=path.resolve(__dirname,'..');
-const d=fs.readFileSync(path.join(REPO,'dist','podzemelye-chyornogo-zamka-remake.html'),'utf8');
+const d=fs.readFileSync(path.join(REPO,'dist','dungeons-of-the-black-castle.html'),'utf8');
 let ok=0,bad=0;
 [['ui_btn_new','"ui_btn_new":"\u041d\u043e\u0432\u0430 \u0433\u0440\u0430"'],
  ['enemy','"shestilapyy_zver":"\u0428\u0415\u0421\u0422\u0418\u041b\u0410\u041f\u0418\u0419 \u0417\u0412\u0406\u0420"'],

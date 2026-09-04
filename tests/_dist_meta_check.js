@@ -1,7 +1,7 @@
 const fs=require('fs');
 const path=require('path');
 const REPO=path.resolve(__dirname,'..');
-const d=fs.readFileSync(path.join(REPO,'dist','podzemelye-chyornogo-zamka-remake.html'),'utf8');
+const d=fs.readFileSync(path.join(REPO,'dist','dungeons-of-the-black-castle.html'),'utf8');
 let ok=0,bad=0;
 [['ui_btn_new','"ui_btn_new":"New Game"'],
  ['enemy','"shestilapyy_zver":"SIX-PAWED BEAST"'],

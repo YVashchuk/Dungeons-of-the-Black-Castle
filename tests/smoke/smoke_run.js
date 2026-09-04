@@ -3,7 +3,7 @@
 // asserts through the DOM and (where a UI path is impractical) through the game's own globals (S, combatState).
 const { chromium } = require('playwright-core');
 const fs = require('fs'); const path = require('path');
-const URL = process.argv[2] || 'http://localhost:8001/dist/podzemelye-chyornogo-zamka-remake.html';
+const URL = process.argv[2] || 'http://localhost:8001/dist/dungeons-of-the-black-castle.html';
 const OUT = path.join(__dirname, 'out'); fs.mkdirSync(OUT, { recursive: true });
 const results = []; const anomalies = [];
 function rec(id, verdict, obs) { results.push({ id, verdict, obs }); console.log(verdict.padEnd(8) + id + ' - ' + obs.replace(/[^\x20-\x7E]/g, '?').slice(0, 160)); }
