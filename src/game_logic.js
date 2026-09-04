@@ -743,7 +743,12 @@ function renderGame(opts){
     }
   }
   document.getElementById('s-text').innerHTML=illustHtml+fmtText(sec.text);
-  document.getElementById('s-area').scrollTop=0;
+  if(!(opts&&opts.repaint)){
+    document.getElementById('s-area').scrollTop=0; // group_82 CU-11: a locale repaint keeps the reader's position
+    // group_82 CU-02: a keyboard-driven paragraph change destroys the activated choice - land on the
+    // paragraph marker (never over an open dialog; dialogs opened later in this render take focus themselves).
+    try{ const sn=document.getElementById('s-num'); if(sn&&!(typeof _bcTopDialog==='function'&&_bcTopDialog())){ if(!sn.hasAttribute('tabindex')) sn.setAttribute('tabindex','-1'); sn.focus({preventScroll:true}); } }catch(e){}
+  }
   // Riddle mechanic dispatch: if paragraph has a riddle field, render the
   // text-input widget instead of standard choice buttons. Per group_18 design.
   if(sec.riddle){renderRiddle(sec);}else if(sec.dice_roll){renderDiceRoll(sec);}else if(sec.dice_check){renderDiceCheck(sec);}else if(sec.dice_loot){renderDiceLoot(sec);}else if(sec.stake_picker){renderStakePicker(sec);}else{renderChoices(sec);}
@@ -1367,6 +1372,7 @@ function handleRiddleFail(riddleConfig){
     if(feedback&&remEl){
       remEl.textContent=remaining;
       feedback.classList.remove('hidden');
+      if(typeof bcAnnounce==='function') bcAnnounce((feedback.textContent||'').replace(/\s+/g,' ').trim()); // group_82 CU-12
     }
     saveGame();
   }
@@ -1413,7 +1419,7 @@ function renderRiddle(sec){
   wrap.appendChild(inputRow);
   // Feedback line (initially shown only if attempts already used)
   const fb=document.createElement('div');
-  fb.id='riddle-feedback';
+  fb.id='riddle-feedback';fb.setAttribute('role','status');fb.setAttribute('aria-live','polite'); // group_82 CU-12
   fb.className=used>0?'riddle-feedback':'riddle-feedback hidden';
   fb.innerHTML=t('neverno_ostalos')+'<span id="riddle-attempts">'+remaining+'</span>';
   wrap.appendChild(fb);
@@ -1432,7 +1438,7 @@ function renderRiddle(sec){
   }
   cont.appendChild(wrap);
   // Focus input after render (slight delay so DOM is ready).
-  setTimeout(function(){inp.focus();},50);
+  setTimeout(function(){ if(inp.isConnected&&!(typeof _bcTopDialog==='function'&&_bcTopDialog())) inp.focus({preventScroll:true}); },50); // group_82 CU-01: never pull focus behind an open dialog
 }
 
 // Shop / buy-choice mechanism (group_14). A choice with purchase:true is
@@ -1703,7 +1709,12 @@ let sectionPrepState={};
 let scriptedLuckContext=null;
 
 function getSectionPrep(sectionId){
-  if(!sectionPrepState[sectionId]) sectionPrepState[sectionId]={};
+  if(!sectionPrepState[sectionId]){
+    // group_82 CB-02: a persisted scripted-luck outcome (S.luckChecks[...].prep) restores the runtime
+    // prep state after a reload; goTo clears the record when the paragraph is left.
+    const rec=(typeof S!=='undefined'&&S&&S.luckChecks)?S.luckChecks[String(sectionId)]:null;
+    sectionPrepState[sectionId]=(rec&&rec.scripted&&rec.prep&&typeof rec.prep==='object')?Object.assign({},rec.prep):{};
+  }
   return sectionPrepState[sectionId];
 }
 
@@ -1841,6 +1852,9 @@ function doScriptedLuckCheck(){
     if(typeof opts.onUnlucky==='function') opts.onUnlucky();
     logEvent('luck',t('proverka_udachi')+roll+' > '+needed,t('neudacha_udacha_teper')+S.luck);
   }
+  // group_82 CB-02: persist the scripted outcome (sec.21/368/436 prep state) at roll time so an F5
+  // cannot reroll it; mid-combat prompts (sec.1175) touch no prep state and stay under B-08.
+  try{ const prep=sectionPrepState[S.section]; if(prep&&typeof prep==='object'){ S.luckChecks=S.luckChecks||{}; S.luckChecks[String(S.section)]={a:roll1,b:roll2,lucky:lucky,scripted:true,prep:JSON.parse(JSON.stringify(prep))}; } }catch(e){}
   document.getElementById('btn-luck-roll').style.display='none';
   updateHUD();saveGame();
   const ch=document.getElementById('luck-choices');
@@ -2266,7 +2280,7 @@ function renderChoices(sec){
   const list=document.getElementById('c-list');list.innerHTML='';
   // group_81 B-07: a resolved luck roll is persisted (S.luckChecks) so an F5 before
   // choosing cannot reroll it - restore it into the runtime maps before the branches.
-  if(sec.has_luck&&!luckDone[S.section]&&S.luckChecks&&S.luckChecks[String(S.section)]){ luckDone[S.section]=true; luckResult[S.section]=S.luckChecks[String(S.section)].lucky?'lucky':'unlucky'; }
+  if(sec.has_luck&&!luckDone[S.section]&&S.luckChecks&&S.luckChecks[String(S.section)]&&!S.luckChecks[String(S.section)].scripted){ luckDone[S.section]=true; luckResult[S.section]=S.luckChecks[String(S.section)].lucky?'lucky':'unlucky'; }
   const hasPendingCombat=sec.enemies&&sec.enemies.length>0&&!combatDone[S.section];
   const combatWon=sec.enemies&&sec.enemies.length>0&&combatDone[S.section];
   const hasPendingLuck=sec.has_luck&&!luckDone[S.section];
@@ -2780,7 +2794,8 @@ function activateStagedJoins(cs){
   // must also wake after NON-round kills (Copy, larva, ally, Death of Orcs) -
   // otherwise the waiting branch spins forever and the fight can neither be won
   // nor left. combatRound's own blocks stay as idempotent fallbacks; the sec.1175
-  // luck prompt still fires from the after-strike block (firstDeathHandled untouched).
+  // luck prompt is offered immediately here (group_82 CB-01); combatRound's and useCopyInCombat's
+  // own sec.1175 blocks stay as idempotent fallbacks.
   if(cs.special&&(cs.special.type==='sec131'||cs.special.type==='sec1175')&&!cs.special.reinforcementsJoined){
     const first=cs.enemies[0];
     if(first&&first.hp<=0){
@@ -2788,6 +2803,9 @@ function activateStagedJoins(cs){
       cs.special.reinforcementsJoined=true; joined=true;
       const slog=document.getElementById('combat-log');
       if(slog)slog.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">${t(cs.special.type==='sec131'?'orel_chasovoy_vyletaet_iz_nishi':'pervyy_ork_poverzhen_teper_vam_p')}</div>`;
+      // group_82 CB-01: sec.1175's luck check is canonically IMMEDIATE («После того, как первый Орк
+      // все же будет повержен, если хотите, ПРОВЕРЬТЕ СВОЮ УДАЧУ») - offer it now, not one round later.
+      if(cs.special.type==='sec1175'){ cs.special.firstDeathHandled=true; if(!cs.special.luckChecked&&typeof promptCanon1175Luck==='function'){ if(typeof updateCombatEnemyDisplay==='function') updateCombatEnemyDisplay(cs); promptCanon1175Luck(); } }
     }
   }
   const deadCount=cs.enemies.filter(x=>x.hp<=0).length;
@@ -2958,6 +2976,7 @@ function useAllyInCombat(allyKey){
   cs.allyUsedThisFight=true;
   if(!Array.isArray(S.summonsUsed)) S.summonsUsed=[];
   if(!S.summonsUsed.some(k=>canonItem(k)===allyKey)) S.summonsUsed.push(allyKey);
+  saveGame(); // group_82 CB-03: the once-per-journey commit must survive an F5 mid-fight (B-08 side-effect rule)
   cs.ally={name:allyText(allyKey).name,skill:a.skill,stamina:a.stamina};
   const log=document.getElementById('combat-log');
   log.innerHTML+=`<div style="color:#b8860b;font-weight:bold;margin-top:8px">${a.icon}${t('vy')}${allyText(allyKey).verb}!</div>`;
@@ -3191,7 +3210,7 @@ window.onload=()=>{
   const h=location.hash.substring(1);
   if(h&&parseInt(h)>0&&GD[h]){
     const sv=loadGame();
-    if(sv){S=sv;S.section=parseInt(h);showScr('game');renderGame();}
+    if(sv){S=sv;const tgt=parseInt(h);if(S.section!==tgt)S.luckChecks={}; /* group_82 CB-04: a luck record belongs to the paragraph it was rolled on */ S.section=tgt;showScr('game');renderGame();}
     else{S=initState(t('tester'),12,24,12,[{id:'FIRE',remaining:2},{id:'HEALING',remaining:2},{id:'FORCE',remaining:2},{id:'WEAKNESS',remaining:2},{id:'COPY',remaining:1},{id:'SWIMMING',remaining:1}]);S.section=parseInt(h);showScr('game');renderGame();}
   }
 };

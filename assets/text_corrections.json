@@ -166,7 +166,8 @@
     "v2.158 -> v2.159": "September 2026 - group_81 batch 2 (P0+P0+P0+P1+P1+P1+P1, Claude tracks A+B): B-01 getItemSize numeric lookup (weapons truly weightless), B-03 script-managed reinforcements wake after non-round kills inside activateStagedJoins (sec.131 soft-lock closed), CA-01 renderRiddle targets #c-list (letter riddles reachable in-game for the first time), B-02 take-then-eat double serving closed, B-07 luck rolls persisted at roll time and restored on reload, CA-02 combat cards keyboard-operable with aria-pressed, CA-03 focus fallback to the first choice after a dialog closes. p1_6d 42 -> 47, MANUAL_SMOKE_CHECKS C18. GAME_RULES.md label 2.158 -> 2.159 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.159 -> v2.160": "September 2026 - group_81 batch 3 (P2 a11y cluster, Claude track A): CA-04 persistent live region + bcAnnounce for notifications, CA-05 dice results announced and focus moved to Continue, CA-06 combat-status reset hook from startCombat, CA-07 keyboard-reachable save import, CA-08 accessible names/states (item names in eat/drop labels, close/add-item labels, HUD chip labels, aria-disabled on greyed spells, aria-pressed on visual pills), CA-09 focus kept after list rebuilds, CA-18 riddle input focus ring. _dist_ui_check assert swapped + 2 added (46 -> 48). GAME_RULES.md label 2.159 -> 2.160 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.160 -> v2.161": "September 2026 - group_81 batch 4 (P2 responsive / fonts / i18n / data / docs, Claude tracks A+B): CA-10 safe-area on the event-log panel, FAB, modal cap and visual dock + the panel as a dialog (focus in, Escape out), CA-11 phone-landscape bounds 900 -> 960px, CA-12 HUD chip line-height, CA-13 sheet nodes restored in reverse order, CA-14 OFL.txt with all three copyright notices, CA-15 regular-weight headings (no synthetic bold for Forum), CA-16/B-04 FR NBSP + UK 'мапа' aria keys, CA-17 sidebar mini-map shown + layout-independent gated M hotkey, B-05 distinct legacyRu for the sec.300 watermelon + no-duplicate guard (6d 47 -> 48), B-06 GAME_RULES.md refreshed (armament, combat persistence, script joins, weakPickIdx, luck persistence) + brief errata, B-08 documented. group_81 30/30 DONE - recheck cycle 2026-09 closed except Track C. MANUAL_SMOKE_CHECKS C19. GAME_RULES.md label 2.160 -> 2.161 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.161 -> v2.162": "September 2026 - registry-only: recheck cycle 2026-09, third auditor (ChatGPT 5.6 Sol on the full 69e6be2 archive with code execution): REPORT_chatgpt_trackB.md (SHA-256 ff2a16e353df...; 62-probe verification of group_81/group_80, 5 findings incl. P0 CB-01 - the B-03 resolution's one-round luck delay at sec.1175 contradicts canon - and P1 CB-02 scripted luck not persisted, CB-03 summon not saved, CB-04 hash entry keeps a stale luck record) and REPORT_chatgpt_trackA.md (SHA-256 1f85993e343a...; 22/22 UI resolutions matched by executed probes, 12 findings incl. P0 CU-01 riddle input focus stealing from the offer dialog at sec.95, P1 CU-02 keyboard navigation focus loss on every goTo, P1 CU-12 riddle feedback not live). 17 hypotheses taken into group_82 with maintainer adjudication notes. GAME_RULES.md label 2.161 -> 2.162 (R-03 guard). No code change; battery ALL GREEN."
+    "v2.161 -> v2.162": "September 2026 - registry-only: recheck cycle 2026-09, third auditor (ChatGPT 5.6 Sol on the full 69e6be2 archive with code execution): REPORT_chatgpt_trackB.md (SHA-256 ff2a16e353df...; 62-probe verification of group_81/group_80, 5 findings incl. P0 CB-01 - the B-03 resolution's one-round luck delay at sec.1175 contradicts canon - and P1 CB-02 scripted luck not persisted, CB-03 summon not saved, CB-04 hash entry keeps a stale luck record) and REPORT_chatgpt_trackA.md (SHA-256 1f85993e343a...; 22/22 UI resolutions matched by executed probes, 12 findings incl. P0 CU-01 riddle input focus stealing from the offer dialog at sec.95, P1 CU-02 keyboard navigation focus loss on every goTo, P1 CU-12 riddle feedback not live). 17 hypotheses taken into group_82 with maintainer adjudication notes. GAME_RULES.md label 2.161 -> 2.162 (R-03 guard). No code change; battery ALL GREEN.",
+    "v2.162 -> v2.163": "September 2026 - group_82 batch 5 (P0+P0+P1+P1+P1+P1+P1+P2, ChatGPT tracks A+B): CB-01 sec.1175 luck offered immediately after any first-orc death (B-03 resolution amended), CB-02 scripted luck outcomes (sec.21/368/436) persisted and restored, CB-03 summon commit saved mid-fight, CB-04 hash entry drops a stale luck record, CU-01 riddle focus never pulls behind a dialog, CU-02 keyboard navigation lands on the paragraph marker, CU-11 locale repaint keeps scroll, CU-12 riddle feedback is a live status. p1_6d 48 -> 54. GAME_RULES.md label 2.162 -> 2.163 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -452,30 +453,34 @@
         {
           "id": "CB-01_sec1175_luck_prompt_delayed",
           "severity": "P0",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "The B-03 resolution deliberately leaves firstDeathHandled untouched, so after a non-round kill of the First Orc (larva, ally, Death of Orcs at open) Orcs 2-3 wake immediately but promptCanon1175Luck fires only after the next full attack exchange - the Third Orc gets a round of attacks before the canonically immediate luck check can make it flee. Canon: «После того, как первый Орк все же будет повержен, если хотите, ПРОВЕРЬТЕ СВОЮ УДАЧУ.» Reproduced by executing the production functions; no natural choice-graph path carries the larva or Death of Orcs to sec.1175 (BFS), but the state bug is executable and the resolution contradicts canon.",
-          "note": "Maintainer adjudication: CONFIRMED - my own B-03 resolution accepted a one-round delay that canon does not allow; kept at P0 by the brief's definition (a resolution contradicting canon), with the natural-play exposure caveat recorded. Fix: activateStagedJoins marks firstDeathHandled and offers the luck check immediately for sec1175 (idempotent with combatRound's and useCopyInCombat's own blocks)."
+          "note": "Maintainer adjudication: CONFIRMED - my own B-03 resolution accepted a one-round delay that canon does not allow; kept at P0 by the brief's definition (a resolution contradicting canon), with the natural-play exposure caveat recorded. Fix: activateStagedJoins marks firstDeathHandled and offers the luck check immediately for sec1175 (idempotent with combatRound's and useCopyInCombat's own blocks).",
+          "resolution": "CONFIRMED P0 DONE. activateStagedJoins now completes the sec.1175 milestone itself: after waking Orcs 2-3 it sets firstDeathHandled and, unless the luck was already checked, refreshes the display and calls promptCanon1175Luck immediately - the Third Orc gets no free round before the canonical option to make it flee. combatRound's after-strike block and useCopyInCombat's block remain idempotent fallbacks (they skip on firstDeathHandled / reinforcementsJoined). The B-03 resolution text is amended; the 6d sec1175 guard now expects firstDeathHandled=true and exactly one prompt call."
         },
         {
           "id": "CB-02_scripted_luck_not_persisted",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "doScriptedLuckCheck saves only S after the outcome callbacks; the outcomes of the three pre-combat scripted checks (sec.21 playerMod, sec.368 modeSelected/playerMod, sec.436 escaped) live in the runtime sectionPrepState, so an F5 between the roll and the next choice re-offers the roll at the cost of another Luck point - the B-07 resolution promised the window closed but covered only the generic doLuckCheck path. Reproduced with the production function and a captured save snapshot.",
-          "note": "Maintainer adjudication: CONFIRMED P1. Fix: persist the prep outcome inside S.luckChecks[section].prep at roll time and restore it in getSectionPrep before renderCanonCombatChoices; goTo already clears the record. The mid-combat sec.1175 luck stays under the B-08 rule (combat state is not persisted)."
+          "note": "Maintainer adjudication: CONFIRMED P1. Fix: persist the prep outcome inside S.luckChecks[section].prep at roll time and restore it in getSectionPrep before renderCanonCombatChoices; goTo already clears the record. The mid-combat sec.1175 luck stays under the B-08 rule (combat state is not persisted).",
+          "resolution": "CONFIRMED P1 DONE. doScriptedLuckCheck persists the scripted outcome at roll time - S.luckChecks[section]={a,b,lucky,scripted:true,prep:<copy of sectionPrepState[section]>} whenever the outcome callbacks produced prep state (sec.21 playerMod, sec.368 mode/playerMod, sec.436 escaped); getSectionPrep restores that prep on first access after a reload, so renderCanonCombatChoices lands on the resolved branch; the generic renderChoices restore ignores scripted records; goTo still clears the record on leaving. The mid-combat sec.1175 prompt writes no prep state and stays under the B-08 rule."
         },
         {
           "id": "CB-03_summon_not_saved",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "useAllyInCombat pushes the ally key into S.summonsUsed but never calls saveGame(); an F5 during the fight restores the pre-summon list and the once-per-journey summon (magic bell bear / bear amulet) can be reused. The June adjudication that refuted the same claim reasoned about export/import, not about F5.",
-          "note": "Maintainer adjudication: CONFIRMED P1 (the June refutation was incomplete). Fix: saveGame() right after the summonsUsed commit - a narrow, intended mid-combat side effect under B-08."
+          "note": "Maintainer adjudication: CONFIRMED P1 (the June refutation was incomplete). Fix: saveGame() right after the summonsUsed commit - a narrow, intended mid-combat side effect under B-08.",
+          "resolution": "CONFIRMED P1 DONE. useAllyInCombat calls saveGame() right after committing S.summonsUsed, so a mid-fight F5 can no longer re-arm the once-per-journey summon. The June refutation (export/import path) is superseded for the reload path."
         },
         {
           "id": "CB-04_hash_entry_keeps_luck_record",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "goTo clears S.luckChecks, but window.onload's hash entry restores the save and overwrites S.section without the equivalent clear; a saved unlucky record for sec.203 survives #203 -> #1 -> #203 and the final entry restores the stale outcome instead of rolling again. Same-section F5 must keep the record; only a hash target different from the saved section should clear it.",
-          "note": "Maintainer adjudication: CONFIRMED P1. Fix: in window.onload clear sv.luckChecks when sv.section !== target before assigning the target."
+          "note": "Maintainer adjudication: CONFIRMED P1. Fix: in window.onload clear sv.luckChecks when sv.section !== target before assigning the target.",
+          "resolution": "CONFIRMED P1 DONE. window.onload clears sv.luckChecks when the hash target differs from the saved section before assigning it; a same-section F5 keeps the record, a hash jump to another paragraph rolls again on return."
         },
         {
           "id": "CB-05_legacy_arbuz_string_maps_to_food",
@@ -487,16 +492,18 @@
         {
           "id": "CU-01_riddle_focus_steals_from_dialog",
           "severity": "P0",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "renderRiddle schedules inp.focus() at 50 ms unconditionally; renderGame renders the riddle before processing first-visit auto_items, and sec.95 carries auto_items castle_password, so the inventory offer dialog opens (initial focus at 0 ms) and the riddle input then pulls focus behind the open aria-modal dialog. The same timer moves focus behind an open menu when a language switch repaints a riddle paragraph. Reproduced with both production functions (timer_delays=0,50, final_focus=riddle-input).",
-          "note": "Maintainer adjudication: CONFIRMED P0 (breaks the dialog focus model). Fix: focus only if the input is still connected and no dialog is open (_bcTopDialog() === null)."
+          "note": "Maintainer adjudication: CONFIRMED P0 (breaks the dialog focus model). Fix: focus only if the input is still connected and no dialog is open (_bcTopDialog() === null).",
+          "resolution": "CONFIRMED P0 DONE. renderRiddle's delayed focus fires only if the input is still in the document and no dialog is open (_bcTopDialog() null), so the sec.95 offer dialog and the menu keep focus; the inventory dialog's own initial focus stands."
         },
         {
           "id": "CU-02_keyboard_navigation_focus_loss",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Keyboard activation of an ordinary choice calls goTo -> renderGame; renderChoices starts with list.innerHTML='' which destroys the focused button, and goTo has no focus transfer, so focus falls to <body> after every ordinary paragraph change (CA-03 covers only dialog closes).",
-          "note": "Maintainer adjudication: CONFIRMED P1. Fix: renderGame focuses the paragraph marker (#s-num, tabindex=-1) on a genuine section change, never on a locale repaint and never over an open dialog."
+          "note": "Maintainer adjudication: CONFIRMED P1. Fix: renderGame focuses the paragraph marker (#s-num, tabindex=-1) on a genuine section change, never on a locale repaint and never over an open dialog.",
+          "resolution": "CONFIRMED P1 DONE. renderGame focuses the paragraph marker (#s-num, tabindex=-1, preventScroll) on a genuine paragraph change - not on a locale repaint and not while a dialog is open; dialogs opened later in the same render take focus through the controller; CA-03's post-dialog fallback still lands on the first choice."
         },
         {
           "id": "CU-03_phone_event_panel_not_trapped",
@@ -557,16 +564,18 @@
         {
           "id": "CU-11_locale_repaint_resets_scroll",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "renderGame unconditionally resets #s-area scrollTop to 0; repaintAfterLangSwitch calls renderGame({repaint:true}), so closing the menu after a language change loses the reader's position in a long paragraph although no navigation happened.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: reset the scroll only when opts.repaint is false."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: reset the scroll only when opts.repaint is false.",
+          "resolution": "ACCEPTED P2 DONE. The #s-area scroll reset (and the CU-02 marker focus) run only when renderGame is not a locale repaint, so closing the menu after a language change keeps the reader's position."
         },
         {
           "id": "CU-12_riddle_feedback_not_live",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "A wrong riddle answer keeps focus in #riddle-input and reveals «Неверно. Осталось попыток: …», but the feedback node has no role/live semantics and handleRiddleFail only changes its class and counter - no programmatic status channel for the error or the dwindling attempts on a primary navigation mechanic.",
-          "note": "Maintainer adjudication: CONFIRMED P1. Fix: role=status aria-live=polite on #riddle-feedback and the localized text also sent through bcAnnounce."
+          "note": "Maintainer adjudication: CONFIRMED P1. Fix: role=status aria-live=polite on #riddle-feedback and the localized text also sent through bcAnnounce.",
+          "resolution": "CONFIRMED P1 DONE. #riddle-feedback is role=status aria-live=polite and handleRiddleFail also pushes the localized text («Неверно. Осталось попыток: N») through bcAnnounce."
         }
       ]
     },
@@ -625,7 +634,7 @@
           "status": "DONE",
           "hypothesis": "sec.131 (goblin + eagle sentry) is script-managed (eagle active:false, no joins). Its activation sites are the top-of-round block (round 5 while the goblin lives) and the after-strike block, which sits after the early return `if(alive.length===0){ if(combatResolved(cs)){endCombat(true);} else { ...protivniki_vyzhidayut...; } return; }`. None of useCopyInCombat / useLarvaInCombat / useAllyInCombat carries a sec131 block and activateStagedJoins ignores enemies without joins. When the goblin falls to a non-round kill (Copy side-fight, sec.932 larva - path sec.1123 -> ... -> sec.131 exists, or the bell's bear) combatResolved is false (eagle hp 7), every further Udar returns at the waiting branch, the eagle never activates and the fight can neither be won nor left (no flee at sec.131). Before v2.146 the same sequence ended in a premature victory; the X-01 fix turned it into a soft-lock. Canon: 'Cherez 4 raunda ataki k nemu prisoedinyaetsya Orel-chasovoy ... Esli vy pobedili oboih strazhey'. The same shape exists at sec.1175 for the larva path and Death-of-Orcs at open (unreachable in play per BFS). handleCanonCombatMilestones(cs) is defined but never called.",
           "note": "Maintainer adjudication: CONFIRMED P0 by code reading (line order of the early return vs the after-strike block). Fix: script-aware first-death activation inside activateStagedJoins, which already runs before the alive check and from every non-round kill path.",
-          "resolution": "CONFIRMED P0. activateStagedJoins - which already runs at the top of every round before the alive check and from every non-round kill path (Copy, larva, ally, Death of Orcs) - now also wakes script-managed reinforcements: when cs.special.type is sec131 or sec1175 and the first enemy is dead with reinforcementsJoined still false, the alive enemies 1..n are activated, the canon log line is appended (orel_chasovoy_vyletaet_iz_nishi / pervyy_ork_poverzhen_teper_vam_p) and the display refreshes. combatRound's own top-of-round and after-strike blocks stay as idempotent fallbacks; firstDeathHandled is left untouched so the sec.1175 luck prompt still fires from the after-strike block one round later. The eagle at sec.131 therefore joins immediately after a Copy / larva / bear kill of the goblin and the waiting branch can no longer spin forever. handleCanonCombatMilestones stays unused (dead code, untouched in this batch). 6d gains two behavioural guards (sec131 and sec1175 scenarios)."
+          "resolution": "CONFIRMED P0. activateStagedJoins - which already runs at the top of every round before the alive check and from every non-round kill path (Copy, larva, ally, Death of Orcs) - now also wakes script-managed reinforcements: when cs.special.type is sec131 or sec1175 and the first enemy is dead with reinforcementsJoined still false, the alive enemies 1..n are activated, the canon log line is appended (orel_chasovoy_vyletaet_iz_nishi / pervyy_ork_poverzhen_teper_vam_p) and the display refreshes. combatRound's own top-of-round and after-strike blocks stay as idempotent fallbacks; firstDeathHandled is left untouched so the sec.1175 luck prompt still fires from the after-strike block one round later. The eagle at sec.131 therefore joins immediately after a Copy / larva / bear kill of the goblin and the waiting branch can no longer spin forever. handleCanonCombatMilestones stays unused (dead code, untouched in this batch). 6d gains two behavioural guards (sec131 and sec1175 scenarios). [Amended by group_82 CB-01: the sec.1175 luck check is now offered immediately after the first orc's death on every kill path; the one-round delay described above is gone.]"
         },
         {
           "id": "B-04_fr_autosave_nbsp",
