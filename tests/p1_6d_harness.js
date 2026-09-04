@@ -61,6 +61,32 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9n. group_80 X-04/R-01/R-03: closing batch (atomic sec436 spend, index plumbing, label sync)
+(function(){
+  ck('X-04 sec436_force consumed only in the fight onclick',
+    gl.split('S.sec436_force=false').length-1===1 &&
+    gl.includes('fightF.onclick=()=>{ S.sec436_force=false; saveGame(); startCombat(sec.enemies,{...sec, player_attack_mod:1, combat_spells_allowed:[]}); };'));
+  ck('R-01 index plumbing: no index-less makeChoiceBtn, withIdx map, 4 e.idx sites',
+    !gl.includes('makeChoiceBtn(ch))') &&
+    gl.includes('const withIdx=sec.choices.map((ch,idx)=>({ch,idx}));') &&
+    gl.split('makeChoiceBtn(e.ch,false,e.idx)').length-1===4);
+  try{
+    eval(gfn('normalizeSave'));
+    const sim=normalizeSave({v:5,shopBought:{'340':[null,2],'99':'junk'},batchPicked:{'585:undefined':true,'585:2':true,'bad':true}});
+    ck('R-01 migration: [null] pruned, junk dropped, bad batch keys deleted, real markers kept',
+      JSON.stringify(sim.shopBought['340'])==='[2]' && !('99' in sim.shopBought) &&
+      sim.batchPicked['585:2']===true && !('585:undefined' in sim.batchPicked) && !('bad' in sim.batchPicked));
+  }catch(e){ ck('R-01 migration eval: '+e.message, false); }
+  (function(){
+    const md=fs.readFileSync(path.join(REPO,'assets','GAME_RULES.md'),'utf8');
+    const lbl=(md.match(/\*\*v(\d+\.\d+)\*\*/)||[])[1];
+    const reg=JSON.parse(fs.readFileSync(path.join(REPO,'assets','text_corrections.json'),'utf8'));
+    const ks=Object.keys(reg.version_history||{});
+    const tgt=((ks[ks.length-1]||'').match(/->\s*v(\d+\.\d+)\s*$/)||[])[1];
+    ck('R-03 GAME_RULES.md label equals last registry transition ('+lbl+' == '+tgt+')', !!lbl&&!!tgt&&lbl===tgt);
+  })();
+})();
+
 // 9m. group_80 V-04: dice persistence
 (function(){
   const glSrc=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
