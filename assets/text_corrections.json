@@ -155,7 +155,8 @@
     "v2.147 -> v2.148": "July 2026 - group_80 batch 5 (P0, the last P0): V-04 dice persistence. Both fate rolls commit persisted records BEFORE showing their outcome: sec.781 restores the same faces and single resolved target on F5/revisit (no reroll-to-success), sec.932 restores the same n and unfinished pickup, and Continue without picking explicitly commits the refusal into diceLootDone. MANUAL_SMOKE_CHECKS C10/C11 added per convention. p1_6d 37 -> 38. Dist rebuilt; battery ALL GREEN.",
     "v2.148 -> v2.149": "September 2026 - group_80 closing batch (P1+P1+P2): X-04 atomic sec.436 Force spend (flag consumed in the fight onclick, not at render - F5 no longer burns the paid cast), R-01 choice-index plumbing through the four post-luck renderChoices branches (withIdx map; shopBought/batchPicked keyed by real indices; normalizeSave prunes legacy [null] / ':undefined' markers) and R-03 GAME_RULES.md label sync with a standing 6d guard (label == last version_history transition). MANUAL_SMOKE_CHECKS C12/C13 added. group_80 12/12 DONE - verification cycle closed. p1_6d 38 -> 42. Dist rebuilt; battery ALL GREEN.",
     "v2.149 -> v2.150": "September 2026 - group_79 stage A, batch 1 (P2+P2): UI-09 map localization + aria (Reset/Fullscreen/fog placeholder -> ui keys; +/- and the layer select get accessible names via the new data-i18n-aria channel in applyStaticI18n; 2C-SHELL harness extended; map refresh reordered after the static pass) and UI-10 motion/feedback (global prefers-reduced-motion rule, :active pressed states, autosave indicator in the menu). 7 ui keys x4 locales (321 -> 328). GAME_RULES.md label 2.149 -> 2.150 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.150 -> v2.151": "September 2026 - group_79 stage A, batch 2 (P1+P1): UI-04 a11y foundation (shared dialog controller: role/aria-modal/labelledby, initial focus, focus return, guarded Escape, Tab trap; :focus-visible ring; live regions on notifications and the luck result; label-for, aria-label and keyboard access for the span/div controls) and UI-06 viewport/safe-area (viewport-fit=cover, insets on the fixed shell layers, dvh fallbacks, clamp padding on preface/pregame, short-viewport title-screen rule). _dist_ui_check 23 -> 33 (printed total). GAME_RULES.md label 2.150 -> 2.151 (R-03 guard). Dist rebuilt; battery ALL GREEN. Stage A complete - stage B (UI-03/UI-07/UI-11/UI-12) awaits the user's A/B/C decisions."
+    "v2.150 -> v2.151": "September 2026 - group_79 stage A, batch 2 (P1+P1): UI-04 a11y foundation (shared dialog controller: role/aria-modal/labelledby, initial focus, focus return, guarded Escape, Tab trap; :focus-visible ring; live regions on notifications and the luck result; label-for, aria-label and keyboard access for the span/div controls) and UI-06 viewport/safe-area (viewport-fit=cover, insets on the fixed shell layers, dvh fallbacks, clamp padding on preface/pregame, short-viewport title-screen rule). _dist_ui_check 23 -> 33 (printed total). GAME_RULES.md label 2.150 -> 2.151 (R-03 guard). Dist rebuilt; battery ALL GREEN. Stage A complete - stage B (UI-03/UI-07/UI-11/UI-12) awaits the user's A/B/C decisions.",
+    "v2.151 -> v2.152": "September 2026 - group_79 stage B, batch 1 (P1): UI-07 Cyrillic display font per decision B - Forum (OFL) bundled for the Cyrillic range, font chains Cinzel / Cinzel Decorative -> Forum -> Cormorant Garamond -> serif, OFL.txt added, the unused Veles Redone and Cyrillic Old Face removed from fonts.css / src/fonts / README (dead base64 payload gone from dist), _dist_ui_check asserts for the new face and for the absence of the removed ones, MANUAL_SMOKE_CHECKS C14. Stage-B decisions recorded as author_decision: UI-03 A, UI-11 A, UI-12 B (deferred to the Midjourney art backlog). GAME_RULES.md label 2.151 -> 2.152 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -546,7 +547,8 @@
           "id": "UI-03_mobile_information_architecture",
           "severity": "P1",
           "status": "OPEN",
-          "hypothesis": "At <=700px the sidebar becomes a 38vh scroll container competing with the 62vh story scroll while choices sit in a non-scrolling bottom and the floating log FAB can cover the last button. Proposal: compact 56-72px sticky HUD (stats+gold+menu) with spells/bag/notes/map in bottom sheets and the log docked in the HUD."
+          "hypothesis": "At <=700px the sidebar becomes a 38vh scroll container competing with the 62vh story scroll while choices sit in a non-scrolling bottom and the floating log FAB can cover the last button. Proposal: compact 56-72px sticky HUD (stats+gold+menu) with spells/bag/notes/map in bottom sheets and the log docked in the HUD.",
+          "author_decision": "A (2026-09-04): full mobile redesign - compact sticky HUD (stats, gold, menu, log) with spells/bag/notes/map as bottom sheets; desktop layout untouched. Implemented together with UI-11 A as the game-screen rebuild series."
         },
         {
           "id": "UI-04_keyboard_screenreader",
@@ -572,8 +574,10 @@
         {
           "id": "UI-07_cyrillic_display_font",
           "severity": "P1",
-          "status": "OPEN",
-          "hypothesis": "Cinzel/Cinzel Decorative ship Latin-only unicode-range with bare serif fallback, so RU/UK headings render in system serif while EN/FR get Cinzel - identity varies by language/OS. Minimum: add Cormorant Garamond (already bundled with Cyrillic) as the explicit ui/title fallback; ideally a licensed Cyrillic display face metrically compatible with Cinzel."
+          "status": "DONE",
+          "hypothesis": "Cinzel/Cinzel Decorative ship Latin-only unicode-range with bare serif fallback, so RU/UK headings render in system serif while EN/FR get Cinzel - identity varies by language/OS. Minimum: add Cormorant Garamond (already bundled with Cyrillic) as the explicit ui/title fallback; ideally a licensed Cyrillic display face metrically compatible with Cinzel.",
+          "author_decision": "B (2026-09-04): dedicated Cyrillic display face (Forum); chain keeps Cormorant Garamond as the safety net; remove the unused fonts from the project.",
+          "resolution": "DECISION B DONE: Forum (Denis Masharov, SIL OFL 1.1, Google Fonts v19 cyrillic subset, 16.5 KB woff2) is bundled as src/fonts/Forum-cyr.woff2 and declared for the Cyrillic range only (U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116), so both display chains become Cinzel / Cinzel Decorative -> Forum -> Cormorant Garamond -> serif: Latin glyphs keep Cinzel, Cyrillic glyphs get Forum's inscriptional capitals instead of the OS serif, and Cormorant (option A) remains the per-glyph safety net. The license text now ships as src/fonts/OFL.txt (covers Cinzel, Cormorant Garamond and Forum). Per the user's instruction the two never-referenced faces with unusable licensing (Veles Redone: template copyright; Cyrillic Old Face: no declared license) were removed from fonts.css, src/fonts/ and the README, and _dist_ui_check now asserts their absence from the built artifact (they had been embedded as dead base64 payload). Two dist asserts added for the Forum face and the font chain; MANUAL_SMOKE_CHECKS C14 covers the visual check on RU/UK vs EN/FR."
         },
         {
           "id": "UI-08_spell_picker_feedback",
@@ -600,13 +604,15 @@
           "id": "UI-11_reading_rhythm",
           "severity": "P2",
           "status": "OPEN",
-          "hypothesis": "Story container allows ~1100px line length on wide screens; choices are permanently separated from the text by a bordered fixed block, weakening the read-then-decide rhythm. Proposal: cap #s-text/#c-list at ~68-74ch centered inside a full-width scroll container; place choices right after the text under a 'Your choice' heading."
+          "hypothesis": "Story container allows ~1100px line length on wide screens; choices are permanently separated from the text by a bordered fixed block, weakening the read-then-decide rhythm. Proposal: cap #s-text/#c-list at ~68-74ch centered inside a full-width scroll container; place choices right after the text under a 'Your choice' heading.",
+          "author_decision": "A (2026-09-04): cap the reading column at 68-74ch and place the choices right after the text under a 'Your choice' heading - the single scroll-flow variant from UI-01; implemented in the UI-03 series."
         },
         {
           "id": "UI-12_icon_and_theming_debt",
           "severity": "P2",
           "status": "OPEN",
-          "hypothesis": "The launcher icon's fine detail muddies at 32-64px (keep the illustration for splash; make a simple mark for favicon/launcher); 58 inline style attributes + 18 cssText + ~140 direct style ops hinder unified responsive/a11y patches - gradually extract to classes and tokens (surface/text/accent/danger/tap/focus/motion)."
+          "hypothesis": "The launcher icon's fine detail muddies at 32-64px (keep the illustration for splash; make a simple mark for favicon/launcher); 58 inline style attributes + 18 cssText + ~140 direct style ops hinder unified responsive/a11y patches - gradually extract to classes and tokens (surface/text/accent/danger/tap/focus/motion).",
+          "author_decision": "B (2026-09-04): wait for the Midjourney subscription - the launcher mark joins the group_71 art backlog; the inline-style-to-tokens extraction is picked up opportunistically by the UI-03/UI-11 game-screen rebuild."
         }
       ],
       "verified": "2026-07-14"

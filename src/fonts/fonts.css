@@ -5,20 +5,18 @@
  * Replaces the @import from fonts.googleapis.com so the app works
  * offline from the first cold launch.
  *
- * Three font families:
- *   1. Cinzel + Cinzel Decorative — Latin display (titles, headers)
- *   2. Cormorant Garamond — body text (Cyrillic + Latin, regular & italic)
- *   3. Veles Redone — Slavic ornamental drop-caps (use selectively)
- *   4. Cyrillic Old Face — optional Slavic-flavored body text alternative
+ * Font families (all SIL OFL 1.1 - license text in ./OFL.txt):
+ *   1. Cinzel + Cinzel Decorative - Latin display (titles, headers)
+ *   2. Cormorant Garamond - body text (Cyrillic + Latin, regular & italic)
+ *   3. Forum (Denis Masharov) - Cyrillic display for RU/UK headings and UI
+ *      chrome, the Cyrillic counterpart of Cinzel (group_79 UI-07). Declared
+ *      for the Cyrillic range only, so Latin keeps Cinzel and the browser
+ *      picks the face per glyph; Cormorant Garamond remains the final net.
  *
- * ⚠ LICENSING NOTES (verify before public deployment):
- *   - Cinzel/Cormorant: SIL OFL, free for any use including commercial
- *   - Veles Redone (sherbackoffalex): COPYRIGHT.txt says "© (your company)
- *     2025 All Rights Reserved" — this is a TEMPLATE PLACEHOLDER, not a
- *     valid open license. Safe for local/personal use; risky for public
- *     hosting. Contact author or replace before public deployment.
- *   - Cyrillic Old Face (David Zbíral, chain from Dr. Berlin): de-facto
- *     free-for-use, no formal license declared. Low risk but unverified.
+ * Licensing: Cinzel, Cormorant Garamond and Forum are SIL OFL 1.1 - free for
+ * any use including commercial. The two Slavic decorative faces bundled
+ * earlier (template copyright / no declared license) were never referenced
+ * by the UI and were removed in group_79 UI-07.
  * ═══════════════════════════════════════════════════════════════ */
 
 /* ─── Cinzel (Latin display, used for titles) ─── */
@@ -77,44 +75,19 @@
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 
-/* ─── Veles Redone (Slavic ornamental — RECOMMENDED FOR DROP-CAPS) ─── */
+/* ─── Forum (Cyrillic display for headings / UI chrome, group_79 UI-07) ─── */
 @font-face {
-  font-family: 'Veles Redone';
+  font-family: 'Forum';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./fonts/VelesRedone.woff2') format('woff2');
-  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116, U+0000-007F;
-}
-
-/* ─── Cyrillic Old Face (Slavic-flavored body text alternative) ─── */
-@font-face {
-  font-family: 'Cyrillic Old Face';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('./fonts/CyrillicOldFace.woff2') format('woff2');
-  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116, U+0000-007F;
+  src: url('./fonts/Forum-cyr.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 
 /* ═══════════════════════════════════════════════════════════════
- * SUGGESTED USAGE (apply in game_shell_top.html when activating PWA)
- * ═══════════════════════════════════════════════════════════════
- *
- * Drop-cap on first letter of paragraph (Slavic fairy-tale style):
- *
- *   .s-text > p:first-of-type::first-letter {
- *     font-family: 'Veles Redone', 'Cyrillic Old Face', serif;
- *     font-size: 4em;
- *     line-height: 0.85;
- *     float: left;
- *     padding: 0.05em 0.1em 0 0;
- *     color: var(--accent-gold, #c8a464);
- *   }
- *
- * Optional Slavic-flavored body text (test for readability first):
- *
- *   .s-text {
- *     font-family: 'Cyrillic Old Face', 'Cormorant Garamond', serif;
- *   }
+ * Usage (game_shell_top.html, group_79 UI-07):
+ *   --font-ui:    'Cinzel', 'Forum', 'Cormorant Garamond', serif;
+ *   --font-title: 'Cinzel Decorative', 'Forum', 'Cormorant Garamond', serif;
+ *   --font-text:  'Cormorant Garamond', Georgia, serif;
  * ═══════════════════════════════════════════════════════════════ */
