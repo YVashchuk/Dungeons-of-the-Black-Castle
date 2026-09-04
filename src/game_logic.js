@@ -226,6 +226,7 @@ function returnSheetSection(){
   var log=document.getElementById('combat-log'), st=document.getElementById('combat-round-status');
   if(!log||!st) return;
   var seen=0;
+  window._bcCombatStatusReset=function(){ seen=0; }; // CA-06: startCombat clears the log synchronously - a count-only heuristic misses equal-length intros
   new MutationObserver(function(){
     var kids=log.children, n=kids.length;
     if(n<seen) seen=0;
@@ -332,6 +333,8 @@ function renderSpellSel(){
     const id=b.dataset.id,delta=parseInt(b.dataset.d);
     if(delta>0&&totSp()>=MAX_SP)return;if(delta<0&&spQty[id]<=0)return;
     spQty[id]+=delta;renderSpellSel();
+    // group_81 CA-09: the grid was rebuilt - refocus the same (or the sibling) qty button.
+    const nb=grid.querySelector('.qty-btn[data-id="'+id+'"][data-d="'+delta+'"]:not([disabled])')||grid.querySelector('.qty-btn[data-id="'+id+'"]:not([disabled])'); if(nb) nb.focus({preventScroll:true});
   });
   // Update start button state
   const startBtn=document.getElementById('btn-start');
@@ -409,11 +412,15 @@ function clearEventLog(){
 }
 
 // ── Item Notification ──
+// group_81 CA-04/CA-05: one persistent live region (#bc-notif-live, shell) - assistive
+// tech announces CHANGES to an existing region, not a pre-filled node inserted afresh.
+function bcAnnounce(text){ try{ const live=document.getElementById('bc-notif-live'); if(!live) return; live.textContent=''; setTimeout(function(){ live.textContent=text; },0); }catch(e){} }
 function showItemNotification(items, title){
-  const el=document.createElement('div');el.className='item-notification';el.setAttribute('role','status');el.setAttribute('aria-live','polite');
+  const el=document.createElement('div');el.className='item-notification';
   el.innerHTML=`<div class="notif-title">${title||t('meshok')}</div>`+
     items.map(i=>`<div class="notif-item${i.startsWith('−')?' loss':''}">${i}</div>`).join('');
   document.body.appendChild(el);
+  bcAnnounce([title||t('meshok')].concat(items).map(x=>String(x).replace(/<[^>]+>/g,'').trim()).filter(Boolean).join(' \u00b7 '));
   setTimeout(()=>{el.style.animation='fadeOut .5s ease-out forwards';
     setTimeout(()=>el.remove(),500);},3000);
 }
@@ -469,7 +476,7 @@ function renderInvModalCurrent(){
       const row=document.createElement('div');
       row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);';
       row.innerHTML=`<span style="font-size:15px;color:var(--parchment);">${invDisplay(item)}</span>
-        <button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i})" title="${t('vybrosit')}">\uD83D\uDDD1</button>`;
+        <button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button>`;
       cur.appendChild(row);
     });
   }
@@ -531,6 +538,7 @@ function dropItemModal(idx){
   S.inventory.splice(idx,1);
   renderInvModalCurrent();
   updateHUD();saveGame();
+  try{ const cur=document.getElementById('inv-modal-current'); const bs=cur?cur.querySelectorAll('button'):[]; const nb=bs.length?bs[Math.min(idx,bs.length-1)]:null; if(nb) nb.focus({preventScroll:true}); else { const fb=document.querySelector('#modal-inventory button:not([disabled])'); if(fb) fb.focus({preventScroll:true}); } }catch(e){} // group_81 CA-09
 }
 
 function closeInvModal(){
@@ -926,8 +934,8 @@ function updateHUD(){
   const il=document.getElementById('inv-list');il.innerHTML='';
   if(S.inventory&&S.inventory.length>0){S.inventory.forEach((item,i)=>{
     const isFood=item&&typeof item==='object'&&item.kind==='food';
-    const eatBtn=isFood?`<button type="button" class="inv-eat" onclick="eatFood(${i})" aria-label="${t('syest')} (+${item.stamina}${t('vyn')})" title="${t('syest')} (+${item.stamina}${t('vyn')})" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">\uD83C\uDF74</button>`:'';
-    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<button type="button" class="inv-remove" onclick="removeItem(${i})" aria-label="${t('vybrosit')}" title="${t('vybrosit')}">\uD83D\uDDD1</button></span></div>`;});}
+    const eatBtn=isFood?`<button type="button" class="inv-eat" onclick="eatFood(${i})" aria-label="${t('syest')}: ${itemName(item.id)} (+${item.stamina}${t('vyn')})" title="${t('syest')} (+${item.stamina}${t('vyn')})" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">\uD83C\uDF74</button>`:'';
+    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<button type="button" class="inv-remove" onclick="removeItem(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button></span></div>`;});}
   else{il.innerHTML=t('meshok_pust');}
   document.getElementById('inv-count').textContent=`(${getBagUsed()}/${getBagSize()})`;
   // Notes
@@ -1048,6 +1056,7 @@ function eatFood(i){
   playSound('item');
   showItemNotification(['🍴 '+itemName(clean)+': +'+actual+t('vyn')]);
   updateHUD();saveGame();
+  focusInventoryRow(i); // group_81 CA-09
 }
 function useFlask(){if(!S||S.flask<=0)return;S.flask--;S.stamina=Math.min(S.staminaMax,S.stamina+2);logEvent('gain',t('glotok_iz_flyagi'),t('2_vynoslivosti_ostalos_glotkov')+S.flask+')');updateHUD();saveGame();}
 function useHealing(){
@@ -1085,7 +1094,10 @@ function toggleAddItem(){const a=document.getElementById('add-item-area');a.styl
 function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.trim();
   if(!v)return;if(getBagUsed()+getItemSize(v)>getBagSize()){alert(t('meshok_polon_3')+getBagSize()+t('mest_2'));return;}
   S.inventory.push(v);inp.value='';updateHUD();saveGame();}
-function removeItem(i){if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);updateHUD();saveGame();}
+// group_81 CA-09: updateHUD rebuilds #inv-list, destroying the activated button -
+// land on the equivalent row (or the add-item control) so keyboard users keep their place.
+function focusInventoryRow(i){ try{ const rows=document.querySelectorAll('#inv-list .inv-item'); const row=rows.length?rows[Math.min(i,rows.length-1)]:null; const b=row&&row.querySelector('button'); if(b){ b.focus({preventScroll:true}); return; } const add=document.getElementById('inv-add-btn'); if(add) add.focus({preventScroll:true}); }catch(e){} }
+function removeItem(i){if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);updateHUD();saveGame();focusInventoryRow(i);}
 
 // ── Choices ──
 // Spell detection and styling
@@ -1630,7 +1642,7 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
     if(totalRemaining<=0){
       btn.style.opacity='.35';btn.style.cursor='not-allowed';
       btn.style.borderStyle='dashed';
-      btn.title=t('zaklyatie_nedostupno');
+      btn.title=t('zaklyatie_nedostupno');btn.setAttribute('aria-disabled','true');
       btn.onclick=(e)=>{e.preventDefault();};
     } else {
       btn.onclick=()=>{const pick=ids.find(id=>getSpellRemaining(id)>0);useSpell(pick);applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
@@ -1656,7 +1668,7 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
     if(remaining<=0){
       btn.style.opacity='.35';btn.style.cursor='not-allowed';
       btn.style.borderStyle='dashed';
-      btn.title=t('zaklyatie_nedostupno');
+      btn.title=t('zaklyatie_nedostupno');btn.setAttribute('aria-disabled','true');
       btn.onclick=(e)=>{e.preventDefault();};
     } else {
       btn.onclick=()=>{useSpell(spellId);applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
@@ -1951,7 +1963,7 @@ function renderCanonCombatChoices(sec,list){
         const stl=SPELL_STYLE_BY_ID['FORCE']||{icon:'✨',border:'#8a4dbd',color:'#b070e0',bg:'rgba(140,70,200,.12)'};
         fb.style.borderColor=stl.border;fb.style.color=stl.color;fb.style.background=stl.bg;
         fb.innerHTML=stl.icon+' '+ch.label+(rem>0?' <span style="opacity:.6;font-size:14px">['+rem+']</span>':'');
-        if(rem<=0){ fb.style.opacity='.35';fb.style.cursor='not-allowed';fb.style.borderStyle='dashed';fb.title=t('zaklyatie_nedostupno');fb.onclick=(e)=>{e.preventDefault();}; }
+        if(rem<=0){ fb.style.opacity='.35';fb.style.cursor='not-allowed';fb.style.borderStyle='dashed';fb.title=t('zaklyatie_nedostupno');fb.setAttribute('aria-disabled','true');fb.onclick=(e)=>{e.preventDefault();}; }
         else { fb.onclick=()=>{ useSpell('FORCE'); S.sec436_force=true; saveGame(); goTo(ch.target); }; }
         list.appendChild(fb);
       } else {
@@ -2048,6 +2060,7 @@ function renderDiceRoll(sec){
     cont.textContent=t('prodolzhit');
     cont.onclick=()=>{ if(tgt!==null&&tgt!==undefined) goTo(tgt); };
     list.appendChild(cont);
+    bcAnnounce(t('kubik_vypalo')+roll); cont.focus({preventScroll:true}); // group_81 CA-05
   };
   list.appendChild(btn);
 }
@@ -2085,6 +2098,7 @@ function renderDiceCheck(sec){
     logEvent('luck',t('kubik_vypalo')+a+'+'+b+'='+sum,t('paragraf_3')+tgt);
     list.innerHTML='';
     showResolved(a,b,ok,tgt);
+    bcAnnounce(t('kubik_vypalo')+a+'+'+b+'='+sum); const cb=list.querySelector('button'); if(cb) cb.focus({preventScroll:true}); // group_81 CA-05
   };
   list.appendChild(btn);
 }
@@ -2145,6 +2159,7 @@ function renderDiceLoot(sec){
     saveGame();
     logEvent('luck',t('kubik_vypalo')+n,'');
     showRolled(n);
+    bcAnnounce(t('kubik_vypalo')+n); const pb=list.querySelector('button'); if(pb) pb.focus({preventScroll:true}); // group_81 CA-05
   };
   list.appendChild(btn);
 }
@@ -2392,7 +2407,7 @@ function startCombat(enemies,sec){
       </div>
     </div>`;
   });
-  document.getElementById('combat-log').innerHTML='';
+  document.getElementById('combat-log').innerHTML=''; if(window._bcCombatStatusReset)window._bcCombatStatusReset();
   if(pModInit!==0){
     document.getElementById('combat-log').innerHTML=`<div style="color:var(--gold);margin-bottom:8px;">${t('modifikator_sily_udara')}${pModInit>0?'+':''}${pModInit}</div>`;
   }
@@ -3293,8 +3308,8 @@ function ensureVisualDock(){
 function syncVisualControls(){
   const amb=document.getElementById('vp-amb');
   const art=document.getElementById('vp-art');
-  if(amb) amb.classList.toggle('on', !!VISUAL.ambience);
-  if(art) art.classList.toggle('on', !!VISUAL.inlineArt);
+  if(amb){ amb.classList.toggle('on', !!VISUAL.ambience); amb.setAttribute('aria-pressed', VISUAL.ambience?'true':'false'); }
+  if(art){ art.classList.toggle('on', !!VISUAL.inlineArt); art.setAttribute('aria-pressed', VISUAL.inlineArt?'true':'false'); }
   document.body.classList.toggle('hide-inline-art', !VISUAL.inlineArt);
 }
 function toggleInlineArt(){

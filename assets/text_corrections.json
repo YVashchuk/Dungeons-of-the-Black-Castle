@@ -163,7 +163,8 @@
     "v2.155 -> v2.156": "September 2026 - registry-only: recheck cycle 2026-09 opened. Gemini 3.1 Pro Track A report archived (SHA-256 d437b031354c...) - four hypotheses recorded as group_81 (UA-01 dialog stack by DOM order P1, UA-02 inventory spans not keyboard-operable P1, UA-03 no live combat-round status P2, UA-04 emoji in HUD aria names P2). The combined A+B run (SHA-256 bc5e456d890f...) is discarded per the accuracy guard; its three Track B claims (sec.1096 harpy flee, sec.300/574 fruit mismatch, sec.96/112 art) were checked against canon and rejected into resolved_no_op. GAME_RULES.md label 2.155 -> 2.156 (R-03 guard). No code change; battery ALL GREEN.",
     "v2.156 -> v2.157": "September 2026 - group_81 batch 1 (P1+P1+P2+P2, Gemini track A): UA-02 inventory eat/drop controls are real buttons with aria-labels (keyboard-operable), UA-01 the dialog controller keeps an open-order stack and raises the newest dialog's z-index (paint order == Escape/Tab order), UA-03 screen-reader combat-round status via a diffing mirror of #combat-log, UA-04 emoji-free aria keys for the HUD map/log/menu buttons (3 ui keys x4, 331 -> 334). _dist_ui_check +4 asserts, MANUAL_SMOKE_CHECKS C17. group_81 4/4 DONE. GAME_RULES.md label 2.156 -> 2.157 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.157 -> v2.158": "September 2026 - registry-only: recheck cycle 2026-09, Claude (Fable 5.1 via Windows MCP) reports archived - track B (SHA-256 0f70efa864e4...; 8 findings incl. P0 B-01 weapons not weightless because ITEM_SIZES[...]||1 and P0 B-03 sec.131 eagle never wakes after a non-round goblin kill) and track A (SHA-256 cde40411b9ed...; 18 findings incl. P0 CA-01 renderRiddle writes into a container that never existed, so the letter-riddle engine was unreachable in-game). 26 hypotheses taken into group_81 (now 30 items, 4 DONE) with maintainer adjudication notes. GAME_RULES.md label 2.157 -> 2.158 (R-03 guard). No code change; battery ALL GREEN.",
-    "v2.158 -> v2.159": "September 2026 - group_81 batch 2 (P0+P0+P0+P1+P1+P1+P1, Claude tracks A+B): B-01 getItemSize numeric lookup (weapons truly weightless), B-03 script-managed reinforcements wake after non-round kills inside activateStagedJoins (sec.131 soft-lock closed), CA-01 renderRiddle targets #c-list (letter riddles reachable in-game for the first time), B-02 take-then-eat double serving closed, B-07 luck rolls persisted at roll time and restored on reload, CA-02 combat cards keyboard-operable with aria-pressed, CA-03 focus fallback to the first choice after a dialog closes. p1_6d 42 -> 47, MANUAL_SMOKE_CHECKS C18. GAME_RULES.md label 2.158 -> 2.159 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.158 -> v2.159": "September 2026 - group_81 batch 2 (P0+P0+P0+P1+P1+P1+P1, Claude tracks A+B): B-01 getItemSize numeric lookup (weapons truly weightless), B-03 script-managed reinforcements wake after non-round kills inside activateStagedJoins (sec.131 soft-lock closed), CA-01 renderRiddle targets #c-list (letter riddles reachable in-game for the first time), B-02 take-then-eat double serving closed, B-07 luck rolls persisted at roll time and restored on reload, CA-02 combat cards keyboard-operable with aria-pressed, CA-03 focus fallback to the first choice after a dialog closes. p1_6d 42 -> 47, MANUAL_SMOKE_CHECKS C18. GAME_RULES.md label 2.158 -> 2.159 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.159 -> v2.160": "September 2026 - group_81 batch 3 (P2 a11y cluster, Claude track A): CA-04 persistent live region + bcAnnounce for notifications, CA-05 dice results announced and focus moved to Continue, CA-06 combat-status reset hook from startCombat, CA-07 keyboard-reachable save import, CA-08 accessible names/states (item names in eat/drop labels, close/add-item labels, HUD chip labels, aria-disabled on greyed spells, aria-pressed on visual pills), CA-09 focus kept after list rebuilds, CA-18 riddle input focus ring. _dist_ui_check assert swapped + 2 added (46 -> 48). GAME_RULES.md label 2.159 -> 2.160 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -561,44 +562,50 @@
         {
           "id": "CA-04_toast_live_region_timing",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "showItemNotification creates the toast with role=status/aria-live and inserts it into the DOM already populated; screen readers announce changes to an existing live region, so pre-filled regions inserted afresh are announced inconsistently - stat/gold/food notifications may be silent.",
-          "note": "Maintainer adjudication: ACCEPTED P2 (AT-dependent). Fix: a persistent sr-only live region written via setTimeout 0."
+          "note": "Maintainer adjudication: ACCEPTED P2 (AT-dependent). Fix: a persistent sr-only live region written via setTimeout 0.",
+          "resolution": "ACCEPTED P2 DONE. One persistent visually hidden live region (#bc-notif-live, role=status aria-live=polite) lives at body level; bcAnnounce(text) clears it and writes the message in a setTimeout(0) so assistive tech sees a change to an existing region. showItemNotification announces its title + lines (tags stripped) through it and the visual toast no longer carries live-region attributes (no double announcement)."
         },
         {
           "id": "CA-05_dice_result_live_focus",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "renderDiceRoll/Check/Loot: the roll button does list.innerHTML='' and appends a plain result div (no live region, unlike #luck-result) plus Continue; the activated button is destroyed, so focus drops to body.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: role=status on the result and focus the Continue button."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: role=status on the result and focus the Continue button.",
+          "resolution": "ACCEPTED P2 DONE. The three dice renderers announce the roll through bcAnnounce and move focus to the freshly rendered Continue / pick button after a click (the restore-on-entry paths stay silent so paragraph entry does not steal focus)."
         },
         {
           "id": "CA-06_combat_status_reset_edge",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "BC_COMBAT_STATUS reset heuristic `if(n<seen) seen=0;` fails when a new fight's synchronous intro batch has at least as many lines as the previous fight's final count; the intro lines are then never announced (simulated on dist).",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: explicit reset hook called from startCombat after the log is cleared."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: explicit reset hook called from startCombat after the log is cleared.",
+          "resolution": "ACCEPTED P2 DONE. BC_COMBAT_STATUS exposes window._bcCombatStatusReset (seen=0); startCombat calls it right after clearing #combat-log, so a new fight's intro batch is announced regardless of the previous fight's line count."
         },
         {
           "id": "CA-07_import_input_keyboard",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Menu import: the file input is display:none (not focusable) and its label has no tabindex, so save import is unreachable by keyboard; the menu Tab trap cycles select -> export -> new game -> close.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: sr-only input instead of display:none."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: sr-only input instead of display:none.",
+          "resolution": "ACCEPTED P2 DONE. The import file input is .sr-only instead of display:none - focusable in the menu Tab cycle, Enter opens the picker, still invisible; the label click path is unchanged."
         },
         {
           "id": "CA-08_accessible_names_states",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Accessible-name/state quality: offer-modal drop button named by its emoji content (title is not a name); event-log close button named by its glyph; #inv-add-btn named '+'; sidebar eat/drop aria-labels identical for every row (no item name); HUD chips labelled only by title, so a screen reader hears unlabeled numbers; greyed spell choices carry no aria-disabled; visual-dock pills carry no aria-pressed.",
-          "note": "Maintainer adjudication: ACCEPTED P2."
+          "note": "Maintainer adjudication: ACCEPTED P2.",
+          "resolution": "ACCEPTED P2 DONE. Offer-modal drop and sidebar eat/drop buttons carry aria-labels that include the item name; the event-log close button and the add-item toggle get aria-labels from existing keys (ui_btn_close, ui_title_add_item); the HUD chips gain sr-only labels (ui_lbl_skill/stamina/luck/gold) so the numbers are read with their names; unavailable spell choices carry aria-disabled=true; the visual-dock pills expose aria-pressed."
         },
         {
           "id": "CA-09_focus_loss_after_rebuilds",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "renderSpellSel, updateHUD's inventory list and renderInvModalCurrent rebuild their containers with innerHTML on activation (spell +/- clicks, eat/drop), destroying the focused control; focus falls to body after each action (inside a dialog the Tab trap recovers at the first control).",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: refocus the equivalent control after each rebuild."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: refocus the equivalent control after each rebuild.",
+          "resolution": "ACCEPTED P2 DONE. After a spell +/- click the equivalent (or the sibling) qty button is refocused; after eat/drop in the sidebar focusInventoryRow lands on the same row's button, else the add-item control; after a drop in the offer modal focus lands on the next drop button, else the first enabled modal button."
         },
         {
           "id": "CA-10_fixed_layers_safe_area",
@@ -659,9 +666,10 @@
         {
           "id": "CA-18_riddle_input_outline",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "#riddle-input{outline:none} (1,0,0) beats input:focus-visible (0,1,1), so the gold ring never applies to the riddle field.",
-          "note": "Maintainer adjudication: ACCEPTED P2. Fix: drop the outline reset."
+          "note": "Maintainer adjudication: ACCEPTED P2. Fix: drop the outline reset.",
+          "resolution": "ACCEPTED P2 DONE. outline:none removed from #riddle-input, so the shared :focus-visible ring applies; the gold border/background on :focus stays."
         }
       ]
     },
