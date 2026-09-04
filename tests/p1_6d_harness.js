@@ -61,6 +61,16 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9q. group_82 batch 5 (CB-02 / CB-03 / CB-04 / CU-01 / CU-02 / CU-12): scripted luck persistence, summon save, hash luck clear, focus guards, riddle status
+(function(){
+  ck('CB-02 scripted luck persisted with prep and restored in getSectionPrep', gl.includes('scripted:true,prep:JSON.parse(JSON.stringify(prep))')&&gl.includes('rec&&rec.scripted&&rec.prep')&&gl.includes("S.luckChecks[String(S.section)].scripted){ luckDone[S.section]=true;"));
+  ck('CB-03 summon commit is saved immediately', /S\.summonsUsed\.push\(allyKey\);\s*\n\s*saveGame\(\);/.test(gl));
+  ck('CB-04 hash entry clears a stale luck record', gl.includes('if(S.section!==tgt)S.luckChecks={};'));
+  ck('CU-01 riddle focus guarded by the dialog stack', gl.includes("if(inp.isConnected&&!(typeof _bcTopDialog==='function'&&_bcTopDialog())) inp.focus({preventScroll:true});"));
+  ck('CU-02 paragraph marker focused on a genuine section change', gl.includes("sn.setAttribute('tabindex','-1'); sn.focus({preventScroll:true});")&&gl.includes('if(!(opts&&opts.repaint)){'));
+  ck('CU-12 riddle feedback is a live status', gl.includes("fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');")&&gl.includes('bcAnnounce((feedback.textContent'));
+})();
+
 // 9p. group_81 batch 4 (B-05): items.json legacyRu values are unique (a duplicate key silently collapses the RU_TO_SLUG literal)
 (function(){
   try{
@@ -84,13 +94,14 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
     globalThis.document=globalThis.document||{getElementById:function(){return null;}};
     globalThis.t=globalThis.t||function(k){return k;};
     globalThis.updateCombatEnemyDisplay=function(){};
+    globalThis.promptCanon1175Luck=function(){ globalThis._p1175=(globalThis._p1175||0)+1; };
     eval(gfn('activateStagedJoins'));
     const cs={round:1,enemies:[{hp:0,active:true},{hp:7,active:false}],special:{type:'sec131',reinforcementsJoined:false}};
     const j=activateStagedJoins(cs);
     ck('B-03 sec131: eagle wakes when the goblin is dead regardless of the kill path', j===true&&cs.enemies[1].active===true&&cs.special.reinforcementsJoined===true);
     const cs2={round:1,enemies:[{hp:0,active:true},{hp:9,active:false},{hp:9,active:false}],special:{type:'sec1175',reinforcementsJoined:false,firstDeathHandled:false,luckChecked:false}};
     activateStagedJoins(cs2);
-    ck('B-03 sec1175: orcs 2-3 wake, firstDeathHandled left for the luck prompt', cs2.enemies[1].active===true&&cs2.enemies[2].active===true&&cs2.special.firstDeathHandled===false);
+    ck('B-03/CB-01 sec1175: orcs 2-3 wake, first death handled and the luck check offered immediately (once)', cs2.enemies[1].active===true&&cs2.enemies[2].active===true&&cs2.special.firstDeathHandled===true&&globalThis._p1175===1);
   }catch(e){ ck('B-03 activateStagedJoins eval: '+e.message,false); }
   ck('B-07 luck roll persisted at roll time and restored in renderChoices', gl.includes("S.luckChecks[String(S.section)]={a:roll1,b:roll2,lucky:lucky};")&&gl.includes("luckResult[S.section]=S.luckChecks[String(S.section)].lucky?'lucky':'unlucky';"));
   ck('CA-01 renderRiddle renders into #c-list (no dead #choices container)', !gl.includes("getElementById('choices')")&&/function renderRiddle\(sec\)\{[\s\S]{0,400}getElementById\('c-list'\)/.test(gl));
