@@ -96,6 +96,7 @@ function normalizeSave(s){
   }
   if(typeof s.batchPicked!=='object'||s.batchPicked===null||Array.isArray(s.batchPicked)) s.batchPicked={};
   for(const k of Object.keys(s.batchPicked)){ if(!/^\d+:\d+$/.test(k)) delete s.batchPicked[k]; }
+  if(typeof s.luckChecks!=='object'||s.luckChecks===null||Array.isArray(s.luckChecks)) s.luckChecks={}; // group_81 B-07: persisted luck rolls
   if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
   if(typeof s.sec436_force!=='boolean') s.sec436_force=false; // §436 Force-on-tree round-trip flag
   if(s.bet_stake===undefined) s.bet_stake=null; // betting Phase B2 — current wager (gold/item) or null
@@ -149,7 +150,10 @@ function _bcDialogClosed(el){
   var prev=_bcDialogOpener.get(el); _bcDialogOpener.delete(el);
   var si=_bcDialogStack.indexOf(el); if(si>=0) _bcDialogStack.splice(si,1);
   if(el.classList.contains('modal-overlay')) el.style.zIndex='';
-  if(prev&&document.body.contains(prev)&&prev.offsetParent!==null){ try{ prev.focus({preventScroll:true}); }catch(e){} }
+  if(prev&&document.body.contains(prev)&&prev.offsetParent!==null){ try{ prev.focus({preventScroll:true}); }catch(e){} return; }
+  // group_81 CA-03: the opener is often destroyed by the re-render that closed the
+  // dialog (combat / luck -> renderGame). Land on the first choice, else the story.
+  setTimeout(function(){ try{ if(_bcTopDialog()) return; var b=document.querySelector('#c-list button:not([disabled])'); if(b&&b.offsetParent!==null){ b.focus({preventScroll:true}); return; } var sa=document.getElementById('s-area'); if(sa){ if(!sa.hasAttribute('tabindex')) sa.setAttribute('tabindex','-1'); sa.focus({preventScroll:true}); } }catch(e){} },0);
 }
 function _bcCloseTopDialog(){
   var top=_bcTopDialog(); if(!top) return false;
@@ -483,6 +487,7 @@ function renderInvModalCurrent(){
     }
     if(S.inventory.some(it=>canonItem(it)===canonItem(item))){
       btn.textContent=t('v_meshke_2');btn.disabled=true;btn.style.opacity='.4';
+      const eb2=document.getElementById('inv-eatnow-'+i); if(eb2){eb2.disabled=true;eb2.style.opacity='.4';} // group_81 B-02: carried food is eaten from the bag
     } else if(getBagUsed()+getItemSize(item)>getBagSize()){
       btn.textContent=getItemSize(item)>1?(t('nuzhno')+getItemSize(item)+t('mest')):t('meshok_polon');btn.disabled=true;btn.style.opacity='.4';
     } else {
@@ -495,6 +500,7 @@ function eatFoundItem(idx){
   if(!S)return;
   const item=pendingItems[idx];
   if(!item||typeof item!=='object'||item.kind!=='food'||item._eaten)return;
+  if(S.inventory.some(it=>canonItem(it)===canonItem(item)))return; // group_81 B-02: already carried - one serving, from the bag
   if(S.stamina>=S.staminaMax){showItemNotification([t('vynoslivost_uzhe_polnaya')]);return;}
   const before=S.stamina;
   S.stamina=Math.min(S.staminaMax,S.stamina+item.stamina);
@@ -1016,7 +1022,10 @@ function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food
 const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0};
 function getItemSize(name){
   if(!name) return 1;
-  return ITEM_SIZES[canonItem(name)]||1;
+  // group_81 B-01: numeric-typed lookup - `||1` turned the slotCost:0 armament
+  // entries into 1 and quietly re-weighted the swords and the shield.
+  const v=ITEM_SIZES[canonItem(name)];
+  return (typeof v==='number')?v:1;
 }
 function getBagUsed(){
   return (S&&Array.isArray(S.inventory)?S.inventory:[]).reduce((sum,it)=>sum+getItemSize(it),0);
@@ -1349,7 +1358,8 @@ function handleRiddleFail(riddleConfig){
 function renderRiddle(sec){
   // Replaces renderChoices when sec.riddle is present. Renders a Cyrillic
   // text input + submit button + feedback row showing remaining attempts.
-  const cont=document.getElementById('choices');
+  // group_81 CA-01: the widget lives in the reading column like every other renderer.
+  const cont=document.getElementById('c-list');
   if(!cont)return;
   cont.innerHTML='';
   const maxAttempts=sec.riddle.max_attempts||3;
@@ -1751,14 +1761,19 @@ function updateCombatEnemyDisplay(cs){
     const isPickable=(cs.pendingWeakPick&&e.hp>0&&!e.fled);
     const isSel=(cs.targetIdx===i)&&isTargetable&&multiTarget;
     const isWeakSel=(cs.pendingWeakPick&&cs.weakPickIdx===i);
-    card.style.outline=isWeakSel?'2px solid var(--red2)':(isSel?'2px solid var(--gold)':'none');
-    card.style.outlineOffset=(isWeakSel||isSel)?'2px':'0';
-    card.style.cursor=((isTargetable&&multiTarget)||isPickable)?'pointer':'default';
-    card.onclick=((isTargetable&&multiTarget)||isPickable)?()=>{
+    // group_81 CA-02: selection rides box-shadow (outline stays free for :focus-visible);
+    // clickable cards are keyboard-operable buttons with a pressed state.
+    card.style.boxShadow=isWeakSel?'0 0 0 2px var(--red2)':(isSel?'0 0 0 2px var(--gold)':'none');
+    card.style.outline='';card.style.outlineOffset='';
+    const clickable=((isTargetable&&multiTarget)||isPickable);
+    card.style.cursor=clickable?'pointer':'default';
+    card.onclick=clickable?()=>{
       if(cs.pendingWeakPick)cs.weakPickIdx=i;
       if(e.hp>0&&e.active!==false&&!e.fled)cs.targetIdx=i;
       updateCombatEnemyDisplay(cs);
     }:null;
+    if(clickable){ card.setAttribute('role','button'); card.tabIndex=0; card.setAttribute('aria-pressed',(isSel||isWeakSel)?'true':'false'); card.setAttribute('aria-label',e.name+', '+status); card.onkeydown=(ev)=>{ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); if(card.onclick)card.onclick(); } }; }
+    else { card.removeAttribute('role'); card.removeAttribute('tabindex'); card.removeAttribute('aria-pressed'); card.removeAttribute('aria-label'); card.onkeydown=null; }
   });
 }
 
@@ -2229,6 +2244,9 @@ function renderStakePicker(sec){
 
 function renderChoices(sec){
   const list=document.getElementById('c-list');list.innerHTML='';
+  // group_81 B-07: a resolved luck roll is persisted (S.luckChecks) so an F5 before
+  // choosing cannot reroll it - restore it into the runtime maps before the branches.
+  if(sec.has_luck&&!luckDone[S.section]&&S.luckChecks&&S.luckChecks[String(S.section)]){ luckDone[S.section]=true; luckResult[S.section]=S.luckChecks[String(S.section)].lucky?'lucky':'unlucky'; }
   const hasPendingCombat=sec.enemies&&sec.enemies.length>0&&!combatDone[S.section];
   const combatWon=sec.enemies&&sec.enemies.length>0&&combatDone[S.section];
   const hasPendingLuck=sec.has_luck&&!luckDone[S.section];
@@ -2317,6 +2335,7 @@ function renderChoices(sec){
 function goTo(id){
   if(!S)return;S.section=id;
   combatDone={};luckDone={};luckResult={};sectionPrepState={};
+  S.luckChecks={}; // group_81 B-07: a persisted luck roll belongs to the paragraph being left
   renderGame();
 }
 
@@ -2737,6 +2756,20 @@ function endCombat(won){
 function activateStagedJoins(cs){
   if(!cs||!cs.enemies)return false;
   let joined=false;
+  // group_81 B-03: script-managed reinforcements (sec.131 eagle, sec.1175 orcs 2-3)
+  // must also wake after NON-round kills (Copy, larva, ally, Death of Orcs) -
+  // otherwise the waiting branch spins forever and the fight can neither be won
+  // nor left. combatRound's own blocks stay as idempotent fallbacks; the sec.1175
+  // luck prompt still fires from the after-strike block (firstDeathHandled untouched).
+  if(cs.special&&(cs.special.type==='sec131'||cs.special.type==='sec1175')&&!cs.special.reinforcementsJoined){
+    const first=cs.enemies[0];
+    if(first&&first.hp<=0){
+      for(let i=1;i<cs.enemies.length;i++){ const w=cs.enemies[i]; if(w&&w.hp>0&&!w.fled) w.active=true; }
+      cs.special.reinforcementsJoined=true; joined=true;
+      const slog=document.getElementById('combat-log');
+      if(slog)slog.innerHTML+=`<div style="color:var(--gold);margin-top:6px;">${t(cs.special.type==='sec131'?'orel_chasovoy_vyletaet_iz_nishi':'pervyy_ork_poverzhen_teper_vam_p')}</div>`;
+    }
+  }
   const deadCount=cs.enemies.filter(x=>x.hp<=0).length;
   cs.enemies.forEach(e=>{
     if(e.active!==false||e.fled||e.hp<=0||!e.joins)return;
@@ -3041,6 +3074,8 @@ function doLuckCheck(sec){
   playSound('dice');const roll1=d6(),roll2=d6(),roll=roll1+roll2;
   const lucky=roll<=S.luck;
   S.luck=Math.max(0,S.luck-1);// decrease luck by 1 after each check
+  // group_81 B-07: persist the resolved roll before anything renders (written by the saveGame below).
+  S.luckChecks=S.luckChecks||{}; S.luckChecks[String(S.section)]={a:roll1,b:roll2,lucky:lucky};
   
   const res=document.getElementById('luck-result');
   const needed=S.luck+1;
