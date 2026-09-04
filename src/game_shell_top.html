@@ -421,7 +421,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
 #riddle-input{flex:1;font-family:var(--font-text);font-size:22px;font-weight:500;
   background:var(--bg2);border:1px solid var(--border);color:var(--parchment);
   padding:18px 22px;border-radius:0;transition:border-color .2s,background .2s;
-  min-height:60px;outline:none;}
+  min-height:60px;}
 #riddle-input:focus{border-color:var(--gold);background:rgba(200,150,42,.06);}
 #riddle-input.shake{animation:riddle-shake .35s cubic-bezier(.36,.07,.19,.97) both;
   border-color:#a85a3a;background:rgba(180,60,40,.10);color:#e8a888;}
@@ -591,10 +591,10 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
   <div class="hud-bar" id="hud-bar" role="toolbar" aria-label="Панель героя" data-i18n-aria="ui_hud_toolbar">
     <div class="hud-row hud-status">
       <span class="hud-name" id="hb-name">Герой</span>
-      <span class="hud-chip" title="Мастерство" data-i18n-title="ui_lbl_skill"><span class="hud-ico" aria-hidden="true">⚔</span><b id="hb-skill">—</b></span>
-      <span class="hud-chip" title="Выносливость" data-i18n-title="ui_lbl_stamina"><span class="hud-ico" aria-hidden="true">♥</span><b id="hb-stamina">—</b></span>
-      <span class="hud-chip" title="Удача" data-i18n-title="ui_lbl_luck"><span class="hud-ico" aria-hidden="true">✦</span><b id="hb-luck">—</b></span>
-      <span class="hud-chip hud-gold" title="Золото" data-i18n-title="ui_lbl_gold"><span class="hud-ico" aria-hidden="true">◉</span><b id="hb-gold">15</b></span>
+      <span class="hud-chip" title="Мастерство" data-i18n-title="ui_lbl_skill"><span class="sr-only" data-i18n="ui_lbl_skill">Мастерство</span><span class="hud-ico" aria-hidden="true">⚔</span><b id="hb-skill">—</b></span>
+      <span class="hud-chip" title="Выносливость" data-i18n-title="ui_lbl_stamina"><span class="sr-only" data-i18n="ui_lbl_stamina">Выносливость</span><span class="hud-ico" aria-hidden="true">♥</span><b id="hb-stamina">—</b></span>
+      <span class="hud-chip" title="Удача" data-i18n-title="ui_lbl_luck"><span class="sr-only" data-i18n="ui_lbl_luck">Удача</span><span class="hud-ico" aria-hidden="true">✦</span><b id="hb-luck">—</b></span>
+      <span class="hud-chip hud-gold" title="Золото" data-i18n-title="ui_lbl_gold"><span class="sr-only" data-i18n="ui_lbl_gold">Золото</span><span class="hud-ico" aria-hidden="true">◉</span><b id="hb-gold">15</b></span>
     </div>
     <div class="hud-row hud-actions">
       <button type="button" class="hud-btn" onclick="openSheet('spells')" title="Заклятия" aria-label="Заклятия" data-i18n-title="ui_lbl_spells" data-i18n-aria="ui_lbl_spells">✨</button>
@@ -648,7 +648,7 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
     <div class="sb-section" id="sb-inv">
       <div class="sb-section-title"><span data-i18n="ui_lbl_bag">Заплечный мешок</span> <span style="font-size:10px;opacity:.5" id="inv-count">(0/7)</span></div>
       <div id="inv-list"></div>
-      <span class="inv-add" id="inv-add-btn" role="button" tabindex="0" onclick="toggleAddItem()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleAddItem();}" style="font-size:10px;opacity:.25;cursor:pointer" title="Добавить предмет вручную" data-i18n-title="ui_title_add_item">+</span>
+      <span class="inv-add" id="inv-add-btn" role="button" tabindex="0" onclick="toggleAddItem()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleAddItem();}" style="font-size:10px;opacity:.25;cursor:pointer" aria-label="Добавить предмет вручную" data-i18n-aria="ui_title_add_item" title="Добавить предмет вручную" data-i18n-title="ui_title_add_item">+</span>
       <div id="add-item-area" style="display:none">
         <div class="add-item-wrap">
           <input class="add-item-input" id="add-item-input" aria-label="Название предмета" data-i18n-aria="ui_ph_add_item" placeholder="Название предмета" maxlength="40" data-i18n-ph="ui_ph_add_item">
@@ -748,7 +748,7 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
     <h3 data-i18n="ui_log_title">📜 Журнал событий</h3>
     <div>
       <button class="event-log-clear" onclick="clearEventLog()" data-i18n="ui_btn_clear_log">Очистить</button>
-      <button class="event-log-close" onclick="toggleEventLog()">✕</button>
+      <button class="event-log-close" onclick="toggleEventLog()" aria-label="Закрыть" data-i18n-aria="ui_btn_close">✕</button>
     </div>
   </div>
   <div class="event-log-list" id="event-log-list"></div>
@@ -809,6 +809,9 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
   </div>
 </div>
 
+<!-- Persistent screen-reader live region (group_81 CA-04/CA-05): fed by bcAnnounce() -->
+<div class="sr-only" id="bc-notif-live" role="status" aria-live="polite"></div>
+
 <!-- MENU -->
 <div class="modal-overlay" id="overlay-menu" role="dialog" aria-modal="true" aria-labelledby="menu-modal-title">
   <div class="menu-content">
@@ -818,7 +821,7 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
     <button class="btn btn-s menu-btn" onclick="exportSave()" data-i18n="ui_menu_export">💾 Экспорт сохранения</button>
     <label class="btn btn-s menu-btn" style="display:block;cursor:pointer">
       <span data-i18n="ui_menu_import">📂 Импорт сохранения</span>
-      <input type="file" accept=".json" style="display:none" onchange="importSave(event)">
+      <input type="file" accept=".json" class="sr-only" onchange="importSave(event)">
     </label>
     <button class="btn btn-d menu-btn" onclick="if(confirm(t('ui_confirm_new_game'))){localStorage.removeItem(SAVE_KEY);location.reload();}" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
     <button class="btn btn-s menu-btn" onclick="closeModal('overlay-menu')" data-i18n="ui_btn_menu_close">← Закрыть</button>

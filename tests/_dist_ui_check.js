@@ -36,7 +36,9 @@ const snips=[
  ['focus ring (UI-04)', ':focus-visible{outline:2px solid var(--gold2)', 1],
  ['dialog roles (UI-04)', 'role="dialog" aria-modal="true"', 8],
  ['dialog controller (UI-04)', 'BC_A11Y_DIALOGS', 2],
- ['notification live region (UI-04)', "el.setAttribute('aria-live','polite')", 1],
+ ['persistent live region (UI-04/CA-04)', 'id="bc-notif-live" role="status" aria-live="polite"', 1],
+ ['keyboard-reachable import input (CA-07)', 'accept=".json" class="sr-only"', 1],
+ ['combat status reset hook (CA-06)', 'window._bcCombatStatusReset=function', 1],
  ['forum cyrillic display (UI-07)', "font-family: 'Forum';", 1],
  ['font chain with Forum (UI-07)', "--font-ui:'Cinzel','Forum','Cormorant Garamond',serif", 1],
 ];
