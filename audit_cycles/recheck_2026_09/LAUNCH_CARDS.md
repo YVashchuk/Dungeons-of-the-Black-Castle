@@ -15,15 +15,19 @@
 
 | Дата | Провайдер | Трек | Итог |
 |---|---|---|---|
-| 2026-09-04 | Gemini 3.1 Pro (обычный чат) | A | **принят**: `REPORT_gemini_trackA.md`, SHA-256 `d437b031…8641`; 4 находки (2 P1 + 2 P2) → group_81 UA-01…UA-04 |
+| 2026-09-04 | Gemini 3.1 Pro (обычный чат) | A | **принят**: `REPORT_gemini_trackA.md`, SHA-256 `d437b031…8641`; 4 находки (2 P1 + 2 P2) → group_81 UA-01…UA-04, закрыты батчем 1 (`79124a5`) |
 | 2026-09-04 | Gemini 3.1 Pro | B (чистый комплект) | **не запустился**: `game_structure.js` пришёл обрезанным на §848, модель корректно остановилась по правилу пре-флайта |
 | 2026-09-04 | Gemini 3.1 Pro | B (объединённый A+B) | **списан** по accuracy guard: пре-флайт назвал неверный первый заголовок выжимки (UI-01 вместо V-01), находки ссылаются на несуществующие поля/файлы (`pre_combat_exits`, `combat_paragraphs.jsonl`, `art30_three_knights`); три B-находки проверены по канону и **отвергнуты** (реестр `resolved_no_op`: UB-01/02/03). Архив: `REPORT_gemini_trackB_combined.md`, SHA-256 `bc5e456d…3659` |
 | 2026-09-04 | Gemini Deep Research | C | **не запущен** — лимит Deep Research; повторить после сброса квоты |
-| — | Claude Fable 5.1 через Windows MCP | B (обязательно), A (второе мнение) | см. карточку 2a |
+| 2026-09-04 | Claude Fable 5.1 через Windows MCP | B | **принят**: `REPORT_claude_trackB.md`, SHA-256 `0f70efa8…5d55d9`; 8 находок (2 P0 + 2 P1 + 4 P2), все подтверждены → B-01…B-08, закрыты батчами 2 и 4 (`be487e2`, `50f211e`) |
+| 2026-09-04 | Claude Fable 5.1 через Windows MCP | A | **принят**: `REPORT_claude_trackA.md`, SHA-256 `cde40411…7c129`; 18 находок (1 P0 + 2 P1 + 15 P2), все подтверждены → CA-01…CA-18, закрыты батчами 2–4 |
+| — | ChatGPT 5.6 Sol (архив + исполнение кода) | A и B | см. карточку 3 — третий, независимый аудитор состояния **после** закрытия group_81 |
 
 Errata брифа (Claude track B, B-06): census `gold_cost 58` — опечатка; в данных и `GAME_RULES.md` — 59.
 
-Урок: у Gemini большие вложения могут **тихо обрезаться** (155 KB `game_structure.js` дошёл до §848). Для трека B нужен провайдер с полным доступом к репозиторию — Claude через MCP.
+Урок: у Gemini большие вложения могут **тихо обрезаться** (155 KB `game_structure.js` дошёл до §848). Для трека B нужен провайдер с полным доступом к репозиторию — Claude через MCP или ChatGPT с архивом.
+
+Итог цикла на `50f211e`: `group_81` **30/30 DONE**, реестр v2.161; открыт только Track C.
 
 ---
 
@@ -62,7 +66,7 @@ Read the attached BRIEF.md first. Run the mandatory pre-flight from its section 
 ```
 
 4. Проверить пре-флайт: первая фраза §1 из `book_text.md`, число ключей GD = 1221, первый заголовок `### ` из `REGISTRY_EXCERPT.md` (это `### V-01_food_object_pipeline - P0 - DONE`).
-5. При нехватке контекста убирать в порядке: `README.md` → `REPORT_2026_07_20.md` → `MANUAL_SMOKE_CHECKS.md`. `book_text.md` и `game_structure.js` — незаменимы. Если `game_structure.js` дошёл обрезанным — трек B у Gemini не запускать, перейти к карточке 2a.
+5. При нехватке контекста убирать в порядке: `README.md` → `REPORT_2026_07_20.md` → `MANUAL_SMOKE_CHECKS.md`. `book_text.md` и `game_structure.js` — незаменимы. Если `game_structure.js` дошёл обрезанным — трек B у Gemini не запускать, перейти к карточке 2a или 3.
 
 ### Запуск Track C (опционально)
 Deep Research (3.1 Pro или 3.6 Flash). Прикрепить `fonts.css`, `mobile.css`, `game_shell_top.html` из `trackA/` и `BRIEF.md`. Сообщение:
@@ -81,35 +85,48 @@ Track C only, per section 10 of the attached BRIEF.md: answer the four standards
 2. Модель **Claude Fable 5.1**, extended thinking включён, web search выключен.
 3. Комплект трека — в Project knowledge (или вложением к первому сообщению). Первое сообщение — то же, что для Gemini, плюс `The files are in the project knowledge; treat them as the attached set.`
 
-## 2a. Claude через Windows MCP — РЕКОМЕНДУЕМЫЙ путь для Track B (и второе мнение по Track A)
+## 2a. Claude через Windows MCP — путь, которым прошёл цикл (Track B обязательно, A — второе мнение)
 
-Подходит, и даже лучше вложений: нет лимита в 10 файлов, нет тихой обрезки, и аудитор может **реально прогнать батарею** (`node tests/run_all.js`). Условия: новый чат **вне проекта**, Claude Fable 5.1, extended thinking, web search выключен, Windows MCP подключён (FileSystem + PowerShell).
+Подходит, и даже лучше вложений: нет лимита в 10 файлов, нет тихой обрезки, и аудитор может **реально прогнать батарею** (`node tests/run_all.js`). Условия: **Incognito-чат** (память выключена) вне проекта, Claude Fable 5.1, extended thinking, web search выключен, Windows MCP подключён (FileSystem + PowerShell). Единственный риск MCP — доступ на запись, поэтому первое сообщение жёстко read-only, а после прогона проверяется `git status`/`git log` (в этом цикле — чисто).
 
-Единственный риск MCP — доступ на запись. Поэтому в первом сообщении жёстко прописан read-only, а после прогона я проверяю `git status` и `git log` (должно быть чисто и на том же HEAD).
-
-**Первое сообщение для Track B** (перед отправкой подставь актуальный хэш из `git log --oneline -1`):
-
-```
-You are the external auditor for the recheck cycle 2026-09 of the JS gamebook remake "Подземелья Чёрного замка". The repository is on this machine at C:\Users\I828868\Downloads\Dungeons-of-the-Black-Castle and you have Windows MCP tools (FileSystem + PowerShell).
-
-Rules:
-1. READ-ONLY. Do not create, modify or delete anything inside the repository. Only read-only git commands (git rev-parse, git log, git status, git diff). Never run build.sh. The ONLY writable places are %TEMP% (scratch scripts) and the git-ignored folder C:\Users\I828868\Downloads\Dungeons-of-the-Black-Castle\_handoff\audit_2026_09_claude\ (your report).
-2. No web search and no search of past chats. Base every statement on the repository files; quote Russian text and code verbatim; write "not determinable from provided files" where applicable.
-3. First read audit_cycles\recheck_2026_09\BRIEF.md in full. Its Track B attachment table maps to these repository paths: src\game_structure.js, src\game_logic.js, src\registries\items.json, assets\GAME_RULES.md, assets\book_text.md, audit_cycles\recheck_2026_09\REGISTRY_EXCERPT.md, MANUAL_SMOKE_CHECKS.md, audit_cycles\recheck_2026_07_20\REPORT.md, README.md. Read the large ones with the file tools; parse the GD blob in game_structure.js with a Node script written to %TEMP% (it is a single line - do not eyeball it).
-4. Pre-flight (brief section 2, adapted): print git rev-parse --short HEAD (expected: <HASH>) and git status --short (expected: empty), then the Track B proof quotes: the first sentence of paragraph 1 from book_text.md, the number of top-level paragraph keys parsed from GD (must be 1221), and the first "### " heading of REGISTRY_EXCERPT.md. If anything does not match, stop and report.
-5. Run the verification battery once: node tests\run_all.js from the repository root (it is read-only) and quote its final line in your report.
-6. Perform Track B only (brief section 6) and report in the format of section 9. Save the report as _handoff\audit_2026_09_claude\REPORT_trackB.md and also print it in the chat.
-```
-
-**Для Track A** — то же сообщение с заменами: пути трека A (`src\game_shell_top.html, src\mobile.css, src\fonts\fonts.css, src\game_logic.js, src\map_module.js, MANUAL_SMOKE_CHECKS.md, audit_cycles\recheck_2026_09\REGISTRY_EXCERPT.md, audit_cycles\full_audit_2026_07_14\UI_AUDIT.md, README.md`), пре-флайт трека A (RU-строка `data-i18n` из шелла, строка `// >>> BC_A11Y_DIALOGS`, первый заголовок `### UI-…`), «Track A only (brief section 5)», файл `REPORT_trackA.md`. В сообщение для трека A добавь строку: `Findings UA-01..UA-04 of the Gemini Track A report are already recorded in the registry as group_81 - re-verify them briefly, then look beyond them.`
-
-После прогона: пришли мне путь к отчёту (или сам отчёт) — я сверю каждую находку с каноном/резолюцией/кодом.
+Готовые первые сообщения лежат файлами: `_handoff\audit_2026_09_claude\PROMPT_trackB.txt` и `PROMPT_trackA.txt` (перед отправкой подставить актуальный `git log --oneline -1` в `<HASH>` / проверить хэш в тексте). Отчёты аудитор кладёт в `_handoff\audit_2026_09_claude\REPORT_track<X>.md`.
 
 ---
 
-## 3. ChatGPT 6 Astra (позже, когда будет доступ)
+## 3. ChatGPT 5.6 Sol — третий аудитор: архив репозитория + исполнение кода
 
-Тот же `BRIEF.md`, те же два комплекта. Если у модели есть исполнение кода — как в цикле 2026-07-20 можно дать GitHub-архив `main` и потребовать реальный `node tests/run_all.js` (ALL GREEN, 16 харнессов + 6 dist-чеков + 1205) до начала анализа; иначе — режим «по чтению кода». Первые сообщения — те же.
+Бриф: **`audit_cycles/recheck_2026_09/BRIEF_chatgpt_third_auditor.md`** (лежит в архиве — прикладывать отдельно не нужно; аудитор читает его из распакованного архива). Он проверяет состояние **после** закрытия group_81: 30 резолюций как спецификации + собственный проход по UI/механикам.
+
+### Архив
+1. Взять хэш HEAD (`git log --oneline -1`) — это должен быть коммит, содержащий бриф (я называю хэш в чате при передаче).
+2. Скачать архив по хэшу: `https://github.com/YVashchuk/Dungeons-of-the-Black-Castle/archive/<хэш>.zip` (тогда корневая папка внутри называется `Dungeons-of-the-Black-Castle-<полный хэш>` — это часть пре-флайта).
+3. Распаковать, удалить **только** `assets\illustrations\` (388 МБ оригиналов Midjourney). `assets\art\` и `dist\art\` (по 7,6 МБ) оставить — их проверяет `_dist_art_check.js`.
+4. Запаковать папку обратно в ZIP, не переименовывая её. Ожидаемый размер ~35 МБ.
+5. `tests\node_modules` копировать не нужно: `acorn` завендорен в `tests\vendor\acorn.js`, батарея идёт офлайн.
+
+### Настройки чата
+- Модель **5.6 Sol**; если есть переключатель режима рассуждений («thinking»/«reasoning») — включить.
+- **Temporary chat** (или память выключена) — аудитор должен быть слепым к нашей истории.
+- **Web browsing — выключить.** **Исполнение кода / анализ файлов (Advanced Data Analysis) — включить**: аудитор обязан прогнать `node tests/run_all.js`.
+- Один чат на трек; ZIP прикладывается к первому сообщению каждого чата.
+
+### Первое сообщение — Track B (вставить как есть)
+
+```
+The attached ZIP is the repository archive of the audited commit (the root folder name contains the hash); assets/illustrations/ was removed on purpose. Extract it in your sandbox and do not modify it. Read audit_cycles/recheck_2026_09/BRIEF_chatgpt_third_auditor.md in full first, then audit_cycles/recheck_2026_09/BRIEF.md. Run the mandatory pre-flight from section 2 of the third-auditor brief, including node tests/run_all.js from the repository root, and print its output. Then perform Track B only (section 4) and report in the format of section 8 as REPORT_trackB.md (offer it for download and print it in the chat). No web browsing; execute code only inside your sandbox.
+```
+
+### Первое сообщение — Track A
+
+```
+The attached ZIP is the repository archive of the audited commit (the root folder name contains the hash); assets/illustrations/ was removed on purpose. Extract it in your sandbox and do not modify it. Read audit_cycles/recheck_2026_09/BRIEF_chatgpt_third_auditor.md in full first, then audit_cycles/recheck_2026_09/BRIEF.md. Run the mandatory pre-flight from section 2 of the third-auditor brief, including node tests/run_all.js from the repository root, and print its output. Then perform Track A only (section 5) and report in the format of section 8 as REPORT_trackA.md (offer it for download and print it in the chat). No web browsing; execute code only inside your sandbox.
+```
+
+### Ожидаемый пре-флайт
+Имя папки с хэшем · `BATTERY: ALL GREEN (16 harnesses + 6 dist checks + baseline)` (6d 48 / dist_ui 50 / 2C-SHELL 215) · последний ключ `version_history` = `v2.160 -> v2.161` · `group_81` = 30 items, все DONE · первая фраза §1 · 1221 ключ GD · первый заголовок `### ` из `REGISTRY_EXCERPT_v2.md`. Если батарея красная или чего-то нет — остановить, разобраться, не давать продолжать. Если в песочнице вдруг нет Node — пусть скажет прямо и продолжит «по чтению кода», пометив батарею как не выполненную.
+
+### Приём результатов
+Скачать `REPORT_track<X>.md` и положить в `_handoff\audit_2026_09_chatgpt\` (папка создана) — либо просто вставить текст в чат. Дальше — как обычно: SHA-256, сверка каждой находки с каноном/резолюцией/кодом, group_82 при необходимости.
 
 ---
 
@@ -117,4 +134,4 @@ Rules:
 
 1. Сохраняю отчёт как `audit_cycles/recheck_2026_09/REPORT_<provider>_<track>.md`, считаю SHA-256, записываю в реестр.
 2. Каждая находка — гипотеза: сверяю с каноном (`book_text.md`/FB2), резолюцией и кодом; при необходимости пишу харнесс-репродукцию.
-3. Подтверждённые — в `group_81_2026_09_04_recheck` (статусы, severity, резолюции по шаблону), затем батчи по обычной схеме (патчер → dry → write → build → батарея → коммит). Отвергнутые — в `resolved_no_op` с причиной и цитатой канона.
+3. Подтверждённые — в группу реестра (статусы, severity, резолюции по шаблону), затем батчи по обычной схеме (патчер → dry → write → build → батарея → коммит). Отвергнутые — в `resolved_no_op` с причиной и цитатой канона.
