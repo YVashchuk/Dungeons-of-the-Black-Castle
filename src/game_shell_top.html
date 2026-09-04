@@ -195,6 +195,8 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .inv-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:15px;color:var(--parchment);}
 .inv-remove{color:#c44;cursor:pointer;font-size:14px;opacity:.5;padding:2px 4px;transition:opacity .2s;}
 .inv-remove:hover{opacity:1;}
+/* UA-02 (group_81): eat/drop are real buttons now - reset the UA button chrome, keep the old look. */
+.inv-eat,.inv-remove{background:none;border:0;font:inherit;line-height:1;appearance:none;-webkit-appearance:none;}
 .inv-empty{font-size:16px;color:var(--muted);opacity:.5;font-style:italic;}
 .inv-add{font-size:12px;color:var(--gold);cursor:pointer;margin-top:6px;display:inline-block;}
 .inv-add:hover{text-decoration:underline;}
@@ -461,6 +463,8 @@ body.hide-inline-art .illustration-container{display:none!important;}
 .sheet-body .sb-section-title{display:none;}
 .sheet-body .sb-section,.sheet-body .sb-flask{border-bottom:0;}
 .sheet-body textarea{min-height:40vh;min-height:40dvh;}
+/* UA-03 (group_81): screen-reader-only text. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
 /* UI-04 (group_79): keyboard focus ring. The .btn / input families reset
    outline for mouse users; :focus-visible restores a gold ring for keyboard
    navigation without touching pointer interaction. */
@@ -596,9 +600,9 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
       <button type="button" class="hud-btn" onclick="openSheet('spells')" title="Заклятия" aria-label="Заклятия" data-i18n-title="ui_lbl_spells" data-i18n-aria="ui_lbl_spells">✨</button>
       <button type="button" class="hud-btn" onclick="openSheet('inv')" title="Заплечный мешок" aria-label="Заплечный мешок" data-i18n-title="ui_lbl_bag" data-i18n-aria="ui_lbl_bag">🎒</button>
       <button type="button" class="hud-btn" onclick="openSheet('notes')" title="Записки" aria-label="Записки" data-i18n-title="ui_lbl_notes" data-i18n-aria="ui_lbl_notes">📝</button>
-      <button type="button" class="hud-btn" onclick="openMapModal()" title="Карта" aria-label="Карта" data-i18n-title="ui_lbl_map" data-i18n-aria="ui_lbl_map">🗺</button>
-      <button type="button" class="hud-btn" onclick="toggleEventLog()" title="Журнал" aria-label="Журнал" data-i18n-title="ui_btn_log" data-i18n-aria="ui_btn_log">📜</button>
-      <button type="button" class="hud-btn" onclick="openMenu()" title="Меню" aria-label="Меню" data-i18n-title="ui_btn_menu" data-i18n-aria="ui_btn_menu">☰</button>
+      <button type="button" class="hud-btn" onclick="openMapModal()" title="Карта" aria-label="Карта" data-i18n-title="ui_aria_map" data-i18n-aria="ui_aria_map">🗺</button>
+      <button type="button" class="hud-btn" onclick="toggleEventLog()" title="Журнал" aria-label="Журнал" data-i18n-title="ui_aria_log" data-i18n-aria="ui_aria_log">📜</button>
+      <button type="button" class="hud-btn" onclick="openMenu()" title="Меню" aria-label="Меню" data-i18n-title="ui_aria_menu" data-i18n-aria="ui_aria_menu">☰</button>
     </div>
   </div>
   <!-- Sidebar -->
@@ -698,6 +702,7 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
     <h2 id="combat-modal-title" data-i18n="ui_combat_title">⚔ Бой!</h2>
     <div id="combat-enemies"></div>
     <div class="combat-log" id="combat-log"></div>
+    <div class="sr-only" id="combat-round-status" role="status" aria-live="polite"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="combat-buttons">
       <button class="btn btn-p" id="btn-combat-round" onclick="combatRound()">Удар!</button>
       <button class="btn btn-s" id="btn-force-spell" style="display:none;border-color:#7a5;color:#9d6;" onclick="useForceInCombat()">💪 Заклятие Силы</button>

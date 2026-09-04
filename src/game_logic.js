@@ -123,12 +123,18 @@ function openMenu(){renderAutosaveNote();document.getElementById('overlay-menu')
 // dialog offers an explicit closeModal control) and a Tab trap. Observing class
 // mutations keeps every existing open/close call site untouched.
 var _bcDialogOpener=new WeakMap();
+var _bcDialogStack=[]; // UA-01 (group_81): open-order stack - paint order == Escape/Tab order
 function _bcIsDialog(el){ return !!(el&&el.classList&&(el.classList.contains('modal-overlay')||el.classList.contains('end-overlay'))); }
 function _bcFocusables(root){ return Array.prototype.filter.call(root.querySelectorAll('button,select,input,textarea,a[href],[tabindex]'), function(el){ return !el.disabled&&el.tabIndex>=0&&el.getAttribute('aria-hidden')!=='true'&&el.offsetParent!==null; }); }
-function _bcTopDialog(){ var all=document.querySelectorAll('.modal-overlay.on,.end-overlay.on'); return all.length?all[all.length-1]:null; }
+function _bcTopDialog(){
+  for(var i=_bcDialogStack.length-1;i>=0;i--){ var d=_bcDialogStack[i]; if(d&&d.classList&&d.classList.contains('on')&&document.body.contains(d)) return d; }
+  var all=document.querySelectorAll('.modal-overlay.on,.end-overlay.on'); return all.length?all[all.length-1]:null;
+}
 function _bcDialogOpened(el){
   if(!el.getAttribute('role')) el.setAttribute('role','dialog');
   el.setAttribute('aria-modal','true');
+  var si=_bcDialogStack.indexOf(el); if(si>=0) _bcDialogStack.splice(si,1); _bcDialogStack.push(el);
+  if(el.classList.contains('modal-overlay')) el.style.zIndex=String(100+_bcDialogStack.length);
   if(!el.hasAttribute('aria-labelledby')&&!el.hasAttribute('aria-label')){
     var h=el.querySelector('h1,h2,h3,.modal-title,.map-title,.end-title');
     if(h){ if(!h.id) h.id=(el.id||'bc-dialog')+'-title'; el.setAttribute('aria-labelledby',h.id); }
@@ -141,6 +147,8 @@ function _bcDialogOpened(el){
 }
 function _bcDialogClosed(el){
   var prev=_bcDialogOpener.get(el); _bcDialogOpener.delete(el);
+  var si=_bcDialogStack.indexOf(el); if(si>=0) _bcDialogStack.splice(si,1);
+  if(el.classList.contains('modal-overlay')) el.style.zIndex='';
   if(prev&&document.body.contains(prev)&&prev.offsetParent!==null){ try{ prev.focus({preventScroll:true}); }catch(e){} }
 }
 function _bcCloseTopDialog(){
@@ -203,6 +211,27 @@ function returnSheetSection(){
   }); }
 })();
 // <<< BC_MOBILE_SHEETS <<<
+
+// >>> BC_COMBAT_STATUS (UA-03, group_81): screen-reader combat-round status >>>
+// #combat-log is rebuilt with innerHTML+= on every append (51 sites), so it
+// cannot be a live region without re-announcing the whole history. This
+// mirror observes the log and announces only the children appended since the
+// last mutation into a visually hidden role=status region.
+(function(){
+  if(typeof MutationObserver==='undefined') return;
+  var log=document.getElementById('combat-log'), st=document.getElementById('combat-round-status');
+  if(!log||!st) return;
+  var seen=0;
+  new MutationObserver(function(){
+    var kids=log.children, n=kids.length;
+    if(n<seen) seen=0;
+    var parts=[];
+    for(var i=seen;i<n;i++){ var tx=(kids[i].textContent||'').replace(/\s+/g,' ').trim(); if(tx) parts.push(tx); }
+    seen=n;
+    if(parts.length){ st.textContent=''; setTimeout(function(){ st.textContent=parts.join(' \u00b7 '); },0); }
+  }).observe(log,{childList:true});
+})();
+// <<< BC_COMBAT_STATUS <<<
 
 // ── Title ──
 function initTitle(){
@@ -891,8 +920,8 @@ function updateHUD(){
   const il=document.getElementById('inv-list');il.innerHTML='';
   if(S.inventory&&S.inventory.length>0){S.inventory.forEach((item,i)=>{
     const isFood=item&&typeof item==='object'&&item.kind==='food';
-    const eatBtn=isFood?`<span class="inv-eat" onclick="eatFood(${i})" title="${t('syest')} (+${item.stamina}${t('vyn')})" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">\uD83C\uDF74</span>`:'';
-    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<span class="inv-remove" onclick="removeItem(${i})" title="${t('vybrosit')}">\uD83D\uDDD1</span></span></div>`;});}
+    const eatBtn=isFood?`<button type="button" class="inv-eat" onclick="eatFood(${i})" aria-label="${t('syest')} (+${item.stamina}${t('vyn')})" title="${t('syest')} (+${item.stamina}${t('vyn')})" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">\uD83C\uDF74</button>`:'';
+    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<button type="button" class="inv-remove" onclick="removeItem(${i})" aria-label="${t('vybrosit')}" title="${t('vybrosit')}">\uD83D\uDDD1</button></span></div>`;});}
   else{il.innerHTML=t('meshok_pust');}
   document.getElementById('inv-count').textContent=`(${getBagUsed()}/${getBagSize()})`;
   // Notes
