@@ -172,7 +172,8 @@
     "v2.164 -> v2.165": "September 2026 - smoke follow-up: an automated live smoke run (Playwright over the installed Chrome, headless; tests/smoke/smoke_run.js) executed 24 checks of MANUAL_SMOKE_CHECKS (S0-S3 build signatures, C1, C2, C3/A2/C8, C4, C10-C19, B2, B3, B5) against the built artifact - all PASS after one real finding, SM-01: focus did not return to the position:fixed log button because the visibility tests relied on offsetParent - fixed with _bcVisible. C17's expectation aligned with the CA-17 hotkey gate. GAME_RULES.md label 2.164 -> 2.165 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.165 -> v2.166": "September 2026 - group_83 PT-01 (P0, found by the first automated end-to-end playthrough tests/smoke/playthrough.js, which reached sec.1220 in 71 steps without the Princess): the victory paragraph was reachable straight after killing Barlad, and the wake-up paragraphs offered «he is dead» without killing him - two canon state gates were honour-system choices. Story flags princess_awake / barlad_dead (auto_items.flags - mandatory, silent, weightless, hidden), inventory_missing negative gate, sec.81 -> 1220 requires princess_awake, sec.627/976 -> 1220 require barlad_dead (-> 1120 only while he lives). items.json 105 -> 107, auto_items 179 -> 182, inventory_condition 131 -> 134. p1_6d 56 -> 60. GAME_RULES.md s1/s8/s11 + label 2.165 -> 2.166 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.166 -> v2.167": "September 2026 - group_84 (ChatGPT agent live smoke on the public build + ChatGPT final Track A re-audit at v2.165): SA-01 dock pills re-localized (data-i18n), SA-03 dock moved into the story column (no more overlap with the sidebar menu button), SA-04 bridge buffs bound to their fight (no Weakness/Force leak into another fight after F5 / hash), CU-13 riddle answer button width (no horizontal overflow on EN/FR desktop), CU-14 phone log focus owned by the controller, CU-15 open log panel closes on a breakpoint change, CU-16 nested luck closes back into the combat dialog, CU-17 closed log panel inert, CU-18 language select single rebuild + refocus, CU-19 Cinzel Decorative declared 700. SA-02 (item names RU-only in EN/FR/UK) stays OPEN for a translation batch. A5 +6 confirmed correct (checklist fixed). The Gemini combined report of 2026-09-05 discarded (fabricated sec.1 quote). p1_6d 60 -> 64, _dist_ui_check 53 -> 55. GAME_RULES.md label 2.166 -> 2.167 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.167 -> v2.168": "September 2026 - group_85 opened (ChatGPT 6 Astra archive audit, 22 findings) and batch 7: AS-03 sec.81 negative branch closed with the Princess awake, AS-07 black-horse escape only while Barlad lives, AS-13 old saves regain the deed flags from visited, AS-15 importSave no longer shadows t(), AS-16 ally name in combat logs, AS-17 FR leading fragments, AS-18 aria-disabled on unavailable purchases, AS-19 stale dialog-stack entry after a breakpoint change, AS-20 README/QUICKSTART, AS-21 script paths, AS-22 password alternatives hidden with the password. Remaining: AS-01/02/04/05/06/08/09/10/11/12 (story flags, batch 8), AS-14 (betting persistence, batch 9), SA-02 (item names, batch 10). p1_6d 64 -> 68. GAME_RULES.md label 2.167 -> 2.168 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.167 -> v2.168": "September 2026 - group_85 opened (ChatGPT 6 Astra archive audit, 22 findings) and batch 7: AS-03 sec.81 negative branch closed with the Princess awake, AS-07 black-horse escape only while Barlad lives, AS-13 old saves regain the deed flags from visited, AS-15 importSave no longer shadows t(), AS-16 ally name in combat logs, AS-17 FR leading fragments, AS-18 aria-disabled on unavailable purchases, AS-19 stale dialog-stack entry after a breakpoint change, AS-20 README/QUICKSTART, AS-21 script paths, AS-22 password alternatives hidden with the password. Remaining: AS-01/02/04/05/06/08/09/10/11/12 (story flags, batch 8), AS-14 (betting persistence, batch 9), SA-02 (item names, batch 10). p1_6d 64 -> 68. GAME_RULES.md label 2.167 -> 2.168 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.168 -> v2.169": "September 2026 - group_85 batch 8 (story-state gates from the Astra Block S table): 13 new hidden flags in items.json (107 -> 120), origin gate from_section (sec.146), inventory_all AND gate (study death -> 489 in 297/411/850/797), riddle.requires_flag (sec.435 needs the hyena encounter of sec.337), fatal_when_stuck (sec.835 dies instead of soft-locking; Pegasus rescue moved from 534 to 835), bear greeting moved from 281 to 740, not-done-yet gates at 412/774/778/1098, knowledge flags weightless / mandatory / undroppable. Census: auto_items 182 -> 192, inventory_condition 134 -> 137, inventory_all 4, inventory_missing 15 -> 21, from_section 2. p1_6d 68 -> 73. GAME_RULES.md s1/s8/s11 + label 2.168 -> 2.169 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -458,16 +459,18 @@
         {
           "id": "AS-01_sec146_entry_origin",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.146 «Если вы пришли с параграфа 205, то отправляйтесь на 933, если же с параграфа 56, то на 1054.» - both exits are offered from either entrance; nothing records the origin.",
-          "note": "Maintainer adjudication: CONFIRMED. Needs an origin gate (S.cameFrom set by goTo, choice field from_section). Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Needs an origin gate (S.cameFrom set by goTo, choice field from_section). Batch 8.",
+          "resolution": "CONFIRMED P1 DONE. goTo records S.cameFrom (the paragraph being left); a choice may carry from_section:N and passesInventoryCheck offers it only when S.cameFrom===N (a save without a known origin - hash entry, old saves - keeps both exits so nobody is stranded). sec.146: -> 933 from 205, -> 1054 from 56."
         },
         {
           "id": "AS-02_study_inspections_death_gate",
           "severity": "P0",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.297/411/850 offer «Если вы уже делали и то, и другое, то 489» (death) at the first inspection; sec.797 has no 489 branch at all. No inspection is recorded.",
-          "note": "Maintainer adjudication: CONFIRMED (voluntary death offered early; sec.797 branch missing). Inspection flags + gate on the other inspections; the literal «и то, и другое» is read as \"the other two listed alternatives\". Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED (voluntary death offered early; sec.797 branch missing). Inspection flags + gate on the other inspections; the literal «и то, и другое» is read as \"the other two listed alternatives\". Batch 8.",
+          "resolution": "CONFIRMED P0 DONE. The four study inspections grant hidden flags on entry (797 study_cupboard, 411 study_door, 850 study_maps, 297 study_mirror); the death exit -> 489 in each of the four (added to 797) is gated with the new inventory_all (AND) on the other three flags - «уже делали и то, и другое» read as 'nothing left to inspect'."
         },
         {
           "id": "AS-03_sec81_negative_branch_open",
@@ -480,23 +483,26 @@
         {
           "id": "AS-04_sec435_riddle_without_encounter",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.435 «Если вы действительно уже встречали кого-то из их знакомых…» - the riddle accepts ГИЕНА without the hyena encounter at sec.337, bypassing the fight and earning the comb.",
-          "note": "Maintainer adjudication: CONFIRMED. Flag hyena_met granted at sec.337; riddle success requires it (fail_target 100 preserved). Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Flag hyena_met granted at sec.337; riddle success requires it (fail_target 100 preserved). Batch 8.",
+          "resolution": "CONFIRMED P1 DONE. sec.337 grants hyena_met; the sec.435 riddle carries requires_flag hyena_met - a correct answer without the encounter routes straight to fail_target 100 («ваш обман непременно откроется»)."
         },
         {
           "id": "AS-05_bear_greeting_misplaced",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.281 «…передать привет медведю, когда встретите его, загляните в параграф 612» is modelled as a direct forest -> 612 choice; at the bear (sec.740) there is only -> 824.",
-          "note": "Maintainer adjudication: CONFIRMED. Flag bear_greeting at sec.281; the -> 612 exit moves to sec.740 gated on the flag. Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Flag bear_greeting at sec.281; the -> 612 exit moves to sec.740 gated on the flag. Batch 8.",
+          "resolution": "CONFIRMED P1 DONE. sec.281 grants bear_greeting and loses its direct -> 612; sec.740 (the bear) offers -> 612 with inventory_condition bear_greeting, keeping -> 824."
         },
         {
           "id": "AS-06_pegasus_rescue_misplaced_sec835_softlock",
           "severity": "P0",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.534 offers -> 1138 (Pegasus rescue) immediately; the open-window trap sec.835 lacks it and, with no Levitation charge, renders only a greyed spell choice and no death - a soft-lock.",
-          "note": "Maintainer adjudication: CONFIRMED. Flag pegasus_friend at sec.534, gated rescue at sec.835, and a fatal_when_stuck rule for sec.835 (canon: the walls close in). Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Flag pegasus_friend at sec.534, gated rescue at sec.835, and a fatal_when_stuck rule for sec.835 (canon: the walls close in). Batch 8.",
+          "resolution": "CONFIRMED P0 DONE. sec.534 grants pegasus_friend and loses its direct -> 1138; sec.835 offers -> 1138 with inventory_condition pegasus_friend and is marked fatal_when_stuck: when no usable exit is rendered (no Levitation charge, no Pegasus) the death overlay is shown as the canon describes - no more soft-lock."
         },
         {
           "id": "AS-07_black_horse_escape_with_barlad_dead",
@@ -509,37 +515,42 @@
         {
           "id": "AS-08_sec412_cliff_not_done_yet",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.412 -> 214 («обойти скалу, если еще не делали этого») stays clickable after sec.214.",
-          "note": "Maintainer adjudication: CONFIRMED. Flag cliff_circled at sec.214 + negative gate. Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Flag cliff_circled at sec.214 + negative gate. Batch 8.",
+          "resolution": "CONFIRMED P1 DONE. sec.214 grants cliff_circled; sec.412 -> 214 carries inventory_missing cliff_circled."
         },
         {
           "id": "AS-09_sec774_vessels_not_done_yet",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.774 -> 1084 / 848 («если еще не делали этого») stay after the respective visits.",
-          "note": "Maintainer adjudication: CONFIRMED. Visit flags at 1084/848 + negative gates. Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Visit flags at 1084/848 + negative gates. Batch 8.",
+          "resolution": "CONFIRMED P1 DONE. sec.1084 / sec.848 grant vessel_silver_seen / vessel_glass_seen; sec.774 -> 1084 / 848 carry the matching inventory_missing gates."
         },
         {
           "id": "AS-10_sec778_chests_not_done_yet",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.778 -> 626 / 1208 («если вы еще этого не сделали») ignore the previous inspections.",
-          "note": "Maintainer adjudication: CONFIRMED. Visit flags at 626/1208 + negative gates. Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Visit flags at 626/1208 + negative gates. Batch 8.",
+          "resolution": "CONFIRMED P1 DONE. sec.626 / sec.1208 grant chest_big_seen / chest_mid_seen; sec.778 -> 626 / 1208 carry the matching inventory_missing gates."
         },
         {
           "id": "AS-11_sec1098_cupboard_and_exit",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.1098: «если еще не делали этого, осмотреть шкаф (94). Если и это сделали, тогда выходите… 1196» - both unconditional.",
-          "note": "Maintainer adjudication: CONFIRMED. Flag at sec.94; negative gate on -> 94, positive gate on -> 1196. Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Flag at sec.94; negative gate on -> 94, positive gate on -> 1196. Batch 8.",
+          "resolution": "CONFIRMED P1 DONE. sec.94 grants cupboard_seen; sec.1098 -> 94 carries inventory_missing cupboard_seen and -> 1196 inventory_condition cupboard_seen."
         },
         {
           "id": "AS-12_knowledge_flags_cost_slots",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "The six older kind:flag entries (castle_password, mirror_secret, throne_lore, treasure_lore, fish_help, password_evenlo) cost a bag slot, go through the optional offer modal (a full bag can reject them) and can be dropped.",
-          "note": "Maintainer adjudication: CONFIRMED. Knowledge flags become weightless, non-droppable, mandatory silent grants (listed in the bag without buttons); deed flags stay hidden. Batch 8."
+          "note": "Maintainer adjudication: CONFIRMED. Knowledge flags become weightless, non-droppable, mandatory silent grants (listed in the bag without buttons); deed flags stay hidden. Batch 8.",
+          "resolution": "CONFIRMED P1 DONE. KNOWLEDGE_FLAGS (castle_password, mirror_secret, throne_lore, treasure_lore, fish_help, password_evenlo) are weightless (getItemSize 0), granted mandatorily and silently by auto_items.items and choice acquires (never through the offer modal), listed in the bag as knowledge without eat / drop buttons and refused by removeItem / dropItemModal. The thirteen new visit / deed flags join the hidden STORY_FLAGS."
         },
         {
           "id": "AS-13_old_saves_cannot_earn_new_flags",
