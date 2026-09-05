@@ -61,6 +61,21 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9v. group_85 batch 8 (AS-01/02/04/05/06/08-12): origin gate, AND gate, riddle requires_flag, fatal_when_stuck, knowledge flags
+(function(){
+  try{
+    globalThis.canonItem=globalThis.canonItem||function(x){return x;};
+    eval(gfn('passesInventoryCheck'));
+    globalThis.S={inventory:['a','b'],cameFrom:205};
+    ck('AS-01 from_section gate: matches origin, hides other origin, permissive without origin', passesInventoryCheck({from_section:205})===true&&passesInventoryCheck({from_section:56})===false&&(function(){ globalThis.S={inventory:[],cameFrom:null}; return passesInventoryCheck({from_section:56})===true; })());
+    globalThis.S={inventory:['a','b']};
+    ck('AS-02 inventory_all is AND; inventory_condition array stays OR', passesInventoryCheck({inventory_all:['a','b']})===true&&passesInventoryCheck({inventory_all:['a','c']})===false&&passesInventoryCheck({inventory_condition:['c','a']})===true);
+  }catch(e){ ck('9v eval: '+e.message,false); }
+  ck('AS-02/AS-04/AS-06 data: study gates, riddle requires_flag, sec.835 fatal + Pegasus gate', [297,411,850,797].every(n=>GD[String(n)].choices.some(c=>c.target===489&&Array.isArray(c.inventory_all)&&c.inventory_all.length===3))&&GD['435'].riddle.requires_flag==='hyena_met'&&GD['337'].auto_items.flags.includes('hyena_met')&&GD['835'].fatal_when_stuck===true&&GD['835'].choices.some(c=>c.target===1138&&c.inventory_condition==='pegasus_friend')&&GD['534'].choices.some(c=>c.target===1138&&c.retired===true));
+  ck('AS-05/08-11 data: bear greeting at 740, not-done-yet gates', GD['740'].choices.some(c=>c.target===612&&c.inventory_condition==='bear_greeting')&&GD['281'].choices.some(c=>c.target===612&&c.retired===true)&&GD['412'].choices.some(c=>c.target===214&&c.inventory_missing==='cliff_circled')&&GD['1098'].choices.some(c=>c.target===1196&&c.inventory_condition==='cupboard_seen'));
+  ck('AS-12 knowledge flags: weightless class, mandatory grant, no drop', gl.includes("const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo']);")&&gl.includes('KNOWLEDGE_FLAGS.has(canonItem(name))) return 0;')&&gl.includes('const learned=offered.filter(')&&gl.includes('KNOWLEDGE_FLAGS.has(canonItem(S.inventory[i]))) return; // group_85 AS-12')&&gl.includes('if(ch.retired) return false;'));
+})();
+
 // 9u. group_85 batch 7 (AS-03 / AS-07 / AS-22 / AS-13 / AS-15 / AS-19): negative gates on sec.81/94/56/205, save backfill, importSave param, observer close
 (function(){
   ck('AS-03/AS-07/AS-22 negative gates in GD', GD['81'].choices.slice(1).every(c=>c.inventory_missing==='princess_awake')&&GD['94'].choices[0].inventory_missing==='barlad_dead'&&GD['56'].choices.slice(1).every(c=>c.inventory_missing==='castle_password')&&GD['205'].choices.slice(1).every(c=>c.inventory_missing==='castle_password'));

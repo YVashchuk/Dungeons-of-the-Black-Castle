@@ -105,5 +105,18 @@
   "wine_bottle": {"legacyRu":"Бутылка вина","kind":"food","legacyRaw":"Бутылка вина (еда: +4)","defaultStamina":4},
   "wood_piece": {"legacyRu":"Красивый кусочек дерева","kind":"item"},
   "princess_awake": {"legacyRu":"Принцесса разбужена","kind":"flag"},
-  "barlad_dead": {"legacyRu":"Барлад Дэрт повержен","kind":"flag"}
+  "barlad_dead": {"legacyRu":"Барлад Дэрт повержен","kind":"flag"},
+  "hyena_met": {"legacyRu":"Встреча с гиеной","kind":"flag"},
+  "bear_greeting": {"legacyRu":"Привет для медведя","kind":"flag"},
+  "pegasus_friend": {"legacyRu":"Дружба с Пегасом","kind":"flag"},
+  "cliff_circled": {"legacyRu":"Скала обойдена","kind":"flag"},
+  "vessel_silver_seen": {"legacyRu":"Серебряный сосуд осмотрен","kind":"flag"},
+  "vessel_glass_seen": {"legacyRu":"Стеклянный сосуд осмотрен","kind":"flag"},
+  "chest_big_seen": {"legacyRu":"Большой сундук осмотрен","kind":"flag"},
+  "chest_mid_seen": {"legacyRu":"Средний сундук осмотрен","kind":"flag"},
+  "cupboard_seen": {"legacyRu":"Шкаф в зале осмотрен","kind":"flag"},
+  "study_cupboard": {"legacyRu":"Кабинет: шкаф осмотрен","kind":"flag"},
+  "study_door": {"legacyRu":"Кабинет: дверь осмотрена","kind":"flag"},
+  "study_maps": {"legacyRu":"Кабинет: карты осмотрены","kind":"flag"},
+  "study_mirror": {"legacyRu":"Кабинет: зеркало осмотрено","kind":"flag"}
 }

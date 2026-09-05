@@ -101,6 +101,7 @@ function normalizeSave(s){
   if(typeof s.luckChecks!=='object'||s.luckChecks===null||Array.isArray(s.luckChecks)) s.luckChecks={}; // group_81 B-07: persisted luck rolls
   // group_85 AS-13: saves made before the story flags existed have the deed scenes in visited already
   // (first-visit grants never fire again) - backfill the flags from visited, idempotently.
+  if(s.cameFrom===undefined) s.cameFrom=null; // group_85 AS-01
   if(Array.isArray(s.visited)&&Array.isArray(s.inventory)){ const vis=s.visited.map(Number); const has=f=>s.inventory.some(it=>it===f); if((vis.includes(627)||vis.includes(976))&&!has('princess_awake')) s.inventory.push('princess_awake'); if(vis.includes(81)&&!has('barlad_dead')) s.inventory.push('barlad_dead'); }
   if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
   if(typeof s.sec436_force!=='boolean') s.sec436_force=false; // §436 Force-on-tree round-trip flag
@@ -192,6 +193,10 @@ function _bcCloseTopDialog(){
   });
 })();
 // <<< BC_A11Y_DIALOGS <<<
+
+// group_85 AS-06: fatal_when_stuck - a paragraph whose every exit is unusable (no spell charge, no rescue)
+// ends the adventure as the canon says (sec.835: the walls close in) instead of soft-locking.
+(function(){ const orig=renderChoices; renderChoices=function(sec){ orig(sec); try{ if(sec&&sec.fatal_when_stuck){ const usable=[...document.querySelectorAll('#c-list button')].some(b=>b.offsetParent!==null&&!b.disabled&&b.getAttribute('aria-disabled')!=='true'); const dead=document.getElementById('end-death'); if(!usable&&dead&&!dead.classList.contains('on')) showDeathOverlay({sec:sec,secKey:String(S.section)}); } }catch(e){} }; })();
 
 // >>> BC_MOBILE_SHEETS (UI-03 A, group_79): phone HUD bar + bottom sheets >>>
 // On viewports <=700px the sidebar is hidden; the HUD bar mirrors the stat
@@ -496,7 +501,7 @@ function renderInvModalCurrent(){
       const row=document.createElement('div');
       row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);';
       row.innerHTML=`<span style="font-size:15px;color:var(--parchment);">${invDisplay(item)}</span>
-        <button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button>`;
+        ${KNOWLEDGE_FLAGS.has(canonItem(item))?'':`<button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button>`}`;
       cur.appendChild(row);
     });
   }
@@ -552,7 +557,7 @@ function takeItem(idx){
   updateHUD();saveGame();
 }
 
-function dropItemModal(idx){
+function dropItemModal(idx){ if(S&&S.inventory&&KNOWLEDGE_FLAGS.has(canonItem(S.inventory[idx]))) return; // group_85 AS-12
   if(!S)return;
   const itm=S.inventory[idx];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));
   S.inventory.splice(idx,1);
@@ -857,7 +862,10 @@ function renderGame(opts){
     // Items — show modal if any found
     if(ai.items&&ai.items.length>0){
       const offered=ai.items.map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v);
-      const newItems=offered.filter(item=>!S.inventory.some(it=>canonItem(it)===canonItem(item)));
+      // group_85 AS-12: knowledge flags are learned, not carried - mandatory, silent, never through the offer modal
+      const learned=offered.filter(v=>typeof v==='string'&&KNOWLEDGE_FLAGS.has(canonItem(v)));
+      learned.forEach(f=>{ if(!S.inventory.some(it=>canonItem(it)===canonItem(f))) S.inventory.push(canonItem(f)); }); if(learned.length) saveGame();
+      const newItems=offered.filter(item=>!(typeof item==='string'&&KNOWLEDGE_FLAGS.has(canonItem(item)))&&!S.inventory.some(it=>canonItem(it)===canonItem(item)));
       if(newItems.length>0){
         showInventoryModal(newItems, notifications);
       } else if(notifications.length>0){
@@ -963,7 +971,7 @@ function updateHUD(){
     if(STORY_FLAGS.has(canonItem(item))) return; // group_83 PT-01
     const isFood=item&&typeof item==='object'&&item.kind==='food';
     const eatBtn=isFood?`<button type="button" class="inv-eat" onclick="eatFood(${i})" aria-label="${t('syest')}: ${itemName(item.id)} (+${item.stamina}${t('vyn')})" title="${t('syest')} (+${item.stamina}${t('vyn')})" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">\uD83C\uDF74</button>`:'';
-    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<button type="button" class="inv-remove" onclick="removeItem(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button></span></div>`;});}
+    il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}${KNOWLEDGE_FLAGS.has(canonItem(item))?'':`<button type="button" class="inv-remove" onclick="removeItem(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button>`}</span></div>`;});}
   else{il.innerHTML=t('meshok_pust');}
   document.getElementById('inv-count').textContent=`(${getBagUsed()}/${getBagSize()})`;
   // Notes
@@ -992,7 +1000,7 @@ const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смер�
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
   "Бронзовый кувшин":"bronze_jug","Бронзовый свисток":"bronze_whistle","Красивая брошка":"brooch",
   "Птичка в клетке":"caged_bird","Свеча":"candle","Подсвечник":"candlestick","Карты":"card_deck",
-  "Пароль в замок":"castle_password","Принцесса разбужена":"princess_awake","Барлад Дэрт повержен":"barlad_dead","Сыр":"cheese","Медный браслет":"copper_bracelet",
+  "Пароль в замок":"castle_password","Принцесса разбужена":"princess_awake","Барлад Дэрт повержен":"barlad_dead","Встреча с гиеной":"hyena_met","Привет для медведя":"bear_greeting","Дружба с Пегасом":"pegasus_friend","Скала обойдена":"cliff_circled","Серебряный сосуд осмотрен":"vessel_silver_seen","Стеклянный сосуд осмотрен":"vessel_glass_seen","Большой сундук осмотрен":"chest_big_seen","Средний сундук осмотрен":"chest_mid_seen","Шкаф в зале осмотрен":"cupboard_seen","Кабинет: шкаф осмотрен":"study_cupboard","Кабинет: дверь осмотрена":"study_door","Кабинет: карты осмотрены":"study_maps","Кабинет: зеркало осмотрено":"study_mirror","Сыр":"cheese","Медный браслет":"copper_bracelet",
   "Медный ключик":"copper_key","Корона":"crown","Шкура оленя":"deer_hide","Прекрасный бриллиант":"diamond",
   "Игральная кость":"die","Водолазный костюм":"diving_suit","Коготь дракона":"dragon_claw",
   "Печень дракона":"dragon_liver","Бляха с золотым орлом":"eagle_plaque","Фигурный ключ":"figured_key",
@@ -1025,7 +1033,7 @@ const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
   "bronze_jug":"Бронзовый кувшин","bronze_whistle":"Бронзовый свисток","brooch":"Красивая брошка",
   "caged_bird":"Птичка в клетке","candle":"Свеча","candlestick":"Подсвечник","card_deck":"Карты",
-  "castle_password":"Пароль в замок","princess_awake":"Принцесса разбужена","barlad_dead":"Барлад Дэрт повержен","cheese":"Сыр","copper_bracelet":"Медный браслет",
+  "castle_password":"Пароль в замок","princess_awake":"Принцесса разбужена","barlad_dead":"Барлад Дэрт повержен","hyena_met":"Встреча с гиеной","bear_greeting":"Привет для медведя","pegasus_friend":"Дружба с Пегасом","cliff_circled":"Скала обойдена","vessel_silver_seen":"Серебряный сосуд осмотрен","vessel_glass_seen":"Стеклянный сосуд осмотрен","chest_big_seen":"Большой сундук осмотрен","chest_mid_seen":"Средний сундук осмотрен","cupboard_seen":"Шкаф в зале осмотрен","study_cupboard":"Кабинет: шкаф осмотрен","study_door":"Кабинет: дверь осмотрена","study_maps":"Кабинет: карты осмотрены","study_mirror":"Кабинет: зеркало осмотрено","cheese":"Сыр","copper_bracelet":"Медный браслет",
   "copper_key":"Медный ключик","crown":"Корона","deer_hide":"Шкура оленя","diamond":"Прекрасный бриллиант",
   "die":"Игральная кость","diving_suit":"Водолазный костюм","dragon_claw":"Коготь дракона",
   "dragon_liver":"Печень дракона","eagle_plaque":"Бляха с золотым орлом","figured_key":"Фигурный ключ",
@@ -1058,10 +1066,14 @@ function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food
 const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0};
 // group_83 PT-01: story flags - hidden, weightless, undroppable state markers kept in the inventory so the
 // inventory_condition / inventory_missing gates work unchanged (princess awakened, Barlad Dert slain).
-const STORY_FLAGS=new Set(['princess_awake','barlad_dead']);
+const STORY_FLAGS=new Set(['princess_awake','barlad_dead','hyena_met','bear_greeting','pegasus_friend','cliff_circled','vessel_silver_seen','vessel_glass_seen','chest_big_seen','chest_mid_seen','cupboard_seen','study_cupboard','study_door','study_maps','study_mirror']);
+// group_85 AS-12: knowledge flags - learned facts (passwords, lore, the fish's promise): weightless, mandatory,
+// undroppable, but listed in the bag so the player can see what they know.
+const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo']);
 function getItemSize(name){
   if(!name) return 1;
   if(typeof STORY_FLAGS!=='undefined'&&STORY_FLAGS.has(canonItem(name))) return 0; // group_83 PT-01 (typeof: harnesses eval this function in isolation)
+  if(typeof KNOWLEDGE_FLAGS!=='undefined'&&KNOWLEDGE_FLAGS.has(canonItem(name))) return 0; // group_85 AS-12
   // group_81 B-01: numeric-typed lookup - `||1` turned the slotCost:0 armament
   // entries into 1 and quietly re-weighted the swords and the shield.
   const v=ITEM_SIZES[canonItem(name)];
@@ -1129,7 +1141,8 @@ function addItem(){if(!S)return;const inp=document.getElementById('add-item-inpu
 // group_81 CA-09: updateHUD rebuilds #inv-list, destroying the activated button -
 // land on the equivalent row (or the add-item control) so keyboard users keep their place.
 function focusInventoryRow(i){ try{ const rows=document.querySelectorAll('#inv-list .inv-item'); const row=rows.length?rows[Math.min(i,rows.length-1)]:null; const b=row&&row.querySelector('button'); if(b){ b.focus({preventScroll:true}); return; } const add=document.getElementById('inv-add-btn'); if(add) add.focus({preventScroll:true}); }catch(e){} }
-function removeItem(i){if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);updateHUD();saveGame();focusInventoryRow(i);}
+function removeItem(i){ if(S&&S.inventory&&KNOWLEDGE_FLAGS.has(canonItem(S.inventory[i]))) return; // group_85 AS-12
+if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);updateHUD();saveGame();focusInventoryRow(i);}
 
 // ── Choices ──
 // Spell detection and styling
@@ -1166,6 +1179,12 @@ function passesInventoryCheck(ch){
   // group_83 PT-01: negative gate - the choice is offered only while the item / flag is ABSENT
   // (sec.627/976 «если волшебник жив» -> 1120 disappears once barlad_dead exists).
   if(ch.inventory_missing){ if(!S||!S.inventory) return false; const miss=ch.inventory_missing; if(S.inventory.some(it=>canonItem(it)===canonItem(miss))) return false; }
+  // group_85 batch 8: a choice retired by canon adjudication keeps its index (choice labels are positional per locale) but never renders
+  if(ch.retired) return false;
+  // group_85 AS-01: origin gate - «если вы пришли с параграфа N» (permissive when the origin is unknown: hash entry, old saves)
+  if(ch.from_section!==undefined&&ch.from_section!==null){ const from=(S&&S.cameFrom!==undefined&&S.cameFrom!==null)?Number(S.cameFrom):null; if(from!==null&&from!==Number(ch.from_section)) return false; }
+  // group_85 AS-02: inventory_all - EVERY listed item / flag must be present (inventory_condition arrays stay OR)
+  if(Array.isArray(ch.inventory_all)){ if(!S||!S.inventory) return false; if(!ch.inventory_all.every(n=>S.inventory.some(it=>canonItem(it)===canonItem(n)))) return false; }
   if(!ch.inventory_condition) return true;
   if(!S||!S.inventory) return false;
   const cond=ch.inventory_condition;
@@ -1217,7 +1236,9 @@ function applyChoiceAcquires(ch, onDone){
   if(!ch||!ch.acquires||!S){if(onDone)onDone();return;}
   if(!S.inventory)S.inventory=[];
   const list=Array.isArray(ch.acquires)?ch.acquires:[ch.acquires];
-  const newItems=list.filter(name=>!S.inventory.some(it=>canonItem(it)===canonItem(name)));
+  // group_85 AS-12: knowledge flags acquired by a choice are learned directly
+  const learnedA=list.filter(n=>KNOWLEDGE_FLAGS.has(canonItem(n))); learnedA.forEach(f=>{ if(!S.inventory.some(it=>canonItem(it)===canonItem(f))) S.inventory.push(canonItem(f)); }); if(learnedA.length){ updateHUD(); saveGame(); }
+  const newItems=list.filter(name=>!KNOWLEDGE_FLAGS.has(canonItem(name))&&!S.inventory.some(it=>canonItem(it)===canonItem(name)));
   if(newItems.length===0){if(onDone)onDone();return;}
   // Hand off to the standard pickup modal so 7-slot overflow logic
   // is shared with auto_items. The modal's Continue button closes
@@ -1364,6 +1385,9 @@ function applyRiddleAnswer(input,riddleConfig){
   // exist in GD. The allow-list prevents random navigation to unintended
   // paragraphs that happen to have the right offset.
   const valid=(riddleConfig.valid_targets||[]).includes(targetId);
+  // group_85 AS-04: a riddle may require a story flag (sec.435: the hyena encounter) - without it a correct
+  // answer is a lie, and «ваш обман непременно откроется» routes straight to fail_target.
+  if(valid&&riddleConfig.requires_flag&&!(S.inventory||[]).some(it=>canonItem(it)===riddleConfig.requires_flag)){ S.riddle_attempts=0; logEvent('loss',t('zagadka_ne_razgadana'),t('paragraf_2')+riddleConfig.fail_target); playSound('death'); goTo(riddleConfig.fail_target); return; }
   if(valid&&GD[String(targetId)]){
     S.riddle_attempts=0;
     logEvent('gain',t('zagadka_razgadana'),t('paragraf_2')+targetId);
@@ -2394,7 +2418,7 @@ function renderChoices(sec){
 }
 
 function goTo(id){
-  if(!S)return;S.section=id;
+  if(!S)return;S.cameFrom=S.section; /* group_85 AS-01 */ S.section=id;
   combatDone={};luckDone={};luckResult={};sectionPrepState={};
   S.luckChecks={}; // group_81 B-07: a persisted luck roll belongs to the paragraph being left
   renderGame();
