@@ -99,6 +99,9 @@ function normalizeSave(s){
   if(typeof s.batchPicked!=='object'||s.batchPicked===null||Array.isArray(s.batchPicked)) s.batchPicked={};
   for(const k of Object.keys(s.batchPicked)){ if(!/^\d+:\d+$/.test(k)) delete s.batchPicked[k]; }
   if(typeof s.luckChecks!=='object'||s.luckChecks===null||Array.isArray(s.luckChecks)) s.luckChecks={}; // group_81 B-07: persisted luck rolls
+  // group_85 AS-13: saves made before the story flags existed have the deed scenes in visited already
+  // (first-visit grants never fire again) - backfill the flags from visited, idempotently.
+  if(Array.isArray(s.visited)&&Array.isArray(s.inventory)){ const vis=s.visited.map(Number); const has=f=>s.inventory.some(it=>it===f); if((vis.includes(627)||vis.includes(976))&&!has('princess_awake')) s.inventory.push('princess_awake'); if(vis.includes(81)&&!has('barlad_dead')) s.inventory.push('barlad_dead'); }
   if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
   if(typeof s.sec436_force!=='boolean') s.sec436_force=false; // §436 Force-on-tree round-trip flag
   if(s.bet_stake===undefined) s.bet_stake=null; // betting Phase B2 — current wager (gold/item) or null
@@ -108,7 +111,7 @@ function normalizeSave(s){
 function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const s=JSON.parse(r);return (typeof s.v==='number'&&s.v>=4&&s.v<=7)?normalizeSave(s):null;}catch{return null;}}
 function exportSave(){saveGame();const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='podzch-save.json';a.click();closeModal('overlay-menu');}
-function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const s=JSON.parse(t);
+function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(rawText=>{try{const s=JSON.parse(rawText); // group_85 AS-15: the parameter must not shadow t()
   if(s.v!==5&&s.v!==4){alert(t('nesovmestimyy_format'));return;}
   if(s.v===4){s.v=5;s.luckMax=s.luck;delete s.luckBoxes;}// upgrade v4→v5
   normalizeSave(s);
@@ -171,7 +174,7 @@ function _bcCloseTopDialog(){
   var was=new WeakMap();
   new MutationObserver(function(recs){
     for(var i=0;i<recs.length;i++){
-      var el=recs[i].target; if(!_bcIsDialog(el)) continue;
+      var el=recs[i].target; if(!_bcIsDialog(el)&&_bcDialogStack.indexOf(el)<0) continue; // group_85 AS-19: a close is handled for anything still on the stack
       var on=el.classList.contains('on'), before=!!was.get(el);
       if(on&&!before) _bcDialogOpened(el); else if(!on&&before) _bcDialogClosed(el);
       was.set(el,on);
@@ -1524,7 +1527,7 @@ function makePurchaseBtn(ch, choiceIndex){
     btn.style.opacity='.4';btn.style.cursor='not-allowed';
     btn.style.borderStyle='dashed';
     btn.title=tooltip;
-    btn.onclick=(e)=>{e.preventDefault();};
+    btn.setAttribute('aria-disabled','true');btn.onclick=(e)=>{e.preventDefault();}; // group_85 AS-18
   } else {
     btn.onclick=()=>completePurchase(ch,choiceIndex,grantsItems,grantsStamina,cost);
   }
@@ -3020,10 +3023,10 @@ function useAllyInCombat(allyKey){
   }
   if(enemyHp<=0){
     target.hp=0;
-    log.innerHTML+=`<div class="hit" style="margin-top:4px">${a.icon} ${a.name}${t('povergaet')}${target.name}!</div>`;
+    log.innerHTML+=`<div class="hit" style="margin-top:4px">${a.icon} ${allyText(allyKey).name}${t('povergaet')}${target.name}!</div>`;
   } else {
     target.hp=Math.max(1,enemyHp);
-    log.innerHTML+=`<div class="miss" style="margin-top:4px">${a.icon} ${target.name}${t('odolel')}${a.name}${t('no_oslablen_vynoslivost')}${target.hp}).</div>`;
+    log.innerHTML+=`<div class="miss" style="margin-top:4px">${a.icon} ${target.name}${t('odolel')}${allyText(allyKey).name}${t('no_oslablen_vynoslivost')}${target.hp}).</div>`;
   }
   updateCombatEnemyDisplay(cs);
   const allyBtn=document.getElementById('btn-summon-ally');

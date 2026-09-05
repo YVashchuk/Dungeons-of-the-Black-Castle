@@ -1,6 +1,8 @@
 import re
+import os
 
-file = r'C:\Users\I828868\Downloads\Dungeons-of-the-Black-Castle\art-pack\metadata\art_catalog.py'
+# group_85 AS-21: resolve relative to this script instead of a personal checkout path
+file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'art-pack', 'metadata', 'art_catalog.py')
 
 with open(file, 'r', encoding='utf-8') as f:
     c = f.read()
