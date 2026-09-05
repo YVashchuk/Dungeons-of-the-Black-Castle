@@ -1,0 +1,21 @@
+# BRIEF — TRACK D (legal & licensing) for Gemini Deep Research
+## A public remake of a 1991 Russian gamebook: what may be published, what must go, what to add
+
+**Context.** The repository `https://github.com/YVashchuk/Dungeons-of-the-Black-Castle` is a non-commercial, one-person JavaScript remake of «Подземелья Чёрного замка» by Дмитрий Браславский (first edition 1991; the remake follows a later corrected edition with 1221 paragraphs). On 2026-09-04 the repository became **public** and GitHub Pages was enabled (the game is playable at `https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/`). The repository contains, among other things:
+
+1. the **full text of the book** in Russian (`assets/book_text.md`, `assets/fb2_remake.fb2`, and the paragraph texts inside `src/game_structure.js` / `src/locale.ru.js`), plus the maintainer's own translations into English, French and Ukrainian (`src/locale.en.js`, `locale.fr.js`, `locale.uk.js`);
+2. a **scanned PDF of the 1991 printed edition** (`assets/pdf_original_1991.pdf`, about 5 MB) and a text extracted from it;
+3. an FB2 file that was downloaded from an online library of uncertain legitimacy (flibusta);
+4. about 60 **illustrations generated with Midjourney** (`assets/art/`, `dist/art/`, originals in `assets/illustrations/`), plus a title lettering image;
+5. three web fonts under the SIL Open Font License (Cinzel, Cormorant Garamond, Forum) with `OFL.txt` shipped;
+6. the maintainer's own code, data, tests and documentation — with **no LICENSE file** at the moment.
+
+**Task.** Research and write `LEGAL_MEMO.md` (English, with cited sources) that answers, with the confidence level of each answer stated:
+
+1. **Rights in the book.** Who holds the copyright in Браславский's gamebooks today (the author, heirs, a publisher — including any recent re-editions or digital releases), the term of protection, and any public statement by the author or rights holders about fan projects, digital remakes, free distribution or non-commercial use. Cite primary sources (interviews, publisher pages, the author's own channels) and say plainly when nothing is found.
+2. **Publishing the full text.** Under Russian law (the country of the work) and under the law of the hosting jurisdictions (GitHub / GitHub Pages: United States; the maintainer lives in Canada), is a public repository that reproduces the whole text — even non-commercially, even as an interactive adaptation with translations — an infringement absent a licence? Distinguish: the original Russian text; the maintainer's translations (derivative works); the scanned PDF of the printed edition (also the publisher's typographic arrangement / illustrations of the 1991 edition); the FB2 obtained from a shadow library. What does GitHub's DMCA / copyright policy do in practice with such repositories?
+3. **Generated art.** Midjourney's current Terms of Service regarding ownership and publication of outputs (free vs paid tiers, the "public visibility" clause, attribution), and the copyright status of AI-generated images in the US, Canada and Russia (can they be protected at all; can they be licensed by the maintainer).
+4. **Fonts and other assets.** Confirm what the SIL OFL 1.1 requires when fonts are bundled in a web build (the current `OFL.txt` with three copyright notices), and whether any other asset class (icons, sounds, the title lettering) needs attention.
+5. **Recommendations**, as a prioritized action list with the reasoning: which files should be removed from the public repository (and how to purge them from history), what to add (a code LICENSE — suggest one; a NOTICE for the book text with attribution and the non-commercial character; a rights/contact statement), whether the text should be kept out of the public tree (e.g. loaded from a private source) or whether seeking the author's permission is realistic — and a draft of a short, respectful permission request to the author / publisher in Russian.
+
+**Rules.** This is research, not legal advice; say so once. Cite every legal claim to a statute, a court decision, an official policy page or a reputable secondary source; mark inferences as such. Do not audit the game itself and do not touch the code. Deliver `LEGAL_MEMO.md` (about 3–5 pages) with a one-paragraph executive summary first and a sources list at the end.

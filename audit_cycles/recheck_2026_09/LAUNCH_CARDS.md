@@ -176,6 +176,41 @@ Read the attached SMOKE_BRIEF_chatgpt.md in full. Mode B: the human performed th
 Отчёт → `_handoff\audit_2026_09_chatgpt\smoke\SMOKE_REPORT.md` (+ скриншоты). Я записываю прогон в журнал `MANUAL_SMOKE_CHECKS.md` (дата, билд, что прогнано, итог), а каждую аномалию / FAIL адьюдицирую как обычно (канон ↔ резолюция ↔ код → группа реестра).
 
 
+## 6. ChatGPT 6 Astra — полный аудит проекта (два чата)
+
+Бриф: **`audit_cycles/recheck_2026_09/BRIEF_full_audit_astra.md`** (в архиве). Главное новое — блок S: перепись всех условных фраз канона «если вы уже… / если вам удалось… / если у вас есть…» и сверка с гейтами движка (урок PT-01: три аудитора искали предметы и пропустили условия на *состоянии*). Плюс блок I с deliverable — таблица переводов 107 предметов на EN/FR/UK (закроет SA-02).
+
+### Чат 1 — архив + исполнение кода
+1. После push взять хэш HEAD (`git log --oneline -1`) и скачать `https://github.com/YVashchuk/Dungeons-of-the-Black-Castle/archive/<хэш>.zip`; удалить **только** `assets\illustrations\`; запаковать, не переименовывая папку (~35 МБ).
+2. Temporary chat, модель **6 Astra**, режим рассуждений включён, **web выключен**, **исполнение кода / анализ файлов включён**. ZIP к первому сообщению.
+3. Первое сообщение:
+
+```
+The attached ZIP is the repository archive of the audited commit (the root folder name contains the hash); assets/illustrations/ was removed on purpose. Extract it in your sandbox and do not modify it. Read audit_cycles/recheck_2026_09/BRIEF_full_audit_astra.md in full, then BRIEF.md and BRIEF_chatgpt_third_auditor.md. Run the CHAT 1 pre-flight, including node tests/run_all.js from the repository root, and print its output. Then perform Blocks S, M, I, U, D in that order and deliver REPORT_astra_archive.md plus ITEM_NAMES_TRANSLATION.json (offer both for download and print the report in the chat). No web browsing; execute code only inside your sandbox.
+```
+
+### Чат 2 — агент с браузером (прохождение + оставшийся смоук)
+1. Temporary chat, 6 Astra, **агент / управление браузером включён**, web только на URL сборки. Прикрепить `BRIEF_full_audit_astra.md` и `SMOKE_BRIEF_chatgpt.md`.
+2. Первое сообщение:
+
+```
+Read the attached BRIEF_full_audit_astra.md (section CHAT 2) and SMOKE_BRIEF_chatgpt.md (sections 1-3). Mode: you drive the browser yourself. The build is https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/dungeons-of-the-black-castle.html - stay on that URL and its #N anchors only. Task 1: play through from the title screen as a reader until paragraph 1220, waking the Princess AND defeating Barlad Dert; log the route, stats and every text/interface disagreement with a screenshot; state whether a "-> 1220" choice was ever offered before both deeds. Task 2: the smoke rows listed in CHAT 2 (A6-A9, A11, A16, A17, B4, C12 in a fresh private session); BLOCKED with a reason where impossible. Deliver REPORT_astra_live.md with screenshots (download + print in the chat). No other web use.
+```
+
+### Приём
+Отчёты и переводы — в `_handoff\audit_2026_09_chatgpt\astra\` (создана). Я архивирую с SHA, адьюдицирую каждую строку блока S против канона/кода (UNMODELLED с последствиями = кандидаты в group_85), вливаю переводы как батч SA-02 после выборочной проверки.
+
+## 7. Gemini Deep Research — Track D (право и лицензии публичного репозитория)
+
+Бриф: **`audit_cycles/recheck_2026_09/BRIEF_trackD_legal_gemini.md`**. Это единственный трек, где web нужен по определению — Deep Research уместен. Прикрепить бриф, сообщение:
+
+```
+Track D only, per the attached BRIEF_trackD_legal_gemini.md: research the five questions with cited primary sources and deliver LEGAL_MEMO.md (executive summary first, prioritized actions, a draft permission request in Russian, sources list). Do not audit or modify the project.
+```
+
+Результат → `_handoff\audit_2026_09_chatgpt\legal\LEGAL_MEMO.md`; выводы обсуждаем, прежде чем что-то удалять из истории репозитория.
+
+
 ## 4. Приёмка (что делаю я)
 
 1. Сохраняю отчёт как `audit_cycles/recheck_2026_09/REPORT_<provider>_<track>.md`, считаю SHA-256, записываю в реестр.
