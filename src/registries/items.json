@@ -103,5 +103,7 @@
   "white_arrow": {"legacyRu":"Белая стрела","kind":"item"},
   "whole_sword": {"legacyRu":"Целый меч","kind":"weapon","slotCost":0},
   "wine_bottle": {"legacyRu":"Бутылка вина","kind":"food","legacyRaw":"Бутылка вина (еда: +4)","defaultStamina":4},
-  "wood_piece": {"legacyRu":"Красивый кусочек дерева","kind":"item"}
+  "wood_piece": {"legacyRu":"Красивый кусочек дерева","kind":"item"},
+  "princess_awake": {"legacyRu":"Принцесса разбужена","kind":"flag"},
+  "barlad_dead": {"legacyRu":"Барлад Дэрт повержен","kind":"flag"}
 }

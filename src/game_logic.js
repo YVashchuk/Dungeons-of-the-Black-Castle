@@ -484,6 +484,7 @@ function renderInvModalCurrent(){
     cur.innerHTML+=t('pusto');
   } else {
     S.inventory.forEach((item,i)=>{
+      if(STORY_FLAGS.has(canonItem(item))) return; // group_83 PT-01
       const row=document.createElement('div');
       row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);';
       row.innerHTML=`<span style="font-size:15px;color:var(--parchment);">${invDisplay(item)}</span>
@@ -843,6 +844,8 @@ function renderGame(opts){
         logEvent('gain','+ '+itemName(eq.item),t('vzyato_v_ruki'));
       }
     }
+    // group_83 PT-01: story flags - mandatory and silent (no offer modal, no notification).
+    if(ai.flags&&ai.flags.length){ ai.flags.forEach(f=>{ if(!S.inventory.some(it=>canonItem(it)===f)) S.inventory.push(f); }); saveGame(); }
     // Items — show modal if any found
     if(ai.items&&ai.items.length>0){
       const offered=ai.items.map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v);
@@ -949,6 +952,7 @@ function updateHUD(){
   // Inventory
   const il=document.getElementById('inv-list');il.innerHTML='';
   if(S.inventory&&S.inventory.length>0){S.inventory.forEach((item,i)=>{
+    if(STORY_FLAGS.has(canonItem(item))) return; // group_83 PT-01
     const isFood=item&&typeof item==='object'&&item.kind==='food';
     const eatBtn=isFood?`<button type="button" class="inv-eat" onclick="eatFood(${i})" aria-label="${t('syest')}: ${itemName(item.id)} (+${item.stamina}${t('vyn')})" title="${t('syest')} (+${item.stamina}${t('vyn')})" style="color:#3c9;cursor:pointer;font-size:14px;padding:2px 6px;">\uD83C\uDF74</button>`:'';
     il.innerHTML+=`<div class="inv-item"><span>${invDisplay(item)}</span><span style="display:flex;gap:2px;align-items:center;">${eatBtn}<button type="button" class="inv-remove" onclick="removeItem(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button></span></div>`;});}
@@ -980,7 +984,7 @@ const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смер�
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
   "Бронзовый кувшин":"bronze_jug","Бронзовый свисток":"bronze_whistle","Красивая брошка":"brooch",
   "Птичка в клетке":"caged_bird","Свеча":"candle","Подсвечник":"candlestick","Карты":"card_deck",
-  "Пароль в замок":"castle_password","Сыр":"cheese","Медный браслет":"copper_bracelet",
+  "Пароль в замок":"castle_password","Принцесса разбужена":"princess_awake","Барлад Дэрт повержен":"barlad_dead","Сыр":"cheese","Медный браслет":"copper_bracelet",
   "Медный ключик":"copper_key","Корона":"crown","Шкура оленя":"deer_hide","Прекрасный бриллиант":"diamond",
   "Игральная кость":"die","Водолазный костюм":"diving_suit","Коготь дракона":"dragon_claw",
   "Печень дракона":"dragon_liver","Бляха с золотым орлом":"eagle_plaque","Фигурный ключ":"figured_key",
@@ -1013,7 +1017,7 @@ const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
   "bronze_jug":"Бронзовый кувшин","bronze_whistle":"Бронзовый свисток","brooch":"Красивая брошка",
   "caged_bird":"Птичка в клетке","candle":"Свеча","candlestick":"Подсвечник","card_deck":"Карты",
-  "castle_password":"Пароль в замок","cheese":"Сыр","copper_bracelet":"Медный браслет",
+  "castle_password":"Пароль в замок","princess_awake":"Принцесса разбужена","barlad_dead":"Барлад Дэрт повержен","cheese":"Сыр","copper_bracelet":"Медный браслет",
   "copper_key":"Медный ключик","crown":"Корона","deer_hide":"Шкура оленя","diamond":"Прекрасный бриллиант",
   "die":"Игральная кость","diving_suit":"Водолазный костюм","dragon_claw":"Коготь дракона",
   "dragon_liver":"Печень дракона","eagle_plaque":"Бляха с золотым орлом","figured_key":"Фигурный ключ",
@@ -1044,8 +1048,12 @@ function canonItem(x){if(x&&typeof x==='object'&&x.kind==='food')return x.id;ret
 function itemName(x){return SLUG_TO_RU[x]||x;}
 function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';return itemName(entry);}
 const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0};
+// group_83 PT-01: story flags - hidden, weightless, undroppable state markers kept in the inventory so the
+// inventory_condition / inventory_missing gates work unchanged (princess awakened, Barlad Dert slain).
+const STORY_FLAGS=new Set(['princess_awake','barlad_dead']);
 function getItemSize(name){
   if(!name) return 1;
+  if(typeof STORY_FLAGS!=='undefined'&&STORY_FLAGS.has(canonItem(name))) return 0; // group_83 PT-01 (typeof: harnesses eval this function in isolation)
   // group_81 B-01: numeric-typed lookup - `||1` turned the slotCost:0 armament
   // entries into 1 and quietly re-weighted the swords and the shield.
   const v=ITEM_SIZES[canonItem(name)];
@@ -1146,7 +1154,11 @@ function getSpellRemaining(spellId){
 // Without an inventory_condition the choice is always visible — this is
 // the default and matches all pre-existing data.
 function passesInventoryCheck(ch){
-  if(!ch||!ch.inventory_condition) return true;
+  if(!ch) return true;
+  // group_83 PT-01: negative gate - the choice is offered only while the item / flag is ABSENT
+  // (sec.627/976 «если волшебник жив» -> 1120 disappears once barlad_dead exists).
+  if(ch.inventory_missing){ if(!S||!S.inventory) return false; const miss=ch.inventory_missing; if(S.inventory.some(it=>canonItem(it)===canonItem(miss))) return false; }
+  if(!ch.inventory_condition) return true;
   if(!S||!S.inventory) return false;
   const cond=ch.inventory_condition;
   // Food-aware match: carried food has a (eda: +N) suffix (see eatFood / para 132),

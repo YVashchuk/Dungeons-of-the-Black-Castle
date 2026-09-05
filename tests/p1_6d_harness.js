@@ -61,6 +61,23 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9s. group_83 PT-01: victory gates - story flags, negative gate, weightless hidden flags
+(function(){
+  const s81=GD['81'], s627=GD['627'], s976=GD['976'];
+  ck('PT-01 sec.81 -> 1220 gated by princess_awake and sec.81 grants barlad_dead', s81.choices[0].target===1220&&s81.choices[0].inventory_condition==='princess_awake'&&Array.isArray(s81.auto_items&&s81.auto_items.flags)&&s81.auto_items.flags.includes('barlad_dead'));
+  ck('PT-01 sec.627/976: -> 1120 only while Barlad lives, -> 1220 needs barlad_dead, both grant princess_awake', [s627,s976].every(s=>s.choices[0].target===1120&&s.choices[0].inventory_missing==='barlad_dead'&&s.choices[1].target===1220&&s.choices[1].inventory_condition==='barlad_dead'&&s.auto_items&&s.auto_items.flags&&s.auto_items.flags.includes('princess_awake')));
+  try{
+    globalThis.canonItem=globalThis.canonItem||function(x){return x;};
+    globalThis.S={inventory:['barlad_dead']};
+    eval(gfn('passesInventoryCheck'));
+    ck('PT-01 inventory_missing hides the choice once the flag exists; positive gate and unconditioned choice unaffected', passesInventoryCheck({inventory_missing:'barlad_dead'})===false&&passesInventoryCheck({inventory_missing:'princess_awake'})===true&&passesInventoryCheck({inventory_condition:'barlad_dead'})===true&&passesInventoryCheck({target:1})===true);
+    eval(gl.match(/const STORY_FLAGS=new Set\([^\n]*\);/)[0].replace('const STORY_FLAGS','globalThis.STORY_FLAGS'));
+    eval(gl.match(/const ITEM_SIZES=\{[^\n]*\};/)[0].replace('const ITEM_SIZES','globalThis.ITEM_SIZES'));
+    eval(gfn('getItemSize'));
+    ck('PT-01 story flags are weightless and hidden from the bag / offer lists', getItemSize('princess_awake')===0&&getItemSize('barlad_dead')===0&&(gl.split('if(STORY_FLAGS.has(canonItem(item))) return;').length-1)>=2);
+  }catch(e){ ck('PT-01 eval: '+e.message,false); }
+})();
+
 // 9r. group_82 batch 6 (CB-05 / CU-03 / CU-05): legacy Arbuz migration, phone event-log panel as a dialog, status reset clears text
 (function(){
   try{
