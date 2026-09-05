@@ -79,6 +79,9 @@
   }
 
   /* (event-log FAB: hidden on phones - its safe-area inset lives on the base rule, group_81 CA-10) */
+  /* group_84 CU-13: the riddle row wraps on phones, the answer button takes the full width. */
+  .riddle-input-row { flex-wrap: wrap; }
+  .riddle-submit { width: 100%; }
   .event-log-panel {
     width: 100%;
     right: -100%;

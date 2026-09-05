@@ -74,7 +74,7 @@
 | A2 | `#553` → «Взять меч» → `#71` | — | Take the whole sword, then enter the storeroom §71 | Notifications «− Целый меч — оставлен взамен нового» and «+ Меч «Смерть Орков»»; the bag lost no slots (weapons are weightless) |
 | A3 | `#628` | «Смерть Орков» in hand (A2) | Start the orc fight | The leader falls **before round 1** («⚔️ «Смерть Орков» разит…»), the two others join immediately |
 | A4 | `#1213` | — | Enter and take the shield | The shield is guaranteed in hand (automatic; the dialog cannot be closed/skipped) |
-| A5 | `#1130`, then any fight | sword (A2) + shield (A4) ideally | Drink the potion, start a fight | The roll line contains «+7» (sword + shield + potion); after **three own kills** — «Зелье потеряло силу» (Copy / bear kills do not count) |
+| A5 | `#1130`, then any fight | sword (A2) + shield (A4) ideally | Drink the potion, start a fight | The roll line contains «+6» with «Смерть Орков» (that sword has no attack bonus: shield +1, potion +5) or «+7» with the whole Green Knight sword (+1); after **three own kills** — «Зелье потеряло силу» (Copy / bear kills do not count) |
 | A6 | `#43` | — | Two orcs: (a) win within 10 rounds; (b) drag it out | (a) automatic route to §1082; (b) at the start of round 11 — «время вышло», exit to §1016 |
 | A7 | `#261` / `#737` / `#1099` | — | Same as A6 for deadlines 3 / 5 / 3 | §261: win→520, lose→8; §737: win→391, lose→182 (fight continues); §1099: overtime = death overlay |
 | A8 | `#781` | — | Dice check | Honest 2d6 widget, threshold ≥ 10: success → 863, fail → 126; no free choice of outcome |

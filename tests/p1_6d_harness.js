@@ -61,6 +61,14 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9t. group_84 (SA-01 / SA-03 / SA-04 / CU-13 / CU-17 / CU-18): dock i18n + placement, fight-bound bridge buffs, riddle row, inert log panel, single picker rebuild
+(function(){
+  ck('SA-01/SA-03 dock pills carry data-i18n and the dock lives in the story column', gl.includes('<span data-i18n="atmosfera">')&&gl.includes('<span data-i18n="illyustracii">')&&gl.includes("(document.querySelector('#scr-game .main')||document.body).appendChild(dock);"));
+  ck('SA-04 bridge buff stored with its section and consumed only there', gl.includes('S.pending_combat_buff={mod:ch.combat_mod,section:ch.target};')&&gl.includes('(pb.section===S.section)?pb.mod:null'));
+  ck('CU-17/CU-14 log panel inert toggling and controller-owned phone focus', gl.includes('panel.inert=!on;')&&gl.includes("const ownedByController=(typeof _bcIsDialog==='function'&&_bcIsDialog(panel));"));
+  ck('CU-18 language select rebuilt once and refocused', !gl.includes('setLanguage(code); renderAllLangPickers();')&&gl.includes("var again=document.getElementById(id); try{ if(again&&typeof again.focus==='function') again.focus({preventScroll:true}); }catch(e){}"));
+})();
+
 // 9s. group_83 PT-01: victory gates - story flags, negative gate, weightless hidden flags
 (function(){
   const s81=GD['81'], s627=GD['627'], s976=GD['976'];
