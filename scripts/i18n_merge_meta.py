@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """i18n_merge_meta.py — merge a translated meta-layer payload (JSON) into locale.<lang>.js (group_72).
 
-Payload shape: {"ui":{...},"enemies":{...},"map":{...},"spells":{id:{name,full}},"allies":{id:{name,verb}},
+Payload shape: {"ui":{...},"enemies":{...},"map":{...},"items":{slug:name},"spells":{id:{name,full}},"allies":{id:{name,verb}},
 optionally "preface":"...","pregame":"..."}. Validation before write:
   - every key must exist in LOCALE_RU (no unknown keys);
   - markup keys must carry the exact same <tag> sequence as RU;
@@ -44,7 +44,7 @@ def main():
         if re.search(r'[\u0400-\u04FF]', tr_v) and lang not in ('uk', 'ru'):
             wl = 'CYRILLIC in %s.%s' % (sec, k)
             (errs if sec != 'ui' or k != 'vash_otvet_im_padezh_ed_ch' else warns).append(wl)
-    for sec in ('ui', 'enemies', 'map'):
+    for sec in ('ui', 'enemies', 'map', 'items'):  # items: group_84 SA-02
         for k, v in pay.get(sec, {}).items():
             if k not in RU[sec]: errs.append('%s.%s: unknown key' % (sec, k)); continue
             check_str(sec, k, RU[sec][k], v)
@@ -72,7 +72,7 @@ def main():
     cov.append('pregame %s' % ('yes' if 'pregame' in pay else 'no'))
     print('validation OK · coverage: ' + ' · '.join(cov))
     if not a.write: print('VALIDATE-ONLY (no --write).'); return
-    for sec in ('ui', 'enemies', 'map'):
+    for sec in ('ui', 'enemies', 'map', 'items'):  # items: group_84 SA-02
         L.setdefault(sec, {}).update(pay.get(sec, {}))
     for sec in ('spells', 'allies'):
         for k, v in pay.get(sec, {}).items():

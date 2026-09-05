@@ -1061,7 +1061,7 @@ const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч
   "wood_piece":"Красивый кусочек дерева",
 };
 function canonItem(x){if(x&&typeof x==='object'&&x.kind==='food')return x.id;return RU_TO_SLUG[x]||x;}
-function itemName(x){return SLUG_TO_RU[x]||x;}
+function itemName(x){ const A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null; return (A&&A.items&&A.items[x])||SLUG_TO_RU[x]||x; } // group_84 SA-02: active locale first, Russian fallback
 function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';return itemName(entry);}
 const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0};
 // group_83 PT-01: story flags - hidden, weightless, undroppable state markers kept in the inventory so the

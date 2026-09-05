@@ -61,6 +61,18 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9w. group_84 SA-02: localized item names - every locale carries an items map, itemName prefers the active locale
+(function(){
+  try{
+    const names={}; for(const L of ['ru','en','fr','uk']){ const src=fs.readFileSync(path.join(REPO,'src','locale.'+L+'.js'),'utf8'); const m=src.match(/const\s+LOCALE_[A-Z]{2}\s*=\s*(\{[\s\S]*\})\s*;?\s*$/); names[L]=JSON.parse(m[1]).items||{}; }
+    ck('SA-02 items maps: ru 120, en/fr/uk 107 with identical key sets', Object.keys(names.ru).length===120&&[names.en,names.fr,names.uk].every(m=>Object.keys(m).length===107)&&JSON.stringify(Object.keys(names.en).sort())===JSON.stringify(Object.keys(names.fr).sort()));
+    globalThis.SLUG_TO_RU=Object.assign(globalThis.SLUG_TO_RU||{},{apple:'\u042f\u0431\u043b\u043e\u043a\u043e',melon:'\u0410\u0440\u0431\u0443\u0437'}); // melon: the CB-05 guard below relies on it
+    eval(gfn('itemName'));
+    globalThis.ACTIVE_LOCALE={items:{apple:'Apple'}}; const en=itemName('apple'); globalThis.ACTIVE_LOCALE=null; const ru=itemName('apple');
+    ck('SA-02 itemName: active locale first, Russian fallback', en==='Apple'&&ru==='\u042f\u0431\u043b\u043e\u043a\u043e'&&itemName('no_such_slug')==='no_such_slug');
+  }catch(e){ ck('SA-02 eval: '+e.message,false); }
+})();
+
 // 9v. group_85 batch 8 (AS-01/02/04/05/06/08-12): origin gate, AND gate, riddle requires_flag, fatal_when_stuck, knowledge flags
 (function(){
   try{

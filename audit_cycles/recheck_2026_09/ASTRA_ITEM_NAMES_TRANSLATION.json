@@ -1,0 +1,537 @@
+{
+  "melon": {
+    "en": "Watermelon",
+    "fr": "Pastèque",
+    "uk": "Кавун"
+  },
+  "coconut": {
+    "en": "Coconut",
+    "fr": "Noix de coco",
+    "uk": "Кокос"
+  },
+  "bun": {
+    "en": "Bun",
+    "fr": "Petit pain",
+    "uk": "Булочка"
+  },
+  "provisions": {
+    "en": "Provisions",
+    "fr": "Provisions",
+    "uk": "Харчі"
+  },
+  "death_of_orcs": {
+    "en": "Sword “Death of Orcs”",
+    "fr": "Épée « Mort des Orcs »",
+    "uk": "Меч «Смерть Орків»"
+  },
+  "knight_shield": {
+    "en": "Knight’s Shield",
+    "fr": "Bouclier de chevalier",
+    "uk": "Лицарський щит"
+  },
+  "apple": {
+    "en": "Apple",
+    "fr": "Pomme",
+    "uk": "Яблуко"
+  },
+  "arrows_5": {
+    "en": "Five Arrows",
+    "fr": "Cinq flèches",
+    "uk": "П’ять стріл"
+  },
+  "banana": {
+    "en": "Banana",
+    "fr": "Banane",
+    "uk": "Банан"
+  },
+  "bear_amulet": {
+    "en": "Bear Amulet",
+    "fr": "Amulette de l’ourse",
+    "uk": "Ведмежий амулет"
+  },
+  "beaver_pelt": {
+    "en": "Beaver Pelt",
+    "fr": "Peau de castor",
+    "uk": "Боброва шкурка"
+  },
+  "birdcage": {
+    "en": "Birdcage",
+    "fr": "Cage à oiseaux",
+    "uk": "Пташина клітка"
+  },
+  "black_arrows_5": {
+    "en": "Five Black Arrows",
+    "fr": "Cinq flèches noires",
+    "uk": "П’ять чорних стріл"
+  },
+  "black_castle_key": {
+    "en": "Black Castle Key",
+    "fr": "Clé du Château Noir",
+    "uk": "Ключ Чорного замку"
+  },
+  "black_pearl": {
+    "en": "Black Pearl",
+    "fr": "Perle noire",
+    "uk": "Чорна перлина"
+  },
+  "book": {
+    "en": "Book",
+    "fr": "Livre",
+    "uk": "Книга"
+  },
+  "bread": {
+    "en": "Bread",
+    "fr": "Pain",
+    "uk": "Хліб"
+  },
+  "bronze_jug": {
+    "en": "Bronze Jug",
+    "fr": "Cruche en bronze",
+    "uk": "Бронзовий глечик"
+  },
+  "bronze_whistle": {
+    "en": "Bronze Whistle",
+    "fr": "Sifflet en bronze",
+    "uk": "Бронзовий свисток"
+  },
+  "brooch": {
+    "en": "Lovely Brooch",
+    "fr": "Jolie broche",
+    "uk": "Гарна брошка"
+  },
+  "caged_bird": {
+    "en": "Caged Bird",
+    "fr": "Oiseau en cage",
+    "uk": "Пташка в клітці"
+  },
+  "candle": {
+    "en": "Candle",
+    "fr": "Bougie",
+    "uk": "Свічка"
+  },
+  "candlestick": {
+    "en": "Candlestick",
+    "fr": "Chandelier",
+    "uk": "Свічник"
+  },
+  "card_deck": {
+    "en": "Deck of Cards",
+    "fr": "Jeu de cartes",
+    "uk": "Колода карт"
+  },
+  "castle_password": {
+    "en": "Castle Password",
+    "fr": "Mot de passe du château",
+    "uk": "Пароль до замку"
+  },
+  "cheese": {
+    "en": "Cheese",
+    "fr": "Fromage",
+    "uk": "Сир"
+  },
+  "copper_bracelet": {
+    "en": "Copper Bracelet",
+    "fr": "Bracelet en cuivre",
+    "uk": "Мідний браслет"
+  },
+  "copper_key": {
+    "en": "Small Copper Key",
+    "fr": "Petite clé en cuivre",
+    "uk": "Мідний ключик"
+  },
+  "crown": {
+    "en": "Crown",
+    "fr": "Couronne",
+    "uk": "Корона"
+  },
+  "deer_hide": {
+    "en": "Deer Hide",
+    "fr": "Peau de cerf",
+    "uk": "Оленяча шкура"
+  },
+  "diamond": {
+    "en": "Splendid Diamond",
+    "fr": "Superbe diamant",
+    "uk": "Прекрасний діамант"
+  },
+  "die": {
+    "en": "Die",
+    "fr": "Dé à jouer",
+    "uk": "Гральна кістка"
+  },
+  "diving_suit": {
+    "en": "Diving Suit",
+    "fr": "Scaphandre",
+    "uk": "Водолазний костюм"
+  },
+  "dragon_claw": {
+    "en": "Dragon Claw",
+    "fr": "Griffe de dragon",
+    "uk": "Кіготь дракона"
+  },
+  "dragon_liver": {
+    "en": "Dragon Liver",
+    "fr": "Foie de dragon",
+    "uk": "Печінка дракона"
+  },
+  "eagle_plaque": {
+    "en": "Golden Eagle Badge",
+    "fr": "Insigne à l’aigle d’or",
+    "uk": "Бляха із золотим орлом"
+  },
+  "figured_key": {
+    "en": "Ornate Key",
+    "fr": "Clé ouvragée",
+    "uk": "Фігурний ключ"
+  },
+  "fire_extinguisher": {
+    "en": "Fire Extinguisher",
+    "fr": "Extincteur",
+    "uk": "Вогнегасник"
+  },
+  "fish_help": {
+    "en": "Fish’s Aid",
+    "fr": "Aide du poisson",
+    "uk": "Допомога рибки"
+  },
+  "flint": {
+    "en": "Fire Striker",
+    "fr": "Briquet à silex",
+    "uk": "Кресало"
+  },
+  "flying_carpet": {
+    "en": "Flying Carpet",
+    "fr": "Tapis volant",
+    "uk": "Килим-літак"
+  },
+  "fox_pelt": {
+    "en": "Fox Pelt",
+    "fr": "Peau de renard",
+    "uk": "Лисяча шкура"
+  },
+  "gold_amulet": {
+    "en": "Gold Amulet",
+    "fr": "Amulette en or",
+    "uk": "Золотий амулет"
+  },
+  "gold_arrow": {
+    "en": "Gold Arrow",
+    "fr": "Flèche en or",
+    "uk": "Золота стріла"
+  },
+  "gold_key": {
+    "en": "Gold Key",
+    "fr": "Clé en or",
+    "uk": "Золотий ключ"
+  },
+  "gold_necklace": {
+    "en": "Gold Necklace",
+    "fr": "Collier en or",
+    "uk": "Золоте намисто"
+  },
+  "gold_oyster": {
+    "en": "Golden Oyster",
+    "fr": "Huître dorée",
+    "uk": "Золота устриця"
+  },
+  "gold_ring": {
+    "en": "Gold Ring",
+    "fr": "Anneau en or",
+    "uk": "Золоте кільце"
+  },
+  "gold_whistle": {
+    "en": "Gold Whistle",
+    "fr": "Sifflet en or",
+    "uk": "Золотий свисток"
+  },
+  "golden_orange": {
+    "en": "Golden Orange",
+    "fr": "Orange d’or",
+    "uk": "Золотий апельсин"
+  },
+  "goldfish": {
+    "en": "Goldfish",
+    "fr": "Poisson d’Or",
+    "uk": "Золота рибка"
+  },
+  "hand_mirror": {
+    "en": "Hand Mirror",
+    "fr": "Petit miroir",
+    "uk": "Дзеркальце"
+  },
+  "helmet": {
+    "en": "Helmet",
+    "fr": "Casque",
+    "uk": "Шолом"
+  },
+  "honey": {
+    "en": "Honey",
+    "fr": "Miel",
+    "uk": "Мед"
+  },
+  "horse_blanket": {
+    "en": "Horse Blanket",
+    "fr": "Couverture de cheval",
+    "uk": "Кінська попона"
+  },
+  "hourglass": {
+    "en": "Hourglass",
+    "fr": "Sablier",
+    "uk": "Пісочний годинник"
+  },
+  "ivory_comb": {
+    "en": "Ivory Comb",
+    "fr": "Peigne en ivoire",
+    "uk": "Гребінь зі слонової кістки"
+  },
+  "lemon": {
+    "en": "Lemon",
+    "fr": "Citron",
+    "uk": "Лимон"
+  },
+  "magic_bell": {
+    "en": "Magic Bell",
+    "fr": "Clochette magique",
+    "uk": "Чарівний дзвіночок"
+  },
+  "magic_belt": {
+    "en": "Magic Belt",
+    "fr": "Ceinture magique",
+    "uk": "Чарівний пояс"
+  },
+  "manuscript": {
+    "en": "Manuscript",
+    "fr": "Manuscrit",
+    "uk": "Рукопис"
+  },
+  "meat": {
+    "en": "Meat",
+    "fr": "Viande",
+    "uk": "М’ясо"
+  },
+  "milk": {
+    "en": "Milk",
+    "fr": "Lait",
+    "uk": "Молоко"
+  },
+  "mirror_secret": {
+    "en": "Secret of the Mirrors",
+    "fr": "Secret des miroirs",
+    "uk": "Таємниця дзеркал"
+  },
+  "nutmeg_biscuit": {
+    "en": "Nutmeg Biscuit",
+    "fr": "Biscuit à la muscade",
+    "uk": "Мускатне печиво"
+  },
+  "orange": {
+    "en": "Orange",
+    "fr": "Orange",
+    "uk": "Апельсин"
+  },
+  "parchment_scroll": {
+    "en": "Parchment Scroll",
+    "fr": "Rouleau de parchemin",
+    "uk": "Пергаментний сувій"
+  },
+  "pass": {
+    "en": "Pass",
+    "fr": "Laissez-passer",
+    "uk": "Перепустка"
+  },
+  "password_evenlo": {
+    "en": "Password “Three from Evenlo”",
+    "fr": "Mot de passe « Les Trois d’Évenlo »",
+    "uk": "Пароль «Троє з Евенло»"
+  },
+  "peacock_feather": {
+    "en": "Peacock Feather",
+    "fr": "Plume de paon",
+    "uk": "Перо павича"
+  },
+  "pear": {
+    "en": "Pear",
+    "fr": "Poire",
+    "uk": "Груша"
+  },
+  "perfume_vial": {
+    "en": "Perfume Vial",
+    "fr": "Flacon de parfum",
+    "uk": "Флакончик парфумів"
+  },
+  "pineapple": {
+    "en": "Pineapple",
+    "fr": "Ananas",
+    "uk": "Ананас"
+  },
+  "prayer_beads": {
+    "en": "Prayer Beads",
+    "fr": "Chapelet",
+    "uk": "Вервиця"
+  },
+  "ring": {
+    "en": "Ring",
+    "fr": "Anneau",
+    "uk": "Кільце"
+  },
+  "rope": {
+    "en": "Rope",
+    "fr": "Corde",
+    "uk": "Мотузка"
+  },
+  "rope_ladder": {
+    "en": "Rope Ladder",
+    "fr": "Échelle de corde",
+    "uk": "Мотузяна драбинка"
+  },
+  "rose": {
+    "en": "Rose",
+    "fr": "Rose",
+    "uk": "Троянда"
+  },
+  "ruby_star": {
+    "en": "Ruby Star",
+    "fr": "Étoile de rubis",
+    "uk": "Рубінова зірка"
+  },
+  "sausage": {
+    "en": "Sausage",
+    "fr": "Saucisse",
+    "uk": "Ковбаса"
+  },
+  "shiny_metal": {
+    "en": "Shiny Piece of Metal",
+    "fr": "Morceau de métal brillant",
+    "uk": "Блискучий шматок металу"
+  },
+  "ship_plaque": {
+    "en": "Sailing Ship Badge",
+    "fr": "Insigne au voilier",
+    "uk": "Бляха з вітрильником"
+  },
+  "signet": {
+    "en": "Signet Ring",
+    "fr": "Chevalière",
+    "uk": "Перстень"
+  },
+  "signet_emerald": {
+    "en": "Emerald Signet Ring",
+    "fr": "Chevalière à l’émeraude",
+    "uk": "Перстень зі смарагдом"
+  },
+  "signet_ruby": {
+    "en": "Ruby Signet Ring",
+    "fr": "Chevalière au rubis",
+    "uk": "Перстень із рубіном"
+  },
+  "silver_bracelet": {
+    "en": "Silver Bracelet",
+    "fr": "Bracelet en argent",
+    "uk": "Срібний браслет"
+  },
+  "silver_ring": {
+    "en": "Silver Ring",
+    "fr": "Anneau en argent",
+    "uk": "Срібне кільце"
+  },
+  "silver_vessel": {
+    "en": "Silver Vessel",
+    "fr": "Vase en argent",
+    "uk": "Срібна посудина"
+  },
+  "silver_whistle": {
+    "en": "Silver Whistle",
+    "fr": "Sifflet en argent",
+    "uk": "Срібний свисток"
+  },
+  "smoking_pipe": {
+    "en": "Smoking Pipe",
+    "fr": "Pipe",
+    "uk": "Люлька"
+  },
+  "spider_larva": {
+    "en": "Spider Larva",
+    "fr": "Larve d’araignée",
+    "uk": "Личинка павука"
+  },
+  "stone_centaur": {
+    "en": "Stone Centaur",
+    "fr": "Centaure de pierre",
+    "uk": "Кам’яний Кентавр"
+  },
+  "stork_feather": {
+    "en": "Stork Feather",
+    "fr": "Plume de cigogne",
+    "uk": "Перо лелеки"
+  },
+  "talisman": {
+    "en": "Protective Charm",
+    "fr": "Talisman protecteur",
+    "uk": "Оберіг"
+  },
+  "tangerine": {
+    "en": "Tangerine",
+    "fr": "Mandarine",
+    "uk": "Мандарин"
+  },
+  "thread_ball": {
+    "en": "Ball of Thread",
+    "fr": "Pelote de fil",
+    "uk": "Клубочок ниток"
+  },
+  "throne_lore": {
+    "en": "Throne Lore",
+    "fr": "Savoir sur le trône",
+    "uk": "Знання про трон"
+  },
+  "treasure_lore": {
+    "en": "Treasure Lore",
+    "fr": "Savoir sur le trésor",
+    "uk": "Знання про скарб"
+  },
+  "water_flask": {
+    "en": "Water Flask",
+    "fr": "Gourde d’eau",
+    "uk": "Фляга з водою"
+  },
+  "watermelon": {
+    "en": "Watermelon from the Patch",
+    "fr": "Pastèque du potager",
+    "uk": "Кавун із баштану"
+  },
+  "whip": {
+    "en": "Whip",
+    "fr": "Fouet",
+    "uk": "Батіг"
+  },
+  "white_arrow": {
+    "en": "White Arrow",
+    "fr": "Flèche blanche",
+    "uk": "Біла стріла"
+  },
+  "whole_sword": {
+    "en": "Intact Sword",
+    "fr": "Épée intacte",
+    "uk": "Цілий меч"
+  },
+  "wine_bottle": {
+    "en": "Bottle of Wine",
+    "fr": "Bouteille de vin",
+    "uk": "Пляшка вина"
+  },
+  "wood_piece": {
+    "en": "Lovely Piece of Wood",
+    "fr": "Joli morceau de bois",
+    "uk": "Гарний шматочок дерева"
+  },
+  "princess_awake": {
+    "en": "Awakened Princess",
+    "fr": "Princesse éveillée",
+    "uk": "Пробуджена Принцеса"
+  },
+  "barlad_dead": {
+    "en": "Defeat of Barlad Dert",
+    "fr": "Défaite de Barlad Dert",
+    "uk": "Поразка Барлада Дерта"
+  }
+}
