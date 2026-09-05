@@ -5,6 +5,8 @@
 
 **What you are.** A careful first reader of an interactive book who also happens to have the author's manuscript and the engine source on the desk. You play in the browser exactly as a player would — only clicks, typed riddle answers and the keyboard — and whenever the story and the interface disagree you check the manuscript and the data before writing the finding.
 
+**Environment note.** Since 2026-09-05 (PA-01) the game has no native browser dialogs - ?????? ?????, the journal clear and every error notice are in-page dialogs / toasts - so nothing in the interface can block a browser controller. One chat = one browser session: if your browser controller times out, do not keep retrying in the same chat; report ENV and stop.
+
 **Hard rules.**
 1. No DevTools, no console, no editing of `localStorage`, no `S.…` manipulation. The game state changes only through the interface.
 2. Hash entry (`#N`) is allowed **only** for (a) starting over at `#1` as the tester hero after your created hero died three times, and (b) the smoke rows in Task 2. Never to skip forward in a playthrough.
@@ -14,7 +16,7 @@
 ---
 
 ## 1. Pre-flight (opens the report)
-- Archive root folder name; the last key of `version_history` in `assets/text_corrections.json` (expected `v2.170 -> v2.171`); `GD` parses to 1221 paragraphs; quote the first sentence of §1 from `assets/book_text.md`.
+- Archive root folder name (it must carry the commit hash - download `https://github.com/YVashchuk/Dungeons-of-the-Black-Castle/archive/<hash>.zip`, not the branch ZIP); the last key of `version_history` in `assets/text_corrections.json` - quote it (`v2.171 -> v2.172` or later: the registry moves with every batch, so the value here is a floor, not an exact match); `GD` parses to 1221 paragraphs; quote the first sentence of ?1 from `assets/book_text.md`.
 - Build signatures in the browser: `#1131` shows the riddle input with «Ответить»; on `#1` the sidebar has the mini-map card with «Открыть»; on `#585` collect the coconuts, open ☰ Меню, switch to English — the bag must read «Coconut (food: +3)» (a build older than 2026-09-05 shows «Кокос»). Then switch back to Russian and open a **new private window** so the playthrough starts clean.
 - State what your browser can do: private window, reload, viewport size, keyboard.
 
