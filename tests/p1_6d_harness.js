@@ -61,6 +61,14 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9u. group_85 batch 7 (AS-03 / AS-07 / AS-22 / AS-13 / AS-15 / AS-19): negative gates on sec.81/94/56/205, save backfill, importSave param, observer close
+(function(){
+  ck('AS-03/AS-07/AS-22 negative gates in GD', GD['81'].choices.slice(1).every(c=>c.inventory_missing==='princess_awake')&&GD['94'].choices[0].inventory_missing==='barlad_dead'&&GD['56'].choices.slice(1).every(c=>c.inventory_missing==='castle_password')&&GD['205'].choices.slice(1).every(c=>c.inventory_missing==='castle_password'));
+  try{ globalThis.SLUG_TO_RU=globalThis.SLUG_TO_RU||{melon:'Арбуз'}; eval(gfn('normalizeSave')); const s1=normalizeSave({v:5,inventory:[],visited:[1,627,'81']}); const s2=normalizeSave(s1); ck('AS-13 backfill from visited, idempotent', s1.inventory.includes('princess_awake')&&s1.inventory.includes('barlad_dead')&&s2.inventory.filter(x=>x==='barlad_dead').length===1); }catch(e){ ck('AS-13 eval: '+e.message,false); }
+  ck('AS-15 importSave callback does not shadow t()', !gl.includes('f.text().then(t=>')&&gl.includes('f.text().then(rawText=>'));
+  ck('AS-19 observer closes any element still on the stack', gl.includes('if(!_bcIsDialog(el)&&_bcDialogStack.indexOf(el)<0) continue;'));
+})();
+
 // 9t. group_84 (SA-01 / SA-03 / SA-04 / CU-13 / CU-17 / CU-18): dock i18n + placement, fight-bound bridge buffs, riddle row, inert log panel, single picker rebuild
 (function(){
   ck('SA-01/SA-03 dock pills carry data-i18n and the dock lives in the story column', gl.includes('<span data-i18n="atmosfera">')&&gl.includes('<span data-i18n="illyustracii">')&&gl.includes("(document.querySelector('#scr-game .main')||document.body).appendChild(dock);"));

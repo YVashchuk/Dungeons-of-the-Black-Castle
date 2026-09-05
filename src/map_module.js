@@ -344,9 +344,9 @@ const oldInitState = window.initState;
     window.importSave = function(e){
       const f=e && e.target && e.target.files ? e.target.files[0] : null;
       if(!f) return;
-      f.text().then(t=>{
+      f.text().then(rawText=>{
         try{
-          const s=JSON.parse(t);
+          const s=JSON.parse(rawText);
           if(![4,5,6,7].includes(s.v)){ alert(t('nesovmestimyy_format')); return; }
           if(s.v===4){ s.v=5; s.luckMax=s.luck; delete s.luckBoxes; }
           if(!s.mapState) s.mapState = clone(BC_MAP_STATE_TEMPLATE);
