@@ -61,6 +61,23 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9x. group_85 batch 9 (AS-14): betting ledger + persisted dice-router roll
+(function(){
+  try{
+    ['t','logEvent','invDisplay','showItemNotification','updateHUD','saveGame','playSound','canonItem'].forEach(n=>{ if(typeof globalThis[n]!=='function') globalThis[n]=function(x){ return typeof x==='string'?x:''; }; });
+    globalThis.getBagUsed=globalThis.getBagUsed||function(){return 0;}; globalThis.getBagSize=globalThis.getBagSize||function(){return 7;}; globalThis.getItemSize=globalThis.getItemSize||function(){return 1;};
+    eval(gfn('applyBetting'));
+    globalThis.S={gold:20,inventory:[],bet_stake:null,flask:2};
+    const s68={id:68,set_stake:{kind:'gold',amount:8}}, s287={id:287,bet_payout:{stake:'lose',gold:10}};
+    applyBetting(s68); const g1=S.gold; applyBetting(s68); const g2=S.gold;            // stake once (reload)
+    applyBetting(s287); const g3=S.gold; applyBetting(s287); const g4=S.gold;          // payout once (reload)
+    applyBetting(s68); const g5=S.gold;                                                  // new round after resolution
+    ck('AS-14 betting ledger: stake 20->12 once, payout +10 once, new round charges again', g1===12&&g2===12&&g3===22&&g4===22&&g5===14&&S.betRoundId===2);
+  }catch(e){ ck('AS-14 applyBetting eval: '+e.message,false); }
+  ck('AS-14 dice router roll persisted until the player continues', gl.includes('S.pendingDiceRoll={section:S.section,roll:roll,tgt:tgt}; saveGame();')&&gl.includes('if(pend&&pend.section===S.section){ showResolved(pend.roll,pend.tgt); return; }')&&gl.includes('S.pendingDiceRoll=null; // group_85 AS-14'));
+  try{ eval(gfn('normalizeSave')); const s=normalizeSave({v:5,inventory:[],visited:[]}); ck('AS-14 normalizeSave backfills betRoundId / betLedger / pendingDiceRoll', s.betRoundId===0&&s.betLedger&&typeof s.betLedger==='object'&&s.pendingDiceRoll===null); }catch(e){ ck('AS-14 normalizeSave eval: '+e.message,false); }
+})();
+
 // 9w. group_84 SA-02: localized item names - every locale carries an items map, itemName prefers the active locale
 (function(){
   try{

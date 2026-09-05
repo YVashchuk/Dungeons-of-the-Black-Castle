@@ -3530,6 +3530,7 @@ function normalizeSave(s){
   // group_85 AS-13: saves made before the story flags existed have the deed scenes in visited already
   // (first-visit grants never fire again) - backfill the flags from visited, idempotently.
   if(s.cameFrom===undefined) s.cameFrom=null; // group_85 AS-01
+  if(typeof s.betRoundId!=='number') s.betRoundId=0; if(!s.betLedger||typeof s.betLedger!=='object'||Array.isArray(s.betLedger)) s.betLedger={}; if(s.pendingDiceRoll===undefined||(s.pendingDiceRoll&&typeof s.pendingDiceRoll!=='object')) s.pendingDiceRoll=null; // group_85 AS-14
   if(Array.isArray(s.visited)&&Array.isArray(s.inventory)){ const vis=s.visited.map(Number); const has=f=>s.inventory.some(it=>it===f); if((vis.includes(627)||vis.includes(976))&&!has('princess_awake')) s.inventory.push('princess_awake'); if(vis.includes(81)&&!has('barlad_dead')) s.inventory.push('barlad_dead'); }
   if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
   if(typeof s.sec436_force!=='boolean') s.sec436_force=false; // §436 Force-on-tree round-trip flag
@@ -5538,15 +5539,8 @@ function bettingDieTarget(sec, roll){
 function renderDiceRoll(sec){
   const list=document.getElementById('c-list'); if(!list) return;
   list.innerHTML='';
-  const btn=document.createElement('button');
-  btn.className='choice-btn';
-  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
-  btn.innerHTML=t('brosit_kubik');
-  btn.onclick=()=>{
-    playSound('dice');
-    const roll=d6();
-    const tgt=bettingDieTarget(sec,roll);
-    logEvent('luck',t('kubik_vypalo')+roll, tgt?(t('paragraf_3')+tgt):'');
+  // group_85 AS-14: the rolled face is committed before it is shown and survives a reload until the player continues.
+  const showResolved=(roll,tgt)=>{
     list.innerHTML='';
     const res=document.createElement('div');
     res.style.cssText='text-align:center;font-size:30px;color:var(--gold);margin:14px 0;font-weight:bold;';
@@ -5557,6 +5551,21 @@ function renderDiceRoll(sec){
     cont.textContent=t('prodolzhit');
     cont.onclick=()=>{ if(tgt!==null&&tgt!==undefined) goTo(tgt); };
     list.appendChild(cont);
+    return cont;
+  };
+  const pend=S&&S.pendingDiceRoll;
+  if(pend&&pend.section===S.section){ showResolved(pend.roll,pend.tgt); return; }
+  const btn=document.createElement('button');
+  btn.className='choice-btn';
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.style.background='rgba(212,175,55,.12)';
+  btn.innerHTML=t('brosit_kubik');
+  btn.onclick=()=>{
+    playSound('dice');
+    const roll=d6();
+    const tgt=bettingDieTarget(sec,roll);
+    S.pendingDiceRoll={section:S.section,roll:roll,tgt:tgt}; saveGame();
+    logEvent('luck',t('kubik_vypalo')+roll, tgt?(t('paragraf_3')+tgt):'');
+    const cont=showResolved(roll,tgt);
     bcAnnounce(t('kubik_vypalo')+roll); cont.focus({preventScroll:true}); // group_81 CA-05
   };
   list.appendChild(btn);
@@ -5676,8 +5685,12 @@ function renderDiceLoot(sec){
 function applyBetting(sec){
   if(!S||!sec) return;
   const notifs=[];
+  // group_85 AS-14: a ledger of betting rounds - a stake is charged once per pending round, a payout once per
+  // round; same-paragraph reloads (or a hash re-entry) neither charge nor pay twice.
+  S.betLedger=S.betLedger||{}; const rid=S.betRoundId||0; const key=String(sec.id);
   // 1) Stake commit
-  if(sec.set_stake){
+  if(sec.set_stake&&!(S.betLedger[key]===rid&&S.bet_stake)){
+    S.betRoundId=rid+1; S.betLedger[key]=S.betRoundId;
     const st=sec.set_stake;
     if(st.kind==='gold'){
       const amt=st.amount||0;
@@ -5696,7 +5709,8 @@ function applyBetting(sec){
     }
   }
   // 2) Payout + stake resolution
-  if(sec.bet_payout){
+  if(sec.bet_payout&&S.betLedger[key]!==(S.betRoundId||0)){
+    S.betLedger[key]=(S.betRoundId||0);
     const bp=sec.bet_payout;
     const stake=S.bet_stake;
     if(bp.stake!==undefined){
@@ -5849,6 +5863,7 @@ function goTo(id){
   if(!S)return;S.cameFrom=S.section; /* group_85 AS-01 */ S.section=id;
   combatDone={};luckDone={};luckResult={};sectionPrepState={};
   S.luckChecks={}; // group_81 B-07: a persisted luck roll belongs to the paragraph being left
+  S.pendingDiceRoll=null; // group_85 AS-14
   renderGame();
 }
 
