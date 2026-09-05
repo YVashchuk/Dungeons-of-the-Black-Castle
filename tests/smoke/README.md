@@ -26,3 +26,11 @@ $env:RESUME='1';        node tests\smoke\playthrough.js                         
 ```
 
 `WAYPOINTS` (default `74,226,976,1120,823,81,1220` - golden orange, wake the Princess, Barlad alive, Barlad, victory) and `MAX_STEPS` are environment variables. `TESTER_BOOST=1` gives the tester every spell at 2 charges: this validates the engine's gates, it is not a sporting playthrough (the unboosted tester cannot reach sec.74 - its shortest route needs Levitation at sec.596). Output: `tests/smoke/out/PLAYTHROUGH_REPORT.md` (route, stats, log) and screenshots every 25 steps. Keep chunks under ~2 minutes when driven through an MCP tool.
+
+## gate_probes.js - live probes of the story-state gates (groups 83/85)
+
+```powershell
+node tests\smoke\gate_probes.js [url]
+```
+
+29 deterministic probes of the checkpoints G-01..G-15 of `BRIEF_playthrough_astra_agent.md`: the tester hero is prepared through `S` (flags, items, origin, spell charges), the paragraph is re-rendered, and the rendered UI is observed (enabled choice buttons by target, bag text / buttons, death overlay). Output: `tests/smoke/out/GATE_PROBES_REPORT.md` + one PNG per probe. Run after any change to gates, flags or `passesInventoryCheck`.
