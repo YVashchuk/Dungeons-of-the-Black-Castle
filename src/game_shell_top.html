@@ -826,8 +826,17 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
       <span data-i18n="ui_menu_import">📂 Импорт сохранения</span>
       <input type="file" accept=".json" class="sr-only" onchange="importSave(event)">
     </label>
-    <button class="btn btn-d menu-btn" onclick="if(confirm(t('ui_confirm_new_game'))){localStorage.removeItem(SAVE_KEY);location.reload();}" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
+    <button class="btn btn-d menu-btn" onclick="bcConfirm(t('ui_confirm_new_game'),function(){localStorage.removeItem(SAVE_KEY);location.reload();})" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
     <button class="btn btn-s menu-btn" onclick="closeModal('overlay-menu')" data-i18n="ui_btn_menu_close">← Закрыть</button>
+  </div>
+</div>
+
+<!-- In-page confirm dialog (group_86 PA-01): replaces native confirm(), which the dialog stack, i18n and automation cannot see -->
+<div class="modal-overlay" id="overlay-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+  <div class="modal" style="max-width:460px;text-align:center">
+    <h2 id="confirm-title" style="font-size:22px"></h2>
+    <button class="btn btn-d menu-btn" id="btn-confirm-yes" data-i18n="ui_btn_confirm_yes">Да</button>
+    <button class="btn btn-s menu-btn" onclick="closeModal('overlay-confirm')" data-i18n="ui_btn_cancel">Отмена</button>
   </div>
 </div>
 

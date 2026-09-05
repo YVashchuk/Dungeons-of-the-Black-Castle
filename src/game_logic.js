@@ -114,10 +114,10 @@ function loadGame(){try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null
 function exportSave(){saveGame();const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='podzch-save.json';a.click();closeModal('overlay-menu');}
 function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(rawText=>{try{const s=JSON.parse(rawText); // group_85 AS-15: the parameter must not shadow t()
-  if(s.v!==5&&s.v!==4){alert(t('nesovmestimyy_format'));return;}
+  if(s.v!==5&&s.v!==4){bcNotice(t('nesovmestimyy_format'));return;}
   if(s.v===4){s.v=5;s.luckMax=s.luck;delete s.luckBoxes;}// upgrade v4→v5
   normalizeSave(s);
-  S=s;saveGame();showScr('game');renderGame();closeModal('overlay-menu');}catch{alert(t('oshibka_zagruzki'));}});e.target.value='';}
+  S=s;saveGame();showScr('game');renderGame();closeModal('overlay-menu');}catch{bcNotice(t('oshibka_zagruzki'));}});e.target.value='';}
 
 // ── Screens ──
 function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scr-'+id).classList.add('on');const elb=document.getElementById('event-log-btn');if(elb)elb.style.display=(id==='game'&&!isMobileHud())?'block':'none';}
@@ -368,7 +368,7 @@ function renderSpellSel(){
 }
 
 function startGame(){
-  if(totSp()!==MAX_SP){alert(t('vyberite_rovno_10_zaklyatiy'));return;}
+  if(totSp()!==MAX_SP){bcNotice(t('vyberite_rovno_10_zaklyatiy'));return;}
   const name=document.getElementById('hero-name').value.trim()||t('geroy');
   if(!diceRolled){cVals.skill=d6()+6;cVals.stamina=d6()+d6()+12;cVals.luck=d6()+6;diceRolled=true;}
   const sp=[];SPELLS.forEach(s=>{if(spQty[s.id]>0)sp.push({id:s.id,remaining:spQty[s.id]});});
@@ -433,12 +433,16 @@ function toggleEventLog(){
 
 function clearEventLog(){
   if(!S)return;
-  if(confirm(t('ochistit_zhurnal'))){S.eventLog=[];saveGame();renderEventLog();}
+  bcConfirm(t('ochistit_zhurnal'),function(){S.eventLog=[];saveGame();renderEventLog();});
 }
 
 // ── Item Notification ──
 // group_81 CA-04/CA-05: one persistent live region (#bc-notif-live, shell) - assistive
 // tech announces CHANGES to an existing region, not a pre-filled node inserted afresh.
+// group_86 PA-01: in-page replacements for confirm()/alert() - native dialogs sit outside the dialog stack,
+// the focus controller, the locale typography and every automation (browser agents, Playwright).
+function bcConfirm(question,onYes){ const ov=document.getElementById('overlay-confirm'); if(!ov){ if(window.confirm(question)) onYes(); return; } const h=document.getElementById('confirm-title'); if(h) h.textContent=question; const yes=document.getElementById('btn-confirm-yes'); if(yes) yes.onclick=function(){ closeModal('overlay-confirm'); try{ onYes(); }catch(e){ console.error(e); } }; ov.classList.add('on'); }
+function bcNotice(text){ try{ showItemNotification([],text); }catch(e){ bcAnnounce(text); } }
 function bcAnnounce(text){ try{ const live=document.getElementById('bc-notif-live'); if(!live) return; live.textContent=''; setTimeout(function(){ live.textContent=text; },0); }catch(e){} }
 function showItemNotification(items, title){
   const el=document.createElement('div');el.className='item-notification';
@@ -1137,7 +1141,7 @@ function useHealingInCombat(){
 }
 function toggleAddItem(){const a=document.getElementById('add-item-area');a.style.display=a.style.display==='none'?'block':'none';}
 function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.trim();
-  if(!v)return;if(getBagUsed()+getItemSize(v)>getBagSize()){alert(t('meshok_polon_3')+getBagSize()+t('mest_2'));return;}
+  if(!v)return;if(getBagUsed()+getItemSize(v)>getBagSize()){bcNotice(t('meshok_polon_3')+getBagSize()+t('mest_2'));return;}
   S.inventory.push(v);inp.value='';updateHUD();saveGame();}
 // group_81 CA-09: updateHUD rebuilds #inv-list, destroying the activated button -
 // land on the equivalent row (or the add-item control) so keyboard users keep their place.

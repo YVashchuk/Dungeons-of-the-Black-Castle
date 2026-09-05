@@ -36,20 +36,23 @@ const snips=[
  ['safe-area on fixed shell (UI-06)', '.scr,.modal-overlay{padding-top:var(--safe-top);', 1],
  ['title short-viewport rule (UI-06)', '#scr-title .t-content { margin: auto;', 1],
  ['focus ring (UI-04)', ':focus-visible{outline:2px solid var(--gold2)', 1],
- ['dialog roles (UI-04)', 'role="dialog" aria-modal="true"', 8],
+ ['dialog roles (UI-04)', 'role="dialog" aria-modal="true"', 9],
  ['dialog controller (UI-04)', 'BC_A11Y_DIALOGS', 2],
  ['persistent live region (UI-04/CA-04)', 'id="bc-notif-live" role="status" aria-live="polite"', 1],
  ['keyboard-reachable import input (CA-07)', 'accept=".json" class="sr-only"', 1],
  ['combat status reset hook (CA-06)', 'window._bcCombatStatusReset=function', 1],
  ['forum cyrillic display (UI-07)', "font-family: 'Forum';", 1],
  ['font chain with Forum (UI-07)', "--font-ui:'Cinzel','Forum','Cormorant Garamond',serif", 1],
+ ['in-page confirm dialog (PA-01)', 'id="overlay-confirm" role="dialog" aria-modal="true"', 1],
+ ['no native confirm in the build (PA-01)', 'confirm(t(', 0],
+ ['no native alert in the build (PA-01)', 'alert(t(', 0],
  ['riddle submit width auto (CU-13)', '.riddle-submit{flex:0 0 auto;width:auto;', 1],
  ['event-log panel inert (CU-17)', 'aria-labelledby="event-log-title" inert>', 1],
  ['menu heading regular weight (CU-08)', '.menu-content h2{font-family:var(--font-ui);color:var(--gold);font-weight:400;', 1],
  ['single M shortcut per layout (CU-10)', "const k=ev.key||''; const isM=(k.toLowerCase()==='m')||(ev.code==='KeyM'&&!/^[\\x20-\\x7e]$/.test(k));", 1],
 ];
 let ok=0,bad=0;
-snips.forEach(([n,s,exp])=>{ const e=exp||1; const c=d.split(s).length-1; if(c===e)ok++; else {bad++; console.log('FAIL '+n+' count='+c+' expected='+e);} });
+snips.forEach(([n,s,exp])=>{ const e=(typeof exp==='number')?exp:1; /* an explicit 0 means 'must be absent' (group_86 PA-01) */ const c=d.split(s).length-1; if(c===e)ok++; else {bad++; console.log('FAIL '+n+' count='+c+' expected='+e);} });
 ['vzyat_2','onload_this_classlist_add_loaded','title_vybrosit','title_sest','vyn_style_color_3c9','neverno_ostalos_popytok','alt_podzemelya_chernogo_zamka','"v_meshke"','Veles Redone','Cyrillic Old Face'].forEach(k=>{ if(d.includes(k)){bad++; console.log('FAIL removed key present: '+k);} else ok++; });
 // group_82 CU-07: the font license travels with the built artifact
 try{ const ofl=fs.readFileSync(require('path').join(__dirname,'..','dist','OFL.txt'),'utf8'); if(ofl.includes('Cinzel Project Authors')&&ofl.includes('Cormorant Project Authors')&&ofl.includes('Reserved Font Name')&&ofl.includes('SIL OPEN FONT LICENSE')) ok++; else {bad++; console.log('FAIL dist/OFL.txt notices');} }catch(e){ bad++; console.log('FAIL dist/OFL.txt missing'); }
