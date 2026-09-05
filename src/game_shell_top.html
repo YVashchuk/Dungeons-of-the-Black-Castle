@@ -249,7 +249,7 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .combat-hp-head{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;}
 .combat-hp-track{height:8px;border-radius:999px;background:var(--bg);border:1px solid var(--border);overflow:hidden;}
 .combat-hp-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red2));border-radius:999px;transition:width .35s ease;}
-.visual-dock{position:fixed;left:calc(12px + var(--safe-left,0px));bottom:calc(12px + var(--safe-bottom,0px));z-index:60;display:flex;gap:8px;}
+.visual-dock{position:absolute;left:calc(12px + var(--safe-left,0px));bottom:calc(12px + var(--safe-bottom,0px));z-index:60;display:flex;gap:8px;}
 .visual-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--border2);background:rgba(17,15,30,.88);color:var(--muted);font-family:var(--font-ui);font-size:12px;cursor:pointer;}
 .visual-pill.on{color:var(--gold2);border-color:var(--gold3);box-shadow:0 0 8px var(--glow);}
 body.hide-inline-art .illustration-container{display:none!important;}
@@ -420,14 +420,14 @@ body.hide-inline-art .illustration-container{display:none!important;}
    paragraph has a riddle field. iOS-safe 16px font to prevent zoom-on-focus. */
 .riddle-container{padding:8px 0;}
 .riddle-input-row{display:flex;gap:10px;margin-bottom:12px;}
-#riddle-input{flex:1;font-family:var(--font-text);font-size:22px;font-weight:500;
+#riddle-input{flex:1;min-width:0;font-family:var(--font-text);font-size:22px;font-weight:500;
   background:var(--bg2);border:1px solid var(--border);color:var(--parchment);
   padding:18px 22px;border-radius:0;transition:border-color .2s,background .2s;
   min-height:60px;}
 #riddle-input:focus{border-color:var(--gold);background:rgba(200,150,42,.06);}
 #riddle-input.shake{animation:riddle-shake .35s cubic-bezier(.36,.07,.19,.97) both;
   border-color:#a85a3a;background:rgba(180,60,40,.10);color:#e8a888;}
-.riddle-submit{flex:0 0 auto;min-width:140px;text-align:center;margin-bottom:0;}
+.riddle-submit{flex:0 0 auto;width:auto;min-width:140px;text-align:center;margin-bottom:0;} /* group_84 CU-13: width:100% from .choice-btn overflowed the flex row */
 .riddle-submit::before{content:'';margin:0;}
 .riddle-feedback{padding:10px 14px;color:#e8a888;font-family:var(--font-text);
   font-size:18px;background:rgba(180,60,40,.08);border-left:3px solid #a85a3a;
@@ -746,7 +746,7 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
 
 <!-- EVENT LOG -->
 <button class="event-log-btn" id="event-log-btn" onclick="toggleEventLog()" style="display:none" data-i18n="ui_btn_log">📜 Журнал</button>
-<div class="event-log-panel" id="event-log-panel" role="dialog" aria-labelledby="event-log-title">
+<div class="event-log-panel" id="event-log-panel" role="dialog" aria-labelledby="event-log-title" inert>
   <div class="event-log-header">
     <h3 id="event-log-title" data-i18n="ui_log_title">📜 Журнал событий</h3>
     <div>

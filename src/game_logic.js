@@ -158,7 +158,7 @@ function _bcDialogClosed(el){
   if(prev&&document.body.contains(prev)&&_bcVisible(prev)){ try{ prev.focus({preventScroll:true}); }catch(e){} return; }
   // group_81 CA-03: the opener is often destroyed by the re-render that closed the
   // dialog (combat / luck -> renderGame). Land on the first choice, else the story.
-  setTimeout(function(){ try{ if(_bcTopDialog()) return; var b=document.querySelector('#c-list button:not([disabled])'); if(b&&_bcVisible(b)){ b.focus({preventScroll:true}); return; } var sa=document.getElementById('s-area'); if(sa){ if(!sa.hasAttribute('tabindex')) sa.setAttribute('tabindex','-1'); sa.focus({preventScroll:true}); } }catch(e){} },0);
+  setTimeout(function(){ try{ var tp=_bcTopDialog(); if(tp){ /* group_84 CU-16: a nested dialog closed into a parent dialog - keep focus inside the parent */ if(!tp.contains(document.activeElement)){ var pref=tp.querySelector('#btn-combat-round:not([disabled])'); var fl=_bcFocusables(tp); var tgt=(pref&&_bcVisible(pref))?pref:(fl.length?fl[0]:null); if(tgt) tgt.focus({preventScroll:true}); } return; } var b=document.querySelector('#c-list button:not([disabled])'); if(b&&_bcVisible(b)){ b.focus({preventScroll:true}); return; } var sa=document.getElementById('s-area'); if(sa){ if(!sa.hasAttribute('tabindex')) sa.setAttribute('tabindex','-1'); sa.focus({preventScroll:true}); } }catch(e){} },0);
 }
 function _bcCloseTopDialog(){
   var top=_bcTopDialog(); if(!top) return false;
@@ -218,6 +218,7 @@ function returnSheetSection(){
 (function(){
   if(typeof updateHUD==='function'){ var _o=updateHUD; updateHUD=function(){ var r=_o.apply(this,arguments); syncHudBar(); return r; }; }
   if(HUD_MQ&&HUD_MQ.addEventListener){ HUD_MQ.addEventListener('change',function(){
+  try{ var lp=document.getElementById('event-log-panel'); if(lp&&lp.classList.contains('on')&&typeof toggleEventLog==='function') toggleEventLog(); }catch(e){} // group_84 CU-15: an open log panel does not survive a breakpoint change (its dialog status depends on it)
     var ov=document.getElementById('overlay-sheet'); if(!HUD_MQ.matches&&ov&&ov.classList.contains('on')) closeModal('overlay-sheet');
     var elb=document.getElementById('event-log-btn'), sg=document.getElementById('scr-game');
     if(elb&&sg&&sg.classList.contains('on')) elb.style.display=HUD_MQ.matches?'none':'block';
@@ -412,9 +413,13 @@ function renderEventLog(){
 function toggleEventLog(){
   const panel=document.getElementById('event-log-panel');
   panel.classList.toggle('on');
-  // group_81 CA-10: the panel behaves like a dialog - focus in on open, back to the log button on close.
-  if(panel.classList.contains('on')){ renderEventLog(); const cb=panel.querySelector('.event-log-close'); if(cb) cb.focus({preventScroll:true}); }
-  else { const fab=document.getElementById('event-log-btn'); const hb=document.querySelector('.hud-btn[onclick="toggleEventLog()"]'); const back=(fab&&_bcVisible(fab))?fab:((hb&&_bcVisible(hb))?hb:null); if(back) back.focus({preventScroll:true}); }
+  const on=panel.classList.contains('on');
+  panel.inert=!on; // group_84 CU-17: the closed panel leaves the Tab order and the accessibility tree
+  // group_81 CA-10: the panel behaves like a dialog - focus in on open, back to the log button on close;
+  // group_84 CU-14: on phones the dialog controller owns both moves (it records the HUD button as the opener).
+  const ownedByController=(typeof _bcIsDialog==='function'&&_bcIsDialog(panel));
+  if(on){ renderEventLog(); const cb=panel.querySelector('.event-log-close'); if(cb&&!ownedByController) cb.focus({preventScroll:true}); }
+  else { const fab=document.getElementById('event-log-btn'); const hb=document.querySelector('.hud-btn[onclick="toggleEventLog()"]'); const back=(fab&&_bcVisible(fab))?fab:((hb&&_bcVisible(hb))?hb:null); if(back&&!ownedByController) back.focus({preventScroll:true}); }
 }
 
 function clearEventLog(){
@@ -688,7 +693,7 @@ function renderLangPicker(containerId){
     if(code===cur) o.selected=true;
     sel.appendChild(o);
   });
-  sel.onchange=function(){ var code=sel.value; if(code!==getLang()){ setLanguage(code); renderAllLangPickers(); } };
+  sel.onchange=function(){ var code=sel.value; if(code!==getLang()){ var id=sel.id; setLanguage(code); var again=document.getElementById(id); try{ if(again&&typeof again.focus==='function') again.focus({preventScroll:true}); }catch(e){} } }; // group_84 CU-18: setLanguage already rebuilds the pickers; refocus the replacement select
   sel.onfocus=function(){ sel.style.borderColor='var(--gold)'; sel.style.boxShadow='0 0 0 2px var(--glow)'; };
   sel.onblur=function(){ sel.style.borderColor='var(--border2)'; sel.style.boxShadow='none'; };
   label.appendChild(g); label.appendChild(sr); label.appendChild(sel);
@@ -1684,7 +1689,7 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
   // startCombat). This replaces the old erroneous double-spend spell tag.
   if(ch.combat_mod){
     btn.innerHTML=ch.label;
-    btn.onclick=()=>{if(S)S.pending_combat_buff=ch.combat_mod;applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+    btn.onclick=()=>{if(S)S.pending_combat_buff={mod:ch.combat_mod,section:ch.target};applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
     return btn;
   }
   const spellId=getSpellId(ch);
@@ -2408,7 +2413,10 @@ function startCombat(enemies,sec){
   //   FORCE         -> player +2 (via forceBuff, identical to the modal cast)
   //   PLAYER_MINUS2 -> Weakness reflected back onto the player (§39 backfire)
   //   ENEMY_PLUS2   -> Force reflected onto the enemy (§865 Green Knight)
-  const pendingBuff=(S&&S.pending_combat_buff)||null;
+  // group_84 SA-04: a bridge buff belongs to the fight it was cast for - apply it only in that paragraph,
+  // discard it anywhere else (F5 / hash jumps could carry it into an unrelated fight); legacy plain values apply once.
+  const pb=(S&&S.pending_combat_buff)||null;
+  const pendingBuff=(pb&&typeof pb==='object')?((pb.section===S.section)?pb.mod:null):pb;
   if(S)S.pending_combat_buff=null;
   const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
   combatState={
@@ -3341,9 +3349,11 @@ function ensureVisualDock(){
   const dock=document.createElement('div');
   dock.id='visual-dock';dock.className='visual-dock';
   dock.innerHTML=`
-    <button class="visual-pill" id="vp-amb" type="button">🌫 <span>${t('atmosfera')}</span></button>
-    <button class="visual-pill" id="vp-art" type="button">🖼 <span>${t('illyustracii')}</span></button>`;
-  document.body.appendChild(dock);
+    <button class="visual-pill" id="vp-amb" type="button">🌫 <span data-i18n="atmosfera">${t('atmosfera')}</span></button>
+    <button class="visual-pill" id="vp-art" type="button">🖼 <span data-i18n="illyustracii">${t('illyustracii')}</span></button>`;
+  // group_84 SA-01/SA-03: labels re-localized by the static pass; the dock lives inside the story column
+  // (position:absolute in .main) so it can never cover the sidebar's menu button.
+  (document.querySelector('#scr-game .main')||document.body).appendChild(dock);
   document.getElementById('vp-amb').onclick=toggleAmbience;
   document.getElementById('vp-art').onclick=toggleInlineArt;
   syncVisualControls();

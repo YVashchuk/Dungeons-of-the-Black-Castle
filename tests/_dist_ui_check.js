@@ -43,6 +43,8 @@ const snips=[
  ['combat status reset hook (CA-06)', 'window._bcCombatStatusReset=function', 1],
  ['forum cyrillic display (UI-07)', "font-family: 'Forum';", 1],
  ['font chain with Forum (UI-07)', "--font-ui:'Cinzel','Forum','Cormorant Garamond',serif", 1],
+ ['riddle submit width auto (CU-13)', '.riddle-submit{flex:0 0 auto;width:auto;', 1],
+ ['event-log panel inert (CU-17)', 'aria-labelledby="event-log-title" inert>', 1],
  ['menu heading regular weight (CU-08)', '.menu-content h2{font-family:var(--font-ui);color:var(--gold);font-weight:400;', 1],
  ['single M shortcut per layout (CU-10)', "const k=ev.key||''; const isM=(k.toLowerCase()==='m')||(ev.code==='KeyM'&&!/^[\\x20-\\x7e]$/.test(k));", 1],
 ];

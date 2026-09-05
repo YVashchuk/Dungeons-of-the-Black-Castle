@@ -170,7 +170,8 @@
     "v2.162 -> v2.163": "September 2026 - group_82 batch 5 (P0+P0+P1+P1+P1+P1+P1+P2, ChatGPT tracks A+B): CB-01 sec.1175 luck offered immediately after any first-orc death (B-03 resolution amended), CB-02 scripted luck outcomes (sec.21/368/436) persisted and restored, CB-03 summon commit saved mid-fight, CB-04 hash entry drops a stale luck record, CU-01 riddle focus never pulls behind a dialog, CU-02 keyboard navigation lands on the paragraph marker, CU-11 locale repaint keeps scroll, CU-12 riddle feedback is a live status. p1_6d 48 -> 54. GAME_RULES.md label 2.162 -> 2.163 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.163 -> v2.164": "September 2026 - group_82 batch 6 (P2 x9, ChatGPT tracks A+B): CB-05 legacy «Арбуз» string migrates to the sec.300 item, CU-03 phone event-log panel joins the dialog controller, CU-04 focus after larva pickup, CU-05 combat status cleared on reset, CU-06 import label focus ring, CU-07 dist/OFL.txt shipped + asserted, CU-08 menu heading weight 400, CU-09 map layer select re-localized, CU-10 single M shortcut per layout. group_82 17/17 DONE - the third-auditor pass is closed; only Track C (standards) remains open in the cycle. p1_6d 54 -> 56, _dist_ui_check 50 -> 53. GAME_RULES.md label 2.163 -> 2.164 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.164 -> v2.165": "September 2026 - smoke follow-up: an automated live smoke run (Playwright over the installed Chrome, headless; tests/smoke/smoke_run.js) executed 24 checks of MANUAL_SMOKE_CHECKS (S0-S3 build signatures, C1, C2, C3/A2/C8, C4, C10-C19, B2, B3, B5) against the built artifact - all PASS after one real finding, SM-01: focus did not return to the position:fixed log button because the visibility tests relied on offsetParent - fixed with _bcVisible. C17's expectation aligned with the CA-17 hotkey gate. GAME_RULES.md label 2.164 -> 2.165 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.165 -> v2.166": "September 2026 - group_83 PT-01 (P0, found by the first automated end-to-end playthrough tests/smoke/playthrough.js, which reached sec.1220 in 71 steps without the Princess): the victory paragraph was reachable straight after killing Barlad, and the wake-up paragraphs offered «he is dead» without killing him - two canon state gates were honour-system choices. Story flags princess_awake / barlad_dead (auto_items.flags - mandatory, silent, weightless, hidden), inventory_missing negative gate, sec.81 -> 1220 requires princess_awake, sec.627/976 -> 1220 require barlad_dead (-> 1120 only while he lives). items.json 105 -> 107, auto_items 179 -> 182, inventory_condition 131 -> 134. p1_6d 56 -> 60. GAME_RULES.md s1/s8/s11 + label 2.165 -> 2.166 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.165 -> v2.166": "September 2026 - group_83 PT-01 (P0, found by the first automated end-to-end playthrough tests/smoke/playthrough.js, which reached sec.1220 in 71 steps without the Princess): the victory paragraph was reachable straight after killing Barlad, and the wake-up paragraphs offered «he is dead» without killing him - two canon state gates were honour-system choices. Story flags princess_awake / barlad_dead (auto_items.flags - mandatory, silent, weightless, hidden), inventory_missing negative gate, sec.81 -> 1220 requires princess_awake, sec.627/976 -> 1220 require barlad_dead (-> 1120 only while he lives). items.json 105 -> 107, auto_items 179 -> 182, inventory_condition 131 -> 134. p1_6d 56 -> 60. GAME_RULES.md s1/s8/s11 + label 2.165 -> 2.166 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.166 -> v2.167": "September 2026 - group_84 (ChatGPT agent live smoke on the public build + ChatGPT final Track A re-audit at v2.165): SA-01 dock pills re-localized (data-i18n), SA-03 dock moved into the story column (no more overlap with the sidebar menu button), SA-04 bridge buffs bound to their fight (no Weakness/Force leak into another fight after F5 / hash), CU-13 riddle answer button width (no horizontal overflow on EN/FR desktop), CU-14 phone log focus owned by the controller, CU-15 open log panel closes on a breakpoint change, CU-16 nested luck closes back into the combat dialog, CU-17 closed log panel inert, CU-18 language select single rebuild + refocus, CU-19 Cinzel Decorative declared 700. SA-02 (item names RU-only in EN/FR/UK) stays OPEN for a translation batch. A5 +6 confirmed correct (checklist fixed). The Gemini combined report of 2026-09-05 discarded (fabricated sec.1 quote). p1_6d 60 -> 64, _dist_ui_check 53 -> 55. GAME_RULES.md label 2.166 -> 2.167 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -447,6 +448,100 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_84_2026_09_05_agent_smoke": {
+      "comment": "Recheck cycle 2026-09, live smoke by the ChatGPT agent (5.6 Sol, agent mode with a cloud browser, public GitHub Pages build dungeons-of-the-black-castle.html at 4c83e44, brief SMOKE_BRIEF_chatgpt.md): 20 PASS / 1 FAIL / 19 BLOCKED / 1 UNCLEAR over the 41 rows plus EN/FR/UK probes, 4 anomalies (SA-01..SA-04); the FAIL (A5, +6 instead of +7) is a checklist error - «Смерть Орков» has no attack bonus (GAME_RULES s6), the agent carried it instead of the whole sword. Second source: the ChatGPT final Track A re-audit on the main archive at v2.165 (battery ALL GREEN by execution, 35 resolutions verified, 7 residual hypotheses CU-13..CU-19). A Gemini combined report of the same day was discarded by the accuracy guard (its pre-flight quotes a fabricated first sentence of sec.1); a ChatGPT run without the archive stopped correctly at the pre-flight (null run). Every item below is a hypothesis pending adjudication.",
+      "source": "chatgpt_agent_smoke_2026_09_05 + chatgpt_trackA_final_2026_09_05",
+      "verified": "2026-09-05",
+      "items": [
+        {
+          "id": "SA-01_dock_pills_not_relocalized",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "Switching RU -> EN/FR/UK in the menu re-localizes the menu and the story, but the bottom dock keeps «Атмосфера / Иллюстрации»; a UK start followed by RU keeps «Ілюстрації» until a reload.",
+          "note": "Maintainer adjudication: CONFIRMED - ensureVisualDock renders the pill labels once through t() with no data-i18n attribute, so the static pass never revisits them.",
+          "resolution": "CONFIRMED P1 DONE. The two pill labels carry data-i18n (atmosfera / illyustracii), so applyStaticI18n re-labels them on every language switch like the rest of the shell."
+        },
+        {
+          "id": "SA-02_item_names_ru_only",
+          "severity": "P1",
+          "status": "OPEN",
+          "hypothesis": "Collected items stay Russian in every locale («Банан (food: +2)», «Банан (nourriture : +2)»), also after a reload: itemName() resolves through SLUG_TO_RU only; the locales carry no item name maps.",
+          "note": "Maintainer adjudication: CONFIRMED - a genuine i18n gap (the story is translated, the 107 item names are not). Needs an items map per locale (EN/FR/UK, 107 entries each) and itemName() falling back to RU; scheduled as its own batch."
+        },
+        {
+          "id": "SA-03_dock_covers_sidebar_menu",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "At 1363x936 the fixed bottom-left dock («Атмосфера / Иллюстрации») covers the sidebar's «☰ Меню» button once the sidebar is scrolled to its end; a mouse click did not open the menu, Enter did.",
+          "note": "Maintainer adjudication: CONFIRMED - .visual-dock is position:fixed at left:12px while the sidebar is 320px wide, so the overlap is structural on every desktop height where the sidebar scrolls.",
+          "resolution": "CONFIRMED P1 DONE. The dock is appended into #scr-game .main (position:absolute inside the story column) instead of the body, so it sits right of the sidebar by construction on desktop and at the column's edge on phones (where the sidebar is hidden); safe-area insets unchanged."
+        },
+        {
+          "id": "SA-04_pending_buff_leaks_to_other_fight",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "After entering sec.116 through its Weakness bridge and leaving by hash to sec.36 without starting the sec.116 fight, the first round against the merchant carried «✦ Слабость: ТОРГОВЕЦ (−2)» although no Weakness was cast there.",
+          "note": "Maintainer adjudication: CONFIRMED by code reading - the bridge choice stores S.pending_combat_buff=ch.combat_mod and startCombat consumes whatever is pending, with no link to the paragraph the buff was cast for; the same leak works for FORCE / ENEMY_PLUS2 bridges. Reachable with F5 or a hash jump (B-08: fights are not persisted).",
+          "resolution": "CONFIRMED P1 DONE. The bridge choice now stores {mod, section: ch.target}; startCombat applies the pending buff only when S.section equals that section and discards it otherwise (legacy plain-string saves still apply once). A buff cast for sec.116 can no longer land on the merchant of sec.36."
+        },
+        {
+          "id": "CU-13_riddle_submit_full_width",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": ".riddle-submit inherits .choice-btn{display:block;width:100%} inside the flex row .riddle-input-row, so the answer button takes the full row width next to the input and the row overflows (agent measurement on FR at 1363px: story-area clientWidth 1043, scrollWidth 1269, «Répondre» ~859px wide).",
+          "note": "Maintainer adjudication: CONFIRMED (reported independently by the smoke agent as anomaly 2 and by the Track A re-audit).",
+          "resolution": "CONFIRMED P1 DONE. .riddle-submit gets width:auto (flex:0 0 auto stays), #riddle-input gets min-width:0 so it can shrink, and on phones the row wraps with a full-width button; a dist assert pins the rule."
+        },
+        {
+          "id": "CU-14_phone_log_focus_two_owners",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "On phones toggleEventLog focuses the close button before the controller sees the panel open, so no opener is recorded; on close toggleEventLog focuses the HUD log button and then the controller's delayed fallback moves focus to a story choice (model: immediate hud-log, settled choice-1).",
+          "note": "Maintainer adjudication: ACCEPTED P2.",
+          "resolution": "ACCEPTED P2 DONE. When the panel is a controller dialog (isMobileHud), toggleEventLog leaves both focus moves to the controller (which records the HUD button as the opener and returns to it); desktop keeps the explicit CA-10 focus in / out."
+        },
+        {
+          "id": "CU-15_log_panel_across_breakpoint",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "An event-log panel that stays open while the viewport crosses 700px keeps a stale dialog status (recognized but not on the stack, or on the stack with aria-modal after leaving phone mode) because _bcIsDialog depends on the current isMobileHud() and the media listener only closes sheets.",
+          "note": "Maintainer adjudication: ACCEPTED P2.",
+          "resolution": "ACCEPTED P2 DONE. The HUD media listener closes an open event-log panel on a breakpoint change (the same policy as the sheets), so the panel is always re-opened under the current controller regime."
+        },
+        {
+          "id": "CU-16_nested_dialog_focus_return",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "sec.1175: the luck prompt nested inside combat closes into resumeCanonCombat, which clears the recorded opener; the close fallback returns early because the combat dialog remains, so focus is left outside the open combat dialog.",
+          "note": "Maintainer adjudication: ACCEPTED P2.",
+          "resolution": "ACCEPTED P2 DONE. When a parent dialog remains after a nested close and focus is not inside it, _bcDialogClosed focuses the parent's preferred control (#btn-combat-round when enabled, else its first focusable); the no-dialog fallback to the first choice is unchanged."
+        },
+        {
+          "id": "CU-17_closed_log_panel_tabbable",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The closed panel is only moved off-screen (right:-420px / -100%); its clear and close buttons stay enabled native buttons in the Tab order.",
+          "note": "Maintainer adjudication: ACCEPTED P2.",
+          "resolution": "ACCEPTED P2 DONE. #event-log-panel starts inert and toggleEventLog sets inert=false on open (before any focus move) and inert=true on close, so the closed subtree is out of the Tab order and the accessibility tree; a dist assert pins the markup."
+        },
+        {
+          "id": "CU-18_language_select_double_rebuild",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The language select's onchange calls setLanguage (which already rebuilds the pickers through repaintAfterLangSwitch) and then renderAllLangPickers again; the focused select is destroyed twice and focus falls to body while the menu stays open.",
+          "note": "Maintainer adjudication: ACCEPTED P2.",
+          "resolution": "ACCEPTED P2 DONE. The duplicate rebuild is removed and the replacement select with the same id is refocused after setLanguage."
+        },
+        {
+          "id": "CU-19_cinzel_decorative_weight_range",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "fonts.css declares CinzelDecorative-lat.woff2 as font-weight 400 700 while the binary is the static Bold (OS/2 700, no fvar); requests for the regular title weight are served by the bold outlines under a misleading descriptor.",
+          "note": "Maintainer adjudication: ACCEPTED P2 (descriptor honesty; rendering unchanged because font matching would pick the same file).",
+          "resolution": "ACCEPTED P2 DONE. The Cinzel Decorative face is declared font-weight:700, matching the shipped binary; the title still resolves to it."
+        }
+      ]
     },
     "group_83_2026_09_04_playthrough": {
       "comment": "Automated end-to-end playthrough by the maintainer (tests/smoke/playthrough.js: Playwright over the installed Chrome, tester hero via hash entry, weighted shortest path to sec.1220, real fights / luck / dice / offers through the UI). The first run won in 71 steps and 0 deaths along 1 -> ... -> 1096 (Harpy) -> 1164 -> 823 (Barlad) -> 81 -> 1220 - i.e. without ever waking the Princess. Findings of the playthrough are adjudicated here.",
@@ -4287,6 +4382,12 @@
   "resolved_no_op": {
     "comment": "Items previously listed as recommended fixes by external audits, but on verification against current source-of-truth files (src/mj_art.js, art-pack/metadata/art_catalog.py, assets/fb2_remake.fb2) found to require no action. Kept here as a graveyard alongside removed_pending so future audits don't resurrect them.",
     "items": [
+      {
+        "id": "smoke_A5_plus6_is_correct_2026_09_05",
+        "previously_claimed": "ChatGPT agent smoke A5 FAIL: with «Смерть Орков», the shield and the dragon potion the roll line shows +6, the checklist expected +7 (sword + shield + potion).",
+        "verdict": "REJECTED - checklist error, engine correct",
+        "reason": "GAME_RULES s6 / playerEquipMod: the whole Green Knight sword gives +1, the knight shield +1, the dragon potion +5, and «Смерть Орков» gives NO attack bonus (it slays the first orc at fight start instead). The agent had swapped the whole sword for «Смерть Орков» at sec.71 (A2), so +6 is the canonical value; MANUAL_SMOKE_CHECKS A5 and SMOKE_BRIEF A5 now state both values."
+      },
       {
         "id": "1072_sleeping_princess",
         "previously_claimed": "ChatGPT art-text audit: §1072 maps to art26_crystal_sarcophagus, should be reassigned to art09_sleeping_princess.",
