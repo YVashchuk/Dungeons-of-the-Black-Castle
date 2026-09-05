@@ -43,8 +43,9 @@ const TAGGER = `(function(){ if(window.__tagged) return; window.__tagged=true;
   if (process.env.TESTER_BOOST === '1' && process.env.RESUME !== '1') { await ev(() => { const have = new Set((S.spells || []).map(x => x.id)); (typeof SPELLS !== 'undefined' ? SPELLS : []).forEach(d => { if (!have.has(d.id)) S.spells.push({ id: d.id, remaining: 0 }); }); S.spells.forEach(x => { x.remaining = Math.max(x.remaining, 2); }); saveGame(); }); L('tester boost: every spell at 2 charges (engine validation run, not a sporting playthrough)'); }
   await prep();
   L('start: ' + JSON.stringify(await state()).slice(0, 200));
+  const _s0 = await state(); const _cp0 = { sec: _s0.sec, snap: await snapshot() };
 
-  const checkpoints = [];            // [{sec, snap}]
+  const checkpoints = [_cp0];        // [{sec, snap}] - the start state is a checkpoint too (resumed chunks can retry a fight)
   const deaths = {};                 // 'from>to' -> count
   const avoid = new Set((RESUMED && RESUMED.avoid) || []);           // edges to avoid after repeated deaths
   const WAYPOINTS = (process.env.WAYPOINTS || '74,226,976,1120,823,81,1220').split(',').map(Number); let wpIdx = (RESUMED && RESUMED.wpIdx) || 0;
@@ -83,7 +84,8 @@ const TAGGER = `(function(){ if(window.__tagged) return; window.__tagged=true;
       L('combat stuck: ' + r); outcome = 'stuck in combat'; break;
     }
     // heal between paragraphs when weak
-    if (s.st <= 8) { const h = await ev(() => { const sp = (S.spells || []).find(x => x.id === 'HEALING' && x.remaining > 0); if (sp && typeof useHealing === 'function') { useHealing(); return 'heal'; } if (S.flask > 0 && typeof useFlask === 'function') { useFlask(); return 'flask'; } return null; }); if (h) { L(h + ' at sec ' + s.sec + ' -> stamina ' + (await state()).st); continue; } }
+    const fightAhead = await ev(() => [...document.querySelectorAll('#c-list button')].some(b => /\u0412\u0441\u0442\u0443\u043f\u0438\u0442\u044c \u0432 \u0431\u043e\u0439/.test(b.textContent) && b.offsetParent !== null));
+    if (s.st <= 8 || (fightAhead && s.st <= 12)) { const h = await ev(() => { const sp = (S.spells || []).find(x => x.id === 'HEALING' && x.remaining > 0); if (sp && typeof useHealing === 'function') { useHealing(); return 'heal'; } if (S.flask > 0 && typeof useFlask === 'function') { useFlask(); return 'flask'; } return null; }); if (h) { L(h + ' at sec ' + s.sec + ' -> stamina ' + (await state()).st); continue; } }
     // choices
     const choices = await ev((W) => { const list = [...document.querySelectorAll('#c-list button')].filter(b => b.offsetParent !== null && !b.disabled && b.getAttribute('aria-disabled') !== 'true'); return list.map((b, i) => ({ i, t: b.textContent.trim().slice(0, 40), target: b.dataset.target ? Number(b.dataset.target) : null, kind: b.dataset.kind || (/Проверить удачу/.test(b.textContent) ? 'luck' : (/Бросить кубик/.test(b.textContent) ? 'dice' : (/Вступить в бой/.test(b.textContent) ? 'fight' : (/Ответить/.test(b.textContent) ? 'riddle' : (/Подобрать|Собрать/.test(b.textContent) ? 'batch' : 'other'))))), dist: b.dataset.target ? window.__distTo(W)[Number(b.dataset.target)] : undefined })); }, WAYPOINTS[wpIdx]);
     const sec = s.sec;
