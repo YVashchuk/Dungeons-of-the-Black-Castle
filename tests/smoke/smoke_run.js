@@ -290,6 +290,16 @@ async function check(id, browser, opts, fn) {
     else rec('C4', (outcome.lioness === true && !outcome.cont) ? 'PASS' : 'FAIL', 'lion killed by Copy -> lioness active=' + outcome.lioness + ' join line=' + outcome.joinedLine + ' premature Continue=' + outcome.cont);
   });
 
+  await check('C22', browser, null, async page => {
+    await open(page, 1); await ev(page, () => openMenu()); await page.waitForTimeout(300);
+    await clickText(page, /Новая игра/, '#overlay-menu'); await page.waitForTimeout(300);
+    const a = await ev(page, () => ({ on: document.getElementById('overlay-confirm').classList.contains('on'), title: document.getElementById('confirm-title').textContent.trim(), focus: document.activeElement && document.activeElement.id, native: false }));
+    await page.keyboard.press('Escape'); await page.waitForTimeout(250);
+    const b = await ev(page, () => ({ off: !document.getElementById('overlay-confirm').classList.contains('on'), save: !!localStorage.getItem(SAVE_KEY), menuOn: document.getElementById('overlay-menu').classList.contains('on') }));
+    await clickText(page, /Новая игра/, '#overlay-menu'); await page.waitForTimeout(300); await ev(page, () => history.replaceState(null, '', location.pathname)); await page.locator('#btn-confirm-yes').click(); await page.waitForTimeout(800);
+    const c = await ev(page, () => ({ title: document.getElementById('scr-title')?.classList.contains('on'), save: !!localStorage.getItem(SAVE_KEY) }));
+    await shot(page, 'C22'); rec('C22', (a.on && /Начать новую игру/.test(a.title) && a.focus === 'btn-confirm-yes' && b.off && b.save && b.menuOn && c.title && !c.save) ? 'PASS' : 'FAIL', 'confirm on=' + a.on + ' title="' + a.title + '" focus=' + a.focus + '; Esc: closed=' + b.off + ' save kept=' + b.save + ' menu still on=' + b.menuOn + '; Yes: title screen=' + c.title + ' save wiped=' + !c.save);
+  });
   await browser.close();
   // ---- report ----
   const counts = results.reduce((m, r) => { m[r.verdict] = (m[r.verdict] || 0) + 1; return m; }, {});
