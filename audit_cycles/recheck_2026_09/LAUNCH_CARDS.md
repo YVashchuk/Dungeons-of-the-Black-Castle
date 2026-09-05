@@ -211,6 +211,29 @@ Track D only, per the attached BRIEF_trackD_legal_gemini.md: research the five q
 Результат → `_handoff\audit_2026_09_chatgpt\legal\LEGAL_MEMO.md`; выводы обсуждаем, прежде чем что-то удалять из истории репозитория.
 
 
+## 8. ChatGPT 6 Astra — агент проходит игру в браузере, имея архив кода под рукой
+
+Бриф: **`audit_cycles/recheck_2026_09/BRIEF_playthrough_astra_agent.md`** (в архиве). Агент играет только через интерфейс (без консоли и правок состояния), но сверяет каждое расхождение с каноном и данными из архива, наблюдает 15 контрольных точек гейтов состояния (G-01…G-15) и после прохождения гоняет строки смоука, до которых не дошла автоматизация (A6–A9, A11, A16, A17, B4, C12).
+
+### Архив
+1. После push взять хэш HEAD (`git log --oneline -1`; бриф должен быть внутри) и скачать `https://github.com/YVashchuk/Dungeons-of-the-Black-Castle/archive/<хэш>.zip`.
+2. Удалить **только** `assets\illustrations\`, запаковать обратно, папку не переименовывать (~35 МБ).
+
+### Настройки чата
+- Temporary chat, модель **6 Astra**, режим рассуждений включён.
+- **Агент / управление браузером включён**; web — только URL сборки и его `#N`-якоря; чтение файлов и исполнение кода в песочнице разрешены (для сверки с каноном и `GD`).
+- ZIP к первому сообщению.
+
+### Первое сообщение
+
+```
+The attached ZIP is the repository archive of the audited commit (root folder name carries the hash); assets/illustrations/ was removed on purpose. It is a read-only reference: extract it, never modify it, never use it to alter the running game. Read audit_cycles/recheck_2026_09/BRIEF_playthrough_astra_agent.md in full, then SMOKE_BRIEF_chatgpt.md section 1. Do the pre-flight (section 1 of the playthrough brief, including the three build signatures in the browser at https://yvashchuk.github.io/Dungeons-of-the-Black-Castle/dist/dungeons-of-the-black-castle.html). Then Task 1: play through from the title screen as a reader, waking the Princess AND defeating Barlad Dert, logging the route, stats and every text/interface disagreement per the anomaly protocol, and filling the gate-checkpoint table G-01..G-15 with screenshots. Then Task 2 (the smoke rows). Deliver REPORT_astra_playthrough.md with the screenshots (offer for download and print the report in the chat). Only clicks, typed answers and the keyboard change the game; hash entry only where the brief allows it. No other web use.
+```
+
+### Приём
+Отчёт и скриншоты — в `_handoff\audit_2026_09_chatgpt\astra\`. Гейты G-01…G-15 сверяю с ожиданиями (это живая приёмка групп 83/85); аномалии PL-… адьюдицирую как обычно — реестр group_86 при необходимости.
+
+
 ## 4. Приёмка (что делаю я)
 
 1. Сохраняю отчёт как `audit_cycles/recheck_2026_09/REPORT_<provider>_<track>.md`, считаю SHA-256, записываю в реестр.
