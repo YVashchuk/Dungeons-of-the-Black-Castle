@@ -300,6 +300,13 @@ async function check(id, browser, opts, fn) {
     const c = await ev(page, () => ({ title: document.getElementById('scr-title')?.classList.contains('on'), save: !!localStorage.getItem(SAVE_KEY) }));
     await shot(page, 'C22'); rec('C22', (a.on && /Начать новую игру/.test(a.title) && a.focus === 'btn-confirm-yes' && b.off && b.save && b.menuOn && c.title && !c.save) ? 'PASS' : 'FAIL', 'confirm on=' + a.on + ' title="' + a.title + '" focus=' + a.focus + '; Esc: closed=' + b.off + ' save kept=' + b.save + ' menu still on=' + b.menuOn + '; Yes: title screen=' + c.title + ' save wiped=' + !c.save);
   });
+  await check('C24', browser, { viewport: { width: 412, height: 640 }, isMobile: true, hasTouch: true }, async page => {
+    await page.goto('about:blank'); await page.goto(URL, { waitUntil: 'load' }); await page.waitForTimeout(500);
+    const a = await ev(page, () => { const t = document.getElementById('scr-title'); const img = document.querySelector('.t-rider-col img'); const r = img.getBoundingClientRect(); return { scrollable: t.scrollHeight > t.clientHeight + 2, sh: t.scrollHeight, ch: t.clientHeight, imgTop: Math.round(r.top), ratioOk: Math.abs(r.width / r.height - img.naturalWidth / img.naturalHeight) < 0.03 }; });
+    await ev(page, () => { const t = document.getElementById('scr-title'); t.scrollTop = t.scrollHeight; }); await page.waitForTimeout(200);
+    const b = await ev(page, () => { const btn = [...document.querySelectorAll('#scr-title button')].find(x => x.offsetParent !== null); const r = btn.getBoundingClientRect(); return { btnBottom: Math.round(r.bottom), vh: window.innerHeight, visible: r.top >= 0 && r.bottom <= window.innerHeight }; });
+    await shot(page, 'C24'); rec('C24', (a.imgTop >= 0 && a.ratioOk && b.visible) ? 'PASS' : 'FAIL', 'title 412x640: scrollable=' + a.scrollable + ' (' + a.sh + '/' + a.ch + ') image top=' + a.imgTop + ' ratio ok=' + a.ratioOk + '; after scroll start button visible=' + b.visible + ' (bottom ' + b.btnBottom + '/' + b.vh + ')');
+  });
   await browser.close();
   // ---- report ----
   const counts = results.reduce((m, r) => { m[r.verdict] = (m[r.verdict] || 0) + 1; return m; }, {});
