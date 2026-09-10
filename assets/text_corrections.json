@@ -185,7 +185,8 @@
     "v2.177 -> v2.178": "September 2026 - group_88 V-01 narration: Web Speech API reader (speak button at the paragraph marker, voice / speed / auto-read in the menu, sentence chunking, stop on paragraph change, per-language voice choice, localStorage prefs); ui keys 340 -> 350; smoke C25. GAME_RULES.md s9 + label 2.177 -> 2.178 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.178 -> v2.179": "September 2026 - group_87 batch E2: PL-37 eat-now choice for batch pickups (food eaten on the spot with a full bag, single collection guard), PL-02 live offer-dialog header with declined item counts (five ui keys x4: 350 -> 355). p1_6d 90 -> 92; smoke C26 automated. GAME_RULES.md label 2.178 -> 2.179 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.179 -> v2.180": "September 2026 - group_88 V-02 (author's review of V-01): narration buttons on the preface and pregame screens, speech stops on screen change; spell cards align-content:start (desktop rows no longer stretch). GAME_RULES.md label 2.179 -> 2.180 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.180 -> v2.181": "September 2026 - group_89 M-01: painted map backgrounds for the three layers (generated for the project, no lettering) with a fog of war masked around discovered nodes; dist/map shipped by build.sh; _dist_ui_check 60 -> 61. GAME_RULES.md label 2.180 -> 2.181 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.180 -> v2.181": "September 2026 - group_89 M-01: painted map backgrounds for the three layers (generated for the project, no lettering) with a fog of war masked around discovered nodes; dist/map shipped by build.sh; _dist_ui_check 60 -> 61. GAME_RULES.md label 2.180 -> 2.181 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.181 -> v2.182": "September 2026 - group_88 V-03: OpenAI narration - bring-your-own-key on-demand synthesis with browser caching, optional pre-rendered file pack (scripts/tts_pregenerate.js + audio/manifest.json), device-voice fallback; ui keys 355 -> 363. GAME_RULES.md s9 + label 2.181 -> 2.182 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -483,6 +484,14 @@
       "source": "author_request_2026_09_09",
       "verified": "2026-09-09",
       "items": [
+        {
+          "id": "V-03_openai_narration",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Author, 2026-09-10: the device voice sounds robotic in Russian; OpenAI's neural voice is wanted.",
+          "note": "Maintainer decision: bring-your-own-key on-demand synthesis (no server, no files in the repository) with an optional pre-rendered file pack; TTS_MEMO (Track F) parked for the rights question.",
+          "resolution": "DONE. Menu > Озвучка: engine «Голос устройства» / «OpenAI — нейросетевой голос»; with OpenAI: API key (stored only in localStorage podzch_voice), voice (onyx default, ash / echo / fable / alloy / sage / nova / shimmer / coral), model (gpt-4o-mini-tts with a per-language narrator instruction, tts-1, tts-1-hd), the shared speed. Playback order per paragraph: a pre-rendered file listed in audio/manifest.json (no key needed) -> OpenAI on demand (mp3 via the speech endpoint, cached in the browser Cache API keyed by language / model / voice / speed / text hash, sentence chunks up to 3500 chars) -> the device voice; failures fall back to the device voice with a notice; ⏳ while preparing, ⏹ while playing; stop on paragraph and screen changes. scripts/tts_pregenerate.js renders dist/audio/<lang>/<N>.mp3 + manifest (resumable, dry-run cost estimate); dist/audio is git-ignored. Eight ui keys in four locales (355 -> 363)."
+        },
         {
           "id": "V-02_narration_on_preface_and_pregame",
           "severity": "P2",
