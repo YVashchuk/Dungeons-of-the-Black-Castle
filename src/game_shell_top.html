@@ -128,7 +128,7 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .spell-counter-chip{text-align:center;font-family:var(--font-ui);color:var(--gold2);font-size:15px;letter-spacing:.06em;margin-bottom:8px;min-height:1.2em;}
 .qty-btn:disabled{opacity:.35;cursor:default;}
 .sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px;}
-.sp-card{background:var(--bg2);border:1px solid var(--border);padding:16px;transition:all .2s;display:grid;grid-template-columns:38px minmax(0,1fr) auto;grid-template-areas:"icon name qty" "icon desc qty";column-gap:14px;row-gap:4px;align-items:start;} /* group_87 PL-45 */
+.sp-card{background:var(--bg2);border:1px solid var(--border);padding:16px;transition:all .2s;display:grid;grid-template-columns:38px minmax(0,1fr) auto;grid-template-areas:"icon name qty" "icon desc qty";column-gap:14px;row-gap:4px;align-items:start;align-content:start;} /* group_87 PL-45; align-content:start - rows do not stretch to the tallest card (V-02) */
 .sp-card.sel{border-color:var(--gold3);background:rgba(200,150,42,.06);}
 .sp-card.maxed{opacity:.4;}
 .sp-icon{font-size:28px;margin-bottom:6px;}
@@ -578,8 +578,9 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
 <!-- ═══ PREFACE ═══ -->
 <div class="scr" id="scr-preface" style="overflow-y:auto;">
   <div style="max-width:800px;margin:0 auto;padding:clamp(20px,5vw,40px) clamp(16px,7vw,60px);">
-    <div class="cr-title" style="margin-bottom:24px;" data-i18n="ui_preface_title">📜 Предисловие</div>
-    <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="preface-text"></div>
+    <div class="s-head"><div class="cr-title" style="margin-bottom:24px;" data-i18n="ui_preface_title">📜 Предисловие</div>
+    <button type="button" class="speak-btn" id="btn-speak-preface" data-src="preface-text" onclick="bcSpeakToggle(this.dataset.src)" aria-pressed="false" aria-label="Озвучить параграф" data-i18n-aria="ui_btn_speak" style="display:none">🔊</button></div>
+<div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="preface-text"></div>
     <div style="margin-top:24px;text-align:center;">
       <button class="btn btn-s" onclick="showScr('spells')">← К выбору заклятий</button>
       <button class="btn btn-p" id="btn-start-from-preface" data-i18n="ui_btn_start_preface">Начать игру ⚔</button>
@@ -590,8 +591,9 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
 <!-- ═══ PRE-GAME NARRATIVE ═══ -->
 <div class="scr" id="scr-pregame" style="overflow-y:auto;">
   <div style="max-width:800px;margin:0 auto;padding:clamp(20px,5vw,40px) clamp(16px,7vw,60px);">
-    <div class="cr-title" style="margin-bottom:24px;" data-i18n="ui_pregame_title">⚔ В путь!</div>
-    <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="pregame-text"></div>
+    <div class="s-head"><div class="cr-title" style="margin-bottom:24px;" data-i18n="ui_pregame_title">⚔ В путь!</div>
+    <button type="button" class="speak-btn" id="btn-speak-pregame" data-src="pregame-text" onclick="bcSpeakToggle(this.dataset.src)" aria-pressed="false" aria-label="Озвучить параграф" data-i18n-aria="ui_btn_speak" style="display:none">🔊</button></div>
+<div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="pregame-text"></div>
     <div style="margin-top:24px;text-align:center;">
       <button class="btn btn-p" id="btn-enter-forest" data-i18n="ui_btn_enter_forest">Войти в Зачарованный лес ⚔</button>
     </div>
@@ -698,7 +700,7 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
     <div class="img-loading" id="img-loading" data-i18n="ui_img_loading">🎨 Рисую сцену…</div>
     <div class="story-area" id="s-area">
       <div class="reader">
-        <div class="s-head"><div class="s-num" id="s-num">§ 1</div><button type="button" class="speak-btn" id="btn-speak" onclick="bcSpeakToggle()" aria-pressed="false" aria-label="Озвучить параграф" data-i18n-aria="ui_btn_speak" style="display:none">🔊</button></div>
+        <div class="s-head"><div class="s-num" id="s-num">§ 1</div><button type="button" class="speak-btn" id="btn-speak" data-src="s-text" onclick="bcSpeakToggle(this.dataset.src)" aria-pressed="false" aria-label="Озвучить параграф" data-i18n-aria="ui_btn_speak" style="display:none">🔊</button></div>
         <div class="s-text" id="s-text"></div>
         <div class="choices-area" id="c-area">
           <div class="choices-title" data-i18n="ui_your_choice">Ваш выбор</div>
