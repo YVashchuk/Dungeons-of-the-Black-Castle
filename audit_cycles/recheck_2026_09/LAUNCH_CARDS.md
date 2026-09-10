@@ -295,6 +295,33 @@ Read the attached BRIEF_map_art_astra.md and generate the three map backgrounds 
 - **После батча E (PL-39 Равнодушие, PL-41 перенос гоблина, PL-20 трофеи после боя, PL-37 съесть сразу):** повтор карточки 8 на новом архиве с двумя изменениями в первом сообщении: маршрут через золотой апельсин (§74 → §226 → §976), и, если браузер ULTRA умеет эмуляцию, viewport 412×915 для строк C16/C17/B5.
 
 
+## 11. ChatGPT 6 Astra ULTRA — вычитка русского текста, затем проверка переводов (перед озвучкой)
+
+Брифы: `audit_cycles/recheck_2026_09/BRIEF_proofread_ru_astra.md` и `BRIEF_translation_review_astra.md` (один язык на чат). Результат — машинно-применимый JSON с точными цитатами (`from` встречается в поле ровно один раз); накатываю патчером, как батч C; «сомнительное» — отдельным файлом на решение автора.
+
+### Шаг 1 — русский текст (один чат)
+1. После push взять хэш HEAD, скачать `https://github.com/YVashchuk/Dungeons-of-the-Black-Castle/archive/<хэш>.zip`, удалить только `assets\illustrations\`, запаковать, папку не переименовывать.
+2. Work Mode, 6 Astra ULTRA, web выключен, исполнение кода включено. ZIP к первому сообщению:
+
+```
+The attached ZIP is the repository archive of the audited commit (root folder name carries the hash); assets/illustrations/ was removed on purpose. Extract it read-only. Read audit_cycles/recheck_2026_09/BRIEF_proofread_ru_astra.md in full and follow it: an automated scan over every Russian text field of src/locale.ru.js, then a reading pass over all 1221 paragraphs and all choice labels, cross-checked against assets/book_text.md and, when in doubt, the 1991 OCR. Deliver RU_PROOFREAD.json (exact, unique "from" substrings), RU_PROOFREAD_DOUBTFUL.md and RU_PROOFREAD_REPORT.md; offer the files for download and print the report in the chat. No web use; do not modify the archive.
+```
+
+3. Результат → `_handoff\audit_2026_09_chatgpt\astra\proofread\`. Я применяю high-confidence правки батчем, medium и «сомнительные» показываю тебе списком.
+
+### Шаг 2 — переводы (три чата, по одному на язык, на новом архиве после шага 1)
+Первое сообщение (заменить `en` на `fr` / `uk` в двух местах):
+
+```
+The attached ZIP is the repository archive of the audited commit (root folder name carries the hash); assets/illustrations/ was removed on purpose. Extract it read-only. LANG = en. Read audit_cycles/recheck_2026_09/BRIEF_translation_review_astra.md in full and follow it for src/locale.en.js against the Russian reference src/locale.ru.js: fidelity of every paragraph, label and interface string, grammar and idiom, target-language typography, terminology consistency. Deliver EN_REVIEW.json (exact, unique "from" substrings), EN_REVIEW_DOUBTFUL.md and EN_REVIEW_REPORT.md; offer the files for download and print the report in the chat. No web use; do not modify the archive.
+```
+
+Результат → `_handoff\audit_2026_09_chatgpt\astra\translations\<lang>\`.
+
+### Шаг 3 — озвучка (после шагов 1–2, вместе с Claude)
+`scripts/tts_pregenerate.js` по языкам; движок и голос — по пробе на трёх параграфах (см. переписку).
+
+
 ## 4. Приёмка (что делаю я)
 
 1. Сохраняю отчёт как `audit_cycles/recheck_2026_09/REPORT_<provider>_<track>.md`, считаю SHA-256, записываю в реестр.
