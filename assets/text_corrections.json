@@ -178,7 +178,8 @@
     "v2.170 -> v2.171": "September 2026 - group_85 batch 9 (AS-14): betting rounds ledger (stake charged once per pending round, payout once per round) and persisted dice-router rolls (S.pendingDiceRoll) - same-paragraph reloads at sec.68/152/287 and the four dice_roll routers no longer duplicate gold / food or reroll. group_85 closed 22/22. p1_6d 75 -> 78. GAME_RULES.md s3.5 + label 2.170 -> 2.171 (R-03 guard). MANUAL_SMOKE_CHECKS C21. Dist rebuilt; battery ALL GREEN.",
     "v2.171 -> v2.172": "September 2026 - group_86 PA-01 (ChatGPT 6 Astra browser-agent playthrough, blocked by the native confirm() on «Новая игра»): every native confirm()/alert() replaced by the in-page #overlay-confirm dialog (bcConfirm) and the toast + live-region notice (bcNotice); ui keys 334 -> 336; smoke C22 automated; _dist_ui_check 55 -> 58. Astra pre-flight archived (build signatures incl. SA-02 confirmed live). GAME_RULES.md label 2.171 -> 2.172 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.172 -> v2.173": "September 2026 - group_87 opened (ChatGPT 6 Astra live playthrough 5-9 Sep: 52 findings) and batches A+B: PL-01 new game / restart drop the hash, PL-06 honest luck notice, PL-31 stamina clamp, PL-35 HUD after knowledge, PL-38 flags not stakeable, PL-43 post-combat spell exits, PL-44 title rider aspect, PL-47 hanging indent for choices, PL-48 combat log colors, PL-51 map toolbar font, PL-52 «Продолжить» after a full win, PL-03 diamond gift consumed, PL-12 sec.90 offers gated (fox skin consumed), PL-14 candle / candlestick granted, PL-50 map refs. OPEN for later batches / author: text corrections (batch C), PL-02, PL-10, PL-13, PL-20, PL-28, PL-36, PL-37, PL-39, PL-41, PL-45/46/49, PL-23, PL-29, PL-33. p1_6d 78 -> 82. GAME_RULES.md label 2.172 -> 2.173 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.173 -> v2.174": "September 2026 - group_87 batch C: 32 canon text corrections in 21 paragraphs (RU prose typos and punctuation found by the Astra live reader: 9/46/56/77/139/150/284/288/291/372/435/520/544/582/627/700/718/730/766/829/923/1096/1115/1152/1196) applied to locale.ru.js, assets/book_text.md and the 6a golden; sec.393 exit label aligned to the canon direction and sec.835 rescue label «Позвать Пегаса» in four locales. GAME_RULES.md label 2.173 -> 2.174 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.173 -> v2.174": "September 2026 - group_87 batch C: 32 canon text corrections in 21 paragraphs (RU prose typos and punctuation found by the Astra live reader: 9/46/56/77/139/150/284/288/291/372/435/520/544/582/627/700/718/730/766/829/923/1096/1115/1152/1196) applied to locale.ru.js, assets/book_text.md and the 6a golden; sec.393 exit label aligned to the canon direction and sec.835 rescue label «Позвать Пегаса» in four locales. GAME_RULES.md label 2.173 -> 2.174 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.174 -> v2.175": "September 2026 - group_87 batch D (the author's Pixel 7a observations): PL-45 spell cards as a grid (phone: name + counter on top, description full width), PL-46 map close pinned top-right on phones, PL-49 «Удар!» below the ability group, PL-10 gender-neutral combat log templates in RU/EN/FR/UK (no more «ранил» for a female enemy). docs/DotBC_redirect_index.html - template for a short-address repo. p1_6d 82 -> 84; MANUAL_SMOKE_CHECKS C23. GAME_RULES.md label 2.174 -> 2.175 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -535,9 +536,10 @@
         {
           "id": "PL-10_combat_log_grammar",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Combat log templates concatenate the enemy name in the nominative («Вы ранили ЛЕВ», «ОГРОМНАЯ ЗМЕЯ ранил»); female / plural enemies (sec.38/110/177/197/240/481/528/760/1096) need gender and case forms in RU/UK, affaibli/affaiblie in FR.",
-          "note": "Maintainer adjudication: ACCEPTED P2 - needs a neutral event template or a per-enemy grammar dictionary; a dedicated i18n batch, not a one-line fix."
+          "note": "Maintainer adjudication: ACCEPTED P2 - needs a neutral event template or a per-enemy grammar dictionary; a dedicated i18n batch, not a one-line fix.",
+          "resolution": "ACCEPTED P2 DONE (neutral templates). The eleven combat-log fragments that agreed with the enemy in gender / case («Вы ранили ЛЕВ», «ОГРОМНАЯ ЗМЕЯ ранил вас», «не смог», «Ничья с», «Заклятие Копии на», «победил свою Копию… ослаблен», «повергает», «одолел») are rewritten as label-style templates that name the enemy without agreement in all four locales («→ Ваш удар: ОГРОМНАЯ ЗМЕЯ (−2 вын., осталось 4)», «ОГРОМНАЯ ЗМЕЯ: удар по вам (−2 вын., осталось 18)», «ОГРОМНАЯ ЗМЕЯ: промах», «→ Ничья: …», «👤 Копия побеждает: …! Враг повержен.», «🐻 Медведица: враг повержен — ЛЕВ!»); FR keeps NBSP before colons and NNBSP before the semicolon. A per-enemy grammar dictionary is no longer needed."
         },
         {
           "id": "PL-11_text_730",
@@ -805,16 +807,18 @@
         {
           "id": "PL-45_spell_card_counter_column",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Spell cards on 412px: the counter takes a full-height column, ~142px left for the description.",
-          "note": "Maintainer adjudication: ACCEPTED - mobile layout batch (name + counter on top, description full width)."
+          "note": "Maintainer adjudication: ACCEPTED - mobile layout batch (name + counter on top, description full width).",
+          "resolution": "ACCEPTED P2 DONE. Spell cards are a CSS grid (icon / name / counter / description as direct children): desktop keeps the counter column, phones (≤ 700 px) put the name and the ± counter on the first row and the description across the full width below; the 44 × 44 buttons are unchanged."
         },
         {
           "id": "PL-46_map_close_under_panel",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "On phones «Закрыть (M)» sits below the tall map info panel.",
-          "note": "Maintainer adjudication: ACCEPTED - mobile layout batch (top toolbar with close on the right)."
+          "note": "Maintainer adjudication: ACCEPTED - mobile layout batch (top toolbar with close on the right).",
+          "resolution": "ACCEPTED P2 DONE. On phones the map's «Закрыть (M)» is pinned to the top-right corner of the modal (the intro paragraph is hidden to save height); the DOM and Tab order are unchanged."
         },
         {
           "id": "PL-47_choice_wrap_under_arrow",
@@ -835,9 +839,10 @@
         {
           "id": "PL-49_strike_next_to_force_on_narrow",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "On narrow screens «Удар!» sits next to «Заклятие Силы»; the round button should stand apart from the ability group in DOM order.",
-          "note": "Maintainer adjudication: ACCEPTED - mobile layout batch (DOM reorder + two special-button insertion points)."
+          "note": "Maintainer adjudication: ACCEPTED - mobile layout batch (DOM reorder + two special-button insertion points).",
+          "resolution": "ACCEPTED P2 DONE. «Удар!» comes after the ability buttons in the DOM (Tab order = visual order) and renders as a separate centred full-width row below them on every size; the special ✦ exits are appended after it."
         },
         {
           "id": "PL-50_map_refs_princess_chamber",

@@ -128,7 +128,7 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
 .spell-counter-chip{text-align:center;font-family:var(--font-ui);color:var(--gold2);font-size:15px;letter-spacing:.06em;margin-bottom:8px;min-height:1.2em;}
 .qty-btn:disabled{opacity:.35;cursor:default;}
 .sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px;}
-.sp-card{background:var(--bg2);border:1px solid var(--border);padding:16px;transition:all .2s;}
+.sp-card{background:var(--bg2);border:1px solid var(--border);padding:16px;transition:all .2s;display:grid;grid-template-columns:38px minmax(0,1fr) auto;grid-template-areas:"icon name qty" "icon desc qty";column-gap:14px;row-gap:4px;align-items:start;} /* group_87 PL-45 */
 .sp-card.sel{border-color:var(--gold3);background:rgba(200,150,42,.06);}
 .sp-card.maxed{opacity:.4;}
 .sp-icon{font-size:28px;margin-bottom:6px;}
@@ -407,6 +407,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
 .map-legend-item{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;}
 .map-legend-sw{display:inline-block;width:14px;height:14px;border-radius:2px;}
 .map-note{font-size:12px;color:var(--muted);padding-top:16px;border-top:1px solid var(--border);margin-top:16px;opacity:.7;line-height:1.5;}
+#combat-buttons #btn-combat-round{flex-basis:100%;max-width:280px;margin-top:6px;} /* group_87 PL-49: the round button stands below the ability group */
 .map-toolbar{display:flex;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px;color:var(--muted);}
 .map-toolbar button{background:var(--bg3);border:1px solid var(--border2);color:var(--parchment);padding:4px 12px;cursor:pointer;font-size:12px;font-family:var(--font-ui);font-weight:400;} /* group_87 PL-51 */
 .map-stage{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:20px;}
@@ -708,12 +709,12 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
     <div class="combat-log" id="combat-log"></div>
     <div class="sr-only" id="combat-round-status" role="status" aria-live="polite"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="combat-buttons">
-      <button class="btn btn-p" id="btn-combat-round" onclick="combatRound()">Удар!</button>
       <button class="btn btn-s" id="btn-force-spell" style="display:none;border-color:#7a5;color:#9d6;" onclick="useForceInCombat()">💪 Заклятие Силы</button>
       <button class="btn btn-s" id="btn-weakness-spell" style="display:none;border-color:#a76;color:#d96;" onclick="useWeaknessInCombat()">🫀 Заклятие Слабости</button>
       <button class="btn btn-s" id="btn-copy-spell" style="display:none;border-color:#666;color:#999;" onclick="useCopyInCombat()">👤 Заклятие Копии</button>
       <button class="btn btn-s" id="btn-larva" style="display:none;border-color:#8a6;color:#cb9;" onclick="useLarvaInCombat()">🕷 Разломить личинку</button>
       <button class="btn btn-s" id="btn-summon-ally" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;" data-i18n="ui_btn_summon_ally">🐻 Позвать союзника</button>
+      <button class="btn btn-p" id="btn-combat-round" onclick="combatRound()">Удар!</button>
       <button class="btn btn-s" id="btn-summon-ally2" style="display:none;border-color:#b8860b;color:#d8a838;" onclick="return false;" data-i18n="ui_btn_summon_ally">🐻 Позвать союзника</button>
       <button class="btn btn-s" id="btn-heal-spell" style="display:none;border-color:#2a8;color:#3c9;" onclick="useHealingInCombat()">💚 Заклятие Исцеления</button>
     </div>

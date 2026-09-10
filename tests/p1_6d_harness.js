@@ -61,6 +61,12 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9z. group_87 batch D (PL-10 / PL-45 / PL-49): neutral combat log, spell card grid, strike button order
+(function(){
+  ck('PL-10 combat log templates are label-style (no verb agreement with the enemy)', LOCALE_RU.ui.vy_ranili==='\u2192 \u0412\u0430\u0448 \u0443\u0434\u0430\u0440: '&&LOCALE_RU.ui.ranil_vas.startsWith(': ')&&LOCALE_RU.ui.ne_smog_vas_ranit===': \u043f\u0440\u043e\u043c\u0430\u0445'&&LOCALE_RU.ui.nichya_s==='\u2192 \u041d\u0438\u0447\u044c\u044f: ');
+  ck('PL-45 spell cards render icon / name / qty / desc as direct grid children', gl.includes('class="sp-card"')||gl.includes("c.className='sp-card'")&&gl.includes('<div class="sp-desc" style="grid-area:desc;')&&!gl.includes('<div style="flex:1;min-width:0;">'));
+})();
+
 // 9y. group_87 batches A+B (PL-01 / PL-38 / PL-43 / PL-52 engine, PL-03 / PL-12 / PL-14 data)
 (function(){
   ck('PL-01 restart / new game drop the hash', gl.includes("history.replaceState(null,'',location.pathname);location.reload();")||true);

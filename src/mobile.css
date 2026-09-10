@@ -150,6 +150,13 @@
     border-right: 0;
     border-bottom: 1px solid rgba(255,255,255,.06);
   }
+  /* group_87 PL-46: the close control belongs to the top-right corner on phones; the intro paragraph is hidden. */
+  .map-modal-shell { position: relative; }
+  .map-toolbar .map-toolbar-right button { position: fixed; top: calc(10px + var(--safe-top, 0px)); right: calc(12px + var(--safe-right, 0px)); z-index: 6; }
+  .map-title { padding-right: 130px; }
+  .map-sub { display: none; }
+  /* group_87 PL-45: spell cards - name and counter on top, description across the full width. */
+  .sp-card { grid-template-columns: 38px minmax(0,1fr) auto; grid-template-areas: "icon name qty" "desc desc desc"; }
   .map-svg-wrap {
     min-height: 300px;
   }

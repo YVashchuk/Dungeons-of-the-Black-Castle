@@ -335,13 +335,11 @@ function renderSpellSel(){
   const grid=document.getElementById('spell-grid');grid.innerHTML='';
   SPELLS.forEach(sp=>{const q=spQty[sp.id];const c=document.createElement('div');
     c.className='sp-card'+(q>0?' sel':'')+(tot>=MAX_SP&&q===0?' maxed':'');
-    c.style.cssText='display:flex;align-items:flex-start;gap:14px;padding:18px 20px;';
-    c.innerHTML=`<div class="sp-icon" style="font-size:32px;min-width:38px;text-align:center;margin-top:2px;">${sp.icon}</div>
-      <div style="flex:1;min-width:0;">
-        <div class="sp-name" style="font-size:21px;margin-bottom:6px;font-weight:500;">${spellText(sp.id).name}</div>
-        <div class="sp-desc" style="font-size:17px;color:rgba(232,220,196,.78);line-height:1.55;">${_spellDescHtml(spellText(sp.id).full)}</div>
-      </div>
-      <div class="sp-qty" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    c.style.cssText='padding:18px 20px;'; // group_87 PL-45: layout lives in CSS (grid areas; phones stack the description below)
+    c.innerHTML=`<div class="sp-icon" style="grid-area:icon;font-size:32px;min-width:38px;text-align:center;margin-top:2px;">${sp.icon}</div>
+      <div class="sp-name" style="grid-area:name;font-size:21px;margin-bottom:6px;font-weight:500;align-self:center;">${spellText(sp.id).name}</div>
+      <div class="sp-desc" style="grid-area:desc;font-size:17px;color:rgba(232,220,196,.78);line-height:1.55;min-width:0;">${_spellDescHtml(spellText(sp.id).full)}</div>
+      <div class="sp-qty" style="grid-area:qty;display:flex;align-items:center;gap:6px;flex-shrink:0;justify-self:end;">
         <button class="qty-btn" data-id="${sp.id}" data-d="-1" aria-label="${t('aria_ubrat')}${spellText(sp.id).name}" ${q<=0?'disabled':''} style="font-size:20px;width:44px;height:44px;">−</button>
         <span class="qty-num" style="font-size:22px;min-width:30px;text-align:center;">${q}</span>
         <button class="qty-btn" data-id="${sp.id}" data-d="1" aria-label="${t('aria_dobavit')}${spellText(sp.id).name}" ${(tot>=MAX_SP)?'disabled':''} style="font-size:20px;width:44px;height:44px;">+</button>
