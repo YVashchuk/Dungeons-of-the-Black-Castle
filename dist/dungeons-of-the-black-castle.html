@@ -471,6 +471,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
    navigation without touching pointer interaction. */
 button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold2);outline-offset:3px;}
 .menu-btn:focus-within{outline:2px solid var(--gold2);outline-offset:3px;} /* group_82 CU-06: the sr-only import input inside its label */
+button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-webkit-tap-highlight-color:transparent;} /* group_87: no grey flash on iOS taps (Gemini chat 2026-09-08, Astra 7.5) */
 /* UI-10 (group_79): honour the OS reduced-motion preference - collapses the
    keyframe animations and transitions to near-zero without touching layout. */
 @media (prefers-reduced-motion: reduce){

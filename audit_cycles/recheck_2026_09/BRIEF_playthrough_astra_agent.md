@@ -41,7 +41,7 @@ Recommended spell split for a created hero: Левитация 2, Исцелен
 | G-02 | §81 with the Princess awake | «→ 1220» offered; the study choices are NOT offered |
 | G-03 | §627 or §976 with Barlad alive | only «→ 1120»; no «→ 1220» |
 | G-04 | §627 or §976 with Barlad dead | «→ 1220» offered, no «→ 1120» |
-| G-05 | §976 / §627 wake-up | the golden orange / ruby signet is consumed; the bag shows no new visible item (the flag is hidden) |
+| G-05 | §976 / §627 wake-up | the golden orange is consumed; the ruby signet is a reusable token and STAYS (group_6); the bag shows no new visible item (the flag is hidden) |
 | G-06 | study §297/§411/§850/§797 | the death choice «Если вы уже делали и то, и другое (489)» appears only once the other three inspections are done; each inspection can be repeated only as a visit, not as a new exit |
 | G-07 | §56 / §205 with the castle password known | only the password choice; no bluffing alternatives |
 | G-08 | §146 | the exit matches the entrance: from §205 → 933, from §56 → 1054 |
