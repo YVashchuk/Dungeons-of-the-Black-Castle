@@ -177,7 +177,8 @@
     "v2.169 -> v2.170": "September 2026 - group_84 SA-02 closed: localized item names in every locale (RU 120 from items.json, EN/FR/UK 107 from the Astra deliverable), itemName() active-locale-first, i18n_merge_meta.py items section; the 2026-09-05 reports archived with SHA-256 (Astra archive audit + deliverables, ChatGPT agent smoke, ChatGPT Track A final, Gemini combined DISCARDED, ChatGPT null run). p1_6d 73 -> 75. GAME_RULES.md s9 + label 2.169 -> 2.170 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.170 -> v2.171": "September 2026 - group_85 batch 9 (AS-14): betting rounds ledger (stake charged once per pending round, payout once per round) and persisted dice-router rolls (S.pendingDiceRoll) - same-paragraph reloads at sec.68/152/287 and the four dice_roll routers no longer duplicate gold / food or reroll. group_85 closed 22/22. p1_6d 75 -> 78. GAME_RULES.md s3.5 + label 2.170 -> 2.171 (R-03 guard). MANUAL_SMOKE_CHECKS C21. Dist rebuilt; battery ALL GREEN.",
     "v2.171 -> v2.172": "September 2026 - group_86 PA-01 (ChatGPT 6 Astra browser-agent playthrough, blocked by the native confirm() on «Новая игра»): every native confirm()/alert() replaced by the in-page #overlay-confirm dialog (bcConfirm) and the toast + live-region notice (bcNotice); ui keys 334 -> 336; smoke C22 automated; _dist_ui_check 55 -> 58. Astra pre-flight archived (build signatures incl. SA-02 confirmed live). GAME_RULES.md label 2.171 -> 2.172 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.172 -> v2.173": "September 2026 - group_87 opened (ChatGPT 6 Astra live playthrough 5-9 Sep: 52 findings) and batches A+B: PL-01 new game / restart drop the hash, PL-06 honest luck notice, PL-31 stamina clamp, PL-35 HUD after knowledge, PL-38 flags not stakeable, PL-43 post-combat spell exits, PL-44 title rider aspect, PL-47 hanging indent for choices, PL-48 combat log colors, PL-51 map toolbar font, PL-52 «Продолжить» after a full win, PL-03 diamond gift consumed, PL-12 sec.90 offers gated (fox skin consumed), PL-14 candle / candlestick granted, PL-50 map refs. OPEN for later batches / author: text corrections (batch C), PL-02, PL-10, PL-13, PL-20, PL-28, PL-36, PL-37, PL-39, PL-41, PL-45/46/49, PL-23, PL-29, PL-33. p1_6d 78 -> 82. GAME_RULES.md label 2.172 -> 2.173 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.172 -> v2.173": "September 2026 - group_87 opened (ChatGPT 6 Astra live playthrough 5-9 Sep: 52 findings) and batches A+B: PL-01 new game / restart drop the hash, PL-06 honest luck notice, PL-31 stamina clamp, PL-35 HUD after knowledge, PL-38 flags not stakeable, PL-43 post-combat spell exits, PL-44 title rider aspect, PL-47 hanging indent for choices, PL-48 combat log colors, PL-51 map toolbar font, PL-52 «Продолжить» after a full win, PL-03 diamond gift consumed, PL-12 sec.90 offers gated (fox skin consumed), PL-14 candle / candlestick granted, PL-50 map refs. OPEN for later batches / author: text corrections (batch C), PL-02, PL-10, PL-13, PL-20, PL-28, PL-36, PL-37, PL-39, PL-41, PL-45/46/49, PL-23, PL-29, PL-33. p1_6d 78 -> 82. GAME_RULES.md label 2.172 -> 2.173 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.173 -> v2.174": "September 2026 - group_87 batch C: 32 canon text corrections in 21 paragraphs (RU prose typos and punctuation found by the Astra live reader: 9/46/56/77/139/150/284/288/291/372/435/520/544/582/627/700/718/730/766/829/923/1096/1115/1152/1196) applied to locale.ru.js, assets/book_text.md and the 6a golden; sec.393 exit label aligned to the canon direction and sec.835 rescue label «Позвать Пегаса» in four locales. GAME_RULES.md label 2.173 -> 2.174 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -486,16 +487,18 @@
         {
           "id": "PL-04_text_291",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.291: screen = canon «вряд ли пошли а правильном направлении».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («пошли в правильном направлении»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («пошли в правильном направлении»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-05_text_582",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.582: screen = canon «каждый из восстановит».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («каждый из них восстановит»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («каждый из них восстановит»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-06_luck_notice_at_cap",
@@ -508,23 +511,26 @@
         {
           "id": "PL-07_text_77",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.77: screen = canon «деревья все также стоят часовыми».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («деревья всё так же стоят часовыми»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («деревья всё так же стоят часовыми»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-08_text_56",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.56: screen = canon «меч. вы понимаете».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («меч. Вы понимаете»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («меч. Вы понимаете»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-09_text_700",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.700: screen = canon «Огня(1188)».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («Огня (1188)»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («Огня (1188)»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-10_combat_log_grammar",
@@ -536,9 +542,10 @@
         {
           "id": "PL-11_text_730",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.730: screen = canon «что бы вы стали более заметным».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («чтобы вы стали более заметным»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («чтобы вы стали более заметным»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-12_fox_skin_offer_without_skin",
@@ -566,37 +573,42 @@
         {
           "id": "PL-15_text_150_1115_923",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.150 «сцена!.. трудно», sec.1115 «или выйдите…?», sec.923 «вычтете 13».",
-          "note": "Maintainer adjudication: ACCEPTED («Трудно», «выйдете», «вычтите»); batch C."
+          "note": "Maintainer adjudication: ACCEPTED («Трудно», «выйдете», «вычтите»); batch C.",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-16_text_1096_139",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.1096 «вы то его представляли», sec.139 «об этом то вы и не подумали».",
-          "note": "Maintainer adjudication: ACCEPTED («вы-то», «об этом-то»); batch C."
+          "note": "Maintainer adjudication: ACCEPTED («вы-то», «об этом-то»); batch C.",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-17_text_372",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.372: screen = canon «Если хотите. Можете воспользоваться».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («Если хотите, можете воспользоваться»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («Если хотите, можете воспользоваться»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-18_text_9_544",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.9 «С ума сойти можно!», — думаете вы; sec.544 «Ты кто?», — спрашивает он (comma after a closing quote that keeps ! / ?).",
-          "note": "Maintainer adjudication: ACCEPTED (remove the comma); batch C."
+          "note": "Maintainer adjudication: ACCEPTED (remove the comma); batch C.",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-19_text_288",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.288: screen = canon «Только становиться темнее».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («Только становится темнее»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («Только становится темнее»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-20_trophies_before_the_fight",
@@ -608,16 +620,18 @@
         {
           "id": "PL-21_label_393_direction",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.393 text «в стене слева рядом с выходом (771)», button «Выйти из столовой через дверь в стене напротив (771)».",
-          "note": "Maintainer adjudication: ACCEPTED - label aligned to the canon direction in all four locales (batch C)."
+          "note": "Maintainer adjudication: ACCEPTED - label aligned to the canon direction in all four locales (batch C).",
+          "resolution": "ACCEPTED P2 DONE. sec.393 label -> 771 now reads «Выйти через дверь в стене слева, рядом с выходом (771)» in all four locales (canon direction)."
         },
         {
           "id": "PL-22_text_829",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.829: screen = canon «красной и не прозрачной жидкостью».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («красной и непрозрачной жидкостью»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («красной и непрозрачной жидкостью»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-23_illustration_mismatch_829_923",
@@ -629,30 +643,34 @@
         {
           "id": "PL-24_text_1152",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.1152: screen = canon «начинается кружиться голова».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («начинает кружиться голова»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («начинает кружиться голова»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-25_text_766",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.766: screen = canon «на крысу, которые обычно водятся».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («на одну из крыс, которые обычно водятся»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («на одну из крыс, которые обычно водятся»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-26_text_718",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.718 «видимо он привык», «Но кажется он даже доволен», «через библиотеку тщательно стараясь» (missing commas).",
-          "note": "Maintainer adjudication: ACCEPTED; batch C."
+          "note": "Maintainer adjudication: ACCEPTED; batch C.",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-27_text_1196",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.1196 «орел, под тоже имеется углубление», «какие бы усилия вы не прилагали», «чем той».",
-          "note": "Maintainer adjudication: ACCEPTED («под ним тоже», «ни прилагали», «чем в конце той»); batch C."
+          "note": "Maintainer adjudication: ACCEPTED («под ним тоже», «ни прилагали», «чем в конце той»); batch C.",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-28_sec886_return_contradiction",
@@ -671,9 +689,10 @@
         {
           "id": "PL-30_text_284",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.284 «вы вступаете святая святых», «кровать, но которой спит».",
-          "note": "Maintainer adjudication: ACCEPTED («вступаете в святая святых», «на которой»); batch C."
+          "note": "Maintainer adjudication: ACCEPTED («вступаете в святая святых», «на которой»); batch C.",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-31_negative_stamina_on_death",
@@ -686,9 +705,10 @@
         {
           "id": "PL-32_text_627",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.627 «согревает Принцессу и будет ее!», «холодным….».",
-          "note": "Maintainer adjudication: ACCEPTED («будит её!», three dots); batch C."
+          "note": "Maintainer adjudication: ACCEPTED («будит её!», three dots); batch C.",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-33_brief_g05_ring_reusable",
@@ -700,9 +720,10 @@
         {
           "id": "PL-34_text_435",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.435: screen = canon «прибавьте, прибавьте к этому».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («прибавьте к этому»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («прибавьте к этому»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-35_knowledge_hud_not_refreshed",
@@ -717,7 +738,8 @@
           "severity": "P2",
           "status": "OPEN",
           "hypothesis": "sec.534 «если ваше Мастерство равно 9 или меньше, то. Иначе, — 750» - the branch for skill ≤ 9 lost its target in the corrected edition; sec.835 rescue label talks about petting Pegasus.",
-          "note": "Maintainer adjudication: label fixed in batch C («Позвать Пегаса (1138)» in four locales); the truncated condition is an AUTHOR DECISION with the 1991 PDF as the source."
+          "note": "Maintainer adjudication: label fixed in batch C («Позвать Пегаса (1138)» in four locales); the truncated condition is an AUTHOR DECISION with the 1991 PDF as the source.",
+          "resolution": "PARTIAL DONE. sec.835 rescue label is «Позвать Пегаса (1138)» in all four locales; the truncated skill ≤ 9 condition of sec.534 stays an AUTHOR DECISION (source: the 1991 PDF)."
         },
         {
           "id": "PL-37_batch_pickup_eat_now",
@@ -744,9 +766,10 @@
         {
           "id": "PL-40_text_520",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.520: screen = canon «составить ему кампанию».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («составить ему компанию»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («составить ему компанию»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-41_deadline_737_loses_first_goblin",
@@ -758,9 +781,10 @@
         {
           "id": "PL-42_text_46",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.46: screen = canon «атакуют вас с верху с коней».",
-          "note": "Maintainer adjudication: ACCEPTED text correction («атакуют вас сверху с коней»); batch C (locale.ru.js + book_text.md)."
+          "note": "Maintainer adjudication: ACCEPTED text correction («атакуют вас сверху с коней»); batch C (locale.ru.js + book_text.md).",
+          "resolution": "ACCEPTED P2 DONE. Text corrected in locale.ru.js (p.t), assets/book_text.md and the 6a golden; EN/FR/UK prose unaffected."
         },
         {
           "id": "PL-43_post_combat_spell_choices_hidden",
