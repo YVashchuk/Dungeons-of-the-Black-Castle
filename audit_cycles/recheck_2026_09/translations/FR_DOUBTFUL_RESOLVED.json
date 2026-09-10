@@ -1,0 +1,1197 @@
+[
+  {
+    "id": "FD-001",
+    "section": 21,
+    "field": "t",
+    "from": "tombez sur le cadavre pourri et rongé de vers de quelqu’un, gisant dans les buissons",
+    "to": "tombez sur un cadavre pourri, rongé de vers, qui gît dans les buissons",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-001 — Prefer a lighter French sentence while preserving the unidentified corpse and its location. The literal wording remains grammatical; the choice is narrative style. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "tombez sur le cadavre pourri et rongé de vers de quelqu’un, gisant dans les buissons"
+    ]
+  },
+  {
+    "id": "FD-002",
+    "section": 32,
+    "field": "t",
+    "from": "Votre fin est décidée.",
+    "to": "Votre sort est scellé.",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-002 — Prefer the familiar fatalistic idiom. The current wording and the alternative emphasizing inevitability are both defensible authorial readings of «Конец ваш предрешен». Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Votre fin est décidée.",
+      "Votre fin est inéluctable."
+    ]
+  },
+  {
+    "id": "FD-003",
+    "section": 112,
+    "field": "t",
+    "from": "un cri retentit dans le tube",
+    "to": "un cri retentit dans le tube",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-003 — KEEP. The first device description in §798 explicitly describes tubes protruding from the wall with flared ends («трубки, расширенные на концах»), supporting tube; a telephone-style combiné would add an unsupported physical interpretation. The supplied alternative changes only narrative phrasing. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "un cri s’élève du tube"
+    ]
+  },
+  {
+    "id": "FD-004",
+    "section": 121,
+    "field": "t",
+    "from": "KBD. Vous ne comprenez pas ce que signifie le K",
+    "to": "KBD. Vous ne comprenez pas ce que signifie le K",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-004 — KEEP. The source leaves the initial К unexplained, and §519 does not expand it. The CBD alternative is conditional: use it only if the author confirms К = кабинет and approves localization as cabinet; otherwise it invents an explanation. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "CBD. Vous ne comprenez pas ce que signifie le C"
+    ]
+  },
+  {
+    "id": "FD-005",
+    "section": 143,
+    "field": "c[2]",
+    "from": "Vous venger de lui pour s’être moqué de vous (3)",
+    "to": "Vous venger de lui parce qu’il s’est moqué de vous (3)",
+    "class": "label",
+    "confidence": "high",
+    "note": "D-005 — Paired choice label for the explicit finite-clause reading in the paragraph; target 3 is unchanged. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Vous venger de lui pour s’être moqué de vous (3)",
+      "Vous venger de ses moqueries (3)"
+    ]
+  },
+  {
+    "id": "FD-006",
+    "section": 143,
+    "field": "t",
+    "from": "vous venger de lui pour s’être moqué de vous",
+    "to": "vous venger de lui parce qu’il s’est moqué de vous",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-005 — The finite clause explicitly attributes the mockery to the spy and reads more clearly aloud. The intended attribution remains recoverable in the current sentence; the compact noun phrase is a stylistic alternative. Apply the paired label decision as well. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "vous venger de lui pour s’être moqué de vous",
+      "vous venger de ses moqueries"
+    ]
+  },
+  {
+    "id": "FD-007",
+    "section": 165,
+    "field": "t",
+    "from": "espérant vous perdre dans la forêt",
+    "to": "espérant disparaître dans la forêt",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-006 — Prefer the escape-from-pursuers reading supported by the following sentence: the pursuers miss the turn and continue on the road. Se perdre can also mean losing oneself among the trees, but can imply losing one’s bearings; the choice removes that connotation. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "espérant vous perdre dans la forêt",
+      "espérant vous fondre dans la forêt"
+    ]
+  },
+  {
+    "id": "FD-008",
+    "section": 220,
+    "field": "t",
+    "from": "un couple de Gobelins",
+    "to": "deux Gobelins",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-007 — Preserve the two guards while avoiding a possible romantic-couple connotation. Couple is grammatical for a pair, and paire preserves that collective emphasis. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "un couple de Gobelins",
+      "une paire de Gobelins"
+    ]
+  },
+  {
+    "id": "FD-009",
+    "section": 227,
+    "field": "t",
+    "from": "aux moments nécessaires",
+    "to": "au besoin",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-008 — Prefer the idiomatic au besoin for «в нужных моментах»; the current wording is comprehensible, while le moment venu gives a more anticipatory narrative rhythm. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "aux moments nécessaires",
+      "le moment venu"
+    ]
+  },
+  {
+    "id": "FD-010",
+    "section": 284,
+    "field": "t",
+    "from": "Derrière lui s’ouvre le noir béant d’un passage secret.",
+    "to": "Derrière lui s’ouvre l’entrée béante et noire d’un passage secret.",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-009 — Prefer an explicit opening, matching the next sentence’s crossing of the threshold. The original poetic nominalization and the more figurative gueule are reasonable differences of narrative voice. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Derrière lui s’ouvre le noir béant d’un passage secret.",
+      "Derrière lui s’ouvre la gueule noire d’un passage secret."
+    ]
+  },
+  {
+    "id": "FD-011",
+    "section": 104,
+    "field": "t",
+    "from": "TENTEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "TENTEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-012",
+    "section": 203,
+    "field": "t",
+    "from": "TENTEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "TENTEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-013",
+    "section": 368,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010 — Adopt TESTEZ as the established house term for the same Luck test; neither imperative is grammatically wrong. This object covers only the cited paragraph. A coherent book-wide decision also needs §§418,421,436,1007,1072,1089,1141,1173,1175,1186; their strings are outside this item’s requested cited scope. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-014",
+    "section": 377,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010 — Adopt TESTEZ as the established house term for the same Luck test; neither imperative is grammatically wrong. This object covers only the cited paragraph. A coherent book-wide decision also needs §§418,421,436,1007,1072,1089,1141,1173,1175,1186; their strings are outside this item’s requested cited scope. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-015",
+    "section": 418,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-016",
+    "section": 421,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-017",
+    "section": 436,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-018",
+    "section": 497,
+    "field": "t",
+    "from": "VÉRIFIEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "VÉRIFIEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-019",
+    "section": 501,
+    "field": "t",
+    "from": "VÉRIFIEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "VÉRIFIEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-020",
+    "section": 1007,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-021",
+    "section": 1072,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-022",
+    "section": 1089,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-023",
+    "section": 1141,
+    "field": "t",
+    "from": "ÉPROUVER VOTRE CHANCE",
+    "to": "TESTER VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVER VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-024",
+    "section": 1173,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-025",
+    "section": 1175,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-026",
+    "section": 1186,
+    "field": "t",
+    "from": "ÉPROUVEZ VOTRE CHANCE",
+    "to": "TESTEZ VOTRE CHANCE",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-010. Complete the chosen book-wide wording for the explicit capitalized Luck-test formula. Preserve imperative versus infinitive; the operation and values do not change. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "ÉPROUVEZ VOTRE CHANCE"
+    ]
+  },
+  {
+    "id": "FD-027",
+    "section": 371,
+    "field": "t",
+    "from": "des trophées de chasse",
+    "to": "des cors de chasse",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-011 — Recommend musical hunting horns, the ordinary reading of «охотничьи рога». The original trophy wording may reflect a different intended object; cornes d’animaux is an alternative only if the author means animal horns. Do not introduce a deer species that the source never names. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "des trophées de chasse",
+      "des cornes d’animaux"
+    ]
+  },
+  {
+    "id": "FD-028",
+    "section": 384,
+    "field": "t",
+    "from": "haut de quatre tailles d’homme",
+    "to": "d’une hauteur égale à quatre fois la taille d’un homme",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-012 — Prefer the shorter narrative comparison, retaining a height of four human statures. The longer alternative expresses the multiplier explicitly; the current wording remains understandable but awkward. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "haut de quatre tailles d’homme",
+      "haut comme quatre hommes"
+    ]
+  },
+  {
+    "id": "FD-029",
+    "section": 439,
+    "field": "t",
+    "from": "Dans le ciel cela volait, même pas cela ne sifflait ; mais une fois en colère, la flamme apparut.",
+    "to": "Dans le ciel cela volait, sans même un sifflement ; mais la colère venue, la flamme apparut.",
+    "class": "grammar",
+    "confidence": "medium",
+    "note": "D-013: Recommend repairing the unidiomatic negative while retaining the past-tense riddle voice. A present-tense retelling is also grammatical and faithful, so the final rhythm and temporal voice remain an authorial choice; the malformed original is not offered as an alternative. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Dans le ciel cela vole sans même siffler ; dès que la colère le prend, la flamme apparaît."
+    ]
+  },
+  {
+    "id": "FD-030",
+    "section": 555,
+    "field": "t",
+    "from": "la chaussée redescend vers la rive du fleuve",
+    "to": "la chaussée redescend vers la rive de la rivière",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "la chaussée redescend vers la rive du fleuve"
+    ]
+  },
+  {
+    "id": "FD-031",
+    "section": 555,
+    "field": "t",
+    "from": "empêcher tout étranger de franchir le fleuve",
+    "to": "empêcher tout étranger de franchir la rivière",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "empêcher tout étranger de franchir le fleuve"
+    ]
+  },
+  {
+    "id": "FD-032",
+    "section": 571,
+    "field": "c[0]",
+    "from": "Atteindre sans encombre l’autre rive du fleuve (715)",
+    "to": "Atteindre sans encombre l’autre rive de la rivière (715)",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Atteindre sans encombre l’autre rive du fleuve (715)"
+    ]
+  },
+  {
+    "id": "FD-033",
+    "section": 571,
+    "field": "t",
+    "from": "Vous parvenez sans encombre sur l’autre rive du fleuve — 715.",
+    "to": "Vous parvenez sans encombre sur l’autre rive de la rivière — 715.",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Vous parvenez sans encombre sur l’autre rive du fleuve — 715."
+    ]
+  },
+  {
+    "id": "FD-034",
+    "section": 589,
+    "field": "t",
+    "from": "Le sentier serpente le long du fleuve",
+    "to": "Le sentier serpente le long de la rivière",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Le sentier serpente le long du fleuve"
+    ]
+  },
+  {
+    "id": "FD-035",
+    "section": 589,
+    "field": "t",
+    "from": "le sentier redescend vers la rive du fleuve",
+    "to": "le sentier redescend vers la rive de la rivière",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "le sentier redescend vers la rive du fleuve"
+    ]
+  },
+  {
+    "id": "FD-036",
+    "section": 589,
+    "field": "t",
+    "from": "de traverser le fleuve",
+    "to": "de traverser la rivière",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "de traverser le fleuve"
+    ]
+  },
+  {
+    "id": "FD-037",
+    "section": 601,
+    "field": "c[0]",
+    "from": "Se tenir sur l’autre rive du fleuve",
+    "to": "Se tenir sur l’autre rive de la rivière",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Se tenir sur l’autre rive du fleuve"
+    ]
+  },
+  {
+    "id": "FD-038",
+    "section": 601,
+    "field": "t",
+    "from": "Vous vous tenez sur l’autre rive du fleuve.",
+    "to": "Vous vous tenez sur l’autre rive de la rivière.",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014: Recommend the neutral rivière, consistent with §§429/502 and RU река; adjust the article/contraction for the feminine noun. Fleuve remains possible if the fictional geography establishes an outlet to the sea. This is one of the occurrences explicitly covered by D-014; all nine cited occurrences are represented. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Vous vous tenez sur l’autre rive du fleuve."
+    ]
+  },
+  {
+    "id": "FD-039",
+    "section": 629,
+    "field": "t",
+    "from": "plongez dans le fleuve",
+    "to": "plongez dans la rivière",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-014. Complete the same-river nomenclature beyond the four examples listed in D-014; no sea outlet is established. The feminine noun fits the existing construction. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "plongez dans le fleuve"
+    ]
+  },
+  {
+    "id": "FD-040",
+    "section": 617,
+    "field": "t",
+    "from": "Si vous le tuez, vous l’avez fait juste à temps",
+    "to": "Si vous le tuez, c’est juste à temps",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-015: Recommend a consistent present-tense narrative viewpoint. The completed-action past is also grammatical and follows RU literally; the choice of viewpoint is editorial, not an unconditional change to the encounter sequence. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Si vous l’avez tué, vous l’avez fait juste à temps"
+    ]
+  },
+  {
+    "id": "FD-041",
+    "section": 624,
+    "field": "t",
+    "from": "Entre-temps, le temps est déjà perdu.",
+    "to": "Mais vous avez déjà perdu du temps.",
+    "class": "grammar",
+    "confidence": "medium",
+    "note": "D-016: Recommend removing the distracting temps repetition and making the wasted opportunity idiomatic in context. Trop is supported by the communication immediately cutting off; the literal narrator rhythm or a less emphatic reading remains possible. Recommendation avoids adding the stronger quantity judgment trop, absent from RU. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Entre-temps, le temps est déjà perdu.",
+      "Mais vous avez déjà perdu trop de temps."
+    ]
+  },
+  {
+    "id": "FD-042",
+    "section": 626,
+    "field": "t",
+    "from": "frappe vos doigts de toutes ses forces",
+    "to": "frappe vos doigts de toutes ses forces",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-017: KEEP recommended: the personified enchanted lid and its force closely preserve RU вырывается ... со всей силы бьет. The alternative is idiomatic but makes the agency less explicit; there is no grammatical necessity to change the current wording. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "s’abat violemment sur vos doigts"
+    ]
+  },
+  {
+    "id": "FD-043",
+    "section": 674,
+    "field": "t",
+    "from": "le couloir de gauche est la voie la plus sûre",
+    "to": "le couloir de gauche est la voie la plus sûre",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-018: KEEP recommended: sûre can mean reliable and §791 explicitly says the star helps choose the best and safest passage. Bonne or fiable emphasize correctness/reliability rather than safety; all are defensible readings of более верный путь. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "le couloir de gauche est la bonne voie",
+      "le couloir de gauche est le chemin le plus fiable"
+    ]
+  },
+  {
+    "id": "FD-044",
+    "section": 703,
+    "field": "t",
+    "from": "des bêtes inconnues, sur lesquelles tremble frileusement une ombre si fragile, prête à s’effondrer à chaque instant…",
+    "to": "des bêtes inconnues, sur lesquelles tremble frileusement une ombre si fragile, prête à s’effondrer à chaque instant…",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-019: KEEP recommended: preserve the deliberately strange RU spatial relation (shadow trembling on the beasts) and collapse image. The smoother alternative makes the shadow belong to the beasts and changes collapse into dissipation; this is a meaningful adaptation requiring author choice. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "des bêtes inconnues, dont l’ombre frissonne, fragile, prête à se dissiper à chaque instant…"
+    ]
+  },
+  {
+    "id": "FD-045",
+    "section": 731,
+    "field": "t",
+    "from": "« Trois d’Évenlo », dites-vous",
+    "to": "« Les Trois d’Évenlo », dites-vous",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-020: Recommend including Les in the first spoken occurrence. §390 teaches the exact phrase « Les Trois d’Évenlo », and items.password_evenlo also includes the article. Harmonizing to that established French phrase is preferable; a deliberately article-free password would require coordinated revision of those earlier occurrences. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "« Trois d’Évenlo », dites-vous"
+    ]
+  },
+  {
+    "id": "FD-046",
+    "section": 731,
+    "field": "t",
+    "from": "« Trois d’Évenlo », répétez-vous",
+    "to": "« Les Trois d’Évenlo », répétez-vous",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-020: Recommend including Les in the repeated spoken occurrence to match the password explicitly taught in §390 and the inventory name. Article-free naming is a possible house choice only if applied consistently across the other occurrences. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "« Trois d’Évenlo », répétez-vous"
+    ]
+  },
+  {
+    "id": "FD-047",
+    "section": 766,
+    "field": "c[7]",
+    "from": "Dire au vieil homme : « Trois d’Évenlo » (731)",
+    "to": "Dire au vieil homme : « Les Trois d’Évenlo » (731)",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-020: Recommend including Les in the selectable password, matching §390, the inventory name, and both recommended §731 readings. Choosing an article-free password instead would require coordinated changes to the teaching and inventory occurrences. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Dire au vieil homme : « Trois d’Évenlo » (731)"
+    ]
+  },
+  {
+    "id": "FD-048",
+    "section": 131,
+    "field": "t",
+    "from": "rounds d’attaque",
+    "to": "assauts",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021. Complete the same combat-round term throughout the book, beyond the cited examples. All round counts remain unchanged. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "rounds d’attaque"
+    ]
+  },
+  {
+    "id": "FD-049",
+    "section": 737,
+    "field": "c[0]",
+    "from": "Le vaincre en 5 rounds d’attaque, allez au (391)",
+    "to": "Vaincre le Gobelin en 5 assauts (391)",
+    "class": "label",
+    "confidence": "high",
+    "note": "D-021: Recommend assauts consistently with the paragraph and §628, and express the choice as one complete action label. The 5-round condition and destination 391 are unchanged; the alternative retains the other valid house term with the same grammatical label structure. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Vaincre le Gobelin en 5 rounds d’attaque (391)"
+    ]
+  },
+  {
+    "id": "FD-050",
+    "section": 737,
+    "field": "t",
+    "from": "5 rounds d’attaque",
+    "to": "5 assauts",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021: Recommend assauts, the term already used in §628, for the same combat-round mechanic. The count and deadline remain unchanged; rounds d’attaque is also understandable and grammatical French gaming terminology. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "5 rounds d’attaque"
+    ]
+  },
+  {
+    "id": "FD-051",
+    "section": 742,
+    "field": "t",
+    "from": "6 rounds d’attaque",
+    "to": "6 assauts",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021: Recommend assauts consistently with §628 and the related §737 choices. The reinforcement still arrives after 6 combat rounds; rounds d’attaque remains an understandable alternative terminology choice. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "6 rounds d’attaque"
+    ]
+  },
+  {
+    "id": "FD-052",
+    "section": null,
+    "field": "ui.cherez_tri_raunda_dva_ostalnyh_o",
+    "from": "rounds",
+    "to": "assauts",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021. Keep UI combat counters consistent with the chosen assaut terminology. This is only the term substitution; unrelated mandatory UI wording corrections remain in FR_REVIEW.json. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "rounds"
+    ]
+  },
+  {
+    "id": "FD-053",
+    "section": null,
+    "field": "ui.raund",
+    "from": "Round",
+    "to": "Assaut",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021. Keep UI combat counters consistent with the chosen assaut terminology. This is only the term substitution; unrelated mandatory UI wording corrections remain in FR_REVIEW.json. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Round"
+    ]
+  },
+  {
+    "id": "FD-054",
+    "section": null,
+    "field": "ui.raundov",
+    "from": "Rounds",
+    "to": "Assauts",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021. Keep UI combat counters consistent with the chosen assaut terminology. This is only the term substitution; unrelated mandatory UI wording corrections remain in FR_REVIEW.json. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Rounds"
+    ]
+  },
+  {
+    "id": "FD-055",
+    "section": null,
+    "field": "ui.snachala_vy_srazhaetes_tolko_s_g",
+    "from": "rounds d’attaque",
+    "to": "assauts",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021. Keep UI combat counters consistent with the chosen assaut terminology. This is only the term substitution; unrelated mandatory UI wording corrections remain in FR_REVIEW.json. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "rounds d’attaque"
+    ]
+  },
+  {
+    "id": "FD-056",
+    "section": null,
+    "field": "ui.snachala_vy_srazhaetes_tolko_s_p",
+    "from": "rounds",
+    "to": "assauts",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021. Keep UI combat counters consistent with the chosen assaut terminology. This is only the term substitution; unrelated mandatory UI wording corrections remain in FR_REVIEW.json. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "rounds"
+    ]
+  },
+  {
+    "id": "FD-057",
+    "section": null,
+    "field": "ui.vy_ulozhilis_v_otvedennye_raund",
+    "from": "rounds",
+    "to": "assauts",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-021. Keep UI combat counters consistent with the chosen assaut terminology. This is only the term substitution; unrelated mandatory UI wording corrections remain in FR_REVIEW.json. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "rounds"
+    ]
+  },
+  {
+    "id": "FD-058",
+    "section": 817,
+    "field": "t",
+    "from": "un étroit escalier de passage",
+    "to": "un étroit escalier de liaison",
+    "class": "grammar",
+    "confidence": "medium",
+    "note": "D-022: Recommend the more idiomatic architectural de liaison for переходную. The current de passage is intelligible; the longer narrative alternative makes the connection between passages explicit, which is only implicit in RU. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "un étroit escalier de passage",
+      "un petit escalier étroit reliant les deux passages"
+    ]
+  },
+  {
+    "id": "FD-059",
+    "section": 835,
+    "field": "t",
+    "from": "il vous faudra les regarder tranquillement en hâtant votre propre mort…",
+    "to": "il vous faudra les regarder sans pouvoir agir, en souhaitant que la mort vienne vite…",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-023: Recommend reading торопить смерть as wishing for a quick death while helpless. The current wording may instead suggest actively hastening one’s death and retains the original image more literally; this meaning choice is not a mandatory grammar repair. The separate closing-walls correction belongs to FR_REVIEW.json. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "il vous faudra les regarder tranquillement en hâtant votre propre mort…"
+    ]
+  },
+  {
+    "id": "FD-060",
+    "section": 836,
+    "field": "t",
+    "from": "pourrez-vous entrer par la fenêtre du dernier, cinquième étage (1192)",
+    "to": "entrerez-vous en volant par la fenêtre du cinquième et dernier étage (1192)",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-024: Recommend framing the menu as a choice of action and making RU влететь explicit. An ability question remains grammatical and closer to pouvez; both retain the fifth-floor destination 1192. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "pourrez-vous entrer en volant par la fenêtre du cinquième et dernier étage (1192)"
+    ]
+  },
+  {
+    "id": "FD-061",
+    "section": 933,
+    "field": "t",
+    "from": "une petite maison basse, d’un seul étage",
+    "to": "une petite maison basse, d’un seul niveau",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-025: Recommend the regionally unambiguous single-level reading of одноэтажный. De plain-pied is natural but slightly more architecturally specific; d’un seul étage is possible where étage denotes a level rather than necessarily a floor above ground. No castle-wide floor renumbering is implied. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "une petite maison basse, de plain-pied",
+      "une petite maison basse, d’un seul étage"
+    ]
+  },
+  {
+    "id": "FD-062",
+    "section": 940,
+    "field": "c[0]",
+    "from": "Maintenant, soit tenter de l’acheter (49)",
+    "to": "Tenter de vous débarrasser de la mendiante en la payant (49)",
+    "class": "label",
+    "confidence": "high",
+    "note": "D-026: Recommend an explicit, self-contained action label for the same pay-off choice. The destination 49 is preserved; acheter can validly mean bribe and amadouer emphasizes placating the beggar, so the wording remains authorial. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Tenter de l’acheter (49)",
+      "Tenter d’amadouer la mendiante avec de l’argent (49)"
+    ]
+  },
+  {
+    "id": "FD-063",
+    "section": 940,
+    "field": "t",
+    "from": "tenter de l’acheter (49)",
+    "to": "tenter de vous débarrasser d’elle en la payant (49)",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-026: Recommend making the defensive motive in откупиться explicit; §49 asks how many coins to give the beggar. Acheter quelqu’un can also mean bribe/buy off, so the current expression is not ungrammatical. Amadouer stresses placating her and is a possible tonal alternative. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "tenter de l’acheter (49)",
+      "tenter de l’amadouer avec de l’argent (49)"
+    ]
+  },
+  {
+    "id": "FD-064",
+    "section": 67,
+    "field": "t",
+    "from": "faites la même addition",
+    "to": "saisissez votre réponse en français dans le champ prévu",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-027. Author choice: use the game’s existing French answer-entry field instead of narrating Russian alphabet arithmetic. Resolve all seven D-027 instructions together; no answer or success destination is disclosed. Alternative retains manual French arithmetic with explicitly prescribed canonical answer forms; its offsets must be selected together across all seven riddles. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "additionnez les rangs alphabétiques de toutes les lettres de votre réponse (A = 1, …, Z = 26), sans article ajouté et sans compter les espaces, puis soustrayez 22 pour obtenir le numéro du paragraphe suivant"
+    ]
+  },
+  {
+    "id": "FD-065",
+    "section": 95,
+    "field": "t",
+    "from": "procédez comme pour les précédentes : ajoutez 50 au résultat et consultez le paragraphe nécessaire",
+    "to": "saisissez-la en français dans le champ prévu pour poursuivre votre aventure",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-027. Author choice: use the game’s existing French answer-entry field instead of narrating Russian alphabet arithmetic. Resolve all seven D-027 instructions together; no answer or success destination is disclosed. Alternative retains manual French arithmetic with explicitly prescribed canonical answer forms; its offsets must be selected together across all seven riddles. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "additionnez les rangs alphabétiques des lettres de votre réponse au singulier et sans article (A = 1, …, Z = 26), puis ajoutez 73 pour obtenir le numéro du paragraphe suivant"
+    ]
+  },
+  {
+    "id": "FD-066",
+    "section": 435,
+    "field": "t",
+    "from": "additionnez les numéros d’ordre des lettres composant son nom, ajoutez, ajoutez à cela « 30 » et consultez le paragraphe portant ce numéro",
+    "to": "saisissez son nom en français dans le champ prévu pour poursuivre votre aventure",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-027. Author choice: use the game’s existing French answer-entry field instead of narrating Russian alphabet arithmetic. Resolve all seven D-027 instructions together; no answer or success destination is disclosed. Alternative retains manual French arithmetic with explicitly prescribed canonical answer forms; its offsets must be selected together across all seven riddles. The current §435 French answer hash for HYENE is missing; this instruction assumes the separate accepted-answer addition supplied in FR_REVIEW.json (field riddles.435). Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "additionnez les rangs alphabétiques des lettres de son nom au singulier et sans article (A = 1, …, Z = 26, en ignorant les accents), puis ajoutez 9 pour obtenir le numéro du paragraphe suivant"
+    ]
+  },
+  {
+    "id": "FD-067",
+    "section": 439,
+    "field": "t",
+    "from": "Additionnez entre eux les numéros d’ordre de toutes les lettres de ce mot et consultez le paragraphe dont vous avez besoin.",
+    "to": "Saisissez votre réponse en français dans le champ prévu pour poursuivre votre aventure.",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-027. Author choice: use the game’s existing French answer-entry field instead of narrating Russian alphabet arithmetic. Resolve all seven D-027 instructions together; no answer or success destination is disclosed. Alternative retains manual French arithmetic with explicitly prescribed canonical answer forms; its offsets must be selected together across all seven riddles. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Additionnez les rangs alphabétiques des lettres de votre réponse au singulier et sans article (A = 1, …, Z = 26), puis ajoutez 8 pour obtenir le numéro du paragraphe suivant."
+    ]
+  },
+  {
+    "id": "FD-068",
+    "section": 992,
+    "field": "t",
+    "from": "Additionnez les rangs alphabétiques des lettres du mot de votre réponse et ajoutez 825 à cette somme. Le nombre obtenu sera le numéro recherché.",
+    "to": "Saisissez votre réponse en français dans le champ prévu pour poursuivre votre aventure.",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-027. Author choice: use the game’s existing French answer-entry field instead of narrating Russian alphabet arithmetic. Resolve all seven D-027 instructions together; no answer or success destination is disclosed. Alternative retains manual French arithmetic with explicitly prescribed canonical answer forms; its offsets must be selected together across all seven riddles. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Additionnez les rangs alphabétiques des lettres de votre réponse au singulier et sans article (A = 1, …, Z = 26), puis ajoutez 866 pour obtenir le numéro du paragraphe suivant."
+    ]
+  },
+  {
+    "id": "FD-069",
+    "section": 1113,
+    "field": "t",
+    "from": "additionnez les rangs dans l’alphabet des lettres qui composent le mot, ajoutez 1046 à cette somme, et le nombre obtenu sera le prochain paragraphe",
+    "to": "saisissez-la en français dans le champ prévu pour poursuivre votre aventure",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-027. Author choice: use the game’s existing French answer-entry field instead of narrating Russian alphabet arithmetic. Resolve all seven D-027 instructions together; no answer or success destination is disclosed. Alternative retains manual French arithmetic with explicitly prescribed canonical answer forms; its offsets must be selected together across all seven riddles. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "additionnez les rangs alphabétiques des lettres de votre réponse en un seul mot, au singulier et sans article (A = 1, …, Z = 26), puis ajoutez 1070 pour obtenir le numéro du paragraphe suivant"
+    ]
+  },
+  {
+    "id": "FD-070",
+    "section": 1131,
+    "field": "t",
+    "from": "ajoutez 916 à la somme des rangs des lettres dans l’alphabet, et si la réponse est correcte, vous arriverez au bon paragraphe",
+    "to": "saisissez-la en français dans le champ prévu ; si elle est correcte, vous poursuivrez votre aventure",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-027. Author choice: use the game’s existing French answer-entry field instead of narrating Russian alphabet arithmetic. Resolve all seven D-027 instructions together; no answer or success destination is disclosed. Alternative retains manual French arithmetic with explicitly prescribed canonical answer forms; its offsets must be selected together across all seven riddles. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "additionnez les rangs alphabétiques des lettres de votre réponse au singulier et sans article (A = 1, …, Z = 26, en ignorant les accents), puis ajoutez 905 pour obtenir le numéro du paragraphe suivant"
+    ]
+  },
+  {
+    "id": "FD-071",
+    "section": null,
+    "field": "ui.vash_otvet_im_padezh_ed_ch",
+    "from": "Votre réponse (un seul mot)",
+    "to": "Votre réponse (au singulier)",
+    "class": "ui",
+    "confidence": "high",
+    "note": "D-027. Coordinated riddle-input guidance must permit existing multiword answers such as mot de passe. Prefer the singulier constraint from RU instead of an incorrect one-word constraint. Shorter labels are valid presentation alternatives. This correction is also supplied in the earlier FR_REVIEW.json. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Votre réponse",
+      "Votre réponse en français"
+    ]
+  },
+  {
+    "id": "FD-072",
+    "section": 992,
+    "field": "t",
+    "from": "Mais je me sens seul ici.",
+    "to": "Mais je me sens seule ici.",
+    "class": "grammar",
+    "confidence": "medium",
+    "note": "D-028. The character calls itself une araignée. Feminine agreement is the neutral French reading; a deliberately male speaking spider may retain seul. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Mais je me sens seul ici."
+    ]
+  },
+  {
+    "id": "FD-073",
+    "section": 1023,
+    "field": "t",
+    "from": "Il n’est pas très profond, haut d’environ deux fois votre taille",
+    "to": "Il n’est pas très profond : environ deux fois votre taille",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-029. Remove the source’s odd height/depth wording while keeping its estimate and qualification. The colon and the dash alternatives differ in narration rhythm. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Il n’est pas très profond, haut d’environ deux fois votre taille",
+      "Il n’est pas très profond — environ deux fois votre taille —"
+    ]
+  },
+  {
+    "id": "FD-074",
+    "section": 1060,
+    "field": "t",
+    "from": "Après avoir monté une courte échelle",
+    "to": "Après avoir monté une courte échelle",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-030. KEEP. Russian лесенка does not establish whether this is a ladder or a short staircase. Retain the current architectural reading rather than inventing one. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Après avoir monté un petit escalier"
+    ]
+  },
+  {
+    "id": "FD-075",
+    "section": 1098,
+    "field": "t",
+    "from": "un planning des postes gardant la Princesse",
+    "to": "un tableau des tours de garde auprès de la Princesse",
+    "class": "grammar",
+    "confidence": "medium",
+    "note": "D-031. Prefer a less modern administrative expression for narration. The following sentence expressly mentions changing the guard; the original planning remains grammatical. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "un planning des postes gardant la Princesse",
+      "un horaire de mise en place des postes de garde de la Princesse"
+    ]
+  },
+  {
+    "id": "FD-076",
+    "section": 1099,
+    "field": "t",
+    "from": "en trois assauts",
+    "to": "en trois assauts au maximum",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-032. Make the upper bound explicit. En trois assauts can already mean within three; the longer wording prevents the exactly-three reading without changing the deadline. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "en trois assauts"
+    ]
+  },
+  {
+    "id": "FD-077",
+    "section": 1175,
+    "field": "t",
+    "from": "en trois assauts",
+    "to": "en trois assauts au maximum",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-032. Make the upper bound explicit. En trois assauts can already mean within three; the longer wording prevents the exactly-three reading without changing the deadline. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "en trois assauts"
+    ]
+  },
+  {
+    "id": "FD-078",
+    "section": 1118,
+    "field": "c[1]",
+    "from": "Sortir par la porte dans le même mur que celui par lequel vous êtes entré (809)",
+    "to": "Sortir par la porte située dans le même mur que la porte d’entrée (809)",
+    "class": "label",
+    "confidence": "high",
+    "note": "D-033. Companion wording for D-033 prose; retain target 809 and positional index. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Sortir par la porte dans le même mur que celui par lequel vous êtes entré (809)"
+    ]
+  },
+  {
+    "id": "FD-079",
+    "section": 1118,
+    "field": "t",
+    "from": "soit par celle du même mur que celui par lequel vous êtes entré",
+    "to": "soit par celle située dans le même mur que la porte d’entrée",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-033. Resolve the wall/door comparison explicitly. The source-like metonymy is recoverable, so this is an idiomatic editorial clarification. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "soit par celle du même mur que celui par lequel vous êtes entré"
+    ]
+  },
+  {
+    "id": "FD-080",
+    "section": 1157,
+    "field": "t",
+    "from": "qui cachent à la vue toutes les entrées et sorties, y compris vous-même",
+    "to": "qui dissimulent toutes les entrées et sorties et vous cachent également",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-034. Avoid literally including the hero among entrances and exits. The source has the same metonymic construction; the practical meaning remains unchanged. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "qui cachent à la vue toutes les entrées et sorties, y compris vous-même"
+    ]
+  },
+  {
+    "id": "FD-081",
+    "section": 1171,
+    "field": "t",
+    "from": "Un autre fut nommé Capitaine",
+    "to": "Un Capitaine fut également nommé",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-035. Neutral recommendation does not decide whether the Captain was one of the three barons or a fourth man. The two alternatives expressly choose those different identities. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      "Un autre fut nommé Capitaine",
+      "L’un d’eux fut nommé Capitaine"
+    ]
+  },
+  {
+    "id": "FD-082",
+    "section": null,
+    "field": "ui.mest_no_v_meshke_tolko",
+    "from": " places), mais le sac n’a que ",
+    "to": " au total), mais places libres : ",
+    "class": "ui",
+    "confidence": "high",
+    "note": "D-036. Coordinated caption-style repair: apply all three D-036 rows together. A noun label before the count avoids singular/plural agreement after the dynamic number, including 1 places and 1 libres. Leading/trailing spaces and the parentheses/comma joins are preserved. The alternatives form a longer explanatory style and must also be selected as a coordinated set. The grammar defect is definite; author_choice refers to the choice of display wording, not whether to repair agreement. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      " au total), mais le nombre de places libres est de "
+    ]
+  },
+  {
+    "id": "FD-083",
+    "section": null,
+    "field": "ui.svobodnyh_iz",
+    "from": " libres sur ",
+    "to": " sur ",
+    "class": "ui",
+    "confidence": "high",
+    "note": "D-036. Coordinated caption-style repair: apply all three D-036 rows together. A noun label before the count avoids singular/plural agreement after the dynamic number, including 1 places and 1 libres. Leading/trailing spaces and the parentheses/comma joins are preserved. The alternatives form a longer explanatory style and must also be selected as a coordinated set. The grammar defect is definite; author_choice refers to the choice of display wording, not whether to repair agreement. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      " sur une capacité totale de "
+    ]
+  },
+  {
+    "id": "FD-084",
+    "section": null,
+    "field": "ui.zanimayut_tail",
+    "from": " (occupant ",
+    "to": " (places occupées : ",
+    "class": "ui",
+    "confidence": "high",
+    "note": "D-036. Coordinated caption-style repair: apply all three D-036 rows together. A noun label before the count avoids singular/plural agreement after the dynamic number, including 1 places and 1 libres. Leading/trailing spaces and the parentheses/comma joins are preserved. The alternatives form a longer explanatory style and must also be selected as a coordinated set. The grammar defect is definite; author_choice refers to the choice of display wording, not whether to repair agreement. Baseline: unchanged archive 6c7b511e1a7f26af03337608672bb57e628a3b30; apply within the specified field. Alternatives replace the same source span.",
+    "author_choice": true,
+    "alternatives": [
+      " (nombre de places occupées : "
+    ]
+  }
+]

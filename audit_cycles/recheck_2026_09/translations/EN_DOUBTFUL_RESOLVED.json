@@ -1,0 +1,889 @@
+[
+  {
+    "id": "D-001",
+    "section": 67,
+    "field": "t",
+    "from": "Lighter than light, simpler than simple",
+    "to": "Easier than easy, simpler than simple",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-001: Recommend the ease reading of «Легче легкого»; the riddle answer is a password. A weight metaphor remains a possible authorial reading, so this is not an unambiguous mistranslation.",
+    "author_choice": true,
+    "alternatives": [
+      "Lighter than light, simpler than simple"
+    ]
+  },
+  {
+    "id": "D-002",
+    "section": 79,
+    "field": "t",
+    "from": "The road in this direction no longer turns anywhere.",
+    "to": "The road no longer branches in this direction.",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-002: Recommend interpreting «уже никуда не сворачивает» as offering no further branches. The source can instead describe a road that stops bending; retain that as an authorial alternative.",
+    "author_choice": true,
+    "alternatives": [
+      "The road runs straight from here on."
+    ]
+  },
+  {
+    "id": "D-003",
+    "section": 88,
+    "field": "t",
+    "from": "pass by through an obstacle",
+    "to": "slip past the obstacle",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-003: Recommend passing an obstacle unnoticed, consistent with the ring granting invisibility and the next clause saying that enemies do not notice you. The awkward Russian «проходите мимо через препятствие» does not conclusively distinguish slipping past from making one’s way through an obstacle; neither reading should grant passage through solid matter.",
+    "author_choice": true,
+    "alternatives": [
+      "make your way through the obstacle"
+    ]
+  },
+  {
+    "id": "D-004",
+    "section": 150,
+    "field": "t",
+    "from": "Most likely, it resembles a room where actors change costumes for performances.",
+    "to": "It looks like a dressing room for actors.",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-004: Optional idiomatic compression; the original is grammatical and preserves more of the narrator’s hesitant, descriptive pacing.",
+    "author_choice": true,
+    "alternatives": [
+      "It seems to be a room where actors change costumes for performances.",
+      "Most likely, it resembles a room where actors change costumes for performances."
+    ]
+  },
+  {
+    "id": "D-005a",
+    "section": 172,
+    "field": "t",
+    "from": "deer skin",
+    "to": "deer hide",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-005: Prefer “deer hide” to match items.deer_hide. “Deer skin” is also valid English; the choice is one of terminology consistency. Apply with D-005b.",
+    "author_choice": true,
+    "alternatives": [
+      "deer skin"
+    ]
+  },
+  {
+    "id": "D-005b",
+    "section": 172,
+    "field": "c[0]",
+    "from": "deer skin",
+    "to": "deer hide",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-005: Companion to D-005a: use the same optional item wording in the choice label. The label destination remains 1062.",
+    "author_choice": true,
+    "alternatives": [
+      "deer skin"
+    ]
+  },
+  {
+    "id": "D-006",
+    "section": 212,
+    "field": "t",
+    "from": "Nature utterly unlike anything typical for this region.",
+    "to": "This landscape is utterly unlike anything typical of this region.",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-006: Prefer a complete, idiomatic sentence for narration. The Russian uses a deliberate fragment, so retaining a fragment is also a legitimate stylistic choice.",
+    "author_choice": true,
+    "alternatives": [
+      "A landscape utterly unlike anything typical of this region.",
+      "Nature utterly unlike anything typical for this region."
+    ]
+  },
+  {
+    "id": "D-007",
+    "section": 212,
+    "field": "t",
+    "from": "before you you see",
+    "to": "you see before you",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-007: Optional word-order adjustment for smoother narration. The original adjacent occurrences of “you” have different grammatical roles and are not a duplication error.",
+    "author_choice": true,
+    "alternatives": [
+      "before you you see"
+    ]
+  },
+  {
+    "id": "D-008a",
+    "section": 243,
+    "field": "t",
+    "from": "a large shaped bottle",
+    "to": "a large, unusually shaped bottle",
+    "class": "terminology",
+    "confidence": "medium",
+    "note": "D-008: Recommend idiomatic “unusually shaped” for «фигурная». The Russian leaves the shape unspecified; a decorative-shape reading is also possible. Apply the selected wording consistently with D-008b and D-008c.",
+    "author_choice": true,
+    "alternatives": [
+      "a large, decoratively shaped bottle"
+    ]
+  },
+  {
+    "id": "D-008b",
+    "section": 243,
+    "field": "t",
+    "from": "the shaped bottle (902)",
+    "to": "the unusually shaped bottle (902)",
+    "class": "terminology",
+    "confidence": "medium",
+    "note": "D-008: Companion to D-008a: harmonize the later mention of the same bottle; reference 902 is unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "the decoratively shaped bottle (902)"
+    ]
+  },
+  {
+    "id": "D-008c",
+    "section": 243,
+    "field": "c[2]",
+    "from": "The shaped bottle (902)",
+    "to": "Try to take the unusually shaped bottle (902)",
+    "class": "label",
+    "confidence": "medium",
+    "note": "D-008: Companion to D-008a: harmonize the choice label. This also incorporates the independently recommended action wording in EN_REVIEW.json T-135 and supersedes that overlapping replacement; destination 902 is unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "Try to take the decoratively shaped bottle (902)"
+    ]
+  },
+  {
+    "id": "D-009",
+    "section": 265,
+    "field": "t",
+    "from": "Soon you reach the end of the path, at the foot of which stands a house.",
+    "to": "Soon you reach the end of the path, where a house stands.",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-009: Recommend locating the house at the stated end of the path, matching D-011. The Russian «у подножия которой» could instead imply its lower end; a slope is not established. The following source sentence still says the path continues behind the house, so this does not resolve that inherited ambiguity.",
+    "author_choice": true,
+    "alternatives": [
+      "Soon you reach the lower end of the path, where a house stands."
+    ]
+  },
+  {
+    "id": "D-010",
+    "section": 306,
+    "field": "t",
+    "from": "In the farthest corner, something seems to be lying there.",
+    "to": "Something seems to be lying in the farthest corner.",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-010: Optional removal of a repeated location cue. The original is grammatical; its slower observation can be retained as an authorial style.",
+    "author_choice": true,
+    "alternatives": [
+      "In the farthest corner, something seems to be lying there."
+    ]
+  },
+  {
+    "id": "D-011",
+    "section": 389,
+    "field": "t",
+    "from": "At its foot stands a house.",
+    "to": "At the end of the path stands a house.",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-011: Recommend the same end-of-path reading as D-009, following the preceding sentence. The Russian «У ее подножия» could instead mean the lower end of a sloping path, although no slope is stated.",
+    "author_choice": true,
+    "alternatives": [
+      "At the lower end of the path stands a house."
+    ]
+  },
+  {
+    "id": "D-012a",
+    "section": 422,
+    "field": "t",
+    "from": "And you set out farther — 452.",
+    "to": "You continue on your way — 452.",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-012: Prefer the idiomatic continuation wording for «А вы отправляетесь дальше». The original is understandable and its connective pacing can be retained; this is stylistic. Apply with D-012b.",
+    "author_choice": true,
+    "alternatives": [
+      "And you go on your way — 452.",
+      "And you set out farther — 452."
+    ]
+  },
+  {
+    "id": "D-012b",
+    "section": 422,
+    "field": "c[0]",
+    "from": "Set out farther (452)",
+    "to": "Continue on your way (452)",
+    "class": "label",
+    "confidence": "high",
+    "note": "D-012: Companion to D-012a: use the same continuation wording in the choice label; destination 452 is unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "Go on your way (452)",
+      "Set out farther (452)"
+    ]
+  },
+  {
+    "id": "D-013",
+    "section": 431,
+    "field": "t",
+    "from": "six poisonous snakes",
+    "to": "six venomous snakes",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-013: Prefer “venomous” for snakes dangerous through their bites. “Poisonous snakes” remains established ordinary-language usage, so the original is not an unambiguous grammar error.",
+    "author_choice": true,
+    "alternatives": [
+      "six poisonous snakes"
+    ]
+  },
+  {
+    "id": "D-014",
+    "section": 465,
+    "field": "t",
+    "from": "a deserted plain, deep and narrow",
+    "to": "a narrow, deserted plain lying in a deep hollow",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-014: Recommend clarifying the depth without replacing the Russian plain with a different landform. The same paragraph explicitly places the plain in a deep pit surrounded by sheer cliffs. Retaining the source’s unusual compressed description is a defensible literary alternative; calling it a basin would be a stronger geographical reinterpretation.",
+    "author_choice": true,
+    "alternatives": [
+      "a deserted plain, deep and narrow"
+    ]
+  },
+  {
+    "id": "D-015",
+    "section": 508,
+    "field": "t",
+    "from": "the inscription “…ake.” Unfortunately, the first few letters have been washed away by rain.",
+    "to": "the inscription “…ke.” Unfortunately, the first few letters have been washed away by rain.",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-015: Recommend retaining the Russian multiple-letter damage by shortening the visible English suffix of Lake. The alternative preserves the more recognisable …ake clue but changes several missing letters to one; the choice affects how readily the player recognises the destination.",
+    "author_choice": true,
+    "alternatives": [
+      "the inscription “…ake.” Unfortunately, the first letter has been washed away by rain."
+    ]
+  },
+  {
+    "id": "D-016",
+    "section": 550,
+    "field": "t",
+    "from": "could not overcome the ill-fated spider",
+    "to": "could not overcome the accursed spider",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-016: Recommend interpreting злополучного as the spider that brought misfortune to its visitor, with accursed used as an expression of hostility, not a literal magical curse. The current ill-fated instead describes the spider’s own fate; it has now been killed, so that reading also remains possible.",
+    "author_choice": true,
+    "alternatives": [
+      "could not overcome the ill-fated spider",
+      "could not overcome the troublesome spider"
+    ]
+  },
+  {
+    "id": "D-017",
+    "section": 552,
+    "field": "t",
+    "from": "Greed has let you down",
+    "to": "Your stinginess has let you down",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-017: Recommend the context-specific sense of жадность: giving several women only one gold piece provokes the fight. The broader greed is grammatical and remains an authorial option.",
+    "author_choice": true,
+    "alternatives": [
+      "Your greed has let you down"
+    ]
+  },
+  {
+    "id": "D-018",
+    "section": 599,
+    "field": "t",
+    "from": "showing off their catch",
+    "to": "showing off their game",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-018: Recommend the customary hunting noun game for the hunters’ добыча. Catch is intelligible, while haul is another idiomatic but less hunting-specific option; this is a lexical preference rather than an unambiguous grammar repair.",
+    "author_choice": true,
+    "alternatives": [
+      "showing off their catch",
+      "showing off their haul"
+    ]
+  },
+  {
+    "id": "D-019",
+    "section": 609,
+    "field": "t",
+    "from": "you limit yourself to fleeing",
+    "to": "you simply flee",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-019: Recommend smoother narration for ограничиваетесь бегством. The preceding clause already states that the hero does not wish to fight any longer; keeping limit yourself emphasizes that restraint more explicitly and is also grammatical.",
+    "author_choice": true,
+    "alternatives": [
+      "you limit yourself to fleeing",
+      "you content yourself with making your escape"
+    ]
+  },
+  {
+    "id": "D-020",
+    "section": 612,
+    "field": "t",
+    "from": "he wipes away a tear of memory",
+    "to": "he wipes away a tear at the memory",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-020: Recommend the idiomatic causal phrasing while retaining the recollection of his family. Russian слезу воспоминаний is lyrical, so the unusual tear of memory can reasonably be retained as an intentional literary image.",
+    "author_choice": true,
+    "alternatives": [
+      "he wipes away a tear of memory",
+      "he wipes away a tear of remembrance"
+    ]
+  },
+  {
+    "id": "D-021",
+    "section": 629,
+    "field": "t",
+    "from": "What will you do: is it worth catching the boat and sailing farther in it (573), or swimming to the opposite bank and leaving the boat alone (164)?",
+    "to": "Will you catch the boat and continue in it (573), or swim to the opposite bank and leave the boat alone (164)?",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-021: Recommend a direct, parallel choice question. This retains both actions and destinations while smoothing the Russian rhetorical стоит. An explicitly evaluative question is also grammatical but places more emphasis on weighing the boat option.",
+    "author_choice": true,
+    "alternatives": [
+      "Is it worth catching the boat and continuing in it (573), or would you rather swim to the opposite bank and leave the boat alone (164)?"
+    ]
+  },
+  {
+    "id": "D-022",
+    "section": 671,
+    "field": "t",
+    "from": "heroes with a death wish keep visiting the castle — and he can barely catch them all",
+    "to": "heroes with a death wish keep visiting the castle — keeping him busy catching them",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-022: Recommend emphasizing the constant workload conveyed by только успевай отлавливать, without implying that some heroes escape capture. The original can reasonably be read as hyperbole about the same workload, so this remains an authorial nuance.",
+    "author_choice": true,
+    "alternatives": [
+      "heroes with a death wish keep visiting the castle — and he can barely keep up with catching them"
+    ]
+  },
+  {
+    "id": "D-023",
+    "section": 722,
+    "field": "t",
+    "from": "the floor of the watch wall’s battlement",
+    "to": "the walkway along the battlements",
+    "class": "terminology",
+    "confidence": "medium",
+    "note": "D-023: Recommend an idiomatic architectural description of пол сторожевой стены-бойницы. The destination §684 confirms a wall edge with battlements through which the hero can look down. Walkway makes the likely structure explicit; the less specific alternative avoids committing to the shape of that surface.",
+    "author_choice": true,
+    "alternatives": [
+      "the top of the battlemented wall"
+    ]
+  },
+  {
+    "id": "D-024",
+    "section": 747,
+    "field": "t",
+    "from": "walking carelessly along the same path",
+    "to": "continuing along the same path without a care",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-024: Recommend the untroubled sense of беззаботно and retain дальше as continuing. Carelessly may suggest negligence, whereas carefree or without a care emphasizes the hero’s unworried state; the choice is semantic emphasis rather than grammar.",
+    "author_choice": true,
+    "alternatives": [
+      "walking carefree along the same path",
+      "walking on along the same path, heedless of danger"
+    ]
+  },
+  {
+    "id": "D-025",
+    "section": 778,
+    "field": "t",
+    "from": "“do not send your peop… to certain death,”",
+    "to": "“do not send your peop… to certain death…,”",
+    "class": "typography",
+    "confidence": "medium",
+    "note": "D-025: Recommend a final ellipsis to make the torn-letter fragment audible and visible while preserving the deliberately incomplete peop…. Russian word order places its truncated лю… last, whereas English puts the truncated noun in the middle. Retaining only the internal ellipsis is equally possible; omitted wording is not reconstructed.",
+    "author_choice": true,
+    "alternatives": [
+      "“do not send your peop… to certain death,”"
+    ]
+  },
+  {
+    "id": "D-026",
+    "section": 797,
+    "field": "t",
+    "from": "If you have already examined both one and the other, go to 489.",
+    "to": "If you have already examined the mirror, the maps on the table, and the door, go to 489.",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-026: Recommend explicitly naming all three remaining inspections. The Russian prose’s и то, и другое is ambiguous after three options, but its label says Уже всё осмотрели. assets/text_corrections.json records that exit 489 requires all three OTHER inspection flags; the cupboard has just been examined in this paragraph. This resolves the English wording in line with the maintained gate without changing Russian. Everything is a shorter valid stylistic alternative.",
+    "author_choice": true,
+    "alternatives": [
+      "If you have already examined everything, go to 489."
+    ]
+  },
+  {
+    "id": "D-027",
+    "section": 835,
+    "field": "t",
+    "from": "calmly watch it and hasten death",
+    "to": "watch in resignation and wish death would come sooner",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-027: Russian «спокойно смотреть на это и торопить смерть» is interpreted as resigned observation and longing for an earlier death in the sealed, crushing room. An active attempt to hasten death is also a grammatical reading, so this is an authorial interpretation, not a uniquely required correction.",
+    "author_choice": true,
+    "alternatives": [
+      "calmly watch it and try to hasten your death"
+    ]
+  },
+  {
+    "id": "D-028a",
+    "section": 921,
+    "field": "t",
+    "from": "you may enter, moving by touch",
+    "to": "you may enter, feeling your way",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-028: Prefer the idiomatic English expression for Russian «передвигаясь на ощупь». The current wording is grammatical and intelligible, so this is a style choice. Apply with D-028b for the corresponding label.",
+    "author_choice": true,
+    "alternatives": [
+      "you may enter, moving by touch"
+    ]
+  },
+  {
+    "id": "D-028b",
+    "section": 921,
+    "field": "c[0]",
+    "from": "Enter, moving by touch (1155)",
+    "to": "Enter, feeling your way (1155)",
+    "class": "label",
+    "confidence": "high",
+    "note": "D-028: Match the idiomatic wording recommended in D-028a; the destination is unchanged. The original is a valid, more literal stylistic alternative.",
+    "author_choice": true,
+    "alternatives": [
+      "Enter, moving by touch (1155)"
+    ]
+  },
+  {
+    "id": "D-029",
+    "section": 932,
+    "field": "t",
+    "from": "However many larvae you have, that many enemies you can kill with their help.",
+    "to": "You can kill one enemy with each larva you have.",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-029: Both versions preserve the one-larva-per-enemy rule stated immediately before this sentence. Prefer the more idiomatic formulation; the literal correlative construction remains grammatical.",
+    "author_choice": true,
+    "alternatives": [
+      "You can kill as many enemies as you have larvae."
+    ]
+  },
+  {
+    "id": "D-030",
+    "section": 985,
+    "field": "t",
+    "from": "a heavy wrought chest",
+    "to": "a heavy iron-bound chest",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-030: Prefer the usual chest-reinforced-with-ironwork reading of Russian «тяжелый кованый сундук». The follow-up in §598 identifies its contents but not its construction; an all-metal wrought-iron chest remains a possible authorial reading.",
+    "author_choice": true,
+    "alternatives": [
+      "a heavy wrought-iron chest"
+    ]
+  },
+  {
+    "id": "D-031",
+    "section": 1013,
+    "field": "t",
+    "from": "You will wander through the dungeons of the Black Castle in darkness and silence until death, until you lose your mind",
+    "to": "You will wander through the dungeons of the Black Castle in darkness and silence until death, losing your mind along the way",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-031: Resolve the Russian overlap of «до самой смерти» and «пока не сойдете с ума» as madness during a lifetime of wandering. This retains both outcomes while making their chronology intelligible; the source itself leaves their relationship awkward, so the restructuring is an authorial choice.",
+    "author_choice": true,
+    "alternatives": [
+      "You will lose your mind as you wander through the dungeons of the Black Castle in darkness and silence for the rest of your life"
+    ]
+  },
+  {
+    "id": "D-032a",
+    "section": 1030,
+    "field": "t",
+    "from": "You return the whistle to the chamberlain.",
+    "to": "You return the whistle to the valet.",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-032: The same prisoner is already called the mage’s valet twice in §947; §1164 names the Harpy as his new valet and describes cleaning clothes. Prefer valet for «камердинер» and apply D-032a/b together. Chamberlain is grammatical but denotes a broader office; retaining that term would require a coordinated terminology change in §947 and §1164.",
+    "author_choice": true,
+    "alternatives": [
+      "You return the whistle to the chamberlain."
+    ]
+  },
+  {
+    "id": "D-032b",
+    "section": 1030,
+    "field": "t",
+    "from": "In gratitude, the chamberlain, guessing who you are,",
+    "to": "In gratitude, the valet, guessing who you are,",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-032: Second occurrence in §1030; use valet consistently with §947 and the replacement valet in §1164. Apply with D-032a. The chamberlain alternative is an authorial office choice and requires coordinated terminology across those passages.",
+    "author_choice": true,
+    "alternatives": [
+      "In gratitude, the chamberlain, guessing who you are,"
+    ]
+  },
+  {
+    "id": "D-033",
+    "section": 1174,
+    "field": "t",
+    "from": "the fire slips from your hands",
+    "to": "your light slips from your hands",
+    "class": "grammar",
+    "confidence": "high",
+    "note": "D-033: Prefer an idiomatic English metonym for Russian «огонь» without inventing a candle, feather, or other route-dependent object. The original metonym is grammatical, so this is a literary style choice.",
+    "author_choice": true,
+    "alternatives": [
+      "your source of light slips from your hands",
+      "the fire slips from your hands"
+    ]
+  },
+  {
+    "id": "D-034",
+    "section": 1213,
+    "field": "t",
+    "from": "add 1 SKILL, even if your initial SKILL had not changed",
+    "to": "add 1 to your SKILL in combat, even if your current SKILL is already at its initial value",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-034: assets/GAME_RULES.md §6 gives the Knight’s Shield +1 Attack Strength; GD[1213] equips knight_shield, and playerEquipMod() adds +1 without changing skill or skillMax. Resolve the unclear Russian cap clause as an uncapped combat bonus. This clarifies the existing rule; it does not introduce a permanent increase to the base stat. Alternative phrasing expresses the same verified mechanic, so wording remains an authorial choice.",
+    "author_choice": true,
+    "alternatives": [
+      "the shield grants a +1 SKILL bonus in combat, which can take your effective SKILL above its initial value"
+    ]
+  },
+  {
+    "id": "D-035",
+    "section": null,
+    "field": "preface",
+    "from": "return unpunished",
+    "to": "return unscathed",
+    "class": "grammar",
+    "confidence": "medium",
+    "note": "D-035: Prefer the idiomatic ominous sense of returning unharmed for Russian «безнаказанно вернуться обратно». Literal punishment is a reasonable darker authorial reading, so the original remains an alternative.",
+    "author_choice": true,
+    "alternatives": [
+      "return unpunished",
+      "return without suffering the consequences"
+    ]
+  },
+  {
+    "id": "D-036a",
+    "section": null,
+    "field": "ui.ui_map_sub",
+    "from": "travelled",
+    "to": "traveled",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "travelled"
+    ]
+  },
+  {
+    "id": "D-036b",
+    "section": null,
+    "field": "ui.ui_leg_path",
+    "from": "travelled",
+    "to": "traveled",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "travelled"
+    ]
+  },
+  {
+    "id": "D-036c",
+    "section": null,
+    "field": "ui.zoloto_proydennye_puti_punktir_u",
+    "from": "travelled",
+    "to": "traveled",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "travelled"
+    ]
+  },
+  {
+    "id": "D-036d",
+    "section": null,
+    "field": "ui.zoloto_proydennye_puti_punktir_u",
+    "from": "sabres",
+    "to": "sabers",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "sabres"
+    ]
+  },
+  {
+    "id": "D-036e",
+    "section": 446,
+    "field": "t",
+    "from": "travelling",
+    "to": "traveling",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "travelling"
+    ]
+  },
+  {
+    "id": "D-036f",
+    "section": 460,
+    "field": "t",
+    "from": "metres",
+    "to": "meters",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "metres"
+    ]
+  },
+  {
+    "id": "D-036g",
+    "section": 465,
+    "field": "t",
+    "from": "travelled",
+    "to": "traveled",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "travelled"
+    ]
+  },
+  {
+    "id": "D-036h",
+    "section": 493,
+    "field": "t",
+    "from": "metres",
+    "to": "meters",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged. If combined with EN_REVIEW.json, apply its T-309 before this spelling replacement.",
+    "author_choice": true,
+    "alternatives": [
+      "metres"
+    ]
+  },
+  {
+    "id": "D-036i",
+    "section": 505,
+    "field": "t",
+    "from": "sabre",
+    "to": "saber",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "sabre"
+    ]
+  },
+  {
+    "id": "D-036j",
+    "section": 566,
+    "field": "t",
+    "from": "sabre",
+    "to": "saber",
+    "class": "typography",
+    "confidence": "high",
+    "note": "D-036: Recommend US spelling to match the existing center, armor and traveler. This is an editorial variety choice, not a grammatical correction. The alternative retains the British spelling; adopting British English globally would require coordinated changes elsewhere. These entries cover the actual variant forms found in the archived English locale; proper names, quantities and units are unchanged.",
+    "author_choice": true,
+    "alternatives": [
+      "sabre"
+    ]
+  },
+  {
+    "id": "D-037",
+    "section": null,
+    "field": "pregame",
+    "from": "many magical mysteries require enchanted objects",
+    "to": "many magical rites require enchanted objects",
+    "class": "fidelity",
+    "confidence": "medium",
+    "note": "D-037: Recommend rites for the concrete practices suggested by Russian «магических таинств» requiring enchanted objects. Mysteries retains a broader, more enigmatic authorial sense, so this recommendation selects a narrower reading.",
+    "author_choice": true,
+    "alternatives": [
+      "many magical mysteries require enchanted objects"
+    ]
+  },
+  {
+    "id": "D-038a",
+    "section": 368,
+    "field": "t",
+    "from": "CHECK YOUR LUCK",
+    "to": "TEST YOUR LUCK",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-038: Recommend the same TEST YOUR LUCK formula used for this mechanic elsewhere in the prose. CHECK YOUR LUCK is also grammatical; this is editorial consistency, with no change to the mechanic or destinations.",
+    "author_choice": true,
+    "alternatives": [
+      "CHECK YOUR LUCK"
+    ]
+  },
+  {
+    "id": "D-038b",
+    "section": 377,
+    "field": "t",
+    "from": "CHECK YOUR LUCK",
+    "to": "TEST YOUR LUCK",
+    "class": "terminology",
+    "confidence": "high",
+    "note": "D-038: Recommend the same TEST YOUR LUCK formula used for this mechanic elsewhere in the prose. CHECK YOUR LUCK is also grammatical; this is editorial consistency, with no change to the mechanic or destinations.",
+    "author_choice": true,
+    "alternatives": [
+      "CHECK YOUR LUCK"
+    ]
+  },
+  {
+    "id": "D-039a",
+    "section": 67,
+    "field": "t",
+    "from": "perform the same addition",
+    "to": "enter your answer in English below",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-039: Recommend answer-entry instructions for this digital English edition. src/game_logic.js checks localeRiddleTarget before the Russian alphabet-sum fallback, and the archived English locale supplies an accepted-answer table for this paragraph. This deliberately replaces the printed-book calculation instructions in prose; the code, answer hashes, routing destinations and numeric constants in game data are unchanged. The alternative preserves the historical Russian calculation with an explicit language qualification. Choose one localization approach consistently across all seven D-039 entries.",
+    "author_choice": true,
+    "alternatives": [
+      "add the letter values of the Russian answer, as in the original book, or enter your answer in English below"
+    ]
+  },
+  {
+    "id": "D-039b",
+    "section": 95,
+    "field": "t",
+    "from": "do the same with it as with the previous ones: add 50 to the result and look at the required paragraph",
+    "to": "enter it in English below to continue",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-039: Recommend answer-entry instructions for this digital English edition. src/game_logic.js checks localeRiddleTarget before the Russian alphabet-sum fallback, and the archived English locale supplies an accepted-answer table for this paragraph. This deliberately replaces the printed-book calculation instructions in prose; the code, answer hashes, routing destinations and numeric constants in game data are unchanged. The alternative preserves the historical Russian calculation with an explicit language qualification. Choose one localization approach consistently across all seven D-039 entries.",
+    "author_choice": true,
+    "alternatives": [
+      "add together the positions of its letters in the Russian alphabet, using the Russian answer, add 50, and turn to the resulting paragraph; in this game, you can enter your answer in English below"
+    ]
+  },
+  {
+    "id": "D-039c",
+    "section": 435,
+    "field": "t",
+    "from": "add together the ordinal numbers of the letters that make up his name, add 30 to this, and look up the paragraph with that number",
+    "to": "enter that acquaintance’s name in English below",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-039: Recommend answer-entry instructions for this digital English edition. src/game_logic.js checks localeRiddleTarget before the Russian alphabet-sum fallback, and the archived English locale supplies an accepted-answer table for this paragraph. This deliberately replaces the printed-book calculation instructions in prose; the code, answer hashes, routing destinations and numeric constants in game data are unchanged. The alternative preserves the historical Russian calculation with an explicit language qualification. Choose one localization approach consistently across all seven D-039 entries.",
+    "author_choice": true,
+    "alternatives": [
+      "add together the positions of the letters of his Russian name in the Russian alphabet, add 30, and turn to the resulting paragraph; in this game, you can enter his name in English below"
+    ]
+  },
+  {
+    "id": "D-039d",
+    "section": 439,
+    "field": "t",
+    "from": "Add together the ordinal numbers of all the letters in this word and look up the paragraph with the number you need.",
+    "to": "Enter your answer in English below to continue.",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-039: Recommend answer-entry instructions for this digital English edition. src/game_logic.js checks localeRiddleTarget before the Russian alphabet-sum fallback, and the archived English locale supplies an accepted-answer table for this paragraph. This deliberately replaces the printed-book calculation instructions in prose; the code, answer hashes, routing destinations and numeric constants in game data are unchanged. The alternative preserves the historical Russian calculation with an explicit language qualification. Choose one localization approach consistently across all seven D-039 entries.",
+    "author_choice": true,
+    "alternatives": [
+      "In the original book, add together the positions of the letters of the Russian answer in the Russian alphabet and turn to the resulting paragraph. In this game, enter your answer in English below."
+    ]
+  },
+  {
+    "id": "D-039e",
+    "section": 992,
+    "field": "t",
+    "from": "Add up the ordinal numbers of the letters that make up the word of your answer, and add 825 to the sum. The resulting number will be the number you need.",
+    "to": "Enter your answer in English below to continue.",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-039: Recommend answer-entry instructions for this digital English edition. src/game_logic.js checks localeRiddleTarget before the Russian alphabet-sum fallback, and the archived English locale supplies an accepted-answer table for this paragraph. This deliberately replaces the printed-book calculation instructions in prose; the code, answer hashes, routing destinations and numeric constants in game data are unchanged. The alternative preserves the historical Russian calculation with an explicit language qualification. Choose one localization approach consistently across all seven D-039 entries.",
+    "author_choice": true,
+    "alternatives": [
+      "In the original book, add together the positions of the letters of the Russian answer in the Russian alphabet, add 825, and turn to the resulting paragraph. In this game, enter your answer in English below."
+    ]
+  },
+  {
+    "id": "D-039f",
+    "section": 1113,
+    "field": "t",
+    "from": "If you know it, add together the ordinal numbers of the letters that make up the word, add 1046 to the sum, and the number you obtain will be the next paragraph number.",
+    "to": "If you know the answer, enter it in English below to continue.",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-039: Recommend answer-entry instructions for this digital English edition. src/game_logic.js checks localeRiddleTarget before the Russian alphabet-sum fallback, and the archived English locale supplies an accepted-answer table for this paragraph. This deliberately replaces the printed-book calculation instructions in prose; the code, answer hashes, routing destinations and numeric constants in game data are unchanged. The alternative preserves the historical Russian calculation with an explicit language qualification. Choose one localization approach consistently across all seven D-039 entries.",
+    "author_choice": true,
+    "alternatives": [
+      "If you know the answer, the original book asks you to add together the positions of its letters in the Russian alphabet, using the Russian answer, add 1046, and turn to the resulting paragraph. In this game, enter your answer in English below."
+    ]
+  },
+  {
+    "id": "D-039g",
+    "section": 1131,
+    "field": "t",
+    "from": "If you know the answer, add 916 to the sum of the ordinal numbers of the letters of the alphabet, and if the answer is correct, you will reach the proper paragraph.",
+    "to": "If you know the answer, enter it in English below; a correct answer will take you to the next paragraph.",
+    "class": "fidelity",
+    "confidence": "high",
+    "note": "D-039: Recommend answer-entry instructions for this digital English edition. src/game_logic.js checks localeRiddleTarget before the Russian alphabet-sum fallback, and the archived English locale supplies an accepted-answer table for this paragraph. This deliberately replaces the printed-book calculation instructions in prose; the code, answer hashes, routing destinations and numeric constants in game data are unchanged. The alternative preserves the historical Russian calculation with an explicit language qualification. Choose one localization approach consistently across all seven D-039 entries.",
+    "author_choice": true,
+    "alternatives": [
+      "If you know the answer, the original book asks you to add together the positions of its letters in the Russian alphabet, using the Russian answer, add 916, and turn to the resulting paragraph. In this game, enter your answer in English below."
+    ]
+  },
+  {
+    "id": "I-01a",
+    "section": null,
+    "field": "ui.zanimayut_tail",
+    "from": " (taking up ",
+    "to": " (slots required: ",
+    "class": "ui",
+    "confidence": "high",
+    "note": "I-01: Confirmed agreement error: the existing concatenation produces taking up 1 slots. Apply I-01a and I-01b together as a count-neutral template, yielding Found 1 item (slots required: 1), but the bag has only 0 free of 6. This paired fragment-contract adjustment fixes the singular and plural cases without changing runtime code. author_choice is false because 1 slots is ungrammatical.",
+    "author_choice": false
+  },
+  {
+    "id": "I-01b",
+    "section": null,
+    "field": "ui.mest_no_v_meshke_tolko",
+    "from": " slots), but the bag has only ",
+    "to": "), but the bag has only ",
+    "class": "ui",
+    "confidence": "high",
+    "note": "I-01: Required companion to I-01a; remove the inflected noun after the count and close the parenthesis immediately. The leading space is intentionally removed as part of the coordinated template change. Apply both entries together; author_choice is false because the original one-slot output is ungrammatical.",
+    "author_choice": false
+  }
+]

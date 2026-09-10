@@ -190,7 +190,8 @@
     "v2.182 -> v2.183": "September 2026 - group_87 batch F (canon repairs with 1991-edition evidence): PL-28 sec.886 returns to the reception 1196 (not the one-way mirror staircase 1044), PL-36 sec.534 ends as in 1991 (no truncated skill condition) - prose in four locales, labels, book_text.md, golden, GD. GAME_RULES.md label 2.182 -> 2.183 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.183 -> v2.184": "September 2026 - group_87 batch G (PL-13): 26 choice labels in ten paragraphs reworded as actions in four locales; sec.987 prose typo. group_87 closed except PL-23 (art, group_71) and the two no-ops. GAME_RULES.md label 2.183 -> 2.184 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.184 -> v2.185": "September 2026 - group_90 PR-01: Russian proofread by ChatGPT 6 Astra ULTRA applied - 592 exact replacements (OCR residue, grammar, punctuation, 50 truncated labels rewritten) in locale.ru.js, the 6a golden, book_text.md and the ui goldens; 115 doubtful items left to the author. GAME_RULES.md label 2.184 -> 2.185 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.185 -> v2.186": "September 2026 - group_90 PR-02: the 115 doubtful places of the Russian proofread resolved with the recommended readings (14 unambiguous, 101 author-choice applied pending veto, 13 kept), incl. link/number repairs in sec.416 and sec.562. GAME_RULES.md label 2.185 -> 2.186 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.185 -> v2.186": "September 2026 - group_90 PR-02: the 115 doubtful places of the Russian proofread resolved with the recommended readings (14 unambiguous, 101 author-choice applied pending veto, 13 kept), incl. link/number repairs in sec.416 and sec.562. GAME_RULES.md label 2.185 -> 2.186 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.186 -> v2.187": "September 2026 - group_91: translation reviews applied (EN 1125, FR 754, UK 1927 replacements) - fidelity to the proofread Russian, grammar, typography (UK apostrophes / ґ, FR NBSP/NNBSP, EN curly quotes), terminology, labels. GAME_RULES.md label 2.186 -> 2.187 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -467,6 +468,37 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_91_2026_09_10_translation_reviews": {
+      "comment": "Translation reviews (EN / FR / UK) by ChatGPT 6 Astra ULTRA, 2026-09-10, one chat per language on the archive 6c7b511 (after the Russian proofread), each with a *_DOUBTFUL_RESOLVED.json follow-up. Applied so that every language matches the corrected Russian text before narration. Files archived under audit_cycles/recheck_2026_09/translations.",
+      "source": "chatgpt_6_astra_ultra_translation_reviews_2026_09_10",
+      "verified": "2026-09-10",
+      "items": [
+        {
+          "id": "TR-EN_translation_review",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "EN translation vs the proofread Russian: fidelity (numbers, conditions, names), grammar and idiom, target typography, terminology, labels and ui fragments.",
+          "note": "ChatGPT 6 Astra ULTRA, archive 6c7b511, brief BRIEF_translation_review_astra.md: 1062 exact replacements ({\"label\":773,\"grammar\":115,\"typography\":15,\"terminology\":85,\"fidelity\":70,\"ui\":4}), 63 doubtful resolved (61 author_choice applied pending veto, 0 kept). SHA-256 review b725d9da5c5066b06f283238ca0f98b6d91a6f516501d66245416ce901f4b047, doubtful 47af93c6c8def9b8c3398bdf2534bf017b365535c0ca940778da0c796d636da8.",
+          "resolution": "DONE. 1062 + 63 replacements applied to locale.en.js by patcher (literal \\n in a few quotes normalised to real line breaks; doubtful items superseding review items revert the earlier fix first)."
+        },
+        {
+          "id": "TR-FR_translation_review",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "FR translation vs the proofread Russian: fidelity (numbers, conditions, names), grammar and idiom, target typography, terminology, labels and ui fragments.",
+          "note": "ChatGPT 6 Astra ULTRA, archive 6c7b511, brief BRIEF_translation_review_astra.md: 678 exact replacements ({\"grammar\":150,\"typography\":73,\"label\":363,\"fidelity\":67,\"terminology\":18,\"ui\":7}), 84 doubtful resolved (84 author_choice applied pending veto, 7 kept). SHA-256 review 00164c9a98e5281eaba3248549e38cdefa2fe340fe8263e60b6b8927ec9bf913, doubtful 2c644e50a7aa7c4d640d9372f33b4538597442966ac5d212724fa4b3c6c54a14.",
+          "resolution": "DONE. 678 + 76 replacements applied to locale.fr.js by patcher (literal \\n in a few quotes normalised to real line breaks; doubtful items superseding review items revert the earlier fix first)."
+        },
+        {
+          "id": "TR-UK_translation_review",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "UK translation vs the proofread Russian: fidelity (numbers, conditions, names), grammar and idiom, target typography, terminology, labels and ui fragments.",
+          "note": "ChatGPT 6 Astra ULTRA, archive 6c7b511, brief BRIEF_translation_review_astra.md: 1782 exact replacements ({\"ui\":10,\"typography\":741,\"fidelity\":49,\"grammar\":137,\"terminology\":24,\"label\":821}), 149 doubtful resolved (148 author_choice applied pending veto, 4 kept). SHA-256 review 083b7c7b6df5a2560c4334981cae52f164c71dcf00c5cefc29d5b428ef5b6c09, doubtful 8e08fb6f54b96ae4a5435ad37a7164fe6833720669ec29fa447a61d899afa838.",
+          "resolution": "DONE. 1782 + 145 replacements applied to locale.uk.js by patcher (literal \\n in a few quotes normalised to real line breaks; doubtful items superseding review items revert the earlier fix first)."
+        }
+      ]
     },
     "group_90_2026_09_10_proofread_ru": {
       "comment": "Russian text proofread by ChatGPT 6 Astra ULTRA (2026-09-10, archive 20e50b3, brief BRIEF_proofread_ru_astra.md): automated scan of 4067 string fields + a reading pass over all 1221 paragraphs and 2221 choice labels (six readers + two verification passes), cross-checked against book_text.md and the 1991 OCR. Delivered RU_PROOFREAD.json with 592 exact replacements (582 high, 10 medium: R-066, R-067, R-135, R-153, R-360, R-406, R-467, R-482, R-484, R-514), RU_PROOFREAD_DOUBTFUL.md (115 items for the author), RU_PROOFREAD_REPORT.md. SHA-256 RU_PROOFREAD.json 572a3d680d98740f0c6c467a962cc88474128e4b799e9a64ba124c182dbba7e7. Every \"from\" verified to occur exactly once in its field before applying. Classes: {\"punct\":352,\"label\":50,\"space\":9,\"spelling\":123,\"ocr\":47,\"hyphen\":11}. Applied to locale.ru.js (475 prose, 113 labels, 4 ui/preface), the 6a golden, book_text.md (where the HTML-stripped mirror carries the same fragment) and the pinned ui goldens; EN/FR/UK follow in the translation review (BRIEF_translation_review_astra.md).",
