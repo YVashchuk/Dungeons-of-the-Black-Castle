@@ -188,7 +188,8 @@
     "v2.180 -> v2.181": "September 2026 - group_89 M-01: painted map backgrounds for the three layers (generated for the project, no lettering) with a fog of war masked around discovered nodes; dist/map shipped by build.sh; _dist_ui_check 60 -> 61. GAME_RULES.md label 2.180 -> 2.181 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.181 -> v2.182": "September 2026 - group_88 V-03: OpenAI narration - bring-your-own-key on-demand synthesis with browser caching, optional pre-rendered file pack (scripts/tts_pregenerate.js + audio/manifest.json), device-voice fallback; ui keys 355 -> 363. GAME_RULES.md s9 + label 2.181 -> 2.182 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.182 -> v2.183": "September 2026 - group_87 batch F (canon repairs with 1991-edition evidence): PL-28 sec.886 returns to the reception 1196 (not the one-way mirror staircase 1044), PL-36 sec.534 ends as in 1991 (no truncated skill condition) - prose in four locales, labels, book_text.md, golden, GD. GAME_RULES.md label 2.182 -> 2.183 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.183 -> v2.184": "September 2026 - group_87 batch G (PL-13): 26 choice labels in ten paragraphs reworded as actions in four locales; sec.987 prose typo. group_87 closed except PL-23 (art, group_71) and the two no-ops. GAME_RULES.md label 2.183 -> 2.184 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.183 -> v2.184": "September 2026 - group_87 batch G (PL-13): 26 choice labels in ten paragraphs reworded as actions in four locales; sec.987 prose typo. group_87 closed except PL-23 (art, group_71) and the two no-ops. GAME_RULES.md label 2.183 -> 2.184 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.184 -> v2.185": "September 2026 - group_90 PR-01: Russian proofread by ChatGPT 6 Astra ULTRA applied - 592 exact replacements (OCR residue, grammar, punctuation, 50 truncated labels rewritten) in locale.ru.js, the 6a golden, book_text.md and the ui goldens; 115 doubtful items left to the author. GAME_RULES.md label 2.184 -> 2.185 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -465,6 +466,21 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_90_2026_09_10_proofread_ru": {
+      "comment": "Russian text proofread by ChatGPT 6 Astra ULTRA (2026-09-10, archive 20e50b3, brief BRIEF_proofread_ru_astra.md): automated scan of 4067 string fields + a reading pass over all 1221 paragraphs and 2221 choice labels (six readers + two verification passes), cross-checked against book_text.md and the 1991 OCR. Delivered RU_PROOFREAD.json with 592 exact replacements (582 high, 10 medium: R-066, R-067, R-135, R-153, R-360, R-406, R-467, R-482, R-484, R-514), RU_PROOFREAD_DOUBTFUL.md (115 items for the author), RU_PROOFREAD_REPORT.md. SHA-256 RU_PROOFREAD.json 572a3d680d98740f0c6c467a962cc88474128e4b799e9a64ba124c182dbba7e7. Every \"from\" verified to occur exactly once in its field before applying. Classes: {\"punct\":352,\"label\":50,\"space\":9,\"spelling\":123,\"ocr\":47,\"hyphen\":11}. Applied to locale.ru.js (475 prose, 113 labels, 4 ui/preface), the 6a golden, book_text.md (where the HTML-stripped mirror carries the same fragment) and the pinned ui goldens; EN/FR/UK follow in the translation review (BRIEF_translation_review_astra.md).",
+      "source": "chatgpt_6_astra_ultra_proofread_2026_09_10",
+      "verified": "2026-09-10",
+      "items": [
+        {
+          "id": "PR-01_russian_text_proofread_592",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The Russian text of the game carried OCR residue, grammar slips of the fb2 remake (imperative for future indicative, lost particles and predicates), punctuation faults and truncated choice labels.",
+          "note": "Maintainer adjudication: sample-checked (OCR-confirmed restorations, future-vs-imperative forms, label rewrites against the prose) and accepted in full; the 115 doubtful items stay with the author.",
+          "resolution": "DONE. 592 replacements applied by patcher (audit_cycles/recheck_2026_09/RU_PROOFREAD.json is the record); labels keep their positional indices; numbers, links and HTML untouched (verified by the JSON contract and the battery)."
+        }
+      ]
     },
     "group_89_2026_09_10_map_design": {
       "comment": "Map design track (the author's verdict on the old map: «выглядит страшно»). Backgrounds generated on 2026-09-10 by ChatGPT 6 Astra ULTRA (built-in image generation) from BRIEF_map_art_astra.md: three parchment-style paintings with no lettering, landmarks placed at the node coordinates of src/map_module.js (contact sheet verified: 16 + 6 + 13 dots on their places). Originals and generation prompts kept in assets/map/originals; JPEG q82 shipped as dist/map. Per the Track D memo AI-generated images carry no copyright of their own; the README credits the generation.",
