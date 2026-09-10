@@ -240,6 +240,51 @@ The attached ZIP is the repository archive of the audited commit (root folder na
 Отчёт и скриншоты — в `_handoff\audit_2026_09_chatgpt\astra\`. Гейты G-01…G-15 сверяю с ожиданиями (это живая приёмка групп 83/85); аномалии PL-… адьюдицирую как обычно — реестр group_86 при необходимости.
 
 
+## 9. Gemini — что ему по силам после 2026-09 (три трека, по одному чату каждый)
+
+**Ограничения Gemini, подтверждённые на практике:** вложения режутся (`game_structure.js` оборвался на §848; при загрузке папки JS-файлы выпали вовсе), пре-флайт может быть выдуман (отчёт 05.09 списан по accuracy guard), чат с большим контекстом виснет. Поэтому Gemini **не получает движок на аудит** — это делает Astra с архивом и исполнением кода. Gemini нужен там, где нужен web и «свежий взгляд»: право, стандарты, критика мобильных экранов.
+
+### Track D — право и лицензии (обязательный)
+- Режим: **Deep Research** (Gemini 3.1 Pro), web включён. Вложение: только `audit_cycles/recheck_2026_09/BRIEF_trackD_legal_gemini.md`. Никакого кода.
+- Сообщение:
+
+```
+Track D only, per the attached BRIEF_trackD_legal_gemini.md: research the five questions with cited primary sources and deliver LEGAL_MEMO.md (executive summary first, prioritized actions, a draft permission request in Russian, sources list). Do not audit or modify the project; if a source cannot be found, say so.
+```
+
+- Результат → `_handoff\audit_2026_09_chatgpt\legal\LEGAL_MEMO.md`. До выводов ничего из истории репозитория не удаляем.
+
+### Track C — стандарты типографики, шрифтов и мобильного веба (желательный)
+- Режим: Deep Research, web включён. Вложения (маленькие, входят целиком): `audit_cycles/recheck_2026_09/BRIEF.md` (раздел 10), `src/fonts/fonts.css`, `src/mobile.css`, `src/game_shell_top.html`, `assets/GAME_RULES.md` (§9 i18n).
+- Сообщение:
+
+```
+Track C only, per section 10 of the attached BRIEF.md: check the attached CSS/HTML against current standards and vendor documentation - SIL OFL bundling and attribution, @font-face weight/descriptor practice, French (NNBSP/NBSP) and Ukrainian typography, iOS/Android safe areas, dvh, overscroll-behavior, tap targets, prefers-reduced-motion, WCAG 2.2 AA for a text-heavy game. Cite sources for every claim; mark inferences. Deliver REPORT_trackC.md with a table: rule - our state (quote the file) - verdict - fix. Do not audit game logic.
+```
+
+### Track E — критика мобильных экранов по скриншотам (быстрый)
+- Режим: обычный чат Gemini 3.1 Pro, web выключен. Вложения: 5–8 скриншотов с Pixel 7a после исправлений `fd6b9c7` (титул, создание героя, экран заклятий, чтение с выборами, бой, карта, меню) + `docs`-ссылка на публичную сборку для контекста.
+- Сообщение:
+
+```
+You are reviewing the mobile UI of a text gamebook (Russian, dark fantasy, 1991 book remake) from the attached phone screenshots only. For each screenshot list concrete usability and visual issues (hierarchy, spacing, tap targets, contrast, wrapping, consistency), rank them P1/P2, and propose the minimal CSS-level change. Do not propose rewriting the app or adding libraries. Do not guess about behaviour you cannot see.
+```
+
+- Результат → `_handoff\audit_2026_09_chatgpt\gemini\REPORT_mobile_ux.md`; каждую строку сверяю с CSS и статусом в реестре, как обычно.
+
+**Если Gemini всё же просит код:** отвечать «код не входит в задание», а не подгружать движок — при обрыве файла его выводы становятся гипотезами о несуществующем коде (прецедент 05.09).
+
+## 10. ChatGPT 6 Astra ULTRA — карта (дизайн) и следующий живой прогон
+
+- **Сейчас, независимо от правок:** бриф `audit_cycles/recheck_2026_09/BRIEF_map_art_astra.md` — три фона карты под существующие координаты узлов (Create Image). Чат Work Mode, вложить только бриф. Сообщение:
+
+```
+Read the attached BRIEF_map_art_astra.md and generate the three map backgrounds exactly as specified (sizes, relative placement of the listed places, no lettering of any kind), plus a contact sheet with the node dots overlaid at the given coordinates. Deliver PNG files for download.
+```
+
+- **После батча E (PL-39 Равнодушие, PL-41 перенос гоблина, PL-20 трофеи после боя, PL-37 съесть сразу):** повтор карточки 8 на новом архиве с двумя изменениями в первом сообщении: маршрут через золотой апельсин (§74 → §226 → §976), и, если браузер ULTRA умеет эмуляцию, viewport 412×915 для строк C16/C17/B5.
+
+
 ## 4. Приёмка (что делаю я)
 
 1. Сохраняю отчёт как `audit_cycles/recheck_2026_09/REPORT_<provider>_<track>.md`, считаю SHA-256, записываю в реестр.

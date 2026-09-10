@@ -850,7 +850,7 @@
           "status": "DONE",
           "hypothesis": "Map node «Говорящий домик» carries paragraph_refs 284 and 627 (the Princess chamber in the castle).",
           "note": "Maintainer adjudication: CONFIRMED. Batch B: 284/627 removed from the cottage node (castle interior is not on the overworld map).",
-          "resolution": "CONFIRMED P2 DONE. 284 and 627 removed from the cottage node's paragraph_refs."
+          "resolution": "CONFIRMED P2 DONE. 284 and 627 removed from the cottage node's paragraph_refs and attached to the castle-interior node ci_princess_chamber (with 81 and 1220), so the wake-up scene is placed in the Princess's chambers on the interior layer."
         },
         {
           "id": "PL-51_map_close_button_font",
