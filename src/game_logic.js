@@ -869,7 +869,7 @@ function renderGame(opts){
       const offered=ai.items.map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v);
       // group_85 AS-12: knowledge flags are learned, not carried - mandatory, silent, never through the offer modal
       const learned=offered.filter(v=>typeof v==='string'&&KNOWLEDGE_FLAGS.has(canonItem(v)));
-      learned.forEach(f=>{ if(!S.inventory.some(it=>canonItem(it)===canonItem(f))) S.inventory.push(canonItem(f)); }); if(learned.length) saveGame();
+      learned.forEach(f=>{ if(!S.inventory.some(it=>canonItem(it)===canonItem(f))) S.inventory.push(canonItem(f)); }); if(learned.length){ updateHUD(); saveGame(); } // group_87 PL-35
       const newItems=offered.filter(item=>!(typeof item==='string'&&KNOWLEDGE_FLAGS.has(canonItem(item)))&&!S.inventory.some(it=>canonItem(it)===canonItem(item)));
       if(newItems.length>0){
         showInventoryModal(newItems, notifications);
@@ -887,7 +887,7 @@ function renderGame(opts){
     if(ai.stamina_sub){S.stamina=Math.max(0,S.stamina-ai.stamina_sub);statNotifs.push('− '+ai.stamina_sub+t('vynoslivosti'));logEvent('loss','− '+ai.stamina_sub+t('vynoslivosti'),t('teper')+S.stamina+'/'+S.staminaMax);}
     if(ai.skill_add){S.skill=Math.min(S.skillMax,S.skill+ai.skill_add);statNotifs.push('+ '+ai.skill_add+t('masterstva'));}
     if(ai.skill_sub){S.skill=Math.max(1,S.skill-ai.skill_sub);statNotifs.push('− '+ai.skill_sub+t('masterstva'));}
-    if(ai.luck_add){S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);statNotifs.push('+ '+ai.luck_add+t('udachi'));}
+    if(ai.luck_add){const lb=S.luck;S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);const inc=S.luck-lb;if(inc>0)statNotifs.push('+ '+inc+t('udachi'));} // group_87 PL-06: report the actual increment
     if(ai.dragon_strength){S.dragonKillsLeft=3;statNotifs.push('+ 5'+t('masterstva')+' ('+t('sila_drakona')+')');logEvent('gain','+ 5'+t('masterstva'),t('sila_drakona'));}
     if(ai.luck_sub){S.luck=Math.max(0,S.luck-ai.luck_sub);statNotifs.push('− '+ai.luck_sub+t('udachi'));}
     if(statNotifs.length>0){updateHUD();saveGame();showItemNotification(statNotifs);}
@@ -2318,7 +2318,8 @@ function applyBetting(sec){
 function renderStakePicker(sec){
   const list=document.getElementById('c-list'); if(!list) return;
   list.innerHTML='';
-  const items=(S&&S.inventory)?S.inventory:[];
+  // group_87 PL-38: flags are not things in the bag - never stakeable
+  const items=((S&&S.inventory)?S.inventory:[]).filter(it=>!STORY_FLAGS.has(canonItem(it))&&!KNOWLEDGE_FLAGS.has(canonItem(it)));
   const rollTarget=sec.stake_roll_target||910;
   const hint=document.createElement('div');
   hint.style.cssText='font-size:14px;color:var(--gold);margin:4px 0 8px;letter-spacing:.06em;';
@@ -2373,8 +2374,9 @@ function renderChoices(sec){
   if(combatWon){
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
     sec.choices.forEach((ch,idx)=>{
-      if(!ch.spell_choice && !ch.luck_type && (!ch.combat_condition || (S.combatCondMet&&S.combatCondMet[S.section])) && passesInventoryCheck(ch) && passesGoldCheck(ch)){
-        list.appendChild(makeChoiceBtn(ch, false, idx));
+      // group_87 PL-43: spell exits survive the victory (their charges gate them); PL-52: a condition exit after a full win reads «Продолжить».
+      if(!ch.luck_type && (!ch.combat_condition || (S.combatCondMet&&S.combatCondMet[S.section])) && passesInventoryCheck(ch) && passesGoldCheck(ch)){
+        const b=makeChoiceBtn(ch, false, idx); if(ch.combat_condition) b.textContent=t('prodolzhit')+' ('+ch.target+')'; list.appendChild(b);
       }
     });
     return;
@@ -2751,10 +2753,10 @@ function combatRound(){
     }
     if(e===tgtEnemy){
       if(pStr>eStr){playSound('hit');e.hp-=2;cs.wounds++;log.innerHTML+=`<div class="hit">${t('vy_ranili')}${e.name}${t('2_vyn_ostalos')}${Math.max(0,e.hp)})</div>`;if(e.hp<=0)dragonKillTick();}
-      else if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name}${t('ranil_vas')}${d}${t('vyn_ostalos')}${Math.max(0,S.stamina)})</div>`;}
+      else if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina=Math.max(0,S.stamina-d); /* group_87 PL-31 */log.innerHTML+=`<div class="miss">→ ${e.name}${t('ranil_vas')}${d}${t('vyn_ostalos')}${Math.max(0,S.stamina)})</div>`;}
       else{log.innerHTML+=`<div class="draw">${t('nichya_s')}${e.name}</div>`;}
     } else {
-      if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina-=d;log.innerHTML+=`<div class="miss">→ ${e.name}${t('tozhe_ranil_vas')}${d}${t('vyn_ostalos')}${Math.max(0,S.stamina)})</div>`;}
+      if(eStr>pStr){playSound('hurt');const d=e.dmg||2;S.stamina=Math.max(0,S.stamina-d); /* group_87 PL-31 */log.innerHTML+=`<div class="miss">→ ${e.name}${t('tozhe_ranil_vas')}${d}${t('vyn_ostalos')}${Math.max(0,S.stamina)})</div>`;}
       else{log.innerHTML+=`<div class="draw">→ ${e.name}${t('ne_smog_vas_ranit')}</div>`;}
     }
   });

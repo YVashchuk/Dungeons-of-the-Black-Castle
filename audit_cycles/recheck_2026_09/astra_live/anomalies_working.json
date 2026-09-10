@@ -1,0 +1,706 @@
+[
+  {
+    "id": "PL-01",
+    "class": "engine/UI",
+    "severity": "P1",
+    "state": "observed and verified in archive",
+    "reproduction": "#585 -> collect coconuts -> Menu -> New game -> Yes; reload retains #585, returns fresh Tester to section 585 with 0/7 bag, not stable title",
+    "screen_quote": "Тестер; § Параграф 585; Мешок пуст; →Сорвать два кокоса (+3 ВЫН каждый); after death and «Начать заново», #725/#436 restores Tester with stamina 0 and death again; base URL permits fresh creation.",
+    "canon_quote": "Прежде чем вы покинете остров, вы можете сорвать с одной из пальм два кокоса, каждый из них добавит вам 3 ВЫНОСЛИВОСТИ.",
+    "gd": "585.choices: pickup_batch of two coconut +3; target 60. GD not root cause.",
+    "source": [
+      "src/game_shell_top.html:829 clears save then location.reload(), does not clear hash",
+      "src/game_logic.js:window.onload reads location.hash and creates tester if save absent",
+      "src/game_shell_top.html:737 death restart calls location.reload() without clearing save or hash."
+    ],
+    "registry": "group_86 PA-01 marked DONE: yes wipes save and returns to title; reopened only for observed hash-entry reset case, native dialog replacement itself works",
+    "fix": "At new-game confirmation remove section hash through navigation to the same pathname/search without hash before reload; test stable title after load from #585 and no tester hero. Apply the same stable title navigation and save reset to the death restart button.",
+    "section": "585 / 725 / 436",
+    "screenshot": "PL-01-new-game-hash.jpg; ENV-title-reset-race.jpg",
+    "screenshots": [
+      "PL-01-new-game-hash.jpg",
+      "ENV-title-reset-race.jpg"
+    ]
+  },
+  {
+    "id": "PL-02",
+    "section": 311,
+    "class": "text/UI",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "Найдено 2 предметов. Свободных мест: 7. / В МЕШКЕ (2/7):;923 «Найдено 1 предметов»",
+    "canon_quote": "В сумочке лежат золотой свисток и прекрасный бриллиант.",
+    "gd": "311.auto_items.items=[gold_whistle,diamond] correct, both taken",
+    "source": "game_logic.js showInventoryModal computes freeSlots and writes inv-modal-text only on open; renderInvModalCurrent updates bag list/buttons but not header.",
+    "fix": "Recompute remaining slots on item take/eat/drop, or explicitly label header as free slots before collection.; also localize singular/2–4/plural of предмет. Shot G-14-lore-before-scroll.jpg.",
+    "screenshot": "screenshots/PL-02-free-slots-counter.jpg",
+    "registry": "Searched the paragraph and exact phrase in text_corrections.json; no exact DONE correction found. Canon/GD comparison is recorded in this row.",
+    "screenshots": [
+      "PL-02-free-slots-counter.jpg"
+    ]
+  },
+  {
+    "id": "PL-03",
+    "section": "535→29→188",
+    "class": "data",
+    "severity": "P1",
+    "state": "observed and verified in archive",
+    "screen_quote": "§29: Он вполне доволен вашим подарком — 188. / §188 bag: Прекрасный бриллиант; 2/9",
+    "canon_quote": "Он вполне доволен вашим подарком — 188.",
+    "gd": "535.choices[target=29] has inventory_condition:diamond but lacks consume_on_use. Neither 29 nor 188 removes diamond.",
+    "registry": "Other trade fixes found (§491 whistle, §12 diamond); no DONE resolution for this exact accepted merchant diamond gift found.",
+    "fix": "Consume diamond on acceptance at 535→29 (inventory_condition + consume_on_use), or at first entry to 29; keep rejecting gift branches non-consuming.",
+    "screenshot": "screenshots/PL-03-diamond-gift.jpg",
+    "screenshots": [
+      "PL-03-diamond-gift.jpg"
+    ]
+  },
+  {
+    "id": "PL-04",
+    "section": 291,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "вряд ли пошли а правильном направлении",
+    "canon_quote": "вряд ли пошли а правильном направлении",
+    "gd": "291 choices 631/7 correct; typo is in prose, not routing",
+    "fix": "Correct Russian text «пошли а правильном» to «пошли в правильном» in canonical text and locale source through normal pipeline.",
+    "screenshot": "screenshots/PL-04-text-291.jpg",
+    "registry": "Searched the paragraph and exact phrase in text_corrections.json; no exact DONE correction found. Canon/GD comparison is recorded in this row.",
+    "screenshots": [
+      "PL-04-text-291.jpg"
+    ]
+  },
+  {
+    "id": "PL-05",
+    "section": 582,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "каждый из восстановит вам по 2 ВЫНОСЛИВОСТИ",
+    "canon_quote": "каждый из восстановит вам по 2 ВЫНОСЛИВОСТИ",
+    "gd": "582.pickup_batch:15 fruits +2 each, unrelated to missing word",
+    "fix": "Insert «них»: «каждый из них восстановит».",
+    "screenshot": "screenshots/PL-05-text-582.jpg",
+    "registry": "Searched the paragraph and exact phrase in text_corrections.json; no exact DONE correction found. Canon/GD comparison is recorded in this row.",
+    "screenshots": [
+      "PL-05-text-582.jpg"
+    ]
+  },
+  {
+    "id": "PL-06",
+    "section": "74 / 923",
+    "class": "expected-by-registry / text",
+    "severity": "P2",
+    "state": "observed and verified in archive; rule adjudication needed",
+    "screen_quote": "Прибавьте себе 1 УДАЧУ, даже если вы еще ни разу не проверяли ее / + 1 удачи; actual 8→8, initial 8;923 +1 Luck promised at10/10, remains10",
+    "canon_quote": "Прибавьте себе 1 УДАЧУ, даже если вы еще ни разу не проверяли ее",
+    "gd": "74.auto_items.luck_add=1; game_logic applies Math.min(luckMax,luck+luck_add);923 auto_items.luck_add1",
+    "registry": "group_31 F-1 explicitly committed global luck cap; expected-by-registry, not re-report of missing effect. Remaining prose/toast promise conflicts with zero actual gain at cap.",
+    "fix": "Display actual delta/cap in notification; reconcile the explicit §74 exception with the maintained rules. If exception upheld, scope bonus beyond cap to §74 rather than removing global cap.; screenshot G-14-lore-923.jpg.",
+    "screenshot": "screenshots/PL-06-luck-74-stats.jpg",
+    "screenshots": [
+      "PL-06-luck-74-stats.jpg"
+    ]
+  },
+  {
+    "id": "PL-07",
+    "section": 77,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "безмолвные деревья все также стоят часовыми",
+    "canon_quote": "безмолвные деревья все также стоят часовыми",
+    "gd": "77: choices 244/199, no text override",
+    "registry": "Exact paragraph/phrase search: no DONE fix found",
+    "fix": "Correct to «всё так же стоят» in canon and Russian text.",
+    "screenshot": "PL-07-text-77.jpg",
+    "screenshots": [
+      "PL-07-text-77.jpg"
+    ]
+  },
+  {
+    "id": "PL-08",
+    "section": 56,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "у третьего — меч. вы понимаете",
+    "canon_quote": "у третьего — меч. вы понимаете",
+    "gd": "56: ordinary gated choices; text from canon",
+    "registry": "Paragraph and exact-phrase search found no DONE correction for this typography",
+    "fix": "Capitalize «Вы» after full stop.",
+    "screenshot": "PL-08-text-56.jpg",
+    "screenshots": [
+      "PL-08-text-56.jpg"
+    ]
+  },
+  {
+    "id": "PL-09",
+    "section": 700,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "Огня(1188)",
+    "canon_quote": "Огня(1188)",
+    "gd": "700: ordinary gated choices; text from canon",
+    "registry": "§700 appears in the DONE Fire-branch repair; that repair works live (FIRE→1188 and sword→628 separate). The quoted source retains «Огня(1188)»; this row is only spacing, not reopening the branch repair.",
+    "fix": "Insert space: «Огня (1188)».",
+    "screenshot": "PL-09-text-700.jpg",
+    "screenshots": [
+      "PL-09-text-700.jpg"
+    ]
+  },
+  {
+    "id": "PL-10",
+    "section": "915 / 1177",
+    "class": "text/UI",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "Вы ранили ЛЕВ; Вы ранили ВТОРОЙ ГОБЛИН; Ничья с ЛЕВ",
+    "canon_quote": "Убив льва, вы можете перешагнуть через него и войти; ПЕРВЫЙ ГОБЛИН; ВТОРОЙ ГОБЛИН",
+    "gd": "915 enemy lev; 1177 pervyy_goblin/vtoroy_goblin; enemy names interpolated in nominative into oblique-case phrases",
+    "registry": "Search падеж / declens / inflect / ранили: no exact DONE found",
+    "fix": "Use case-neutral combat log templates («Ранение: {enemy}», «Ничья: {enemy}») or localized case forms; combat flags unchanged.",
+    "screenshot": "PL-10-combat-grammar.jpg",
+    "screenshots": [
+      "PL-10-combat-grammar.jpg"
+    ]
+  },
+  {
+    "id": "PL-11",
+    "section": 730,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "этого оказывается достаточно, что бы вы стали более заметным",
+    "canon_quote": "этого оказывается достаточно, что бы вы стали более заметным",
+    "gd": "730 choices620/90/1092; no effect involved",
+    "registry": "No matching DONE spelling correction found",
+    "fix": "Spell conjunction as «чтобы».",
+    "screenshot": "PL-11-text-730.jpg",
+    "screenshots": [
+      "PL-11-text-730.jpg"
+    ]
+  },
+  {
+    "id": "PL-12",
+    "section": "90→679",
+    "class": "data / engine",
+    "severity": "P1",
+    "state": "observed and verified in archive; reopen group56 target-check claim",
+    "screen_quote": "Вы вытаскиваете из мешка шкуру лисы… Хорошо, так и быть, мы тебя пропустим; choices987/1003/343 all offered",
+    "canon_quote": "Вам придется оставить шкуру лисы и выйти в одну из трех дверей",
+    "gd": "90 choices679/720/966 unconditional; 679 choices987/1003/343 unconditional. Hero never acquired fox skin.",
+    "registry": "group56: §90 deliberately ungated bluff/claim, «offer-prompts whose targets themselves check». Observed target679 does not reject absent skin.",
+    "fix": "Keep claim available only if intended, but check and consume fox skin when accepted at679; provide a canon-backed refusal/return to730 for missing skin. Alternatively gate90→679 plus ensure upstream90 is not a dead end with no listed items.",
+    "screenshot": "PL-12-absent-fox-skin.jpg",
+    "screenshots": [
+      "PL-12-absent-fox-skin.jpg"
+    ]
+  },
+  {
+    "id": "PL-13",
+    "section": "987 / 603 / 590 / 622 / 1152 / 930 / 623 / 94 / 774 / 778",
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "любо выйти в противоположную дверь; тогда какой— серебряный; button1084 «Попадаете в комнату, посреди которой высится…» fails to name silver vessel; §603 first button «Быстро взбегаете по лестнице на небольшой… (1015)» omits right passage;590 «Военный лагерь врага! Может быть, стоит пойти туда и (715)»;622 кнопка «За дверью лестница, по которой вы спускаетесь… (975)»;1152 «Не будете рисковать, оставите бутыль и… (978)»;930 «Идти по коридору. Вдруг слева видите проем еще… (837)»;623 «Внимание прежде всего привлекают руки волшебника. На(1071)» / «Взять один из них или вернетесь на(81)»; §94: «Фигурка спасет вас. А пока можете осмотреть стол (1098)» и «Будет обратиться за помощью… (989)»; §774 люк назван «дверь»/«большой сундук» в кнопках; §778 «Теперь, если вы еще этого не сделали, можете… (626)» не называет большой сундук",
+    "canon_quote": "любо выйти в противоположную дверь; тогда какой— серебряный; §603 «Войдете в правый (1015) или в левый проход (712)»;590 «пойти туда и попытаться разузнать что-нибудь о замке (715)»;622 «две двери — прямо (975) и направо (394)»;1152 «оставите бутыль и осмотрите сундук (978)»;930 «слева… Пойдете туда (837)»;623 «с рубином(1071)… или вернетесь на81 и осмотрите кабинет»; §94 prose: «А пока можете осмотреть стол (1098)»; §774 «Люк заперт»; §778 «большой (626)»",
+    "gd": "987 choices1084/674/1003;603 choices674/1015/712;590 choices715/915;622 choices975/394;1152 choices1130/978;930 choices837/1143;623 choices1071/479/81",
+    "registry": "No exact DONE spelling correction found;590 mentions key route, no exact label correction;623 DONE emerald gate and81 endings do not concern these labels; §94 AS07/DONE concerns only barlad_dead gate (PASS); label defect not covered.; §774 group16/17 касается стоимости, AS09 сосудов, AS10 §778 осмотров (все механики PASS); ошибки подписей не закрывались.",
+    "fix": "«либо выйти» in prose/button; space before em dash. Relabel1084 as «Взять серебряный сосуд».  Relabel603→1015 «Войти в правый проход». Additional screenshot PL-13-label-603.jpg. §590 button «Пойти в военный лагерь и разузнать о замке (715)». Screenshot PL-13-label-590.jpg. §622 label «Пойти прямо (975)», shot PL-13-label-622.jpg. §1152 preserve «осмотреть сундук» in label, screenshot PL-24-text-1152.jpg. §930 «Свернуть в левый коридор (837)», screenshot PL-13-label-930.jpg. §623 «Взять перстень с рубином(1071)» / «Вернуться к осмотру кабинета(81)», shot PL-13-label-623.jpg.",
+    "screenshot": "PL-13-text-987.jpg",
+    "screenshots": [
+      "PL-13-text-987.jpg"
+    ]
+  },
+  {
+    "id": "PL-14",
+    "section": "894 / 459 / 284",
+    "class": "data",
+    "severity": "P1",
+    "state": "observed and verified in archive",
+    "screen_quote": "можете быстро схватить подсвечник со стола…; only exit1046, bag7/9 contains no candlestick, no offer dialog;459 «предусмотрительно прихватив с собой свечку», bag3/7, no candle/offer;284 «Взяв свечу со стола волшебника», bag4/7 no candle",
+    "canon_quote": "можете быстро схватить подсвечник со стола Начальника стражи;459 «предусмотрительно прихватив с собой свечку»;284 same phrase",
+    "gd": "894 has only choice1046, no auto_items/acquires; 1046 has choices694/150/215 only;459 and930 no auto_items/acquires;284 no auto_items/acquires",
+    "registry": "§894 found only in deadline repair; no DONE candlestick handout fix;459 key route references do not address candle grant",
+    "fix": "Offer canonical candlestick once at894 (auto_items.items), retaining ability to decline; mark pickup on acceptance. Grant candle once at459; screenshot PL-14-candle-459.jpg. Grant candle once at284; screenshot PL-30-text-284.jpg.",
+    "screenshot": "PL-14-candlestick-894.jpg",
+    "screenshots": [
+      "PL-14-candlestick-894.jpg"
+    ]
+  },
+  {
+    "id": "PL-15",
+    "section": "150 / 1115 / 923",
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "сцена!.. трудно себе представить это; Хотите подняться… или выйдите…;1115 «Что вы сначала осмотрите… или выйдите…?»;923 «вычтете13… и прочтите»",
+    "canon_quote": "сцена!.. трудно себе представить это; Хотите подняться… или выйдите…;1115 «Что вы сначала осмотрите… или выйдите…?»;923 «вычтете13… и прочтите»",
+    "gd": "150 choices42/1046;1115 choices829/978/459;923 knowledge-grant, text arithmetic",
+    "registry": "No exact DONE correction found;1115 ORTHO-PASS for other FB2 defects does not correct this word; group50 quotes this exact form while fixing the mirror gate, not spelling",
+    "fix": "«Трудно» with capital letter after sentence-ending punctuation; «выйдете» in future-tense question. §1115 «выйдете», screenshot PL-15-text-1115.jpg.;923 imperative «вычтите», G-14-lore-923.jpg.",
+    "screenshot": "PL-15-text-150.jpg",
+    "screenshots": [
+      "PL-15-text-150.jpg"
+    ]
+  },
+  {
+    "id": "PL-16",
+    "section": "1096 / 139",
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "Но вы то его представляли себе совсем другим. §139 «об этом то вы и не подумали».",
+    "canon_quote": "Но вы то его представляли себе совсем другим. §139 «об этом то вы и не подумали».",
+    "gd": "1096 enemies harpy10/12; no text override involved;139 choices101/524",
+    "registry": "§1096 registry discusses mirror gate/combat, no exact «вы то» correction;139 registry gate fixes do not concern this spelling",
+    "fix": "Use particle with hyphen: «вы-то». §139 «об этом-то»; screenshot PL-16-text-139.jpg.",
+    "screenshot": "PL-16-text-1096.jpg",
+    "screenshots": [
+      "PL-16-text-1096.jpg"
+    ]
+  },
+  {
+    "id": "PL-17",
+    "section": 372,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive, noticed RUN2",
+    "screen_quote": "Если хотите. Можете воспользоваться заклятием Огня",
+    "canon_quote": "Если хотите. Можете воспользоваться заклятием Огня",
+    "gd": "372 FIRE103 or beast9/7 then311",
+    "registry": "Existing372 localization wording fix concerns EN accepting consequences; exact punctuation correction not found",
+    "fix": "«Если хотите, можете…».",
+    "screenshot": "PL-17-text-372.jpg",
+    "screenshots": [
+      "PL-17-text-372.jpg"
+    ]
+  },
+  {
+    "id": "PL-18",
+    "section": "9 / 544",
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "«С ума сойти можно!», — думаете вы.; §544 «Ты кто?», — спрашивает он.",
+    "canon_quote": "«С ума сойти можно!», — думаете вы.; §544 «Ты кто?», — спрашивает он.",
+    "gd": "9 choices288/313;544 choices250/942",
+    "registry": "No exact quoted punctuation correction found",
+    "fix": "Remove comma after closing quote following exclamation mark. Same correction for question mark in544; screenshot PL-18-text-544.jpg.",
+    "screenshot": "PL-18-text-9.jpg",
+    "screenshots": [
+      "PL-18-text-9.jpg"
+    ]
+  },
+  {
+    "id": "PL-19",
+    "section": 288,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "Только становиться темнее и тише",
+    "canon_quote": "Только становиться темнее и тише",
+    "gd": "288 choices224/493",
+    "registry": "No exact paragraph spelling correction found",
+    "fix": "«становится» without soft sign.",
+    "screenshot": "PL-19-text-288.jpg",
+    "screenshots": [
+      "PL-19-text-288.jpg"
+    ]
+  },
+  {
+    "id": "PL-20",
+    "section": "440 / 182",
+    "class": "data",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "Найдены предметы: Золотой ключ; +Взять offered while «Вступить в бой» still pending; §182 offers bronze whistle before entering the goblin fight.",
+    "canon_quote": "Если вы убили дракона, то подберите золотой ключ, упавший с его шеи; §182: «Убив его, вы осматриваете одежду обоих Гоблинов».",
+    "gd": "440.auto_items.items=[gold_key] before combat; exit353 post_combat; FIRE140 alternative; 182.auto_items.items=[bronze_whistle], likewise executed before combat.",
+    "registry": "No exact DONE early-loot fix found; source-key grant tracked elsewhere; inspect outcome before final adjudication",
+    "fix": "Grant key at accepted post-victory edge440→353 or after combat win; retain separate Fire140 kill grant and one-time pickup. Gate §182 whistle after both canonical combat phases, once only.",
+    "screenshot": "PL-20-key-before-dragon.jpg; PL-20-182-premature-loot.jpg",
+    "screenshots": [
+      "PL-20-key-before-dragon.jpg",
+      "PL-20-182-premature-loot.jpg"
+    ]
+  },
+  {
+    "id": "PL-21",
+    "section": 393,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "Текст: «в стене слева рядом с выходом (771)»; кнопка: «Выйти из столовой через дверь в стене напротив (771)»",
+    "canon_quote": "«в стене слева рядом с выходом (771)»; extracted Выборы repeats opposite-wall error",
+    "gd": "393.choices target771; no direction override",
+    "registry": "393 mentions key routes, combat gates and corridor illustration, no DONE direction-label correction",
+    "fix": "Align 771 label to «Выйти через дверь слева рядом со входом (771)» after author confirms вход/выход wording.",
+    "screenshot": "PL-21-direction-393-button.jpg",
+    "screenshots": [
+      "PL-21-direction-393-button.jpg"
+    ]
+  },
+  {
+    "id": "PL-22",
+    "section": 829,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "«с какой-то красной и не прозрачной жидкостью»",
+    "canon_quote": "«с какой-то красной и не прозрачной жидкостью»",
+    "gd": "829 choices1152/978",
+    "registry": "No 829 or exact phrase correction found",
+    "fix": "Use «непрозрачной» as one word.",
+    "screenshot": "PL-22-text-829.jpg",
+    "screenshots": [
+      "PL-22-text-829.jpg"
+    ]
+  },
+  {
+    "id": "PL-23",
+    "section": "829 / 923",
+    "class": "layout",
+    "severity": "P2",
+    "state": "observed visual discrepancy; binding verified in archive; author adjudication needed",
+    "screen_quote": "«Внутри стоит стеклянная бутыль…»; illustration visibly shows a bearded man with barrel, no cupboard or red bottle;923 same man-and-barrel illustration for empty room with parchment plan",
+    "canon_quote": "1115 room has long been empty;829 «Вы приоткрываете дверцы тумбочки»;923 «На его дне обнаруживаете пергаментный свиток»",
+    "gd": "829 no scene-specific art; ILLUST_MAP[829]=2_bfd6d93f46917b7b6f8cf4624dcc8647.jpg shared747/923; live src art/legacy/... matches",
+    "registry": "Legacy replacement is already a general backlog; no exact829 or file binding correction found. Do not label new regression. The mounted-knight versus infantry illustrations at §46/96 are an already OPEN group71 art issue, not counted as another regression.",
+    "fix": "Author to replace or unbind the mismatched legacy illustration; no game flags needed.; also923 same binding, screenshot G-14-lore-before-scroll.jpg.",
+    "screenshot": "PL-22-text-829.jpg",
+    "screenshots": [
+      "PL-22-text-829.jpg"
+    ]
+  },
+  {
+    "id": "PL-24",
+    "section": 1152,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "«у вас начинается кружиться голова»",
+    "canon_quote": "«у вас начинается кружиться голова»",
+    "gd": "1152 auto_items.stamina_sub3 applied correctly;choices1130/978",
+    "registry": "1152 registry only lists stamina_sub3; no spelling correction",
+    "fix": "Use «начинает кружиться голова».",
+    "screenshot": "PL-24-text-1152.jpg",
+    "screenshots": [
+      "PL-24-text-1152.jpg"
+    ]
+  },
+  {
+    "id": "PL-25",
+    "section": 766,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "«на крысу, которые обычно водятся в подземельях»",
+    "canon_quote": "«на крысу, которые обычно водятся в подземельях»",
+    "gd": "766 choices1144/1171/324/1026/689/441/718/731; no text override",
+    "registry": "766 password trap and old luck-cap commit references; no agreement correction",
+    "fix": "Use «на одну из крыс, которые обычно водятся в подземельях».",
+    "screenshot": "PL-25-text-766.jpg",
+    "screenshots": [
+      "PL-25-text-766.jpg"
+    ]
+  },
+  {
+    "id": "PL-26",
+    "section": 718,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "«видимо он привык»; «Но кажется он даже доволен»; «через библиотеку тщательно стараясь»",
+    "canon_quote": "Same three fragments",
+    "gd": "718 choices285",
+    "registry": "No718 entry found",
+    "fix": "«видимо, он»; «Но, кажется, он»; «через библиотеку, тщательно стараясь».",
+    "screenshot": "PL-26-punctuation-718.jpg",
+    "screenshots": [
+      "PL-26-punctuation-718.jpg"
+    ]
+  },
+  {
+    "id": "PL-27",
+    "section": 1196,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "«орел, под тоже имеется углубление»; «какие бы усилия вы не прилагали»; «в конце… лестницы, чем той»",
+    "canon_quote": "Same three fragments",
+    "gd": "1196 gated/consumed white_arrow→871 and eagle_plaque→604; choices995/266/886 correct",
+    "registry": "GroupB and83/85 fixes concern item/inspection gates, not these words; no regression claim",
+    "fix": "«под ним тоже»; «ни прилагали»; «чем в конце той».",
+    "screenshot": "PL-27-text-1196.jpg",
+    "screenshots": [
+      "PL-27-text-1196.jpg"
+    ]
+  },
+  {
+    "id": "PL-28",
+    "section": "886→1044",
+    "class": "data/text",
+    "severity": "P1",
+    "state": "observed and verified in archive; intended target suspected",
+    "screen_quote": "886 «вернетесь на1044 и выберете другую дверь» →1044 «обратно пути нет… сразиться с волшебником»; only1096 offered",
+    "canon_quote": "886 and1044 repeat the same incompatible descriptions",
+    "gd": "886 only inbound1196, exit1044;1044 only1096, no door selection",
+    "registry": "No886/1044 registry entry found",
+    "fix": "Author to confirm return should be1196; align canon, label and GD edge. Current live route followed this printed choice, not hash.",
+    "screenshot": "PL-28-return-1044.jpg",
+    "screenshots": [
+      "PL-28-return-1044.jpg"
+    ]
+  },
+  {
+    "id": "PL-29",
+    "section": "297/411/850/797",
+    "class": "expected-by-registry/text",
+    "severity": "P2",
+    "state": "observed; intended three-other-flags gate verified",
+    "screen_quote": "411 label «Если уже осмотрели шкаф и стол — идти дальше(489)» but hidden until mirror also inspected; prose all4 «и то, и другое»",
+    "canon_quote": "Same two-item wording although three alternatives listed",
+    "gd": "inventory_all of other3study flags, correct G06 behavior",
+    "registry": "AS-02 DONE intentionally interprets as nothing left to inspect; mechanic passed, no reopening",
+    "fix": "Align prose and411label to «Если уже осмотрели все три остальных места…».",
+    "screenshot": "G-06-07-door-all.jpg",
+    "screenshots": [
+      "G-06-07-door-all.jpg"
+    ]
+  },
+  {
+    "id": "PL-30",
+    "section": 284,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "«вы вступаете святая святых»; «кровать, но которой спит»",
+    "canon_quote": "Same fragments",
+    "gd": "284 choices1072/226",
+    "registry": "Group50 mirror route DONE does not address these typos",
+    "fix": "«вы вступаете в святая святых»; «на которой».",
+    "screenshot": "PL-30-text-284.jpg",
+    "screenshots": [
+      "PL-30-text-284.jpg"
+    ]
+  },
+  {
+    "id": "PL-31",
+    "section": 250,
+    "class": "engine/UI",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "Fatal round8: log twice «осталось0», sidebar «−3/19»",
+    "canon_quote": "250 two goblins7/9 and8/8, no spells; hero-creation UI «При нуле — гибель»",
+    "gd": "250 simultaneous enemies; combat loop uses S.stamina-=d for each attack, log Math.max(0,S.stamina), HUD raw value",
+    "registry": "No negative-stamina correction found; bad dice death itself is not a defect",
+    "fix": "Clamp stored stamina to0 (and stop applying further damage after fatal hit), use same value in HUD and log.",
+    "screenshot": "PL-31-negative-stamina-death.jpg",
+    "screenshots": [
+      "PL-31-negative-stamina-death.jpg"
+    ]
+  },
+  {
+    "id": "PL-32",
+    "section": 627,
+    "class": "text",
+    "severity": "P2",
+    "state": "observed and verified in archive",
+    "screen_quote": "«оно согревает Принцессу и будет ее!»; «холодным….»",
+    "canon_quote": "Same fragments",
+    "gd": "627 princess_awake and barlad_dead gates work",
+    "registry": "627 ring mechanism entries, no exact typo correction found",
+    "fix": "«будит её»; normalize ellipsis to3dots.",
+    "screenshot": "G-04-G-05-ruby-after.jpg",
+    "screenshots": [
+      "G-04-G-05-ruby-after.jpg"
+    ]
+  },
+  {
+    "id": "PL-33",
+    "section": "G-05 / 226→627",
+    "class": "expected-by-registry",
+    "severity": "P2",
+    "state": "observed conflict in acceptance brief; game matches archive",
+    "screen_quote": "After awakening, Перстень с рубином remains, bag4/7; no visible princess flag",
+    "canon_quote": "627 ring radiates warmth; no loss described. BriefG05 says ring consumed",
+    "gd": "226→627 inventory_condition signet_ruby without consume_on_use;627 hidden princess_awake",
+    "registry": "group6 ruby_ring status_done explicitly «Reusable token … no consume_on_use»; existing intended behavior",
+    "fix": "Correct G05 to require orange consumption and ruby retention, unless author deliberately changes canon. Do not reopen reusable-ring game behavior as bug.",
+    "screenshot": "G-04-G-05-ruby-after.jpg",
+    "screenshots": [
+      "G-04-G-05-ruby-after.jpg"
+    ]
+  },
+  {
+    "id": "PL-34",
+    "section": "435",
+    "class": "text",
+    "severity": "P2",
+    "state": "observed; verified in archive",
+    "screen_quote": "прибавьте, прибавьте к этому «30»",
+    "canon_quote": "прибавьте, прибавьте к этому «30»",
+    "gd": "riddle modifier30; requires_flag hyena_met, mechanics correct",
+    "registry": "AS04 DONE encounter gate verified PASS. No duplicate-word correction located.",
+    "fix": "Удалить повтор «прибавьте,» в каноне и локализации; переходы не менять.",
+    "screenshot": "PL-34-G-12-riddle435.jpg",
+    "screenshots": [
+      "PL-34-G-12-riddle435.jpg"
+    ]
+  },
+  {
+    "id": "PL-35",
+    "section": "95",
+    "class": "engine",
+    "severity": "P2",
+    "state": "observed; verified in archive",
+    "screen_quote": "§95: в мешке (3/7) только 2 кокоса и серебряный сосуд; §56: появляется «Пароль в замок», доступно «Назвать пароль (146)»",
+    "canon_quote": "«я скажу тебе пароль, чтобы попасть в замок. Пароль — 146»",
+    "gd": "95.auto_items.items=[castle_password]. renderGame updates HUD before learning; learned-only branch saves without updateHUD when notifications empty.",
+    "registry": "AS12 DONE requires lore listed in bag; actual grant, zero weight and nondroppable behavior work, first-render HUD display fails.",
+    "fix": "После обязательного learned-grant обновлять HUD; не требовать следующего перехода.",
+    "screenshot": "PL-35-password95-missing.jpg; G-07-password-not-granted.jpg",
+    "screenshots": [
+      "PL-35-password95-missing.jpg",
+      "G-07-password-not-granted.jpg"
+    ]
+  },
+  {
+    "id": "PL-36",
+    "section": "534",
+    "class": "text",
+    "severity": "P2",
+    "state": "observed; verified in archive; missing destination needs author",
+    "screen_quote": "«Теперь, если ваше Мастерство равно 9 или меньше, то. Иначе, — 750»",
+    "canon_quote": "«Теперь, если ваше Мастерство равно 9 или меньше, то. Иначе, — 750»",
+    "gd": "534 only active choice750;1138 retired and moved to835",
+    "registry": "AS06 DONE concerns rescue placement and fatal_when_stuck, both PASS; no repair of incomplete skill conditional located",
+    "fix": "Восстановить авторский текст/адрес ветви Мастерство≤9 либо убрать остаток условия после сверки; не угадывать номер. Подпись спасения835 заменить на «Позвать Пегаса».",
+    "screenshot": "PL-36-incomplete-534.jpg; G-10-Pegasus.jpg",
+    "screenshots": [
+      "PL-36-incomplete-534.jpg",
+      "G-10-Pegasus.jpg"
+    ]
+  },
+  {
+    "id": "PL-37",
+    "section": "801 / 1140",
+    "class": "expected-by-registry",
+    "severity": "P2",
+    "state": "observed mismatch canon versus deliberate pickup_batch implementation",
+    "screen_quote": "Мешок7/7, ВЫН20/24; нет «Съесть сразу»; нажатие выдачи даёт «мешок полон: 2/3 не взято» и «✓ Собрано»",
+    "canon_quote": "801 «Вы можете съесть их сразу или положить в заплечный мешок»;1140 «Можете использовать и то, и другое или же взять с собой»",
+    "gd": "pickup_batch only, respects free slots and consumes one-shot batch even zero pickups",
+    "registry": "group78 G12 deliberately implements capped batch. group80 V01 eat-now fix applies offer modal389, not batches. A11 cap/persistence expectations PASS; canon eat-now option still absent here.",
+    "fix": "Дать еде из партии отдельное однократное действие «Съесть сразу», не требующее места; сохранять расход порций без дублирования.",
+    "screenshot": "A11-801-full.jpg; A11-1140-full.jpg",
+    "screenshots": [
+      "A11-801-full.jpg",
+      "A11-1140-full.jpg"
+    ]
+  },
+  {
+    "id": "PL-38",
+    "section": "1212",
+    "class": "engine",
+    "severity": "P1",
+    "state": "observed hidden flags offered and accepted as stake; durable loss of princess flag NOT reproduced after reload",
+    "screen_quote": "«Поставить: Принцесса разбужена», «Поставить: Барлад Дэрт повержен», «Поставить: Пароль в замок»; Princess button accepted→910. After hash/reload81 still1220.",
+    "canon_quote": "«какую-нибудь вещицу из вашего мешка»",
+    "gd": "1212.stake_picker; renderStakePicker enumerates all S.inventory and splices without STORY_FLAGS/KNOWLEDGE_FLAGS guards",
+    "registry": "group41 picker predates AS12 knowledge/story protections; group85 flags hidden/nondroppable promise violated by wager UI. Story-state load backfill appears to restore Princess after reload; no claim of persistent Princess loss.",
+    "fix": "Фильтровать список и обработчик ставок по STORY_FLAGS/KNOWLEDGE_FLAGS; использовать общий предикат отчуждаемого предмета.",
+    "screenshot": "PL-38-story-flags-stakes.jpg; PL-38-princess-flag-removed.jpg",
+    "screenshots": [
+      "PL-38-story-flags-stakes.jpg",
+      "PL-38-princess-flag-removed.jpg"
+    ]
+  },
+  {
+    "id": "PL-39",
+    "section": "520→413",
+    "class": "data/engine",
+    "severity": "P1",
+    "state": "observed; verified in archive",
+    "screen_quote": "«это новое заклятие — заклятие Равнодушия. Добавьте его к уже имеющимся заклятиям.» No new charge appears at520 or after413, including natural261 victory.",
+    "canon_quote": "«это новое заклятие — заклятие Равнодушия. Добавьте его к уже имеющимся заклятиям.»",
+    "gd": "520 has only choice413, no auto_items/auto_spells; engine has no Indifference grant/ability.",
+    "registry": "group78 G02/DONE covers261 deadline routing, not the canonical spell reward at520; no exact DONE reward fix found.",
+    "fix": "Grant Indifference once on canonical reward520 and implement its single-enemy combat effect; record receipt flag there and check charge where used.",
+    "screenshot": "PL-39-520-no-indifference.jpg; PL-39-413-no-indifference.jpg",
+    "screenshots": [
+      "PL-39-520-no-indifference.jpg",
+      "PL-39-413-no-indifference.jpg"
+    ]
+  },
+  {
+    "id": "PL-40",
+    "section": "520",
+    "class": "text",
+    "severity": "P2",
+    "state": "observed; verified in archive",
+    "screen_quote": "«составить ему кампанию»",
+    "canon_quote": "«составить ему кампанию»",
+    "gd": "520 prose; choice413 unaffected.",
+    "registry": "No exact spelling correction found; deadline repair is unrelated.",
+    "fix": "Replace «кампанию» with «компанию» in canon/localization.",
+    "screenshot": "PL-39-520-no-indifference.jpg",
+    "screenshots": [
+      "PL-39-520-no-indifference.jpg"
+    ]
+  },
+  {
+    "id": "PL-41",
+    "section": "737→182",
+    "class": "engine/data",
+    "severity": "P1",
+    "state": "observed in continuous UI transition; verified in archive",
+    "screen_quote": "At737 after five rounds first goblin has2/10. Timeout→182; new fight contains only goblin8/8, skill8. Killing it alone permits continuation.",
+    "canon_quote": "«Вы опять набрасываетесь на него и продолжаете бой. Если убили его, то сделали это как раз вовремя, поскольку на его зов прибегает здоровенный Гоблин.»",
+    "gd": "737.round_deadline={rounds:5,win:391,lose:182}; 182.enemies contains only the second goblin(skill8,stamina8); remaining first enemy is not carried.",
+    "registry": "group78 G02/DONE fixes destination182 and describes continued fight; destination works, first phase does not. Observed reopening limited to lost enemy state.",
+    "fix": "Carry first goblin remaining stamina/phase from737 timeout, finish it at182, then spawn reinforcement; grant loot and postcombat exits only after both.",
+    "screenshot": "A7-737-direct-round5.jpg; PL-41-182-missing-first-goblin.jpg; PL-41-182-only-new-goblin-killed.jpg",
+    "screenshots": [
+      "A7-737-direct-round5.jpg",
+      "PL-41-182-missing-first-goblin.jpg",
+      "PL-41-182-only-new-goblin-killed.jpg"
+    ]
+  },
+  {
+    "id": "PL-42",
+    "section": "46",
+    "class": "text",
+    "severity": "P2",
+    "state": "observed; verified in archive",
+    "screen_quote": "«атакуют вас с верху с коней»",
+    "canon_quote": "«атакуют вас с верху с коней»",
+    "gd": "46.player_attack_mod=-1 works; prose only.",
+    "registry": "group78 G01/DONE modifier works; no exact spelling correction found.",
+    "fix": "Use «сверху» as one word.",
+    "screenshot": "PL-42-46-sverkhu.jpg",
+    "screenshots": [
+      "PL-42-46-sverkhu.jpg"
+    ]
+  },
+  {
+    "id": "PL-43",
+    "section": "182",
+    "class": "engine",
+    "severity": "P1",
+    "state": "observed after victory, twice; verified in archive",
+    "screen_quote": "After victory only «Нет ни того, ни другого, идите вдоль берега, на (589)». Swimming and Levitation charges remain (repeat screenshot shows Swimming1).",
+    "canon_quote": "«Заклятие Плавания — 841. Заклятие Левитации — 904.»",
+    "gd": "182.choices841/904: post_combat:true, spell_choice:true, spell SWIMMING/LEVITATION. renderChoices combatWon branch requires !ch.spell_choice, hiding both.",
+    "registry": "group62/DONE post_combat gates prevent early escape, but combatWon spell filter suppresses valid postcombat magic. Exact observed interaction reopened.",
+    "fix": "Permit explicitly post_combat spell choices after victory when charges exist; deduct once on clicking the chosen bridge, never while rendering.",
+    "screenshot": "PL-43-182-postcombat-spells-hidden.jpg",
+    "screenshots": [
+      "PL-43-182-postcombat-spells-hidden.jpg"
+    ]
+  }
+]

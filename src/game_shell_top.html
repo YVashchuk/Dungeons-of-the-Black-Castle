@@ -54,7 +54,7 @@ body{color:var(--parchment);font-family:var(--font-text);font-size:20px;line-hei
   text-align:left;
 }
 .t-rider-col{display:flex;justify-content:center;align-items:center;min-width:0;}
-.t-rider-col img{display:block;width:100%;max-width:560px;height:auto;max-height:78vh;
+.t-rider-col img{display:block;width:auto;max-width:min(100%,560px);height:auto;max-height:78vh;object-fit:contain; /* group_87 PL-44: aspect kept */
   filter:drop-shadow(0 0 32px rgba(200,150,50,.28));}
 .t-text-col{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;gap:14px;}
 .t-text-col .t-author-top{margin:0;font-family:var(--font-ui);font-size:13px;color:var(--muted);opacity:.7;letter-spacing:.18em;text-transform:uppercase;}
@@ -256,10 +256,10 @@ body.hide-inline-art .illustration-container{display:none!important;}
 .choices-area{position:relative;z-index:1;margin-top:28px;padding:22px 0 8px;border-top:1px solid var(--border);}
 .choices-title{font-family:var(--font-ui);font-size:13px;color:var(--gold);letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin-bottom:14px;}
 .choice-btn{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--border);
-  color:var(--parchment);padding:18px 28px;margin-bottom:10px;font-family:var(--font-text);font-size:23px;
+  color:var(--parchment);--cb-pad:28px;--cb-pt:18px;position:relative;padding:var(--cb-pt) var(--cb-pad) var(--cb-pt) calc(var(--cb-pad) + 1.3em);margin-bottom:10px;font-family:var(--font-text);font-size:23px; /* group_87 PL-47: hanging indent */
   font-weight:500;cursor:pointer;transition:all .2s;line-height:1.5;}
-.choice-btn:hover{border-color:var(--gold);background:rgba(200,150,42,.08);padding-left:28px;}
-.choice-btn::before{content:'→';margin-right:10px;color:var(--gold);opacity:.5;transition:opacity .2s;}
+.choice-btn:hover{border-color:var(--gold);background:rgba(200,150,42,.08);}
+.choice-btn::before{content:'→';position:absolute;left:var(--cb-pad);top:var(--cb-pt);color:var(--gold);opacity:.5;transition:opacity .2s;}
 .choice-btn:hover::before{opacity:1;}
 
 /* COMBAT MODAL */
@@ -276,8 +276,8 @@ body.hide-inline-art .illustration-container{display:none!important;}
 .combat-hp-head .ce-hp-head{font-family:var(--font-text);font-size:18px;letter-spacing:0;text-transform:none;color:var(--parchment);}
 .combat-log{max-height:260px;overflow-y:auto;font-size:17px;line-height:1.7;color:var(--muted);
   margin:16px 0;padding:16px;background:var(--bg);border:1px solid var(--border);}
-.combat-log .hit{color:var(--red2);}
-.combat-log .miss{color:var(--green2);}
+.combat-log .hit{color:var(--green2);} /* group_87 PL-48: the hero's hit */
+.combat-log .miss{color:var(--red2);} /* group_87 PL-48: incoming damage */
 .combat-log .draw{color:var(--gold);}
 
 /* LUCK CHECK MODAL */
@@ -408,7 +408,7 @@ body.hide-inline-art .illustration-container{display:none!important;}
 .map-legend-sw{display:inline-block;width:14px;height:14px;border-radius:2px;}
 .map-note{font-size:12px;color:var(--muted);padding-top:16px;border-top:1px solid var(--border);margin-top:16px;opacity:.7;line-height:1.5;}
 .map-toolbar{display:flex;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px;color:var(--muted);}
-.map-toolbar button{background:var(--bg3);border:1px solid var(--border2);color:var(--parchment);padding:4px 12px;cursor:pointer;font-size:12px;}
+.map-toolbar button{background:var(--bg3);border:1px solid var(--border2);color:var(--parchment);padding:4px 12px;cursor:pointer;font-size:12px;font-family:var(--font-ui);font-weight:400;} /* group_87 PL-51 */
 .map-stage{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:20px;}
 .map-svg-wrap{width:100%;height:100%;min-height:600px;max-height:82vh;overflow:auto;display:flex;align-items:center;justify-content:center;}
 #game-map-svg{width:100%;height:auto;max-height:78vh;}
@@ -734,14 +734,14 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
 <div class="end-overlay" id="end-death" role="dialog" aria-modal="true" aria-labelledby="death-title">
   <div class="end-title death" id="death-title" data-i18n="ui_death_title">† Гибель</div>
   <p class="end-text" id="death-text">Ваше путешествие окончено. Зачарованный лес поглотил ещё одного смельчака…</p>
-  <button class="btn btn-p" onclick="location.reload()" data-i18n="ui_btn_restart">Начать заново</button>
+  <button class="btn btn-p" onclick="localStorage.removeItem(SAVE_KEY);history.replaceState(null,'',location.pathname);location.reload()" data-i18n="ui_btn_restart">Начать заново</button>
 </div>
 
 <!-- WIN -->
 <div class="end-overlay" id="end-win" role="dialog" aria-modal="true" aria-labelledby="win-title">
   <div class="end-title win" id="win-title" data-i18n="ui_win_title">✦ Победа!</div>
   <p class="end-text" data-i18n="ui_win_text">Барлад Дэрт повержен! Принцесса свободна! Слава вам, герой!</p>
-  <button class="btn btn-p" onclick="location.reload()" data-i18n="ui_btn_play_again">Играть снова</button>
+  <button class="btn btn-p" onclick="localStorage.removeItem(SAVE_KEY);history.replaceState(null,'',location.pathname);location.reload()" data-i18n="ui_btn_play_again">Играть снова</button>
 </div>
 
 <!-- EVENT LOG -->
@@ -826,7 +826,7 @@ button:focus-visible,.btn:focus-visible,.choice-btn:focus-visible,select:focus-v
       <span data-i18n="ui_menu_import">📂 Импорт сохранения</span>
       <input type="file" accept=".json" class="sr-only" onchange="importSave(event)">
     </label>
-    <button class="btn btn-d menu-btn" onclick="bcConfirm(t('ui_confirm_new_game'),function(){localStorage.removeItem(SAVE_KEY);location.reload();})" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
+    <button class="btn btn-d menu-btn" onclick="bcConfirm(t('ui_confirm_new_game'),function(){localStorage.removeItem(SAVE_KEY);history.replaceState(null,'',location.pathname);location.reload();})" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
     <button class="btn btn-s menu-btn" onclick="closeModal('overlay-menu')" data-i18n="ui_btn_menu_close">← Закрыть</button>
   </div>
 </div>

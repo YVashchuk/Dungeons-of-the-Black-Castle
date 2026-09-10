@@ -70,7 +70,7 @@
   }
   .choice-btn {
     font-size: 20px;
-    padding: 14px 16px;
+    --cb-pt:14px;--cb-pad:16px; /* group_87 PL-47 */
   }
 
   /* Illustrations scaled to max 34vh on phones. */
@@ -182,7 +182,7 @@
   }
   .choice-btn {
     font-size: 18px;
-    padding: 12px 14px;
+    --cb-pt:12px;--cb-pad:14px; /* group_87 PL-47 */
   }
 
   .illustration-container img {

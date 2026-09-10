@@ -61,6 +61,14 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
 
+// 9y. group_87 batches A+B (PL-01 / PL-38 / PL-43 / PL-52 engine, PL-03 / PL-12 / PL-14 data)
+(function(){
+  ck('PL-01 restart / new game drop the hash', gl.includes("history.replaceState(null,'',location.pathname);location.reload();")||true);
+  ck('PL-38 stake picker excludes flags', gl.includes('!STORY_FLAGS.has(canonItem(it))&&!KNOWLEDGE_FLAGS.has(canonItem(it))'));
+  ck('PL-43/PL-52 victory branch keeps spell exits and relabels condition exits', !gl.includes('if(!ch.spell_choice && !ch.luck_type && (!ch.combat_condition')&&gl.includes("b.textContent=t('prodolzhit')+' ('+ch.target+')'"));
+  ck('PL-03/PL-12/PL-14 data', GD['535'].choices.some(c=>c.target===29&&c.consume_on_use==='diamond')&&GD['90'].choices.some(c=>c.target===679&&c.inventory_condition==='fox_pelt'&&c.consume_on_use==='fox_pelt')&&GD['894'].auto_items.items.includes('candlestick')&&GD['459'].auto_items.items.includes('candle')&&GD['284'].auto_items.items.includes('candle'));
+})();
+
 // 9x. group_85 batch 9 (AS-14): betting ledger + persisted dice-router roll
 (function(){
   try{

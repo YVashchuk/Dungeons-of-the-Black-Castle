@@ -1,0 +1,61 @@
+{
+  "recorded_at_utc": "2026-09-09T22:35:34.154927+00:00",
+  "archive_root": "Dungeons-of-the-Black-Castle-8b147bd4adb64b16f87436b8497034ba31a1f715",
+  "commit_hash": "8b147bd4adb64b16f87436b8497034ba31a1f715",
+  "zip_sha256": "2c6235f75d4ecd4e11139b393b29c2f7675a5a3d3457c2c6973367fffb263876",
+  "version_history_last_key": "v2.171 -> v2.172",
+  "gd_paragraphs": 1221,
+  "gd_ids_complete_1_to_1221": true,
+  "canon_section_1_first_sentence": "Вы быстро идете вперед и вскоре оказываетесь в лесу.",
+  "archive_file_count": 444,
+  "changed_files": [],
+  "screenshot_count": 182,
+  "initial_attempt": {
+    "browser_error": "CDP operation refresh tabs timed out after 20000ms",
+    "date": "2026-09-05",
+    "stopped": true
+  },
+  "browser_status": "Task1 and assigned smoke attempts completed after explicit user retry authorization",
+  "build_signatures": {
+    "1131": "PASS",
+    "1_minimap": "PASS",
+    "585_coconut_en": "PASS"
+  },
+  "private_window": "unavailable",
+  "viewport": [
+    1363,
+    936
+  ],
+  "reload": "browser reload API; keyboard F5 no observed reload",
+  "task1": "completed RUN5 paragraph1220, both deeds",
+  "gate_verdicts": {
+    "PASS": 14,
+    "UNCLEAR": 1
+  },
+  "smoke_verdicts": {
+    "PASS": 7,
+    "FAIL": 1,
+    "BLOCKED": 1
+  },
+  "anomaly_counts": {
+    "P1": 9,
+    "P2": 34
+  },
+  "task1_distinct_paragraphs": 138,
+  "task1_visits": 260,
+  "all_logged_distinct_paragraphs": 203,
+  "browser_log_records": 1150,
+  "final_reference_integrity": {
+    "zip_current_bytes": 27856896,
+    "zip_current_sha256": "3fee32325b7ae90e33883d4392b09b6e5dfa33ec68b5659942e4f8477446372c",
+    "zip_eocd_present": false,
+    "complete_local_entries_verified": 322,
+    "changed_files_in_complete_entries": [
+      "Dungeons-of-the-Black-Castle-8b147bd4adb64b16f87436b8497034ba31a1f715/assets/pdf_original_1991.pdf"
+    ],
+    "last_verified_entry": "Dungeons-of-the-Black-Castle-8b147bd4adb64b16f87436b8497034ba31a1f715/dist/art/mj/art53_six_legged_beast.jpg",
+    "current_archive_copy_truncated": true,
+    "initial_full_verification_file_count": 444,
+    "initial_full_sha256": "2c6235f75d4ecd4e11139b393b29c2f7675a5a3d3457c2c6973367fffb263876"
+  }
+}

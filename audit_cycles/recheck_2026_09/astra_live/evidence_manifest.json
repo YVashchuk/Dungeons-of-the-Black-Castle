@@ -1,0 +1,1682 @@
+{
+  "updated_utc": "2026-09-09",
+  "audited_reference_commit": "8b147bd4adb64b16f87436b8497034ba31a1f715",
+  "smoke_totals": {
+    "BLOCKED": 7,
+    "PASS": 29,
+    "UNCLEAR": 3,
+    "FAIL": 2
+  },
+  "anomalies": {
+    "total": 52,
+    "P0": 0,
+    "P1": 9,
+    "P2": 43
+  },
+  "new_log_physical_rows": 471,
+  "historical_screenshots": 182,
+  "new_screenshots": 110,
+  "note": "Source archives and live game were not modified; design/map images are separately labelled proposals/schematic.",
+  "files": [
+    {
+      "path": "REPORT_astra_playthrough.md",
+      "bytes": 133116,
+      "sha256": "d811abc5709c1cfedbdc133a9c65164fce34bc2c41b1d63640d053449f7bccc5"
+    },
+    {
+      "path": "REPORT_astra_playthrough_original.md",
+      "bytes": 89682,
+      "sha256": "fc100f174118347295e267a24a60db5acb6e4307344d359c70b26799d50374a3"
+    },
+    {
+      "path": "addendum/A5_preparation.md",
+      "bytes": 16273,
+      "sha256": "3405ac013d446a6e6bf4a6a820c0800275bc667a3ba38830a5a4ca86debe7165"
+    },
+    {
+      "path": "addendum/C7_B2_clarifications.md",
+      "bytes": 7325,
+      "sha256": "34c84b49de3491bcec314f607a6f6ac4bc7562a50e7670d210c202048cc60806"
+    },
+    {
+      "path": "addendum/CODE_DESIGN_RECOMMENDATIONS.md",
+      "bytes": 31152,
+      "sha256": "4174032f2bcc25eeb763d62cc23b79a9b45d3e68a1fcbed6e28ad41ead87b6ef"
+    },
+    {
+      "path": "addendum/GEMINI_review.md",
+      "bytes": 22453,
+      "sha256": "8d5c38642b6d0f64543a383d0b2468a6c97fc0bf5c50919afb295cc7973d6f47"
+    },
+    {
+      "path": "addendum/HISTORICAL_SMOKE_COVERAGE.json",
+      "bytes": 27204,
+      "sha256": "cd0ad745f1fd0206927db964427d76cc73392a55fcd7d045a1681e3ec164e57b"
+    },
+    {
+      "path": "addendum/HISTORICAL_SMOKE_COVERAGE.md",
+      "bytes": 27295,
+      "sha256": "88bfaaf04ffec2fdfbffb39aaf5379e915287deb29cc751c35d5a422e5051b66"
+    },
+    {
+      "path": "addendum/NEW_ANOMALIES_PROTOCOL.md",
+      "bytes": 25851,
+      "sha256": "da469af320649e3e3663be246a2f7dd094e5b45806a656814d4c67de22ded590"
+    },
+    {
+      "path": "addendum/REPORT_mobile_recheck.md",
+      "bytes": 42385,
+      "sha256": "1ab5cf1c2b9e63d93a9b3f37f441c30bd1b3980dbf4aaf2cec4b32f8376c4404"
+    },
+    {
+      "path": "addendum/SMOKE_RESULTS.json",
+      "bytes": 46876,
+      "sha256": "7e0445e92b4f0fe333a322e5899af340efd4e9f89f94f5eae6e2f511bf82d87c"
+    },
+    {
+      "path": "addendum/SMOKE_RESULTS.md",
+      "bytes": 32388,
+      "sha256": "4a16601080c85b585542ee354c34fdd0f00ffb7c632005f2bc2427115a7eeae4"
+    },
+    {
+      "path": "addendum/browser_log.jsonl",
+      "bytes": 2549075,
+      "sha256": "1155fdedce173ca457b712207fa787fd728f53bf2a05060667db6e99111706ba"
+    },
+    {
+      "path": "addendum/design/MOBILE_LAYOUT_PROPOSAL.html",
+      "bytes": 12353,
+      "sha256": "10132c054687b10351f153cbcc0a04b38406f03e60156278f0794a8f649596a9"
+    },
+    {
+      "path": "addendum/design/MOBILE_LAYOUT_PROPOSAL.png",
+      "bytes": 298791,
+      "sha256": "af53ad118c63c8e3d63a683ef7d31b1da7290eaa2de4abf664e964a05b19c63b"
+    },
+    {
+      "path": "addendum/design/MOBILE_LAYOUT_PROPOSAL.svg",
+      "bytes": 13817,
+      "sha256": "214c55f299b17a5623e5d418dad650d219105e876b92834d7fe5bab79e7ad52a"
+    },
+    {
+      "path": "addendum/design/README_LAYOUT_PROPOSAL.md",
+      "bytes": 2288,
+      "sha256": "a133f01ccb2889642b8340ec2411dd78652c726e8dadf6cfe20cc9ca7c6d0e68"
+    },
+    {
+      "path": "addendum/design/build_layout_preview.py",
+      "bytes": 8900,
+      "sha256": "e6dc23e26b967b2fbdd6e9faadfdb1d682986fb87ef9642d04fc6769cd68c2c4"
+    },
+    {
+      "path": "addendum/font_observations.jsonl",
+      "bytes": 32791,
+      "sha256": "de2a31808368121b067e39b517566b5b0032dc9e9b52b05df978247b60f115d2"
+    },
+    {
+      "path": "addendum/layout_observations.jsonl",
+      "bytes": 1082,
+      "sha256": "7ce9829ab19d23348143a78b51d15e73b7daaf703cda9b96fdd62fbf11825d0e"
+    },
+    {
+      "path": "addendum/map/DotBC_verified_route.html",
+      "bytes": 9932,
+      "sha256": "2aa993592397a610ce8445cdc27068978b23d719ce7a47111fd6ac28bd15751e"
+    },
+    {
+      "path": "addendum/map/DotBC_verified_route.png",
+      "bytes": 395339,
+      "sha256": "034bd63bc8471c7d4e472b9be11d75f4fc349a1478a0d553f01b9964b1d184a6"
+    },
+    {
+      "path": "addendum/map/DotBC_verified_route.svg",
+      "bytes": 16017,
+      "sha256": "08653a837353b7212f9cfc4e2ae3560a70a34dc36a9f94d306a8de010dc8bbd8"
+    },
+    {
+      "path": "addendum/map/MAP_NOTES.md",
+      "bytes": 9152,
+      "sha256": "4b0ec49578dfec175488b17e7c916b786effb50c593159f87c81376c28ab5263"
+    },
+    {
+      "path": "addendum/map/build_verified_map.py",
+      "bytes": 24858,
+      "sha256": "f6bf6078323fdb43d584f6505b17419aad9b6b74e9407254dae4b63851c98504"
+    },
+    {
+      "path": "addendum/map/map_provenance.json",
+      "bytes": 39895,
+      "sha256": "1d940d0d9191a7be44ad5361a393be8b5fa8c00cde4cc01d4d58d72166aa41d1"
+    },
+    {
+      "path": "addendum/screenshots/A1-snake-damage-three.jpg",
+      "bytes": 64264,
+      "sha256": "89740f182260101cf90b1c010fe3facb984da35aac098931ef103a5006cd2559"
+    },
+    {
+      "path": "addendum/screenshots/A1-target3-gold.jpg",
+      "bytes": 59994,
+      "sha256": "9ce72c957d4db71508feb2475fc27903770c3839cf705c09409e02e065186db0"
+    },
+    {
+      "path": "addendum/screenshots/A1-target6-damage.jpg",
+      "bytes": 67433,
+      "sha256": "c8949f7846881a49bc2897214156188c22cae37f486459843d94d194ce242fe9"
+    },
+    {
+      "path": "addendum/screenshots/A10-five-rolled-three-taken.jpg",
+      "bytes": 113556,
+      "sha256": "d128541d71636f15adf53f849752111b1076867a053069e14c104f3cae1055f9"
+    },
+    {
+      "path": "addendum/screenshots/A10-selected-second-dead-card.jpg",
+      "bytes": 54790,
+      "sha256": "de19c6b361f6ed30a3389a91eef471e6dc6105f2d0d0d1bb08c3bb08e8d862e9"
+    },
+    {
+      "path": "addendum/screenshots/A10-selected-second-snake-killed.jpg",
+      "bytes": 65179,
+      "sha256": "a8345b8392ea68937b85b3f05234e117e0aa28049fddd4217369b95a687acf4d"
+    },
+    {
+      "path": "addendum/screenshots/A11-1140-free-after.jpg",
+      "bytes": 135929,
+      "sha256": "23ab4486dc690c6cf05f45b0a0a96cc5458090850d50850c793fcd5e743c745b"
+    },
+    {
+      "path": "addendum/screenshots/A11-1140-free-taken.jpg",
+      "bytes": 140427,
+      "sha256": "be2852566bed0473a8cfe04f549f1b479fcbde2be70527d81404c67eba8b7481"
+    },
+    {
+      "path": "addendum/screenshots/A11-582-after.jpg",
+      "bytes": 113469,
+      "sha256": "4f32da0ddec400ee09f947a62f5e117bda13b21d6276e83658f38af17aa0a39e"
+    },
+    {
+      "path": "addendum/screenshots/A11-582-round-robin.jpg",
+      "bytes": 118521,
+      "sha256": "e4a551ce982391de76e9207b7236cb145677afe9ae9ab5f7fdc794d3bac623ae"
+    },
+    {
+      "path": "addendum/screenshots/A11-585-full-bag.jpg",
+      "bytes": 75257,
+      "sha256": "54f2e0fdd5d60aa162009284a72d636af93ff39cd92dfa2f2233f0cc8ed7db84"
+    },
+    {
+      "path": "addendum/screenshots/A11-724-free-after.jpg",
+      "bytes": 102308,
+      "sha256": "ec96f6eedc8f82878817f1b8dd91f9f9ff5c28274a52d07c011e6dcb723784c0"
+    },
+    {
+      "path": "addendum/screenshots/A11-724-free-taken.jpg",
+      "bytes": 103498,
+      "sha256": "4314aa3a4f11631aad3b5de0b2f8c909030056bc9c4abc634e634cdc311443ce"
+    },
+    {
+      "path": "addendum/screenshots/A11-801-free-after.jpg",
+      "bytes": 87803,
+      "sha256": "89beec6dc6b82538f40caaa44ba2fad4c0110ea4e6d9ff7ea44953d558c439eb"
+    },
+    {
+      "path": "addendum/screenshots/A11-801-free-taken.jpg",
+      "bytes": 89263,
+      "sha256": "ba4c079d75d4494247f6bf2a0b670a42c323e61522374786109d6e258cb9c024"
+    },
+    {
+      "path": "addendum/screenshots/A12-after-paid-food.jpg",
+      "bytes": 69780,
+      "sha256": "47870e7e313570a47413f78cdab9a410124d3c20211dbc4a2dbf35b9f34080b0"
+    },
+    {
+      "path": "addendum/screenshots/A12-before-paid-food.jpg",
+      "bytes": 79514,
+      "sha256": "b2901626798bcbc37adc52d88c84da40413044987351199d4d52d343d19851e1"
+    },
+    {
+      "path": "addendum/screenshots/A12-gold1-no-food.jpg",
+      "bytes": 75708,
+      "sha256": "56a0f15524d7e55e27c36ac3c3046d572ba513e69bed4ddcbb650c35330db43b"
+    },
+    {
+      "path": "addendum/screenshots/A13-fish-paid.jpg",
+      "bytes": 63886,
+      "sha256": "0c0e233e0ea8b0dd33fbc7b95febc0544a71a33ac4a96aa2d799dbf3e4d1535a"
+    },
+    {
+      "path": "addendum/screenshots/A14-one-kill-exit.jpg",
+      "bytes": 72162,
+      "sha256": "2a637eb92fdcf14b10130f03e80162206ceb88fc3cf3b065f756b7b0d03d96b5"
+    },
+    {
+      "path": "addendum/screenshots/A15-flee-cost.jpg",
+      "bytes": 83550,
+      "sha256": "40ae079bb2bfc3f23daf0e774175b618b2c964808688c15c715ed3b4772ab395"
+    },
+    {
+      "path": "addendum/screenshots/A15-phase1-no-flee.jpg",
+      "bytes": 50044,
+      "sha256": "03062e2e200dd34b159d5f3214f96b82c585335baf93f9cbbaa7d01161880faf"
+    },
+    {
+      "path": "addendum/screenshots/A15-phase2-flee.jpg",
+      "bytes": 57632,
+      "sha256": "e6bf73a23a5e0c0969bfacd5cee23e4a4a9a1bcc27e47cbadcbdd1424dfbc044"
+    },
+    {
+      "path": "addendum/screenshots/A16-116-retarget-debuff-stays.jpg",
+      "bytes": 66425,
+      "sha256": "35aa77c9bf319cf19901567ec05a0b179afac98a42c61837a5b7332f8ffa77d5"
+    },
+    {
+      "path": "addendum/screenshots/A2-C3-sword-exchange.jpg",
+      "bytes": 85450,
+      "sha256": "1edd5a95c124f720ea1adb7973a0e93c9726fca25909de615b8ff9d9ee087685"
+    },
+    {
+      "path": "addendum/screenshots/A3-leader-dead-others-active.jpg",
+      "bytes": 57702,
+      "sha256": "2869a68319cb26555e4d0364129ab023ef07e903bce3609c726f2f378a0d89d4"
+    },
+    {
+      "path": "addendum/screenshots/A4-C3-shield.jpg",
+      "bytes": 71813,
+      "sha256": "557771e2c555929a972ebe08fcc11e125b9eba62875a2a29317fac4eeb27174e"
+    },
+    {
+      "path": "addendum/screenshots/A5-after-two-own-still-plus7.jpg",
+      "bytes": 64280,
+      "sha256": "bd6094e9054d1d35e1c7dae7c8295b927956f9d5ec58b62cbf8a829bfd2aed74"
+    },
+    {
+      "path": "addendum/screenshots/A5-copy-and-bear-kills.jpg",
+      "bytes": 68053,
+      "sha256": "2e1e6e581c4a37fda8fc6bd093a924bcca2e5d1e39f7b633a316cb89540a20ba"
+    },
+    {
+      "path": "addendum/screenshots/A5-next-fight-plus2.jpg",
+      "bytes": 58223,
+      "sha256": "6d67292d3f7e00520b9ec8c45442b9c5098fadd944b4cbc4917c4ea72637e65f"
+    },
+    {
+      "path": "addendum/screenshots/A5-third-own-expires-after-allies.jpg",
+      "bytes": 62266,
+      "sha256": "9b7e3d79ee1ae6e1e1bbcb9cf5ccedabe56ad91e1e4f96c4a660b632a3795534"
+    },
+    {
+      "path": "addendum/screenshots/A8-success-863.jpg",
+      "bytes": 73965,
+      "sha256": "f033da78d847f644d936505fbe674b202d15d37b130f51c79681e49209ce09b9"
+    },
+    {
+      "path": "addendum/screenshots/A8-success-roll.jpg",
+      "bytes": 93027,
+      "sha256": "c966faec6c587357c50f3e3e8e1e1e8b0546d8db16166c542658348ccf731263"
+    },
+    {
+      "path": "addendum/screenshots/A9-new-success-journal.jpg",
+      "bytes": 81163,
+      "sha256": "f47bfdabbb4dd79547e7f21857ed72b94f7120af7cd45f38ba4ccb8722967189"
+    },
+    {
+      "path": "addendum/screenshots/A9-second-win-journal.jpg",
+      "bytes": 81158,
+      "sha256": "8e83ca2ceae527bc9f3b114e853a464a7f22fc4c0571806f08469010f7bab2e5"
+    },
+    {
+      "path": "addendum/screenshots/B2-fled-state1175.jpg",
+      "bytes": 67809,
+      "sha256": "b98eac6f7fcd8d7336eae7b1f7ee07f79d3e8e45852d40ce980cb9cc2a764f8b"
+    },
+    {
+      "path": "addendum/screenshots/B3-art-off.jpg",
+      "bytes": 57461,
+      "sha256": "573f09b84dfb339a76af8841535598c97cf4a6d611483a7fdec21ec382c65264"
+    },
+    {
+      "path": "addendum/screenshots/B3-art-on.jpg",
+      "bytes": 144659,
+      "sha256": "e6c581a6b076daea271c938f544c60096bd5b6485ca6085f87e1af44fb4049a2"
+    },
+    {
+      "path": "addendum/screenshots/B3-art-restored.jpg",
+      "bytes": 144232,
+      "sha256": "aa23e2a4f6c2f263d06786575988a3432b68c16a4e9364d22e10f564374ad596"
+    },
+    {
+      "path": "addendum/screenshots/C1-full-bag-eat.jpg",
+      "bytes": 52072,
+      "sha256": "184e97894537d99a9c66afa2385d31746cdb7ab3c63d938b4ef39ecaeae7b82c"
+    },
+    {
+      "path": "addendum/screenshots/C1-full-stamina-toast.jpg",
+      "bytes": 45892,
+      "sha256": "0b434acda16a5cba4c80eb916f9e1e9e7693bacc5876b4beb5b21564d3b8c706"
+    },
+    {
+      "path": "addendum/screenshots/C1-watermelon-eaten.jpg",
+      "bytes": 45123,
+      "sha256": "8c507e396184bd24012895d4d1dbaa734b07a3be6ecb41df893138fc26a8b9c3"
+    },
+    {
+      "path": "addendum/screenshots/C10-after.jpg",
+      "bytes": 97470,
+      "sha256": "004de6b1add9c89e53d6a3154001e9d8a3596a64d4fbb86377fcd157f94d6d26"
+    },
+    {
+      "path": "addendum/screenshots/C10-before.jpg",
+      "bytes": 95546,
+      "sha256": "a7cb9738550aef4b3bfddcc6d9900b1cb7c86d6e17dba0b1c6f8453c413c5a05"
+    },
+    {
+      "path": "addendum/screenshots/C10-reentry.jpg",
+      "bytes": 97575,
+      "sha256": "467a95d5cdd7b2afced54a78ffdd0202e6e33f57d6427e7f22dab041c59305a6"
+    },
+    {
+      "path": "addendum/screenshots/C11-after.jpg",
+      "bytes": 113790,
+      "sha256": "ef4873f4162700a695998cb3288d20b1584abe9cd287f638fe004273e3383421"
+    },
+    {
+      "path": "addendum/screenshots/C11-before.jpg",
+      "bytes": 111942,
+      "sha256": "e3c91d43f0757083051ea5e97433599da73274ccc56a4009aa870c52510739de"
+    },
+    {
+      "path": "addendum/screenshots/C11-declined-reentry.jpg",
+      "bytes": 109087,
+      "sha256": "51973f50c6898bd5c8c9148402b18d5d793c2bc8acfa0ad4b32fc053dcbd71a2"
+    },
+    {
+      "path": "addendum/screenshots/C13-shop-after.jpg",
+      "bytes": 140842,
+      "sha256": "24f4c121bc2f7254c10aa2fa4d7ad3c3980d7d0d4bd5fb3be2dfce19ae36f319"
+    },
+    {
+      "path": "addendum/screenshots/C13-shop-before.jpg",
+      "bytes": 110663,
+      "sha256": "bab2d3b7c4a9b9be0d1fc014853d5c338be5cd1a68238eafce26ad9f4e37bae3"
+    },
+    {
+      "path": "addendum/screenshots/C14-EN-combat.jpg",
+      "bytes": 53426,
+      "sha256": "b938a363e22fe3c95d5b5c9578c3d4104b357c64d75db3e65b26e25c191c9a07"
+    },
+    {
+      "path": "addendum/screenshots/C14-EN-map.jpg",
+      "bytes": 54801,
+      "sha256": "ca1eb5f6d70746c17646a776c7c84b1369f4ec1c68cc7d494dc8d9b4e8ce88bb"
+    },
+    {
+      "path": "addendum/screenshots/C14-EN-menu.jpg",
+      "bytes": 41136,
+      "sha256": "48e2b55ef831ea175088f8982105537ebf447d181d5f33458f66d4acfcacd118"
+    },
+    {
+      "path": "addendum/screenshots/C14-EN-title.jpg",
+      "bytes": 111899,
+      "sha256": "7351812092380f5925ee56cf4a01197aac44a839d98f93c323fbe343b92612b3"
+    },
+    {
+      "path": "addendum/screenshots/C14-FR-combat.jpg",
+      "bytes": 54565,
+      "sha256": "1a9dd38f3ac7a2c339de34a002b8a1dba61bb0a5efb10ee54300bcb7ee14587e"
+    },
+    {
+      "path": "addendum/screenshots/C14-FR-map.jpg",
+      "bytes": 57137,
+      "sha256": "43b71463372a8b70b9e8670806802393c3c6909f126d5614f8b97dd0f4ea0135"
+    },
+    {
+      "path": "addendum/screenshots/C14-FR-menu.jpg",
+      "bytes": 34590,
+      "sha256": "52b813ad1186240f70a7cf9203b67b88216d8c864d01ab9a60e68822372fb4fd"
+    },
+    {
+      "path": "addendum/screenshots/C14-FR-title.jpg",
+      "bytes": 112910,
+      "sha256": "8f98a6a8a3dafeb3539ca222f0f8feedc497b7d385a210167b51d3e5e365ea3a"
+    },
+    {
+      "path": "addendum/screenshots/C14-RU-combat.jpg",
+      "bytes": 51979,
+      "sha256": "2a4db43880774c2f7145421a487229aa5cca7d4aa45543a379a4132a59d9caee"
+    },
+    {
+      "path": "addendum/screenshots/C14-RU-title.jpg",
+      "bytes": 110117,
+      "sha256": "216e0b54f787ae61057cae90f8d6442c29d02a4d4da7f27d2737b5c5b0296cbb"
+    },
+    {
+      "path": "addendum/screenshots/C14-UK-combat.jpg",
+      "bytes": 51554,
+      "sha256": "64e4d99b997a081150b9b27f810de9ee40f33401239f9be61fd13d2ff00c14da"
+    },
+    {
+      "path": "addendum/screenshots/C14-UK-map.jpg",
+      "bytes": 53329,
+      "sha256": "28322feb01ac381c03d9a675a09d7c0bdca1247d6a1d6e489f41ff3e9ac6c452"
+    },
+    {
+      "path": "addendum/screenshots/C14-UK-menu.jpg",
+      "bytes": 39616,
+      "sha256": "ac23e69221a7a592d9b2d954479b41b9c5cc2f56515a5ca73173279faf4994c1"
+    },
+    {
+      "path": "addendum/screenshots/C14-UK-title.jpg",
+      "bytes": 110419,
+      "sha256": "4f854f6594f0cf1202a913537d358df0c37e5cedcb87cb2c811dbc7fa8c2686c"
+    },
+    {
+      "path": "addendum/screenshots/C15-B1-132-last-choice.jpg",
+      "bytes": 100441,
+      "sha256": "95235908882009d26144e4e4b3e18a58cf4832aa3ea6794b2c57422460ec2f4b"
+    },
+    {
+      "path": "addendum/screenshots/C15-B1-132-text-choice-boundary.jpg",
+      "bytes": 108908,
+      "sha256": "cad56c6d60817c58352123390f7bdc7b76c156882f4423b1e491fb9f2d0da606"
+    },
+    {
+      "path": "addendum/screenshots/C15-B1-340-last-choice.jpg",
+      "bytes": 101689,
+      "sha256": "defaaa857bb23693cac2300d1ba0f4e9293e8cdeb8b81b32c7a54b29e7de4d74"
+    },
+    {
+      "path": "addendum/screenshots/C15-B1-340-text-choice-boundary.jpg",
+      "bytes": 121455,
+      "sha256": "fd3637860be857635d57f25e7f07539d6608d9132d8c04f13b175c36de3831d4"
+    },
+    {
+      "path": "addendum/screenshots/C17-drop-keyboard-focus.jpg",
+      "bytes": 78090,
+      "sha256": "f20d5614154b023b40f05301ca6f06cbb111d01729208735fd4ee2fc6ba5b1e2"
+    },
+    {
+      "path": "addendum/screenshots/C17-food-keyboard-focus.jpg",
+      "bytes": 79613,
+      "sha256": "b80e290735f9a5671d1e527df31fe53fa6b83b10e5d9078155dfcdc6c87c09f8"
+    },
+    {
+      "path": "addendum/screenshots/C18-eagle-immediately-joins.jpg",
+      "bytes": 65053,
+      "sha256": "095202e5dd729b07bfb09c0b758ba99ec11836e480e4cdf16d98e6555dae1016"
+    },
+    {
+      "path": "addendum/screenshots/C18-first-choice-focus.jpg",
+      "bytes": 104106,
+      "sha256": "02705b672b71daf709e7f8f1b877e136fab2ba173d4bcae5a0872cd67fc6c894"
+    },
+    {
+      "path": "addendum/screenshots/C18-luck-after.jpg",
+      "bytes": 81381,
+      "sha256": "5aa1d3b28a5e993b1d60d5fae8a11128c103da4e9bdf50dd1cfe8a50a4b6f2a5"
+    },
+    {
+      "path": "addendum/screenshots/C18-luck-before.jpg",
+      "bytes": 42684,
+      "sha256": "2ced2e032dd53365ba9b436069bfb8b9e54b01d490ce4a62af6d133a5a792f65"
+    },
+    {
+      "path": "addendum/screenshots/C18-luck-result-after.jpg",
+      "bytes": 80167,
+      "sha256": "9cbae9ce4f17539560c27567d3cf075cffa3db319cc6e8470cceb83fd54ade33"
+    },
+    {
+      "path": "addendum/screenshots/C18-luck-result-before.jpg",
+      "bytes": 46350,
+      "sha256": "1a4cdb0df526ea02fdebe294e66a629d978e8ec49d75d6bdd620e273109a01b4"
+    },
+    {
+      "path": "addendum/screenshots/C19-M-map.jpg",
+      "bytes": 54002,
+      "sha256": "5f6235dd450d4178057b5e16ebfd79dd7c50db9ef60557661297f750f54f31ae"
+    },
+    {
+      "path": "addendum/screenshots/C19-after-reload.jpg",
+      "bytes": 51086,
+      "sha256": "a1ddbf79339dbc8e3a39a6f75a0cf45a0be6937da827a14d6eefc6886bedcbbe"
+    },
+    {
+      "path": "addendum/screenshots/C19-before-reload.jpg",
+      "bytes": 110490,
+      "sha256": "737186f2094966fed9d0cd5571f6865a34d6ffe347834e24aa84895661ec6697"
+    },
+    {
+      "path": "addendum/screenshots/C19-log-closed-settled.jpg",
+      "bytes": 116549,
+      "sha256": "2ed79ce6be3719ce1dca5c1862095774c2ee2f3de0e9bffab7e79b5227d63d28"
+    },
+    {
+      "path": "addendum/screenshots/C19-restored-after.jpg",
+      "bytes": 50881,
+      "sha256": "8c3cf6ed8ee37f47e8c78d32e35975fcaf6b05022ab109b2587bcbdaa58d8a56"
+    },
+    {
+      "path": "addendum/screenshots/C19-wounded-before.jpg",
+      "bytes": 57208,
+      "sha256": "7ce5ccfd4115a3e6e3d68090dd94cae6ad644afdd0b2ec49f15abec831968fff"
+    },
+    {
+      "path": "addendum/screenshots/C2-C13-coconuts-persist.jpg",
+      "bytes": 22428,
+      "sha256": "274d3679768f47103810ec20a3795a4796f2eb713554644ce82f4bf5d5f619bc"
+    },
+    {
+      "path": "addendum/screenshots/C2-C13-persist-verified.jpg",
+      "bytes": 72779,
+      "sha256": "7c00494008f17c860788b6acae410b9671d54815fb3d66e9c86489ddb406473a"
+    },
+    {
+      "path": "addendum/screenshots/C3-shield-without-whole.jpg",
+      "bytes": 73169,
+      "sha256": "a10c5532356a55728d5766562e0fd58f416fd225570ae3fa5227cce58720689e"
+    },
+    {
+      "path": "addendum/screenshots/C3-without-whole.jpg",
+      "bytes": 83580,
+      "sha256": "767bf015d3bbe4053551fab85674a6f1313f30e651f0d10bd580f915cba946ed"
+    },
+    {
+      "path": "addendum/screenshots/C4-copy-kills-lioness-joins.jpg",
+      "bytes": 52857,
+      "sha256": "f6ba35b0e1138c54587940b2e7c4620c9454e2785cdf74130ba0c8d18c17327a"
+    },
+    {
+      "path": "addendum/screenshots/C4-copy-outcome2.jpg",
+      "bytes": 49259,
+      "sha256": "6e5d57a4adc0a8dc3e516f793edd09b7a7c1e501ad210229fc338eaabc98baa4"
+    },
+    {
+      "path": "addendum/screenshots/C4-lioness-joins.jpg",
+      "bytes": 49973,
+      "sha256": "093110d14cd69e81dbc1d163be0cb68f55ad627a67476d9b0e47ef499c9edf97"
+    },
+    {
+      "path": "addendum/screenshots/C5-round11-third-joins.jpg",
+      "bytes": 61130,
+      "sha256": "3e2bc252fad23c783c85c2c5aff0c5f50babd08ae06fbc7f2aedec452951c22e"
+    },
+    {
+      "path": "addendum/screenshots/C6-waiting-selected.jpg",
+      "bytes": 57110,
+      "sha256": "db96738a5e57125b6f8ce998bc814e7749cc4452e45538d244651c85ea204f7d"
+    },
+    {
+      "path": "addendum/screenshots/C6-weakness-stays.jpg",
+      "bytes": 63283,
+      "sha256": "80d733aabd90b79aa03fe6419dbf03b4aad796d806241698cd15e2015bf9a5dd"
+    },
+    {
+      "path": "addendum/screenshots/C7-continuous-next250-no-stale.jpg",
+      "bytes": 54064,
+      "sha256": "15db7be8dd6cc30afa2805b1b1dc06ffbb56290d8c88da2330f86ace0f723436"
+    },
+    {
+      "path": "addendum/screenshots/C7-continuous-victory.jpg",
+      "bytes": 55004,
+      "sha256": "2e4c8d2de68b80c3a574689c007e9486ed2b7be2ad6e94b6d88331aa15873a83"
+    },
+    {
+      "path": "addendum/screenshots/C7-final-win-no-flee.jpg",
+      "bytes": 55075,
+      "sha256": "a673eeb04bb94d33b8a4ea7f07988c884bfb516fa909c79f8d0f43996dc38d9d"
+    },
+    {
+      "path": "addendum/screenshots/C7-next43-combat-no-stale-after-reload.jpg",
+      "bytes": 54777,
+      "sha256": "15739ed6514d7a44482d5d1e231f3cfc2e026580b029f14eb88f1dfee0c6ee2c"
+    },
+    {
+      "path": "addendum/screenshots/C7-victory-no-special.jpg",
+      "bytes": 54431,
+      "sha256": "254c4421d25bd8ffe6bf721f3c88b3fa3b0a6f0733fd6e54f87489be4edf6d5f"
+    },
+    {
+      "path": "addendum/screenshots/C8-instant-goblin-flee.jpg",
+      "bytes": 55933,
+      "sha256": "de71bba63f05c2d6378b980a39fcea48bafc777a474e37e293b85e2b63db2e2f"
+    },
+    {
+      "path": "addendum/screenshots/C9-dragon-conditional-exit.jpg",
+      "bytes": 106757,
+      "sha256": "9937ffe9b71b5060a5a72530f01059c11d62c7dcfbd4a46d9bb8ed35487ffb98"
+    },
+    {
+      "path": "addendum/screenshots/C9-spirit-conditional-exit.jpg",
+      "bytes": 58793,
+      "sha256": "7c743ef7ac15767470eb964279645f0239c54feeebb9a1586817bd81e735e907"
+    },
+    {
+      "path": "addendum/screenshots/M-06-snake-both-colors.jpg",
+      "bytes": 58483,
+      "sha256": "ae5391cb2b725e345beca1d1a970b8fee4f73bf62985da8373f6024897cd8a41"
+    },
+    {
+      "path": "addendum/screenshots/M-06-snake-grammar-colors.jpg",
+      "bytes": 58706,
+      "sha256": "c49ff30321ee84a06c6741cce4753419612c47523bba7306b25b7cb94501d8ba"
+    },
+    {
+      "path": "addendum/screenshots/M-07-map-wrong-Princess-location.jpg",
+      "bytes": 51159,
+      "sha256": "b56929df19ca99d8a24840ddca88b029255665845efc4368af359e9e9eedbd00"
+    },
+    {
+      "path": "addendum/screenshots/PL52-final-choice.jpg",
+      "bytes": 121269,
+      "sha256": "b05c176bbd3e68a5a46afddbe991ee2bed14acff6b13a9b51ee1d6c2489c89a4"
+    },
+    {
+      "path": "addendum/screenshots/PL52-instant-victory.jpg",
+      "bytes": 49146,
+      "sha256": "975e8a4e6da2090ea1f6a6645c88058895891984833f3a2377552ff807f679e2"
+    },
+    {
+      "path": "addendum/screenshots/preflight-final-autosave.jpg",
+      "bytes": 41122,
+      "sha256": "26333c6801692a8aeb8280bc06f02d678ad50e2d5cf39faed7182b2d387a42a3"
+    },
+    {
+      "path": "addendum/screenshots/preflight-final-riddle.jpg",
+      "bytes": 99022,
+      "sha256": "d2e16802828410696f05d4d0cc18ea4b6d6ac50f63c65d1e1fad0bb9b2f3757d"
+    },
+    {
+      "path": "addendum/screenshots/preflight-final-sidebar-visible.jpg",
+      "bytes": 111973,
+      "sha256": "dd0d59b39850a77a4c9888ef19cd56c5e8769234679195475165372b8dea0adb"
+    },
+    {
+      "path": "addendum/screenshots/preflight-final-sidebar.jpg",
+      "bytes": 108500,
+      "sha256": "f5a4b658cc32f815f0f21a72d4b296e4195e032d34d7535b0db20a8dce87f520"
+    },
+    {
+      "path": "addendum/screenshots/preflight-menu-autosave.jpg",
+      "bytes": 40948,
+      "sha256": "21df8d76988abf331eaf959307e62424cfe1f5e5152acc371d201df26c53ac54"
+    },
+    {
+      "path": "addendum/source_hash_recheck.json",
+      "bytes": 975,
+      "sha256": "60e3df292843a60c6d05f7357bbcd6566e68fa6065c9480947cc5866537ce8e3"
+    },
+    {
+      "path": "addendum/user_evidence/Gemini_Generated_Image_kkrhhmkkrhhmkkrh.jpeg",
+      "bytes": 829195,
+      "sha256": "74585378cba8799375c0e0ca2cfb7596bc50b805771c11fd25a4612256b6a16d"
+    },
+    {
+      "path": "addendum/user_evidence/Gemini_discussion.pdf",
+      "bytes": 1099076,
+      "sha256": "69a44ff53535b505bf24513a5c13844a877b29f3c47a5c689a3f7aaa50384a03"
+    },
+    {
+      "path": "addendum/user_evidence/Screenshot_20260909-174409.png",
+      "bytes": 2081448,
+      "sha256": "5d8195c939afe592480badeda94bfbf66cfa000df60cf9c1813983f06c918540"
+    },
+    {
+      "path": "addendum/user_evidence/Screenshot_20260909-174452.png",
+      "bytes": 1299355,
+      "sha256": "37701a47ca067a168518d72c648d4c026452ceaa4da1894e799114da0756f2a3"
+    },
+    {
+      "path": "addendum/user_evidence/Screenshot_20260909-174608.png",
+      "bytes": 390451,
+      "sha256": "065977f755b67b805db9bc4cd0468f176589c2ee6a78e2b97f1b12dcebc6dd4f"
+    },
+    {
+      "path": "addendum/user_evidence/Screenshot_20260909-174726.png",
+      "bytes": 711752,
+      "sha256": "eb429ba0e873fb0278013345df7f473b2715ae6c7904bc878d5a2c62398bfaee"
+    },
+    {
+      "path": "addendum/user_evidence/Screenshot_20260909-175314.png",
+      "bytes": 325189,
+      "sha256": "4c1adea85aef83602de372a4619174ecf0ab352c072b446a4c8199649dff6c55"
+    },
+    {
+      "path": "anomalies_working.json",
+      "bytes": 43426,
+      "sha256": "390faef0fa97d829fd572f06f761f297324c9c23de25476f6043ffdc3f612a86"
+    },
+    {
+      "path": "browser_log.jsonl",
+      "bytes": 5915208,
+      "sha256": "dc5ec898c2377cda850a9d231f33c769a05765835085efd61836b9c2cc48a3bf"
+    },
+    {
+      "path": "evidence_manifest_original.json",
+      "bytes": 31020,
+      "sha256": "2c38fd33621342997e4bcc8731852359a8991eee43697f0384915cc161a9c5ed"
+    },
+    {
+      "path": "final_reference_integrity.json",
+      "bytes": 802,
+      "sha256": "1e48314eeb2de7801687567a972b2d287e6c05da4c79cc741a55a9d5988fd6e2"
+    },
+    {
+      "path": "preflight_evidence.json",
+      "bytes": 2217,
+      "sha256": "fff2d9aee7cf86fd73d9b874a5df220602987a5f589b8b4acbfd6c533d714f6c"
+    },
+    {
+      "path": "routes_working.json",
+      "bytes": 105426,
+      "sha256": "3ef4559911c518c6c3118a3ae3bdb3b9600031bc7c6431c8e513517c238fd6e4"
+    },
+    {
+      "path": "screenshots/A11-1140-full.jpg",
+      "bytes": 140710,
+      "sha256": "5ae6db683b9beee4b4bcaf03a894e56bf1d135e73f7e8a126392ba5cabee584a"
+    },
+    {
+      "path": "screenshots/A11-1140-reload.jpg",
+      "bytes": 136110,
+      "sha256": "36f935c11f2a9bfa8a269aa7c4075ef4df14a40ed904580046cc8bdf302e9cc1"
+    },
+    {
+      "path": "screenshots/A11-724-full.jpg",
+      "bytes": 103879,
+      "sha256": "3abe8e63285105b1a09e3a742208ad640034d0e519d3a617e957efd6ea814746"
+    },
+    {
+      "path": "screenshots/A11-724-reload.jpg",
+      "bytes": 102326,
+      "sha256": "4cb359a4559cca16adf25a1bb97c2675e90b8339a7ec2c0b8d3ba7acfff30bd4"
+    },
+    {
+      "path": "screenshots/A11-801-before.jpg",
+      "bytes": 93933,
+      "sha256": "0fb7003f5b91ba774f45585b624aa438ab770bd5f560702b1eca43add652e9c6"
+    },
+    {
+      "path": "screenshots/A11-801-full.jpg",
+      "bytes": 91308,
+      "sha256": "54e8715943d7ae48117ce53f45c6fe16254176cdfe13065b13d3daa766af2840"
+    },
+    {
+      "path": "screenshots/A11-801-reload.jpg",
+      "bytes": 89926,
+      "sha256": "823b0eb825492acc1d58680d974b761c0297f401a57c292b36b5bab38ebc1ea9"
+    },
+    {
+      "path": "screenshots/A16-470-retarget.jpg",
+      "bytes": 63424,
+      "sha256": "7445f35aaf0611c777f2a0898627b61297c0d6dbc3fd66bbe3955a2b4f1e653d"
+    },
+    {
+      "path": "screenshots/A16-470-round1.jpg",
+      "bytes": 62380,
+      "sha256": "8421708a9b9f5ed1c8275ae01d0b712b636b17d217c66941032bc04c27aa52bf"
+    },
+    {
+      "path": "screenshots/A16-655-retarget.jpg",
+      "bytes": 63455,
+      "sha256": "4e2c8f3973d86aabdb69cecd1d05c28c29fd82153f0af883112d678eb6b6d2a1"
+    },
+    {
+      "path": "screenshots/A16-655-round1-visible.jpg",
+      "bytes": 53423,
+      "sha256": "a80a143a90853399a45e38b749d0af0b7ce90530a43fe428bd2d2bb9d7d9eedd"
+    },
+    {
+      "path": "screenshots/A16-655-round1.jpg",
+      "bytes": 53416,
+      "sha256": "cc31f914445061eb40f1fcf1c1cd1000207c801515be3762bd73292b4e2e1dbd"
+    },
+    {
+      "path": "screenshots/A17-39-player-minus2.jpg",
+      "bytes": 68786,
+      "sha256": "b859f1e7288bb08e42e26f593df2842d1634a47fabd53b0981b10965fbb696fa"
+    },
+    {
+      "path": "screenshots/A17-865-enemy-plus2.jpg",
+      "bytes": 53489,
+      "sha256": "9bb5ca758e057470c4ceb69e44d6c21dbdd96861cf90fc497909b444aa913d2b"
+    },
+    {
+      "path": "screenshots/A17-force-final.jpg",
+      "bytes": 68672,
+      "sha256": "abfbf44e50bb0d014c8f87e669207e68bc539e3f8f9fb2acbb39ac02fe8b4d63"
+    },
+    {
+      "path": "screenshots/A6-before-round11.jpg",
+      "bytes": 58751,
+      "sha256": "b0daeb57018e3b71bb4b9ece1bc3ab25bccf9a28579daa0da842f3e956cbc3d1"
+    },
+    {
+      "path": "screenshots/A6-overtime.jpg",
+      "bytes": 55811,
+      "sha256": "7d634a2ed01f9140fe2f2b27852914ede56df8ce3fce628ae1d497c1d00f64ac"
+    },
+    {
+      "path": "screenshots/A6-overtime1016.jpg",
+      "bytes": 35373,
+      "sha256": "6d1a58ca452565a53bf383a44af45bd7c37a156d65f5751ff09d507e8a84e955"
+    },
+    {
+      "path": "screenshots/A6-win-1082.jpg",
+      "bytes": 90332,
+      "sha256": "b2e8ceb5d92732e8bef860a5db51f3b87665fd0841909f3f2815024edc57d128"
+    },
+    {
+      "path": "screenshots/A6-win-combat.jpg",
+      "bytes": 55430,
+      "sha256": "84cd6bd8d044444270f93eb018322384d7d46980d8158f9dcbff1647e3faaccf"
+    },
+    {
+      "path": "screenshots/A7-1099-death.jpg",
+      "bytes": 18220,
+      "sha256": "02fde556bcf4bc0979cb0e4c28408737a820e1d59ee6d395ca91db405a34360e"
+    },
+    {
+      "path": "screenshots/A7-182-actual-combat.jpg",
+      "bytes": 45144,
+      "sha256": "87be7109efef5c746bf673c2e88b74d6b044f3f425c1643083d75d1954f1ad8b"
+    },
+    {
+      "path": "screenshots/A7-182-fight-continues.jpg",
+      "bytes": 43760,
+      "sha256": "8b74981c747429e25589c29b8bfe3e0b8e7fefdb15bbecf2c138bed8b0d2da9a"
+    },
+    {
+      "path": "screenshots/A7-261-overtime8.jpg",
+      "bytes": 120305,
+      "sha256": "e3d2851f07b6149976017e79c7b24fd99d7b7ff26588048e2e6b62e1d26506f7"
+    },
+    {
+      "path": "screenshots/A7-261-win520.jpg",
+      "bytes": 121516,
+      "sha256": "007abfd3d4a3c8dbfbfc28891e3d54a316c6d017d0a9fc64f193b60ed44e27f0"
+    },
+    {
+      "path": "screenshots/A7-737-direct-round5.jpg",
+      "bytes": 50603,
+      "sha256": "540a0976b8e477681931d8500536676eb75a51492e9b90446d010e15f3606c48"
+    },
+    {
+      "path": "screenshots/A7-737-overtime182.jpg",
+      "bytes": 44805,
+      "sha256": "e47c09405cb5fa9b2f8d9adad8aba4fa2ff7ea5961536b983cb5d4154b059815"
+    },
+    {
+      "path": "screenshots/A7-737-win391.jpg",
+      "bytes": 53911,
+      "sha256": "dbbb01e5a2d658e53df0990351a59920faef12fb7ece60c396745c7d746046da"
+    },
+    {
+      "path": "screenshots/A8-G15-dice-after.jpg",
+      "bytes": 98271,
+      "sha256": "86286e80010d5bf0d5268e4771c8287ea04cd1a7f4e01385a2e43208638cd3df"
+    },
+    {
+      "path": "screenshots/A8-G15-dice-before.jpg",
+      "bytes": 96314,
+      "sha256": "603a85a93625d312285d69e973a9cc656487090a0692d9358e818cb611c79d8a"
+    },
+    {
+      "path": "screenshots/A9-attempt1-after11.jpg",
+      "bytes": 64387,
+      "sha256": "db00c22f291f70c26cef2a80d132a659324eabcded75a4edc1348b74699a7551"
+    },
+    {
+      "path": "screenshots/A9-no-whistle.jpg",
+      "bytes": 99739,
+      "sha256": "adfc7a71df74b8ee2325ae26f8eeb3176bd3f61536c2ad740f5bd5b2a45215cd"
+    },
+    {
+      "path": "screenshots/A9-roll1.jpg",
+      "bytes": 101277,
+      "sha256": "4084eb6da77d35457b7538f104bdd8d6a257c0298823bc89069e54af7f677019"
+    },
+    {
+      "path": "screenshots/A9-success-journal.jpg",
+      "bytes": 80734,
+      "sha256": "9519b752d7bdb7253fe5e16b15a75ea210626f83a71935c37eb8ad5b7c77d643"
+    },
+    {
+      "path": "screenshots/A9-with-whistle.jpg",
+      "bytes": 105461,
+      "sha256": "db2f049d9d75a39459865cd5461eb4dd46fdff63c8ebed6f15cb75a7d6da89b3"
+    },
+    {
+      "path": "screenshots/A9-zero-death.jpg",
+      "bytes": 18230,
+      "sha256": "37d9ba05c3f7b47bd63ea3b41d2e18288639103c300e2367f00e5d878a0d69a9"
+    },
+    {
+      "path": "screenshots/B4-RUN4-zero.jpg",
+      "bytes": 92977,
+      "sha256": "a4d37c13b3736144604cebba07b21dd3444a15c2bfe4c777181a0f0770275e55"
+    },
+    {
+      "path": "screenshots/B4-spell-picker.jpg",
+      "bytes": 76060,
+      "sha256": "ce75a7d4330aabfe856e43b65890af8a0e8ee5b68996aa50847741eef3faf6d9"
+    },
+    {
+      "path": "screenshots/C12-G15-after-reload-settled.jpg",
+      "bytes": 137810,
+      "sha256": "272ad2f470bf5c8280213e9be7f5b1384f50f9e683daaf51c2e63edbec777359"
+    },
+    {
+      "path": "screenshots/C12-G15-after-reload.jpg",
+      "bytes": 22430,
+      "sha256": "21168bab4f24fd4a69c081765c7a861663ef18b089ccea18771f38823edf7dd2"
+    },
+    {
+      "path": "screenshots/C12-G15-before-reload.jpg",
+      "bytes": 145665,
+      "sha256": "a261088153b95e0dba401055b89f7d83397dc5ecb42cdb3dc6dafba57a825e39"
+    },
+    {
+      "path": "screenshots/C12-G15-luck-result.jpg",
+      "bytes": 63033,
+      "sha256": "93f71c20d78a2218605008b5cfc046e64f987d018de6d2579acbcd42a77bd7ec"
+    },
+    {
+      "path": "screenshots/C12-restored-fight.jpg",
+      "bytes": 55958,
+      "sha256": "6891773cd83acc047537faec150e90dda91d984cb98e745867f7b6c9320f3d29"
+    },
+    {
+      "path": "screenshots/ENDING-smoke-demo.jpg",
+      "bytes": 17724,
+      "sha256": "4aea6647b66e459ee7578f5403827e1f1711216d6e6092efb47196c5fc508a00"
+    },
+    {
+      "path": "screenshots/ENV-2026-09-08-session-reset.jpg",
+      "bytes": 108911,
+      "sha256": "4c8105270d7e878896ffb655e3f2df26891da721cb2b00e435b35c4a7b7d1a52"
+    },
+    {
+      "path": "screenshots/ENV-Sep9-no-save.jpg",
+      "bytes": 108907,
+      "sha256": "739fb4c48c658e28e6e9a8edd3d8d79004916ba006fd14dad6092de2ed6d19cc"
+    },
+    {
+      "path": "screenshots/ENV-Sep9b-no-save.jpg",
+      "bytes": 22009,
+      "sha256": "bcc349473fe877f9ea561b4e2f5f82ab48c14b70e12f55eb7739b23e141ee7cd"
+    },
+    {
+      "path": "screenshots/ENV-reset2-no-save.jpg",
+      "bytes": 108903,
+      "sha256": "e49e5a400a63833fcf4444e36076cfc73ea0548eabd37860d9d00cafa8583ef4"
+    },
+    {
+      "path": "screenshots/ENV-title-reset-race.jpg",
+      "bytes": 18811,
+      "sha256": "c06fc6916393be216c376961a84aca08a512b5ae05ff8204d57d8e95fea9901a"
+    },
+    {
+      "path": "screenshots/G-01-Barlad-dead-princess-asleep.jpg",
+      "bytes": 91002,
+      "sha256": "890f1fee2d8b832cb76a9abaf9dfc9dd461b8899a0cd7686e5603d163ae0dc46"
+    },
+    {
+      "path": "screenshots/G-02-awake-final.jpg",
+      "bytes": 79006,
+      "sha256": "ff6efd562967be618194dca1a0180aa8af8985fadb2bca6c95e8e117064712e6"
+    },
+    {
+      "path": "screenshots/G-03-G-05-orange-after.jpg",
+      "bytes": 84140,
+      "sha256": "7588355162805fb935b463db65f323170ef7a9b6acf16eae916e735b2eed6523"
+    },
+    {
+      "path": "screenshots/G-04-G-05-ruby-after.jpg",
+      "bytes": 128088,
+      "sha256": "5bdb15b01ebdcc0233f7bb50556cf4a7fd76d1ec4da582f8b91cada509cb6c12"
+    },
+    {
+      "path": "screenshots/G-05-orange-before.jpg",
+      "bytes": 82134,
+      "sha256": "9d92214f85e8e62d71e8d6920bad69f18ed2b67683f15c24a0b4633fd97737c2"
+    },
+    {
+      "path": "screenshots/G-06-01-cupboard.jpg",
+      "bytes": 93932,
+      "sha256": "becc0c5fa91e30c7b7006c315009167f0d3bd3663da314c1195fec7aef4768b6"
+    },
+    {
+      "path": "screenshots/G-06-02-maps.jpg",
+      "bytes": 109423,
+      "sha256": "eb59ab520111f95fa87d0620989501458985c46062cc604adf46cea3b48ed9f0"
+    },
+    {
+      "path": "screenshots/G-06-03-door.jpg",
+      "bytes": 89855,
+      "sha256": "b4db9fcada9c328ddce5772c90199c7cfbaebb074faadbf05db1f177588a555c"
+    },
+    {
+      "path": "screenshots/G-06-04-mirror-all-inspected.jpg",
+      "bytes": 80991,
+      "sha256": "4166220c6c4b6e0ed46c15eff1b7b8fa570673146c78131132c112c6dbe07d01"
+    },
+    {
+      "path": "screenshots/G-06-05-cupboard-all.jpg",
+      "bytes": 97705,
+      "sha256": "904a8ae5cd12e72dc79eb2411cfdd9678c4220edd17e99457cf7e62937f1052e"
+    },
+    {
+      "path": "screenshots/G-06-06-maps-all.jpg",
+      "bytes": 115055,
+      "sha256": "cf8612597910395cb2e99aed14ce0f9693ccb122a04519fd344de117a42426ce"
+    },
+    {
+      "path": "screenshots/G-06-07-door-all.jpg",
+      "bytes": 97928,
+      "sha256": "3852c324946531b2e1c05ae59ba18fc6b4119de770eff8eaebd7efb857794451"
+    },
+    {
+      "path": "screenshots/G-06-repeat-before-fourth.jpg",
+      "bytes": 94046,
+      "sha256": "6ff4ea6741dc840ba45657aa87c9dcfb33fe441fc9650e562f0a0016d88e827f"
+    },
+    {
+      "path": "screenshots/G-07-from205.jpg",
+      "bytes": 89090,
+      "sha256": "9b39715c61d798862a2f2c7c65d1a92f8b0bff41908d5c0cfa157fce3126e042"
+    },
+    {
+      "path": "screenshots/G-07-password-not-granted.jpg",
+      "bytes": 94415,
+      "sha256": "97c8130a502e3472ecc699456b20adf223f28c4bdf039b67b5b3bbb6974248b3"
+    },
+    {
+      "path": "screenshots/G-08-from205.jpg",
+      "bytes": 61359,
+      "sha256": "21e624a80cf376689f180c856fba535f0a1b5216a64ab287112f3247de20e170"
+    },
+    {
+      "path": "screenshots/G-08-from56.jpg",
+      "bytes": 61384,
+      "sha256": "e79fe556d832f3fb381cb2d6d05d9b940cc11429e05ca4e4a17e2f635d7342a6"
+    },
+    {
+      "path": "screenshots/G-09-after-final.jpg",
+      "bytes": 89988,
+      "sha256": "c3af61d0309c30bf9d1fa3facb7905f414b0b905131674f1884d2206f72b4fa2"
+    },
+    {
+      "path": "screenshots/G-09-before-final.jpg",
+      "bytes": 83836,
+      "sha256": "6770846106821aba3f67e88309547383d64f24531abdaa902168e4735b26ccef"
+    },
+    {
+      "path": "screenshots/G-10-Pegasus.jpg",
+      "bytes": 97388,
+      "sha256": "5bd73347161f07b11bdfcfdb698632d76f0cb325e6bfca32557d3a3a34bacdeb"
+    },
+    {
+      "path": "screenshots/G-10-no-rescue-death.jpg",
+      "bytes": 41810,
+      "sha256": "06f83b9a6fab0fa1f02567e218b25b1747ecd14f75b6e3e2d36ec644a091f653"
+    },
+    {
+      "path": "screenshots/G-11-chests-after.jpg",
+      "bytes": 134150,
+      "sha256": "6791126ef6859d80f1de99680b3055f4bcdd2870898a19b10290bd45135528cf"
+    },
+    {
+      "path": "screenshots/G-11-chests-big.jpg",
+      "bytes": 139556,
+      "sha256": "7c164e80749e3ac8ff39f11bc0d4066a8ab1f868fc609d94bec6e9d37a3c2fb0"
+    },
+    {
+      "path": "screenshots/G-11-cliff-after.jpg",
+      "bytes": 83143,
+      "sha256": "b41103d92b2c7c5cf38a5cd70e619cfbc101ad9a4a6fb43c69f159569685ea44"
+    },
+    {
+      "path": "screenshots/G-11-cliff-before.jpg",
+      "bytes": 87255,
+      "sha256": "8f5108d59f6eb74a5f9141d84a27817e8a66676d698cc6521fc119be94f08feb"
+    },
+    {
+      "path": "screenshots/G-11-cupboard-after.jpg",
+      "bytes": 80297,
+      "sha256": "2662b170895627eccb6110917419b99d85b63767fbab3a7bdf61ff226ac4572f"
+    },
+    {
+      "path": "screenshots/G-11-cupboard-before.jpg",
+      "bytes": 77255,
+      "sha256": "d0441ad3d88f64744b560191a553832683c9830b11f628d663834290c8c9aae6"
+    },
+    {
+      "path": "screenshots/G-11-vessels-after.jpg",
+      "bytes": 92918,
+      "sha256": "cad423c300eb0638218a2b1d48b70bcafdeda1c350e613b6655d063c8079df1f"
+    },
+    {
+      "path": "screenshots/G-11-vessels-before.jpg",
+      "bytes": 100158,
+      "sha256": "3d1eff42020149d8a676998e7b55d62c2d809abee2036a8710349de0f750c547"
+    },
+    {
+      "path": "screenshots/G-11-vessels-silver.jpg",
+      "bytes": 96140,
+      "sha256": "292246ee6e277a0641e1ca9c8c51b9c6f4347e3006e6484e3379306f43cb6192"
+    },
+    {
+      "path": "screenshots/G-12-no-hyena-result.jpg",
+      "bytes": 88283,
+      "sha256": "e0e42c9c71536ed66bc6313c99fd5c9976e482bfabfd54c8e25290d54a70510c"
+    },
+    {
+      "path": "screenshots/G-13-Barlad-dead.jpg",
+      "bytes": 108382,
+      "sha256": "991bbd35e08f939555d5877301a7c2c45194dec99cbc0b17b9487b6d543b2eeb"
+    },
+    {
+      "path": "screenshots/G-14-lore-923.jpg",
+      "bytes": 126641,
+      "sha256": "f30f97d77d6525fb8237c13b4465df5b90e0d494b6c02c8c76592d619fcb72d2"
+    },
+    {
+      "path": "screenshots/G-14-lore-before-scroll.jpg",
+      "bytes": 48861,
+      "sha256": "5ec197d698a907f52f21502d9ad7db3c188e9ad5c5dacfd8ce1f54757a2bc4cc"
+    },
+    {
+      "path": "screenshots/G-14-shield.jpg",
+      "bytes": 72500,
+      "sha256": "f98eedd04713878c7eb8770ae1d118183aff04da24337b0a7ef4d9efa1de9c13"
+    },
+    {
+      "path": "screenshots/G-14-sword.jpg",
+      "bytes": 83719,
+      "sha256": "9cc748a573c056baa6c2d407e615efc66290a6c1d56033377ea3c3a55bc988f8"
+    },
+    {
+      "path": "screenshots/G-15-fight-after.jpg",
+      "bytes": 54178,
+      "sha256": "52305926a57c676e310af611ea8c2b82b849f422fea4f902b0fbaa1bed4338ec"
+    },
+    {
+      "path": "screenshots/G-15-fight-before.jpg",
+      "bytes": 64821,
+      "sha256": "0c1f60b5589c02c4bd761ad8cc44d37b2df93d905643d88758a50dd35734b32f"
+    },
+    {
+      "path": "screenshots/G-15-purchase-reload.jpg",
+      "bytes": 176754,
+      "sha256": "baaa2fd6c4c9706aab0d73c26cbd924700d1966cdb11f2d68828cc4d6526946f"
+    },
+    {
+      "path": "screenshots/G-15-stake-after.jpg",
+      "bytes": 54468,
+      "sha256": "450a61a0dd567832af82320e7524c790cdaaa28b06aaeb2ccecf2efbfebd167b"
+    },
+    {
+      "path": "screenshots/G-15-stake-before.jpg",
+      "bytes": 55926,
+      "sha256": "d0ba5632092d488d4f25fa9737b52b5f70fa9d7d284625f579dc92dd7073cf16"
+    },
+    {
+      "path": "screenshots/HERO-01-stats.jpg",
+      "bytes": 45943,
+      "sha256": "942c08a7102bc75780fcc889cdb4e234f4143b915c06b884cad0cf677be1afcf"
+    },
+    {
+      "path": "screenshots/HERO-02-stats.jpg",
+      "bytes": 45804,
+      "sha256": "36563877e66343e01ccc575c17e6328ed27bed340dd074652ebfc9ab73f491ac"
+    },
+    {
+      "path": "screenshots/NOTE-bag-90.jpg",
+      "bytes": 57668,
+      "sha256": "20433d4e6ca7fa5925955d3d701e4edb77bc32fbbc5025fe33aaaabf3a8ec642"
+    },
+    {
+      "path": "screenshots/NOTE-password-915.jpg",
+      "bytes": 70617,
+      "sha256": "ca57c4f180e01f4e33e485b0c4a138b7ad7cfc2be0f47ae9fd2dfdb0c7066d80"
+    },
+    {
+      "path": "screenshots/PF-01-riddle.jpg",
+      "bytes": 99361,
+      "sha256": "4ea8aa934b1dfbf6442ff411e9c8d3e1b111f0c9ef105e2deb5f5af9a77104ef"
+    },
+    {
+      "path": "screenshots/PF-02-map.jpg",
+      "bytes": 114315,
+      "sha256": "1373ab246e033314ff65b6ea37a402bafff0a8bd0b75c67b57412a7eb58f8429"
+    },
+    {
+      "path": "screenshots/PF-03-coconut-en.jpg",
+      "bytes": 66538,
+      "sha256": "35fa97d757180f95b9f7002221218b190aa04a773a865ee018be1aaa20ed2283"
+    },
+    {
+      "path": "screenshots/PF-Sep9-coconut-en.jpg",
+      "bytes": 33981,
+      "sha256": "74c3a1351f82a3a9e6ba9b8a25c29efc07159f589edafa1b389d5322d786493a"
+    },
+    {
+      "path": "screenshots/PF-Sep9-map.jpg",
+      "bytes": 107915,
+      "sha256": "e79281068476804e88d41fe42b80d277f885cb90f1c29d46b9ef24a75d7205da"
+    },
+    {
+      "path": "screenshots/PF-Sep9-riddle.jpg",
+      "bytes": 98356,
+      "sha256": "f9701d67c4a8470c6237e077355d07d88e60a982ab50d6f83761038643a7a0c9"
+    },
+    {
+      "path": "screenshots/PF-Sep9b-coconut-en.jpg",
+      "bytes": 34021,
+      "sha256": "e456cf57c0224ca1425f91a91b7032c7bc1247fdd3b495b2412d74494717a9df"
+    },
+    {
+      "path": "screenshots/PF-Sep9b-map.jpg",
+      "bytes": 100369,
+      "sha256": "5b57bddf9b6d9f243e8ca0a473ca92f7b689e23c4a3fda1b446976226b1bb7ea"
+    },
+    {
+      "path": "screenshots/PF-Sep9b-riddle.jpg",
+      "bytes": 98494,
+      "sha256": "848f0910261406bf7380f946d40a01714240daddd787af022944aa5f7fcfc505"
+    },
+    {
+      "path": "screenshots/PF-repeat-coconut-en.jpg",
+      "bytes": 66931,
+      "sha256": "ab2634a4d6f369d457f6683acfe9b7bffeea55a13eb8bfd8979bdce8182c5f68"
+    },
+    {
+      "path": "screenshots/PF-repeat-map1.jpg",
+      "bytes": 114458,
+      "sha256": "c4421c65f9973d0df10fc371aab551809b5cdc52de93ed68aa3246c4e8922100"
+    },
+    {
+      "path": "screenshots/PF-repeat-riddle1131.jpg",
+      "bytes": 99361,
+      "sha256": "4ea8aa934b1dfbf6442ff411e9c8d3e1b111f0c9ef105e2deb5f5af9a77104ef"
+    },
+    {
+      "path": "screenshots/PL-01-new-game-hash.jpg",
+      "bytes": 75086,
+      "sha256": "4683f3a6f89118066f253cda66fccb598840f15b144706ea1e568022d92ede06"
+    },
+    {
+      "path": "screenshots/PL-02-free-slots-counter.jpg",
+      "bytes": 47537,
+      "sha256": "b60673eaaeb19a1b34d1e5900b1031f531df7c9dc915763145032e825ae4a208"
+    },
+    {
+      "path": "screenshots/PL-02-items-311.jpg",
+      "bytes": 45791,
+      "sha256": "5f015f9f15128bef8d7ceb9773f767f09cb67996ef6600af2acb0d192d4a8123"
+    },
+    {
+      "path": "screenshots/PL-03-diamond-gift.jpg",
+      "bytes": 160328,
+      "sha256": "410a8c95d6e3c348127bcac492b52a96e42d2f325d7c9ab8b8247a651f60e0a3"
+    },
+    {
+      "path": "screenshots/PL-04-text-291.jpg",
+      "bytes": 84072,
+      "sha256": "37aaa09a13f393bdcc3215bd9a397c25b059085a362262f5e6887611c11840ce"
+    },
+    {
+      "path": "screenshots/PL-05-text-582.jpg",
+      "bytes": 112217,
+      "sha256": "f0c1657d6d65e152e4ea9b2f116b28fa925a36340eb63ac09b9caf2ca1d073e0"
+    },
+    {
+      "path": "screenshots/PL-06-luck-74-stats.jpg",
+      "bytes": 74528,
+      "sha256": "6a7330b1ce93e983c7dbab39cad050fc3cbf7a1adb435f32ac7b1c74b73e75e3"
+    },
+    {
+      "path": "screenshots/PL-06-luck-74.jpg",
+      "bytes": 74075,
+      "sha256": "98b6958a861d8df308feb81aa2c7087cb09f3604a327cc46fa9933b40686c4f4"
+    },
+    {
+      "path": "screenshots/PL-07-text-77.jpg",
+      "bytes": 109343,
+      "sha256": "85b9f1fcc71376745bb5f7b2e775997b0fed5463c62afcc4d2e622947ea5f28e"
+    },
+    {
+      "path": "screenshots/PL-08-text-56.jpg",
+      "bytes": 170326,
+      "sha256": "e34cfbb49db74e1d45fad7792e5d11d8b6adf32fb2a6446503a83fc50f7ba0e1"
+    },
+    {
+      "path": "screenshots/PL-09-text-700.jpg",
+      "bytes": 70856,
+      "sha256": "787d6a0e28524305729844475b60c57c0327b42f445efaf0b36372878f95df59"
+    },
+    {
+      "path": "screenshots/PL-10-combat-grammar.jpg",
+      "bytes": 58860,
+      "sha256": "c0e5021b9019399951974d0a2ccff20b1a4798f1022bed670066085943547a8c"
+    },
+    {
+      "path": "screenshots/PL-11-text-730.jpg",
+      "bytes": 151433,
+      "sha256": "8bf8209a4cebf6e5ca08c281f479a6a7ef5680e9de833d2916599e15fd4a199e"
+    },
+    {
+      "path": "screenshots/PL-12-absent-fox-skin.jpg",
+      "bytes": 98293,
+      "sha256": "f947179b18b422722af89757cea08c7ab1c6c7df07e7143ada58f1382b30ca42"
+    },
+    {
+      "path": "screenshots/PL-13-label-590.jpg",
+      "bytes": 123470,
+      "sha256": "0f6777a94eb7ec4d9484fb6db9fece180365b167652c6b91a6bc2c0130886374"
+    },
+    {
+      "path": "screenshots/PL-13-label-603.jpg",
+      "bytes": 57833,
+      "sha256": "5c4f453ea1965706f3382ab023642aa605179d5d07b4039a0ed517b7cfe1b1d2"
+    },
+    {
+      "path": "screenshots/PL-13-label-622.jpg",
+      "bytes": 67390,
+      "sha256": "2d7ce43592f337e70d2bda0fc355f806653a68dd0a3aa3d78ac1dda452cee4c6"
+    },
+    {
+      "path": "screenshots/PL-13-label-623.jpg",
+      "bytes": 70240,
+      "sha256": "7047afe0e2d0157dad8d6a753ecff0bbff45a9465e91aaf63436bd4696d7ff7b"
+    },
+    {
+      "path": "screenshots/PL-13-label-930.jpg",
+      "bytes": 58683,
+      "sha256": "40484c2b89c35d4aa8fa680f52b9aa96adb335733a17323ae54693b890278907"
+    },
+    {
+      "path": "screenshots/PL-13-text-987.jpg",
+      "bytes": 85764,
+      "sha256": "a2e89e182a499e8b96d9f09dc1350f007fe88a3c62caa355c45d3db7c7e6bf8d"
+    },
+    {
+      "path": "screenshots/PL-14-candle-459.jpg",
+      "bytes": 85138,
+      "sha256": "5ddf2a51a01fe6ad737de8daf4a056a6d340b5c06d6587ea32b13529eaa4c284"
+    },
+    {
+      "path": "screenshots/PL-14-candlestick-894.jpg",
+      "bytes": 65440,
+      "sha256": "189ddbbe4a967f80343c03ac4734413c33ba2e37ef96145bb1bef1b36c6b92a3"
+    },
+    {
+      "path": "screenshots/PL-15-text-1115.jpg",
+      "bytes": 103715,
+      "sha256": "76b7558e7875bb2239dacddc103421f92fe8a9d142095f377a21d6ed05d0d7c5"
+    },
+    {
+      "path": "screenshots/PL-15-text-150.jpg",
+      "bytes": 108587,
+      "sha256": "73ed1b12278e4efe113f72996561b77dc4e7950a5957463bf0f08a66cfebc6a8"
+    },
+    {
+      "path": "screenshots/PL-16-text-1096.jpg",
+      "bytes": 151866,
+      "sha256": "45aff4d8e9c01c4fb8b0e7384939e622639468af9a35e2d7f76677eea04dd43a"
+    },
+    {
+      "path": "screenshots/PL-16-text-139.jpg",
+      "bytes": 64962,
+      "sha256": "7dc9b283f2dfed06e5b4b9e61485b8b54d9d93dd6d6be87edb8c9ef4eb93e6ee"
+    },
+    {
+      "path": "screenshots/PL-17-text-372.jpg",
+      "bytes": 125296,
+      "sha256": "8810d968e3b0833b9c47c56dc8ac903c001f7e13e9753d1eb53fb9b32588f3bd"
+    },
+    {
+      "path": "screenshots/PL-18-text-544.jpg",
+      "bytes": 93327,
+      "sha256": "7e512e918e5b3fa199eb41d60bf9241dd8efe9f766f9bfa430b88927b08fdda6"
+    },
+    {
+      "path": "screenshots/PL-18-text-9.jpg",
+      "bytes": 80369,
+      "sha256": "b8169d0af9a8d99cf86788b6fd5f6b9a023f168f7d28e67e28891f4152be4bc3"
+    },
+    {
+      "path": "screenshots/PL-19-text-288.jpg",
+      "bytes": 94480,
+      "sha256": "18fc9175ea1f3e07042d4925ea48a91937485e5ee15544cf3a277b9f96269bbb"
+    },
+    {
+      "path": "screenshots/PL-20-182-premature-loot.jpg",
+      "bytes": 43012,
+      "sha256": "c5150345368ea960c8ecdabfa0102988cfae62abef76cef7fd43f852287f1d0c"
+    },
+    {
+      "path": "screenshots/PL-20-key-before-dragon.jpg",
+      "bytes": 46941,
+      "sha256": "84bbce9ae22a29fe629816c131ee7d1fbc25b1f7ef78ec2e1b5a50428ff576ce"
+    },
+    {
+      "path": "screenshots/PL-21-direction-393-button.jpg",
+      "bytes": 115850,
+      "sha256": "a93513beac61299c3dd93a72188fc73163a6940c3006ff0d1e167ca925142a6c"
+    },
+    {
+      "path": "screenshots/PL-21-direction-393-choices.jpg",
+      "bytes": 144817,
+      "sha256": "a5dec2e7cd41d6894881517fec22b7d398dbd2e0a939754de6f6cab47244fd74"
+    },
+    {
+      "path": "screenshots/PL-21-direction-393.jpg",
+      "bytes": 142192,
+      "sha256": "286516be900b58794caf8cc869f6deeb2fe1939ff1fa53e875722885b6702669"
+    },
+    {
+      "path": "screenshots/PL-22-text-829.jpg",
+      "bytes": 111469,
+      "sha256": "3689fd52ce03c3e0b7022cb5e9fc049a1faa0cafc45e057255ea55157b561590"
+    },
+    {
+      "path": "screenshots/PL-24-text-1152.jpg",
+      "bytes": 71346,
+      "sha256": "56cff8f499807e1461f5411f7a6fb258c016d7e99acb3c3b514ac7360f594c81"
+    },
+    {
+      "path": "screenshots/PL-25-text-766.jpg",
+      "bytes": 141239,
+      "sha256": "23adf9e3e1774b295349e307c963f3a0f6c9aa3cd47418d4718b4f64a96846aa"
+    },
+    {
+      "path": "screenshots/PL-26-punctuation-718.jpg",
+      "bytes": 139608,
+      "sha256": "58311adcfcf32c78332fc8ef205956be63c3b98f97f4fdf80f616baeb962ffb8"
+    },
+    {
+      "path": "screenshots/PL-27-text-1196.jpg",
+      "bytes": 146763,
+      "sha256": "eafd39b63679e32af48ab6b64285d6d0a4ff828fed13bfd770dafc7878f69f4e"
+    },
+    {
+      "path": "screenshots/PL-28-return-1044.jpg",
+      "bytes": 80192,
+      "sha256": "c313f830c35ec1cddbf543bfc37e44c2fb23fc90ae26082c738a3e9f8a6b91ec"
+    },
+    {
+      "path": "screenshots/PL-30-text-284.jpg",
+      "bytes": 134337,
+      "sha256": "cd496a2015bf50722a2dede321a0ad225389758b1d4996e834d762fef17ef856"
+    },
+    {
+      "path": "screenshots/PL-31-negative-stamina-death.jpg",
+      "bytes": 60650,
+      "sha256": "ad4b40f7c58ee0a1e958fcc25b7bc19e8b7633b71475dca710814005feeaeb59"
+    },
+    {
+      "path": "screenshots/PL-34-G-12-riddle435.jpg",
+      "bytes": 79218,
+      "sha256": "3e9ab9de8e7e710d2a276399f976e870b799abdbf215cd563f5af2216643b892"
+    },
+    {
+      "path": "screenshots/PL-35-password95-missing.jpg",
+      "bytes": 109540,
+      "sha256": "e6e6fe73e89c22ff5f736ad9a018144f29a0c1aa62a1b93a9256e838a44c7150"
+    },
+    {
+      "path": "screenshots/PL-36-incomplete-534.jpg",
+      "bytes": 91946,
+      "sha256": "1f8578d97f581d47b48933fa8783574cc8cdfe8edaa3958422efaff9bd5f5696"
+    },
+    {
+      "path": "screenshots/PL-38-princess-flag-removed.jpg",
+      "bytes": 82005,
+      "sha256": "62bb8c07aefd14f6ad770b571dcded82839fd0e9e221225673b299a1afc90dd6"
+    },
+    {
+      "path": "screenshots/PL-38-story-flags-stakes.jpg",
+      "bytes": 109742,
+      "sha256": "e1c72f1bd6089f52f25c389f5ee218161e13a1b15db23d42dad82c770aa1f2e1"
+    },
+    {
+      "path": "screenshots/PL-39-413-no-indifference.jpg",
+      "bytes": 70218,
+      "sha256": "8f66d07d887f1cebce3d402c4d2e3d25984763edc04db9f0336f3953063caf22"
+    },
+    {
+      "path": "screenshots/PL-39-520-no-indifference.jpg",
+      "bytes": 124861,
+      "sha256": "d2486395a994d6d6750cbc23d9447736906eb15aef4769f89c9c9fb60a97a694"
+    },
+    {
+      "path": "screenshots/PL-41-182-missing-first-goblin.jpg",
+      "bytes": 47166,
+      "sha256": "5d27eb5efcb18ac64b22826d9eaccbbe36c93607da8384d5e1c096096385913b"
+    },
+    {
+      "path": "screenshots/PL-41-182-only-new-goblin-killed.jpg",
+      "bytes": 48332,
+      "sha256": "e1cf53481b3ee509e7715572390fc952e38b45335070e955f34367609a393d34"
+    },
+    {
+      "path": "screenshots/PL-42-46-sverkhu.jpg",
+      "bytes": 97576,
+      "sha256": "fe75388b27d33a33221bd53b2865913b6e33270d130a8d67f14edb43ddb24517"
+    },
+    {
+      "path": "screenshots/PL-43-182-postcombat-spells-hidden.jpg",
+      "bytes": 101524,
+      "sha256": "3a90258696a9fb96d733a462b67b2110ec6124b367c01b28c5b62121ecfdd435"
+    },
+    {
+      "path": "screenshots/RUN1-F01-beast-victory.jpg",
+      "bytes": 57156,
+      "sha256": "ce34ad61c9a1910deef2bc57fd79968a8692c15dee37e6912ad13f4618308cd2"
+    },
+    {
+      "path": "screenshots/RUN1-F02-goblin-victory.jpg",
+      "bytes": 53134,
+      "sha256": "d26f5cf0a30b86d72941c9d1920a759c929e3845c52b0378ff807d1dee6f6d14"
+    },
+    {
+      "path": "screenshots/RUN1-F03-lion-victory.jpg",
+      "bytes": 44075,
+      "sha256": "657fff81426862328c654a5db9127ee655ff6cbe2de2490366b477790ae86f43"
+    },
+    {
+      "path": "screenshots/RUN1-F04-goblins-victory.jpg",
+      "bytes": 58860,
+      "sha256": "c0e5021b9019399951974d0a2ccff20b1a4798f1022bed670066085943547a8c"
+    },
+    {
+      "path": "screenshots/RUN1-F05-chief-copy.jpg",
+      "bytes": 47893,
+      "sha256": "43eaa06fe77b33fd75f48b4a2b5d69d647f1653845e3754caaae7aecc6f81da4"
+    },
+    {
+      "path": "screenshots/RUN1-F05-chief-round3.jpg",
+      "bytes": 53695,
+      "sha256": "5fdc5ed5472ff3d395f2d930b6181bea90a429da4227a282711655ee6d098ff4"
+    },
+    {
+      "path": "screenshots/RUN1-F06-harpy-final.jpg",
+      "bytes": 55524,
+      "sha256": "aa61309d292a641c51367c30a0814d74220f635385989881496ee0a7314206e3"
+    },
+    {
+      "path": "screenshots/RUN1-death.jpg",
+      "bytes": 18188,
+      "sha256": "e288efe63c646ff4c0f0ce74c2f9569f1d9d387183c438dd8693283afd56b6fb"
+    },
+    {
+      "path": "screenshots/RUN1-items-311.jpg",
+      "bytes": 45791,
+      "sha256": "5f015f9f15128bef8d7ceb9773f767f09cb67996ef6600af2acb0d192d4a8123"
+    },
+    {
+      "path": "screenshots/RUN2-F01-beast-victory.jpg",
+      "bytes": 57321,
+      "sha256": "f15510b240bcb9b799f5452c16e77ef48fb2262fccae3d0fb40f1ca59ccd7bb3"
+    },
+    {
+      "path": "screenshots/RUN3-F01-dragon-victory.jpg",
+      "bytes": 51729,
+      "sha256": "c80bcdb47034277daff2eb60d52fd57b4d84da63922334a6f4796e038a2a4e60"
+    },
+    {
+      "path": "screenshots/RUN3-F02-river-goblins.jpg",
+      "bytes": 54156,
+      "sha256": "c22fcadfa580b0cd6b31c308a197d7b9c759cdc12d10910c782bb9030ce4f6b5"
+    },
+    {
+      "path": "screenshots/RUN3-F03-lion.jpg",
+      "bytes": 44363,
+      "sha256": "6c0aba38b0e2d1dfa3ffe19714b88e42b82b195823bb83e2640c4c4b4e6f7041"
+    },
+    {
+      "path": "screenshots/RUN3-F04-goblins.jpg",
+      "bytes": 58483,
+      "sha256": "183796b2d766bd4af7d61fb908895363a88c7d07c8c850abc510eb3ef2372bb2"
+    },
+    {
+      "path": "screenshots/RUN3-F05-harpy-copy.jpg",
+      "bytes": 54999,
+      "sha256": "4e5d60a40f6988a13b5f35a629962004614a4a1424a55681cfe9a2ce34a15b44"
+    },
+    {
+      "path": "screenshots/RUN3-F06-Barlad-victory.jpg",
+      "bytes": 54690,
+      "sha256": "a9192d12c66f02724094fc7944f59c73d1c0d5c626eddb5eb473f324609108a3"
+    },
+    {
+      "path": "screenshots/RUN5-F01-river.jpg",
+      "bytes": 54206,
+      "sha256": "50e07177e397a2de0076aed35a67551b3118a56274207b543d3d66b51e170d53"
+    },
+    {
+      "path": "screenshots/RUN5-F02-lion.jpg",
+      "bytes": 44607,
+      "sha256": "5fe97d88c7e8db979ac0b706127471565b712b63eb7f95b0c8ff626a65cef461"
+    },
+    {
+      "path": "screenshots/RUN5-F03-goblins1177.jpg",
+      "bytes": 58204,
+      "sha256": "4d1c0bf2b4215a74f166b8c726720714757903f0ee7a824c8e331ee59ec5f30e"
+    },
+    {
+      "path": "screenshots/RUN5-F04-harpy-copy.jpg",
+      "bytes": 55211,
+      "sha256": "ab018b288b854957363f0ed5e9e48961cf8d9bc939bf5667c8a2ea7be1548111"
+    },
+    {
+      "path": "screenshots/RUN5-F05-Barlad-victory.jpg",
+      "bytes": 54772,
+      "sha256": "6813e79caf9e0a5c5293976d1585600678c2cf48aad7e929779c85cff5a6705b"
+    },
+    {
+      "path": "screenshots/TITLE-created-run.jpg",
+      "bytes": 110122,
+      "sha256": "d7eee3a731fdc0ede4d5f52b616922c1135cebf93670f0f78e8f0da8feb5aa8c"
+    }
+  ]
+}
