@@ -182,7 +182,8 @@
     "v2.174 -> v2.175": "September 2026 - group_87 batch D (the author's Pixel 7a observations): PL-45 spell cards as a grid (phone: name + counter on top, description full width), PL-46 map close pinned top-right on phones, PL-49 «Удар!» below the ability group, PL-10 gender-neutral combat log templates in RU/EN/FR/UK (no more «ранил» for a female enemy). docs/DotBC_redirect_index.html - template for a short-address repo. p1_6d 82 -> 84; MANUAL_SMOKE_CHECKS C23. GAME_RULES.md label 2.174 -> 2.175 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.175 -> v2.176": "September 2026 - group_87 batch E1: PL-39 Indifference spell of sec.520 (ninth, granted-only, one use in combat), PL-41 sec.737 -> 182 enemy carry-over + staged huge goblin, PL-20 post-combat trophies at sec.440 / sec.182. ui keys 336 -> 340, spells 8 -> 9, enemies +1 (zdorovennyy_goblin), auto_items 195 (sec.182 -1, sec.520 +1), post_combat_items 2, spell_grant 1, carry_enemy 1. p1_6d 84 -> 87; MANUAL_SMOKE_CHECKS C24-C26. GAME_RULES.md s1/s3/s8 + label 2.175 -> 2.176 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.176 -> v2.177": "September 2026 - group_87 PL-53 (author's Pixel 7a report): the title screen scrolls on every size instead of clipping when it does not fit (in-app browser headers, large fonts); smoke C24 automated. GAME_RULES.md label 2.176 -> 2.177 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.177 -> v2.178": "September 2026 - group_88 V-01 narration: Web Speech API reader (speak button at the paragraph marker, voice / speed / auto-read in the menu, sentence chunking, stop on paragraph change, per-language voice choice, localStorage prefs); ui keys 340 -> 350; smoke C25. GAME_RULES.md s9 + label 2.177 -> 2.178 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.177 -> v2.178": "September 2026 - group_88 V-01 narration: Web Speech API reader (speak button at the paragraph marker, voice / speed / auto-read in the menu, sentence chunking, stop on paragraph change, per-language voice choice, localStorage prefs); ui keys 340 -> 350; smoke C25. GAME_RULES.md s9 + label 2.177 -> 2.178 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.178 -> v2.179": "September 2026 - group_87 batch E2: PL-37 eat-now choice for batch pickups (food eaten on the spot with a full bag, single collection guard), PL-02 live offer-dialog header with declined item counts (five ui keys x4: 350 -> 355). p1_6d 90 -> 92; smoke C26 automated. GAME_RULES.md label 2.178 -> 2.179 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -499,9 +500,10 @@
         {
           "id": "PL-02_offer_modal_free_slots_and_plurals",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Offer dialog header «Найдено 2 предметов. Свободных мест: 7» is computed once at open and not refreshed after taking; RU plurals (1 предмет / 2 предмета / 5 предметов) are not declined.",
-          "note": "Maintainer adjudication: ACCEPTED. Header refresh + RU plural forms (new ui keys) - a later i18n batch."
+          "note": "Maintainer adjudication: ACCEPTED. Header refresh + RU plural forms (new ui keys) - a later i18n batch.",
+          "resolution": "ACCEPTED P2 DONE. The offer dialog header is rendered by renderInvModalHeader() at open and after every take / eat / drop (remaining items and free slots recomputed), and the item count is declined per language (pluralKey: RU/UK 1 / 2-4 / 5+, EN and FR singular / plural) through five new ui keys in four locales."
         },
         {
           "id": "PL-03_diamond_gift_not_consumed",
@@ -773,9 +775,10 @@
         {
           "id": "PL-37_batch_pickup_eat_now",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.801 / 1140 «съесть их сразу или положить…»: with a full bag only the batch button exists, no «Съесть сразу».",
-          "note": "Maintainer adjudication: ACCEPTED - eat-now for batch pickups (later batch; keep the duplicate-serving guards)."
+          "note": "Maintainer adjudication: ACCEPTED - eat-now for batch pickups (later batch; keep the duplicate-serving guards).",
+          "resolution": "ACCEPTED P2 DONE. A batch pickup whose entries contain food offers a second choice «🍴 Съесть сразу (+N вын.)» next to «Собрать»: the food is eaten on the spot (stamina capped at the maximum), non-food entries still go into the bag if they fit, the batch is marked collected once (S.batchPicked - no double serving), and the choices repaint. Canon of sec.801 / 1140 («съесть их сразу или положить в мешок») is honoured with a full bag."
         },
         {
           "id": "PL-38_stake_picker_offers_flags",

@@ -498,19 +498,15 @@ function showItemNotification(items, title){
 
 // ── Inventory Modal (for item pickup with overflow) ──
 let pendingItems=[];
+// group_87 PL-02: declined item counts and a header that follows every take / eat / drop
+function pluralKey(n){ const L=getLang(); n=Math.abs(Number(n)||0); if(L==='ru'||L==='uk'){ const m10=n%10, m100=n%100; if(m10===1&&m100!==11) return 'predmet_1'; if(m10>=2&&m10<=4&&!(m100>=12&&m100<=14)) return 'predmet_2'; return 'predmet_5'; } if(L==='fr') return n<=1?'predmet_1':'predmet_2'; return n===1?'predmet_1':'predmet_2'; }
+function renderInvModalHeader(){ const txt=document.getElementById('inv-modal-text'); if(!txt) return; const n=pendingItems.length; const freeSlots=getBagSize()-getBagUsed(); const incomingSize=pendingItems.reduce((s,it)=>s+getItemSize(it),0); const what=n+' '+t(pluralKey(n)); if(n>0&&freeSlots<incomingSize){ txt.innerHTML=`${t('naydeno_2')}${what}${t('zanimayut_tail')}${incomingSize}${t('mest_no_v_meshke_tolko')}${freeSlots}${t('svobodnyh_iz')}${getBagSize()}.<br>${t('vyberite_chto_vzyat_ili_vybroste')}`; } else { txt.innerHTML=`${t('naydeno_2')}${what}${t('svobodnyh_mest_tail')}${freeSlots}.`; } }
 function showInventoryModal(newItems, extraNotifs){
   pendingItems=newItems.slice();
   const modal=document.getElementById('modal-inventory');
-  const freeSlots=getBagSize()-getBagUsed();
   
-  // Text
-  const txt=document.getElementById('inv-modal-text');
-  const incomingSize=newItems.reduce((s,it)=>s+getItemSize(it),0);
-  if(freeSlots<incomingSize){
-    txt.innerHTML=`${t('naydeno_2')}${newItems.length}${t('predmetov_zanimayut')}${incomingSize}${t('mest_no_v_meshke_tolko')}${freeSlots}${t('svobodnyh_iz')}${getBagSize()}.<br>${t('vyberite_chto_vzyat_ili_vybroste')}`;
-  } else {
-    txt.innerHTML=`${t('naydeno_2')}${newItems.length}${t('predmetov_svobodnyh_mest')}${freeSlots}.`;
-  }
+  // Text (group_87 PL-02)
+  renderInvModalHeader();
   
   // Found items — each with "Взять" button
   const found=document.getElementById('inv-modal-found');
@@ -538,6 +534,7 @@ function showInventoryModal(newItems, extraNotifs){
 }
 
 function renderInvModalCurrent(){
+  try{ renderInvModalHeader(); }catch(e){} // group_87 PL-02
   const cur=document.getElementById('inv-modal-current');
   cur.innerHTML='<div style="font-size:14px;color:var(--gold);margin-bottom:6px;letter-spacing:.08em;">'+t('v_meshke_lbl')+' ('+getBagUsed()+'/'+getBagSize()+'):</div>';
   if(S.inventory.length===0){
@@ -1705,7 +1702,29 @@ function makeBatchBtn(ch, choiceIndex){
     playSound('item');showItemNotification(msgs);updateHUD();saveGame();
     btn.disabled=true;btn.style.opacity='0.5';btn.innerHTML='\u2713 '+t('sobrano');
   };
-  return btn;
+  // group_87 PL-37: «съесть их сразу или положить в мешок» - a batch with food also offers eating it on the spot
+  const foods=(ch.pickup_batch||[]).filter(ent=>typeof ent==='object'&&ent.food);
+  if(!foods.length) return btn;
+  const frag=document.createDocumentFragment(); frag.appendChild(btn);
+  const eat=document.createElement('button'); eat.className='choice-btn';
+  eat.style.borderColor='var(--green)'; eat.style.color='var(--green2)'; eat.style.background='rgba(40,180,100,.08)';
+  const total=foods.reduce((s,f)=>s+(Number(f.stamina)||0),0);
+  eat.innerHTML='\ud83c\udf74 '+t('syest_srazu')+' (+'+total+t('vyn')+')';
+  eat.onclick=()=>{
+    if(S.batchPicked&&S.batchPicked[key]) return; // PL-37
+    let free=getBagSize()-getBagUsed(); const msgs=[]; let gained=0;
+    (ch.pickup_batch||[]).forEach(ent=>{
+      if(typeof ent==='object'&&ent.food){ const before=S.stamina; S.stamina=Math.min(S.staminaMax,S.stamina+(Number(ent.stamina)||0)); gained+=S.stamina-before; msgs.push('\ud83c\udf74 '+invDisplay({kind:'food',id:ent.food,stamina:ent.stamina})); }
+      else if(free>=getItemSize(ent)){ S.inventory.push(ent); free-=getItemSize(ent); msgs.push('+ '+invDisplay(ent)); }
+    });
+    if(gained>0) msgs.push('+ '+gained+t('vynoslivosti'));
+    S.batchPicked=S.batchPicked||{}; S.batchPicked[key]=true;
+    logEvent('gain',t('syest_srazu')+' (+'+gained+')','');
+    playSound('item'); showItemNotification(msgs); updateHUD(); saveGame();
+    try{ renderGame({repaint:true}); }catch(e){}
+  };
+  frag.appendChild(eat);
+  return frag;
 }
 
 function makeBashBtn(ch){

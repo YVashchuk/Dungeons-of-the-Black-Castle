@@ -307,6 +307,13 @@ async function check(id, browser, opts, fn) {
     const b = await ev(page, () => { const btn = [...document.querySelectorAll('#scr-title button')].find(x => x.offsetParent !== null); const r = btn.getBoundingClientRect(); return { btnBottom: Math.round(r.bottom), vh: window.innerHeight, visible: r.top >= 0 && r.bottom <= window.innerHeight }; });
     await shot(page, 'C24'); rec('C24', (a.imgTop >= 0 && a.ratioOk && b.visible) ? 'PASS' : 'FAIL', 'title 412x640: scrollable=' + a.scrollable + ' (' + a.sh + '/' + a.ch + ') image top=' + a.imgTop + ' ratio ok=' + a.ratioOk + '; after scroll start button visible=' + b.visible + ' (bottom ' + b.btnBottom + '/' + b.vh + ')');
   });
+  await check('C26', browser, null, async page => {
+    await open(page, 585); await ev(page, () => { S.stamina = Math.max(1, S.staminaMax - 4); saveGame(); renderGame({ repaint: true }); }); await page.waitForTimeout(300);
+    const a = await ev(page, () => ({ st: S.stamina, max: S.staminaMax, bag: S.inventory.length, eat: [...document.querySelectorAll('#c-list button')].some(b => /Съесть сразу/.test(b.textContent)) }));
+    await clickText(page, /Съесть сразу/, '#c-list'); await page.waitForTimeout(400);
+    const b = await ev(page, () => ({ st: S.stamina, bag: S.inventory.length, done: [...document.querySelectorAll('#c-list button')].filter(x => /Собрано/.test(x.textContent)).length, eatLeft: [...document.querySelectorAll('#c-list button')].some(x => /Съесть сразу/.test(x.textContent)) }));
+    await shot(page, 'C26'); rec('C26', (a.eat && b.st === a.max && b.bag === a.bag && b.done === 1 && !b.eatLeft) ? 'PASS' : 'FAIL', 'eat-now offered=' + a.eat + '; stamina ' + a.st + ' -> ' + b.st + ' (max ' + a.max + '); bag ' + a.bag + ' -> ' + b.bag + '; collected marks=' + b.done + ' eat button left=' + b.eatLeft);
+  });
   await browser.close();
   // ---- report ----
   const counts = results.reduce((m, r) => { m[r.verdict] = (m[r.verdict] || 0) + 1; return m; }, {});

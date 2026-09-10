@@ -68,6 +68,12 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9ab. group_87 batch E2 (PL-02 / PL-37): plural forms, live offer header, batch eat-now
+(function(){
+  try{ eval(gfn('pluralKey')); globalThis.getLang=function(){return 'ru';}; const ru=[1,2,5,11,21,22,25,101].map(pluralKey).join(','); globalThis.getLang=function(){return 'en';}; const en=[1,2].map(pluralKey).join(','); globalThis.getLang=function(){return 'fr';}; const fr=[0,1,2].map(pluralKey).join(','); ck('PL-02 pluralKey RU/EN/FR forms', ru==='predmet_1,predmet_2,predmet_5,predmet_5,predmet_1,predmet_2,predmet_5,predmet_1'&&en==='predmet_1,predmet_2'&&fr==='predmet_1,predmet_1,predmet_2'); }catch(e){ ck('PL-02 pluralKey eval: '+e.message,false); }
+  ck('PL-02/PL-37 wiring: header re-rendered in renderInvModalCurrent; batch eat-now guarded by batchPicked', gl.includes('try{ renderInvModalHeader(); }catch(e){}')&&gl.includes("if(S.batchPicked&&S.batchPicked[key]) return; // PL-37")&&gl.includes('S.stamina=Math.min(S.staminaMax,S.stamina+(Number(ent.stamina)||0))'));
+})();
+
 // 9aa. group_88 V-01: narration - sentence chunking, stop on paragraph change, menu wiring, keys in four locales
 (function(){
   try{ eval(gfn('bcSplitSentences')); const ch=bcSplitSentences('\u041f\u0435\u0440\u0432\u043e\u0435. \u0412\u0442\u043e\u0440\u043e\u0435! \u0422\u0440\u0435\u0442\u044c\u0435? '+'\u0430'.repeat(300)+'. \u041a\u043e\u043d\u0435\u0446'); ck('V-01 sentences chunked (<=220 chars per chunk where possible, nothing lost)', ch.length>=3&&ch.join(' ').replace(/\s+/g,' ').length>=310&&ch.slice(0,-2).every(c=>c.length<=225)); }catch(e){ ck('V-01 chunking eval: '+e.message,false); }
