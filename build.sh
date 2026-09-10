@@ -105,6 +105,9 @@ cat "$SRC_DIR/locale.uk.js"
 # ── Step 3: static art assets (externalized 2026-07-01, group_70) ──
 # group_82 CU-07: the font license travels with the built artifact
 cp "$SRC_DIR/fonts/OFL.txt" "$DIST_DIR/OFL.txt"
+# group_89 M-01: painted map backgrounds (JPEG, generated for the project; originals in assets/map/originals)
+mkdir -p "$DIST_DIR/map"
+cp assets/map/*.jpg "$DIST_DIR/map/"
 
 if [ -d "assets/art" ]; then
   mkdir -p "$DIST_DIR/art"

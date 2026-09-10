@@ -3168,6 +3168,8 @@ function ensureMapState(){
     }
   }
 
+  // group_89 M-01: painted backgrounds (assets/map, shipped as dist/map) and a fog of war over the unexplored parts.
+  const BC_MAP_BG = { overworld: 'map/map_overworld.jpg', castle_exterior: 'map/map_castle_exterior.jpg', castle_interior: 'map/map_castle_interior.jpg' };
   function renderMapSvg(targetId, mode){
     const svg = document.getElementById(targetId);
     if(!svg || !window.S) return;
@@ -3196,8 +3198,19 @@ function ensureMapState(){
       </defs>`;
     let parts = [];
     parts.push(defs);
-    parts.push(`<rect width="${layer.width}" height="${layer.height}" fill="${bg}"/>`);
-    parts.push(`<rect width="${layer.width}" height="${layer.height}" fill="url(#${targetId}-grid)" opacity="0.8"/>`);
+    const bgSrc = BC_MAP_BG[layerId];
+    if(bgSrc){
+      // painted background + fog: a dark veil with soft holes around the discovered nodes (the current node gets a wider one)
+      const holeR = mode==='mini' ? 120 : 190;
+      const holes = nodes.filter(n=>discovered.has(n.id)).map(n=>`<circle cx="${n.x}" cy="${n.y}" r="${ms.current_node===n.id ? Math.round(holeR*1.25) : holeR}" fill="url(#${targetId}-hole)"/>`).join('');
+      parts.push(`<defs><radialGradient id="${targetId}-hole"><stop offset="50%" stop-color="#000"/><stop offset="100%" stop-color="#fff"/></radialGradient><mask id="${targetId}-fog" maskUnits="userSpaceOnUse" x="0" y="0" width="${layer.width}" height="${layer.height}"><rect width="${layer.width}" height="${layer.height}" fill="#fff"/>${holes}</mask></defs>`);
+      parts.push(`<rect width="${layer.width}" height="${layer.height}" fill="${bg}"/>`);
+      parts.push(`<image href="${bgSrc}" x="0" y="0" width="${layer.width}" height="${layer.height}" preserveAspectRatio="none"/>`);
+      parts.push(`<rect width="${layer.width}" height="${layer.height}" fill="rgba(6,5,10,0.78)" mask="url(#${targetId}-fog)"/>`);
+    } else {
+      parts.push(`<rect width="${layer.width}" height="${layer.height}" fill="${bg}"/>`);
+      parts.push(`<rect width="${layer.width}" height="${layer.height}" fill="url(#${targetId}-grid)" opacity="0.8"/>`);
+    }
     parts.push(`<rect x="20" y="20" width="${layer.width-40}" height="${layer.height-40}" rx="22" fill="none" stroke="#8f6f3b" stroke-width="4"/>`);
 
     // Draw undiscovered skeleton (barely visible hints)

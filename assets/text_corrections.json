@@ -184,7 +184,8 @@
     "v2.176 -> v2.177": "September 2026 - group_87 PL-53 (author's Pixel 7a report): the title screen scrolls on every size instead of clipping when it does not fit (in-app browser headers, large fonts); smoke C24 automated. GAME_RULES.md label 2.176 -> 2.177 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.177 -> v2.178": "September 2026 - group_88 V-01 narration: Web Speech API reader (speak button at the paragraph marker, voice / speed / auto-read in the menu, sentence chunking, stop on paragraph change, per-language voice choice, localStorage prefs); ui keys 340 -> 350; smoke C25. GAME_RULES.md s9 + label 2.177 -> 2.178 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.178 -> v2.179": "September 2026 - group_87 batch E2: PL-37 eat-now choice for batch pickups (food eaten on the spot with a full bag, single collection guard), PL-02 live offer-dialog header with declined item counts (five ui keys x4: 350 -> 355). p1_6d 90 -> 92; smoke C26 automated. GAME_RULES.md label 2.178 -> 2.179 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.179 -> v2.180": "September 2026 - group_88 V-02 (author's review of V-01): narration buttons on the preface and pregame screens, speech stops on screen change; spell cards align-content:start (desktop rows no longer stretch). GAME_RULES.md label 2.179 -> 2.180 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.179 -> v2.180": "September 2026 - group_88 V-02 (author's review of V-01): narration buttons on the preface and pregame screens, speech stops on screen change; spell cards align-content:start (desktop rows no longer stretch). GAME_RULES.md label 2.179 -> 2.180 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.180 -> v2.181": "September 2026 - group_89 M-01: painted map backgrounds for the three layers (generated for the project, no lettering) with a fog of war masked around discovered nodes; dist/map shipped by build.sh; _dist_ui_check 60 -> 61. GAME_RULES.md label 2.180 -> 2.181 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -461,6 +462,21 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_89_2026_09_10_map_design": {
+      "comment": "Map design track (the author's verdict on the old map: «выглядит страшно»). Backgrounds generated on 2026-09-10 by ChatGPT 6 Astra ULTRA (built-in image generation) from BRIEF_map_art_astra.md: three parchment-style paintings with no lettering, landmarks placed at the node coordinates of src/map_module.js (contact sheet verified: 16 + 6 + 13 dots on their places). Originals and generation prompts kept in assets/map/originals; JPEG q82 shipped as dist/map. Per the Track D memo AI-generated images carry no copyright of their own; the README credits the generation.",
+      "source": "author_design_2026_09_10 + chatgpt_6_astra_image_gen",
+      "verified": "2026-09-10",
+      "items": [
+        {
+          "id": "M-01_painted_map_backgrounds_fog",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The adventure map is a flat dark-green rectangle with a grid and dots; unexplored areas are simply empty, so the map neither looks like a map nor conveys exploration.",
+          "note": "Maintainer decision: painted backgrounds + fog of war, keeping the existing node / edge / label rendering.",
+          "resolution": "DONE. renderMapSvg draws the layer painting (<image>, 1600x1000 / 1200x900 / 1600x1200 matching the layer sizes) under the graph and a dark veil (rgba 6,5,10 at 0.78) masked by soft radial holes around discovered nodes (r 190, the current node 1.25x; mini-map r 120); the grid pattern is gone, the parchment frame, golden paths, stubs, labels with dark strokes and «?» silhouettes are unchanged. build.sh ships assets/map/*.jpg as dist/map; a dist assert pins the wiring."
+        }
+      ]
     },
     "group_88_2026_09_09_narration": {
       "comment": "Narration (text-to-speech) requested by the author on 2026-09-09 after the Gemini design chat. Design decision: device voices through the Web Speech API (no server, no API keys, works on GitHub Pages); pre-generated neural narration (Silero / OpenAI / ElevenLabs) is a separate research track (Gemini Track F: model and service licences, quality of Russian, size budget) and touches the rights question of Track D.",
