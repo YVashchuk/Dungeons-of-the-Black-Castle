@@ -19,7 +19,7 @@ function gfn(n){const s=gl.indexOf('function '+n+'(');return brace(s).replace('f
 ck('game_structure.js GD has ZERO Cyrillic', !CYR.test(JSON.stringify(GD)));
 
 // 2. enemies locale complete + resolver
-ck('LOCALE_RU.enemies has all 66 keys with exact values', Object.keys(data.enemies).every(k=>LOCALE_RU.enemies[k]===data.enemies[k]) && Object.keys(LOCALE_RU.enemies).length===66);
+ck('LOCALE_RU.enemies has all 67 keys with exact values (66 + zdorovennyy_goblin, group_87 PL-41)', Object.keys(data.enemies).every(k=>LOCALE_RU.enemies[k]===data.enemies[k]) && Object.keys(LOCALE_RU.enemies).length===67);
 let emis=0; for(const k in data.enemies){ if(enemyName(k)!==data.enemies[k]) emis++; }
 ck('enemyName(slug) reproduces all 66 names (mismatch '+emis+')', emis===0);
 ck('enemyName(unknown) safe', enemyName('__no__')==='__no__');
@@ -60,6 +60,13 @@ ck('GD[528] on-tree penalty modelled', GD['528'].player_attack_mod===-1);
 // If this fails, a new one-sided luck paragraph entered GD and needs FB2 adjudication.
 const oneSidedLuck=Object.keys(GD).filter(k=>{const cs=(GD[k].choices||[]).filter(c=>c.luck_type);return cs.length>0&&(cs.every(c=>c.luck_type==='lucky')||cs.every(c=>c.luck_type==='unlucky'));}).map(Number).sort((a,b)=>a-b);
 ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSidedLuck)==='[203,289,377,418,421,436,1186]');
+
+// 9aa. group_87 batch E1 (PL-39 / PL-41 / PL-20): granted spell, carry-over, post-combat trophies
+(function(){
+  ck('PL-39 data + engine: sec.520 grants INDIFFERENCE, picker skips granted spells, combat function present', GD['520'].auto_items.spell_grant.id==='INDIFFERENCE'&&gl.includes('SPELLS.filter(sp=>!sp.granted).forEach(')&&gl.includes('function useIndifferenceInCombat()')&&gl.includes('"id":"INDIFFERENCE"'));
+  ck('PL-41 data + engine: sec.737 carries its enemy, sec.182 has the carried goblin + the staged huge goblin', GD['737'].round_deadline.carry_enemy===true&&GD['182'].enemies.length===2&&GD['182'].enemies[0].name==='goblin'&&GD['182'].enemies[1].joins&&GD['182'].enemies[1].joins.after_death===0&&gl.includes('S.carryOver={to:_dl.lose,hp:al[0].hp}'));
+  ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
+})();
 
 // 9z. group_87 batch D (PL-10 / PL-45 / PL-49): neutral combat log, spell card grid, strike button order
 (function(){
@@ -311,7 +318,7 @@ ck('dice_bash on 725 choice to 1215', JSON.stringify(GD['725'].choices[1])==='{"
 ck('dice_loot 932 exact', JSON.stringify(GD['932'].dice_loot)==='{"item":"spider_larva","target":1123}');
 
 // 9. group_78 G-02: canonical round-deadline routing (43/261/737/1099)
-ck('round_deadline configs exact', JSON.stringify(GD['43'].round_deadline)==='{"rounds":10,"win":1082,"lose":1016}' && JSON.stringify(GD['261'].round_deadline)==='{"rounds":3,"win":520,"lose":8}' && JSON.stringify(GD['737'].round_deadline)==='{"rounds":5,"win":391,"lose":182}' && JSON.stringify(GD['1099'].round_deadline)==='{"rounds":3,"win":894,"lose":"death"}');
+ck('round_deadline configs exact', JSON.stringify(GD['43'].round_deadline)==='{"rounds":10,"win":1082,"lose":1016}' && JSON.stringify(GD['261'].round_deadline)==='{"rounds":3,"win":520,"lose":8}' && JSON.stringify(GD['737'].round_deadline)==='{"rounds":5,"win":391,"lose":182,"carry_enemy":true}' && JSON.stringify(GD['1099'].round_deadline)==='{"rounds":3,"win":894,"lose":"death"}');
 
 console.log(`\n6d HARNESS: ${pass} passed, ${fail} failed`);
 process.exit(fail?1:0);

@@ -1,5 +1,5 @@
 // ── Spells ──
-const SPELLS=[{"id":"LEVITATION","icon":"🌬️"},{"id":"FIRE","icon":"🔥"},{"id":"ILLUSION","icon":"🌀"},{"id":"FORCE","icon":"💪"},{"id":"WEAKNESS","icon":"🫀"},{"id":"COPY","icon":"👤"},{"id":"HEALING","icon":"💚"},{"id":"SWIMMING","icon":"🌊"}];
+const SPELLS=[{"id":"LEVITATION","icon":"🌬️"},{"id":"FIRE","icon":"🔥"},{"id":"ILLUSION","icon":"🌀"},{"id":"FORCE","icon":"💪"},{"id":"WEAKNESS","icon":"🫀"},{"id":"COPY","icon":"👤"},{"id":"HEALING","icon":"💚"},{"id":"SWIMMING","icon":"🌊"},{"id":"INDIFFERENCE","icon":"🌀","granted":true}];
 
 // ── Combat summons (item-triggered allies) ──
 // Distinct ally actors with their OWN Skill/Stamina (NOT copies of the player or enemy).
@@ -102,6 +102,7 @@ function normalizeSave(s){
   // group_85 AS-13: saves made before the story flags existed have the deed scenes in visited already
   // (first-visit grants never fire again) - backfill the flags from visited, idempotently.
   if(s.cameFrom===undefined) s.cameFrom=null; // group_85 AS-01
+  if(s.carryOver===undefined||(s.carryOver&&typeof s.carryOver!=='object')) s.carryOver=null; if(!s.postCombatDone||typeof s.postCombatDone!=='object'||Array.isArray(s.postCombatDone)) s.postCombatDone={}; // group_87 PL-41 / PL-20
   if(typeof s.betRoundId!=='number') s.betRoundId=0; if(!s.betLedger||typeof s.betLedger!=='object'||Array.isArray(s.betLedger)) s.betLedger={}; if(s.pendingDiceRoll===undefined||(s.pendingDiceRoll&&typeof s.pendingDiceRoll!=='object')) s.pendingDiceRoll=null; // group_85 AS-14
   if(Array.isArray(s.visited)&&Array.isArray(s.inventory)){ const vis=s.visited.map(Number); const has=f=>s.inventory.some(it=>it===f); if((vis.includes(627)||vis.includes(976))&&!has('princess_awake')) s.inventory.push('princess_awake'); if(vis.includes(81)&&!has('barlad_dead')) s.inventory.push('barlad_dead'); }
   if(typeof s.riddle_attempts!=='number') s.riddle_attempts=0;
@@ -194,6 +195,24 @@ function _bcCloseTopDialog(){
   });
 })();
 // <<< BC_A11Y_DIALOGS <<<
+
+// group_87 PL-39: Indifference - the current target forgets the fight (not a kill: no potion tick, no loot logic)
+function useIndifferenceInCombat(){
+  if(!combatState||!S||!S.spells)return;
+  const sp=S.spells.find(x=>x.id==='INDIFFERENCE'); if(!sp||sp.remaining<=0)return;
+  const cs=combatState; const alive=getAliveCombatEnemies(cs); if(alive.length===0)return;
+  const target=getCombatTarget(cs)||alive[0];
+  sp.remaining--; target.hp=0; target.fled=true; target.indifferent=true;
+  const log=document.getElementById('combat-log');
+  if(log) log.innerHTML+=`<div style="color:#9fb3e6;font-weight:bold;margin-top:8px">${t('zaklyatie_ravnodushiya_na')}${target.name}${t('vrag_zabyvaet_o_bitve')}</div>`;
+  logEvent('combat',t('zaklyatie_ravnodushiya_na')+target.name,t('vrag_zabyvaet_o_bitve'));
+  const btn=document.getElementById('btn-indifference-spell'); if(btn) btn.style.display='none';
+  updateHUD();updateCombatEnemyDisplay(cs);saveGame();
+  activateStagedJoins(cs);
+  if(combatResolved(cs)){ endCombat(true); } else { updateCombatConditionButtons(cs); }
+}
+// group_87 PL-39 / PL-41: after a fight starts - show the Indifference button while a charge remains, consume a carry-over
+(function(){ const orig=startCombat; startCombat=function(){ const r=orig.apply(this,arguments); try{ if(S&&S.carryOver&&combatState&&S.carryOver.to===S.section){ S.carryOver=null; saveGame(); } const b=document.getElementById('btn-indifference-spell'); if(b) b.style.display=(combatState&&getSpellRemaining('INDIFFERENCE')>0)?'inline-block':'none'; }catch(e){} return r; }; })();
 
 // group_85 AS-06: fatal_when_stuck - a paragraph whose every exit is unusable (no spell charge, no rescue)
 // ends the adventure as the canon says (sec.835: the walls close in) instead of soft-locking.
@@ -333,7 +352,7 @@ function renderSpellSel(){
   const bar=document.getElementById('slots-bar');bar.innerHTML='';const tot=totSp(); const chip=document.getElementById('spell-counter-chip'); if(chip) chip.textContent=tot+t('iz')+MAX_SP+t('vybrano');
   for(let i=0;i<MAX_SP;i++){const d=document.createElement('div');d.className='slot-pip'+(i<tot?' on':'');d.textContent=i<tot?'✦':'·';bar.appendChild(d);}
   const grid=document.getElementById('spell-grid');grid.innerHTML='';
-  SPELLS.forEach(sp=>{const q=spQty[sp.id];const c=document.createElement('div');
+  SPELLS.filter(sp=>!sp.granted).forEach(sp=>{const q=spQty[sp.id];const c=document.createElement('div'); // group_87 PL-39: granted-only spells are not picked at creation
     c.className='sp-card'+(q>0?' sel':'')+(tot>=MAX_SP&&q===0?' maxed':'');
     c.style.cssText='padding:18px 20px;'; // group_87 PL-45: layout lives in CSS (grid areas; phones stack the description below)
     c.innerHTML=`<div class="sp-icon" style="grid-area:icon;font-size:32px;min-width:38px;text-align:center;margin-top:2px;">${sp.icon}</div>
@@ -885,7 +904,8 @@ function renderGame(opts){
     if(ai.stamina_sub){S.stamina=Math.max(0,S.stamina-ai.stamina_sub);statNotifs.push('− '+ai.stamina_sub+t('vynoslivosti'));logEvent('loss','− '+ai.stamina_sub+t('vynoslivosti'),t('teper')+S.stamina+'/'+S.staminaMax);}
     if(ai.skill_add){S.skill=Math.min(S.skillMax,S.skill+ai.skill_add);statNotifs.push('+ '+ai.skill_add+t('masterstva'));}
     if(ai.skill_sub){S.skill=Math.max(1,S.skill-ai.skill_sub);statNotifs.push('− '+ai.skill_sub+t('masterstva'));}
-    if(ai.luck_add){const lb=S.luck;S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);const inc=S.luck-lb;if(inc>0)statNotifs.push('+ '+inc+t('udachi'));} // group_87 PL-06: report the actual increment
+    if(ai.spell_grant){ const g=ai.spell_grant; const gs=S.spells.find(x=>x.id===g.id); const gc=g.charges||1; if(gs) gs.remaining+=gc; else S.spells.push({id:g.id,remaining:gc}); const gd=SPELLS.find(x=>x.id===g.id); statNotifs.push('+ '+(gd?gd.icon+' ':'')+spellText(g.id).name+' ×'+gc); logEvent('gain',(gd?gd.icon:'')+t('zaklyatie')+spellText(g.id).name,'+'+gc); } // group_87 PL-39: a spell granted by the story (sec.520)
+  if(ai.luck_add){const lb=S.luck;S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);const inc=S.luck-lb;if(inc>0)statNotifs.push('+ '+inc+t('udachi'));} // group_87 PL-06: report the actual increment
     if(ai.dragon_strength){S.dragonKillsLeft=3;statNotifs.push('+ 5'+t('masterstva')+' ('+t('sila_drakona')+')');logEvent('gain','+ 5'+t('masterstva'),t('sila_drakona'));}
     if(ai.luck_sub){S.luck=Math.max(0,S.luck-ai.luck_sub);statNotifs.push('− '+ai.luck_sub+t('udachi'));}
     if(statNotifs.length>0){updateHUD();saveGame();showItemNotification(statNotifs);}
@@ -1828,7 +1848,7 @@ function updateCombatEnemyDisplay(cs){
     const statusEl=card.querySelector('.ce-status');
     let status=t('v_boyu');
     let stateClass='state-active';
-    if(e.fled){ status=t('ubezhal'); stateClass='state-fled'; }
+    if(e.indifferent){ status=t('ravnodushen'); stateClass='state-fled'; } else if(e.fled){ status=t('ubezhal'); stateClass='state-fled'; }
     else if(e.hp<=0){ status=t('poverzhen'); stateClass='state-dead'; }
     else if(e.active===false){ status=t('ozhidaet'); stateClass='state-waiting'; }
     if(statusEl){
@@ -2370,6 +2390,8 @@ function renderChoices(sec){
   }
 
   if(combatWon){
+    // group_87 PL-20: trophies granted after the victory, once per paragraph
+    if(sec.post_combat_items){ S.postCombatDone=S.postCombatDone||{}; if(!S.postCombatDone[S.section]){ S.postCombatDone[S.section]=true; saveGame(); const pci=sec.post_combat_items; const offered=(pci.items||[]).map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v); const newItems=offered.filter(item=>!S.inventory.some(it=>canonItem(it)===canonItem(item))); if(newItems.length) showInventoryModal(newItems,[]); } }
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
     sec.choices.forEach((ch,idx)=>{
       // group_87 PL-43: spell exits survive the victory (their charges gate them); PL-52: a condition exit after a full win reads «Продолжить».
@@ -2466,7 +2488,7 @@ function startCombat(enemies,sec){
   if(S)S.pending_combat_buff=null;
   const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
   combatState={
-    enemies:enemies.map((e,idx)=>({...e,name:enemyName(e.name),hp:e.stamina,dmg:e.damage||2,active:!(((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0) || e.joins!==undefined),fled:false})),
+    enemies:enemies.map((e,idx)=>({...e,name:enemyName(e.name),hp:((idx===0&&S&&S.carryOver&&S.carryOver.to===S.section&&typeof S.carryOver.hp==='number')?Math.max(1,Math.min(e.stamina,S.carryOver.hp)):e.stamina) /* group_87 PL-41 */,dmg:e.damage||2,active:!(((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0) || e.joins!==undefined),fled:false})),
     round:0,
     wounds:0,
     sec:sec,
@@ -2682,6 +2704,7 @@ function combatRound(){
       endCombat(false);
       return;
     }
+    if(_dl.carry_enemy&&S){ const al=getAliveCombatEnemies(cs); if(al.length){ S.carryOver={to:_dl.lose,hp:al[0].hp}; saveGame(); } } // group_87 PL-41: the fight continues in the next paragraph
     endCombatRouted(_dl.lose,'vremya_vyshlo_boy_zatyanulsya');
     return;
   }
@@ -2914,7 +2937,7 @@ function endCombatRouted(target,msgKey){
   combatDone[S.section]=true;
   clearCombatExtraButtons();
   const log=document.getElementById('combat-log');
-  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
+  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva','btn-indifference-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
   log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t(msgKey)}</div>`;
   logEvent('combat',t(msgKey),t('raundov')+(combatState?combatState.round:0));
   const b=document.getElementById('btn-combat-round');

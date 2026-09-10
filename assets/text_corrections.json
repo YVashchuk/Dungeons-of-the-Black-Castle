@@ -179,7 +179,8 @@
     "v2.171 -> v2.172": "September 2026 - group_86 PA-01 (ChatGPT 6 Astra browser-agent playthrough, blocked by the native confirm() on «Новая игра»): every native confirm()/alert() replaced by the in-page #overlay-confirm dialog (bcConfirm) and the toast + live-region notice (bcNotice); ui keys 334 -> 336; smoke C22 automated; _dist_ui_check 55 -> 58. Astra pre-flight archived (build signatures incl. SA-02 confirmed live). GAME_RULES.md label 2.171 -> 2.172 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.172 -> v2.173": "September 2026 - group_87 opened (ChatGPT 6 Astra live playthrough 5-9 Sep: 52 findings) and batches A+B: PL-01 new game / restart drop the hash, PL-06 honest luck notice, PL-31 stamina clamp, PL-35 HUD after knowledge, PL-38 flags not stakeable, PL-43 post-combat spell exits, PL-44 title rider aspect, PL-47 hanging indent for choices, PL-48 combat log colors, PL-51 map toolbar font, PL-52 «Продолжить» after a full win, PL-03 diamond gift consumed, PL-12 sec.90 offers gated (fox skin consumed), PL-14 candle / candlestick granted, PL-50 map refs. OPEN for later batches / author: text corrections (batch C), PL-02, PL-10, PL-13, PL-20, PL-28, PL-36, PL-37, PL-39, PL-41, PL-45/46/49, PL-23, PL-29, PL-33. p1_6d 78 -> 82. GAME_RULES.md label 2.172 -> 2.173 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.173 -> v2.174": "September 2026 - group_87 batch C: 32 canon text corrections in 21 paragraphs (RU prose typos and punctuation found by the Astra live reader: 9/46/56/77/139/150/284/288/291/372/435/520/544/582/627/700/718/730/766/829/923/1096/1115/1152/1196) applied to locale.ru.js, assets/book_text.md and the 6a golden; sec.393 exit label aligned to the canon direction and sec.835 rescue label «Позвать Пегаса» in four locales. GAME_RULES.md label 2.173 -> 2.174 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.174 -> v2.175": "September 2026 - group_87 batch D (the author's Pixel 7a observations): PL-45 spell cards as a grid (phone: name + counter on top, description full width), PL-46 map close pinned top-right on phones, PL-49 «Удар!» below the ability group, PL-10 gender-neutral combat log templates in RU/EN/FR/UK (no more «ранил» for a female enemy). docs/DotBC_redirect_index.html - template for a short-address repo. p1_6d 82 -> 84; MANUAL_SMOKE_CHECKS C23. GAME_RULES.md label 2.174 -> 2.175 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.174 -> v2.175": "September 2026 - group_87 batch D (the author's Pixel 7a observations): PL-45 spell cards as a grid (phone: name + counter on top, description full width), PL-46 map close pinned top-right on phones, PL-49 «Удар!» below the ability group, PL-10 gender-neutral combat log templates in RU/EN/FR/UK (no more «ранил» for a female enemy). docs/DotBC_redirect_index.html - template for a short-address repo. p1_6d 82 -> 84; MANUAL_SMOKE_CHECKS C23. GAME_RULES.md label 2.174 -> 2.175 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.175 -> v2.176": "September 2026 - group_87 batch E1: PL-39 Indifference spell of sec.520 (ninth, granted-only, one use in combat), PL-41 sec.737 -> 182 enemy carry-over + staged huge goblin, PL-20 post-combat trophies at sec.440 / sec.182. ui keys 336 -> 340, spells 8 -> 9, enemies +1 (zdorovennyy_goblin), auto_items 195 (sec.182 -1, sec.520 +1), post_combat_items 2, spell_grant 1, carry_enemy 1. p1_6d 84 -> 87; MANUAL_SMOKE_CHECKS C24-C26. GAME_RULES.md s1/s3/s8 + label 2.175 -> 2.176 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -615,9 +616,10 @@
         {
           "id": "PL-20_trophies_before_the_fight",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.440 offers the gold key and sec.182 the bronze whistle on entry, before the fight; canon: «Если вы убили дракона…», «Убив его… обоих Гоблинов».",
-          "note": "Maintainer adjudication: ACCEPTED - needs a post-combat grant mechanism (auto_items on entry fires before the fight); later batch (post_combat_items)."
+          "note": "Maintainer adjudication: ACCEPTED - needs a post-combat grant mechanism (auto_items on entry fires before the fight); later batch (post_combat_items).",
+          "resolution": "ACCEPTED P2 DONE. New paragraph field post_combat_items: its items are offered once (S.postCombatDone) when the victory branch renders, so the gold key of sec.440 and the bronze whistle of sec.182 arrive after the fight as the canon says («Если вы убили дракона…», «Убив его… по бронзовому свистку»); the Fire path at sec.440 still gets the key at sec.140."
         },
         {
           "id": "PL-21_label_393_direction",
@@ -761,9 +763,10 @@
         {
           "id": "PL-39_indifference_spell_not_implemented",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.520 grants «заклятие Равнодушия» - one use, one enemy forgets the fight; nothing is added to the hero.",
-          "note": "Maintainer adjudication: CONFIRMED engine gap - a ninth, granted-only spell (charges 1) usable in combat to remove the current target; needs locale entries and picker exclusion; dedicated batch."
+          "note": "Maintainer adjudication: CONFIRMED engine gap - a ninth, granted-only spell (charges 1) usable in combat to remove the current target; needs locale entries and picker exclusion; dedicated batch.",
+          "resolution": "CONFIRMED P1 DONE. Ninth spell INDIFFERENCE (granted-only: excluded from the creation picker, granted by auto_items.spell_grant at sec.520 with one charge). In combat a «🌀 Заклятие Равнодушия» button (shown while a charge remains) makes the current target forget the fight: it leaves the fight as «равнодушен» without counting as a kill, staged reinforcements wake as on any removal, and a lone enemy ends the fight as a win. Locale entries (spell name/description, four ui keys) in RU/EN/FR/UK."
         },
         {
           "id": "PL-40_text_520",
@@ -776,9 +779,10 @@
         {
           "id": "PL-41_deadline_737_loses_first_goblin",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.737 deadline -> 182: canon «продолжаете бой. Если убили его… прибегает здоровенный Гоблин»; the engine starts 182 with only the new goblin, the first one (2/10) vanishes.",
-          "note": "Maintainer adjudication: CONFIRMED - needs an enemy carry-over from the deadline fight into 182 (first goblin with remaining stamina, the big one joins after its death); dedicated engine batch."
+          "note": "Maintainer adjudication: CONFIRMED - needs an enemy carry-over from the deadline fight into 182 (first goblin with remaining stamina, the big one joins after its death); dedicated engine batch.",
+          "resolution": "CONFIRMED P1 DONE. sec.737's round_deadline carries the surviving enemy (carry_enemy: S.carryOver = {to: 182, hp}); sec.182 now starts with that goblin (7/10, remaining stamina restored) and the huge goblin (8/8, new enemy key zdorovennyy_goblin) joins after its death (joins: after_death 0). A hash entry into sec.182 starts the first goblin at full stamina."
         },
         {
           "id": "PL-42_text_46",
