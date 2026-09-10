@@ -187,7 +187,8 @@
     "v2.179 -> v2.180": "September 2026 - group_88 V-02 (author's review of V-01): narration buttons on the preface and pregame screens, speech stops on screen change; spell cards align-content:start (desktop rows no longer stretch). GAME_RULES.md label 2.179 -> 2.180 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.180 -> v2.181": "September 2026 - group_89 M-01: painted map backgrounds for the three layers (generated for the project, no lettering) with a fog of war masked around discovered nodes; dist/map shipped by build.sh; _dist_ui_check 60 -> 61. GAME_RULES.md label 2.180 -> 2.181 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.181 -> v2.182": "September 2026 - group_88 V-03: OpenAI narration - bring-your-own-key on-demand synthesis with browser caching, optional pre-rendered file pack (scripts/tts_pregenerate.js + audio/manifest.json), device-voice fallback; ui keys 355 -> 363. GAME_RULES.md s9 + label 2.181 -> 2.182 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.182 -> v2.183": "September 2026 - group_87 batch F (canon repairs with 1991-edition evidence): PL-28 sec.886 returns to the reception 1196 (not the one-way mirror staircase 1044), PL-36 sec.534 ends as in 1991 (no truncated skill condition) - prose in four locales, labels, book_text.md, golden, GD. GAME_RULES.md label 2.182 -> 2.183 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.182 -> v2.183": "September 2026 - group_87 batch F (canon repairs with 1991-edition evidence): PL-28 sec.886 returns to the reception 1196 (not the one-way mirror staircase 1044), PL-36 sec.534 ends as in 1991 (no truncated skill condition) - prose in four locales, labels, book_text.md, golden, GD. GAME_RULES.md label 2.182 -> 2.183 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.183 -> v2.184": "September 2026 - group_87 batch G (PL-13): 26 choice labels in ten paragraphs reworded as actions in four locales; sec.987 prose typo. group_87 closed except PL-23 (art, group_71) and the two no-ops. GAME_RULES.md label 2.183 -> 2.184 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -623,9 +624,10 @@
         {
           "id": "PL-13_choice_labels_lose_meaning",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "Ten choice labels are truncated prose («…(1015)», «На (1071)», «Быстро взбегаете по лестнице на небольшой… (1015)») or misname the object (sec.987 «любо», 603, 590, 622, 1152, 930, 623, 94, 774 «люк» as «дверь», 778).",
-          "note": "Maintainer adjudication: ACCEPTED - a label review batch (positional labels in four locales); needs the author's wording for direction words."
+          "note": "Maintainer adjudication: ACCEPTED - a label review batch (positional labels in four locales); needs the author's wording for direction words.",
+          "resolution": "ACCEPTED P2 DONE. Choice labels reworded as actions naming the object in all four locales: sec.987 (silver / glass vessel, opposite door; prose «любо» -> «либо» and the dash spacing in RU/UK), 603 (right passage), 590 (camp / try to get in), 622 (straight ahead), 1152 (leave the bottle and examine the chest), 930 (left corridor), 623 (ruby / emerald signet, back to the study), 94 (call the magic horse / examine the desk), 774 (the hatch, not a door or a chest; take the vessels), 778 (big chest). Positional indices unchanged; golden and book_text updated for the prose fix."
         },
         {
           "id": "PL-14_candle_and_candlestick_not_granted",
