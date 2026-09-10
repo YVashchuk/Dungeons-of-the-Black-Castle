@@ -189,7 +189,8 @@
     "v2.181 -> v2.182": "September 2026 - group_88 V-03: OpenAI narration - bring-your-own-key on-demand synthesis with browser caching, optional pre-rendered file pack (scripts/tts_pregenerate.js + audio/manifest.json), device-voice fallback; ui keys 355 -> 363. GAME_RULES.md s9 + label 2.181 -> 2.182 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.182 -> v2.183": "September 2026 - group_87 batch F (canon repairs with 1991-edition evidence): PL-28 sec.886 returns to the reception 1196 (not the one-way mirror staircase 1044), PL-36 sec.534 ends as in 1991 (no truncated skill condition) - prose in four locales, labels, book_text.md, golden, GD. GAME_RULES.md label 2.182 -> 2.183 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.183 -> v2.184": "September 2026 - group_87 batch G (PL-13): 26 choice labels in ten paragraphs reworded as actions in four locales; sec.987 prose typo. group_87 closed except PL-23 (art, group_71) and the two no-ops. GAME_RULES.md label 2.183 -> 2.184 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.184 -> v2.185": "September 2026 - group_90 PR-01: Russian proofread by ChatGPT 6 Astra ULTRA applied - 592 exact replacements (OCR residue, grammar, punctuation, 50 truncated labels rewritten) in locale.ru.js, the 6a golden, book_text.md and the ui goldens; 115 doubtful items left to the author. GAME_RULES.md label 2.184 -> 2.185 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.184 -> v2.185": "September 2026 - group_90 PR-01: Russian proofread by ChatGPT 6 Astra ULTRA applied - 592 exact replacements (OCR residue, grammar, punctuation, 50 truncated labels rewritten) in locale.ru.js, the 6a golden, book_text.md and the ui goldens; 115 doubtful items left to the author. GAME_RULES.md label 2.184 -> 2.185 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.185 -> v2.186": "September 2026 - group_90 PR-02: the 115 doubtful places of the Russian proofread resolved with the recommended readings (14 unambiguous, 101 author-choice applied pending veto, 13 kept), incl. link/number repairs in sec.416 and sec.562. GAME_RULES.md label 2.185 -> 2.186 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -472,6 +473,14 @@
       "source": "chatgpt_6_astra_ultra_proofread_2026_09_10",
       "verified": "2026-09-10",
       "items": [
+        {
+          "id": "PR-02_doubtful_readings_applied",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "115 doubtful places of the Russian proofread (RU_PROOFREAD_DOUBTFUL.md): damaged syntax without a certain restoration, authorial punctuation, truncated labels with unclosed brackets, number/link mismatches in prose (sec.416 1366 -> 366, sec.562 562 -> 315).",
+          "note": "Maintainer decision (with the author's go-ahead to finish the text before narration): the recommended reading of RU_DOUBTFUL_RESOLVED.json applied for every item, including the 101 marked author_choice - the author may veto by D-id; 13 items keep the original wording; D-004 / D-045 / D-061 / D-114 supersede R-023 / R-274 / R-339 / R-585. SHA-256 RU_DOUBTFUL_RESOLVED.json 52f7e6f9651cd9ae48f4703e276596f7c1de5762ef2339f68cefe7af1b402f86.",
+          "resolution": "DONE. Applied to locale.ru.js, the 6a golden, book_text.md and the ui / preface goldens; the JSON is archived under audit_cycles/recheck_2026_09 for the translation reviews."
+        },
         {
           "id": "PR-01_russian_text_proofread_592",
           "severity": "P2",
