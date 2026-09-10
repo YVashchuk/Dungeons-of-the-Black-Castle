@@ -181,7 +181,8 @@
     "v2.173 -> v2.174": "September 2026 - group_87 batch C: 32 canon text corrections in 21 paragraphs (RU prose typos and punctuation found by the Astra live reader: 9/46/56/77/139/150/284/288/291/372/435/520/544/582/627/700/718/730/766/829/923/1096/1115/1152/1196) applied to locale.ru.js, assets/book_text.md and the 6a golden; sec.393 exit label aligned to the canon direction and sec.835 rescue label «Позвать Пегаса» in four locales. GAME_RULES.md label 2.173 -> 2.174 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.174 -> v2.175": "September 2026 - group_87 batch D (the author's Pixel 7a observations): PL-45 spell cards as a grid (phone: name + counter on top, description full width), PL-46 map close pinned top-right on phones, PL-49 «Удар!» below the ability group, PL-10 gender-neutral combat log templates in RU/EN/FR/UK (no more «ранил» for a female enemy). docs/DotBC_redirect_index.html - template for a short-address repo. p1_6d 82 -> 84; MANUAL_SMOKE_CHECKS C23. GAME_RULES.md label 2.174 -> 2.175 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.175 -> v2.176": "September 2026 - group_87 batch E1: PL-39 Indifference spell of sec.520 (ninth, granted-only, one use in combat), PL-41 sec.737 -> 182 enemy carry-over + staged huge goblin, PL-20 post-combat trophies at sec.440 / sec.182. ui keys 336 -> 340, spells 8 -> 9, enemies +1 (zdorovennyy_goblin), auto_items 195 (sec.182 -1, sec.520 +1), post_combat_items 2, spell_grant 1, carry_enemy 1. p1_6d 84 -> 87; MANUAL_SMOKE_CHECKS C24-C26. GAME_RULES.md s1/s3/s8 + label 2.175 -> 2.176 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.176 -> v2.177": "September 2026 - group_87 PL-53 (author's Pixel 7a report): the title screen scrolls on every size instead of clipping when it does not fit (in-app browser headers, large fonts); smoke C24 automated. GAME_RULES.md label 2.176 -> 2.177 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.176 -> v2.177": "September 2026 - group_87 PL-53 (author's Pixel 7a report): the title screen scrolls on every size instead of clipping when it does not fit (in-app browser headers, large fonts); smoke C24 automated. GAME_RULES.md label 2.176 -> 2.177 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.177 -> v2.178": "September 2026 - group_88 V-01 narration: Web Speech API reader (speak button at the paragraph marker, voice / speed / auto-read in the menu, sentence chunking, stop on paragraph change, per-language voice choice, localStorage prefs); ui keys 340 -> 350; smoke C25. GAME_RULES.md s9 + label 2.177 -> 2.178 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -458,6 +459,21 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_88_2026_09_09_narration": {
+      "comment": "Narration (text-to-speech) requested by the author on 2026-09-09 after the Gemini design chat. Design decision: device voices through the Web Speech API (no server, no API keys, works on GitHub Pages); pre-generated neural narration (Silero / OpenAI / ElevenLabs) is a separate research track (Gemini Track F: model and service licences, quality of Russian, size budget) and touches the rights question of Track D.",
+      "source": "author_request_2026_09_09",
+      "verified": "2026-09-09",
+      "items": [
+        {
+          "id": "V-01_web_speech_narration",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The game has no narration; the author wants the paragraphs read aloud with a good voice.",
+          "note": "Maintainer decision: implement the zero-infrastructure variant first.",
+          "resolution": "DONE. A speak button (🔊 / ⏹, aria-pressed) sits at the paragraph marker; the menu gains a narration section (auto-read new paragraphs, voice per language from the device list, speed 0.7-1.3, «Послушать» test) persisted in localStorage podzch_voice. Speech text is the rendered paragraph without illustrations and without the «(N)» paragraph numbers, split into sentence chunks of ~220 characters (Chrome truncates long utterances); goTo stops the current speech and, with auto-read on, starts the new paragraph; setLanguage stops speech and re-lists voices. Unsupported browsers hide the controls; a missing voice for the language falls back to the system default. Ten ui keys in RU/EN/FR/UK (FR typography kept)."
+        }
+      ]
     },
     "group_87_2026_09_09_astra_live_playthrough": {
       "comment": "ChatGPT 6 Astra as a browser agent with the 8b147bd archive at hand (brief BRIEF_playthrough_astra_agent.md, card 8), Work Mode project, 5-9 September 2026 - the first complete live reader playthrough by an external agent: five heroes created from the title, 260 paragraph visits (138 distinct), 17 fights won / 2 lost, «Астра V» defeated Barlad Dert, woke the Princess and reached sec.1220 on the ring route; gate checkpoints G-01..G-15: 14 PASS / 1 UNCLEAR (G-05 - the brief was wrong about the ring); the 41-row smoke matrix 29 PASS / 2 FAIL (C14 = PL-51, A7 = PL-41/43) / 7 BLOCKED (private window, phone viewport, OS layout) / 3 UNCLEAR (checklist wording); 52 findings (P1 9 / P2 43) with 292 screenshots; the maintainer's Pixel 7a screenshots reviewed (PL-44..PL-52); the Gemini design chat of 2026-09-08 reviewed (7.5). Evidence archived from _handoff/audit_2026_09_chatgpt/astra/new (REPORT_astra_playthrough.md + addendum). Every finding was checked by the maintainer against code / canon; text corrections follow the registry pipeline; author decisions are marked OPEN.",

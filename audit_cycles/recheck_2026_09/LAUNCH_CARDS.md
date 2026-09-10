@@ -272,6 +272,16 @@ You are reviewing the mobile UI of a text gamebook (Russian, dark fantasy, 1991 
 
 - Результат → `_handoff\audit_2026_09_chatgpt\gemini\REPORT_mobile_ux.md`; каждую строку сверяю с CSS и статусом в реестре, как обычно.
 
+### Track F — нейросетевая озвучка (желательный, после Track D)
+- Режим: Deep Research, web включён. Вложение: только `audit_cycles/recheck_2026_09/BRIEF_trackF_narration_gemini.md`.
+- Сообщение:
+
+```
+Track F only, per the attached BRIEF_trackF_narration_gemini.md: research the five questions (offline and commercial neural TTS for Russian/Ukrainian/French - licences of weights and generated audio, redistribution terms, quality, cost for ~1.5 M characters, delivery on GitHub Pages) with cited primary sources and deliver TTS_MEMO.md with a comparison table and a ranked recommendation. Do not audit or modify the project.
+```
+
+- Результат → `_handoff\audit_2026_09_chatgpt\legal\TTS_MEMO.md`. Базовая озвучка голосами устройства уже в игре (group_88 V-01); исследование — про «премиум»-вариант.
+
 **Если Gemini всё же просит код:** отвечать «код не входит в задание», а не подгружать движок — при обрыве файла его выводы становятся гипотезами о несуществующем коде (прецедент 05.09).
 
 ## 10. ChatGPT 6 Astra ULTRA — карта (дизайн) и следующий живой прогон

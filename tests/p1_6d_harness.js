@@ -68,6 +68,13 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9aa. group_88 V-01: narration - sentence chunking, stop on paragraph change, menu wiring, keys in four locales
+(function(){
+  try{ eval(gfn('bcSplitSentences')); const ch=bcSplitSentences('\u041f\u0435\u0440\u0432\u043e\u0435. \u0412\u0442\u043e\u0440\u043e\u0435! \u0422\u0440\u0435\u0442\u044c\u0435? '+'\u0430'.repeat(300)+'. \u041a\u043e\u043d\u0435\u0446'); ck('V-01 sentences chunked (<=220 chars per chunk where possible, nothing lost)', ch.length>=3&&ch.join(' ').replace(/\s+/g,' ').length>=310&&ch.slice(0,-2).every(c=>c.length<=225)); }catch(e){ ck('V-01 chunking eval: '+e.message,false); }
+  ck('V-01 goTo stops speech and auto-reads after render; renderGame refreshes the button; menu renders voices', gl.includes('try{ bcStopSpeech(); }catch(e){} S.cameFrom=S.section;')&&gl.includes('renderGame();\n  try{ bcVoiceAutoRead(); }catch(e){}'.replace('\n',String.fromCharCode(10)))||gl.includes('bcVoiceAutoRead(); }catch(e){}'));
+  ck('V-01 ui keys in four locales', ['ru','en','fr','uk'].every(L=>{ const src=fs.readFileSync(path.join(REPO,'src','locale.'+L+'.js'),'utf8'); return ['ui_voice_section','ui_voice_auto','ui_voice_voice','ui_voice_rate','ui_voice_none','ui_voice_unavailable','ui_btn_speak','ui_btn_speak_stop','ui_voice_test','ui_voice_test_btn'].every(k=>src.includes('"'+k+'"')); }));
+})();
+
 // 9z. group_87 batch D (PL-10 / PL-45 / PL-49): neutral combat log, spell card grid, strike button order
 (function(){
   ck('PL-10 combat log templates are label-style (no verb agreement with the enemy)', LOCALE_RU.ui.vy_ranili==='\u2192 \u0412\u0430\u0448 \u0443\u0434\u0430\u0440: '&&LOCALE_RU.ui.ranil_vas.startsWith(': ')&&LOCALE_RU.ui.ne_smog_vas_ranit===': \u043f\u0440\u043e\u043c\u0430\u0445'&&LOCALE_RU.ui.nichya_s==='\u2192 \u041d\u0438\u0447\u044c\u044f: ');

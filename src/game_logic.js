@@ -123,7 +123,7 @@ function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(rawT
 // ── Screens ──
 function showScr(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scr-'+id).classList.add('on');const elb=document.getElementById('event-log-btn');if(elb)elb.style.display=(id==='game'&&!isMobileHud())?'block':'none';}
 function closeModal(id){document.getElementById(id).classList.remove('on');if(id==='overlay-sheet')returnSheetSection();}
-function openMenu(){renderAutosaveNote();document.getElementById('overlay-menu').classList.add('on');}
+function openMenu(){renderAutosaveNote();try{ renderVoiceMenu(); }catch(e){} document.getElementById('overlay-menu').classList.add('on');} // group_88 V-01: voice list
 
 // >>> BC_A11Y_DIALOGS (UI-04, group_79): shared dialog controller >>>
 // Every overlay toggled through the 'on' class (.modal-overlay / .end-overlay,
@@ -254,6 +254,31 @@ function returnSheetSection(){
 })();
 // <<< BC_MOBILE_SHEETS <<<
 
+// >>> BC_VOICE (V-01, group_88): narration through the Web Speech API >>>
+// Device voices only (no server, no keys): a speak button at the paragraph marker, voice / speed / auto-read in the
+// menu (per language, persisted in localStorage), sentence chunks (Chrome stops long utterances after ~15 s),
+// speech stops on every paragraph change, starts only from a user gesture (iOS / Chrome autoplay policy).
+const VOICE_KEY='podzch_voice';
+const BC_LANG_TAGS={ru:'ru-RU',en:'en-US',fr:'fr-FR',uk:'uk-UA'};
+let _voice={auto:false,rate:1,voiceURI:{}}; let _voiceQueue=[]; let _voiceSpeaking=false;
+function voiceSupported(){ return typeof window!=='undefined'&&('speechSynthesis' in window)&&typeof SpeechSynthesisUtterance!=='undefined'; }
+function loadVoicePrefs(){ try{ const v=JSON.parse(localStorage.getItem(VOICE_KEY)||'null'); if(v&&typeof v==='object'){ _voice.auto=!!v.auto; _voice.rate=Math.min(1.3,Math.max(0.7,Number(v.rate)||1)); _voice.voiceURI=(v.voiceURI&&typeof v.voiceURI==='object')?v.voiceURI:{}; } }catch(e){} }
+function saveVoicePrefs(){ try{ localStorage.setItem(VOICE_KEY,JSON.stringify(_voice)); }catch(e){} }
+function bcVoicesFor(lang){ const tag=(BC_LANG_TAGS[lang]||String(lang)).slice(0,2).toLowerCase(); let all=[]; try{ all=voiceSupported()?speechSynthesis.getVoices():[]; }catch(e){} return all.filter(v=>String(v.lang||'').toLowerCase().replace('_','-').startsWith(tag)); }
+function bcPickVoice(){ const lang=getLang(); const list=bcVoicesFor(lang); const want=_voice.voiceURI[lang]; return list.find(v=>v.voiceURI===want)||list.find(v=>v.default)||list[0]||null; }
+function bcSpeechText(){ const el=document.getElementById('s-text'); if(!el) return ''; const clone=el.cloneNode(true); clone.querySelectorAll('img,figure,figcaption,.illust,.art-block').forEach(n=>n.remove()); return String(clone.textContent||'').replace(/\(\s*\d{1,4}\s*\)/g,'').replace(/\s+/g,' ').trim(); }
+function bcSplitSentences(txt){ const parts=String(txt).match(/[^.!?\u2026]+[.!?\u2026]+["\u00bb)]?|[^.!?\u2026]+$/g)||[String(txt)]; const out=[]; let buf=''; for(const p of parts){ if((buf+p).length>220&&buf.trim()){ out.push(buf.trim()); buf=p; } else buf+=p; } if(buf.trim()) out.push(buf.trim()); return out; }
+function bcSpeak(text){ if(!voiceSupported()||!text) return false; bcStopSpeech(); const v=bcPickVoice(); const lang=BC_LANG_TAGS[getLang()]||'ru-RU'; _voiceQueue=bcSplitSentences(text).map(c=>{ const u=new SpeechSynthesisUtterance(c); u.lang=(v&&v.lang)||lang; if(v) u.voice=v; u.rate=_voice.rate; u.pitch=1; return u; }); _voiceSpeaking=true; bcSpeakNext(); bcVoiceButton(); return true; }
+function bcSpeakNext(){ const u=_voiceQueue.shift(); if(!u){ _voiceSpeaking=false; bcVoiceButton(); return; } u.onend=function(){ if(_voiceSpeaking) bcSpeakNext(); }; u.onerror=function(){ _voiceSpeaking=false; _voiceQueue=[]; bcVoiceButton(); }; try{ speechSynthesis.speak(u); }catch(e){ _voiceSpeaking=false; _voiceQueue=[]; bcVoiceButton(); } }
+function bcStopSpeech(){ _voiceQueue=[]; _voiceSpeaking=false; try{ if(voiceSupported()) speechSynthesis.cancel(); }catch(e){} bcVoiceButton(); }
+function bcSpeakToggle(){ if(_voiceSpeaking){ bcStopSpeech(); return; } const ok=bcSpeak(bcSpeechText()); if(!ok) bcNotice(t('ui_voice_unavailable')); }
+function bcVoiceButton(){ const b=document.getElementById('btn-speak'); if(!b) return; b.style.display=voiceSupported()?'':'none'; b.setAttribute('aria-pressed',_voiceSpeaking?'true':'false'); b.textContent=_voiceSpeaking?'\u23f9':'\ud83d\udd0a'; const lbl=_voiceSpeaking?t('ui_btn_speak_stop'):t('ui_btn_speak'); b.setAttribute('aria-label',lbl); b.title=lbl; }
+function bcVoiceAutoRead(){ if(_voice.auto&&voiceSupported()){ setTimeout(function(){ try{ bcSpeak(bcSpeechText()); }catch(e){} },60); } }
+function renderVoiceMenu(){ const row=document.getElementById('voice-row'); if(!row) return; if(!voiceSupported()){ row.style.display='none'; return; } row.style.display=''; const auto=document.getElementById('voice-auto'); if(auto) auto.checked=_voice.auto; const rate=document.getElementById('voice-rate'); if(rate) rate.value=String(_voice.rate); const sel=document.getElementById('voice-select'); if(sel){ const list=bcVoicesFor(getLang()); sel.innerHTML=''; if(!list.length){ const o=document.createElement('option'); o.value=''; o.textContent=t('ui_voice_none'); sel.appendChild(o); sel.disabled=true; } else { sel.disabled=false; const cur=bcPickVoice(); list.forEach(v=>{ const o=document.createElement('option'); o.value=v.voiceURI; o.textContent=v.name+(v.localService===false?' \u2601':''); if(cur&&cur.voiceURI===v.voiceURI) o.selected=true; sel.appendChild(o); }); } } }
+function voiceMenuChanged(){ const auto=document.getElementById('voice-auto'); const rate=document.getElementById('voice-rate'); const sel=document.getElementById('voice-select'); if(auto) _voice.auto=!!auto.checked; if(rate) _voice.rate=Math.min(1.3,Math.max(0.7,Number(rate.value)||1)); if(sel&&sel.value) _voice.voiceURI[getLang()]=sel.value; saveVoicePrefs(); }
+function voiceTest(){ voiceMenuChanged(); if(!bcSpeak(t('ui_voice_test'))) bcNotice(t('ui_voice_unavailable')); }
+(function(){ loadVoicePrefs(); if(voiceSupported()){ try{ speechSynthesis.addEventListener('voiceschanged',function(){ try{ renderVoiceMenu(); }catch(e){} }); }catch(e){} } })();
+// <<< BC_VOICE <<<
 // >>> BC_COMBAT_STATUS (UA-03, group_81): screen-reader combat-round status >>>
 // #combat-log is rebuilt with innerHTML+= on every append (51 sites), so it
 // cannot be a live region without re-announcing the whole history. This
@@ -684,7 +709,9 @@ function applyLang(code, opts){
 }
 function setLanguage(code){
   if(!LOCALES[code]) return false;
+  try{ bcStopSpeech(); }catch(e){} // group_88 V-01: the voice follows the language
   applyLang(code,{});
+  try{ renderVoiceMenu(); }catch(e){}
   try{ localStorage.setItem(LANG_KEY,code); }catch(e){}
   return true;
 }
@@ -764,7 +791,7 @@ function renderGame(opts){
   if(!S)return;updateHUD();
   const sec=locSec(S.section);
   if(!sec){goTo(1);return;}
-  document.getElementById('s-num').textContent=t('paragraf')+S.section;
+  document.getElementById('s-num').textContent=t('paragraf')+S.section; try{ bcVoiceButton(); }catch(e){} // group_88 V-01
   // Render illustration — priority: Midjourney (color AI art) > legacy b/w scans.
   let illustHtml='';
   const secKey=String(S.section);
@@ -2458,11 +2485,12 @@ function renderChoices(sec){
 }
 
 function goTo(id){
-  if(!S)return;S.cameFrom=S.section; /* group_85 AS-01 */ S.section=id;
+  if(!S)return;try{ bcStopSpeech(); }catch(e){} S.cameFrom=S.section; /* group_85 AS-01 */ S.section=id;
   combatDone={};luckDone={};luckResult={};sectionPrepState={};
   S.luckChecks={}; // group_81 B-07: a persisted luck roll belongs to the paragraph being left
   S.pendingDiceRoll=null; // group_85 AS-14
   renderGame();
+  try{ bcVoiceAutoRead(); }catch(e){} // group_88 V-01
 }
 
 

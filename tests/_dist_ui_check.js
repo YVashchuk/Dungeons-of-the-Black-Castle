@@ -43,6 +43,8 @@ const snips=[
  ['combat status reset hook (CA-06)', 'window._bcCombatStatusReset=function', 1],
  ['forum cyrillic display (UI-07)', "font-family: 'Forum';", 1],
  ['font chain with Forum (UI-07)', "--font-ui:'Cinzel','Forum','Cormorant Garamond',serif", 1],
+ ['speak button at the paragraph marker (V-01)', 'id="btn-speak"', 1],
+ ['narration section in the menu (V-01)', 'id="voice-row"', 1],
  ['in-page confirm dialog (PA-01)', 'id="overlay-confirm" role="dialog" aria-modal="true"', 1],
  ['no native confirm in the build (PA-01)', 'confirm(t(', 0],
  ['no native alert in the build (PA-01)', 'alert(t(', 0],
