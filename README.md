@@ -212,3 +212,8 @@ bash build.sh
 ---
 
 Разработано с использованием Claude Opus 4.8 (Anthropic), ChatGPT 5.5 Extended и Gemini 3.1 Pro.
+
+
+## Озвучка
+
+В игре два режима чтения вслух: голоса устройства (Web Speech API) и нейросетевая озвучка OpenAI — по ключу в ☰ Меню → Озвучка или из заранее сгенерированных файлов `dist/audio/<lang>/N.mp3` (манифест `dist/audio/manifest.json`; играют без ключа). Генерация: `set OPENAI_API_KEY=sk-…` → `scripts\tts_all.cmd` (RU/FR/UK — onyx, EN — fable, `tts-1-hd`; возобновляемо). Пробы голосов: `node scripts\tts_pregenerate.js --lang ru --from 1 --to 1 --voice fable --out dist\audio_samples\ru-fable`.

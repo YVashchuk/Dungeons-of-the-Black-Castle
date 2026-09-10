@@ -191,7 +191,8 @@
     "v2.183 -> v2.184": "September 2026 - group_87 batch G (PL-13): 26 choice labels in ten paragraphs reworded as actions in four locales; sec.987 prose typo. group_87 closed except PL-23 (art, group_71) and the two no-ops. GAME_RULES.md label 2.183 -> 2.184 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.184 -> v2.185": "September 2026 - group_90 PR-01: Russian proofread by ChatGPT 6 Astra ULTRA applied - 592 exact replacements (OCR residue, grammar, punctuation, 50 truncated labels rewritten) in locale.ru.js, the 6a golden, book_text.md and the ui goldens; 115 doubtful items left to the author. GAME_RULES.md label 2.184 -> 2.185 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.185 -> v2.186": "September 2026 - group_90 PR-02: the 115 doubtful places of the Russian proofread resolved with the recommended readings (14 unambiguous, 101 author-choice applied pending veto, 13 kept), incl. link/number repairs in sec.416 and sec.562. GAME_RULES.md label 2.185 -> 2.186 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.186 -> v2.187": "September 2026 - group_91: translation reviews applied (EN 1125, FR 754, UK 1927 replacements) - fidelity to the proofread Russian, grammar, typography (UK apostrophes / ґ, FR NBSP/NNBSP, EN curly quotes), terminology, labels. GAME_RULES.md label 2.186 -> 2.187 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.186 -> v2.187": "September 2026 - group_91: translation reviews applied (EN 1125, FR 754, UK 1927 replacements) - fidelity to the proofread Russian, grammar, typography (UK apostrophes / ґ, FR NBSP/NNBSP, EN curly quotes), terminology, labels. GAME_RULES.md label 2.186 -> 2.187 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.187 -> v2.188": "September 2026 - group_88 V-04 (narration pack): voices chosen by the author (RU/FR/UK onyx, EN fable, tts-1-hd), scripts/tts_all.cmd for the four-language render, dist/audio published (gitignore lifted). GAME_RULES.md label 2.187 -> 2.188 (R-03 guard). Battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -543,6 +544,14 @@
       "source": "author_request_2026_09_09",
       "verified": "2026-09-09",
       "items": [
+        {
+          "id": "V-04_narration_pack_voices",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Pre-rendered narration for all four languages (the author's listening test of 2026-09-11 on §1 / §67 / §835 with onyx, fable and gpt-4o-mini-tts).",
+          "note": "Author's decision: OpenAI tts-1-hd; RU onyx, FR onyx, UK onyx (fable carries an English accent in other languages), EN fable. scripts/tts_all.cmd renders dist/audio/<lang>/N.mp3 + preface / pregame + manifest (two passes, resumable); dist/audio is published (removed from .gitignore) so GitHub Pages serves the files and the game plays them without a key. Size budget: ~150-200 MB per language in mp3 - GitHub Pages recommends a 1 GB site; commit per language and check the total.",
+          "resolution": null
+        },
         {
           "id": "V-03_openai_narration",
           "severity": "P2",

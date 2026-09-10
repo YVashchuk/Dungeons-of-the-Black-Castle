@@ -54,5 +54,5 @@ tests/smoke/out/
 tests/smoke/node_modules/
 tests/smoke/package.json
 tests/smoke/package-lock.json
-# pre-rendered narration (scripts/tts_pregenerate.js) - local unless published deliberately
-dist/audio/
+# dist/audio (narration pack) is published on purpose since 2026-09-11 (V-04); samples stay local
+dist/audio_samples/
