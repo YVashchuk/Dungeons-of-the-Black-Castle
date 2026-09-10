@@ -186,7 +186,8 @@
     "v2.178 -> v2.179": "September 2026 - group_87 batch E2: PL-37 eat-now choice for batch pickups (food eaten on the spot with a full bag, single collection guard), PL-02 live offer-dialog header with declined item counts (five ui keys x4: 350 -> 355). p1_6d 90 -> 92; smoke C26 automated. GAME_RULES.md label 2.178 -> 2.179 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.179 -> v2.180": "September 2026 - group_88 V-02 (author's review of V-01): narration buttons on the preface and pregame screens, speech stops on screen change; spell cards align-content:start (desktop rows no longer stretch). GAME_RULES.md label 2.179 -> 2.180 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.180 -> v2.181": "September 2026 - group_89 M-01: painted map backgrounds for the three layers (generated for the project, no lettering) with a fog of war masked around discovered nodes; dist/map shipped by build.sh; _dist_ui_check 60 -> 61. GAME_RULES.md label 2.180 -> 2.181 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.181 -> v2.182": "September 2026 - group_88 V-03: OpenAI narration - bring-your-own-key on-demand synthesis with browser caching, optional pre-rendered file pack (scripts/tts_pregenerate.js + audio/manifest.json), device-voice fallback; ui keys 355 -> 363. GAME_RULES.md s9 + label 2.181 -> 2.182 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.181 -> v2.182": "September 2026 - group_88 V-03: OpenAI narration - bring-your-own-key on-demand synthesis with browser caching, optional pre-rendered file pack (scripts/tts_pregenerate.js + audio/manifest.json), device-voice fallback; ui keys 355 -> 363. GAME_RULES.md s9 + label 2.181 -> 2.182 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.182 -> v2.183": "September 2026 - group_87 batch F (canon repairs with 1991-edition evidence): PL-28 sec.886 returns to the reception 1196 (not the one-way mirror staircase 1044), PL-36 sec.534 ends as in 1991 (no truncated skill condition) - prose in four locales, labels, book_text.md, golden, GD. GAME_RULES.md label 2.182 -> 2.183 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -740,9 +741,10 @@
         {
           "id": "PL-28_sec886_return_contradiction",
           "severity": "P1",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.886 «вернетесь на 1044 и выберете другую дверь», but sec.1044 says «обратно пути нет» and offers only 1096 - the printed edge is self-contradictory (the successful run used it).",
-          "note": "Maintainer adjudication: CONFIRMED canon contradiction - AUTHOR DECISION needed (return to 1196?); canon, label and GD to be aligned together."
+          "note": "Maintainer adjudication: CONFIRMED canon contradiction - AUTHOR DECISION needed (return to 1196?); canon, label and GD to be aligned together.",
+          "resolution": "CONFIRMED P1 DONE. Canon evidence from the 1991 edition (assets/book_1991_extracted.txt): the black corridor is 1991 §478 «…или вернётесь на 534 и выберете другую дверь», and 1991 §534 is the reception with five doors = our §1196, while our §1044 (1991 §266, «обратно пути нет») is the mirror staircase. The corrected edition mis-renumbered the return address. sec.886 -> 1196 in GD, in the prose of all four locales, in book_text.md and the 6a golden; the exit label reads «Вернуться в приёмную и выбрать другую дверь (1196)» (four locales)."
         },
         {
           "id": "PL-29_study_wording_vs_gate",
@@ -801,10 +803,10 @@
         {
           "id": "PL-36_sec534_truncated_condition_and_835_label",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "sec.534 «если ваше Мастерство равно 9 или меньше, то. Иначе, — 750» - the branch for skill ≤ 9 lost its target in the corrected edition; sec.835 rescue label talks about petting Pegasus.",
           "note": "Maintainer adjudication: label fixed in batch C («Позвать Пегаса (1138)» in four locales); the truncated condition is an AUTHOR DECISION with the 1991 PDF as the source.",
-          "resolution": "PARTIAL DONE. sec.835 rescue label is «Позвать Пегаса (1138)» in all four locales; the truncated skill ≤ 9 condition of sec.534 stays an AUTHOR DECISION (source: the 1991 PDF)."
+          "resolution": "CONFIRMED P2 DONE. The 1991 edition (§297) has no skill condition at all: the paragraph ends «Погладив Пегаса, выходите из конюшни и направляетесь к зданию в центре двора — 416 (our 750)». The truncated «если ваше Мастерство равно 9 или меньше, то. Иначе, — 750.» of the corrected edition is a damaged later insertion, so the 1991 ending is restored in all four locales, book_text.md and the golden; the exit label reads «Выйти из конюшни к зданию в центре двора (750)». The retired first choice (-> 1138, moved to sec.835 in AS-06) keeps its index."
         },
         {
           "id": "PL-37_batch_pickup_eat_now",
