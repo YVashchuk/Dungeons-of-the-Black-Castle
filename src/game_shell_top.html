@@ -839,7 +839,7 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
     <div class="voice-row" id="voice-row" style="display:none">
       <div class="voice-title" data-i18n="ui_voice_section">🔊 Озвучка</div>
       <label><input type="checkbox" id="voice-auto" onchange="voiceMenuChanged()"> <span data-i18n="ui_voice_auto">Читать новые параграфы автоматически</span></label>
-      <label><span data-i18n="ui_voice_engine">Движок</span> <select id="voice-engine" onchange="voiceMenuChanged();renderVoiceMenu()" aria-label="Движок" data-i18n-aria="ui_voice_engine"><option value="device" data-i18n="ui_voice_engine_device">Голос устройства</option><option value="openai" data-i18n="ui_voice_engine_openai">OpenAI — нейросетевой голос (нужен ключ API)</option></select></label>
+      <label><span data-i18n="ui_voice_engine">Движок</span> <select id="voice-engine" onchange="voiceMenuChanged();renderVoiceMenu()" aria-label="Движок" data-i18n-aria="ui_voice_engine"><option value="auto" data-i18n="ui_voice_engine_auto">Автоматически</option><option value="pack" data-i18n="ui_voice_engine_pack">Готовая озвучка</option><option value="device" data-i18n="ui_voice_engine_device">Голос устройства</option><option value="openai" data-i18n="ui_voice_engine_openai">OpenAI — нейросетевой голос (нужен ключ API)</option></select></label>
       <div id="voice-openai" style="display:none">
         <label><span data-i18n="ui_voice_key">Ключ API OpenAI</span> <input type="password" id="voice-key" autocomplete="off" spellcheck="false" placeholder="sk-…" onchange="voiceMenuChanged()" aria-label="Ключ API OpenAI" data-i18n-aria="ui_voice_key"></label>
         <div class="voice-hint" data-i18n="ui_voice_key_hint">Ключ хранится только в этом браузере</div>

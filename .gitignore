@@ -56,3 +56,5 @@ tests/smoke/package.json
 tests/smoke/package-lock.json
 # dist/audio (narration pack) is published on purpose since 2026-09-11 (V-04); samples stay local
 dist/audio_samples/
+# Midjourney originals (383 MB) live outside git since 2026-09-11 - see _handoff/illustrations_originals
+assets/illustrations/originals/
