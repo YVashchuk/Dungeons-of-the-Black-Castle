@@ -194,7 +194,8 @@
     "v2.186 -> v2.187": "September 2026 - group_91: translation reviews applied (EN 1125, FR 754, UK 1927 replacements) - fidelity to the proofread Russian, grammar, typography (UK apostrophes / ґ, FR NBSP/NNBSP, EN curly quotes), terminology, labels. GAME_RULES.md label 2.186 -> 2.187 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.187 -> v2.188": "September 2026 - group_88 V-04 (narration pack): voices chosen by the author (RU/FR/UK onyx, EN fable, tts-1-hd), scripts/tts_all.cmd for the four-language render, dist/audio published (gitignore lifted). GAME_RULES.md label 2.187 -> 2.188 (R-03 guard). Battery ALL GREEN.",
     "v2.188 -> v2.189": "September 2026 - group_88 V-04 done (four-language narration pack rendered) and V-05: pack compressed to AAC 48 kbps mono (605 MB, ext m4a), engine choice in the menu (auto / bundled / device / OpenAI), Midjourney originals out of git. ui keys 364 -> 366. GAME_RULES.md label 2.188 -> 2.189 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.189 -> v2.190": "September 2026 - group_92 SH-01: sec.63 one free item at the dead merchant's shop (hidden flag merchant_loot, cost 0 until consumed); items 120 -> 121; ui keys 366 -> 368. GAME_RULES.md s3 + label 2.189 -> 2.190 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.189 -> v2.190": "September 2026 - group_92 SH-01: sec.63 one free item at the dead merchant's shop (hidden flag merchant_loot, cost 0 until consumed); items 120 -> 121; ui keys 366 -> 368. GAME_RULES.md s3 + label 2.189 -> 2.190 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.190 -> v2.191": "September 2026 - group_93 Track C (Gemini standards research): scroll-padding under the dock (WCAG 2.4.11), interactive-widget=resizes-content, overscroll-behavior on the reader; the font-weight-range claim refuted by binary inspection (variable fonts). _dist_ui_check 61 -> 63. GAME_RULES.md label 2.190 -> 2.191 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -471,6 +472,67 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_93_2026_09_11_track_c_standards": {
+      "comment": "Track C (standards): Gemini Deep Research 2026-09-11 on BRIEF.md s10 + fonts.css + mobile.css + game_shell_top.html + GAME_RULES.md (no engine code). Report archived as audit_cycles/recheck_2026_09/REPORT_trackC_gemini.md. Eight matrix rows: five PASS (2.1.2 escape gating, 2.5.8 targets 44 px, 2.4.7/2.4.13 focus ring, 4.1.3 live regions, prefers-reduced-motion), three actionable, one FAIL refuted by binary inspection.",
+      "source": "gemini_deep_research_trackC_2026_09_11",
+      "verified": "2026-09-11",
+      "items": [
+        {
+          "id": "TC-01_wcag_2411_focus_obscured_by_fixed_layers",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Focused choices can scroll under fixed layers (HUD / bottom dock) - WCAG 2.2 SC 2.4.11.",
+          "note": "Maintainer adjudication: on phones the HUD sits above .main (not over the scroller), but the visual dock (44 px, absolute in .main) does overlay the bottom of .story-area - partially confirmed.",
+          "resolution": "DONE. .story-area gets scroll-padding-top 12px and scroll-padding-bottom calc(72px + safe-bottom), so scroll-into-view keeps a focused choice above the dock."
+        },
+        {
+          "id": "TC-02_android_keyboard_dvh",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Chromium keeps the virtual keyboard out of dvh calculations; fixed bottom inputs (riddle answer) can hide under the keyboard on Android.",
+          "note": "Maintainer adjudication: ACCEPTED (documented Chromium behaviour; opt-in flag).",
+          "resolution": "DONE. viewport meta gains interactive-widget=resizes-content (dist assert)."
+        },
+        {
+          "id": "TC-03_overscroll_reader",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "overscroll-behavior:contain exists only on the title screen; pull-to-refresh can fire while reading.",
+          "note": "Maintainer adjudication: ACCEPTED (also raised by the Gemini design chat and Astra 7.5).",
+          "resolution": "DONE. .story-area has overscroll-behavior:contain."
+        },
+        {
+          "id": "TC-04_font_weight_ranges_on_static_fonts",
+          "severity": "P1",
+          "status": "REJECTED",
+          "hypothesis": "fonts.css declares font-weight ranges (400 700 / 400 600) on what the report assumes are static binaries - a CSS Fonts 4 descriptor violation.",
+          "note": "Maintainer adjudication: REFUTED by inspecting the woff2 table directories: Cinzel-lat.woff2, CormorantGaramond-lat.woff2 and CormorantGaramond-cyr.woff2 carry fvar + gvar (variable fonts) - ranges are correct; the static files (Cinzel Decorative 700, Cormorant italics 400, Forum 400) already declare single weights (CU-19). The report inferred from CSS without the binaries; Astra's archive audit (which inspected the binaries) agrees."
+        },
+        {
+          "id": "TC-05_ofl_single_file_delivery",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "If the game were shipped as a single HTML with base64 fonts, the OFL text would be lost.",
+          "note": "Maintainer adjudication: current state PASS - dist/OFL.txt is shipped and asserted, the inlined fonts.css header carries the three copyright notices, QUICKSTART tells to distribute the whole dist/ folder. No change.",
+          "resolution": "DONE (no-op)."
+        },
+        {
+          "id": "TC-06_ios_safe_area_repaint_inference",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "WebKit may resolve env(safe-area-inset-*) to 0 until the first scroll (fixed HUD too low on first paint).",
+          "note": "Maintainer adjudication: inference without evidence; to be observed on the author's iPhone (C16/C17) before any polyfill."
+        },
+        {
+          "id": "TC-07_observer_and_ch_unit_inferences",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "MutationObserver on body may cost on low-end phones; 72ch with Cormorant's zero may exceed the 75-character measure.",
+          "note": "Maintainer adjudication: the observer uses an attribute filter on class and fires only on overlay toggles; the reading column was tuned by eye in group_79 (UI-01) and confirmed by the author - no change.",
+          "resolution": "DONE (no-op)."
+        }
+      ]
     },
     "group_92_2026_09_11_shop_free_pick": {
       "comment": "sec.63 free pick (the open sub-point of group_78 G-13 and the group_68 picker family): «можете взять с собой любой товар, который торговец предлагал, но вы не купили. Загляните еще раз в параграф 132 и выберите» - the repeat shop charged full price. Author's decision 2026-09-11: implement.",

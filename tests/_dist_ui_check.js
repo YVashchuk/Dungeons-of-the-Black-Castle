@@ -43,6 +43,8 @@ const snips=[
  ['combat status reset hook (CA-06)', 'window._bcCombatStatusReset=function', 1],
  ['forum cyrillic display (UI-07)', "font-family: 'Forum';", 1],
  ['font chain with Forum (UI-07)', "--font-ui:'Cinzel','Forum','Cormorant Garamond',serif", 1],
+ ['viewport meta resizes with the keyboard (TC-03)', 'interactive-widget=resizes-content', 1],
+ ['reader scroll-padding for the dock (TC-02)', 'scroll-padding-bottom:calc(72px + var(--safe-bottom,0px))', 1],
  ['map backgrounds wired (M-01)', "const BC_MAP_BG = { overworld: 'map/map_overworld.jpg'", 1],
  ['speak button at the paragraph marker (V-01)', 'id="btn-speak"', 1],
  ['narration section in the menu (V-01)', 'id="voice-row"', 1],
