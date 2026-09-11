@@ -197,7 +197,8 @@
     "v2.189 -> v2.190": "September 2026 - group_92 SH-01: sec.63 one free item at the dead merchant's shop (hidden flag merchant_loot, cost 0 until consumed); items 120 -> 121; ui keys 366 -> 368. GAME_RULES.md s3 + label 2.189 -> 2.190 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.190 -> v2.191": "September 2026 - group_93 Track C (Gemini standards research): scroll-padding under the dock (WCAG 2.4.11), interactive-widget=resizes-content, overscroll-behavior on the reader; the font-weight-range claim refuted by binary inspection (variable fonts). _dist_ui_check 61 -> 63. GAME_RULES.md label 2.190 -> 2.191 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.191 -> v2.192": "September 2026 - group_94 HR-01: repository history rewritten (scan / OCR / fb2 / art and map originals / legacy single-file build removed); 1.12 GiB -> 630.9 MiB, 349 commits; canon sources and originals kept locally under _handoff. README / GAME_RULES / HANDOFF paths updated. GAME_RULES.md label 2.191 -> 2.192 (R-03 guard). Battery ALL GREEN.",
-    "v2.192 -> v2.193": "September 2026 - group_95 (housekeeping audit): census in README / GAME_RULES / HANDOFF corrected against the sources, six PR-02 fixes synchronised into book_text.md (+ BEL / provenance), goldens 6a (three labels) and 6b (ninth spell) re-synced with a new label-count assert, gate_probes G-15 no longer claims an unrun PASS, automated smoke rows renamed S-TITLE / S-EAT, dangling post-rewrite paths repaired, QUICKSTART and init_and_push fixed, .gitignore guards the purged paths, 53 obsolete files deleted. GAME_RULES.md label 2.192 -> 2.193 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.192 -> v2.193": "September 2026 - group_95 (housekeeping audit): census in README / GAME_RULES / HANDOFF corrected against the sources, six PR-02 fixes synchronised into book_text.md (+ BEL / provenance), goldens 6a (three labels) and 6b (ninth spell) re-synced with a new label-count assert, gate_probes G-15 no longer claims an unrun PASS, automated smoke rows renamed S-TITLE / S-EAT, dangling post-rewrite paths repaired, QUICKSTART and init_and_push fixed, .gitignore guards the purged paths, 53 obsolete files deleted. GAME_RULES.md label 2.192 -> 2.193 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.193 -> v2.194": "September 2026 - group_96: acceptance of the cleaned build 1a7195d by the maintainer's tools (battery ALL GREEN, smoke 27/27, gate probes 28+1, full playthrough to sec.1220 with both deeds); the fifth external browser-agent attempt failed in the provider's infrastructure. Event log keeps the language of each entry (documented, by design). GAME_RULES.md s9 + label 2.193 -> 2.194 (R-03 guard)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -475,6 +476,37 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_96_2026_09_11_acceptance": {
+      "comment": "Acceptance of the cleaned build (commit 1a7195d). Fifth attempt to have ChatGPT 6 Astra ULTRA play it live ended like the previous three in the provider's browser infrastructure: 'exec-server transport disconnected' during the click from sec.397 to sec.372, after three paragraphs of the reader route. The agent's pre-flight passed (archive hash, registry v2.192 -> v2.193, GD 1221, sec.1 quote; live signatures: riddle widget, mini-map with painted terrain, EN «Coconut (food: +3)», autosave line), the in-page new-game dialog and the spell picker (0..10, bounds disabled, 44x44) passed, and the narration controls were present on the paragraph, preface and pregame screens - but no gate checkpoint, fight or smoke row was reached and zero game anomalies were verified. Report and screenshots: _handoff/smoke_2026_09_11 (kept out of git). Acceptance was therefore completed by the maintainer's own tools on the same build.",
+      "source": "chatgpt_6_astra_ultra_live_attempt_2026_09_11 + maintainer_tools",
+      "verified": "2026-09-11",
+      "items": [
+        {
+          "id": "AC-01_acceptance_of_the_cleaned_build",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "After groups 87-95 (engine, text, translations, narration, map, Track C, housekeeping) the build needed a live acceptance run.",
+          "note": "The external agent could not deliver one (ENV, fourth failure in a row).",
+          "resolution": "DONE by the maintainer's tools on commit 1a7195d: battery ALL GREEN (16 harnesses + 6 dist checks + baseline), automated smoke 27/27 with 0 page errors, gate probes 28 PASS + 1 EXTERNAL (G-15 now honestly delegated to the smoke runner), and a full automated playthrough sec.1 -> sec.1220 with both deeds (orange route: 74 -> 226 -> 976 grants princess_awake and offers only 1120 -> 1120 -> 1096 Harpy -> 1164 -> 823 Barlad -> 81 grants barlad_dead -> 1220), 0 deaths, 0 runtime errors. The player tool now heals before a fight whenever stamina is more than 4 below maximum (two earlier attempts lost the Barlad fight at 16/24 - dice, not a defect)."
+        },
+        {
+          "id": "AC-02_event_log_keeps_the_language_of_its_entries",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Agent observation: after switching the language, journal entries written earlier (e.g. «Собрано (2)») stay in the previous language.",
+          "note": "Maintainer adjudication: BY DESIGN, not a defect. logEvent stores the rendered sentence, so the journal is a diary written at the moment of the event; re-rendering it would require storing keys and parameters for every entry ever written, including saves made before such a change. Documented in GAME_RULES s9 instead.",
+          "resolution": "DONE (documented). GAME_RULES s9 states that the event log keeps the language in which each entry was written; everything else follows the active locale."
+        },
+        {
+          "id": "AC-03_external_browser_agents_unreliable",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Four consecutive live runs by browser agents failed in the provider's infrastructure (native confirm dialog once - fixed as PA-01; CDP tabs.list twice; transport disconnect once).",
+          "note": "Maintainer decision: stop relying on external browser agents for acceptance. The in-house Playwright trio (smoke_run, gate_probes, playthrough) covers the engine deterministically; what an agent adds - a reader's judgement about text and layout - is now obtained from the author's own phone and from archive audits with code execution.",
+          "resolution": "DONE (process). LAUNCH_CARDS card 8 marked as 'retry only when the provider's browser works'; acceptance evidence is produced in-house."
+        }
+      ]
     },
     "group_95_2026_09_11_housekeeping": {
       "comment": "Housekeeping audit of the repository itself (ChatGPT 6 Astra ULTRA, 2026-09-11, archive 4747a05 without dist/audio; report read in chat and deliberately not archived). 37 findings across leftovers, dangling references, registry integrity, census truth, build/tests, docs and hygiene; the battery and an independent rebuild (80/80 files byte-identical) passed in the auditor's sandbox. Every claim below was re-verified by the maintainer against the tree before acting.",
