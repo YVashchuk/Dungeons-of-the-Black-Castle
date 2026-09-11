@@ -195,7 +195,8 @@
     "v2.187 -> v2.188": "September 2026 - group_88 V-04 (narration pack): voices chosen by the author (RU/FR/UK onyx, EN fable, tts-1-hd), scripts/tts_all.cmd for the four-language render, dist/audio published (gitignore lifted). GAME_RULES.md label 2.187 -> 2.188 (R-03 guard). Battery ALL GREEN.",
     "v2.188 -> v2.189": "September 2026 - group_88 V-04 done (four-language narration pack rendered) and V-05: pack compressed to AAC 48 kbps mono (605 MB, ext m4a), engine choice in the menu (auto / bundled / device / OpenAI), Midjourney originals out of git. ui keys 364 -> 366. GAME_RULES.md label 2.188 -> 2.189 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.189 -> v2.190": "September 2026 - group_92 SH-01: sec.63 one free item at the dead merchant's shop (hidden flag merchant_loot, cost 0 until consumed); items 120 -> 121; ui keys 366 -> 368. GAME_RULES.md s3 + label 2.189 -> 2.190 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.190 -> v2.191": "September 2026 - group_93 Track C (Gemini standards research): scroll-padding under the dock (WCAG 2.4.11), interactive-widget=resizes-content, overscroll-behavior on the reader; the font-weight-range claim refuted by binary inspection (variable fonts). _dist_ui_check 61 -> 63. GAME_RULES.md label 2.190 -> 2.191 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.190 -> v2.191": "September 2026 - group_93 Track C (Gemini standards research): scroll-padding under the dock (WCAG 2.4.11), interactive-widget=resizes-content, overscroll-behavior on the reader; the font-weight-range claim refuted by binary inspection (variable fonts). _dist_ui_check 61 -> 63. GAME_RULES.md label 2.190 -> 2.191 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.191 -> v2.192": "September 2026 - group_94 HR-01: repository history rewritten (scan / OCR / fb2 / art and map originals / legacy single-file build removed); 1.12 GiB -> 630.9 MiB, 349 commits; canon sources and originals kept locally under _handoff. README / GAME_RULES / HANDOFF paths updated. GAME_RULES.md label 2.191 -> 2.192 (R-03 guard). Battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -472,6 +473,21 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_94_2026_09_11_history_rewrite": {
+      "comment": "History rewrite, 2026-09-11 (author's decision after the Track D memo). git filter-repo on a fresh mirror removed from the whole history: assets/pdf_original_1991.pdf, assets/book_1991_extracted.txt, assets/fb2_remake.fb2, assets/illustrations/originals, assets/map/originals and the legacy single-file build dist/podzemelye-chyornogo-zamka-remake.html (11.6 MB x ~120 commits = 1.4 GB of unique blobs - the real ballast). Pack 1.12 GiB -> 630.9 MiB; 411 -> 349 commits (62 became empty and were pruned); working tree lost exactly 8 files; dist/audio (4893), assets/illustrations/web (46) and dist/map (3) intact; battery ALL GREEN after the reset. Backup mirror kept locally at Downloads/dbc-backup.git. Commit hashes quoted in this registry, in audit_cycles/* and in the handoff documents before 2026-09-11 belong to the pre-rewrite history.",
+      "source": "author_decision_2026_09_11",
+      "verified": "2026-09-11",
+      "items": [
+        {
+          "id": "HR-01_history_rewrite",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The public history carried the 1991 scan, its OCR, the shadow-library fb2, 383 MB of Midjourney originals and 1.4 GB of superseded single-file builds.",
+          "note": "Plan: _handoff/legal/HISTORY_REWRITE_PLAN.md; script: _handoff/legal/rewrite_history.cmd. No forks existed (GitHub API: 0).",
+          "resolution": "DONE. Force-pushed as ee9a6bf; working copy reset and garbage-collected; canon sources kept locally in _handoff/canon_sources, map PNG originals in _handoff/map_originals, illustration originals in _handoff/illustrations_originals."
+        }
+      ]
     },
     "group_93_2026_09_11_track_c_standards": {
       "comment": "Track C (standards): Gemini Deep Research 2026-09-11 on BRIEF.md s10 + fonts.css + mobile.css + game_shell_top.html + GAME_RULES.md (no engine code). Report archived as audit_cycles/recheck_2026_09/REPORT_trackC_gemini.md. Eight matrix rows: five PASS (2.1.2 escape gating, 2.5.8 targets 44 px, 2.4.7/2.4.13 focus ring, 4.1.3 live regions, prefers-reduced-motion), three actionable, one FAIL refuted by binary inspection.",
