@@ -193,7 +193,8 @@
     "v2.185 -> v2.186": "September 2026 - group_90 PR-02: the 115 doubtful places of the Russian proofread resolved with the recommended readings (14 unambiguous, 101 author-choice applied pending veto, 13 kept), incl. link/number repairs in sec.416 and sec.562. GAME_RULES.md label 2.185 -> 2.186 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.186 -> v2.187": "September 2026 - group_91: translation reviews applied (EN 1125, FR 754, UK 1927 replacements) - fidelity to the proofread Russian, grammar, typography (UK apostrophes / ґ, FR NBSP/NNBSP, EN curly quotes), terminology, labels. GAME_RULES.md label 2.186 -> 2.187 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.187 -> v2.188": "September 2026 - group_88 V-04 (narration pack): voices chosen by the author (RU/FR/UK onyx, EN fable, tts-1-hd), scripts/tts_all.cmd for the four-language render, dist/audio published (gitignore lifted). GAME_RULES.md label 2.187 -> 2.188 (R-03 guard). Battery ALL GREEN.",
-    "v2.188 -> v2.189": "September 2026 - group_88 V-04 done (four-language narration pack rendered) and V-05: pack compressed to AAC 48 kbps mono (605 MB, ext m4a), engine choice in the menu (auto / bundled / device / OpenAI), Midjourney originals out of git. ui keys 364 -> 366. GAME_RULES.md label 2.188 -> 2.189 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.188 -> v2.189": "September 2026 - group_88 V-04 done (four-language narration pack rendered) and V-05: pack compressed to AAC 48 kbps mono (605 MB, ext m4a), engine choice in the menu (auto / bundled / device / OpenAI), Midjourney originals out of git. ui keys 364 -> 366. GAME_RULES.md label 2.188 -> 2.189 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.189 -> v2.190": "September 2026 - group_92 SH-01: sec.63 one free item at the dead merchant's shop (hidden flag merchant_loot, cost 0 until consumed); items 120 -> 121; ui keys 366 -> 368. GAME_RULES.md s3 + label 2.189 -> 2.190 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -470,6 +471,21 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_92_2026_09_11_shop_free_pick": {
+      "comment": "sec.63 free pick (the open sub-point of group_78 G-13 and the group_68 picker family): «можете взять с собой любой товар, который торговец предлагал, но вы не купили. Загляните еще раз в параграф 132 и выберите» - the repeat shop charged full price. Author's decision 2026-09-11: implement.",
+      "source": "author_decision_2026_09_11",
+      "verified": "2026-09-11",
+      "items": [
+        {
+          "id": "SH-01_sec63_free_pick_at_132",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "After killing the merchant (sec.63) the canon grants one item of the shop free of charge; the game only offered the paid repeat shop.",
+          "note": "Maintainer reading: «любой товар» (singular) = one item; the merchant is dead, so the rest of the stock stays purchasable as before (canon-neutral).",
+          "resolution": "DONE. sec.63 grants the hidden story flag merchant_loot (auto_items.flags; items.json 120 -> 121). While the flag is held, every priced purchase at sec.132 renders at cost 0 with the suffix «— бесплатно (из лавки убитого торговца)» (ui_free_pick x4); the first purchase consumes the flag (journal: ui_free_pick_log) and the shop returns to prices. shopBought marks the taken item as usual. Data-only for the paragraph; engine: makePurchaseBtn cost override + flag consumption."
+        }
+      ]
     },
     "group_91_2026_09_10_translation_reviews": {
       "comment": "Translation reviews (EN / FR / UK) by ChatGPT 6 Astra ULTRA, 2026-09-10, one chat per language on the archive 6c7b511 (after the Russian proofread), each with a *_DOUBTFUL_RESOLVED.json follow-up. Applied so that every language matches the corrected Russian text before narration. Files archived under audit_cycles/recheck_2026_09/translations.",

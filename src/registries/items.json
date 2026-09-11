@@ -118,5 +118,6 @@
   "study_cupboard": {"legacyRu":"Кабинет: шкаф осмотрен","kind":"flag"},
   "study_door": {"legacyRu":"Кабинет: дверь осмотрена","kind":"flag"},
   "study_maps": {"legacyRu":"Кабинет: карты осмотрены","kind":"flag"},
-  "study_mirror": {"legacyRu":"Кабинет: зеркало осмотрено","kind":"flag"}
+  "study_mirror": {"legacyRu":"Кабинет: зеркало осмотрено","kind":"flag"},
+  "merchant_loot": {"legacyRu":"Добыча торговца","kind":"flag"}
 }

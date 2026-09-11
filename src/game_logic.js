@@ -1063,7 +1063,7 @@ const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смер�
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
   "Бронзовый кувшин":"bronze_jug","Бронзовый свисток":"bronze_whistle","Красивая брошка":"brooch",
   "Птичка в клетке":"caged_bird","Свеча":"candle","Подсвечник":"candlestick","Карты":"card_deck",
-  "Пароль в замок":"castle_password","Принцесса разбужена":"princess_awake","Барлад Дэрт повержен":"barlad_dead","Встреча с гиеной":"hyena_met","Привет для медведя":"bear_greeting","Дружба с Пегасом":"pegasus_friend","Скала обойдена":"cliff_circled","Серебряный сосуд осмотрен":"vessel_silver_seen","Стеклянный сосуд осмотрен":"vessel_glass_seen","Большой сундук осмотрен":"chest_big_seen","Средний сундук осмотрен":"chest_mid_seen","Шкаф в зале осмотрен":"cupboard_seen","Кабинет: шкаф осмотрен":"study_cupboard","Кабинет: дверь осмотрена":"study_door","Кабинет: карты осмотрены":"study_maps","Кабинет: зеркало осмотрено":"study_mirror","Сыр":"cheese","Медный браслет":"copper_bracelet",
+  "Пароль в замок":"castle_password","Принцесса разбужена":"princess_awake","Барлад Дэрт повержен":"barlad_dead","Добыча торговца":"merchant_loot","Встреча с гиеной":"hyena_met","Привет для медведя":"bear_greeting","Дружба с Пегасом":"pegasus_friend","Скала обойдена":"cliff_circled","Серебряный сосуд осмотрен":"vessel_silver_seen","Стеклянный сосуд осмотрен":"vessel_glass_seen","Большой сундук осмотрен":"chest_big_seen","Средний сундук осмотрен":"chest_mid_seen","Шкаф в зале осмотрен":"cupboard_seen","Кабинет: шкаф осмотрен":"study_cupboard","Кабинет: дверь осмотрена":"study_door","Кабинет: карты осмотрены":"study_maps","Кабинет: зеркало осмотрено":"study_mirror","Сыр":"cheese","Медный браслет":"copper_bracelet",
   "Медный ключик":"copper_key","Корона":"crown","Шкура оленя":"deer_hide","Прекрасный бриллиант":"diamond",
   "Игральная кость":"die","Водолазный костюм":"diving_suit","Коготь дракона":"dragon_claw",
   "Печень дракона":"dragon_liver","Бляха с золотым орлом":"eagle_plaque","Фигурный ключ":"figured_key",
@@ -1096,7 +1096,7 @@ const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
   "bronze_jug":"Бронзовый кувшин","bronze_whistle":"Бронзовый свисток","brooch":"Красивая брошка",
   "caged_bird":"Птичка в клетке","candle":"Свеча","candlestick":"Подсвечник","card_deck":"Карты",
-  "castle_password":"Пароль в замок","princess_awake":"Принцесса разбужена","barlad_dead":"Барлад Дэрт повержен","hyena_met":"Встреча с гиеной","bear_greeting":"Привет для медведя","pegasus_friend":"Дружба с Пегасом","cliff_circled":"Скала обойдена","vessel_silver_seen":"Серебряный сосуд осмотрен","vessel_glass_seen":"Стеклянный сосуд осмотрен","chest_big_seen":"Большой сундук осмотрен","chest_mid_seen":"Средний сундук осмотрен","cupboard_seen":"Шкаф в зале осмотрен","study_cupboard":"Кабинет: шкаф осмотрен","study_door":"Кабинет: дверь осмотрена","study_maps":"Кабинет: карты осмотрены","study_mirror":"Кабинет: зеркало осмотрено","cheese":"Сыр","copper_bracelet":"Медный браслет",
+  "castle_password":"Пароль в замок","princess_awake":"Принцесса разбужена","barlad_dead":"Барлад Дэрт повержен","merchant_loot":"Добыча торговца","hyena_met":"Встреча с гиеной","bear_greeting":"Привет для медведя","pegasus_friend":"Дружба с Пегасом","cliff_circled":"Скала обойдена","vessel_silver_seen":"Серебряный сосуд осмотрен","vessel_glass_seen":"Стеклянный сосуд осмотрен","chest_big_seen":"Большой сундук осмотрен","chest_mid_seen":"Средний сундук осмотрен","cupboard_seen":"Шкаф в зале осмотрен","study_cupboard":"Кабинет: шкаф осмотрен","study_door":"Кабинет: дверь осмотрена","study_maps":"Кабинет: карты осмотрены","study_mirror":"Кабинет: зеркало осмотрено","cheese":"Сыр","copper_bracelet":"Медный браслет",
   "copper_key":"Медный ключик","crown":"Корона","deer_hide":"Шкура оленя","diamond":"Прекрасный бриллиант",
   "die":"Игральная кость","diving_suit":"Водолазный костюм","dragon_claw":"Коготь дракона",
   "dragon_liver":"Печень дракона","eagle_plaque":"Бляха с золотым орлом","figured_key":"Фигурный ключ",
@@ -1129,7 +1129,7 @@ function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food
 const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0};
 // group_83 PT-01: story flags - hidden, weightless, undroppable state markers kept in the inventory so the
 // inventory_condition / inventory_missing gates work unchanged (princess awakened, Barlad Dert slain).
-const STORY_FLAGS=new Set(['princess_awake','barlad_dead','hyena_met','bear_greeting','pegasus_friend','cliff_circled','vessel_silver_seen','vessel_glass_seen','chest_big_seen','chest_mid_seen','cupboard_seen','study_cupboard','study_door','study_maps','study_mirror']);
+const STORY_FLAGS=new Set(['princess_awake','barlad_dead','merchant_loot','hyena_met','bear_greeting','pegasus_friend','cliff_circled','vessel_silver_seen','vessel_glass_seen','chest_big_seen','chest_mid_seen','cupboard_seen','study_cupboard','study_door','study_maps','study_mirror']);
 // group_85 AS-12: knowledge flags - learned facts (passwords, lore, the fish's promise): weightless, mandatory,
 // undroppable, but listed in the bag so the player can see what they know.
 const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo']);
@@ -1568,7 +1568,9 @@ function renderRiddle(sec){
 function makePurchaseBtn(ch, choiceIndex){
   const btn=document.createElement('button');
   btn.className='choice-btn purchase-btn';
-  const cost=ch.gold_cost||0;
+  // group_92 SH-01 (sec.63 -> 132): one item of the dead merchant is free while the merchant_loot flag is held
+  const freePick=!!(ch.gold_cost>0&&S&&S.inventory&&S.inventory.some(it=>canonItem(it)==='merchant_loot'));
+  const cost=freePick?0:(ch.gold_cost||0);
   const grantsItems=Array.isArray(ch.grants_items)?ch.grants_items:(ch.grants_items?[ch.grants_items]:[]);
   const grantsStamina=ch.grants_stamina||0;
   // Auto-append price if the label doesn't already mention the exact amount
@@ -1577,6 +1579,7 @@ function makePurchaseBtn(ch, choiceIndex){
   if(cost>0&&!(new RegExp('\\b'+cost+'\\b').test(displayLabel))){
     displayLabel+=` — ${cost}${t('zol')}`;
   }
+  if(freePick){ displayLabel+=' '+t('ui_free_pick'); } // group_92 SH-01
   btn.textContent=`💰 ${displayLabel}`;
   btn.style.borderColor='var(--gold)';
   btn.style.color='var(--gold)';
@@ -1616,7 +1619,7 @@ function makePurchaseBtn(ch, choiceIndex){
     btn.title=tooltip;
     btn.setAttribute('aria-disabled','true');btn.onclick=(e)=>{e.preventDefault();}; // group_85 AS-18
   } else {
-    btn.onclick=()=>completePurchase(ch,choiceIndex,grantsItems,grantsStamina,cost);
+    btn.onclick=()=>{ if(freePick){ S.inventory=S.inventory.filter(it=>canonItem(it)!=='merchant_loot'); logEvent('gain',t('ui_free_pick_log'),t('paragraf_2')+S.section); } completePurchase(ch,choiceIndex,grantsItems,grantsStamina,cost); };
   }
   return btn;
 }

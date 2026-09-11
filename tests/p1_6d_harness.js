@@ -68,6 +68,11 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9ac. group_92 SH-01: sec.63 free pick
+(function(){
+  ck('SH-01 sec.63 grants merchant_loot; shop cost override present', GD['63'].auto_items.flags.includes('merchant_loot')&&gl.includes("const cost=freePick?0:(ch.gold_cost||0);")&&gl.includes("S.inventory=S.inventory.filter(it=>canonItem(it)!=='merchant_loot');"));
+})();
+
 // 9ab. group_87 batch E2 (PL-02 / PL-37): plural forms, live offer header, batch eat-now
 (function(){
   try{ eval(gfn('pluralKey')); globalThis.getLang=function(){return 'ru';}; const ru=[1,2,5,11,21,22,25,101].map(pluralKey).join(','); globalThis.getLang=function(){return 'en';}; const en=[1,2].map(pluralKey).join(','); globalThis.getLang=function(){return 'fr';}; const fr=[0,1,2].map(pluralKey).join(','); ck('PL-02 pluralKey RU/EN/FR forms', ru==='predmet_1,predmet_2,predmet_5,predmet_5,predmet_1,predmet_2,predmet_5,predmet_1'&&en==='predmet_1,predmet_2'&&fr==='predmet_1,predmet_1,predmet_2'); }catch(e){ ck('PL-02 pluralKey eval: '+e.message,false); }
