@@ -4,9 +4,9 @@
 // ╠═══════════════════════════════════════════════════════════════════════╣
 // ║  36 AI illustrations in unified dark Slavic fantasy style.            ║
 // ║                                                                       ║
-// ║  Originals (PNG, full resolution): assets/illustrations/originals/    ║
+// ║  Originals (PNG): kept outside git by the maintainer (_handoff/illustrations_originals)    ║
 // ║  Web versions (JPEG 900px Q82):    assets/illustrations/web/          ║
-// ║  This file embeds the WEB versions as base64 for offline play.        ║
+// ║  This file maps paragraphs to external art files under assets/art/mj (copied to dist/art by build.sh).        ║
 // ║                                                                       ║
 // ║  HERO REFERENCE URL (for Midjourney --cref in re-generations):        ║
 // ║  https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png     ║

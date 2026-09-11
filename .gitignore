@@ -58,3 +58,10 @@ tests/smoke/package-lock.json
 dist/audio_samples/
 # Midjourney originals (383 MB) live outside git since 2026-09-11 - see _handoff/illustrations_originals
 assets/illustrations/originals/
+# purged from history 2026-09-11 (group_94) - never re-add
+assets/pdf_original_1991.pdf
+assets/fb2_remake.fb2
+assets/book_1991_extracted.txt
+assets/map/originals/
+dist/podzemelye-chyornogo-zamka-remake.html
+*.bak

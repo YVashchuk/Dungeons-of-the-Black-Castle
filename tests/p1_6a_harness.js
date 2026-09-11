@@ -26,7 +26,8 @@ for(const k of Object.keys(orig)){
   if(pText(n)!==orig[k].t) textMis++;
   const ls=locSec(n);
   if(!ls||ls.text!==orig[k].t) locMis++;
-  for(let i=0;i<orig[k].c.length;i++){
+  if(ls.choices&&ls.choices.length!==orig[k].c.length) locMis++; // group_95 B01: label count must match the golden
+    for(let i=0;i<orig[k].c.length;i++){
     nLab++;
     if(label(n,i)!==orig[k].c[i]) labMis++;
     if(!ls.choices||ls.choices[i].label!==orig[k].c[i]) locMis++;

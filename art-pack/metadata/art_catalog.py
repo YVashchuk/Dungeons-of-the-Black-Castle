@@ -50,7 +50,7 @@ CATALOG = {
         'remake_paragraphs': [1072],  # §1220 will move to art52_princess_rescue once that art is generated.
         # ┌─ TRANSITIONAL STATE (2026-04) ─────────────────────────────┐
         # │ Current runtime (src/mj_art.js + dist/*.html) still has   │
-        # │ [1072, 1220] for art09 because art52 isn't generated yet. │
+        # │ [1072] for art09 (art52 was generated later; the April transition is complete). │
         # │ When you generate art52: ALSO remove 1220 from the        │
         # │ MJ_META.art09 array in src/mj_art.js, then rebuild dist.  │
         # └────────────────────────────────────────────────────────────┘

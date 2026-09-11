@@ -18,7 +18,7 @@ const PREFACE_TEXT=prefaceText();
 const PREGAME_TEXT=pregameText();
 
 // slim consts preserve structural fields exactly
-ck('SPELLS slimmed to [{id,icon}] x8 (matches orig structural)', JSON.stringify(SPELLS)===JSON.stringify(orig.spells_new));
+ck('SPELLS slimmed to [{id,icon}] x9 (matches orig structural)', JSON.stringify(SPELLS)===JSON.stringify(orig.spells_new));
 ck('COMBAT_ALLIES slimmed to {skill,stamina,scope,icon} (matches orig structural)', JSON.stringify(COMBAT_ALLIES)===JSON.stringify(orig.allies_new));
 ck('SPELLS has no name/full now', SPELLS.every(s=>!('name' in s)&&!('full' in s)));
 ck('COMBAT_ALLIES has no name/verb now', Object.values(COMBAT_ALLIES).every(a=>!('name' in a)&&!('verb' in a)));
@@ -31,8 +31,8 @@ ck('ally skill/stamina/scope/icon preserved', allyStructMis===0);
 
 // resolvers reproduce text exactly
 let snMis=0,sfMis=0; orig.spells.forEach(s=>{ if(spellText(s.id).name!==s.name) snMis++; if(spellText(s.id).full!==s.full) sfMis++; });
-ck(`spellText reproduces all 8 spell names (mismatches ${snMis})`, snMis===0);
-ck(`spellText reproduces all 8 spell full-descriptions (mismatches ${sfMis})`, sfMis===0);
+ck(`spellText reproduces all 9 spell names (mismatches ${snMis})`, snMis===0);
+ck(`spellText reproduces all 9 spell full-descriptions (mismatches ${sfMis})`, sfMis===0);
 let anMis=0,avMis=0; for(const k in orig.allies){ if(allyText(k).name!==orig.allies[k].name) anMis++; if(allyText(k).verb!==orig.allies[k].verb) avMis++; }
 ck(`allyText reproduces ally names (mismatches ${anMis})`, anMis===0);
 ck(`allyText reproduces ally verbs (mismatches ${avMis})`, avMis===0);

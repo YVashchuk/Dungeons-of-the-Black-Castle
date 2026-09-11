@@ -13,9 +13,9 @@ This project is a browser adaptation of **"Подземелья Чёрного �
 | Used text | Remake / corrected edition (2018, by Braslavsky + Morozov) |
 | Paragraphs | **1221** (NOT 583 as in the raw 1991 edition) |
 | Victory paragraph | **§1220** (NOT §617) |
-| Source file | `assets/fb2_remake.fb2` |
-| Original source material (REFERENCE ONLY) | `assets/pdf_original_1991.pdf` (scanned 1991 print edition, with original illustrations) |
-| 1991 adjudication text | `assets/book_1991_extracted.txt` — 617 sequential paragraphs decoded from the scanned PDF (font-shift +0x228). Settles "what did the original intend?" questions locally; whitespace-mangled, so match space-insensitively. |
+| Source file | `_handoff/canon_sources/fb2_remake.fb2 (вне git с 11.09.2026)` |
+| Original source material (REFERENCE ONLY) | `_handoff/canon_sources/pdf_original_1991.pdf (вне git)` (scanned 1991 print edition, with original illustrations) |
+| 1991 adjudication text | `_handoff/canon_sources/book_1991_extracted.txt (вне git)` — 617 sequential paragraphs decoded from the scanned PDF (font-shift +0x228). Settles "what did the original intend?" questions locally; whitespace-mangled, so match space-insensitively. |
 | Markdown export for AI tools | `assets/book_text.md` (full text + corrections log, derived from `fb2_remake.fb2`) |
 
 The remake preserves the original story and mechanics but:
@@ -30,11 +30,11 @@ numbering (1–1221) unless explicitly stated otherwise.**
 
 The original 1991 edition is kept only as a scanned reference:
 
-- `assets/pdf_original_1991.pdf` — **scanned 2-pages-per-sheet** PDF of the 1991 print edition, retained for cross-checking original imagery and layout. Do NOT use as a text source — OCR quality is poor and the text has been superseded by the 2018 remake.
+- `_handoff/canon_sources/pdf_original_1991.pdf (вне git)` — **scanned 2-pages-per-sheet** PDF of the 1991 print edition, retained for cross-checking original imagery and layout. Do NOT use as a text source — OCR quality is poor and the text has been superseded by the 2018 remake.
 
 > The raw 1991 text files (`fb2_original_1991.fb2`, `epub_original_1991.epub`) were removed from the repo — the scanned PDF above covers the historical-reference need, and all development uses the remake. They remain in git history if ever needed.
 
-**All development uses `assets/fb2_remake.fb2`** as the canonical source. Any AI-assisted analysis (Gemini, ChatGPT, Claude) should be fed `assets/book_text.md`, the MD export of that text whose header carries the corrections log; the authoritative correction registry is `assets/text_corrections.json`.
+**All development uses `_handoff/canon_sources/fb2_remake.fb2 (вне git с 11.09.2026)`** as the canonical source. Any AI-assisted analysis (Gemini, ChatGPT, Claude) should be fed `assets/book_text.md`, the MD export of that text whose header carries the corrections log; the authoritative correction registry is `assets/text_corrections.json`.
 
 ## File structure
 
@@ -104,7 +104,7 @@ See `docs/PWA_IMPLEMENTATION.md` for the step-by-step activation guide.
 ## Illustrations — important rules
 
 1. **Originals are never modified.** Full-resolution PNGs from Midjourney live
-   in `assets/illustrations/originals/` and are treated as the source of truth.
+   in `_handoff/illustrations_originals/ (вне git)` and are treated as the source of truth.
 2. **Web versions are derivative.** If runtime needs to shrink an image, it
    goes in `assets/illustrations/web/` as a separate copy. Never downscale
    an original in-place.

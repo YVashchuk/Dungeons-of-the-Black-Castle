@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-07-14",
+  "last_updated": "2026-09-11",
   "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -196,7 +196,8 @@
     "v2.188 -> v2.189": "September 2026 - group_88 V-04 done (four-language narration pack rendered) and V-05: pack compressed to AAC 48 kbps mono (605 MB, ext m4a), engine choice in the menu (auto / bundled / device / OpenAI), Midjourney originals out of git. ui keys 364 -> 366. GAME_RULES.md label 2.188 -> 2.189 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.189 -> v2.190": "September 2026 - group_92 SH-01: sec.63 one free item at the dead merchant's shop (hidden flag merchant_loot, cost 0 until consumed); items 120 -> 121; ui keys 366 -> 368. GAME_RULES.md s3 + label 2.189 -> 2.190 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.190 -> v2.191": "September 2026 - group_93 Track C (Gemini standards research): scroll-padding under the dock (WCAG 2.4.11), interactive-widget=resizes-content, overscroll-behavior on the reader; the font-weight-range claim refuted by binary inspection (variable fonts). _dist_ui_check 61 -> 63. GAME_RULES.md label 2.190 -> 2.191 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.191 -> v2.192": "September 2026 - group_94 HR-01: repository history rewritten (scan / OCR / fb2 / art and map originals / legacy single-file build removed); 1.12 GiB -> 630.9 MiB, 349 commits; canon sources and originals kept locally under _handoff. README / GAME_RULES / HANDOFF paths updated. GAME_RULES.md label 2.191 -> 2.192 (R-03 guard). Battery ALL GREEN."
+    "v2.191 -> v2.192": "September 2026 - group_94 HR-01: repository history rewritten (scan / OCR / fb2 / art and map originals / legacy single-file build removed); 1.12 GiB -> 630.9 MiB, 349 commits; canon sources and originals kept locally under _handoff. README / GAME_RULES / HANDOFF paths updated. GAME_RULES.md label 2.191 -> 2.192 (R-03 guard). Battery ALL GREEN.",
+    "v2.192 -> v2.193": "September 2026 - group_95 (housekeeping audit): census in README / GAME_RULES / HANDOFF corrected against the sources, six PR-02 fixes synchronised into book_text.md (+ BEL / provenance), goldens 6a (three labels) and 6b (ninth spell) re-synced with a new label-count assert, gate_probes G-15 no longer claims an unrun PASS, automated smoke rows renamed S-TITLE / S-EAT, dangling post-rewrite paths repaired, QUICKSTART and init_and_push fixed, .gitignore guards the purged paths, 53 obsolete files deleted. GAME_RULES.md label 2.192 -> 2.193 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -354,6 +355,7 @@
         {
           "id": "deviation_classes_documented",
           "status": "DONE",
+          "resolution": "DONE (documentation item). The deviation classes are described in the detail field below and mirrored in GAME_RULES.md; no code or data change was required.",
           "detail": "Full 1221-paragraph diff vs FB2: 1179 exact, 42 deltas. Besides par849 (already registered) and the three fixes above, two INTENTIONAL unregistered classes are hereby documented as project conventions: (1) ORTHO-PASS over FB2 OCR/grammar defects - 25 paragraphs: 26,59,62,161,309,351,395,431,567,632,730,764,794,856,945,980,989,1041,1090,1115,1117,1167,1168,1179,1210 (locale is correct, FB2 is defective: 'iz pod'->'iz-pod', 'ne smotrya'->'nesmotrya', 'tolu'->'stolu', 'ga'->'na', 'drat'->'dratsya', 'tyanutsya' fix). (2) IMPERATIVE REPHRASING of trailing questions into button style - 14 paragraphs: 97,132,171,229,243,248,273,296,302,321,350,884,1071,1202 (option content and targets preserved). Future audits must NOT resurrect these as bugs. Cosmetic outliers inside class 2 (labels 350[0] and 273[0] still carry the FB2 question verbatim) - optional polish, not defects."
         },
         {
@@ -473,6 +475,101 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_95_2026_09_11_housekeeping": {
+      "comment": "Housekeeping audit of the repository itself (ChatGPT 6 Astra ULTRA, 2026-09-11, archive 4747a05 without dist/audio; report read in chat and deliberately not archived). 37 findings across leftovers, dangling references, registry integrity, census truth, build/tests, docs and hygiene; the battery and an independent rebuild (80/80 files byte-identical) passed in the auditor's sandbox. Every claim below was re-verified by the maintainer against the tree before acting.",
+      "source": "chatgpt_6_astra_ultra_housekeeping_2026_09_11",
+      "verified": "2026-09-11",
+      "items": [
+        {
+          "id": "HK-01_stale_census_in_docs",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "README / GAME_RULES / HANDOFF quote counts that the sources contradict (auto_items 182/192 vs 195, edges 2218 vs 2221, items 120 vs 121, flags 21 vs 22, inventory_condition 137 vs 140, consume_on_use 32 vs 34, enemies 120/24 vs 121/25, ui keys 366 vs 368).",
+          "note": "Confirmed by recomputation from GD / items.json / locales.",
+          "resolution": "DONE. All three documents updated to the recomputed census."
+        },
+        {
+          "id": "HK-02_book_text_mirror_lag",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Six PR-02 replacements (§§371/440/483/561/963/997) landed in locale.ru.js and the golden but not in assets/book_text.md; the header also carried a U+0007 control character and pointed at the long-gone src/remake_data.js.",
+          "note": "Confirmed; the mirror is an export, the locale is the truth.",
+          "resolution": "DONE. Six fragments synchronised, BEL removed, provenance and version label corrected (the header now says the mirror may lag on labels)."
+        },
+        {
+          "id": "HK-03_goldens_incomplete",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "_6a_orig.json holds 2218 labels vs 2221 current - the three labels appended in group_85/87 (§740, §797, §835) escaped comparison; _6b_orig.json has 8 spell texts while the locale has 9 (INDIFFERENCE uncovered).",
+          "note": "Confirmed by executing the harness data; the harnesses passed only because they iterate the golden.",
+          "resolution": "DONE. Goldens re-synced from the current locale and the 6a harness now fails when a paragraph's label count differs from the golden."
+        },
+        {
+          "id": "HK-04_dishonest_test_reporting",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "gate_probes.js pushed an unconditional PASS for G-15 (reload behaviour it never probes) and quoted a stale smoke score; the automated smoke reused the manual ids C24 / C26 for different checks.",
+          "note": "Confirmed by reading the scripts.",
+          "resolution": "DONE. G-15 is reported as EXTERNAL with a pointer to the smoke runner (28 real probes + 1 external); the automated rows are renamed S-TITLE and S-EAT and documented in MANUAL_SMOKE_CHECKS; the mangled journal row (PowerShell mojibake) was rewritten."
+        },
+        {
+          "id": "HK-05_dangling_paths_after_rewrite",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Active documents and src/mj_art.js still instruct the reader to open assets/fb2_remake.fb2, the 1991 scan, its OCR and assets/illustrations/originals; mj_art.js also claimed to embed base64 art.",
+          "note": "Confirmed (134 textual occurrences across 57 files; most are legitimate history).",
+          "resolution": "DONE. Active instructions in README, GAME_RULES, PROJECT_NOTES, TRANSLATION_GUIDE and the mj_art header now point at _handoff/canon_sources and describe the external-art pipeline; historical audit documents keep their original wording."
+        },
+        {
+          "id": "HK-06_obsolete_files_deleted",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "scripts/inject_b64.py, scripts/run_batch4_js.py, scripts/fix_ref_urls.py, scripts/write_icons.py, assets/illustrations/web (46 duplicates of assets/art), a byte-identical duplicate of AUDIT_2026-06-01_diagnostic.md, folder_icon.ico and assets/favicon.ico are unreferenced by build, runtime and tests.",
+          "note": "Confirmed by grep + build/battery after deletion.",
+          "resolution": "DONE. 53 files removed (~5.2 MB); assets/art, dist/art, dist/map, the goldens and all reusable tooling kept."
+        },
+        {
+          "id": "HK-07_quickstart_and_init_script",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "QUICKSTART still opens with the private-phase upload instructions and tells the reader to share the single HTML (AS-20 claimed otherwise); scripts/init_and_push.sh aborts because it requires a data/ folder that never existed.",
+          "note": "Confirmed.",
+          "resolution": "DONE. QUICKSTART opens with the playable short URL and the whole-dist instruction; the initializer checks src / dist / assets / tests."
+        },
+        {
+          "id": "HK-08_gitignore_and_links",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The purged paths (except illustrations/originals) were not in .gitignore, so they could be re-added by accident; the flattened astra_live reports keep addendum/ design/ map/ prefixes in 12 links.",
+          "note": "Confirmed.",
+          "resolution": "DONE. .gitignore guards all purged paths and *.bak; the astra_live links are flattened."
+        },
+        {
+          "id": "HK-09_tts_resume_ignores_m4a",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "tts_pregenerate.js decides what to render by looking for <key>.mp3, so after tts_compress.js moved the masters away and left .m4a, a rerun would schedule all 4892 texts again (and spend money); tts_all.cmd tells the user to commit dist/audio without mentioning the compression step.",
+          "note": "Maintainer adjudication: CONFIRMED and worth fixing before the next language, but the pack is rendered and the scripts are not run unattended - scheduled, not urgent.",
+          "resolution": null
+        },
+        {
+          "id": "HK-10_personal_paths_in_history_docs",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Twelve historical audit documents quote the maintainer's Windows profile path (C:\\Users\\<id>\\...).",
+          "note": "Maintainer adjudication: cosmetic in a repository that is about to go private; sanitising quoted evidence would falsify historical records. Left as is deliberately.",
+          "resolution": null
+        },
+        {
+          "id": "HK-11_legacy_art_entries",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "Seven legacy art files and MJ art10 / art25 / art29 have no paragraph binding; retiring them needs coordinated manifest, catalog, build and test changes.",
+          "note": "Maintainer adjudication: art29 is documented as intentionally unbound (cover / hostess art); the rest belong to the group_71 art backlog, not to housekeeping.",
+          "resolution": null
+        }
+      ]
     },
     "group_94_2026_09_11_history_rewrite": {
       "comment": "History rewrite, 2026-09-11 (author's decision after the Track D memo). git filter-repo on a fresh mirror removed from the whole history: assets/pdf_original_1991.pdf, assets/book_1991_extracted.txt, assets/fb2_remake.fb2, assets/illustrations/originals, assets/map/originals and the legacy single-file build dist/podzemelye-chyornogo-zamka-remake.html (11.6 MB x ~120 commits = 1.4 GB of unique blobs - the real ballast). Pack 1.12 GiB -> 630.9 MiB; 411 -> 349 commits (62 became empty and were pruned); working tree lost exactly 8 files; dist/audio (4893), assets/illustrations/web (46) and dist/map (3) intact; battery ALL GREEN after the reset. Backup mirror kept locally at Downloads/dbc-backup.git. Commit hashes quoted in this registry, in audit_cycles/* and in the handoff documents before 2026-09-11 belong to the pre-rewrite history.",
@@ -951,9 +1048,10 @@
         {
           "id": "PL-33_brief_g05_ring_reusable",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "The playthrough brief expected the ruby signet to be consumed at the wake-up; group_6 defines it as a reusable token and the game keeps it.",
-          "note": "Maintainer adjudication: brief error, not a game bug - brief G-05 corrected; no-op for the game."
+          "note": "Maintainer adjudication: brief error, not a game bug - brief G-05 corrected; no-op for the game.",
+          "resolution": "DONE (no-op for the game). BRIEF_playthrough_astra_agent.md G-05 now states that the ruby signet is a reusable token and stays; the engine was already correct."
         },
         {
           "id": "PL-34_text_435",

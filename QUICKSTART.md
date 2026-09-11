@@ -1,3 +1,8 @@
+> **Играть сразу:** https://yvashchuk.github.io/DotBC/ — короткая ссылка на публичную сборку.
+> **Скачать для офлайна:** нужна вся папка `dist/` (HTML + `art/` + `map/` + `audio/` + `sounds/` + `OFL.txt`) — один HTML без соседних файлов останется без иллюстраций, карты и озвучки.
+> **Разработчику:** `git clone` → `bash build.sh` → `node tests/run_all.js`.
+
+---
 # 🚀 QUICKSTART — Загрузка проекта на GitHub
 
 ## Что вам нужно
@@ -99,7 +104,7 @@ git push origin main
 Приватный репо → GitHub Pages не работает для приватных.
 
 **Варианты:**
-1. Скачать `dist/dungeons-of-the-black-castle.html` и отправить файлом
+1. Скачать всю папку `dist/` (HTML + art/ + map/ + audio/ + sounds/) и отправить архивом
 2. Сделать репо публичным — тогда работает raw URL:
    ```
    https://raw.githubusercontent.com/YVashchuk/Dungeons-of-the-Black-Castle/main/dist/dungeons-of-the-black-castle.html

@@ -45,7 +45,7 @@ fi
 
 # Проверка структуры
 echo "📁 Проверка структуры папок..."
-for dir in src dist data docs assets; do
+for dir in src dist assets tests; do
   if [ ! -d "$dir" ]; then
     echo "❌ Папка $dir отсутствует!"
     exit 1
