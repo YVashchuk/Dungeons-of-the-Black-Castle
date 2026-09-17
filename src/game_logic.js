@@ -1057,7 +1057,7 @@ function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bag
 // RU->slug migration (phase1.5b-5f). itemName(): slug -> Russian display name (passthrough for
 // unknown / hand-typed strings). invDisplay(): an inventory entry -> display string (resolves the
 // slug, preserves any food suffix). RU_TO_SLUG/SLUG_TO_RU are generated from items.json.
-const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield","Арбуз":"melon","Кокос":"coconut","Булочка":"bun","Немного еды":"provisions",
+const RU_TO_SLUG={"Золотая змейка":"golden_snake","Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield","Арбуз":"melon","Кокос":"coconut","Булочка":"bun","Немного еды":"provisions",
   "Яблоко":"apple","Здесь 5 стрел":"arrows_5","Банан":"banana","Медвежий амулет":"bear_amulet",
   "Шкурка бобра":"beaver_pelt","Клетка для птиц":"birdcage","Здесь 5 чёрных стрел":"black_arrows_5",
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
@@ -1090,7 +1090,7 @@ const RU_TO_SLUG={"Личинка паука":"spider_larva","Меч «Смер�
   "Белая стрела":"white_arrow","Целый меч":"whole_sword","Бутылка вина":"wine_bottle",
   "Красивый кусочек дерева":"wood_piece",
 };
-const SLUG_TO_RU={spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",melon:"Арбуз",coconut:"Кокос",bun:"Булочка",provisions:"Немного еды",
+const SLUG_TO_RU={golden_snake:"Золотая змейка",spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",melon:"Арбуз",coconut:"Кокос",bun:"Булочка",provisions:"Немного еды",
   "apple":"Яблоко","arrows_5":"Здесь 5 стрел","banana":"Банан","bear_amulet":"Медвежий амулет",
   "beaver_pelt":"Шкурка бобра","birdcage":"Клетка для птиц","black_arrows_5":"Здесь 5 чёрных стрел",
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
@@ -2672,6 +2672,13 @@ function startCombat(enemies,sec){
     if(larvaCount>0){larvaBtn.style.display='inline-block';larvaBtn.textContent=t('razlomit_lichinku')+larvaCount+']';}
     else larvaBtn.style.display='none';
   }
+  // group_97 PL-01 (sec.127): the Golden Snake summons every snake of the forest once per journey -
+  // it kills any enemy except Barlad Dert, whose magic prevents any attempt on his life (sec.823).
+  const snakeBtn=document.getElementById('btn-snake');
+  if(snakeBtn){
+    const hasSnake=!!(S&&S.inventory&&S.inventory.some(it=>canonItem(it)==='golden_snake'));
+    snakeBtn.style.display=(hasSnake&&!isBarladFight())?'inline-block':'none';
+  }
   // §950: HEALING usable in combat where canon permits (self-cast, invisible).
   // Shown whenever the allowlist includes HEALING and a charge remains; the
   // handler caps at staminaMax. The HUD heal button stays hidden (overlay).
@@ -2910,6 +2917,7 @@ function endCombat(won){
   if(weakBtn)weakBtn.style.display='none';
   const larvaBtnEnd=document.getElementById('btn-larva');
   if(larvaBtnEnd)larvaBtnEnd.style.display='none';
+  const snakeBtnEnd=document.getElementById('btn-snake'); if(snakeBtnEnd)snakeBtnEnd.style.display='none'; // group_97 PL-01
   if(won){
     playSound('victory');
     const _csec=GD[S.section];
@@ -3003,7 +3011,7 @@ function endCombatRouted(target,msgKey){
   combatDone[S.section]=true;
   clearCombatExtraButtons();
   const log=document.getElementById('combat-log');
-  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva','btn-indifference-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
+  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva','btn-snake','btn-indifference-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
   log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t(msgKey)}</div>`;
   logEvent('combat',t(msgKey),t('raundov')+(combatState?combatState.round:0));
   const b=document.getElementById('btn-combat-round');
@@ -3031,6 +3039,31 @@ function useLarvaInCombat(){
   const btn=document.getElementById('btn-larva');
   const left=(S.inventory||[]).filter(it=>canonItem(it)==='spider_larva').length;
   if(btn){ if(left>0){btn.textContent=t('razlomit_lichinku')+left+']';} else {btn.style.display='none';} }
+  activateStagedJoins(cs);
+  if(combatResolved(cs)){ endCombat(true); }
+  else { updateCombatConditionButtons(cs); }
+}
+
+// group_97 PL-01: the Golden Snake (sec.127) - one use per journey, any enemy except Barlad Dert.
+function isBarladFight(){ try{ return String(S&&S.section)==='823'; }catch(e){ return false; } }
+function useSnakeInCombat(){
+  if(!combatState||!S)return;
+  if(isBarladFight()){ bcNotice(t('zmeyka_ne_deystvuet')); return; }
+  const idx=(S.inventory||[]).findIndex(it=>canonItem(it)==='golden_snake');
+  if(idx<0)return;
+  const cs=combatState;
+  const alive=getAliveCombatEnemies(cs);
+  if(alive.length===0)return;
+  const target=getCombatTarget(cs)||alive[0];
+  S.inventory.splice(idx,1);
+  target.hp=0;
+  dragonKillTick();
+  playSound('combat_death_enemy');
+  const log=document.getElementById('combat-log');
+  if(log) log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('vy_zovete_zmey')}${target.name}${t('padaet_zamertvo')}</div>`;
+  logEvent('combat',t('vy_zovete_zmey')+target.name,t('padaet_zamertvo'));
+  updateHUD();updateCombatEnemyDisplay(cs);saveGame();
+  const btn=document.getElementById('btn-snake'); if(btn) btn.style.display='none';
   activateStagedJoins(cs);
   if(combatResolved(cs)){ endCombat(true); }
   else { updateCombatConditionButtons(cs); }

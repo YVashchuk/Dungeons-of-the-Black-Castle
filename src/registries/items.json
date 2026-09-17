@@ -119,5 +119,6 @@
   "study_door": {"legacyRu":"Кабинет: дверь осмотрена","kind":"flag"},
   "study_maps": {"legacyRu":"Кабинет: карты осмотрены","kind":"flag"},
   "study_mirror": {"legacyRu":"Кабинет: зеркало осмотрено","kind":"flag"},
-  "merchant_loot": {"legacyRu":"Добыча торговца","kind":"flag"}
+  "merchant_loot": {"legacyRu":"Добыча торговца","kind":"flag"},
+  "golden_snake": {"legacyRu":"Золотая змейка","kind":"item"}
 }

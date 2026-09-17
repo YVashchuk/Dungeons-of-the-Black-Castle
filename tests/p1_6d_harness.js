@@ -68,6 +68,12 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9ad. group_97 PL-01/PL-03: the Golden Snake of sec.127 and the riddle fail labels in every locale
+(function(){
+  ck('PL-01 sec.127 grants golden_snake; combat handler refuses Barlad', GD['127'].auto_items.items.includes('golden_snake')&&gl.includes("function useSnakeInCombat()")&&gl.includes("if(isBarladFight()){ bcNotice(t('zmeyka_ne_deystvuet')); return; }"));
+  ck('PL-03 every riddle paragraph with a RU fail label has one in EN/FR/UK', ['en','fr','uk'].every(L=>{ const src=fs.readFileSync(path.join(REPO,'src','locale.'+L+'.js'),'utf8'); const J=JSON.parse(src.match(/const\s+LOCALE_[A-Z]{2}\s*=\s*(\{[\s\S]*\})\s*;?\s*$/)[1]); return ['67','95','435','439','992','1113'].every(k=>typeof J.p[k].rfl==='string'&&J.p[k].rfl.length>3); }));
+})();
+
 // 9ac. group_92 SH-01: sec.63 free pick
 (function(){
   ck('SH-01 sec.63 grants merchant_loot; shop cost override present', GD['63'].auto_items.flags.includes('merchant_loot')&&gl.includes("const cost=freePick?0:(ch.gold_cost||0);")&&gl.includes("S.inventory=S.inventory.filter(it=>canonItem(it)!=='merchant_loot');"));
@@ -121,7 +127,7 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
 (function(){
   try{
     const names={}; for(const L of ['ru','en','fr','uk']){ const src=fs.readFileSync(path.join(REPO,'src','locale.'+L+'.js'),'utf8'); const m=src.match(/const\s+LOCALE_[A-Z]{2}\s*=\s*(\{[\s\S]*\})\s*;?\s*$/); names[L]=JSON.parse(m[1]).items||{}; }
-    ck('SA-02 items maps: ru 120, en/fr/uk 107 with identical key sets', Object.keys(names.ru).length===120&&[names.en,names.fr,names.uk].every(m=>Object.keys(m).length===107)&&JSON.stringify(Object.keys(names.en).sort())===JSON.stringify(Object.keys(names.fr).sort()));
+    ck('SA-02 items maps: RU covers every registry item, EN/FR/UK share one key set that RU contains', (function(){ const reg=JSON.parse(fs.readFileSync(path.join(REPO,'src','registries','items.json'),'utf8')); const items=reg.items||reg; const ruKeys=Object.keys(names.ru); const en=Object.keys(names.en).sort(), fr=Object.keys(names.fr).sort(), uk=Object.keys(names.uk).sort(); return ruKeys.length===Object.keys(items).length && ruKeys.every(k=>k in items) && JSON.stringify(en)===JSON.stringify(fr) && JSON.stringify(fr)===JSON.stringify(uk) && en.every(k=>k in names.ru); })());
     globalThis.SLUG_TO_RU=Object.assign(globalThis.SLUG_TO_RU||{},{apple:'\u042f\u0431\u043b\u043e\u043a\u043e',melon:'\u0410\u0440\u0431\u0443\u0437'}); // melon: the CB-05 guard below relies on it
     eval(gfn('itemName'));
     globalThis.ACTIVE_LOCALE={items:{apple:'Apple'}}; const en=itemName('apple'); globalThis.ACTIVE_LOCALE=null; const ru=itemName('apple');
