@@ -68,6 +68,13 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9ae. group_98: map top bar follows the shown layer; full screen keeps the layer selector
+(function(){
+  const mmSrc=fs.readFileSync(path.join(REPO,'src','map_module.js'),'utf8');
+  ck('PL-02 top bar updated only for the full map', mmSrc.includes("if(mode!=='mini') updateMapTopbar(layer, nodes, discovered);"));
+  ck('PL-01 full screen targets the modal shell', mmSrc.includes("document.querySelector('#overlay-map .map-modal-shell')"));
+})();
+
 // 9ad. group_97 PL-01/PL-03: the Golden Snake of sec.127 and the riddle fail labels in every locale
 (function(){
   ck('PL-01 sec.127 grants golden_snake; combat handler refuses Barlad', GD['127'].auto_items.items.includes('golden_snake')&&gl.includes("function useSnakeInCombat()")&&gl.includes("if(isBarladFight()){ bcNotice(t('zmeyka_ne_deystvuet')); return; }"));

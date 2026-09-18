@@ -265,7 +265,9 @@ function ensureMapState(){
     });
 
     svg.innerHTML = parts.join('');
-    updateMapTopbar(layer, nodes, discovered);
+    // group_98 PL-02: the top bar describes the FULL map; the mini pass runs last and used to
+    // overwrite it with the current node's layer, so the caption never followed the layer selector.
+    if(mode!=='mini') updateMapTopbar(layer, nodes, discovered);
     if(mode==='mini'){
       const meta=document.getElementById('map-mini-meta');
       if(meta) meta.innerHTML = `<div><b>${t('uzel')}</b> ${MAP_NODE_BY_ID[ms.current_node]?.title || '—'}</div><div><b>${t('otkryto')}</b> ${nodes.filter(n=>discovered.has(n.id)).length} / ${nodes.length}</div>`;
@@ -306,7 +308,12 @@ function ensureMapState(){
   };
   window.zoomGameMap = function(dir){ gameMapZoom = Math.max(0.65, Math.min(2.6, gameMapZoom + (dir>0?0.2:-0.2))); renderGameMap(); };
   window.resetGameMapView = function(){ gameMapZoom = 1; renderGameMap(); };
-  window.toggleGameMapFullscreen = function(){ const el=document.getElementById('map-modal-stage'); if(!document.fullscreenElement) el.requestFullscreen?.(); else document.exitFullscreen?.(); };
+  window.toggleGameMapFullscreen = function(){
+    // group_98 PL-01: full screen takes the whole modal shell (side panel + stage), otherwise the layer
+    // selector, zoom and legend stay behind and the player cannot switch layers while zoomed in.
+    const el=document.querySelector('#overlay-map .map-modal-shell')||document.getElementById('map-modal-stage');
+    if(!document.fullscreenElement) el.requestFullscreen?.(); else document.exitFullscreen?.();
+  };
 
 window.bcRefreshMapLanguage = function(activeLocale){
     var A=(activeLocale&&activeLocale.map)?activeLocale.map:null;

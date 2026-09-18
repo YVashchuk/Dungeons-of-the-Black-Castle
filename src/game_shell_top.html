@@ -425,6 +425,8 @@ body.hide-inline-art .illustration-container{display:none!important;}
 #game-map-svg{width:100%;height:auto;max-height:78vh;}
 #map-mini-svg{width:100%;height:100%;}
 .map-modal-shell.fullscreen{width:98vw;height:98vh;}
+.map-modal-shell:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none;background:var(--bg1);} /* group_98 PL-01: the whole shell goes full screen, selector included */
+.map-modal-shell:fullscreen .map-modal-side{max-height:none;}
 
 
 /* Letter-sum riddle widget (group_18). Replaces standard choice buttons when
