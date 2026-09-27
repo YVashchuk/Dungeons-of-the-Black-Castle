@@ -23,6 +23,9 @@ for %%P in (1 2) do (
 )
 
 echo.
+echo ===== compress to AAC 48 kbps (masters move to _handoff\audio_master) =====
+node scripts\tts_compress.js --concurrency 6
+echo.
 echo ===== sizes =====
 for %%L in (ru en fr uk) do (
   for /f "usebackq" %%S in (`powershell -NoProfile -Command "(Get-ChildItem 'dist\audio\%%L' -File | Measure-Object Length -Sum).Sum / 1MB"`) do echo   %%L: %%S MB

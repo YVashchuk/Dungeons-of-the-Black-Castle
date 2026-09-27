@@ -5,7 +5,7 @@ relative to the repo, so it works from any clone location.
 
 ## Run (from the repo root)
     npm --prefix tests install          # optional: acorn for the AST-based harnesses (tests/vendor/acorn.js is the offline fallback, so a bare archive runs the battery without npm)
-    node tests/run_all.js               # 16 harnesses + reachability baseline (expect ALL GREEN, 1205 reachable)
+    node tests/run_all.js               # 17 harnesses + reachability baseline (expect ALL GREEN, 1205 reachable)
 
 Dist spot-checks (run after `bash build.sh` when relevant), each exits 0:
     for f in tests/_dist_*_check.js; do node "$f"; done                              # POSIX shells
@@ -16,7 +16,7 @@ runner path has no `tests/` prefix there, and the `_dist_` checks must be run on
 `node` invocation (a glob passed to a single `node` executes only the first script).
 
 ## Layout
-- `*_harness.js` — 16 active harnesses (i18n phases, items, signet, engine hygiene, riddle i18n, ...)
+- `*_harness.js` — 17 active harnesses (i18n phases, items, signet, engine hygiene, riddle i18n, static scope, ...); `_static_scope_harness.js` parses every shipped source with acorn and fails on undeclared identifiers, implicit globals, inline handlers calling missing functions, dead top-level functions, missing or unused ui keys, unknown element ids and debug leftovers
 - `goldens/` — golden fixtures/manifests the harnesses compare against
 - `regen_fixtures.js` — rebuilds the 6b/6d/6e1/6e2 goldens from current sources (use ONLY after
   an intentional change to the guarded values; other goldens are maintained by hand per increment)

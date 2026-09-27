@@ -260,7 +260,7 @@ function returnSheetSection(){
 // speech stops on every paragraph change, starts only from a user gesture (iOS / Chrome autoplay policy).
 const VOICE_KEY='podzch_voice';
 const BC_LANG_TAGS={ru:'ru-RU',en:'en-US',fr:'fr-FR',uk:'uk-UA'};
-let _voice={auto:false,rate:1,voiceURI:{},engine:'auto',openaiKey:'',openaiVoice:'onyx',openaiModel:'gpt-4o-mini-tts'}; // engine: auto (bundled pack, else device) | pack | device | openai let _voiceQueue=[]; let _voiceSpeaking=false;
+let _voice={auto:false,rate:1,voiceURI:{},engine:'auto',openaiKey:'',openaiVoice:'onyx',openaiModel:'gpt-4o-mini-tts'}; let _voiceQueue=[]; let _voiceSpeaking=false; // engine: auto (bundled pack, else device) | pack | device | openai (group_99 VC-01: the declarations sit before the comment)
 function voiceSupported(){ return typeof window!=='undefined'&&('speechSynthesis' in window)&&typeof SpeechSynthesisUtterance!=='undefined'; }
 function loadVoicePrefs(){ try{ const v=JSON.parse(localStorage.getItem(VOICE_KEY)||'null'); if(v&&typeof v==='object'){ _voice.auto=!!v.auto; _voice.rate=Math.min(1.3,Math.max(0.7,Number(v.rate)||1)); _voice.voiceURI=(v.voiceURI&&typeof v.voiceURI==='object')?v.voiceURI:{}; _voice.engine=(['auto','pack','device','openai'].indexOf(v.engine)>=0)?v.engine:'auto'; _voice.openaiKey=typeof v.openaiKey==='string'?v.openaiKey:''; _voice.openaiVoice=typeof v.openaiVoice==='string'&&v.openaiVoice?v.openaiVoice:'onyx'; _voice.openaiModel=typeof v.openaiModel==='string'&&v.openaiModel?v.openaiModel:'gpt-4o-mini-tts'; } }catch(e){} }
 function saveVoicePrefs(){ try{ localStorage.setItem(VOICE_KEY,JSON.stringify(_voice)); }catch(e){} }
@@ -2133,33 +2133,6 @@ function renderCanonCombatChoices(sec,list){
   return false;
 }
 
-function handleCanonCombatMilestones(cs){
-  if(!cs||!cs.special||cs.special.type!=='sec1175') return false;
-  const log=document.getElementById('combat-log');
-  const first=cs.enemies[0];
-  if(cs.round===4 && first.hp>0 && !cs.special.reinforcementsJoined){
-    cs.enemies[1].active=true;
-    cs.enemies[2].active=true;
-    cs.special.reinforcementsJoined=true;
-    log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('cherez_tri_raunda_dva_ostalnyh_o')}</div>`;
-    updateCombatEnemyDisplay(cs);
-  }
-  if(first.hp<=0 && !cs.special.firstDeathHandled){
-    cs.special.firstDeathHandled=true;
-    if(!cs.special.reinforcementsJoined){
-      cs.enemies[1].active=true;
-      cs.enemies[2].active=true;
-      cs.special.reinforcementsJoined=true;
-      log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('pervyy_ork_poverzhen_teper_vam_p')}</div>`;
-      updateCombatEnemyDisplay(cs);
-    }
-    if(!cs.special.luckChecked && cs.enemies[2].hp>0 && !cs.enemies[2].fled){
-      promptCanon1175Luck();
-      return true;
-    }
-  }
-  return false;
-}
 
 function promptCanon1175Luck(){
   const cs=combatState;
@@ -3496,9 +3469,6 @@ function playSound(type){
 
 // Web Audio API stub kept for any future code that might still want a live
 // AudioContext (e.g. a custom equaliser). Currently unused.
-const AudioCtx=window.AudioContext||window.webkitAudioContext;
-let audioCtx=null;
-function getAudio(){if(!audioCtx&&AudioCtx)audioCtx=new AudioCtx();return audioCtx;}
 
 
 

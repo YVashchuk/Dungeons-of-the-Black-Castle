@@ -1,4 +1,4 @@
-> **Играть сразу:** https://yvashchuk.github.io/DotBC/ — короткая ссылка на публичную сборку.
+> **Играть сразу:** https://yvashchuk.github.io/DotBC/ — короткая ссылка на публичную сборку (отдельный репозиторий `DotBC`; его `index.html` — шаблон `docs/DotBC_redirect_index.html`).
 > **Скачать для офлайна:** нужна вся папка `dist/` (HTML + `art/` + `map/` + `audio/` + `sounds/` + `OFL.txt`) — один HTML без соседних файлов останется без иллюстраций, карты и озвучки.
 > **Разработчику:** `git clone` → `bash build.sh` → `node tests/run_all.js`.
 

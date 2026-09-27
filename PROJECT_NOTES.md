@@ -45,7 +45,7 @@ Dungeons-of-the-Black-Castle/
 │   ├── pdf_original_1991.pdf   ← Scanned 1st-edition PDF (historical reference only)
 │   ├── book_1991_extracted.txt ← Decoded 1991 text (617 paragraphs) — adjudication source
 │   ├── book_text.md            ← Full text + corrections log (for Gemini/AI tools, MD format)
-│   ├── text_corrections.json   ← Authoritative correction registry (versioned; now v2.100, 70 groups)
+│   ├── text_corrections.json   ← Authoritative correction registry (versioned; the last `version_history` key is the current version)
 │   ├── analytical_report.pdf   ← Design analysis for Windows + Android adaptation
 │   ├── art/                    ← Canonical runtime art binaries (75 files, 7.6 MB) → copied to dist/art
 │   └── illustrations/
@@ -81,7 +81,7 @@ Dungeons-of-the-Black-Castle/
 │       ├── icon-512.png
 │       └── icon-maskable-512.png  ← Android adaptive icon
 ├── scripts/                    ← Git push helpers
-├── tests/       — verification battery (16 harnesses + goldens + runner; node tests/run_all.js)
+├── tests/       — verification battery (17 harnesses + goldens + runner; node tests/run_all.js)
 ├── audit_cycles/               ← Historical audit archive (per-cycle briefs/reports; tracked)
 ├── _handoff/                   ← (GIT-IGNORED) Briefs for external AI sessions
 ├── build.sh                    ← Concatenate src/* into dist/
@@ -106,7 +106,7 @@ See `docs/PWA_IMPLEMENTATION.md` for the step-by-step activation guide.
 1. **Originals are never modified.** Full-resolution PNGs from Midjourney live
    in `_handoff/illustrations_originals/ (вне git)` and are treated as the source of truth.
 2. **Web versions are derivative.** If runtime needs to shrink an image, it
-   goes in `assets/illustrations/web/` as a separate copy. Never downscale
+   goes in `assets/art/mj/` (JPEG 900px Q82; the build copies it to `dist/art/`) as a separate copy. Never downscale
    an original in-place.
 3. **Prompts and reference URLs are preserved in three places** for every
    image — each is authoritative in its own way:
@@ -211,7 +211,7 @@ or sharing the game (zip the whole `dist/`). Source files stay modular under
 ## Engine features beyond basic Fighting-Fantasy mechanics
 
 These are the non-obvious mechanics a maintainer (or external auditor) must know.
-Authoritative detail lives in `assets/text_corrections.json` (the ledger, v2.100)
+Authoritative detail lives in `assets/text_corrections.json` (the ledger)
 and the per-topic audits under `audit_cycles/`.
 
 ### Combat ally summons (item-summoned, NOT the Copy spell)

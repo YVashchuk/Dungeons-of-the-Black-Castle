@@ -1,5 +1,7 @@
 # PWA Implementation Plan — Dungeons of the Black Castle
 
+> **Статус 2026-09:** PWA не активирована — `dist/sw.js` и `dist/manifest.webmanifest` лежат в сборке, но оболочка не подключает манифест и не регистрирует service worker, поэтому кэша, способного отдать устаревшую сборку, нет. Шрифты давно встроены в HTML (шаги про `dist/fonts/` ниже устарели). План оставлен как справка на случай активации.
+
 Based on ChatGPT 5.5 Research task C-1 (April 2026).
 
 > **Status: prepared, NOT activated.** All files required for PWA-ification have been

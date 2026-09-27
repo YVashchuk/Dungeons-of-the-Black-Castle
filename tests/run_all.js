@@ -1,7 +1,7 @@
 // Verification battery runner. Usage: node tests/run_all.js
 const {spawnSync}=require('child_process'); const path=require('path');
 const T=__dirname;
-const HARNESSES=["p2_2a_harness.js", "p2_2b_harness.js", "p2_2c_harness.js", "p2_shell_i18n_harness.js", "p1_6a_harness.js", "p1_6b_harness.js", "p1_6c1_harness.js", "p1_6c2_harness.js", "p1_6d_harness.js", "p1_6e1_harness.js", "p1_6e2_harness.js", "harness_groupB.js", "p1_items_5f_harness.js", "_signet_harness.js", "_hygiene_harness.js", "_riddle_i18n_harness.js"];
+const HARNESSES=["p2_2a_harness.js", "p2_2b_harness.js", "p2_2c_harness.js", "p2_shell_i18n_harness.js", "p1_6a_harness.js", "p1_6b_harness.js", "p1_6c1_harness.js", "p1_6c2_harness.js", "p1_6d_harness.js", "p1_6e1_harness.js", "p1_6e2_harness.js", "harness_groupB.js", "p1_items_5f_harness.js", "_signet_harness.js", "_hygiene_harness.js", "_riddle_i18n_harness.js", "_static_scope_harness.js"];
 let fails=0;
 for(const h of HARNESSES){
   const r=spawnSync(process.execPath,[path.join(T,h)],{encoding:'utf8'});

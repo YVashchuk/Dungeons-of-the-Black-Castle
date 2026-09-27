@@ -68,7 +68,7 @@ the best variant, upscale, then base64-embed.
 ## Integration steps after a winner is picked
 
 1. Resize PNG → JPEG Q82, short side ≤ 900 px (matches the
-   `assets/illustrations/web/` pipeline used for the 43 MJ arts).
+   web pipeline used for the MJ arts (JPEG 900px Q82 in `assets/art/`)).
 2. Convert to base64.
 3. Replace the `TITLE_RIDER='...'` value in `src/title_art.js` with
    the new base64 string.

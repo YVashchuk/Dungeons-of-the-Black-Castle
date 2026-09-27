@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "last_updated": "2026-09-11",
-  "schema_doc": "Canonical paragraph-level corrections registry. Source of truth for all manual edits applied on top of the immutable FB2 source. Pipeline: fb2_remake.fb2 → parse → text_corrections.json → apply → remake_data.js / book_text.md.",
+  "last_updated": "2026-09-27",
+  "schema_doc": "Canonical paragraph-level corrections registry and adjudication ledger - the source of truth for every intentional edit on top of the canon (the fb2 remake of the 1991 first edition, kept outside git since 2026-09-11 in _handoff/canon_sources). Pipeline: canon -> text_corrections.json (adjudication) -> src/game_structure.js + src/locale.*.js (applied by patchers) -> build.sh -> dist/. Item statuses: OPEN (pending), DONE (applied; carries a resolution), REJECTED (adjudicated as not a defect), VERIFIED_RESOLVED (a stale claim re-checked and found already fixed, group_76). version_history keys are transitions (older ones use the arrow character, newer ones \"->\"); the key \"v2.x verification sweep 2026-05-22\" is an annotation, not a transition. Commit hashes quoted before 2026-09-11 belong to the pre-rewrite history (group_94).",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
     "v2 → v2.1": "May 2026 sweep against current MJ_MAP and art_catalog.py state revealed that all Group 4 art-mapping recommendations from both audits were already in place: §1072 already maps to art09_sleeping_princess; art12_camp/art29_hostess/art41_mounted catalogues already match MJ_MAP; §319/§100/§558/§846/§1123 already use the recommended arts. The audits were taken before previous sessions had already cleaned up these mappings. Items recorded in resolved_no_op below as verified-and-resolved so future audits don't resurrect them.",
@@ -200,7 +200,8 @@
     "v2.192 -> v2.193": "September 2026 - group_95 (housekeeping audit): census in README / GAME_RULES / HANDOFF corrected against the sources, six PR-02 fixes synchronised into book_text.md (+ BEL / provenance), goldens 6a (three labels) and 6b (ninth spell) re-synced with a new label-count assert, gate_probes G-15 no longer claims an unrun PASS, automated smoke rows renamed S-TITLE / S-EAT, dangling post-rewrite paths repaired, QUICKSTART and init_and_push fixed, .gitignore guards the purged paths, 53 obsolete files deleted. GAME_RULES.md label 2.192 -> 2.193 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.193 -> v2.194": "September 2026 - group_96: acceptance of the cleaned build 1a7195d by the maintainer's tools (battery ALL GREEN, smoke 27/27, gate probes 28+1, full playthrough to sec.1220 with both deeds); the fifth external browser-agent attempt failed in the provider's infrastructure. Event log keeps the language of each entry (documented, by design). GAME_RULES.md s9 + label 2.193 -> 2.194 (R-03 guard).",
     "v2.194 -> v2.195": "September 2026 - group_97 (Astra live run 2026-09-17): PL-01 the Golden Snake of sec.127 implemented (item, grant, once-per-journey combat kill, refused against Barlad), PL-02 stale RU label at sec.963, PL-03 riddle fail labels translated into EN/FR/UK (six paragraphs). items 121 -> 122; ui keys 368 -> 371; p1_6d 93 -> 95; smoke C30. GAME_RULES.md s3 + label 2.194 -> 2.195 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.195 -> v2.196": "September 2026 - group_98 (Astra live run 2026-09-18, all blocks finished): MAP-01 full screen takes the whole map shell so the layer selector, zoom and legend remain reachable; MAP-02 the top bar no longer inherits the mini-map layer (updateMapTopbar runs for the full map only). p1_6d 95 -> 97; _dist_ui_check 63 -> 64; smoke C31. GAME_RULES.md label 2.195 -> 2.196 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.195 -> v2.196": "September 2026 - group_98 (Astra live run 2026-09-18, all blocks finished): MAP-01 full screen takes the whole map shell so the layer selector, zoom and legend remain reachable; MAP-02 the top bar no longer inherits the mini-map layer (updateMapTopbar runs for the full map only). p1_6d 95 -> 97; _dist_ui_check 63 -> 64; smoke C31. GAME_RULES.md label 2.195 -> 2.196 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.196 -> v2.197": "September 2026 - group_99 self-audit: VC-01 voice declarations restored (a // comment had swallowed them), new tests/_static_scope_harness.js (battery 16 -> 17 harnesses), dead code and dead ui keys removed (ui 371 -> 369), HK-09 closed (TTS resume understands the AAC pack; tts_all compresses), documents aligned with the tree, HANDOFF.md as the single current handoff, two bootstrap scripts removed, old backlog re-verified. GAME_RULES.md label 2.196 -> 2.197 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -479,6 +480,85 @@
       ],
       "verified": "2026-07-09"
     },
+    "group_99_2026_09_27_self_audit": {
+      "comment": "Repository self-audit 2026-09-27 (Claude Opus 5.5): automated scan of the registry, census vs documents, locale parity and label targets, static analysis of every shipped source (acorn), junk and dangling references, PWA state, and a re-verification of the old backlog (spell hooks, one-sided luck, gold key, resource gates). Baseline before the audit: a5cb66a, battery ALL GREEN, dist reproducible.",
+      "source": "claude_opus_5_5_self_audit_2026_09_27",
+      "verified": "2026-09-27",
+      "items": [
+        {
+          "id": "VC-01_voice_declarations_swallowed_by_a_comment",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "src/game_logic.js line 263: the V-05 edit appended a // comment in the middle of a one-line declaration, so \"let _voiceQueue=[]; let _voiceSpeaking=false;\" became part of the comment; both became implicit globals created only when showScr / bcStopSpeech first assigned them, and any earlier read would throw.",
+          "note": "Found by static analysis (implicit globals); the behavioural harnesses and the live runs passed only because showScr runs before the first read.",
+          "resolution": "DONE. Declarations restored before the comment; the new static harness fails on any implicit global."
+        },
+        {
+          "id": "SA-01_static_scope_harness",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The battery had no static check for scope, dead code or unused i18n keys; VC-01, two dead functions and two dead ui keys went unnoticed.",
+          "note": "Maintainer decision.",
+          "resolution": "DONE. tests/_static_scope_harness.js (10 checks: parse, undeclared identifiers, implicit globals, inline handlers, duplicate top-level functions, dead top-level functions, missing / unused ui keys, unknown element ids, debug leftovers) added to run_all.js; it failed on exactly the three defect classes before the fix and passes after it."
+        },
+        {
+          "id": "DC-01_dead_functions",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "handleCanonCombatMilestones (sec.1175 milestones, superseded by activateStagedJoins in group_81/82) and getAudio (with AudioCtx / audioCtx) were never called.",
+          "note": "Confirmed: no reference in code, shell or tests.",
+          "resolution": "DONE. Removed."
+        },
+        {
+          "id": "DC-02_dead_ui_keys",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "ui.predmetov_zanimayut and ui.predmetov_svobodnyh_mest were replaced by zanimayut_tail / svobodnyh_mest_tail in group_87 E2 but stayed in four locales and the 6c-2 golden.",
+          "note": "Confirmed.",
+          "resolution": "DONE. Removed from the four locales and the golden (ui keys 371 -> 369)."
+        },
+        {
+          "id": "DOC-01_documents_vs_tree",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Stale numbers and paths: README (auto_items 182/195 vs 196, module count, the 1991 OCR path), GAME_RULES (status line, truth hierarchy paths, 121 items / 15 hidden flags, joins 9/7 vs 10/8 with sec.182, spells heading, auto_items 195, 107 translated item names), PROJECT_NOTES (v2.100 / 70 groups, assets/illustrations/web), TRANSLATION_GUIDE (8 spells, 298 ui keys, 65 enemies, 77 ui_ keys, \"58 terminal paragraphs\", tests \"outside the repository\"), tests/smoke README (24 checks, 29 probes), the title-rider prompt and the mj_art header (deleted web folder), the PWA plan (dist/fonts), LAUNCH_CARDS (packing without assets/illustrations), registry schema_doc (remake_data.js pipeline) and last_updated.",
+          "note": "Confirmed by recomputation (census, art coverage 107 MJ + 56 legacy = 132, 10 build modules, 25 combat allowlists, 14 combat_mod bridges).",
+          "resolution": "DONE. All documents aligned with the tree; README gains the one-shot combat items and HANDOFF.md."
+        },
+        {
+          "id": "HO-01_single_current_handoff",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Two dated handoff snapshots at the root, both stale (v2.171 / v2.192).",
+          "note": "Maintainer decision.",
+          "resolution": "DONE. HANDOFF.md at the root is the current state; the dated snapshots moved to audit_cycles/recheck_2026_09/handoffs/."
+        },
+        {
+          "id": "JK-01_bootstrap_push_scripts",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "scripts/fix_and_push.sh (one-off merge with the remote at bootstrap) and scripts/push_with_gh.sh (gh-CLI first push) are referenced by nothing; the documented helpers are init_and_push / update_and_push.",
+          "note": "Confirmed.",
+          "resolution": "DONE. Removed (recoverable from history)."
+        },
+        {
+          "id": "LB-01_old_backlog_reverified",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Old backlog claims: spell charge not spent at sec.7 / 93 / 415, dead-end luck paragraphs, gold key at sec.1172, resource gates at sec.464 / 1208, sec.45 art.",
+          "note": "Re-checked against the tree.",
+          "resolution": "DONE (no change). sec.7 / 93 / 415 carry spell hooks; the seven one-sided luck paragraphs are documented as canonically fatal (GAME_RULES 3.5); sec.1172 grants the gold key; sec.464 gates the rope and sec.1208 the figured key; sec.45 uses art26 (art09/art26 duplication stays in the art backlog)."
+        },
+        {
+          "id": "NM-01_riddle_numbers_in_translations",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Six riddle paragraphs (95, 435, 992, 1113, 1131) and sec.994 have fewer numbers in EN/FR/UK prose than in RU.",
+          "note": "Checked: the translations replace the letter-arithmetic instruction (\"add 50 to the sum of the letters\") with \"enter the answer below\" because the riddles accept localized answers by hash; sec.994 writes \"twice\" for «2 раза».",
+          "resolution": "DONE (intentional, no change)."
+        }
+      ]
+    },
     "group_98_2026_09_18_map_layout": {
       "comment": "Live reader run by ChatGPT 6 Astra ULTRA on the published build 49bd980 (2026-09-18), the first that finished every block without a browser failure. Blocks A, B, C and E clean: the Golden Snake of group_97 is offered at sec.127, kills the chosen enemy once and is absent in Barlad's fight; the sec.963 label and the riddle fail labels in EN/FR/UK are fixed; sec.781 restores its dice result after a full reload; sec.63 -> 132 gives the first item free and prices the rest; sec.585 eat-now caps at the maximum; the combat log is neutral with the hero's hit green and incoming damage red; the narration buttons work on the preface and pregame screens. Two map-layout findings. Report and screenshots: _handoff/smoke_2026_09_11/run3 (kept out of git).",
       "source": "chatgpt_6_astra_ultra_live_2026_09_18",
@@ -636,10 +716,10 @@
         {
           "id": "HK-09_tts_resume_ignores_m4a",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "tts_pregenerate.js decides what to render by looking for <key>.mp3, so after tts_compress.js moved the masters away and left .m4a, a rerun would schedule all 4892 texts again (and spend money); tts_all.cmd tells the user to commit dist/audio without mentioning the compression step.",
           "note": "Maintainer adjudication: CONFIRMED and worth fixing before the next language, but the pack is rendered and the scripts are not run unattended - scheduled, not urgent.",
-          "resolution": null
+          "resolution": "DONE (group_99). tts_pregenerate.js treats <key>.mp3 or <key>.m4a as rendered (resume and manifest refresh), prints a reminder to compress when the published pack is AAC; tts_all.cmd runs tts_compress.js after the two render passes."
         },
         {
           "id": "HK-10_personal_paths_in_history_docs",

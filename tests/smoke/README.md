@@ -1,6 +1,6 @@
 # tests/smoke - automated live smoke (not part of the battery)
 
-`smoke_run.js` drives the BUILT game in the locally installed Google Chrome (headless, via `playwright-core`, no browser download) and executes 24 of the `MANUAL_SMOKE_CHECKS.md` rows for real: hash entries, real button clicks, F5 reloads, keyboard (Tab / Enter / Esc / M incl. a Cyrillic-layout keydown), phone viewport 412x915 with bottom sheets, landscape 915x412, fonts, the reading column, dice / luck / purchase persistence. It is grey-box: assertions go through the DOM and the game globals (`S`, `combatState`).
+`smoke_run.js` drives the BUILT game in the locally installed Google Chrome (headless, via `playwright-core`, no browser download) and executes 27 checks for real (rows of `MANUAL_SMOKE_CHECKS.md` plus the automation-only S-TITLE and S-EAT): hash entries, real button clicks, F5 reloads, keyboard (Tab / Enter / Esc / M incl. a Cyrillic-layout keydown), phone viewport 412x915 with bottom sheets, landscape 915x412, fonts, the reading column, dice / luck / purchase persistence. It is grey-box: assertions go through the DOM and the game globals (`S`, `combatState`).
 
 ## Run
 
@@ -33,4 +33,4 @@ $env:RESUME='1';        node tests\smoke\playthrough.js                         
 node tests\smoke\gate_probes.js [url]
 ```
 
-29 deterministic probes of the checkpoints G-01..G-15 of `BRIEF_playthrough_astra_agent.md`: the tester hero is prepared through `S` (flags, items, origin, spell charges), the paragraph is re-rendered, and the rendered UI is observed (enabled choice buttons by target, bag text / buttons, death overlay). Output: `tests/smoke/out/GATE_PROBES_REPORT.md` + one PNG per probe. Run after any change to gates, flags or `passesInventoryCheck`.
+28 deterministic probes of the checkpoints G-01..G-14 (G-15, reload behaviour, is reported as EXTERNAL and covered by `smoke_run.js`) of `BRIEF_playthrough_astra_agent.md`: the tester hero is prepared through `S` (flags, items, origin, spell charges), the paragraph is re-rendered, and the rendered UI is observed (enabled choice buttons by target, bag text / buttons, death overlay). Output: `tests/smoke/out/GATE_PROBES_REPORT.md` + one PNG per probe. Run after any change to gates, flags or `passesInventoryCheck`.

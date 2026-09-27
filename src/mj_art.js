@@ -2,10 +2,10 @@
 // ║  MJ_ART — Midjourney illustrations for                                ║
 // ║  Dungeons of the Black Castle (Remake 1991 1st-ed, 1221 paragraphs)   ║
 // ╠═══════════════════════════════════════════════════════════════════════╣
-// ║  36 AI illustrations in unified dark Slavic fantasy style.            ║
+// ║  42 art ids (45 images), unified dark Slavic fantasy style.     ║
 // ║                                                                       ║
 // ║  Originals (PNG): kept outside git by the maintainer (_handoff/illustrations_originals)    ║
-// ║  Web versions (JPEG 900px Q82):    assets/illustrations/web/          ║
+// ║  Web versions (JPEG 900px Q82):    assets/art/mj/ -> dist/art/mj/     ║
 // ║  This file maps paragraphs to external art files under assets/art/mj (copied to dist/art by build.sh).        ║
 // ║                                                                       ║
 // ║  HERO REFERENCE URL (for Midjourney --cref in re-generations):        ║
