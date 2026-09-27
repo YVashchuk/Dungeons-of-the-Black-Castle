@@ -34,3 +34,11 @@ node tests\smoke\gate_probes.js [url]
 ```
 
 28 deterministic probes of the checkpoints G-01..G-14 (G-15, reload behaviour, is reported as EXTERNAL and covered by `smoke_run.js`) of `BRIEF_playthrough_astra_agent.md`: the tester hero is prepared through `S` (flags, items, origin, spell charges), the paragraph is re-rendered, and the rendered UI is observed (enabled choice buttons by target, bag text / buttons, death overlay). Output: `tests/smoke/out/GATE_PROBES_REPORT.md` + one PNG per probe. Run after any change to gates, flags or `passesInventoryCheck`.
+
+## branch_probes.js - deterministic probes of the dice / deadline branches
+
+```powershell
+node tests\smoke\branch_probes.js [url]
+```
+
+Seven probes of the branches that a live run reaches only by luck: overtime of #43 (-> 1016, a death ending), #261 (-> 8) and #737 (-> 182 with the wounded goblin carried over and the big goblin waiting), the door of #725 (a double -> 1215, death when the last stamina point is spent, the Golden Whistle gate -> 142) and the first collection at #582 with a full bag (nothing taken, «✓ Собрано» survives a reload). The tester hero is prepared through `S` and `d6()` is replaced by a scripted sequence; every result is read after real clicks. Output: `tests/smoke/out/BRANCH_PROBES_REPORT.md` + one PNG per probe.

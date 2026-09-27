@@ -1,6 +1,6 @@
 # HANDOFF — текущее состояние проекта
 
-**Обновлено:** 2026-09-27 · реестр **v2.197** (`assets/text_corrections.json`, последняя строка `version_history`) · батарея `node tests/run_all.js` — ALL GREEN (17 харнессов + 6 dist-чеков + reachability baseline 1205) · автосмоук 27/27 · пробы гейтов 28 + G-15 внешняя · автопрохождение §1 → §1220 с обоими подвигами.
+**Обновлено:** 2026-09-27 · реестр **v2.197** (`assets/text_corrections.json`, последняя строка `version_history`) · батарея `node tests/run_all.js` — ALL GREEN (17 харнессов + 6 dist-чеков + reachability baseline 1205) · автосмоук 27/27 · пробы гейтов 28 + G-15 внешняя · пробы веток 7/7 · живой прогон Astra 27.09 — 0 дефектов · автопрохождение §1 → §1220 с обоими подвигами.
 
 Прежние снимки (`HANDOFF_2026-09-05.md`, `HANDOFF_2026-09-11.md`) перенесены в `audit_cycles/recheck_2026_09/handoffs/`; хэши коммитов в документах до 11.09.2026 относятся к истории до переписи (group_94).
 
@@ -15,12 +15,12 @@
 2. **TC-06:** проверить на iPhone, не уезжает ли HUD при первом показе (safe-area) — только наблюдение.
 3. **HK-10 / HK-11** — осознанно не трогаем: личные пути в исторических отчётах; семь legacy-иллюстраций без привязки.
 4. **PL-29** — формулировка «и то, и другое» в кабинете против гейта на три осмотра: по желанию автора.
-5. Глазами автора на телефоне: озвучка (C25/C27/C28), раскладка (C14–C24, C31).
+5. Глазами автора на телефоне: слышимая озвучка (C25/C27/C28) и мобильная раскладка (C14–C24, C31) — единственное, чего не могут агент и автоматика.
 6. Репозиторий уйдёт в private после тестов (Pages и `DotBC` отключатся на бесплатном плане).
 
 ## Инструменты
 - `node tests/run_all.js` — батарея (офлайн, acorn завендорен). `bash build.sh` — сборка `src/` → `dist/`.
-- Живые проверки (Playwright поверх установленного Chrome, сервер `python -m http.server 8001` из корня): `tests/smoke/smoke_run.js` (27), `tests/smoke/gate_probes.js` (28 + 1 внешняя), `tests/smoke/playthrough.js` (автоигрок: `WAYPOINTS`, `TESTER_BOOST=1`, `RESUME=1`, `MAX_STEPS`; куски не длиннее ~2 минут).
+- Живые проверки (Playwright поверх установленного Chrome, сервер `python -m http.server 8001` из корня): `tests/smoke/smoke_run.js` (27), `tests/smoke/gate_probes.js` (28 + 1 внешняя), `tests/smoke/branch_probes.js` (7 веток кубиков и дедлайнов с подменённым `d6()`), `tests/smoke/playthrough.js` (автоигрок: `WAYPOINTS`, `TESTER_BOOST=1`, `RESUME=1`, `MAX_STEPS`; куски не длиннее ~2 минут).
 - Озвучка: `scripts/tts_all.cmd` (рендер 4 языков + сжатие), `scripts/tts_pregenerate.js` (один язык, `--out` для проб), `scripts/tts_compress.js` (AAC 48 kbps).
 - Внешний аудит: ZIP по хэшу коммита без `dist/audio`; брифы — `audit_cycles/recheck_2026_09/BRIEF_*.md`; результат адьюдицируется патчером (dry-run → `--write`) и записывается группой в реестр.
 
