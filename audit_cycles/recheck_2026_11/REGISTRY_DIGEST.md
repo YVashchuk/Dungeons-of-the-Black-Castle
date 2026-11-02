@@ -1,6 +1,6 @@
 # REGISTRY_DIGEST — assets/text_corrections.json
 
-- Generated 2026-11-02 from the registry at `v2.199 -> v2.200` (last_updated 2026-11-02).
+- Generated 2026-11-02 from the registry at `v2.200 -> v2.201` (last_updated 2026-11-02).
 - One line per adjudicated item: `[STATUS] id (severity) §paragraphs — claim → resolution`. Statuses: OPEN, DONE, REJECTED, VERIFIED_RESOLVED (a stale claim re-checked and found already fixed). Full texts live in the registry itself.
 
 ## corrections (2 entries; canon-level text and data corrections applied on top of the fb2 source)
@@ -49,6 +49,15 @@
 ## group_73_2026_07_09_tests_migration — Verification battery migrated from the external C:/Users/.../Downloads/_audit_tmp scratch folder into the repo as tests/ (author directive 2026-07-09) - version-controlled and portable.
 - [DONE] battery_migration (-) —  → tests/ now holds the 16 active harnesses, 6 dist spot-checks, 7 golden fixtures (goldens/), verify_reach3.py, regen_fixtures.js and a run_all.js runner (16 harnesses + reachability baseline in one command). All absolute paths rew…
 - [DONE] sweep_incident_2026_07_09 (-) —  → Recorded for posterity: the housekeeping sweep earlier the same day deleted four golden fixtures (6b/6d/6e1/6e2) because the keep-pattern was incomplete, and the post-sweep sanity ran only three harnesses. Recovered by reconstruc…
+
+## group_101_2026_11_02_argon_engine — Gemini 4 Argon (Gemini app), 2026-11-02: engine robustness review, Part 2 of audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md, over src/game_logic.js, src/map_module.js, the shell and mobile.css (kit at aaceb31, registry v2.198 -> v2.199; the pre-fli…
+- [DONE] EN-01_save_survives_blocked_storage (P1) — saveGame() wrote to localStorage without try/catch; with storage blocked (privacy settings, sandboxed frames) or full, the exception stopped the game start, every choice and every pickup. → DONE. saveGame() is guarded; the first failure shows one notice («Не удаётся сохранить игру…», new ui key x4) and play continues. Severity P1 in the project scale: it bites only in that environment.
+- [DONE] EN-02_pickup_dialog_close_paths (P1) — Escape could not close the pick-up dialog (the closer selector only knew closeModal), and the acquires navigation hook (AR-19) survived any close that was not a click on «Готово». → DONE. The continuation is parked in window._invModalOnDone and closeInvModal() runs it exactly once whichever way the dialog closes; Escape closes the dialog (and continues the route); the AR-19 guard follows the new wiring.
+- [DONE] EN-03_import_normalizes (P1) — The map module's window.importSave replaced the engine's and skipped normalizeSave(s): imported saves missed field backfills, legacy item migration and the story-flag backfill; null or primitive JSON was not r… → DONE. The wrapper rejects non-objects and calls normalizeSave(s) before use, the same normalization loadGame applies.
+- [DONE] EN-04_language_switch_mid_fight (P2) — A language switch during a fight left enemy names and the charge buttons in the previous language; worse (found while fixing), the crossbow recognised ghosts by the translated name, so after a switch an arrow … → DONE. combatState enemies keep rawName (the enemy key); relabelCombatUi() re-localizes names, the Copy / Force / Weakness / larva / crossbow / ally buttons after a switch; the crossbow tests ghosts by key.
+- [DONE] EN-05_arrow_count_forgotten (P2) — Dropping a partly used arrow bundle kept its S.arrowsLeft count. → DONE. forgetArrowCount() on removeItem / dropItemModal; clear_inventory resets the counts.
+- [DONE] EN-06_untrusted_strings_sanitized (P2) — A typed item name (and any string in an imported save) reached innerHTML and attributes unescaped - markup or script could run, also from a shared save file. → DONE. addItem() strips < > & " ' ` and caps the name at 60 characters; normalizeSave() strips them from inventory strings and food ids and removes < > from journal entries of loaded or imported saves.
+- [DONE] EN-07_narration_rate_and_stop (P2) — The bundled narration ignored the speed slider (playbackRate fixed at 1) and a stop could leave the playback promise unsettled (an OpenAI Blob URL then waited for the next clip to be revoked). → DONE. bcPlayUrl(url, token, rate) sets playbackRate (the pack passes the slider value, OpenAI keeps 1 because the speed is in the request); bcStopSpeech() settles a pending playback.
 
 ## group_100_2026_11_02_argon_fidelity — Gemini 4 Argon (Gemini app, thinking level Medium), 2026-11-02: text-vs-engine fidelity sweep over all 1221 Russian paragraphs against GD, the engine, items.json, GAME_RULES and REGISTRY_DIGEST (brief audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md;…
 - [DONE] AR-01_skull_chain (P1) §252,842,854,859,913,938,1012,1027,1041,1116 — The skull of §252 («положите череп в заплечный мешок») and §1116 («можете взять его себе») did not exist; the four gas traps §842 / §854 / §859 / §913 («Если у вас есть череп… если же нет, … душит вас») let ev… → DONE. Item skull; §252 «положите череп…» acquires it, §1116 offers it; each trap exit requires and spends it, so without a skull the paragraph has no exit and ends in death; the skull stays at §1041 / §938 / §1012 / §1027 as the …
@@ -534,4 +543,4 @@
 - {"id":"UB-02_sec300_watermelon_vs_sec574_banana_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.300 grants watermelon but sec.574 gates on banana - item id mismatch.","verdict":"rejected","reason":"Two differe…
 - {"id":"UB-03_sec96_sec112_art_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.96 (single Green Knight) is assigned art30_three_knights and the dialogue sec.112 is assigned combat artwork.","verdict":"rejected"…
 
-END OF DIGEST — 308 items with id and status + 82 legacy entries, registry v2.199 -> v2.200
+END OF DIGEST — 315 items with id and status + 82 legacy entries, registry v2.200 -> v2.201

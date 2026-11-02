@@ -51,7 +51,7 @@ function d6(){const a=new Uint32Array(1);crypto.getRandomValues(a);return(a[0]%6
 
 // ── Save/Load ──
 var lastAutosaveAt=null; // UI-10 (group_79): timestamp of the last successful autosave, shown in the menu
-function saveGame(){if(!S)return;localStorage.setItem(SAVE_KEY,JSON.stringify(S));lastAutosaveAt=Date.now();renderAutosaveNote();}
+function saveGame(){if(!S)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));lastAutosaveAt=Date.now();renderAutosaveNote();}catch(e){ /* group_101 E-001: blocked or full storage must not stop the game */ if(!window._bcSaveWarned){ window._bcSaveWarned=true; try{ bcNotice(t('sohranenie_nedostupno')); }catch(_){} } }}
 // UI-10 (group_79): "Autosaved: sec.N - HH:MM" line in the menu overlay. Reads the
 // persisted timestamp (not "now"), so an unsaved session shows nothing.
 function renderAutosaveNote(){ try{ var el=document.getElementById('autosave-note'); if(!el) return; if(!S||!lastAutosaveAt){ el.textContent=''; return; } var d=new Date(lastAutosaveAt); var hh=String(d.getHours()).padStart(2,'0'), mm=String(d.getMinutes()).padStart(2,'0'); el.textContent=t('ui_autosave_note')+' \u00a7'+S.section+' \u00b7 '+hh+':'+mm; }catch(e){} }
@@ -69,6 +69,9 @@ function normalizeSave(s){
   if(!Array.isArray(s.inventory)) s.inventory=[];
   // group_82 CB-05: a pre-slug raw «Арбуз» string is the sec.300 ITEM (the sec.389 food is a structured object).
   s.inventory=s.inventory.map(it=>(typeof it==='string'&&it.trim()===SLUG_TO_RU['melon'] /* the legacy RU name */)?'watermelon':it);
+  // group_101 E-006: a loaded or imported save cannot smuggle markup into the bag, the HUD or the journal
+  s.inventory=s.inventory.map(it=>typeof it==='string'?it.replace(/[<>&"'`]/g,''):((it&&typeof it==='object'&&typeof it.id==='string')?Object.assign({},it,{id:it.id.replace(/[<>&"'`]/g,'')}):it));
+  if(Array.isArray(s.eventLog)) s.eventLog=s.eventLog.filter(ev=>ev&&typeof ev==='object').map(ev=>{ const o=Object.assign({},ev); ['main','detail','para','type'].forEach(f=>{ if(typeof o[f]==='string') o[f]=o[f].replace(/[<>]/g,''); }); return o; });
   if(!Array.isArray(s.spells))    s.spells=[];
   if(!Array.isArray(s.visited))   s.visited=[];
   if(typeof s.notes!=='string')   s.notes='';
@@ -169,7 +172,7 @@ function _bcDialogClosed(el){
 function _bcCloseTopDialog(){
   var top=_bcTopDialog(); if(!top) return false;
   if(top.id==='event-log-panel'){ if(typeof toggleEventLog==='function') toggleEventLog(); return true; } // group_82 CU-03
-  var closer=top.querySelector('[onclick*="closeModal("]'); if(!closer) return false;
+  var closer=top.querySelector('[onclick*="closeModal("],[onclick*="closeInvModal("]'); if(!closer) return false; // group_101 E-002: Escape closes the pick-up dialog too
   closer.click(); return true;
 }
 (function(){
@@ -272,7 +275,7 @@ function bcSplitSentences(txt,max){ max=max||220; const parts=String(txt).match(
 function bcSpeak(text,srcId){ if(!text) return false; bcStopSpeech(); _voiceSrc=srcId||'s-text'; _voiceSpeaking=true; bcVoiceButton(); const token=++_ttsToken; bcSpeakSmart(text,_voiceSrc,token); return true; }
 function bcSpeakDevice(text,srcId){ if(!voiceSupported()||!text) return false; try{ speechSynthesis.cancel(); }catch(e){} _voiceQueue=[]; _voiceSrc=srcId||'s-text'; const v=bcPickVoice(); const lang=BC_LANG_TAGS[getLang()]||'ru-RU'; _voiceQueue=bcSplitSentences(text).map(c=>{ const u=new SpeechSynthesisUtterance(c); u.lang=(v&&v.lang)||lang; if(v) u.voice=v; u.rate=_voice.rate; u.pitch=1; return u; }); _voiceSpeaking=true; bcSpeakNext(); bcVoiceButton(); return true; }
 function bcSpeakNext(){ const u=_voiceQueue.shift(); if(!u){ _voiceSpeaking=false; bcVoiceButton(); return; } u.onend=function(){ if(_voiceSpeaking) bcSpeakNext(); }; u.onerror=function(){ _voiceSpeaking=false; _voiceQueue=[]; bcVoiceButton(); }; try{ speechSynthesis.speak(u); }catch(e){ _voiceSpeaking=false; _voiceQueue=[]; bcVoiceButton(); } }
-function bcStopSpeech(){ _voiceQueue=[]; _voiceSpeaking=false; _voiceLoading=false; _ttsToken++; try{ if(_ttsAudio){ _ttsAudio.pause(); _ttsAudio.removeAttribute('src'); _ttsAudio.load(); } }catch(e){} try{ if(voiceSupported()) speechSynthesis.cancel(); }catch(e){} bcVoiceButton(); }
+function bcStopSpeech(){ _voiceQueue=[]; _voiceSpeaking=false; _voiceLoading=false; _ttsToken++; try{ if(_ttsAudio&&_ttsAudio._settle){ const fin=_ttsAudio._settle; _ttsAudio._settle=null; fin(); } }catch(e){} /* group_101 E-007 */ try{ if(_ttsAudio){ _ttsAudio.pause(); _ttsAudio.removeAttribute('src'); _ttsAudio.load(); } }catch(e){} try{ if(voiceSupported()) speechSynthesis.cancel(); }catch(e){} bcVoiceButton(); }
 function bcSpeakToggle(srcId){ srcId=srcId||'s-text'; if((_voiceSpeaking||_voiceLoading)&&_voiceSrc===srcId){ bcStopSpeech(); return; } const ok=bcSpeak(bcSpeechText(srcId),srcId); if(!ok) bcNotice(t('ui_voice_unavailable')); }
 function bcVoiceButton(){ document.querySelectorAll('.speak-btn').forEach(function(b){ const mine=(b.dataset.src||'s-text')===_voiceSrc; const on=_voiceSpeaking&&mine; b.style.display=''; b.setAttribute('aria-pressed',on?'true':'false'); b.textContent=(_voiceLoading&&mine)?'\u23f3':(on?'\u23f9':'\ud83d\udd0a'); const lbl=(_voiceLoading&&mine)?t('ui_voice_loading'):(on?t('ui_btn_speak_stop'):t('ui_btn_speak')); b.setAttribute('aria-label',lbl); b.title=lbl; }); }
 function bcVoiceAutoRead(){ if(_voice.auto){ setTimeout(function(){ try{ bcSpeak(bcSpeechText('s-text'),'s-text'); }catch(e){} },60); } }
@@ -286,12 +289,12 @@ let _ttsAudio=null, _ttsToken=0, _ttsManifest=null, _voiceLoading=false;
 function bcVoiceEngine(){ const e=_voice.engine||'auto'; if(e==='openai') return _voice.openaiKey?'openai':'device'; return e; }
 function bcHash(s){ let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h+s.charCodeAt(i))|0; return (h>>>0).toString(16); }
 async function bcTtsManifest(){ if(_ttsManifest!==null) return _ttsManifest; try{ const r=await fetch('audio/manifest.json',{cache:'no-cache'}); _ttsManifest=r.ok?await r.json():false; }catch(e){ _ttsManifest=false; } return _ttsManifest; }
-function bcPlayUrl(url,token){ return new Promise(function(res,rej){ if(token!==_ttsToken) return res(); if(!_ttsAudio){ _ttsAudio=new Audio(); _ttsAudio.preload='auto'; } const a=_ttsAudio; a.onended=function(){ res(); }; a.onerror=function(){ rej(new Error('audio')); }; a.src=url; a.playbackRate=1; a.play().catch(rej); }); }
+function bcPlayUrl(url,token,rate){ return new Promise(function(res,rej){ if(token!==_ttsToken) return res(); if(!_ttsAudio){ _ttsAudio=new Audio(); _ttsAudio.preload='auto'; } const a=_ttsAudio; a._settle=res; a.onended=function(){ a._settle=null; res(); }; a.onerror=function(){ a._settle=null; rej(new Error('audio')); }; a.src=url; a.playbackRate=(rate&&isFinite(rate))?rate:1; a.play().catch(function(err){ a._settle=null; rej(err); }); }); } // group_101 E-007: rate for the bundled pack; _settle lets a stop finish the wait
 async function bcTtsBlob(text,lang){ const voice=_voice.openaiVoice||'onyx', model=_voice.openaiModel||'gpt-4o-mini-tts'; const speed=Math.min(1.5,Math.max(0.7,Number(_voice.rate)||1)); const key='https://dbc.tts/'+lang+'/'+model+'/'+voice+'/'+speed+'/'+bcHash(text); let cache=null; try{ if(window.caches){ cache=await caches.open(TTS_CACHE); const hit=await cache.match(key); if(hit) return await hit.blob(); } }catch(e){} const body={model:model,voice:voice,input:text,response_format:'mp3',speed:speed}; if(model.indexOf('gpt-4o')===0) body.instructions=t('ui_voice_style'); const r=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',headers:{'Authorization':'Bearer '+_voice.openaiKey,'Content-Type':'application/json'},body:JSON.stringify(body)}); if(!r.ok) throw new Error('openai '+r.status); const blob=await r.blob(); try{ if(cache) await cache.put(key,new Response(blob,{headers:{'Content-Type':'audio/mpeg'}})); }catch(e){} return blob; }
 async function bcSpeakOpenAI(text,srcId,token){ const lang=getLang(); const chunks=bcSplitSentences(text,3500); _voiceLoading=true; bcVoiceButton(); try{ for(const c of chunks){ if(token!==_ttsToken) return; const blob=await bcTtsBlob(c,lang); if(token!==_ttsToken) return; _voiceLoading=false; bcVoiceButton(); const url=URL.createObjectURL(blob); try{ await bcPlayUrl(url,token); } finally { URL.revokeObjectURL(url); } } }catch(e){ console.warn('tts',e); if(token===_ttsToken){ _voiceLoading=false; bcNotice(t('ui_voice_err')); if(voiceSupported()){ bcSpeakDevice(text,srcId); return; } } } if(token===_ttsToken){ _voiceLoading=false; _voiceSpeaking=false; bcVoiceButton(); } }
 async function bcSpeakSmart(text,srcId,token){ const lang=getLang(); const key=(srcId==='s-text'&&typeof S!=='undefined'&&S)?String(S.section):String(srcId).replace('-text',''); const eng=bcVoiceEngine();
   // V-05: the engine choice is the player's - pack (bundled files) / device voices (incl. the browser's Google voices) / OpenAI by key; auto = pack when the language has one, else device
-  if(eng==='pack'||eng==='auto'){ try{ const man=await bcTtsManifest(); if(token!==_ttsToken) return; if(man&&man[lang]&&man[lang][key]){ await bcPlayUrl('audio/'+lang+'/'+key+'.'+(man.ext||'mp3'),token); if(token===_ttsToken){ _voiceSpeaking=false; bcVoiceButton(); } return; } }catch(e){} if(token!==_ttsToken) return; }
+  if(eng==='pack'||eng==='auto'){ try{ const man=await bcTtsManifest(); if(token!==_ttsToken) return; if(man&&man[lang]&&man[lang][key]){ await bcPlayUrl('audio/'+lang+'/'+key+'.'+(man.ext||'mp3'),token,Math.min(1.3,Math.max(0.7,Number(_voice.rate)||1))); if(token===_ttsToken){ _voiceSpeaking=false; bcVoiceButton(); } return; } }catch(e){} if(token!==_ttsToken) return; }
   if(eng==='openai'){ return bcSpeakOpenAI(text,srcId,token); }
   if(voiceSupported()){ bcSpeakDevice(text,srcId); return; } _voiceSpeaking=false; bcVoiceButton(); bcNotice(t('ui_voice_unavailable')); }
 // <<< BC_VOICE <<<
@@ -621,7 +624,7 @@ function takeItem(idx){
 function dropItemModal(idx){ if(S&&S.inventory&&KNOWLEDGE_FLAGS.has(canonItem(S.inventory[idx]))) return; // group_85 AS-12
   if(!S)return;
   const itm=S.inventory[idx];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));
-  S.inventory.splice(idx,1);
+  S.inventory.splice(idx,1); forgetArrowCount(itm);
   renderInvModalCurrent();
   updateHUD();saveGame();
   try{ const cur=document.getElementById('inv-modal-current'); const bs=cur?cur.querySelectorAll('button'):[]; const nb=bs.length?bs[Math.min(idx,bs.length-1)]:null; if(nb) nb.focus({preventScroll:true}); else { const fb=document.querySelector('#modal-inventory button:not([disabled])'); if(fb) fb.focus({preventScroll:true}); } }catch(e){} // group_81 CA-09
@@ -630,6 +633,8 @@ function dropItemModal(idx){ if(S&&S.inventory&&KNOWLEDGE_FLAGS.has(canonItem(S.
 function closeInvModal(){
   document.getElementById('modal-inventory').classList.remove('on');
   updateHUD();saveGame();
+  const after=window._invModalOnDone; window._invModalOnDone=null; // group_101 E-002
+  if(typeof after==='function'){ try{ after(); }catch(e){} }
 }
 
 // ── Death Overlay ──
@@ -711,8 +716,21 @@ function repaintAfterLangSwitch(){
   try{ if(window.bcRefreshMapLanguage) window.bcRefreshMapLanguage(ACTIVE_LOCALE); }catch(e){}
   var sg=document.getElementById('scr-game');
   var inGame=!!(S && sg && sg.classList && sg.classList.contains('on'));
-  if(inGame){ try{ renderGame({repaint:true}); }catch(e){} }
+  if(inGame){ try{ renderGame({repaint:true}); }catch(e){} try{ relabelCombatUi(); }catch(e){} }
   else { try{ updateHUD(); }catch(e){} }
+}
+// group_101 E-004: a language switch during a fight re-localizes the open combat modal (enemy names, charge buttons).
+function relabelCombatUi(){
+  const cs=combatState; const mc=document.getElementById('modal-combat'); if(!cs||!mc||!mc.classList.contains('on')) return;
+  (cs.enemies||[]).forEach(en=>{ if(en.rawName) en.name=enemyName(en.rawName); });
+  const lab=(id,txt)=>{ const b=document.getElementById(id); if(b&&b.style.display!=='none') b.textContent=txt; };
+  lab('btn-copy-spell',t('zaklyatie_kopii')+getSpellRemaining('COPY')+']');
+  lab('btn-force-spell',t('zaklyatie_sily')+getSpellRemaining('FORCE')+']');
+  lab('btn-weakness-spell',t('zaklyatie_slabosti')+getSpellRemaining('WEAKNESS')+']');
+  lab('btn-larva',t('razlomit_lichinku')+((S&&S.inventory)?S.inventory.filter(it=>canonItem(it)==='spider_larva').length:0)+']');
+  lab('btn-crossbow',t('ui_btn_crossbow')+' ['+arrowsAvailable()+']');
+  ['btn-summon-ally','btn-summon-ally2'].forEach(id=>{ const b=document.getElementById(id); const k=b&&b.dataset.ally; if(b&&k&&b.style.display!=='none'&&COMBAT_ALLIES[k]) b.textContent=COMBAT_ALLIES[k].icon+t('pozvat')+allyText(k).name; });
+  try{ updateCombatEnemyDisplay(cs); }catch(e){}
 }
 function applyLang(code, opts){
   if(!LOCALES[code]) code=DEFAULT_LANG;
@@ -847,7 +865,7 @@ function renderGame(opts){
     // paragraph so any other effect on the same auto_items operates on
     // the cleared state. clear_inventory empties S.inventory; gold_zero
     // resets S.gold to 0.
-    if(ai.clear_inventory){
+    if(ai.clear_inventory){ S.arrowsLeft={}; /* group_101 E-005 */
       const lostCount=S.inventory.length;
       if(lostCount>0){
         S.inventory=[];
@@ -1207,14 +1225,14 @@ function useHealingInCombat(){
   updateHUD();saveGame();
 }
 function toggleAddItem(){const a=document.getElementById('add-item-area');a.style.display=a.style.display==='none'?'block':'none';}
-function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.trim();
+function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.replace(/[<>&"'`]/g,'').trim().slice(0,60); /* group_101 E-006: rendered through innerHTML and attributes */
   if(!v)return;if(getBagUsed()+getItemSize(v)>getBagSize()){bcNotice(t('meshok_polon_3')+getBagSize()+t('mest_2'));return;}
   S.inventory.push(v);inp.value='';updateHUD();saveGame();}
 // group_81 CA-09: updateHUD rebuilds #inv-list, destroying the activated button -
 // land on the equivalent row (or the add-item control) so keyboard users keep their place.
 function focusInventoryRow(i){ try{ const rows=document.querySelectorAll('#inv-list .inv-item'); const row=rows.length?rows[Math.min(i,rows.length-1)]:null; const b=row&&row.querySelector('button'); if(b){ b.focus({preventScroll:true}); return; } const add=document.getElementById('inv-add-btn'); if(add) add.focus({preventScroll:true}); }catch(e){} }
 function removeItem(i){ if(S&&S.inventory&&KNOWLEDGE_FLAGS.has(canonItem(S.inventory[i]))) return; // group_85 AS-12
-if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);updateHUD();saveGame();focusInventoryRow(i);}
+if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);forgetArrowCount(itm);updateHUD();saveGame();focusInventoryRow(i);}
 
 // ── Choices ──
 // Spell detection and styling
@@ -1316,19 +1334,9 @@ function applyChoiceAcquires(ch, onDone){
   // is shared with auto_items. The modal's Continue button closes
   // itself; we wire navigation onto the close-handler via a one-shot.
   showInventoryModal(newItems, []);
-  const modal=document.getElementById('modal-inventory');
-  // group_100: the Done button is #btn-inv-done (class btn-p) - the old '.btn-primary' lookup fell back to the first
-  // «+ Взять» button, so «Готово» never navigated; the wiring is one-shot so later offer dialogs cannot repeat it.
-  const closeBtn=document.getElementById('btn-inv-done')||modal.querySelector('button');
-  if(closeBtn&&onDone){
-    const originalOnClick=closeBtn.onclick;
-    closeBtn.onclick=(e)=>{
-      closeBtn.onclick=originalOnClick;
-      if(originalOnClick)originalOnClick.call(closeBtn,e);
-      else closeInvModal();
-      onDone();
-    };
-  }
+  // group_100 AR-19 + group_101 E-002: the continuation is parked, not wired onto a button - closeInvModal() runs it
+  // exactly once whichever way the dialog closes («Готово», Escape, code), so no stale handler can survive.
+  window._invModalOnDone=onDone||null;
 }
 
 // Per-choice gold deduction (group_16). A choice may carry `gold_cost: N`
@@ -2541,7 +2549,7 @@ function startCombat(enemies,sec){
   if(S)S.pending_combat_buff=null;
   const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
   combatState={
-    enemies:enemies.map((e,idx)=>(e=(e&&e.mirror_hero&&S)?Object.assign({},e,{skill:S.skill,stamina:Math.max(1,S.stamina)}):e /* group_100: sec.239 - your own Copy has your SKILL and STAMINA */,{...e,name:enemyName(e.name),hp:((idx===0&&S&&S.carryOver&&S.carryOver.to===S.section&&typeof S.carryOver.hp==='number')?Math.max(1,Math.min(e.stamina,S.carryOver.hp)):e.stamina) /* group_87 PL-41 */,dmg:e.damage||2,active:!(((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0) || e.joins!==undefined),fled:false})),
+    enemies:enemies.map((e,idx)=>(e=(e&&e.mirror_hero&&S)?Object.assign({},e,{skill:S.skill,stamina:Math.max(1,S.stamina)}):e /* group_100: sec.239 - your own Copy has your SKILL and STAMINA */,{...e,rawName:e.name,name:enemyName(e.name),hp:((idx===0&&S&&S.carryOver&&S.carryOver.to===S.section&&typeof S.carryOver.hp==='number')?Math.max(1,Math.min(e.stamina,S.carryOver.hp)):e.stamina) /* group_87 PL-41 */,dmg:e.damage||2,active:!(((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0) || e.joins!==undefined),fled:false})),
     round:0,
     wounds:0,
     sec:sec,
@@ -2626,7 +2634,7 @@ function startCombat(enemies,sec){
         const a=COMBAT_ALLIES[key];
         b.style.display='inline-block';
         b.textContent=`${a.icon}${t('pozvat')}${allyText(key).name}`;
-        b.onclick=()=>useAllyInCombat(key);
+        b.onclick=()=>useAllyInCombat(key); b.dataset.ally=key; // group_101 E-004: relabel after a language switch
         slot++;
       }
     }
@@ -3066,6 +3074,7 @@ function useSnakeInCombat(){
 
 // group_100 F-020: the crossbow of sec.649. Arrows come in bundles (arrows_5 from sec.649, black_arrows_5 from sec.570);
 // S.arrowsLeft keeps what is left of each bundle (default 5). One shot per fight («с остальными придется драться на мечах»).
+function forgetArrowCount(itm){ if(S&&S.arrowsLeft){ const c=canonItem(itm); if(c==='arrows_5'||c==='black_arrows_5') delete S.arrowsLeft[c]; } } // group_101 E-005
 function arrowsAvailable(){ if(!S||!S.inventory) return 0; let n=0; ['arrows_5','black_arrows_5'].forEach(sl=>{ if(S.inventory.some(it=>canonItem(it)===sl)){ const left=(S.arrowsLeft&&typeof S.arrowsLeft[sl]==='number')?S.arrowsLeft[sl]:5; n+=Math.max(0,left); } }); return n; }
 function useCrossbowInCombat(){
   if(!combatState||!S)return;
@@ -3074,7 +3083,7 @@ function useCrossbowInCombat(){
   if(!S.inventory.some(it=>canonItem(it)==='crossbow')||arrowsAvailable()<=0) return;
   const alive=getAliveCombatEnemies(cs); if(alive.length===0) return;
   const target=getCombatTarget(cs)||alive[0];
-  if(['prizrak','duh_mertvyh','zloy_duh'].map(k=>enemyName(k)).includes(target.name)){ bcNotice(t('strela_skvoz_prizraka')); return; }
+  if(['prizrak','duh_mertvyh','zloy_duh'].includes(target.rawName)){ /* group_101 E-004: by key, so a language switch mid-fight cannot hide a ghost */ bcNotice(t('strela_skvoz_prizraka')); return; }
   const sl=(S.inventory.some(it=>canonItem(it)==='arrows_5')&&!(S.arrowsLeft&&S.arrowsLeft.arrows_5===0))?'arrows_5':'black_arrows_5';
   S.arrowsLeft=S.arrowsLeft||{}; const left=(typeof S.arrowsLeft[sl]==='number'?S.arrowsLeft[sl]:5)-1; S.arrowsLeft[sl]=left;
   if(left<=0){ const ix=S.inventory.findIndex(it=>canonItem(it)===sl); if(ix>=0) S.inventory.splice(ix,1); delete S.arrowsLeft[sl]; }

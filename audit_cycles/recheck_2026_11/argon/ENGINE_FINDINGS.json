@@ -1,0 +1,86 @@
+[
+  {
+    "id": "E-001",
+    "file": "src/game_logic.js",
+    "function": "saveGame",
+    "quote": "function saveGame(){if(!S)return;localStorage.setItem(SAVE_KEY,JSON.stringify(S));lastAutosaveAt=Date.now();renderAutosaveNote();}",
+    "problem": "localStorage.setItem(SAVE_KEY, ...) and localStorage.getItem(SAVE_KEY) in initTitle are not wrapped in try/catch (unlike loadVoicePrefs/saveVoicePrefs and loadVisualSettings/saveVisualSettings). In Safari Private Browsing, strict tracking protection, sandboxed iframes, or when localStorage quota is exceeded, setItem throws a QuotaExceededError or SecurityError DOMException. Because saveGame() is called synchronously inside startGame(), takeItem(), eatFood(), useSpell(), doLuckCheck(), renderDiceRoll(), and at the end of renderGame(), an uncaught exception aborts execution mid-transition.",
+    "scenario": "Open the game in a browser context where localStorage writes throw (e.g. quota full or storage blocked) and click 'Отправиться в путь' on the spell selection screen (startGame). saveGame() throws before renderPregameText() and showScr('pregame') can run, leaving the player stuck on the spell screen.",
+    "impact": "Uncaught DOMException halts game start, choice transitions, and item pickups whenever storage is unavailable or full.",
+    "proposed_patch": "function saveGame(){if(!S)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));lastAutosaveAt=Date.now();renderAutosaveNote();}catch(e){}}",
+    "severity": "P0",
+    "confidence": "high"
+  },
+  {
+    "id": "E-002",
+    "file": "src/game_logic.js",
+    "function": "applyChoiceAcquires",
+    "quote": "const closeBtn=document.getElementById('btn-inv-done')||modal.querySelector('button');",
+    "problem": "When a player clicks a choice with `acquires`, `applyChoiceAcquires` opens `#modal-inventory` and monkey-patches `closeBtn.onclick` so that clicking 'Готово' (`#btn-inv-done`) navigates to `ch.target` (`onDone()`). However, if the player closes the inventory modal by pressing `Escape`, `_bcCloseTopDialog()` searches `#modal-inventory` using `top.querySelector('[onclick*=\"closeModal(\"]')`, which returns `null` because `#btn-inv-done` has `onclick=\"closeInvModal()\"`. Even worse, if the player opens the Menu or triggers a language repaint or clicks the choice button a second time, `closeBtn.onclick` remains overwritten with the one-shot navigation callback if the modal was closed by any other code path (`closeInvModal()`), causing the next normal `auto_items` inventory modal's 'Готово' button to unexpectedly teleport the player to the old `ch.target`.",
+    "scenario": "1. At a paragraph with a choice carrying `acquires` (e.g., §252 or §76), click the choice to open `#modal-inventory`. 2. Press `Escape` — nothing happens because `_bcCloseTopDialog()` only matches `[onclick*=\"closeModal(\"]` and misses `onclick=\"closeInvModal()\"`. 3. If `closeInvModal()` is called programmatically (or if `#btn-inv-done` is not clicked), `closeBtn.onclick` retains the stale `onDone` navigation closure.",
+    "impact": "1) Escape key fails to close `#modal-inventory` (unlike other closable modals). 2) Stale `onclick` hook on `#btn-inv-done` can fire on a later paragraph's inventory modal if `#modal-inventory` was closed without clicking `#btn-inv-done`.",
+    "proposed_patch": "In `closeInvModal()`, run and clear any pending `window._invModalOnDone` callback so all close paths (button click, Escape, programmatic close) execute `onDone` cleanly once; in `_bcCloseTopDialog()`, change the selector to `top.querySelector('[onclick*=\"closeModal(\"],[onclick*=\"closeInvModal(\"]')`.",
+    "severity": "P1",
+    "confidence": "high"
+  },
+  {
+    "id": "E-003",
+    "file": "src/map_module.js",
+    "function": "window.importSave",
+    "quote": "if(![4,5,6,7].includes(s.v)){ (typeof bcNotice==='function'?bcNotice:alert)(t('nesovmestimyy_format')); return; }",
+    "problem": "Two drift defects in `map_module.js`'s wrapper around `window.importSave`: (1) It completely replaces `game_logic.js`'s `importSave` instead of calling `oldImportSave`, and **omits `normalizeSave(s)`**! As a result, importing a save file bypasses `normalizeSave(s)` completely — missing arrays (`s.inventory`, `s.spells`, `s.visited`), `NaN` or non-numeric stats, legacy `'Арбуз'` strings (CB-05), and pre-v2.166 story flags (`princess_awake`, `barlad_dead` backfill from `visited`, AS-13) are never normalized on file import. (2) If the uploaded JSON is `null` or a primitive (e.g. `JSON.parse('null')` or `JSON.parse('123')`), `s.v` throws a `TypeError` (caught) or, if `s` is `{\"v\":5,\"stamina\":\"bad\"}`, corrupts runtime state and produces `NaN` in combat and HUD.",
+    "scenario": "Export or hand-edit a save file (or import an older v4/v5 save where `visited` contains 627 and 81 before story flags existed, or where optional fields are omitted), then import it via Menu -> 'Импорт сохранения'. Because `map_module.js` overwrites `window.importSave` without calling `normalizeSave(s)`, the imported state `S` lacks backfilled story flags and normalized fields.",
+    "impact": "Importing an old or minimal save file skips `normalizeSave(s)`, breaking victory gates (AS-13), legacy item migration (CB-05), and type safety for `S` fields.",
+    "proposed_patch": "In `src/map_module.js` inside `window.importSave`, call `if(typeof normalizeSave==='function') normalizeSave(s);` right after upgrading `s.v===4` (and guard `if(!s||typeof s!=='object') throw new Error('invalid');`).",
+    "severity": "P1",
+    "confidence": "high"
+  },
+  {
+    "id": "E-004",
+    "file": "src/game_logic.js",
+    "function": "repaintAfterLangSwitch",
+    "quote": "if(inGame){ try{ renderGame({repaint:true}); }catch(e){} }",
+    "problem": "Switching the language via the Menu while a modal combat (`#modal-combat.on`) or luck check (`#modal-luck.on`) is open calls `renderGame({repaint:true})`, which rebuilds `#c-list` and updates the background story text, but does NOT re-localize the open combat modal's enemy cards (`combatState.enemies[i].name` was snapshotted in the old language at `startCombat`, and `.ce-status` pills keep old strings until the next round) or dynamic spell button counters (`#btn-copy-spell`, `#btn-force-spell`, `#btn-weakness-spell`, `#btn-larva`, `#btn-crossbow`, `#btn-summon-ally`), nor the open `#modal-luck` prompt text.",
+    "scenario": "1. Enter any combat paragraph (e.g. §43) and click 'Вступить в бой'. 2. On mobile or via keyboard/menu, switch the language from RU to EN. 3. Observe `#modal-combat`: enemy card names (`combatState.enemies[i].name`), status pills (`в бою`), and dynamic button labels (`👤 Заклятие Копии [1]`, `💪 Заклятие Силы [2]`) remain in Russian until the next action or fight.",
+    "impact": "Mixed-language UI inside the combat and luck modals after a mid-fight or mid-roll language switch.",
+    "proposed_patch": "Store the raw enemy slug `rawName: e.name` on each `combatState.enemies` entry in `startCombat`, and in `repaintAfterLangSwitch()` (when `combatState` is active) refresh `e.name = enemyName(e.rawName)`, re-render `#combat-enemies` + dynamic combat button labels, and call `updateCombatEnemyDisplay(combatState)`.",
+    "severity": "P2",
+    "confidence": "high"
+  },
+  {
+    "id": "E-005",
+    "file": "src/game_logic.js",
+    "function": "useCrossbowInCombat",
+    "quote": "const sl=(S.inventory.some(it=>canonItem(it)==='arrows_5')&&!(S.arrowsLeft&&S.arrowsLeft.arrows_5===0))?'arrows_5':'black_arrows_5';",
+    "problem": "If a player drops an arrow bundle (`arrows_5` or `black_arrows_5`) from their bag when it has fewer than 5 arrows left (e.g. 1 arrow left) and later picks up or buys or acquires a fresh bundle of the same slug, `S.arrowsLeft[sl]` still holds the stale count (`1`) because `removeItem()` and `dropItemModal()` do not delete `S.arrowsLeft[canonItem(itm)]` when the bundle is removed from `S.inventory`.",
+    "scenario": "1. Fire 4 arrows from `arrows_5` in combat (`S.arrowsLeft.arrows_5` is now 1). 2. Drop `arrows_5` from the bag via the trash button (`removeItem` / `dropItemModal`). 3. Acquire `arrows_5` again (or on a revisit/hash). It displays `(1)` instead of `(5)`.",
+    "impact": "Stale `S.arrowsLeft` counter persists after an arrow bundle is dropped from the inventory.",
+    "proposed_patch": "In `removeItem(i)` and `dropItemModal(idx)` (and `clear_inventory`), add: `const c=canonItem(itm); if(S.arrowsLeft&&(c==='arrows_5'||c==='black_arrows_5')) delete S.arrowsLeft[c];`.",
+    "severity": "P2",
+    "confidence": "high"
+  },
+  {
+    "id": "E-006",
+    "file": "src/game_logic.js",
+    "function": "updateHUD",
+    "quote": "il.innerHTML+=`<div class=\"inv-item\"><span>${invDisplay(item)}</span><span style=\"display:flex;gap:2px;align-items:center;\">${eatBtn}${KNOWLEDGE_FLAGS.has(canonItem(item))?'':`<button type=\"button\" class=\"inv-remove\" onclick=\"removeItem(${i})\" aria-label=\"${t('vybrosit')}: ${invDisplay(item)}\" title=\"${t('vybrosit')}\">\\uD83D\\uDDD1</button>`}</span></div>`;",
+    "problem": "The manual item input (`#add-item-input` -> `addItem()`) pushes a raw user-typed string `v` directly into `S.inventory`. `updateHUD()`, `renderInvModalCurrent()`, `showItemNotification()`, and `logEvent()` interpolate `invDisplay(item)` (which returns unknown strings verbatim) directly into `innerHTML` and double-quoted HTML attributes (`aria-label=\"... ${invDisplay(item)}\"`). If a player types `<img src=x onerror=...>` or a string containing `\"` into `#add-item-input`, it breaks the DOM markup and executes arbitrary HTML/JS on every HUD render and persisted save.",
+    "scenario": "1. Click `+` (`#inv-add-btn`) in the bag section to open `#add-item-area`. 2. Type `\" onclick=\"alert(1)` or `<b>test</b>` into `#add-item-input` and click OK. 3. `updateHUD()` injects the unescaped string into `il.innerHTML` and `aria-label`.",
+    "impact": "DOM breakage and self-XSS (or save-file XSS when sharing a `.json` save file containing a crafted string in `inventory` or `eventLog`) via unescaped `innerHTML` interpolation.",
+    "proposed_patch": "Escape HTML characters (`&`, `<`, `>`, `\"`, `'`) in `invDisplay()` (or sanitize in `addItem()` and `normalizeSave()`).",
+    "severity": "P2",
+    "confidence": "high"
+  },
+  {
+    "id": "E-007",
+    "file": "src/game_logic.js",
+    "function": "bcPlayUrl",
+    "quote": "function bcPlayUrl(url,token){ return new Promise(function(res,rej){ if(token!==_ttsToken) return res(); if(!_ttsAudio){ _ttsAudio=new Audio(); _ttsAudio.preload='auto'; } const a=_ttsAudio; a.onended=function(){ res(); }; a.onerror=function(){ rej(new Error('audio')); }; a.src=url; a.playbackRate=1; a.play().catch(rej); }); }",
+    "problem": "1) When `bcStopSpeech()` cancels playback while `bcPlayUrl` is awaiting `_ttsAudio`, `bcStopSpeech()` calls `_ttsAudio.pause(); _ttsAudio.removeAttribute('src'); _ttsAudio.load();`. Removing `src` and calling `load()` on an active `HTMLAudioElement` either fires `onerror` (rejecting the promise) or leaves the `Promise` in `bcPlayUrl` pending forever until the next `bcPlayUrl` overwrites `a.onended`/`a.onerror`, leaking the `Blob` object URL in `bcSpeakOpenAI` (`URL.revokeObjectURL(url)` in `finally` never runs if the Promise never settles). 2) `a.playbackRate=1` is hardcoded instead of respecting `_voice.rate` for bundled pack audio (`eng==='pack'||eng==='auto'`).",
+    "scenario": "1. Start narration with OpenAI TTS (`bcSpeakOpenAI`) or bundled pack (`bcSpeakSmart`). 2. Click the stop button (`bcSpeakToggle` -> `bcStopSpeech()`) mid-sentence. 3. Also, changing the voice speed slider (`#voice-rate`) in the menu has no effect on bundled pack audio because `bcPlayUrl` hardcodes `a.playbackRate=1`.",
+    "impact": "Unsettled Promise / leaked Blob URLs when stopping OpenAI narration mid-chunk, and the voice speed setting (`_voice.rate`) is ignored by bundled pack narration.",
+    "proposed_patch": "In `bcStopSpeech()`, call `if(_ttsAudio&&_ttsAudio._resolve) _ttsAudio._resolve();` so `bcPlayUrl`'s promise settles immediately on stop and `finally { URL.revokeObjectURL(url); }` always runs; in `bcPlayUrl(url,token,rate)`, set `a.playbackRate = rate || 1;` (passing `_voice.rate` for bundled pack audio and `1` for OpenAI where speed is already baked into the API request).",
+    "severity": "P2",
+    "confidence": "high"
+  }
+]

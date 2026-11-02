@@ -367,6 +367,7 @@ const oldInitState = window.initState;
       f.text().then(rawText=>{
         try{
           const s=JSON.parse(rawText);
+          if(!s||typeof s!=='object'){ throw new Error('invalid save'); } // group_101 E-003
           if(![4,5,6,7].includes(s.v)){ (typeof bcNotice==='function'?bcNotice:alert)(t('nesovmestimyy_format')); return; }
           if(s.v===4){ s.v=5; s.luckMax=s.luck; delete s.luckBoxes; }
           if(!s.mapState) s.mapState = clone(BC_MAP_STATE_TEMPLATE);
@@ -377,6 +378,7 @@ const oldInitState = window.initState;
           if(!Array.isArray(s.mapState.seen_edges)) s.mapState.seen_edges = [];
           s.v = 7;
           if(!s._mapLastSection) s._mapLastSection = null;
+          if(typeof normalizeSave==='function') normalizeSave(s); // group_101 E-003: the same normalization as loadGame (fields, legacy items, story-flag backfill)
           window.S=s; saveGame(); showScr('game'); renderGame(); closeModal('overlay-menu');
         }catch(err){ (typeof bcNotice==='function'?bcNotice:alert)(t('oshibka_zagruzki')); console.error(err); }
       });

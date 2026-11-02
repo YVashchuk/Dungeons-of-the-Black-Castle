@@ -204,7 +204,8 @@
     "v2.196 -> v2.197": "September 2026 - group_99 self-audit: VC-01 voice declarations restored (a // comment had swallowed them), new tests/_static_scope_harness.js (battery 16 -> 17 harnesses), dead code and dead ui keys removed (ui 371 -> 369), HK-09 closed (TTS resume understands the AAC pack; tts_all compresses), documents aligned with the tree, HANDOFF.md as the single current handoff, two bootstrap scripts removed, old backlog re-verified. GAME_RULES.md label 2.196 -> 2.197 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.197 -> v2.198": "November 2026 - group_100: Gemini 4 Argon fidelity sweep adjudicated - skull chain, crossbow, single-use silver vessel and the green gas, spy offers, river teleport retired, the old man's secret door moved to the castle gates, mirror fight at §239, spells forgotten, flask fill / empty, Levitation hooks, trophies after fights, card deck and sword grants, item gates, food for the fugitives, §1099 toll removed, inert flee flags removed; plus AR-19 (acquires navigation on «Готово») found by the new tests/smoke/fidelity_probes.js (25 probes). items 122 -> 125; ui keys 369 -> 377; p1_6d 97 -> 103. GAME_RULES.md + label 2.197 -> 2.198 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.198 -> v2.199": "November 2026 - group_100 AR-18 (the second flask of §462 made real on the author's decision: weightless, comes full, 2 sips per flask, springs fill both, the merchant fills one, the bandit drinks one, a lost bet takes the second) and AR-20 (§410 spring fills the flask). Two fidelity probes added (27). GAME_RULES.md label 2.198 -> 2.199 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.199 -> v2.200": "November 2026 - group_100 record completed: the Argon report archived in audit_cycles/recheck_2026_11/argon/; findings_map gives the verdict of each of the 45 findings (40 accepted, 5 rejected) and of the four uncertain readings; the five rejections are separate records AR-17a..e with their reasons; smoke rows C32-C47 cover every repair for live runs. GAME_RULES.md label 2.199 -> 2.200 (R-03 guard)."
+    "v2.199 -> v2.200": "November 2026 - group_100 record completed: the Argon report archived in audit_cycles/recheck_2026_11/argon/; findings_map gives the verdict of each of the 45 findings (40 accepted, 5 rejected) and of the four uncertain readings; the five rejections are separate records AR-17a..e with their reasons; smoke rows C32-C47 cover every repair for live runs. GAME_RULES.md label 2.199 -> 2.200 (R-03 guard).",
+    "v2.200 -> v2.201": "November 2026 - group_101: Gemini 4 Argon engine review adjudicated, all 7 findings fixed - guarded saveGame with one notice (E-001), pick-up continuation runs once on every close path and Escape closes the dialog (E-002), the map module's import normalizes the save (E-003), enemy keys and relabelCombatUi after a language switch, ghosts by key (E-004), arrow counts forgotten on drop (E-005), typed and loaded strings sanitized (E-006), bundled narration follows the speed slider and a stop settles playback (E-007). ui keys 377 -> 378; p1_6d 104 -> 105; fidelity probes 27 -> 35 (8 engine-*); smoke rows C48-C51. GAME_RULES.md label 2.200 -> 2.201 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -482,6 +483,120 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_101_2026_11_02_argon_engine": {
+      "comment": "Gemini 4 Argon (Gemini app), 2026-11-02: engine robustness review, Part 2 of audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md, over src/game_logic.js, src/map_module.js, the shell and mobile.css (kit at aaceb31, registry v2.198 -> v2.199; the pre-flight matched that kit). 7 findings, all confirmed against the code and fixed; each repair has a live probe (8 probes, ids engine-*). Report archived in audit_cycles/recheck_2026_11/argon/ (ENGINE_FINDINGS.json, ENGINE_REPORT.md; verdicts in README.md). The reviewer also confirmed as sound: the S bridge, the dialog stack, the mobile sheets, anti-reroll persistence, staged joins and kill paths, stamina clamping, listener lifecycles.",
+      "source": "gemini_4_argon_engine_review_2026_11_02",
+      "verified": "2026-11-02",
+      "items": [
+        {
+          "id": "EN-01_save_survives_blocked_storage",
+          "finding": "E-001",
+          "severity": "P1",
+          "reviewer_severity": "P0",
+          "status": "DONE",
+          "hypothesis": "saveGame() wrote to localStorage without try/catch; with storage blocked (privacy settings, sandboxed frames) or full, the exception stopped the game start, every choice and every pickup.",
+          "note": "Confirmed by reading the code; a live probe in tests/smoke/fidelity_probes.js passes after the fix.",
+          "resolution": "DONE. saveGame() is guarded; the first failure shows one notice («Не удаётся сохранить игру…», new ui key x4) and play continues. Severity P1 in the project scale: it bites only in that environment."
+        },
+        {
+          "id": "EN-02_pickup_dialog_close_paths",
+          "finding": "E-002",
+          "severity": "P1",
+          "reviewer_severity": "P1",
+          "status": "DONE",
+          "hypothesis": "Escape could not close the pick-up dialog (the closer selector only knew closeModal), and the acquires navigation hook (AR-19) survived any close that was not a click on «Готово».",
+          "note": "Confirmed by reading the code; a live probe in tests/smoke/fidelity_probes.js passes after the fix.",
+          "resolution": "DONE. The continuation is parked in window._invModalOnDone and closeInvModal() runs it exactly once whichever way the dialog closes; Escape closes the dialog (and continues the route); the AR-19 guard follows the new wiring."
+        },
+        {
+          "id": "EN-03_import_normalizes",
+          "finding": "E-003",
+          "severity": "P1",
+          "reviewer_severity": "P1",
+          "status": "DONE",
+          "hypothesis": "The map module's window.importSave replaced the engine's and skipped normalizeSave(s): imported saves missed field backfills, legacy item migration and the story-flag backfill; null or primitive JSON was not rejected.",
+          "note": "Confirmed by reading the code; a live probe in tests/smoke/fidelity_probes.js passes after the fix.",
+          "resolution": "DONE. The wrapper rejects non-objects and calls normalizeSave(s) before use, the same normalization loadGame applies."
+        },
+        {
+          "id": "EN-04_language_switch_mid_fight",
+          "finding": "E-004",
+          "severity": "P2",
+          "reviewer_severity": "P2",
+          "status": "DONE",
+          "hypothesis": "A language switch during a fight left enemy names and the charge buttons in the previous language; worse (found while fixing), the crossbow recognised ghosts by the translated name, so after a switch an arrow could kill a ghost.",
+          "note": "Confirmed by reading the code; a live probe in tests/smoke/fidelity_probes.js passes after the fix.",
+          "resolution": "DONE. combatState enemies keep rawName (the enemy key); relabelCombatUi() re-localizes names, the Copy / Force / Weakness / larva / crossbow / ally buttons after a switch; the crossbow tests ghosts by key."
+        },
+        {
+          "id": "EN-05_arrow_count_forgotten",
+          "finding": "E-005",
+          "severity": "P2",
+          "reviewer_severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Dropping a partly used arrow bundle kept its S.arrowsLeft count.",
+          "note": "Confirmed by reading the code; a live probe in tests/smoke/fidelity_probes.js passes after the fix.",
+          "resolution": "DONE. forgetArrowCount() on removeItem / dropItemModal; clear_inventory resets the counts."
+        },
+        {
+          "id": "EN-06_untrusted_strings_sanitized",
+          "finding": "E-006",
+          "severity": "P2",
+          "reviewer_severity": "P2",
+          "status": "DONE",
+          "hypothesis": "A typed item name (and any string in an imported save) reached innerHTML and attributes unescaped - markup or script could run, also from a shared save file.",
+          "note": "Confirmed by reading the code; a live probe in tests/smoke/fidelity_probes.js passes after the fix.",
+          "resolution": "DONE. addItem() strips < > & \" ' ` and caps the name at 60 characters; normalizeSave() strips them from inventory strings and food ids and removes < > from journal entries of loaded or imported saves."
+        },
+        {
+          "id": "EN-07_narration_rate_and_stop",
+          "finding": "E-007",
+          "severity": "P2",
+          "reviewer_severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The bundled narration ignored the speed slider (playbackRate fixed at 1) and a stop could leave the playback promise unsettled (an OpenAI Blob URL then waited for the next clip to be revoked).",
+          "note": "Confirmed by reading the code; a live probe in tests/smoke/fidelity_probes.js passes after the fix.",
+          "resolution": "DONE. bcPlayUrl(url, token, rate) sets playbackRate (the pack passes the slider value, OpenAI keeps 1 because the speed is in the request); bcStopSpeech() settles a pending playback."
+        }
+      ],
+      "findings_map": [
+        {
+          "finding": "E-001",
+          "verdict": "accepted",
+          "cluster": "EN-01"
+        },
+        {
+          "finding": "E-002",
+          "verdict": "accepted",
+          "cluster": "EN-02"
+        },
+        {
+          "finding": "E-003",
+          "verdict": "accepted",
+          "cluster": "EN-03"
+        },
+        {
+          "finding": "E-004",
+          "verdict": "accepted",
+          "cluster": "EN-04"
+        },
+        {
+          "finding": "E-005",
+          "verdict": "accepted",
+          "cluster": "EN-05"
+        },
+        {
+          "finding": "E-006",
+          "verdict": "accepted",
+          "cluster": "EN-06"
+        },
+        {
+          "finding": "E-007",
+          "verdict": "accepted",
+          "cluster": "EN-07"
+        }
+      ]
     },
     "group_100_2026_11_02_argon_fidelity": {
       "comment": "Gemini 4 Argon (Gemini app, thinking level Medium), 2026-11-02: text-vs-engine fidelity sweep over all 1221 Russian paragraphs against GD, the engine, items.json, GAME_RULES and REGISTRY_DIGEST (brief audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md; the 900 KB locale was uploaded in four parts after the first upload was cut at §467). Pre-flight matched the maintainer's reference values exactly (1221 / 369 keys, GD[1221] luck 357/628, GD[127] golden_snake, useSnakeInCombat, initVisualPolishV1, digest last line). 45 findings: every one re-verified against the tree; 40 accepted in 17 clusters, 5 rejected, 1 left to the author. A deterministic probe of the repairs (tests/smoke/fidelity_probes.js) then exposed one more defect of its own (AR-19). Report archived in audit_cycles/recheck_2026_11/argon/ (FIDELITY_FINDINGS.json verbatim, FIDELITY_REPORT.md, README.md with the verdict per finding); findings_map below maps every finding to its cluster or rejection.",
