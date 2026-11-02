@@ -203,7 +203,8 @@
     "v2.195 -> v2.196": "September 2026 - group_98 (Astra live run 2026-09-18, all blocks finished): MAP-01 full screen takes the whole map shell so the layer selector, zoom and legend remain reachable; MAP-02 the top bar no longer inherits the mini-map layer (updateMapTopbar runs for the full map only). p1_6d 95 -> 97; _dist_ui_check 63 -> 64; smoke C31. GAME_RULES.md label 2.195 -> 2.196 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.196 -> v2.197": "September 2026 - group_99 self-audit: VC-01 voice declarations restored (a // comment had swallowed them), new tests/_static_scope_harness.js (battery 16 -> 17 harnesses), dead code and dead ui keys removed (ui 371 -> 369), HK-09 closed (TTS resume understands the AAC pack; tts_all compresses), documents aligned with the tree, HANDOFF.md as the single current handoff, two bootstrap scripts removed, old backlog re-verified. GAME_RULES.md label 2.196 -> 2.197 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.197 -> v2.198": "November 2026 - group_100: Gemini 4 Argon fidelity sweep adjudicated - skull chain, crossbow, single-use silver vessel and the green gas, spy offers, river teleport retired, the old man's secret door moved to the castle gates, mirror fight at §239, spells forgotten, flask fill / empty, Levitation hooks, trophies after fights, card deck and sword grants, item gates, food for the fugitives, §1099 toll removed, inert flee flags removed; plus AR-19 (acquires navigation on «Готово») found by the new tests/smoke/fidelity_probes.js (25 probes). items 122 -> 125; ui keys 369 -> 377; p1_6d 97 -> 103. GAME_RULES.md + label 2.197 -> 2.198 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.198 -> v2.199": "November 2026 - group_100 AR-18 (the second flask of §462 made real on the author's decision: weightless, comes full, 2 sips per flask, springs fill both, the merchant fills one, the bandit drinks one, a lost bet takes the second) and AR-20 (§410 spring fills the flask). Two fidelity probes added (27). GAME_RULES.md label 2.198 -> 2.199 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.198 -> v2.199": "November 2026 - group_100 AR-18 (the second flask of §462 made real on the author's decision: weightless, comes full, 2 sips per flask, springs fill both, the merchant fills one, the bandit drinks one, a lost bet takes the second) and AR-20 (§410 spring fills the flask). Two fidelity probes added (27). GAME_RULES.md label 2.198 -> 2.199 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.199 -> v2.200": "November 2026 - group_100 record completed: the Argon report archived in audit_cycles/recheck_2026_11/argon/; findings_map gives the verdict of each of the 45 findings (40 accepted, 5 rejected) and of the four uncertain readings; the five rejections are separate records AR-17a..e with their reasons; smoke rows C32-C47 cover every repair for live runs. GAME_RULES.md label 2.199 -> 2.200 (R-03 guard)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -483,7 +484,7 @@
       "verified": "2026-07-09"
     },
     "group_100_2026_11_02_argon_fidelity": {
-      "comment": "Gemini 4 Argon (Gemini app, thinking level Medium), 2026-11-02: text-vs-engine fidelity sweep over all 1221 Russian paragraphs against GD, the engine, items.json, GAME_RULES and REGISTRY_DIGEST (brief audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md; the 900 KB locale was uploaded in four parts after the first upload was cut at §467). Pre-flight matched the maintainer's reference values exactly (1221 / 369 keys, GD[1221] luck 357/628, GD[127] golden_snake, useSnakeInCombat, initVisualPolishV1, digest last line). 45 findings: every one re-verified against the tree; 40 accepted in 17 clusters, 5 rejected, 1 left to the author. A deterministic probe of the repairs (tests/smoke/fidelity_probes.js) then exposed one more defect of its own (AR-19). Report kept in the chat, not archived.",
+      "comment": "Gemini 4 Argon (Gemini app, thinking level Medium), 2026-11-02: text-vs-engine fidelity sweep over all 1221 Russian paragraphs against GD, the engine, items.json, GAME_RULES and REGISTRY_DIGEST (brief audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md; the 900 KB locale was uploaded in four parts after the first upload was cut at §467). Pre-flight matched the maintainer's reference values exactly (1221 / 369 keys, GD[1221] luck 357/628, GD[127] golden_snake, useSnakeInCombat, initVisualPolishV1, digest last line). 45 findings: every one re-verified against the tree; 40 accepted in 17 clusters, 5 rejected, 1 left to the author. A deterministic probe of the repairs (tests/smoke/fidelity_probes.js) then exposed one more defect of its own (AR-19). Report archived in audit_cycles/recheck_2026_11/argon/ (FIDELITY_FINDINGS.json verbatim, FIDELITY_REPORT.md, README.md with the verdict per finding); findings_map below maps every finding to its cluster or rejection.",
       "source": "gemini_4_argon_fidelity_2026_11_02",
       "verified": "2026-11-02",
       "items": [
@@ -616,12 +617,49 @@
           "resolution": "DONE. Removed; the 6d guard keeps peaceful choices free of flee."
         },
         {
-          "id": "AR-17_rejected_findings",
+          "id": "AR-17a_sec736_golden_horseshoe",
           "severity": "P2",
           "status": "REJECTED",
-          "hypothesis": "F-026 §736 golden horseshoe; F-035 §1054 «К палаткам — 915»; F-036 §951 spell_choice; F-039 §1052 dagger; F-043 §882 «отблагодарить» Ivan.",
-          "note": "§736 is one of the 16 unreachable vestigial paragraphs; the fb2 canon prints «К палаткам? — 915» (kept as written); spell_choice is not read by the engine; the dagger has no consumer anywhere in the book; §882 is narrative (enforcing a payment could strand a hero who has nothing left after §908).",
-          "resolution": "REJECTED - see note."
+          "finding": "F-026",
+          "hypothesis": "§736 «Это Золотая подкова, «на счастье». Теперь вы будете всегда удачливы…» - the horseshoe and its luck rule are not modelled.",
+          "note": "§736 is one of the 16 vestigial paragraphs of the original that no route reaches (the reachability baseline lists it); the reviewer itself proposed no change. Modelling an item nobody can obtain would only add dead data.",
+          "resolution": "REJECTED - §736 is one of the 16 vestigial paragraphs of the original that no route reaches (the reachability baseline lists it); the reviewer itself proposed no change. Modelling an item nobody can obtain would only add dead data."
+        },
+        {
+          "id": "AR-17b_sec1054_tents_915",
+          "severity": "P2",
+          "status": "REJECTED",
+          "finding": "F-035",
+          "hypothesis": "§1054 «К палаткам? — 915» skips the tents of §715 that §944 sends the reader to («идите к палаткам — 715»).",
+          "note": "The fb2 canon prints «К реке? — 944. К палаткам? — 915.» at §1054; the remake follows the text. «715» is the instruction of a different paragraph (§944, the river bank). Changing a canon target is the author's call, not a fidelity fix.",
+          "resolution": "REJECTED - The fb2 canon prints «К реке? — 944. К палаткам? — 915.» at §1054; the remake follows the text. «715» is the instruction of a different paragraph (§944, the river bank). Changing a canon target is the author's call, not a fidelity fix."
+        },
+        {
+          "id": "AR-17c_sec951_spell_choice_marker",
+          "severity": "P2",
+          "status": "REJECTED",
+          "finding": "F-036",
+          "hypothesis": "§951 → 1021 carries spell:\"SWIMMING\" without spell_choice:true.",
+          "note": "The engine never reads spell_choice; the charge is spent by the spell field, which is present. The marker is cosmetic.",
+          "resolution": "REJECTED - The engine never reads spell_choice; the charge is spent by the spell field, which is present. The marker is cosmetic."
+        },
+        {
+          "id": "AR-17d_sec1052_dagger",
+          "severity": "P2",
+          "status": "REJECTED",
+          "finding": "F-039",
+          "hypothesis": "§1052 «Вы засовываете кинжал за пояс» grants nothing.",
+          "note": "No paragraph of the book ever uses or checks a dagger; the reviewer marked it low-confidence and cosmetic. An item without a mechanic would only clutter the bag.",
+          "resolution": "REJECTED - No paragraph of the book ever uses or checks a dagger; the reviewer marked it low-confidence and cosmetic. An item without a mechanic would only clutter the bag."
+        },
+        {
+          "id": "AR-17e_sec882_thanks_to_ivan",
+          "severity": "P2",
+          "status": "REJECTED",
+          "finding": "F-043",
+          "hypothesis": "§882 «Вы должны чем-нибудь отблагодарить человека, спасшего вашу жизнь, скажем, отдав какое-нибудь заклятие, вещицу или денег.» is not enforced.",
+          "note": "A moral instruction with no price and no consequence in the text; the reader decides. Enforcing a payment would strand a hero who reaches §882 with nothing left after the four-day trap of §908 (the reviewer's own reading B).",
+          "resolution": "REJECTED - A moral instruction with no price and no consequence in the text; the reader decides. Enforcing a payment would strand a hero who reaches §882 with nothing left after the four-day trap of §908 (the reviewer's own reading B)."
         },
         {
           "id": "AR-18_second_flask_462",
@@ -646,6 +684,393 @@
           "hypothesis": "Found by the fidelity probe, not by the reviewer: applyChoiceAcquires looked for .btn-primary, but the offer dialog's «Готово» is #btn-inv-done (class btn-p), so the navigation was wired to the first «+ Взять» button - pressing «Готово» closed the dialog without leaving the paragraph (all 15 acquires choices), and a permanent wiring would have repeated the navigation in later dialogs.",
           "note": "Confirmed by the probe skull-taken-at-252 (skull in the bag, hero still at §252).",
           "resolution": "DONE. The wiring targets #btn-inv-done and restores the button's own handler on first use; 6d guard; the probe now passes (hero at §480 with the skull)."
+        }
+      ],
+      "findings_map": [
+        {
+          "finding": "F-001",
+          "section": 10,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-002",
+          "section": 74,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-003",
+          "section": 76,
+          "class": "ITEM_NOT_GRANTED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-06"
+        },
+        {
+          "finding": "F-004",
+          "section": 129,
+          "class": "ITEM_NOT_GRANTED",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-11"
+        },
+        {
+          "finding": "F-005",
+          "section": 143,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-006",
+          "section": 162,
+          "class": "ITEM_NOT_GRANTED",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-11"
+        },
+        {
+          "finding": "F-007",
+          "section": 340,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-008",
+          "section": 358,
+          "class": "ITEM_NOT_GRANTED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-12"
+        },
+        {
+          "finding": "F-009",
+          "section": 385,
+          "class": "STAT_NOT_APPLIED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-09 + AR-18"
+        },
+        {
+          "finding": "F-010",
+          "section": 427,
+          "class": "STAT_NOT_APPLIED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-09"
+        },
+        {
+          "finding": "F-011",
+          "section": 442,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-012",
+          "section": 454,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-04"
+        },
+        {
+          "finding": "F-013",
+          "section": 499,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-14"
+        },
+        {
+          "finding": "F-014",
+          "section": 505,
+          "class": "ITEM_NOT_GRANTED",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-11"
+        },
+        {
+          "finding": "F-015",
+          "section": 542,
+          "class": "ITEM_NOT_GRANTED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-12"
+        },
+        {
+          "finding": "F-016",
+          "section": 252,
+          "class": "OTHER",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-01"
+        },
+        {
+          "finding": "F-017",
+          "section": 597,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-14"
+        },
+        {
+          "finding": "F-018",
+          "section": 636,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-019",
+          "section": 648,
+          "class": "STAT_NOT_APPLIED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-08"
+        },
+        {
+          "finding": "F-020",
+          "section": 649,
+          "class": "ABILITY_NOT_IMPLEMENTED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-02"
+        },
+        {
+          "finding": "F-021",
+          "section": 684,
+          "class": "SPELL_HOOK_MISSING",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-10"
+        },
+        {
+          "finding": "F-022",
+          "section": 689,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-023",
+          "section": 658,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-13 + AR-16"
+        },
+        {
+          "finding": "F-024",
+          "section": 719,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-025",
+          "section": 791,
+          "class": "SPELL_HOOK_MISSING",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-10"
+        },
+        {
+          "finding": "F-026",
+          "section": 736,
+          "class": "ABILITY_NOT_IMPLEMENTED",
+          "reviewer_severity": "P2",
+          "verdict": "rejected",
+          "cluster": "AR-17a"
+        },
+        {
+          "finding": "F-027",
+          "section": 748,
+          "class": "STAT_NOT_APPLIED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-09"
+        },
+        {
+          "finding": "F-028",
+          "section": 769,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-029",
+          "section": 804,
+          "class": "ITEM_NOT_CONSUMED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-13 + AR-16"
+        },
+        {
+          "finding": "F-030",
+          "section": 826,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-13"
+        },
+        {
+          "finding": "F-031",
+          "section": 842,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P0",
+          "verdict": "accepted",
+          "cluster": "AR-01"
+        },
+        {
+          "finding": "F-032",
+          "section": 854,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P0",
+          "verdict": "accepted",
+          "cluster": "AR-01"
+        },
+        {
+          "finding": "F-033",
+          "section": 859,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P0",
+          "verdict": "accepted",
+          "cluster": "AR-01"
+        },
+        {
+          "finding": "F-034",
+          "section": 913,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P0",
+          "verdict": "accepted",
+          "cluster": "AR-01"
+        },
+        {
+          "finding": "F-035",
+          "section": 1054,
+          "class": "ROUTE_MISMATCH",
+          "reviewer_severity": "P2",
+          "verdict": "rejected",
+          "cluster": "AR-17b"
+        },
+        {
+          "finding": "F-036",
+          "section": 951,
+          "class": "SPELL_HOOK_MISSING",
+          "reviewer_severity": "P2",
+          "verdict": "rejected",
+          "cluster": "AR-17c"
+        },
+        {
+          "finding": "F-037",
+          "section": 957,
+          "class": "ITEM_NOT_GRANTED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-03"
+        },
+        {
+          "finding": "F-038",
+          "section": 981,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-039",
+          "section": 1052,
+          "class": "ITEM_NOT_GRANTED",
+          "reviewer_severity": "P2",
+          "verdict": "rejected",
+          "cluster": "AR-17d"
+        },
+        {
+          "finding": "F-040",
+          "section": 1099,
+          "class": "SPELL_HOOK_MISSING",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-15"
+        },
+        {
+          "finding": "F-041",
+          "section": 1119,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-042",
+          "section": 1125,
+          "class": "STAT_NOT_APPLIED",
+          "reviewer_severity": "P1",
+          "verdict": "accepted",
+          "cluster": "AR-09"
+        },
+        {
+          "finding": "F-043",
+          "section": 882,
+          "class": "SPELL_HOOK_MISSING",
+          "reviewer_severity": "P2",
+          "verdict": "rejected",
+          "cluster": "AR-17e"
+        },
+        {
+          "finding": "F-044",
+          "section": 1171,
+          "class": "OTHER",
+          "reviewer_severity": "P2",
+          "verdict": "accepted",
+          "cluster": "AR-16"
+        },
+        {
+          "finding": "F-045",
+          "section": 1205,
+          "class": "CONDITION_NOT_GATED",
+          "reviewer_severity": "P0",
+          "verdict": "accepted",
+          "cluster": "AR-05"
+        },
+        {
+          "finding": "U-1 (§882)",
+          "verdict": "rejected",
+          "cluster": "AR-17e"
+        },
+        {
+          "finding": "U-2 (§462 second flask)",
+          "verdict": "accepted (author)",
+          "cluster": "AR-18"
+        },
+        {
+          "finding": "U-3 (§239 mirror fight)",
+          "verdict": "accepted",
+          "cluster": "AR-07"
+        },
+        {
+          "finding": "U-4 (§1054)",
+          "verdict": "rejected",
+          "cluster": "AR-17b"
+        },
+        {
+          "finding": "maintainer",
+          "verdict": "added",
+          "cluster": "AR-19 (acquires «Готово»), AR-20 (§410 spring)"
         }
       ]
     },

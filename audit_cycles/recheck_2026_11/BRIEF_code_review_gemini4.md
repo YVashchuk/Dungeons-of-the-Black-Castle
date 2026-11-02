@@ -1,6 +1,6 @@
 # BRIEF — Gemini 4 Argon: text-vs-engine fidelity sweep and engine robustness review
 
-**Project:** «Подземелья Чёрного замка» (Dungeons of the Black Castle) — a browser remake of D. Braslavsky's 1991 gamebook (1,221 paragraphs, Russian canon, EN/FR/UK translations). **Date:** November 2026. **Registry state:** `v2.198 -> v2.199`.
+**Project:** «Подземелья Чёрного замка» (Dungeons of the Black Castle) — a browser remake of D. Braslavsky's 1991 gamebook (1,221 paragraphs, Russian canon, EN/FR/UK translations). **Date:** November 2026. **Registry state:** `v2.199 -> v2.200`.
 
 You are reviewing a finished, heavily audited game. 100 adjudication groups are closed (the hundredth adjudicated your own fidelity sweep); a battery of 17 harnesses, 27 live smoke checks, 28 gate probes, 7 branch probes and an automated playthrough to the victory paragraph all pass. What is still possible — and what this review is for — is the defect only a reader who also reads the data can find: **the text promises something the engine does not do.** The last one, found in September 2026, was §127: the prose hands the hero a Golden Snake that can, once per journey, summon every snake of the forest to kill any enemy except Barlad Dert; neither the item nor the ability existed in the game data.
 

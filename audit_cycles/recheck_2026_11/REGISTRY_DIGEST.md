@@ -1,6 +1,6 @@
 # REGISTRY_DIGEST — assets/text_corrections.json
 
-- Generated 2026-11-02 from the registry at `v2.198 -> v2.199` (last_updated 2026-11-02).
+- Generated 2026-11-02 from the registry at `v2.199 -> v2.200` (last_updated 2026-11-02).
 - One line per adjudicated item: `[STATUS] id (severity) §paragraphs — claim → resolution`. Statuses: OPEN, DONE, REJECTED, VERIFIED_RESOLVED (a stale claim re-checked and found already fixed). Full texts live in the registry itself.
 
 ## corrections (2 entries; canon-level text and data corrections applied on top of the fb2 source)
@@ -67,7 +67,11 @@
 - [DONE] AR-14_food_for_the_fugitives (P2) §85,499,597 — §499 / §597 «Дадите им поесть (85)» was open without food and cost nothing; §85 «увидев еду… набрасываются на нее». → DONE. New choice field food_offer: visible only with food in the bag; the smallest meal is given (journal, notice). One ui key x4.
 - [DONE] AR-15_copy_toll_removed_1099 (P2) §894,1099 — §1099 put a Copy charge on the victory exit to 894 although Copy is an in-fight spell; a deadline win already routes to 894. → DONE. spell / spell_choice removed from §1099→894; a probe confirms the win without a Copy charge reaches §894.
 - [DONE] AR-16_flee_flags_on_peaceful_choices (P2) — 15 choices in paragraphs without enemies carried flee:true (Argon listed 14). → DONE. Removed; the 6d guard keeps peaceful choices free of flee.
-- [REJECTED] AR-17_rejected_findings (P2) §736,882,908,951,1052,1054 — F-026 §736 golden horseshoe; F-035 §1054 «К палаткам — 915»; F-036 §951 spell_choice; F-039 §1052 dagger; F-043 §882 «отблагодарить» Ivan. → REJECTED - see note.
+- [REJECTED] AR-17a_sec736_golden_horseshoe (P2) §736 — §736 «Это Золотая подкова, «на счастье». Теперь вы будете всегда удачливы…» - the horseshoe and its luck rule are not modelled. → REJECTED - §736 is one of the 16 vestigial paragraphs of the original that no route reaches (the reachability baseline lists it); the reviewer itself proposed no change. Modelling an item nobody can obtain would only add dead dat…
+- [REJECTED] AR-17b_sec1054_tents_915 (P2) §715,944,1054 — §1054 «К палаткам? — 915» skips the tents of §715 that §944 sends the reader to («идите к палаткам — 715»). → REJECTED - The fb2 canon prints «К реке? — 944. К палаткам? — 915.» at §1054; the remake follows the text. «715» is the instruction of a different paragraph (§944, the river bank). Changing a canon target is the author's call, no…
+- [REJECTED] AR-17c_sec951_spell_choice_marker (P2) §951 — §951 → 1021 carries spell:"SWIMMING" without spell_choice:true. → REJECTED - The engine never reads spell_choice; the charge is spent by the spell field, which is present. The marker is cosmetic.
+- [REJECTED] AR-17d_sec1052_dagger (P2) §1052 — §1052 «Вы засовываете кинжал за пояс» grants nothing. → REJECTED - No paragraph of the book ever uses or checks a dagger; the reviewer marked it low-confidence and cosmetic. An item without a mechanic would only clutter the bag.
+- [REJECTED] AR-17e_sec882_thanks_to_ivan (P2) §882,908 — §882 «Вы должны чем-нибудь отблагодарить человека, спасшего вашу жизнь, скажем, отдав какое-нибудь заклятие, вещицу или денег.» is not enforced. → REJECTED - A moral instruction with no price and no consequence in the text; the reader decides. Enforcing a payment would strand a hero who reaches §882 with nothing left after the four-day trap of §908 (the reviewer's own readi…
 - [DONE] AR-18_second_flask_462 (P2) §132,385,462,929 — §462 «Можете взять ее с собой, тогда у вас будут две фляги. Воду эту можете использовать так же, как и вашу» - water_flask is an inert item without sips. → DONE (author's decision 2026-11-02). The Orc's flask is weightless (on the belt) and comes full; flaskMax() = 2 sips per flask, 4 with two; two more HUD pips; springs (flask_fill) fill every flask, the merchant of §132 fills one …
 - [DONE] AR-20_sec410_spring_fills_the_flask (P2) §410,427,748,1125 — §410 «Можете наполнить флягу, если она пуста (пользуйтесь этой водой так же, как и той, что была у вас в начале путешествия)» - not modelled; Argon missed it while flagging §427 / §748 / §1125. → DONE. GD[410].auto_items gains flask_fill:"full" (beside the existing +7 STAMINA).
 - [DONE] AR-19_acquires_done_button (P1) §252,480 — Found by the fidelity probe, not by the reviewer: applyChoiceAcquires looked for .btn-primary, but the offer dialog's «Готово» is #btn-inv-done (class btn-p), so the navigation was wired to the first «+ Взять»… → DONE. The wiring targets #btn-inv-done and restores the button's own handler on first use; 6d guard; the probe now passes (hero at §480 with the skull).
@@ -530,4 +534,4 @@
 - {"id":"UB-02_sec300_watermelon_vs_sec574_banana_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.300 grants watermelon but sec.574 gates on banana - item id mismatch.","verdict":"rejected","reason":"Two differe…
 - {"id":"UB-03_sec96_sec112_art_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.96 (single Green Knight) is assigned art30_three_knights and the dialogue sec.112 is assigned combat artwork.","verdict":"rejected"…
 
-END OF DIGEST — 304 items with id and status + 82 legacy entries, registry v2.198 -> v2.199
+END OF DIGEST — 308 items with id and status + 82 legacy entries, registry v2.199 -> v2.200
