@@ -611,6 +611,7 @@ function takeItem(idx){
   if(!item||item._eaten||S.inventory.some(it=>canonItem(it)===canonItem(item)))return;
   if(getBagUsed()+getItemSize(item)>getBagSize())return;
   S.inventory.push(item);
+  if(canonItem(item)==='water_flask'){ S.flask=Math.min(flaskMax(),(S.flask||0)+2); } // group_100 AR-18: «флягу с водой» - it comes full
   logEvent('gain','+ '+invDisplay(item),t('v_meshok'));
   playSound('item');
   renderInvModalCurrent();
@@ -945,8 +946,8 @@ function renderGame(opts){
     if(ai.skill_add){S.skill=Math.min(S.skillMax,S.skill+ai.skill_add);statNotifs.push('+ '+ai.skill_add+t('masterstva'));}
     if(ai.skill_sub){S.skill=Math.max(1,S.skill-ai.skill_sub);statNotifs.push('− '+ai.skill_sub+t('masterstva'));}
     // group_100 (Argon fidelity): the flask filled at a spring / emptied for the dying bandit; spells wiped by the enchanted water
-    if(ai.flask_fill){ const fb=S.flask||0; S.flask=2; if(S.flask>fb){ statNotifs.push(t('ui_flask_filled')); logEvent('gain',t('ui_flask_filled'),''); } }
-    if(ai.flask_zero){ if((S.flask||0)>0){ S.flask=0; statNotifs.push(t('ui_flask_emptied')); logEvent('loss',t('ui_flask_emptied'),''); } }
+    if(ai.flask_fill){ const fb=S.flask||0; S.flask=flaskMax(); /* springs fill every flask */ if(S.flask>fb){ statNotifs.push(t('ui_flask_filled')); logEvent('gain',t('ui_flask_filled'),''); } }
+    if(ai.flask_zero){ if((S.flask||0)>0){ S.flask=Math.max(0,(S.flask||0)-2); /* «два больших глотка» - one flask is given */ statNotifs.push(t('ui_flask_emptied')); logEvent('loss',t('ui_flask_emptied'),''); } }
     if(ai.spells_zero&&Array.isArray(S.spells)){ let lost=0; S.spells.forEach(sp=>{ lost+=(sp.remaining||0); sp.remaining=0; }); if(lost>0){ statNotifs.push(t('ui_spells_forgotten')); logEvent('loss',t('ui_spells_forgotten'),''); } }
     if(ai.spell_grant){ const g=ai.spell_grant; const gs=S.spells.find(x=>x.id===g.id); const gc=g.charges||1; if(gs) gs.remaining+=gc; else S.spells.push({id:g.id,remaining:gc}); const gd=SPELLS.find(x=>x.id===g.id); statNotifs.push('+ '+(gd?gd.icon+' ':'')+spellText(g.id).name+' ×'+gc); logEvent('gain',(gd?gd.icon:'')+t('zaklyatie')+spellText(g.id).name,'+'+gc); } // group_87 PL-39: a spell granted by the story (sec.520)
   if(ai.luck_add){const lb=S.luck;S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);const inc=S.luck-lb;if(inc>0)statNotifs.push('+ '+inc+t('udachi'));} // group_87 PL-06: report the actual increment
@@ -1013,6 +1014,8 @@ function updateHUD(){
   document.getElementById('bar-stamina').style.width=(S.stamina/S.staminaMax*100)+'%';
   document.getElementById('sb-gold').textContent=S.gold;
   // Flask
+  if(typeof S.flask==='number'){ const fm=flaskMax(); if(S.flask>fm) S.flask=fm; } // group_100 AR-18: a dropped or lost second flask takes its water with it
+  ['fp2','fp3'].forEach((id,i)=>{ const el=document.getElementById(id); if(el){ el.style.display=(flaskMax()>2)?'':'none'; el.className='flask-pip'+(S.flask>=i+3?' full':''); } });
   document.getElementById('fp0').className='flask-pip'+(S.flask>=1?' full':'');
   document.getElementById('fp1').className='flask-pip'+(S.flask>=2?' full':'');
   document.getElementById('flask-use').disabled=S.flask<=0;
@@ -1130,7 +1133,7 @@ const SLUG_TO_RU={golden_snake:"Золотая змейка",skull:"Череп",
 function canonItem(x){if(x&&typeof x==='object'&&x.kind==='food')return x.id;return RU_TO_SLUG[x]||x;}
 function itemName(x){ const A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null; return (A&&A.items&&A.items[x])||SLUG_TO_RU[x]||x; } // group_84 SA-02: active locale first, Russian fallback
 function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';const c=canonItem(entry);if(c==='arrows_5'||c==='black_arrows_5'){const left=(S&&S.arrowsLeft&&typeof S.arrowsLeft[c]==='number')?S.arrowsLeft[c]:5;return itemName(entry)+' ('+left+')';}return itemName(entry);} // group_100: arrows show what is left
-const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0,crossbow:0}; // group_100: the crossbow hangs on the back (weapons are not carried in the bag)
+const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0,crossbow:0,water_flask:0}; // group_100: the crossbow hangs on the back, the Orc's flask on the belt (not in the bag) // group_100: the crossbow hangs on the back (weapons are not carried in the bag)
 // group_83 PT-01: story flags - hidden, weightless, undroppable state markers kept in the inventory so the
 // inventory_condition / inventory_missing gates work unchanged (princess awakened, Barlad Dert slain).
 const STORY_FLAGS=new Set(['princess_awake','barlad_dead','merchant_loot','hyena_met','bear_greeting','pegasus_friend','cliff_circled','vessel_silver_seen','vessel_glass_seen','chest_big_seen','chest_mid_seen','cupboard_seen','study_cupboard','study_door','study_maps','study_mirror']);
@@ -1169,6 +1172,8 @@ function eatFood(i){
   updateHUD();saveGame();
   focusInventoryRow(i); // group_81 CA-09
 }
+// group_100 AR-18 (sec.462): «тогда у вас будут две фляги» - the Orc's flask doubles the water: 2 sips per flask.
+function flaskMax(){ return 2+((S&&S.inventory&&S.inventory.some(it=>canonItem(it)==='water_flask'))?2:0); }
 function useFlask(){if(!S||S.flask<=0)return;S.flask--;S.stamina=Math.min(S.staminaMax,S.stamina+2);logEvent('gain',t('glotok_iz_flyagi'),t('2_vynoslivosti_ostalos_glotkov')+S.flask+')');updateHUD();saveGame();}
 function useHealing(){
   if(!S)return;
@@ -1603,7 +1608,7 @@ function makePurchaseBtn(ch, choiceIndex){
   //  • flask_fill      — disabled when the flask is already full (max 2).
   //  • grants_food     — carried food string; counts against bag like an item.
   const bagMaxed=ch.grants_bag_size&&getBagSize()>=ch.grants_bag_size;
-  const flaskFull=ch.flask_fill&&((S.flask||0)>=2);
+  const flaskFull=ch.flask_fill&&((S.flask||0)>=flaskMax());
   const foodOverflow=ch.grants_food&&(getBagUsed()+1>getBagSize());
   const wouldOverflow=(grantsItems.length>0)&&(getBagUsed()+grantsItems.filter(n=>!S.inventory.some(it=>canonItem(it)===canonItem(n))).reduce((s,n)=>s+getItemSize(n),0)>getBagSize());
   let disabled=false;
@@ -1680,12 +1685,12 @@ function completePurchase(ch, choiceIndex, grantsItems, grantsStamina, cost){
   // §132 flask refill — 'full'/'water' top to max (2), 'half' adds one sip.
   if(ch.flask_fill){
     const beforeF=S.flask||0;
-    if(ch.flask_fill==='half'){ S.flask=Math.min(2,beforeF+1); }
-    else { S.flask=2; }
+    if(ch.flask_fill==='half'){ S.flask=Math.min(flaskMax(),beforeF+1); }
+    else { S.flask=Math.min(flaskMax(),beforeF+2); } // group_100 AR-18: the merchant fills one flask (whole +2 / half +1)
     const addedF=S.flask-beforeF;
     if(addedF>0){
-      notifs.push(t('flyaga')+S.flask+'/2)');
-      logEvent('gain',t('flyaga_napolnena'),t('glotkov')+S.flask+'/2');
+      notifs.push(t('flyaga')+S.flask+'/'+flaskMax()+')');
+      logEvent('gain',t('flyaga_napolnena'),t('glotkov')+S.flask+'/'+flaskMax());
     }
   }
   // §132 carried food — deposit a self-describing food string (repeatable,
@@ -2369,7 +2374,8 @@ function applyBetting(sec){
     if(bp.gold){ S.gold+=bp.gold; notifs.push('+ '+bp.gold+t('zolotyh')); logEvent('gain','+ '+bp.gold+t('zolotyh'),t('vyigrysh_vsego')+S.gold); }
     if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.some(x=>canonItem(x)===canonItem(it))&&getBagUsed()+getItemSize(it)<=getBagSize()){ S.inventory.push(it); notifs.push('+ '+invDisplay(it)); logEvent('gain','+ '+invDisplay(it),t('vyigrysh_3')); } }); }
     if(bp.food){ let f2=0; bp.food.forEach(f=>{ for(let k=0;k<(f.count||1);k++){ const obj={id:f.name,kind:'food',stamina:f.stamina}; if(getBagUsed()+getItemSize(obj)<=getBagSize()){ S.inventory.push(obj); f2++; } } }); if(f2>0){ notifs.push(t('eda')+f2); logEvent('gain',t('eda')+f2,t('vyigrysh_3')); } }
-    if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push(t('flyaga_poteryana')); logEvent('loss',t('flyaga_poteryana_2'),t('proigrana_v_igre')); } }
+    if(bp.flask_zero&&S.inventory.some(it=>canonItem(it)==='water_flask')){ S.inventory.splice(S.inventory.findIndex(it=>canonItem(it)==='water_flask'),1); S.flask=Math.min(S.flask||0,2); notifs.push(t('flyaga_poteryana')); logEvent('loss',t('flyaga_poteryana_2'),t('proigrana_v_igre')); } // group_100 AR-18: the second flask is staked first
+    else if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push(t('flyaga_poteryana')); logEvent('loss',t('flyaga_poteryana_2'),t('proigrana_v_igre')); } }
   }
   if(notifs.length>0){ playSound('item'); showItemNotification(notifs,t('igra_v_kosti')); updateHUD(); saveGame(); }
 }

@@ -202,7 +202,8 @@
     "v2.194 -> v2.195": "September 2026 - group_97 (Astra live run 2026-09-17): PL-01 the Golden Snake of sec.127 implemented (item, grant, once-per-journey combat kill, refused against Barlad), PL-02 stale RU label at sec.963, PL-03 riddle fail labels translated into EN/FR/UK (six paragraphs). items 121 -> 122; ui keys 368 -> 371; p1_6d 93 -> 95; smoke C30. GAME_RULES.md s3 + label 2.194 -> 2.195 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.195 -> v2.196": "September 2026 - group_98 (Astra live run 2026-09-18, all blocks finished): MAP-01 full screen takes the whole map shell so the layer selector, zoom and legend remain reachable; MAP-02 the top bar no longer inherits the mini-map layer (updateMapTopbar runs for the full map only). p1_6d 95 -> 97; _dist_ui_check 63 -> 64; smoke C31. GAME_RULES.md label 2.195 -> 2.196 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.196 -> v2.197": "September 2026 - group_99 self-audit: VC-01 voice declarations restored (a // comment had swallowed them), new tests/_static_scope_harness.js (battery 16 -> 17 harnesses), dead code and dead ui keys removed (ui 371 -> 369), HK-09 closed (TTS resume understands the AAC pack; tts_all compresses), documents aligned with the tree, HANDOFF.md as the single current handoff, two bootstrap scripts removed, old backlog re-verified. GAME_RULES.md label 2.196 -> 2.197 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.197 -> v2.198": "November 2026 - group_100: Gemini 4 Argon fidelity sweep adjudicated - skull chain, crossbow, single-use silver vessel and the green gas, spy offers, river teleport retired, the old man's secret door moved to the castle gates, mirror fight at §239, spells forgotten, flask fill / empty, Levitation hooks, trophies after fights, card deck and sword grants, item gates, food for the fugitives, §1099 toll removed, inert flee flags removed; plus AR-19 (acquires navigation on «Готово») found by the new tests/smoke/fidelity_probes.js (25 probes). items 122 -> 125; ui keys 369 -> 377; p1_6d 97 -> 103. GAME_RULES.md + label 2.197 -> 2.198 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.197 -> v2.198": "November 2026 - group_100: Gemini 4 Argon fidelity sweep adjudicated - skull chain, crossbow, single-use silver vessel and the green gas, spy offers, river teleport retired, the old man's secret door moved to the castle gates, mirror fight at §239, spells forgotten, flask fill / empty, Levitation hooks, trophies after fights, card deck and sword grants, item gates, food for the fugitives, §1099 toll removed, inert flee flags removed; plus AR-19 (acquires navigation on «Готово») found by the new tests/smoke/fidelity_probes.js (25 probes). items 122 -> 125; ui keys 369 -> 377; p1_6d 97 -> 103. GAME_RULES.md + label 2.197 -> 2.198 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.198 -> v2.199": "November 2026 - group_100 AR-18 (the second flask of §462 made real on the author's decision: weightless, comes full, 2 sips per flask, springs fill both, the merchant fills one, the bandit drinks one, a lost bet takes the second) and AR-20 (§410 spring fills the flask). Two fidelity probes added (27). GAME_RULES.md label 2.198 -> 2.199 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -625,10 +626,18 @@
         {
           "id": "AR-18_second_flask_462",
           "severity": "P2",
-          "status": "OPEN",
+          "status": "DONE",
           "hypothesis": "§462 «Можете взять ее с собой, тогда у вас будут две фляги. Воду эту можете использовать так же, как и вашу» - water_flask is an inert item without sips.",
           "note": "Author decision: a second flask needs a second sip counter in the HUD; low value.",
-          "resolution": null
+          "resolution": "DONE (author's decision 2026-11-02). The Orc's flask is weightless (on the belt) and comes full; flaskMax() = 2 sips per flask, 4 with two; two more HUD pips; springs (flask_fill) fill every flask, the merchant of §132 fills one (whole +2, half +1), the dying bandit of §385 drinks one flask (-2), a flask lost at dice is the second one if held; a dropped second flask takes its water. An AI search answer the author brought claimed that the treasure of the bandit holds another flask and that a flask holds 4 sips - both false against the canon (§929 holds 10 gold, a silver ring and a lamp; §132 sells a whole or a half flask)."
+        },
+        {
+          "id": "AR-20_sec410_spring_fills_the_flask",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "§410 «Можете наполнить флягу, если она пуста (пользуйтесь этой водой так же, как и той, что была у вас в начале путешествия)» - not modelled; Argon missed it while flagging §427 / §748 / §1125.",
+          "note": "Found by the maintainer while checking the flask canon for AR-18.",
+          "resolution": "DONE. GD[410].auto_items gains flask_fill:\"full\" (beside the existing +7 STAMINA)."
         },
         {
           "id": "AR-19_acquires_done_button",
