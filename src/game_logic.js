@@ -944,6 +944,10 @@ function renderGame(opts){
     if(ai.stamina_sub){S.stamina=Math.max(0,S.stamina-ai.stamina_sub);statNotifs.push('− '+ai.stamina_sub+t('vynoslivosti'));logEvent('loss','− '+ai.stamina_sub+t('vynoslivosti'),t('teper')+S.stamina+'/'+S.staminaMax);}
     if(ai.skill_add){S.skill=Math.min(S.skillMax,S.skill+ai.skill_add);statNotifs.push('+ '+ai.skill_add+t('masterstva'));}
     if(ai.skill_sub){S.skill=Math.max(1,S.skill-ai.skill_sub);statNotifs.push('− '+ai.skill_sub+t('masterstva'));}
+    // group_100 (Argon fidelity): the flask filled at a spring / emptied for the dying bandit; spells wiped by the enchanted water
+    if(ai.flask_fill){ const fb=S.flask||0; S.flask=2; if(S.flask>fb){ statNotifs.push(t('ui_flask_filled')); logEvent('gain',t('ui_flask_filled'),''); } }
+    if(ai.flask_zero){ if((S.flask||0)>0){ S.flask=0; statNotifs.push(t('ui_flask_emptied')); logEvent('loss',t('ui_flask_emptied'),''); } }
+    if(ai.spells_zero&&Array.isArray(S.spells)){ let lost=0; S.spells.forEach(sp=>{ lost+=(sp.remaining||0); sp.remaining=0; }); if(lost>0){ statNotifs.push(t('ui_spells_forgotten')); logEvent('loss',t('ui_spells_forgotten'),''); } }
     if(ai.spell_grant){ const g=ai.spell_grant; const gs=S.spells.find(x=>x.id===g.id); const gc=g.charges||1; if(gs) gs.remaining+=gc; else S.spells.push({id:g.id,remaining:gc}); const gd=SPELLS.find(x=>x.id===g.id); statNotifs.push('+ '+(gd?gd.icon+' ':'')+spellText(g.id).name+' ×'+gc); logEvent('gain',(gd?gd.icon:'')+t('zaklyatie')+spellText(g.id).name,'+'+gc); } // group_87 PL-39: a spell granted by the story (sec.520)
   if(ai.luck_add){const lb=S.luck;S.luck=Math.min(S.luckMax,S.luck+ai.luck_add);const inc=S.luck-lb;if(inc>0)statNotifs.push('+ '+inc+t('udachi'));} // group_87 PL-06: report the actual increment
     if(ai.dragon_strength){S.dragonKillsLeft=3;statNotifs.push('+ 5'+t('masterstva')+' ('+t('sila_drakona')+')');logEvent('gain','+ 5'+t('masterstva'),t('sila_drakona'));}
@@ -1057,7 +1061,7 @@ function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bag
 // RU->slug migration (phase1.5b-5f). itemName(): slug -> Russian display name (passthrough for
 // unknown / hand-typed strings). invDisplay(): an inventory entry -> display string (resolves the
 // slug, preserves any food suffix). RU_TO_SLUG/SLUG_TO_RU are generated from items.json.
-const RU_TO_SLUG={"Золотая змейка":"golden_snake","Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield","Арбуз":"melon","Кокос":"coconut","Булочка":"bun","Немного еды":"provisions",
+const RU_TO_SLUG={"Золотая змейка":"golden_snake","Череп":"skull","Арбалет":"crossbow","Тайна потайной дверцы":"secret_door","Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield","Арбуз":"melon","Кокос":"coconut","Булочка":"bun","Немного еды":"provisions",
   "Яблоко":"apple","Здесь 5 стрел":"arrows_5","Банан":"banana","Медвежий амулет":"bear_amulet",
   "Шкурка бобра":"beaver_pelt","Клетка для птиц":"birdcage","Здесь 5 чёрных стрел":"black_arrows_5",
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
@@ -1090,7 +1094,7 @@ const RU_TO_SLUG={"Золотая змейка":"golden_snake","Личинка �
   "Белая стрела":"white_arrow","Целый меч":"whole_sword","Бутылка вина":"wine_bottle",
   "Красивый кусочек дерева":"wood_piece",
 };
-const SLUG_TO_RU={golden_snake:"Золотая змейка",spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",melon:"Арбуз",coconut:"Кокос",bun:"Булочка",provisions:"Немного еды",
+const SLUG_TO_RU={golden_snake:"Золотая змейка",skull:"Череп",crossbow:"Арбалет",secret_door:"Тайна потайной дверцы",spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",melon:"Арбуз",coconut:"Кокос",bun:"Булочка",provisions:"Немного еды",
   "apple":"Яблоко","arrows_5":"Здесь 5 стрел","banana":"Банан","bear_amulet":"Медвежий амулет",
   "beaver_pelt":"Шкурка бобра","birdcage":"Клетка для птиц","black_arrows_5":"Здесь 5 чёрных стрел",
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
@@ -1125,14 +1129,14 @@ const SLUG_TO_RU={golden_snake:"Золотая змейка",spider_larva:"Ли�
 };
 function canonItem(x){if(x&&typeof x==='object'&&x.kind==='food')return x.id;return RU_TO_SLUG[x]||x;}
 function itemName(x){ const A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null; return (A&&A.items&&A.items[x])||SLUG_TO_RU[x]||x; } // group_84 SA-02: active locale first, Russian fallback
-function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';return itemName(entry);}
-const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0};
+function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';const c=canonItem(entry);if(c==='arrows_5'||c==='black_arrows_5'){const left=(S&&S.arrowsLeft&&typeof S.arrowsLeft[c]==='number')?S.arrowsLeft[c]:5;return itemName(entry)+' ('+left+')';}return itemName(entry);} // group_100: arrows show what is left
+const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0,crossbow:0}; // group_100: the crossbow hangs on the back (weapons are not carried in the bag)
 // group_83 PT-01: story flags - hidden, weightless, undroppable state markers kept in the inventory so the
 // inventory_condition / inventory_missing gates work unchanged (princess awakened, Barlad Dert slain).
 const STORY_FLAGS=new Set(['princess_awake','barlad_dead','merchant_loot','hyena_met','bear_greeting','pegasus_friend','cliff_circled','vessel_silver_seen','vessel_glass_seen','chest_big_seen','chest_mid_seen','cupboard_seen','study_cupboard','study_door','study_maps','study_mirror']);
 // group_85 AS-12: knowledge flags - learned facts (passwords, lore, the fish's promise): weightless, mandatory,
 // undroppable, but listed in the bag so the player can see what they know.
-const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo']);
+const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo','secret_door']); // group_100: the old man's hidden door (sec.76 -> sec.56 / sec.205)
 function getItemSize(name){
   if(!name) return 1;
   if(typeof STORY_FLAGS!=='undefined'&&STORY_FLAGS.has(canonItem(name))) return 0; // group_83 PT-01 (typeof: harnesses eval this function in isolation)
@@ -1241,7 +1245,7 @@ function passesInventoryCheck(ch){
   if(!ch) return true;
   // group_83 PT-01: negative gate - the choice is offered only while the item / flag is ABSENT
   // (sec.627/976 «если волшебник жив» -> 1120 disappears once barlad_dead exists).
-  if(ch.inventory_missing){ if(!S||!S.inventory) return false; const miss=ch.inventory_missing; if(S.inventory.some(it=>canonItem(it)===canonItem(miss))) return false; }
+  if(ch.food_offer){ if(!S||!S.inventory||!S.inventory.some(it=>it&&typeof it==='object'&&it.kind==='food')) return false; } /* group_100: «дадите им поесть» needs food */ if(ch.inventory_missing){ if(!S||!S.inventory) return false; const miss=ch.inventory_missing; if(S.inventory.some(it=>canonItem(it)===canonItem(miss))) return false; }
   // group_85 batch 8: a choice retired by canon adjudication keeps its index (choice labels are positional per locale) but never renders
   if(ch.retired) return false;
   // group_85 AS-01: origin gate - «если вы пришли с параграфа N» (permissive when the origin is unknown: hash entry, old saves)
@@ -1308,10 +1312,13 @@ function applyChoiceAcquires(ch, onDone){
   // itself; we wire navigation onto the close-handler via a one-shot.
   showInventoryModal(newItems, []);
   const modal=document.getElementById('modal-inventory');
-  const closeBtn=modal.querySelector('.btn-primary')||modal.querySelector('button');
+  // group_100: the Done button is #btn-inv-done (class btn-p) - the old '.btn-primary' lookup fell back to the first
+  // «+ Взять» button, so «Готово» never navigated; the wiring is one-shot so later offer dialogs cannot repeat it.
+  const closeBtn=document.getElementById('btn-inv-done')||modal.querySelector('button');
   if(closeBtn&&onDone){
     const originalOnClick=closeBtn.onclick;
     closeBtn.onclick=(e)=>{
+      closeBtn.onclick=originalOnClick;
       if(originalOnClick)originalOnClick.call(closeBtn,e);
       else closeInvModal();
       onDone();
@@ -1349,6 +1356,7 @@ function applyChoiceGoldCost(ch){
 // are silently skipped — gating via inventory_condition guarantees
 // possession in well-formed data, but a defensive check is cheap.
 function applyChoiceConsume(ch){
+  if(ch&&ch.food_offer&&S&&S.inventory){ let bi=-1; S.inventory.forEach((it,i)=>{ if(it&&typeof it==='object'&&it.kind==='food'&&(bi<0||(Number(it.stamina)||0)<(Number(S.inventory[bi].stamina)||0))) bi=i; }); if(bi>=0){ const f=S.inventory.splice(bi,1)[0]; logEvent('loss',t('ui_food_given'),invDisplay(f)); showItemNotification(['− '+invDisplay(f)]); updateHUD(); } } // group_100: the smallest meal goes to the fugitives
   if(!ch||!ch.consume_on_use||!S||!S.inventory) return;
   const cu=ch.consume_on_use;
   const removed=[];
@@ -2527,7 +2535,7 @@ function startCombat(enemies,sec){
   if(S)S.pending_combat_buff=null;
   const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
   combatState={
-    enemies:enemies.map((e,idx)=>({...e,name:enemyName(e.name),hp:((idx===0&&S&&S.carryOver&&S.carryOver.to===S.section&&typeof S.carryOver.hp==='number')?Math.max(1,Math.min(e.stamina,S.carryOver.hp)):e.stamina) /* group_87 PL-41 */,dmg:e.damage||2,active:!(((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0) || e.joins!==undefined),fled:false})),
+    enemies:enemies.map((e,idx)=>(e=(e&&e.mirror_hero&&S)?Object.assign({},e,{skill:S.skill,stamina:Math.max(1,S.stamina)}):e /* group_100: sec.239 - your own Copy has your SKILL and STAMINA */,{...e,name:enemyName(e.name),hp:((idx===0&&S&&S.carryOver&&S.carryOver.to===S.section&&typeof S.carryOver.hp==='number')?Math.max(1,Math.min(e.stamina,S.carryOver.hp)):e.stamina) /* group_87 PL-41 */,dmg:e.damage||2,active:!(((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0) || e.joins!==undefined),fled:false})),
     round:0,
     wounds:0,
     sec:sec,
@@ -2651,6 +2659,13 @@ function startCombat(enemies,sec){
   if(snakeBtn){
     const hasSnake=!!(S&&S.inventory&&S.inventory.some(it=>canonItem(it)==='golden_snake'));
     snakeBtn.style.display=(hasSnake&&!isBarladFight())?'inline-block':'none';
+  }
+  // group_100 F-020 (sec.649): the crossbow - one shot per fight kills the chosen enemy (not Barlad Dert, not ghosts or spirits)
+  const xbBtn=document.getElementById('btn-crossbow');
+  if(xbBtn){
+    const nArrows=arrowsAvailable();
+    const okXb=!!(S&&S.inventory&&S.inventory.some(it=>canonItem(it)==='crossbow'))&&nArrows>0&&!isBarladFight()&&!(combatState&&combatState.arrowUsed);
+    xbBtn.style.display=okXb?'inline-block':'none'; if(okXb) xbBtn.textContent=t('ui_btn_crossbow')+' ['+nArrows+']';
   }
   // §950: HEALING usable in combat where canon permits (self-cast, invisible).
   // Shown whenever the allowlist includes HEALING and a charge remains; the
@@ -2891,6 +2906,7 @@ function endCombat(won){
   const larvaBtnEnd=document.getElementById('btn-larva');
   if(larvaBtnEnd)larvaBtnEnd.style.display='none';
   const snakeBtnEnd=document.getElementById('btn-snake'); if(snakeBtnEnd)snakeBtnEnd.style.display='none'; // group_97 PL-01
+  const xbBtnEnd=document.getElementById('btn-crossbow'); if(xbBtnEnd)xbBtnEnd.style.display='none'; // group_100
   if(won){
     playSound('victory');
     const _csec=GD[S.section];
@@ -2984,7 +3000,7 @@ function endCombatRouted(target,msgKey){
   combatDone[S.section]=true;
   clearCombatExtraButtons();
   const log=document.getElementById('combat-log');
-  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva','btn-snake','btn-indifference-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
+  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva','btn-snake','btn-crossbow','btn-indifference-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
   log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t(msgKey)}</div>`;
   logEvent('combat',t(msgKey),t('raundov')+(combatState?combatState.round:0));
   const b=document.getElementById('btn-combat-round');
@@ -3037,6 +3053,31 @@ function useSnakeInCombat(){
   logEvent('combat',t('vy_zovete_zmey')+target.name,t('padaet_zamertvo'));
   updateHUD();updateCombatEnemyDisplay(cs);saveGame();
   const btn=document.getElementById('btn-snake'); if(btn) btn.style.display='none';
+  activateStagedJoins(cs);
+  if(combatResolved(cs)){ endCombat(true); }
+  else { updateCombatConditionButtons(cs); }
+}
+
+// group_100 F-020: the crossbow of sec.649. Arrows come in bundles (arrows_5 from sec.649, black_arrows_5 from sec.570);
+// S.arrowsLeft keeps what is left of each bundle (default 5). One shot per fight («с остальными придется драться на мечах»).
+function arrowsAvailable(){ if(!S||!S.inventory) return 0; let n=0; ['arrows_5','black_arrows_5'].forEach(sl=>{ if(S.inventory.some(it=>canonItem(it)===sl)){ const left=(S.arrowsLeft&&typeof S.arrowsLeft[sl]==='number')?S.arrowsLeft[sl]:5; n+=Math.max(0,left); } }); return n; }
+function useCrossbowInCombat(){
+  if(!combatState||!S)return;
+  if(isBarladFight()){ bcNotice(t('strely_ne_berut_barlada')); return; }
+  const cs=combatState; if(cs.arrowUsed) return;
+  if(!S.inventory.some(it=>canonItem(it)==='crossbow')||arrowsAvailable()<=0) return;
+  const alive=getAliveCombatEnemies(cs); if(alive.length===0) return;
+  const target=getCombatTarget(cs)||alive[0];
+  if(['prizrak','duh_mertvyh','zloy_duh'].map(k=>enemyName(k)).includes(target.name)){ bcNotice(t('strela_skvoz_prizraka')); return; }
+  const sl=(S.inventory.some(it=>canonItem(it)==='arrows_5')&&!(S.arrowsLeft&&S.arrowsLeft.arrows_5===0))?'arrows_5':'black_arrows_5';
+  S.arrowsLeft=S.arrowsLeft||{}; const left=(typeof S.arrowsLeft[sl]==='number'?S.arrowsLeft[sl]:5)-1; S.arrowsLeft[sl]=left;
+  if(left<=0){ const ix=S.inventory.findIndex(it=>canonItem(it)===sl); if(ix>=0) S.inventory.splice(ix,1); delete S.arrowsLeft[sl]; }
+  cs.arrowUsed=true; target.hp=0; dragonKillTick(); playSound('combat_death_enemy');
+  const log=document.getElementById('combat-log');
+  if(log) log.innerHTML+=`<div style="color:var(--gold);font-weight:bold;margin-top:8px">${t('vy_strelyaete')}${target.name}${t('padaet_zamertvo')}</div>`;
+  logEvent('combat',t('vy_strelyaete')+target.name,t('padaet_zamertvo'));
+  updateHUD();updateCombatEnemyDisplay(cs);saveGame();
+  const btn=document.getElementById('btn-crossbow'); if(btn) btn.style.display='none';
   activateStagedJoins(cs);
   if(combatResolved(cs)){ endCombat(true); }
   else { updateCombatConditionButtons(cs); }

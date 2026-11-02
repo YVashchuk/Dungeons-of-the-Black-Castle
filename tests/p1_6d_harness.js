@@ -19,7 +19,7 @@ function gfn(n){const s=gl.indexOf('function '+n+'(');return brace(s).replace('f
 ck('game_structure.js GD has ZERO Cyrillic', !CYR.test(JSON.stringify(GD)));
 
 // 2. enemies locale complete + resolver
-ck('LOCALE_RU.enemies has all 67 keys with exact values (66 + zdorovennyy_goblin, group_87 PL-41)', Object.keys(data.enemies).every(k=>LOCALE_RU.enemies[k]===data.enemies[k]) && Object.keys(LOCALE_RU.enemies).length===67);
+ck('LOCALE_RU.enemies has all 68 keys with exact values (66 + zdorovennyy_goblin PL-41 + vasha_kopiya group_100)', Object.keys(data.enemies).every(k=>LOCALE_RU.enemies[k]===data.enemies[k]) && Object.keys(LOCALE_RU.enemies).length===68);
 let emis=0; for(const k in data.enemies){ if(enemyName(k)!==data.enemies[k]) emis++; }
 ck('enemyName(slug) reproduces all 66 names (mismatch '+emis+')', emis===0);
 ck('enemyName(unknown) safe', enemyName('__no__')==='__no__');
@@ -66,6 +66,16 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-39 data + engine: sec.520 grants INDIFFERENCE, picker skips granted spells, combat function present', GD['520'].auto_items.spell_grant.id==='INDIFFERENCE'&&gl.includes('SPELLS.filter(sp=>!sp.granted).forEach(')&&gl.includes('function useIndifferenceInCombat()')&&gl.includes('"id":"INDIFFERENCE"'));
   ck('PL-41 data + engine: sec.737 carries its enemy, sec.182 has the carried goblin + the staged huge goblin', GD['737'].round_deadline.carry_enemy===true&&GD['182'].enemies.length===2&&GD['182'].enemies[0].name==='goblin'&&GD['182'].enemies[1].joins&&GD['182'].enemies[1].joins.after_death===0&&gl.includes('S.carryOver={to:_dl.lose,hp:al[0].hp}'));
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
+})();
+
+// 9af. group_100: Argon fidelity sweep - skull chain, crossbow, silver vessel single use, river teleport, the old man's door, mirror fight
+(function(){
+  ck('AR skull: granted at 252/1116, gated and spent at 842/854/859/913', GD['252'].choices[1].acquires==='skull'&&GD['1116'].auto_items.items.includes('skull')&&[842,854,859,913].every(n=>GD[String(n)].choices[0].inventory_condition==='skull'&&GD[String(n)].choices[0].consume_on_use==='skull'));
+  ck('AR crossbow: granted at 649, handler refuses Barlad, one shot per fight', GD['649'].auto_items.items.includes('crossbow')&&gl.includes('function useCrossbowInCombat()')&&gl.includes('cs.arrowUsed=true'));
+  ck('AR silver vessel spent at 388/608/742/556; 957 needs the bronze jug; 1038 grants the vessel', [[388,1],[608,0],[742,1],[556,0]].every(([n,i])=>GD[String(n)].choices[i].consume_on_use==='silver_vessel')&&GD['957'].choices[0].inventory_condition==='bronze_jug'&&GD['1038'].auto_items.items.includes('silver_vessel'));
+  ck('AR routing: 1205->249 and 76->1145 retired; 56/205 offer 1145 with secret_door', GD['1205'].choices[0].retired===true&&GD['76'].choices[0].retired===true&&['56','205'].every(n=>GD[n].choices.some(c=>c.target===1145&&c.inventory_condition==='secret_door')));
+  ck('AR acquires: navigation is wired to #btn-inv-done and is one-shot', gl.includes("const closeBtn=document.getElementById('btn-inv-done')||modal.querySelector('button');")&&gl.includes('closeBtn.onclick=originalOnClick;'));
+  ck('AR mirror fight at 239 and no flee flags on peaceful choices', GD['239'].enemies[0].mirror_hero===true&&Object.keys(GD).every(k=>(GD[k].enemies||[]).length||!(GD[k].choices||[]).some(c=>c.flee)));
 })();
 
 // 9ae. group_98: map top bar follows the shown layer; full screen keeps the layer selector
@@ -154,12 +164,12 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   }catch(e){ ck('9v eval: '+e.message,false); }
   ck('AS-02/AS-04/AS-06 data: study gates, riddle requires_flag, sec.835 fatal + Pegasus gate', [297,411,850,797].every(n=>GD[String(n)].choices.some(c=>c.target===489&&Array.isArray(c.inventory_all)&&c.inventory_all.length===3))&&GD['435'].riddle.requires_flag==='hyena_met'&&GD['337'].auto_items.flags.includes('hyena_met')&&GD['835'].fatal_when_stuck===true&&GD['835'].choices.some(c=>c.target===1138&&c.inventory_condition==='pegasus_friend')&&GD['534'].choices.some(c=>c.target===1138&&c.retired===true));
   ck('AS-05/08-11 data: bear greeting at 740, not-done-yet gates', GD['740'].choices.some(c=>c.target===612&&c.inventory_condition==='bear_greeting')&&GD['281'].choices.some(c=>c.target===612&&c.retired===true)&&GD['412'].choices.some(c=>c.target===214&&c.inventory_missing==='cliff_circled')&&GD['1098'].choices.some(c=>c.target===1196&&c.inventory_condition==='cupboard_seen'));
-  ck('AS-12 knowledge flags: weightless class, mandatory grant, no drop', gl.includes("const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo']);")&&gl.includes('KNOWLEDGE_FLAGS.has(canonItem(name))) return 0;')&&gl.includes('const learned=offered.filter(')&&gl.includes('KNOWLEDGE_FLAGS.has(canonItem(S.inventory[i]))) return; // group_85 AS-12')&&gl.includes('if(ch.retired) return false;'));
+  ck('AS-12 knowledge flags: weightless class, mandatory grant, no drop', gl.includes("const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo','secret_door']);")&&gl.includes('KNOWLEDGE_FLAGS.has(canonItem(name))) return 0;')&&gl.includes('const learned=offered.filter(')&&gl.includes('KNOWLEDGE_FLAGS.has(canonItem(S.inventory[i]))) return; // group_85 AS-12')&&gl.includes('if(ch.retired) return false;'));
 })();
 
 // 9u. group_85 batch 7 (AS-03 / AS-07 / AS-22 / AS-13 / AS-15 / AS-19): negative gates on sec.81/94/56/205, save backfill, importSave param, observer close
 (function(){
-  ck('AS-03/AS-07/AS-22 negative gates in GD', GD['81'].choices.slice(1).every(c=>c.inventory_missing==='princess_awake')&&GD['94'].choices[0].inventory_missing==='barlad_dead'&&GD['56'].choices.slice(1).every(c=>c.inventory_missing==='castle_password')&&GD['205'].choices.slice(1).every(c=>c.inventory_missing==='castle_password'));
+  ck('AS-03/AS-07/AS-22 negative gates in GD', GD['81'].choices.slice(1).every(c=>c.inventory_missing==='princess_awake')&&GD['94'].choices[0].inventory_missing==='barlad_dead'&&GD['56'].choices.slice(1).filter(c=>c.target!==1145).every(c=>c.inventory_missing==='castle_password')&&GD['205'].choices.slice(1).filter(c=>c.target!==1145).every(c=>c.inventory_missing==='castle_password') /* group_100: the old man's hidden door is its own route, open with or without the password */);
   try{ globalThis.SLUG_TO_RU=globalThis.SLUG_TO_RU||{melon:'Арбуз'}; eval(gfn('normalizeSave')); const s1=normalizeSave({v:5,inventory:[],visited:[1,627,'81']}); const s2=normalizeSave(s1); ck('AS-13 backfill from visited, idempotent', s1.inventory.includes('princess_awake')&&s1.inventory.includes('barlad_dead')&&s2.inventory.filter(x=>x==='barlad_dead').length===1); }catch(e){ ck('AS-13 eval: '+e.message,false); }
   ck('AS-15 importSave callback does not shadow t()', !gl.includes('f.text().then(t=>')&&gl.includes('f.text().then(rawText=>'));
   ck('AS-19 observer closes any element still on the stack', gl.includes('if(!_bcIsDialog(el)&&_bcDialogStack.indexOf(el)<0) continue;'));
@@ -302,7 +312,7 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   const zi=glSrc.indexOf('const ITEM_SIZES={');
   const sizes=glSrc.slice(zi,glSrc.indexOf('};',zi));
   const weapons=Object.keys(ijr).filter(k=>ijr[k].kind==='weapon');
-  const weaponsZero=weapons.length===3 && weapons.every(k=>ijr[k].slotCost===0 && sizes.includes(k+':0'));
+  const weaponsZero=weapons.length>=3 && weapons.every(k=>ijr[k].slotCost===0 && sizes.includes(k+':0'));
   ck('V-02/G2-01 equip shapes + weightless weapons parity', JSON.stringify(GD['71'].auto_items)==='{"equip":{"item":"death_of_orcs","swap_out":"whole_sword"}}' && JSON.stringify(GD['1213'].auto_items)==='{"equip":{"item":"knight_shield"}}' && weaponsZero && glSrc.includes('if(ai.equip){'));
 })();
 

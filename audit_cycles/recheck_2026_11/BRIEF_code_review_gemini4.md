@@ -1,8 +1,8 @@
 # BRIEF — Gemini 4 Argon: text-vs-engine fidelity sweep and engine robustness review
 
-**Project:** «Подземелья Чёрного замка» (Dungeons of the Black Castle) — a browser remake of D. Braslavsky's 1991 gamebook (1,221 paragraphs, Russian canon, EN/FR/UK translations). **Date:** November 2026. **Registry state:** `v2.196 -> v2.197`.
+**Project:** «Подземелья Чёрного замка» (Dungeons of the Black Castle) — a browser remake of D. Braslavsky's 1991 gamebook (1,221 paragraphs, Russian canon, EN/FR/UK translations). **Date:** November 2026. **Registry state:** `v2.197 -> v2.198`.
 
-You are reviewing a finished, heavily audited game. 99 adjudication groups are closed; a battery of 17 harnesses, 27 live smoke checks, 28 gate probes, 7 branch probes and an automated playthrough to the victory paragraph all pass. What is still possible — and what this review is for — is the defect only a reader who also reads the data can find: **the text promises something the engine does not do.** The last one, found in September 2026, was §127: the prose hands the hero a Golden Snake that can, once per journey, summon every snake of the forest to kill any enemy except Barlad Dert; neither the item nor the ability existed in the game data.
+You are reviewing a finished, heavily audited game. 100 adjudication groups are closed (the hundredth adjudicated your own fidelity sweep); a battery of 17 harnesses, 27 live smoke checks, 28 gate probes, 7 branch probes and an automated playthrough to the victory paragraph all pass. What is still possible — and what this review is for — is the defect only a reader who also reads the data can find: **the text promises something the engine does not do.** The last one, found in September 2026, was §127: the prose hands the hero a Golden Snake that can, once per journey, summon every snake of the forest to kill any enemy except Barlad Dert; neither the item nor the ability existed in the game data.
 
 ## Attached — one code folder (11 files)
 
@@ -17,7 +17,7 @@ You are reviewing a finished, heavily audited game. 99 adjudication groups are c
 | `src/mobile.css` | phone layout |
 | `src/registries/items.json` | item registry: slug → `{legacyRu, kind}` with kind ∈ item / food / weapon / flag |
 | `assets/GAME_RULES.md` | the living description of every mechanic and of the **deliberate deviations** from the canon |
-| `REGISTRY_DIGEST.md` | one line per adjudicated decision of `assets/text_corrections.json` (284 items + 82 legacy entries) |
+| `REGISTRY_DIGEST.md` | one line per adjudicated decision of `assets/text_corrections.json` (one line per decision + legacy entries) |
 | `HANDOFF.md` | current project state |
 
 ## 0. Pre-flight — mandatory, before any analysis

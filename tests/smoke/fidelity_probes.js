@@ -1,0 +1,70 @@
+// fidelity_probes.js - live probes of the text-vs-engine repairs of group_100 (Gemini 4 Argon fidelity sweep, 2026-11-02).
+// Grey-box like branch_probes.js: the tester hero is prepared through S, navigation uses the engine's goTo() (what a choice click does),
+// d6() is scripted where a fight must be won; every verdict is read from the rendered UI or the game state after real button clicks.
+// Usage (server on 8001 from the repo root): node tests/smoke/fidelity_probes.js [url] -> tests/smoke/out/FIDELITY_PROBES_REPORT.md
+const { chromium } = require('playwright-core');
+const fs = require('fs'); const path = require('path');
+const URL = process.argv[2] || 'http://localhost:8001/dist/dungeons-of-the-black-castle.html';
+const ONLY = process.env.ONLY || ''; // run only the probes whose id contains this text
+const OUT = path.join(__dirname, 'out'); fs.mkdirSync(OUT, { recursive: true });
+const rows = []; const rec = (id, ok, obs) => { rows.push({ id, verdict: ok ? 'PASS' : 'FAIL', obs }); console.log((ok ? 'PASS    ' : 'FAIL    ') + id + ' - ' + obs.replace(/[^\x20-\x7E]/g, '?').slice(0, 200)); };
+const TAG = "(function(){ if(window.__tagged) return; window.__tagged=true; const orig=makeChoiceBtn; makeChoiceBtn=function(ch,dc,idx){ const b=orig(ch,dc,idx); try{ if(b&&b.dataset) b.dataset.target=String(ch.target); }catch(e){} return b; }; })();";
+const V = () => ({ sec: S.section, inv: S.inventory.map(i => typeof i === 'string' ? i : (i.kind === 'food' ? 'food:' + i.id : i.id)), flask: S.flask, st: S.stamina, death: document.getElementById('end-death').classList.contains('on'), targets: [...document.querySelectorAll('#c-list button')].filter(b => b.offsetParent !== null && b.dataset.target).map(b => b.dataset.target), pending: (typeof pendingItems !== 'undefined' && document.getElementById('modal-inventory').classList.contains('on')) ? pendingItems.map(i => typeof i === 'string' ? i : i.id) : [] });
+(async () => {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  async function probe(id, setup, act, judge) {
+    if (ONLY && !id.includes(ONLY)) return;
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'ru-RU' }); const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(String(e.message).slice(0, 120)));
+    try {
+      await page.goto('about:blank'); await page.goto(URL + '#1', { waitUntil: 'load' });
+      await page.waitForFunction(() => document.getElementById('scr-game')?.classList.contains('on'), null, { timeout: 15000 });
+      await page.evaluate(TAG); await page.evaluate(() => document.querySelectorAll('.modal-overlay.on').forEach(m => m.classList.remove('on')));
+      await page.evaluate(setup); await page.waitForTimeout(350);
+      const x = act ? await act(page) : null; const v = await page.evaluate(V);
+      const r = judge(v, x); rec(id, r.ok && !errs.length, r.obs + (errs.length ? ' | pageerrors: ' + errs.join('; ') : ''));
+    } catch (e) { rec(id, false, 'runner error: ' + String(e.message || e).split('\n')[0].slice(0, 160)); }
+    await ctx.close();
+  }
+  const go = n => `document.querySelectorAll('.modal-overlay.on').forEach(m=>m.classList.remove('on')); goTo(${n});`;
+  const hero = (inv, extra) => `S.skill=12; S.skillMax=Math.max(S.skillMax||0,12); S.staminaMax=24; S.stamina=24; S.flask=2; S.inventory=${JSON.stringify(inv)}; ${extra || ''} saveGame();`;
+  const click = tgt => page => page.evaluate(t => { const b = [...document.querySelectorAll('#c-list button')].find(x => x.dataset.target === String(t)); if (b) b.click(); return !!b; }, tgt).then(async ok => { await page.waitForTimeout(350); return ok; });
+  const fight = async (page, max) => { await page.evaluate(() => { const b = [...document.querySelectorAll('#c-list button')].find(x => /Вступить в бой/.test(x.textContent)); if (b) b.click(); }); await page.waitForTimeout(300); const from = await page.evaluate(() => S.section); for (let i = 0; i < (max || 12); i++) { const done = await page.evaluate(() => !document.getElementById('modal-combat').classList.contains('on') || /Продолжить/.test(document.getElementById('btn-combat-round').textContent)); if (done) break; await page.evaluate(() => document.getElementById('btn-combat-round').click()); await page.waitForTimeout(70); } await page.evaluate(() => { const b = document.getElementById('btn-combat-round'); if (document.getElementById('modal-combat').classList.contains('on') && /Продолжить/.test(b.textContent)) b.click(); }); await page.waitForTimeout(400); return from; };
+  const winDice = "d6=function(){ return (window.__flip=!window.__flip)?6:1; };"; // hero rolls 6s, enemies 1s
+
+  // skull chain
+  await probe('skull-trap-without-skull-842', new Function(hero([]) + go(842)), null, v => ({ ok: v.death && !v.targets.includes('1041'), obs: 'death overlay ' + v.death + ', exits ' + v.targets.join(',') }));
+  await probe('skull-trap-with-skull-842', new Function(hero(['skull']) + go(842)), click(1041), v => ({ ok: v.sec === 1041 && !v.inv.includes('skull') && !v.death, obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') }));
+  await probe('skull-taken-at-252', new Function(hero([]) + go(252)), async page => { await click(480)(page); await page.evaluate(() => { if (document.getElementById('modal-inventory').classList.contains('on')) { const i = pendingItems.findIndex(x => (typeof x === 'string' ? x : x.id) === 'skull'); if (i >= 0) takeItem(i); document.getElementById('btn-inv-done').click(); } }); await page.waitForTimeout(400); }, v => ({ ok: v.sec === 480 && v.inv.includes('skull'), obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') }));
+  await probe('skull-offered-at-1116', new Function(hero([]) + go(1116)), null, v => ({ ok: v.pending.includes('skull'), obs: 'offer ' + v.pending.join(',') }));
+  // crossbow
+  await probe('crossbow-shot-43', new Function(hero(['crossbow', 'arrows_5']) + go(43)), async page => { await page.evaluate(() => { const b = [...document.querySelectorAll('#c-list button')].find(x => /Вступить в бой/.test(x.textContent)); if (b) b.click(); }); await page.waitForTimeout(300); const before = await page.evaluate(() => ({ shown: document.getElementById('btn-crossbow').offsetParent !== null, text: document.getElementById('btn-crossbow').textContent })); await page.evaluate(() => document.getElementById('btn-crossbow').click()); await page.waitForTimeout(300); const after = await page.evaluate(() => ({ dead: combatState.enemies[0].hp, left: S.arrowsLeft && S.arrowsLeft.arrows_5, shown: document.getElementById('btn-crossbow').offsetParent !== null, bag: document.getElementById('inv-list').textContent.replace(/\s+/g, ' ') })); return { before, after }; }, (v, x) => ({ ok: x.before.shown && /\[5\]/.test(x.before.text) && x.after.dead === 0 && x.after.left === 4 && !x.after.shown && /\(4\)/.test(x.after.bag), obs: 'before ' + JSON.stringify(x.before) + ' after ' + JSON.stringify({ dead: x.after.dead, left: x.after.left, shown: x.after.shown, bag4: /\(4\)/.test(x.after.bag) }) }));
+  await probe('crossbow-not-against-barlad-823', new Function(hero(['crossbow', 'arrows_5']) + go(823)), async page => { await page.evaluate(() => { const b = [...document.querySelectorAll('#c-list button')].find(x => /Вступить в бой/.test(x.textContent)); if (b) b.click(); }); await page.waitForTimeout(300); return page.evaluate(() => document.getElementById('btn-crossbow').offsetParent !== null); }, (v, shown) => ({ ok: shown === false, obs: 'crossbow button shown against Barlad: ' + shown }));
+  await probe('crossbow-passes-through-ghost', new Function(hero(['crossbow', 'arrows_5']) + "window.__g=Number(Object.keys(GD).find(k=>(GD[k].enemies||[]).some(e=>e.name==='prizrak'))); " + go('window.__g')), async page => { await page.evaluate(() => { const b = [...document.querySelectorAll('#c-list button')].find(x => /Вступить в бой/.test(x.textContent)); if (b) b.click(); }); await page.waitForTimeout(300); await page.evaluate(() => { const g = enemyName('prizrak'); const i = combatState.enemies.findIndex(e => e.name === g); combatState.targetIdx = i; }); await page.evaluate(() => document.getElementById('btn-crossbow').click()); await page.waitForTimeout(250); return page.evaluate(() => ({ sec: S.section, left: S.arrowsLeft ? S.arrowsLeft.arrows_5 : 5, ghostHp: combatState.enemies.find(e => e.name === enemyName('prizrak')).hp })); }, (v, x) => ({ ok: x.left === 5 && x.ghostHp > 0, obs: 'ghost at §' + x.sec + ': arrows left ' + x.left + ', ghost hp ' + x.ghostHp }));
+  // mirror fight
+  await probe('mirror-fight-239', new Function(hero([], 'S.skill=11; S.stamina=19;') + go(239)), async page => { await page.evaluate(() => { const b = [...document.querySelectorAll('#c-list button')].find(x => /Вступить в бой/.test(x.textContent)); if (b) b.click(); }); await page.waitForTimeout(300); return page.evaluate(() => ({ skill: combatState.enemies[0].skill, hp: combatState.enemies[0].hp, name: combatState.enemies[0].name })); }, (v, x) => ({ ok: x.skill === 11 && x.hp === 19, obs: 'copy ' + JSON.stringify(x) }));
+  // spells, flask
+  await probe('spells-forgotten-648', new Function(hero([], "S.spells=[{id:'FIRE',remaining:2},{id:'HEALING',remaining:1}];") + go(648)), null, () => ({ ok: true, obs: '' })).then(() => {});
+  rows.pop();
+  await probe('spells-forgotten-648', new Function(hero([], "S.spells=[{id:'FIRE',remaining:2},{id:'HEALING',remaining:1}];") + go(648)), page => page.evaluate(() => S.spells.map(s => s.id + ':' + s.remaining).join(' ')), (v, x) => ({ ok: /FIRE:0/.test(x) && /HEALING:0/.test(x), obs: 'spells ' + x }));
+  await probe('flask-filled-427', new Function(hero([], 'S.flask=0;') + go(427)), null, v => ({ ok: v.flask === 2, obs: 'flask ' + v.flask }));
+  await probe('flask-emptied-385', new Function(hero([]) + go(385)), null, v => ({ ok: v.flask === 0, obs: 'flask ' + v.flask }));
+  // gates
+  await probe('spy-gates-454', new Function(hero([]) + go(454)), null, v => ({ ok: v.targets.join(',') === '3', obs: 'empty bag exits ' + v.targets.join(',') }));
+  await probe('spy-manuscript-454', new Function(hero(['manuscript']) + go(454)), click(138), v => ({ ok: v.sec === 138 && !v.inv.includes('manuscript'), obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') }));
+  await probe('food-gate-597', new Function(hero([]) + go(597)), null, v => ({ ok: !v.targets.includes('85'), obs: 'no food exits ' + v.targets.join(',') }));
+  await probe('food-given-597', new Function(hero([{ kind: 'food', id: 'apple', stamina: 2 }, { kind: 'food', id: 'banana', stamina: 1 }]) + go(597)), click(85), v => ({ ok: v.sec === 85 && v.inv.join(',') === 'food:apple', obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') + ' (the smaller meal was given)' }));
+  await probe('river-teleport-retired-1205', new Function(hero([]) + go(1205)), null, v => ({ ok: !v.targets.includes('249') && v.targets.includes('670'), obs: 'exits ' + v.targets.join(',') }));
+  await probe('ship-plaque-spent-1078', new Function(hero(['ship_plaque']) + go(1078)), click(249), v => ({ ok: v.sec === 249 && !v.inv.includes('ship_plaque'), obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') }));
+  await probe('old-man-secret-76', new Function(hero([]) + go(76)), null, v => ({ ok: !v.targets.includes('1145') && v.inv.includes('secret_door') && v.pending.includes('deer_hide'), obs: 'exits ' + v.targets.join(',') + ', bag ' + v.inv.join(',') + ', offer ' + v.pending.join(',') }));
+  await probe('hidden-door-at-gate-56', new Function(hero(['secret_door']) + go(56)), click(1145), v => ({ ok: v.sec === 1145, obs: 'sec ' + v.sec }));
+  await probe('no-hidden-door-without-secret-205', new Function(hero([]) + go(205)), null, v => ({ ok: !v.targets.includes('1145'), obs: 'exits ' + v.targets.join(',') }));
+  await probe('green-gas-needs-jug-957', new Function(hero([]) + go(957)), null, v => ({ ok: !v.targets.includes('1038'), obs: 'exits ' + v.targets.join(',') }));
+  await probe('green-gas-silvers-the-jug-957', new Function(hero(['bronze_jug']) + go(957)), click(1038), v => ({ ok: v.sec === 1038 && !v.inv.includes('bronze_jug') && v.pending.includes('silver_vessel'), obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') + ', offer ' + v.pending.join(',') }));
+  await probe('silver-vessel-single-use-608', new Function(hero(['silver_vessel']) + go(608)), click(728), v => ({ ok: v.sec === 728 && !v.inv.includes('silver_vessel'), obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') }));
+  await probe('whistle-after-the-fight-129', new Function(hero([]) + winDice + go(129)), async page => { const atEntry = await page.evaluate(() => (document.getElementById('modal-inventory').classList.contains('on') ? pendingItems.map(i => typeof i === 'string' ? i : i.id) : [])); await fight(page); return atEntry; }, (v, atEntry) => ({ ok: !atEntry.includes('bronze_whistle') && v.pending.includes('bronze_whistle'), obs: 'offered on entry: [' + atEntry.join(',') + '], after the win: [' + v.pending.join(',') + ']' }));
+  await probe('chief-of-guard-win-without-copy-1099', new Function(hero([], "S.skill=20; S.spells=[];") + winDice + go(1099)), async page => { await fight(page); return null; }, v => ({ ok: v.sec === 894, obs: 'after the win sec ' + v.sec }));
+  await browser.close();
+  const counts = rows.reduce((m, r) => { m[r.verdict] = (m[r.verdict] || 0) + 1; return m; }, {});
+  fs.writeFileSync(path.join(OUT, 'FIDELITY_PROBES_REPORT.md'), ['# FIDELITY_PROBES_REPORT.md - group_100 repairs (Gemini 4 Argon fidelity sweep)', '', '- URL: ' + URL + ' - ' + new Date().toISOString(), '', '| probe | verdict | observation |', '|---|---|---|', ...rows.map(r => '| ' + r.id + ' | ' + r.verdict + ' | ' + r.obs.replace(/\|/g, '\\|') + ' |'), '', '## Counts', '', Object.entries(counts).map(([k, v]) => '- ' + k + ': ' + v).join('\n'), ''].join('\n'), 'utf8');
+  console.log('REPORT: ' + path.join(OUT, 'FIDELITY_PROBES_REPORT.md') + ' | ' + JSON.stringify(counts));
+})().catch(e => { console.error('PROBES FAILED: ' + e.stack); process.exit(1); });

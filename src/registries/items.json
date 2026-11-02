@@ -120,5 +120,8 @@
   "study_maps": {"legacyRu":"Кабинет: карты осмотрены","kind":"flag"},
   "study_mirror": {"legacyRu":"Кабинет: зеркало осмотрено","kind":"flag"},
   "merchant_loot": {"legacyRu":"Добыча торговца","kind":"flag"},
-  "golden_snake": {"legacyRu":"Золотая змейка","kind":"item"}
+  "golden_snake": {"legacyRu":"Золотая змейка","kind":"item"},
+  "skull": {"legacyRu":"Череп","kind":"item"},
+  "crossbow": {"legacyRu":"Арбалет","kind":"weapon","slotCost":0},
+  "secret_door": {"legacyRu":"Тайна потайной дверцы","kind":"flag"}
 }

@@ -42,3 +42,12 @@ node tests\smoke\branch_probes.js [url]
 ```
 
 Seven probes of the branches that a live run reaches only by luck: overtime of #43 (-> 1016, a death ending), #261 (-> 8) and #737 (-> 182 with the wounded goblin carried over and the big goblin waiting), the door of #725 (a double -> 1215, death when the last stamina point is spent, the Golden Whistle gate -> 142) and the first collection at #582 with a full bag (nothing taken, «✓ Собрано» survives a reload). The tester hero is prepared through `S` and `d6()` is replaced by a scripted sequence; every result is read after real clicks. Output: `tests/smoke/out/BRANCH_PROBES_REPORT.md` + one PNG per probe.
+
+## fidelity_probes.js - the text-vs-engine repairs of group_100
+
+```powershell
+node tests\smoke\fidelity_probes.js [url]          # all 25 probes
+$env:ONLY="crossbow"; node tests\smoke\fidelity_probes.js   # only probes whose id contains the text
+```
+
+Skull traps (death without a skull, survival and loss with one, the skull taken at #252 and offered at #1116), the crossbow (a shot kills and spends one arrow, the bag shows what is left, no button against Barlad, an arrow passes through a ghost unspent), the mirror fight at #239, spells forgotten at #648, the flask filled at #427 and emptied at #385, the spy's gates at #454, food for the fugitives at #597, the retired river teleport at #1205 and the plaque spent at #1078, the old man's secret at #76 and the hidden door at the gates #56 / #205, the green gas that silvers the bronze jug at #957, the single-use silver vessel at #608, the whistle offered only after the fight at #129, and the Chief of the Guard won without a Copy charge at #1099. Output: `tests/smoke/out/FIDELITY_PROBES_REPORT.md`.

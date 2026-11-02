@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-27",
+  "last_updated": "2026-11-02",
   "schema_doc": "Canonical paragraph-level corrections registry and adjudication ledger - the source of truth for every intentional edit on top of the canon (the fb2 remake of the 1991 first edition, kept outside git since 2026-09-11 in _handoff/canon_sources). Pipeline: canon -> text_corrections.json (adjudication) -> src/game_structure.js + src/locale.*.js (applied by patchers) -> build.sh -> dist/. Item statuses: OPEN (pending), DONE (applied; carries a resolution), REJECTED (adjudicated as not a defect), VERIFIED_RESOLVED (a stale claim re-checked and found already fixed, group_76). version_history keys are transitions (older ones use the arrow character, newer ones \"->\"); the key \"v2.x verification sweep 2026-05-22\" is an annotation, not a transition. Commit hashes quoted before 2026-09-11 belong to the pre-rewrite history (group_94).",
   "version_history": {
     "v1 → v2": "Major reconciliation pass after ChatGPT 5.5 + Gemini 3.1 Pro parallel audits (Apr 2026). Removed 3 spurious pending items (§13 stamina+15, §140 gold+30, §532 wound_2 — first two were misinterpretations of paragraph-arithmetic mechanics, third was already implemented in src/remake_data.js + src/game_logic.js). Corrected §166 canonical branch set. Registered ~25 new pending items across 4 categories: gold-sign data bugs, missing passive auto-effects, missing item acquisitions, conditional-choice gating, and the dynamic-target paragraph-arithmetic engine cluster.",
@@ -201,7 +201,8 @@
     "v2.193 -> v2.194": "September 2026 - group_96: acceptance of the cleaned build 1a7195d by the maintainer's tools (battery ALL GREEN, smoke 27/27, gate probes 28+1, full playthrough to sec.1220 with both deeds); the fifth external browser-agent attempt failed in the provider's infrastructure. Event log keeps the language of each entry (documented, by design). GAME_RULES.md s9 + label 2.193 -> 2.194 (R-03 guard).",
     "v2.194 -> v2.195": "September 2026 - group_97 (Astra live run 2026-09-17): PL-01 the Golden Snake of sec.127 implemented (item, grant, once-per-journey combat kill, refused against Barlad), PL-02 stale RU label at sec.963, PL-03 riddle fail labels translated into EN/FR/UK (six paragraphs). items 121 -> 122; ui keys 368 -> 371; p1_6d 93 -> 95; smoke C30. GAME_RULES.md s3 + label 2.194 -> 2.195 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.195 -> v2.196": "September 2026 - group_98 (Astra live run 2026-09-18, all blocks finished): MAP-01 full screen takes the whole map shell so the layer selector, zoom and legend remain reachable; MAP-02 the top bar no longer inherits the mini-map layer (updateMapTopbar runs for the full map only). p1_6d 95 -> 97; _dist_ui_check 63 -> 64; smoke C31. GAME_RULES.md label 2.195 -> 2.196 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.196 -> v2.197": "September 2026 - group_99 self-audit: VC-01 voice declarations restored (a // comment had swallowed them), new tests/_static_scope_harness.js (battery 16 -> 17 harnesses), dead code and dead ui keys removed (ui 371 -> 369), HK-09 closed (TTS resume understands the AAC pack; tts_all compresses), documents aligned with the tree, HANDOFF.md as the single current handoff, two bootstrap scripts removed, old backlog re-verified. GAME_RULES.md label 2.196 -> 2.197 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.196 -> v2.197": "September 2026 - group_99 self-audit: VC-01 voice declarations restored (a // comment had swallowed them), new tests/_static_scope_harness.js (battery 16 -> 17 harnesses), dead code and dead ui keys removed (ui 371 -> 369), HK-09 closed (TTS resume understands the AAC pack; tts_all compresses), documents aligned with the tree, HANDOFF.md as the single current handoff, two bootstrap scripts removed, old backlog re-verified. GAME_RULES.md label 2.196 -> 2.197 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.197 -> v2.198": "November 2026 - group_100: Gemini 4 Argon fidelity sweep adjudicated - skull chain, crossbow, single-use silver vessel and the green gas, spy offers, river teleport retired, the old man's secret door moved to the castle gates, mirror fight at §239, spells forgotten, flask fill / empty, Levitation hooks, trophies after fights, card deck and sword grants, item gates, food for the fugitives, §1099 toll removed, inert flee flags removed; plus AR-19 (acquires navigation on «Готово») found by the new tests/smoke/fidelity_probes.js (25 probes). items 122 -> 125; ui keys 369 -> 377; p1_6d 97 -> 103. GAME_RULES.md + label 2.197 -> 2.198 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -479,6 +480,165 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_100_2026_11_02_argon_fidelity": {
+      "comment": "Gemini 4 Argon (Gemini app, thinking level Medium), 2026-11-02: text-vs-engine fidelity sweep over all 1221 Russian paragraphs against GD, the engine, items.json, GAME_RULES and REGISTRY_DIGEST (brief audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md; the 900 KB locale was uploaded in four parts after the first upload was cut at §467). Pre-flight matched the maintainer's reference values exactly (1221 / 369 keys, GD[1221] luck 357/628, GD[127] golden_snake, useSnakeInCombat, initVisualPolishV1, digest last line). 45 findings: every one re-verified against the tree; 40 accepted in 17 clusters, 5 rejected, 1 left to the author. A deterministic probe of the repairs (tests/smoke/fidelity_probes.js) then exposed one more defect of its own (AR-19). Report kept in the chat, not archived.",
+      "source": "gemini_4_argon_fidelity_2026_11_02",
+      "verified": "2026-11-02",
+      "items": [
+        {
+          "id": "AR-01_skull_chain",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "The skull of §252 («положите череп в заплечный мешок») and §1116 («можете взять его себе») did not exist; the four gas traps §842 / §854 / §859 / §913 («Если у вас есть череп… если же нет, … душит вас») let everyone survive.",
+          "note": "Argon F-016, F-031..F-034; confirmed (no item, no gate).",
+          "resolution": "DONE. Item skull; §252 «положите череп…» acquires it, §1116 offers it; each trap exit requires and spends it, so without a skull the paragraph has no exit and ends in death; the skull stays at §1041 / §938 / §1012 / §1027 as the text says."
+        },
+        {
+          "id": "AR-02_crossbow_ability",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§649 promises a crossbow that, with its arrows, kills one enemy without a fight (not Barlad Dert, not ghosts or spirits); the arrows were an inert bundle and the crossbow did not exist.",
+          "note": "Argon F-020 (the Golden Snake class); §570 black arrows are the same ammunition.",
+          "resolution": "DONE. Item crossbow (weapon, weightless); §649 offers the crossbow and the arrows; in a fight «🏹 Выстрелить из арбалета [N]» kills the chosen enemy, once per fight («с остальными придется драться на мечах»); arrows come in bundles of 5 (arrows_5, black_arrows_5) with S.arrowsLeft, the bag shows the remainder; no button against Barlad; ghosts and spirits (prizrak, duh_mertvyh, zloy_duh) are not hit and the arrow is not spent. Four ui keys x4."
+        },
+        {
+          "id": "AR-03_silver_vessel_single_use_and_green_gas",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "The silver vessel («пользоваться им можно только один раз», «еще раз невозможно воспользоваться») stayed in the bag after killing the knights at §739 / §728 / §861 / §775; §957 «Если у вас какая-нибудь емкость…» was open to everyone and §1038 (the container turns silver) granted nothing.",
+          "note": "Argon F-037; confirmed.",
+          "resolution": "DONE. The vessel is spent at §388→739, §608→728, §742→861, §556→775; §957→1038 requires and spends the bronze jug; §1038 offers the silver vessel."
+        },
+        {
+          "id": "AR-04_spy_offers_gated",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§454 lets anyone offer the manuscript, the book or the stork feather (and §221 the manuscript) and skip the spy fight.",
+          "note": "Argon F-012; confirmed.",
+          "resolution": "DONE. Each offer requires the item and spends it (the spy seizes the manuscript, takes the book, burns the feather)."
+        },
+        {
+          "id": "AR-05_river_teleport_retired",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§1205 offered «Перейти к применению бляхи с корабликом (249)» - a jump from the river into the castle dungeon; the text only tells the reader where to turn when the plaque is needed (§1078). The plaque, welded into the wall at §249, also stayed in the bag.",
+          "note": "Argon F-045 (same class as AS-05 / AS-06 of group_85); confirmed.",
+          "resolution": "DONE. §1205→249 retired (labels keep their positions); §1078→249 spends the plaque."
+        },
+        {
+          "id": "AR-06_old_man_secret_door",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§76 offered «Войти в замок через потайную дверцу (1145)» from the old man's house, while §1145 begins «Это то, что искали. Вы прекрасно помните слова старичка…» - the door is used at the castle; the deer hide the old man gives was granted only on the leave and trade exits.",
+          "note": "Argon F-003 plus the maintainer's reading of §1145 (precedent: group_85 AS-05 / AS-06). Reversible on the author's word.",
+          "resolution": "DONE. §76 grants the deer hide and the knowledge flag secret_door («Тайна потайной дверцы»); §76→1145 retired; the castle gates §56 and §205 offer «Войти через потайную дверцу, о которой рассказал старичок (1145)» to a hero who knows the secret, with or without the password; §487 no longer duplicates the hide."
+        },
+        {
+          "id": "AR-07_mirror_fight_239",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§239 «придется вам драться с самим собой (МАСТЕРСТВО и ВЫНОСЛИВОСТЬ у Копии такие же, как и у вас). Если победили…» - the fight did not exist.",
+          "note": "Argon report, uncertain reading 3; confirmed as a missing fight.",
+          "resolution": "DONE. Enemy vasha_kopiya with mirror_hero: SKILL and STAMINA copied from the hero at the start of the fight; the return to §143 is offered after victory. Names x4."
+        },
+        {
+          "id": "AR-08_spells_forgotten_648",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§648 «Вычеркните у себя все ваши заклятия» had no effect.",
+          "note": "Argon F-019; confirmed.",
+          "resolution": "DONE. auto_items.spells_zero sets every spell charge to 0 (notice and journal)."
+        },
+        {
+          "id": "AR-09_flask_fill_and_empty",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Filling the flask at §427 / §748 / §1125 and emptying it for the dying bandit at §385 («отметьте, что фляга пуста») had no effect.",
+          "note": "Argon F-009, F-010, F-027, F-042; confirmed.",
+          "resolution": "DONE. auto_items.flask_fill (full) and flask_zero."
+        },
+        {
+          "id": "AR-10_levitation_hooks",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§684 («если… у вас есть еще одно заклинание Левитации… 836, 907, 1075») and §791 (907, 1075) let the hero fly without a Levitation charge.",
+          "note": "Argon F-021, F-025; confirmed.",
+          "resolution": "DONE. Five exits now spend a Levitation charge (spell hooks 100 -> 104 with AR-15)."
+        },
+        {
+          "id": "AR-11_whistle_after_the_fight",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "§129 / §162 / §505 offered the bronze whistle on entry, before the goblin fight («Если вы убили Гоблина…»).",
+          "note": "Argon F-004, F-006, F-014; same class as PL-20.",
+          "resolution": "DONE. post_combat_items at the three paragraphs."
+        },
+        {
+          "id": "AR-12_card_deck_and_sword_grants",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§358 «Вы можете собрать колоду и взять с собой» granted nothing (the deck is a pass at §658); §553 granted the Green Knight's sword on entry even to a hero who leaves «ничего не трогая», while §542 «возьмите его себе» granted nothing.",
+          "note": "Argon F-008, F-015; confirmed.",
+          "resolution": "DONE. §358 offers the card deck; the sword grant moved from §553 to §542."
+        },
+        {
+          "id": "AR-13_item_gates_and_consumption",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "§658 «Шлем?» was open without the helmet; §804 the metal that «проваливается сквозь» the hatch stayed in the bag; §826 «печень дракона (365)» was open without the liver.",
+          "note": "Argon F-023 (the old group_21 note left it ungated without a reason), F-029, F-030.",
+          "resolution": "DONE. Helmet gate, metal spent, liver gate."
+        },
+        {
+          "id": "AR-14_food_for_the_fugitives",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "§499 / §597 «Дадите им поесть (85)» was open without food and cost nothing; §85 «увидев еду… набрасываются на нее».",
+          "note": "Argon F-013, F-017.",
+          "resolution": "DONE. New choice field food_offer: visible only with food in the bag; the smallest meal is given (journal, notice). One ui key x4."
+        },
+        {
+          "id": "AR-15_copy_toll_removed_1099",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "§1099 put a Copy charge on the victory exit to 894 although Copy is an in-fight spell; a deadline win already routes to 894.",
+          "note": "Argon F-040; harmless in practice (the deadline routes the win) but misleading data.",
+          "resolution": "DONE. spell / spell_choice removed from §1099→894; a probe confirms the win without a Copy charge reaches §894."
+        },
+        {
+          "id": "AR-16_flee_flags_on_peaceful_choices",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "15 choices in paragraphs without enemies carried flee:true (Argon listed 14).",
+          "note": "The engine applies the flee penalty only during a fight, so the flags were inert noise.",
+          "resolution": "DONE. Removed; the 6d guard keeps peaceful choices free of flee."
+        },
+        {
+          "id": "AR-17_rejected_findings",
+          "severity": "P2",
+          "status": "REJECTED",
+          "hypothesis": "F-026 §736 golden horseshoe; F-035 §1054 «К палаткам — 915»; F-036 §951 spell_choice; F-039 §1052 dagger; F-043 §882 «отблагодарить» Ivan.",
+          "note": "§736 is one of the 16 unreachable vestigial paragraphs; the fb2 canon prints «К палаткам? — 915» (kept as written); spell_choice is not read by the engine; the dagger has no consumer anywhere in the book; §882 is narrative (enforcing a payment could strand a hero who has nothing left after §908).",
+          "resolution": "REJECTED - see note."
+        },
+        {
+          "id": "AR-18_second_flask_462",
+          "severity": "P2",
+          "status": "OPEN",
+          "hypothesis": "§462 «Можете взять ее с собой, тогда у вас будут две фляги. Воду эту можете использовать так же, как и вашу» - water_flask is an inert item without sips.",
+          "note": "Author decision: a second flask needs a second sip counter in the HUD; low value.",
+          "resolution": null
+        },
+        {
+          "id": "AR-19_acquires_done_button",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "Found by the fidelity probe, not by the reviewer: applyChoiceAcquires looked for .btn-primary, but the offer dialog's «Готово» is #btn-inv-done (class btn-p), so the navigation was wired to the first «+ Взять» button - pressing «Готово» closed the dialog without leaving the paragraph (all 15 acquires choices), and a permanent wiring would have repeated the navigation in later dialogs.",
+          "note": "Confirmed by the probe skull-taken-at-252 (skull in the bag, hero still at §252).",
+          "resolution": "DONE. The wiring targets #btn-inv-done and restores the button's own handler on first use; 6d guard; the probe now passes (hero at §480 with the skull)."
+        }
+      ]
     },
     "group_99_2026_09_27_self_audit": {
       "comment": "Repository self-audit 2026-09-27 (Claude Opus 5.5): automated scan of the registry, census vs documents, locale parity and label targets, static analysis of every shipped source (acorn), junk and dangling references, PWA state, and a re-verification of the old backlog (spell hooks, one-sided luck, gold key, resource gates). Baseline before the audit: a5cb66a, battery ALL GREEN, dist reproducible.",
