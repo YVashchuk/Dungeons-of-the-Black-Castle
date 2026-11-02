@@ -205,7 +205,8 @@
     "v2.197 -> v2.198": "November 2026 - group_100: Gemini 4 Argon fidelity sweep adjudicated - skull chain, crossbow, single-use silver vessel and the green gas, spy offers, river teleport retired, the old man's secret door moved to the castle gates, mirror fight at §239, spells forgotten, flask fill / empty, Levitation hooks, trophies after fights, card deck and sword grants, item gates, food for the fugitives, §1099 toll removed, inert flee flags removed; plus AR-19 (acquires navigation on «Готово») found by the new tests/smoke/fidelity_probes.js (25 probes). items 122 -> 125; ui keys 369 -> 377; p1_6d 97 -> 103. GAME_RULES.md + label 2.197 -> 2.198 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.198 -> v2.199": "November 2026 - group_100 AR-18 (the second flask of §462 made real on the author's decision: weightless, comes full, 2 sips per flask, springs fill both, the merchant fills one, the bandit drinks one, a lost bet takes the second) and AR-20 (§410 spring fills the flask). Two fidelity probes added (27). GAME_RULES.md label 2.198 -> 2.199 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.199 -> v2.200": "November 2026 - group_100 record completed: the Argon report archived in audit_cycles/recheck_2026_11/argon/; findings_map gives the verdict of each of the 45 findings (40 accepted, 5 rejected) and of the four uncertain readings; the five rejections are separate records AR-17a..e with their reasons; smoke rows C32-C47 cover every repair for live runs. GAME_RULES.md label 2.199 -> 2.200 (R-03 guard).",
-    "v2.200 -> v2.201": "November 2026 - group_101: Gemini 4 Argon engine review adjudicated, all 7 findings fixed - guarded saveGame with one notice (E-001), pick-up continuation runs once on every close path and Escape closes the dialog (E-002), the map module's import normalizes the save (E-003), enemy keys and relabelCombatUi after a language switch, ghosts by key (E-004), arrow counts forgotten on drop (E-005), typed and loaded strings sanitized (E-006), bundled narration follows the speed slider and a stop settles playback (E-007). ui keys 377 -> 378; p1_6d 104 -> 105; fidelity probes 27 -> 35 (8 engine-*); smoke rows C48-C51. GAME_RULES.md label 2.200 -> 2.201 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.200 -> v2.201": "November 2026 - group_101: Gemini 4 Argon engine review adjudicated, all 7 findings fixed - guarded saveGame with one notice (E-001), pick-up continuation runs once on every close path and Escape closes the dialog (E-002), the map module's import normalizes the save (E-003), enemy keys and relabelCombatUi after a language switch, ghosts by key (E-004), arrow counts forgotten on drop (E-005), typed and loaded strings sanitized (E-006), bundled narration follows the speed slider and a stop settles playback (E-007). ui keys 377 -> 378; p1_6d 104 -> 105; fidelity probes 27 -> 35 (8 engine-*); smoke rows C48-C51. GAME_RULES.md label 2.200 -> 2.201 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.201 -> v2.202": "November 2026 - group_101 E-004 completed: the prompt of an open luck check follows a language switch (window._luckInfoRender); the post-roll panel and scripted custom prompts recorded as a deliberate rejection (EN-04r); probe engine-luck-prompt (36); smoke C49 extended, C52 export / import; live-run brief block G updated. GAME_RULES.md label 2.201 -> 2.202 (R-03 guard)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -485,7 +486,7 @@
       "verified": "2026-07-09"
     },
     "group_101_2026_11_02_argon_engine": {
-      "comment": "Gemini 4 Argon (Gemini app), 2026-11-02: engine robustness review, Part 2 of audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md, over src/game_logic.js, src/map_module.js, the shell and mobile.css (kit at aaceb31, registry v2.198 -> v2.199; the pre-flight matched that kit). 7 findings, all confirmed against the code and fixed; each repair has a live probe (8 probes, ids engine-*). Report archived in audit_cycles/recheck_2026_11/argon/ (ENGINE_FINDINGS.json, ENGINE_REPORT.md; verdicts in README.md). The reviewer also confirmed as sound: the S bridge, the dialog stack, the mobile sheets, anti-reroll persistence, staged joins and kill paths, stamina clamping, listener lifecycles.",
+      "comment": "Gemini 4 Argon (Gemini app), 2026-11-02: engine robustness review, Part 2 of audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md, over src/game_logic.js, src/map_module.js, the shell and mobile.css (kit at aaceb31, registry v2.198 -> v2.199; the pre-flight matched that kit). 7 findings, all confirmed against the code and fixed (one sub-point of E-004 - the post-roll luck panel and scripted custom prompts - deliberately left as is, EN-04r); each repair has a live probe (8 probes, ids engine-*). Report archived in audit_cycles/recheck_2026_11/argon/ (ENGINE_FINDINGS.json, ENGINE_REPORT.md; verdicts in README.md). The reviewer also confirmed as sound: the S bridge, the dialog stack, the mobile sheets, anti-reroll persistence, staged joins and kill paths, stamina clamping, listener lifecycles.",
       "source": "gemini_4_argon_engine_review_2026_11_02",
       "verified": "2026-11-02",
       "items": [
@@ -527,7 +528,17 @@
           "status": "DONE",
           "hypothesis": "A language switch during a fight left enemy names and the charge buttons in the previous language; worse (found while fixing), the crossbow recognised ghosts by the translated name, so after a switch an arrow could kill a ghost.",
           "note": "Confirmed by reading the code; a live probe in tests/smoke/fidelity_probes.js passes after the fix.",
-          "resolution": "DONE. combatState enemies keep rawName (the enemy key); relabelCombatUi() re-localizes names, the Copy / Force / Weakness / larva / crossbow / ally buttons after a switch; the crossbow tests ghosts by key."
+          "resolution": "DONE. combatState enemies keep rawName (the enemy key); relabelCombatUi() re-localizes names, the Copy / Force / Weakness / larva / crossbow / ally buttons after a switch; the crossbow tests ghosts by key. The prompt of an open luck check (ordinary, or scripted with the default prompt) is re-rendered too, before the roll."
+        },
+        {
+          "id": "EN-04r_post_roll_panel_and_custom_prompts",
+          "finding": "E-004 (remainder)",
+          "severity": "P2",
+          "reviewer_severity": "P2",
+          "status": "REJECTED",
+          "hypothesis": "After a luck roll, the result panel and its continue buttons, and the custom prompts that scripted fights compose (for example the §1175 luck prompt), keep the language they were drawn in when the language is switched while they are open.",
+          "note": "Deliberately not re-rendered: the result panel is a one-off message that disappears with the next click, and re-drawing it would have to replay a resolved roll (the anti-reroll records make that a display-only path to build and test); the custom prompts are composed by the fight from its live state at that moment. The next screen after the click is fully in the new language.",
+          "resolution": "REJECTED - a mixed-language moment that lasts one click; cost and risk outweigh the benefit."
         },
         {
           "id": "EN-05_arrow_count_forgotten",
@@ -579,7 +590,7 @@
         {
           "finding": "E-004",
           "verdict": "accepted",
-          "cluster": "EN-04"
+          "cluster": "EN-04 (luck prompt included); remainder rejected as EN-04r"
         },
         {
           "finding": "E-005",

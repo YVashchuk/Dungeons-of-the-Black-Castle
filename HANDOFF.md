@@ -1,6 +1,6 @@
 # HANDOFF — текущее состояние проекта
 
-**Обновлено:** 2026-09-27 · реестр **v2.201** (`assets/text_corrections.json`, последняя строка `version_history`) · батарея `node tests/run_all.js` — ALL GREEN (17 харнессов + 6 dist-чеков + reachability baseline 1205) · автосмоук 27/27 · пробы гейтов 28 + G-15 внешняя · пробы веток 7/7 · живой прогон Astra 27.09 — 0 дефектов · автопрохождение §1 → §1220 с обоими подвигами.
+**Обновлено:** 2026-09-27 · реестр **v2.202** (`assets/text_corrections.json`, последняя строка `version_history`) · батарея `node tests/run_all.js` — ALL GREEN (17 харнессов + 6 dist-чеков + reachability baseline 1205) · автосмоук 27/27 · пробы гейтов 28 + G-15 внешняя · пробы веток 7/7 · живой прогон Astra 27.09 — 0 дефектов · автопрохождение §1 → §1220 с обоими подвигами.
 
 Прежние снимки (`HANDOFF_2026-09-05.md`, `HANDOFF_2026-09-11.md`) перенесены в `audit_cycles/recheck_2026_09/handoffs/`; хэши коммитов в документах до 11.09.2026 относятся к истории до переписи (group_94).
 
@@ -23,7 +23,7 @@
 
 ## Инструменты
 - `node tests/run_all.js` — батарея (офлайн, acorn завендорен). `bash build.sh` — сборка `src/` → `dist/`.
-- Живые проверки (Playwright поверх установленного Chrome, сервер `python -m http.server 8001` из корня): `tests/smoke/smoke_run.js` (27), `tests/smoke/gate_probes.js` (28 + 1 внешняя), `tests/smoke/branch_probes.js` (7 веток кубиков и дедлайнов с подменённым `d6()`), `tests/smoke/fidelity_probes.js` (35 проб: «текст обещает — движок делает» group_100 и надёжность движка group_101, `engine-*`; `ONLY=<часть id>` запускает выборочно), `tests/smoke/playthrough.js` (автоигрок: `WAYPOINTS`, `TESTER_BOOST=1`, `RESUME=1`, `MAX_STEPS`; куски не длиннее ~2 минут).
+- Живые проверки (Playwright поверх установленного Chrome, сервер `python -m http.server 8001` из корня): `tests/smoke/smoke_run.js` (27), `tests/smoke/gate_probes.js` (28 + 1 внешняя), `tests/smoke/branch_probes.js` (7 веток кубиков и дедлайнов с подменённым `d6()`), `tests/smoke/fidelity_probes.js` (36 проб: «текст обещает — движок делает» group_100 и надёжность движка group_101, `engine-*`; `ONLY=<часть id>` запускает выборочно), `tests/smoke/playthrough.js` (автоигрок: `WAYPOINTS`, `TESTER_BOOST=1`, `RESUME=1`, `MAX_STEPS`; куски не длиннее ~2 минут).
 - Озвучка: `scripts/tts_all.cmd` (рендер 4 языков + сжатие), `scripts/tts_pregenerate.js` (один язык, `--out` для проб), `scripts/tts_compress.js` (AAC 48 kbps).
 - Внешний аудит: ZIP по хэшу коммита без `dist/audio`; брифы — `audit_cycles/recheck_2026_09/BRIEF_*.md`; результат адьюдицируется патчером (dry-run → `--write`) и записывается группой в реестр.
 

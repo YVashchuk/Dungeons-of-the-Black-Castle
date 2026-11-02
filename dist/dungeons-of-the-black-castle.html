@@ -4215,7 +4215,7 @@ function repaintAfterLangSwitch(){
   try{ if(window.bcRefreshMapLanguage) window.bcRefreshMapLanguage(ACTIVE_LOCALE); }catch(e){}
   var sg=document.getElementById('scr-game');
   var inGame=!!(S && sg && sg.classList && sg.classList.contains('on'));
-  if(inGame){ try{ renderGame({repaint:true}); }catch(e){} try{ relabelCombatUi(); }catch(e){} }
+  if(inGame){ try{ renderGame({repaint:true}); }catch(e){} try{ relabelCombatUi(); }catch(e){} try{ const ml=document.getElementById('modal-luck'), rb=document.getElementById('btn-luck-roll'); if(ml&&ml.classList.contains('on')&&rb&&rb.style.display!=='none'&&typeof window._luckInfoRender==='function') window._luckInfoRender(); }catch(e){} /* group_101 E-004: an open luck prompt follows the switch */ }
   else { try{ updateHUD(); }catch(e){} }
 }
 // group_101 E-004: a language switch during a fight re-localizes the open combat modal (enemy names, charge buttons).
@@ -5486,8 +5486,7 @@ function startScriptedLuckCheck(opts){
   scriptedLuckContext=opts||{};
   document.getElementById('luck-result').innerHTML='';
   document.getElementById('luck-choices').innerHTML='';
-  const header=opts&&opts.promptHtml?opts.promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('broste_dva_kubika_esli_rezultat')}${S.luck}${t('vam_povezlo')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`;
-  document.getElementById('luck-info').innerHTML=header;
+  window._luckInfoRender=()=>{ const header=opts&&opts.promptHtml?opts.promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('broste_dva_kubika_esli_rezultat')}${S.luck}${t('vam_povezlo')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`; document.getElementById('luck-info').innerHTML=header; }; window._luckInfoRender(); /* group_101 E-004 */
   document.getElementById('btn-luck-roll').style.display='inline-block';
   document.getElementById('btn-luck-roll').onclick=doScriptedLuckCheck;
   document.getElementById('modal-luck').classList.add('on');
@@ -6826,7 +6825,7 @@ function formatLuckPanel(roll1,roll2,roll,needed,lucky,extraHtml){
 function startLuckCheck(sec){
   document.getElementById('luck-result').innerHTML='';
   document.getElementById('luck-choices').innerHTML='';
-  document.getElementById('luck-info').innerHTML=`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('broste_dva_kubika_esli_rezultat')}${S.luck}${t('vam_povezlo')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`;
+  window._luckInfoRender=()=>{ document.getElementById('luck-info').innerHTML=`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('broste_dva_kubika_esli_rezultat')}${S.luck}${t('vam_povezlo')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`; }; window._luckInfoRender(); /* group_101 E-004: re-rendered after a language switch */
   document.getElementById('btn-luck-roll').style.display='inline-block';
   document.getElementById('btn-luck-roll').onclick=()=>doLuckCheck(sec);
   document.getElementById('modal-luck').classList.add('on');
