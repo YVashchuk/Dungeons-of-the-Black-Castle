@@ -68,6 +68,12 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9ai. group_104: a luck roll made after a language switch is drawn in the active language (continuation labels; scripted prompt and result texts)
+(function(){
+  const dl=gl.slice(gl.indexOf('function doLuckCheck(sec){'), gl.indexOf('function doLuckCheck(sec){')+3000);
+  ck('AS-07 doLuckCheck labels the continuation from the active language; scripted luck texts are functions evaluated when drawn', dl.includes('const live=GD[String(S.section)]?locSec(S.section):null;')&&dl.includes('btn.textContent=liveLabel(c);')&&gl.includes("function lazyHtml(v){ return typeof v==='function'?v():v; }")&&gl.includes('opts.promptHtml?lazyHtml(opts.promptHtml):')&&gl.includes('${lazyHtml(opts.successHtml)}')&&gl.includes('${lazyHtml(opts.failHtml)}')&&(gl.match(/promptHtml:\(\)=>`/g)||[]).length===4&&(gl.match(/successHtml:\(\)=>t\(/g)||[]).length===4&&(gl.match(/failHtml:\(\)=>t\(/g)||[]).length===4&&!/successHtml:t\(/.test(gl)&&!/failHtml:t\(/.test(gl));
+})();
+
 // 9ah. group_103: a language switch mid-fight re-localizes what is on screen (cards, round button, condition and scripted buttons), not only combatState
 (function(){
   const rl=gl.slice(gl.indexOf('function relabelCombatUi(){'), gl.indexOf('function applyLang(code, opts){'));

@@ -208,7 +208,8 @@
     "v2.200 -> v2.201": "November 2026 - group_101: Gemini 4 Argon engine review adjudicated, all 7 findings fixed - guarded saveGame with one notice (E-001), pick-up continuation runs once on every close path and Escape closes the dialog (E-002), the map module's import normalizes the save (E-003), enemy keys and relabelCombatUi after a language switch, ghosts by key (E-004), arrow counts forgotten on drop (E-005), typed and loaded strings sanitized (E-006), bundled narration follows the speed slider and a stop settles playback (E-007). ui keys 377 -> 378; p1_6d 104 -> 105; fidelity probes 27 -> 35 (8 engine-*); smoke rows C48-C51. GAME_RULES.md label 2.200 -> 2.201 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.201 -> v2.202": "November 2026 - group_101 E-004 completed: the prompt of an open luck check follows a language switch (window._luckInfoRender); the post-roll panel and scripted custom prompts recorded as a deliberate rejection (EN-04r); probe engine-luck-prompt (36); smoke C49 extended, C52 export / import; live-run brief block G updated. GAME_RULES.md label 2.201 -> 2.202 (R-03 guard).",
     "v2.202 -> v2.203": "November 2026 - group_102: the Astra live run of 2026-11-02 adjudicated (12 PASS, 0 game defects, 7 rows blocked by a transport disconnect): C38 checklist expectation corrected (AS-01), #N changes in an open tab now navigate like a fresh link (AS-02, hashchange -> reload), the blocked rows covered by deterministic probes (AS-03, fidelity probes 36 -> 43). p1_6d 105 -> 106. GAME_RULES.md hash line + label 2.202 -> 2.203 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.203 -> v2.204": "November 2026 - group_103: the Astra continuation run of 2026-11-03 adjudicated (7 rows: 5 PASS, 2 FAIL): a language switch in an open fight now re-localizes what is on screen - the cards, the round button, the condition button and the scripted §1175 buttons (AS-04, ASTRA-02; the E-004 probe had read combatState only); C52 names both import rejections (AS-05, ASTRA-03); the rows covered by probes after the 2026-11-02 disconnect confirmed live (AS-06). Fidelity probes 43 -> 49; p1_6d 106 -> 107. GAME_RULES.md i18n line + label 2.203 -> 2.204 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.203 -> v2.204": "November 2026 - group_103: the Astra continuation run of 2026-11-03 adjudicated (7 rows: 5 PASS, 2 FAIL): a language switch in an open fight now re-localizes what is on screen - the cards, the round button, the condition button and the scripted §1175 buttons (AS-04, ASTRA-02; the E-004 probe had read combatState only); C52 names both import rejections (AS-05, ASTRA-03); the rows covered by probes after the 2026-11-02 disconnect confirmed live (AS-06). Fidelity probes 43 -> 49; p1_6d 106 -> 107. GAME_RULES.md i18n line + label 2.203 -> 2.204 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.204 -> v2.205": "November 2026 - group_104: the Astra continuation run of 2026-11-03 (part 3, C49) adjudicated: C49 PASS, ASTRA-02 confirmed fixed on screen (AS-08); ASTRA-04 fixed (AS-07): a luck roll made after a language switch is drawn in the active language - the continuation buttons of ordinary checks and the prompt, success and failure texts of the scripted checks (§21, §368, §436, §1175); EN-04r narrowed to a panel already drawn after the roll. Fidelity probes 49 -> 51; p1_6d 107 -> 108. GAME_RULES.md i18n line + label 2.204 -> 2.205 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -486,6 +487,31 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_104_2026_11_03_live_run_part3": {
+      "comment": "ChatGPT 6 Astra ULTRA continuation run (part 3) on the published build a0aed07, 2026-11-03 10:32–10:35 EST, desktop Chrome 1363×936: row C49 only, as rewritten after part 2. C49 PASS - the combat modal follows RU → EN → RU on screen (ASTRA-02 confirmed fixed), the ghost and the luck check met their criteria; one new low finding (ASTRA-04). Report, anomalies JSON and 11 screenshots: _handoff/smoke_2026_11_02/part3 (kept out of git).",
+      "source": "chatgpt_6_astra_ultra_live_2026_11_03_part3",
+      "verified": "2026-11-03",
+      "items": [
+        {
+          "id": "AS-07_luck_roll_after_a_switch_in_active_language",
+          "finding": "ASTRA-04",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The luck check at §1221 was opened in Russian and the language switched to English before the roll; after the English roll the panel was English but the continuation button read «Удача с вами (357)» instead of «LUCK is with you (357)».",
+          "note": "Confirmed against the code: startLuckCheck binds doLuckCheck to the paragraph hydrated when the check opened, so the continuation buttons drawn after the roll took the labels of the opening language. The scripted checks had the same shape: §21, §368, §436 and the §1175 fight composed their prompt, success and failure texts when the check opened, so a switch before the roll left the custom prompt and the result text in the opening language (the part EN-04r had recorded for custom prompts).",
+          "resolution": "DONE. doLuckCheck takes the continuation labels from the active language at roll time (locSec, matched by position and target); the scripted checks pass their prompt, success and failure texts as functions (lazyHtml) evaluated when drawn, so a switch before the roll re-renders the custom prompt as well and the result is written in the new language. EN-04r narrows to what remains: a panel already drawn after the roll keeps its language until the click. 6d guard; 2 probes (luck-continuation-follows-language-ASTRA04, scripted-luck-follows-language-ASTRA04) fail on the previous build (a0aed07) and pass on the fix."
+        },
+        {
+          "id": "AS-08_c49_confirmed_live",
+          "finding": "C49 (PASS)",
+          "severity": "P3",
+          "status": "DONE",
+          "hypothesis": "C49 was rewritten after part 2 (ASTRA-02) and needed the reader's view on the fixed build.",
+          "note": "Seen on screen: «⚔ Combat!», «FIRST ORC» / «SECOND ORC», «Skill / Stamina / STATUS», «STRIKE!» and the spell buttons in English, all back in Russian after the return switch; log lines kept the language they were written in; the ghost at §618 stayed 11/11 with five arrows after a shot in English; the §1221 prompt followed the switch before the roll.",
+          "resolution": "DONE - ASTRA-02 confirmed fixed live. C32–C52 are now accepted live except C51 (sound - the author's phone check)."
+        }
+      ]
     },
     "group_103_2026_11_03_live_run_part2": {
       "comment": "ChatGPT 6 Astra ULTRA continuation run (part 2) on the published build d2e44e3, 2026-11-03 09:28 EST, desktop Chrome 1363×936; brief audit_cycles/recheck_2026_11/BRIEF_smoke_astra_2026-11.md, section «Continuation runs»: rows C43 (second half), C44, C45, C48, C49, C50, C52 - the rows the 2026-11-02 run could not reach. 7 rows: 5 PASS, 2 FAIL - one game defect (ASTRA-02: the combat cards did not follow a language switch on screen) and one checklist wording (ASTRA-03). Report and anomalies JSON: _handoff/smoke_2026_11_02/part2 (kept out of git); the screenshots stay with the maintainer.",

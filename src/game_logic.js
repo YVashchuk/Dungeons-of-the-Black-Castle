@@ -1878,6 +1878,8 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
 
 let sectionPrepState={};
 let scriptedLuckContext=null;
+// group_104 AS-07: scripted luck texts may be functions, evaluated when drawn - a language switch before the roll then applies to them too.
+function lazyHtml(v){ return typeof v==='function'?v():v; }
 
 function getSectionPrep(sectionId){
   if(!sectionPrepState[sectionId]){
@@ -1999,7 +2001,7 @@ function startScriptedLuckCheck(opts){
   scriptedLuckContext=opts||{};
   document.getElementById('luck-result').innerHTML='';
   document.getElementById('luck-choices').innerHTML='';
-  window._luckInfoRender=()=>{ const header=opts&&opts.promptHtml?opts.promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('broste_dva_kubika_esli_rezultat')}${S.luck}${t('vam_povezlo')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`; document.getElementById('luck-info').innerHTML=header; }; window._luckInfoRender(); /* group_101 E-004 */
+  window._luckInfoRender=()=>{ const header=opts&&opts.promptHtml?lazyHtml(opts.promptHtml):`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('broste_dva_kubika_esli_rezultat')}${S.luck}${t('vam_povezlo')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`; document.getElementById('luck-info').innerHTML=header; }; window._luckInfoRender(); /* group_101 E-004 */
   document.getElementById('btn-luck-roll').style.display='inline-block';
   document.getElementById('btn-luck-roll').onclick=doScriptedLuckCheck;
   document.getElementById('modal-luck').classList.add('on');
@@ -2014,11 +2016,11 @@ function doScriptedLuckCheck(){
   const res=document.getElementById('luck-result');
   const needed=S.luck+1;
   if(lucky){
-    res.innerHTML=formatLuckPanel(roll1,roll2,roll,needed,true, opts.successHtml?`<div style="color:var(--muted);line-height:1.7">${opts.successHtml}</div>`:'');
+    res.innerHTML=formatLuckPanel(roll1,roll2,roll,needed,true, opts.successHtml?`<div style="color:var(--muted);line-height:1.7">${lazyHtml(opts.successHtml)}</div>`:'');
     if(typeof opts.onLucky==='function') opts.onLucky();
     logEvent('luck',t('proverka_udachi')+roll+' ≤ '+needed,t('udachno_udacha_teper')+S.luck);
   } else {
-    res.innerHTML=formatLuckPanel(roll1,roll2,roll,needed,false, opts.failHtml?`<div style="color:var(--muted);line-height:1.7">${opts.failHtml}</div>`:'');
+    res.innerHTML=formatLuckPanel(roll1,roll2,roll,needed,false, opts.failHtml?`<div style="color:var(--muted);line-height:1.7">${lazyHtml(opts.failHtml)}</div>`:'');
     if(typeof opts.onUnlucky==='function') opts.onUnlucky();
     logEvent('luck',t('proverka_udachi')+roll+' > '+needed,t('neudacha_udacha_teper')+S.luck);
   }
@@ -2050,9 +2052,9 @@ function renderCanonCombatChoices(sec,list){
       btn.style.borderColor='var(--green)';btn.style.color='var(--green2)';btn.style.background='rgba(40,180,100,.12)';
       btn.innerHTML=t('proverit_udachu');
       btn.onclick=()=>startScriptedLuckCheck({
-        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('snachala_nuzhno_proverit_udachu')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
-        successHtml:t('vy_mgnovenno_pererubaete_nit_i_s'),
-        failHtml:t('nit_ne_poddalas_srazu_srazhatsya'),
+        promptHtml:()=>`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('snachala_nuzhno_proverit_udachu')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
+        successHtml:()=>t('vy_mgnovenno_pererubaete_nit_i_s'),
+        failHtml:()=>t('nit_ne_poddalas_srazu_srazhatsya'),
         onLucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, playerMod:0}; },
         onUnlucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, playerMod:-2}; },
         afterClose:()=>renderGame()
@@ -2078,9 +2080,9 @@ function renderCanonCombatChoices(sec,list){
       luck.style.borderColor='var(--green)';luck.style.color='var(--green2)';luck.style.background='rgba(40,180,100,.12)';
       luck.innerHTML=t('proverit_udachu_i_popytatsya_ose');
       luck.onclick=()=>startScriptedLuckCheck({
-        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('mozhno_dratsya_stoya_na_zemle_so')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
-        successHtml:t('vam_udaetsya_osedlat_konya_v_boy'),
-        failHtml:t('osedlat_konya_ne_udalos_srazhats'),
+        promptHtml:()=>`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('mozhno_dratsya_stoya_na_zemle_so')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
+        successHtml:()=>t('vam_udaetsya_osedlat_konya_v_boy'),
+        failHtml:()=>t('osedlat_konya_ne_udalos_srazhats'),
         onLucky:()=>{ sectionPrepState[sec.id]={modeSelected:true, playerMod:0}; },
         onUnlucky:()=>{ sectionPrepState[sec.id]={modeSelected:true, playerMod:-1}; },
         afterClose:()=>renderGame()
@@ -2124,9 +2126,9 @@ function renderCanonCombatChoices(sec,list){
       btn.style.borderColor='var(--green)';btn.style.color='var(--green2)';btn.style.background='rgba(40,180,100,.12)';
       btn.innerHTML=t('proverit_udachu');
       btn.onclick=()=>startScriptedLuckCheck({
-        promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('pauk_tyanet_vas_k_sebe_esli_pove')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
-        successHtml:t('vy_pererubaete_lestnicu_i_sprygi'),
-        failHtml:t('pauk_zatyagivaet_vas_na_derevo_v'),
+        promptHtml:()=>`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('pauk_tyanet_vas_k_sebe_esli_pove')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
+        successHtml:()=>t('vy_pererubaete_lestnicu_i_sprygi'),
+        failHtml:()=>t('pauk_zatyagivaet_vas_na_derevo_v'),
         onLucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, escaped:true}; },
         onUnlucky:()=>{ sectionPrepState[sec.id]={luckResolved:true, escaped:false}; },
         afterClose:()=>{ const s=getSectionPrep(sec.id); if(s.escaped){ goTo(456); } else { renderGame(); } }
@@ -2177,9 +2179,9 @@ function promptCanon1175Luck(){
   log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('mozhete_proverit_udachu_esli_pov')}</div>`;
   setCombatExtraButtons([
     {text:t('proverit_udachu'), key:'proverit_udachu', className:'btn btn-g', onClick:()=>startScriptedLuckCheck({
-      promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('pervyy_ork_uzhe_poverzhen_esli_u')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
-      successHtml:t('tretiy_ork_predpochitaet_spastis'),
-      failHtml:t('tretiy_ork_ne_drognul_boy_prodol'),
+      promptHtml:()=>`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('pervyy_ork_uzhe_poverzhen_esli_u')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
+      successHtml:()=>t('tretiy_ork_predpochitaet_spastis'),
+      failHtml:()=>t('tretiy_ork_ne_drognul_boy_prodol'),
       onLucky:()=>{ cs.special.luckChecked=true; cs.enemies[2].active=false; cs.enemies[2].fled=true; updateCombatEnemyDisplay(cs); },
       onUnlucky:()=>{ cs.special.luckChecked=true; },
       afterClose:()=>resumeCanonCombat()
@@ -3369,11 +3371,14 @@ function doLuckCheck(sec){
   const lr=luckResult[S.section];
   if(sec&&sec.choices){
     const luckChoices=sec.choices.filter(c=>c.luck_type===lr);
+    // group_104 AS-07 (ASTRA-04): the continuation is drawn now, so its label comes from the active language - sec was hydrated
+    // when the check opened, and a language switch before the roll left the button in the opening language.
+    const live=GD[String(S.section)]?locSec(S.section):null; const liveLabel=c=>{ const i=sec.choices.indexOf(c); const lc=(live&&Array.isArray(live.choices))?live.choices[i]:null; return (lc&&lc.target===c.target)?lc.label:c.label; };
     if(luckChoices.length>0){
       luckChoices.forEach(c=>{
         const btn=document.createElement('button');btn.className='btn btn-s';
         btn.style.cssText='margin:8px;font-size:18px;padding:12px 24px;';
-        btn.textContent=c.label;
+        btn.textContent=liveLabel(c);
         btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');goTo(c.target);};
         ch.appendChild(btn);
       });
