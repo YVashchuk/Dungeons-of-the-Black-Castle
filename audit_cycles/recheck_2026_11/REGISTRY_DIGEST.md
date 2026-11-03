@@ -1,6 +1,6 @@
 # REGISTRY_DIGEST — assets/text_corrections.json
 
-- Generated 2026-11-02 from the registry at `v2.201 -> v2.202` (last_updated 2026-11-02).
+- Generated 2026-11-03 from the registry at `v2.202 -> v2.203` (last_updated 2026-11-02).
 - One line per adjudicated item: `[STATUS] id (severity) §paragraphs — claim → resolution`. Statuses: OPEN, DONE, REJECTED, VERIFIED_RESOLVED (a stale claim re-checked and found already fixed). Full texts live in the registry itself.
 
 ## corrections (2 entries; canon-level text and data corrections applied on top of the fb2 source)
@@ -49,6 +49,11 @@
 ## group_73_2026_07_09_tests_migration — Verification battery migrated from the external C:/Users/.../Downloads/_audit_tmp scratch folder into the repo as tests/ (author directive 2026-07-09) - version-controlled and portable.
 - [DONE] battery_migration (-) —  → tests/ now holds the 16 active harnesses, 6 dist spot-checks, 7 golden fixtures (goldens/), verify_reach3.py, regen_fixtures.js and a run_all.js runner (16 harnesses + reachability baseline in one command). All absolute paths rew…
 - [DONE] sweep_incident_2026_07_09 (-) —  → Recorded for posterity: the housekeeping sweep earlier the same day deleted four golden fixtures (6b/6d/6e1/6e2) because the keep-pattern was incomplete, and the post-sweep sanity ran only three harnesses. Recovered by reconstruc…
+
+## group_102_2026_11_02_live_run — ChatGPT 6 Astra ULTRA live run on the published build be1b154 (redeployed as 628cbf8 after a GitHub Pages 500), 2026-11-02 evening, brief audit_cycles/recheck_2026_11/BRIEF_smoke_astra_2026-11.md. Blocks A-E complete, F partial, G not started: the controller …
+- [DONE] AS-01_c38_checklist_expectation (P2) §385,410,427,462 — C38 expected 4 of 4 flask pips after §385 → §462 and 3 of 4 after a sip; the screen showed 2 of 4 and 1 of 4. → DONE. C38 rewritten: 2 of 4 after §462, 1 of 4 after a sip, 4 of 4 at §427, 3 of 4 after a sip, +7 STAMINA and 4 of 4 at §410.
+- [DONE] AS-02_hash_change_in_an_open_tab (P2) — The run noted that #N works after a load or a reload, but changing only the hash of an open tab did not change the screen; README and GAME_RULES promise direct #N navigation. → DONE. A hashchange listener reloads the page when the new hash names an existing paragraph other than the current one; the load-time hash entry then applies exactly as for a fresh link (a fight in progress restarts, as with F5). …
+- [DONE] AS-03_blocked_rows_covered_by_probes (P2) §1099 — The rows the live run could not reach stay unverified until a continuation run. → DONE. 7 probes added (43 in total, all pass). A live continuation run of the same rows remains welcome for the reader's view.
 
 ## group_101_2026_11_02_argon_engine — Gemini 4 Argon (Gemini app), 2026-11-02: engine robustness review, Part 2 of audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md, over src/game_logic.js, src/map_module.js, the shell and mobile.css (kit at aaceb31, registry v2.198 -> v2.199; the pre-fli…
 - [DONE] EN-01_save_survives_blocked_storage (P1) — saveGame() wrote to localStorage without try/catch; with storage blocked (privacy settings, sandboxed frames) or full, the exception stopped the game start, every choice and every pickup. → DONE. saveGame() is guarded; the first failure shows one notice («Не удаётся сохранить игру…», new ui key x4) and play continues. Severity P1 in the project scale: it bites only in that environment.
@@ -544,4 +549,4 @@
 - {"id":"UB-02_sec300_watermelon_vs_sec574_banana_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.300 grants watermelon but sec.574 gates on banana - item id mismatch.","verdict":"rejected","reason":"Two differe…
 - {"id":"UB-03_sec96_sec112_art_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.96 (single Green Knight) is assigned art30_three_knights and the dialogue sec.112 is assigned combat artwork.","verdict":"rejected"…
 
-END OF DIGEST — 316 items with id and status + 82 legacy entries, registry v2.201 -> v2.202
+END OF DIGEST — 319 items with id and status + 82 legacy entries, registry v2.202 -> v2.203

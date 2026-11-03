@@ -206,7 +206,8 @@
     "v2.198 -> v2.199": "November 2026 - group_100 AR-18 (the second flask of §462 made real on the author's decision: weightless, comes full, 2 sips per flask, springs fill both, the merchant fills one, the bandit drinks one, a lost bet takes the second) and AR-20 (§410 spring fills the flask). Two fidelity probes added (27). GAME_RULES.md label 2.198 -> 2.199 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.199 -> v2.200": "November 2026 - group_100 record completed: the Argon report archived in audit_cycles/recheck_2026_11/argon/; findings_map gives the verdict of each of the 45 findings (40 accepted, 5 rejected) and of the four uncertain readings; the five rejections are separate records AR-17a..e with their reasons; smoke rows C32-C47 cover every repair for live runs. GAME_RULES.md label 2.199 -> 2.200 (R-03 guard).",
     "v2.200 -> v2.201": "November 2026 - group_101: Gemini 4 Argon engine review adjudicated, all 7 findings fixed - guarded saveGame with one notice (E-001), pick-up continuation runs once on every close path and Escape closes the dialog (E-002), the map module's import normalizes the save (E-003), enemy keys and relabelCombatUi after a language switch, ghosts by key (E-004), arrow counts forgotten on drop (E-005), typed and loaded strings sanitized (E-006), bundled narration follows the speed slider and a stop settles playback (E-007). ui keys 377 -> 378; p1_6d 104 -> 105; fidelity probes 27 -> 35 (8 engine-*); smoke rows C48-C51. GAME_RULES.md label 2.200 -> 2.201 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.201 -> v2.202": "November 2026 - group_101 E-004 completed: the prompt of an open luck check follows a language switch (window._luckInfoRender); the post-roll panel and scripted custom prompts recorded as a deliberate rejection (EN-04r); probe engine-luck-prompt (36); smoke C49 extended, C52 export / import; live-run brief block G updated. GAME_RULES.md label 2.201 -> 2.202 (R-03 guard)."
+    "v2.201 -> v2.202": "November 2026 - group_101 E-004 completed: the prompt of an open luck check follows a language switch (window._luckInfoRender); the post-roll panel and scripted custom prompts recorded as a deliberate rejection (EN-04r); probe engine-luck-prompt (36); smoke C49 extended, C52 export / import; live-run brief block G updated. GAME_RULES.md label 2.201 -> 2.202 (R-03 guard).",
+    "v2.202 -> v2.203": "November 2026 - group_102: the Astra live run of 2026-11-02 adjudicated (12 PASS, 0 game defects, 7 rows blocked by a transport disconnect): C38 checklist expectation corrected (AS-01), #N changes in an open tab now navigate like a fresh link (AS-02, hashchange -> reload), the blocked rows covered by deterministic probes (AS-03, fidelity probes 36 -> 43). p1_6d 105 -> 106. GAME_RULES.md hash line + label 2.202 -> 2.203 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -484,6 +485,40 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_102_2026_11_02_live_run": {
+      "comment": "ChatGPT 6 Astra ULTRA live run on the published build be1b154 (redeployed as 628cbf8 after a GitHub Pages 500), 2026-11-02 evening, brief audit_cycles/recheck_2026_11/BRIEF_smoke_astra_2026-11.md. Blocks A-E complete, F partial, G not started: the controller transport disconnected in F and the brief forbids retries (ENV). 21 rows: 12 PASS, 1 FAIL (a checklist expectation), 7 BLOCKED, 1 N/A (sound); 0 game defects in the executed part. Report, anomalies JSON and screenshots: _handoff/smoke_2026_11_02 (kept out of git).",
+      "source": "chatgpt_6_astra_ultra_live_2026_11_02",
+      "verified": "2026-11-02",
+      "items": [
+        {
+          "id": "AS-01_c38_checklist_expectation",
+          "finding": "ASTRA-01",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "C38 expected 4 of 4 flask pips after §385 → §462 and 3 of 4 after a sip; the screen showed 2 of 4 and 1 of 4.",
+          "note": "Confirmed against the code and the canon: §385 empties the only flask (flask_zero, −2), the Orc's flask of §462 comes full (+2), so two flasks hold 2 of 4 sips. The engine is right; the checklist written in group_100 was wrong (the agent classified it correctly as expected-by-registry).",
+          "resolution": "DONE. C38 rewritten: 2 of 4 after §462, 1 of 4 after a sip, 4 of 4 at §427, 3 of 4 after a sip, +7 STAMINA and 4 of 4 at §410."
+        },
+        {
+          "id": "AS-02_hash_change_in_an_open_tab",
+          "finding": "run note",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The run noted that #N works after a load or a reload, but changing only the hash of an open tab did not change the screen; README and GAME_RULES promise direct #N navigation.",
+          "note": "Confirmed: the hash entry runs in window.onload only and nothing listened to hashchange. The engine never assigns location.hash (a new game uses history.replaceState), so a listener cannot loop.",
+          "resolution": "DONE. A hashchange listener reloads the page when the new hash names an existing paragraph other than the current one; the load-time hash entry then applies exactly as for a fresh link (a fight in progress restarts, as with F5). 6d guard; probe hash-change-navigates-AS02."
+        },
+        {
+          "id": "AS-03_blocked_rows_covered_by_probes",
+          "finding": "C43, C44, C45, C48, C49, C50, C52 (BLOCKED)",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The rows the live run could not reach stay unverified until a continuation run.",
+          "note": "Each row already had or now has a deterministic probe in tests/smoke/fidelity_probes.js: C43 no-hidden-door-without-secret-205; C44 green-gas-needs-jug-957, green-gas-silvers-the-jug-957, silver-vessel-single-use-608; C45 whistle-after-the-fight-129, card-deck-offered-358, sword-at-542-not-at-553, leave-553-without-sword; C48 engine-escape-continues-pickup-E002, engine-no-stale-continuation-E002; C49 engine-language-switch-mid-fight-E004, engine-ghost-by-key-after-switch-E004, engine-luck-prompt-follows-language-E004; C50 engine-add-item-sanitized-E006; C52 engine-export-import-roundtrip-E003, engine-import-rejects-a-non-save-E003, engine-import-normalizes-E003. The boundary of C47 (a win in exactly the third round of §1099) is the existing probe chief-of-guard-win-without-copy-1099 (6 STAMINA, 2 per round).",
+          "resolution": "DONE. 7 probes added (43 in total, all pass). A live continuation run of the same rows remains welcome for the reader's view."
+        }
+      ]
     },
     "group_101_2026_11_02_argon_engine": {
       "comment": "Gemini 4 Argon (Gemini app), 2026-11-02: engine robustness review, Part 2 of audit_cycles/recheck_2026_11/BRIEF_code_review_gemini4.md, over src/game_logic.js, src/map_module.js, the shell and mobile.css (kit at aaceb31, registry v2.198 -> v2.199; the pre-flight matched that kit). 7 findings, all confirmed against the code and fixed (one sub-point of E-004 - the post-roll luck panel and scripted custom prompts - deliberately left as is, EN-04r); each repair has a live probe (8 probes, ids engine-*). Report archived in audit_cycles/recheck_2026_11/argon/ (ENGINE_FINDINGS.json, ENGINE_REPORT.md; verdicts in README.md). The reviewer also confirmed as sound: the S bridge, the dialog stack, the mobile sheets, anti-reroll persistence, staged joins and kill paths, stamina clamping, listener lifecycles.",

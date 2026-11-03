@@ -68,6 +68,11 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9ag. group_102: a hash change in an open tab navigates like a fresh link; the engine itself never assigns location.hash
+(function(){
+  ck('AS-02 hashchange reloads onto a valid paragraph and the engine never writes the hash', gl.includes("window.addEventListener('hashchange',()=>{ const h=location.hash.substring(1); if(!(h&&parseInt(h)>0&&GD[h])) return;")&&gl.includes('location.reload(); });')&&!/location\.hash\s*=[^=]/.test(gl));
+})();
+
 // 9af. group_100: Argon fidelity sweep - skull chain, crossbow, silver vessel single use, river teleport, the old man's door, mirror fight
 (function(){
   ck('AR skull: granted at 252/1116, gated and spent at 842/854/859/913', GD['252'].choices[1].acquires==='skull'&&GD['1116'].auto_items.items.includes('skull')&&[842,854,859,913].every(n=>GD[String(n)].choices[0].inventory_condition==='skull'&&GD[String(n)].choices[0].consume_on_use==='skull'));

@@ -3438,6 +3438,11 @@ window.onload=()=>{
   }
 };
 
+// group_102 AS-02: a #N typed into the address bar of an open tab behaves like opening that link - the page reloads and
+// the load-time hash entry above applies. The engine never writes the hash itself (a new game uses history.replaceState),
+// so this fires only for the reader's own hash changes; the current paragraph's own number does nothing.
+window.addEventListener('hashchange',()=>{ const h=location.hash.substring(1); if(!(h&&parseInt(h)>0&&GD[h])) return; const sg=document.getElementById('scr-game'); if(S&&S.section===parseInt(h)&&sg&&sg.classList.contains('on')) return; location.reload(); });
+
 // ── Sound Effects (real OGG files via <audio>) ──
 // Maps semantic event names used throughout game_logic.js to OGG files in
 // dist/sounds/{ui,combat,spells,ambience,events}/. The 20 keys below mirror
