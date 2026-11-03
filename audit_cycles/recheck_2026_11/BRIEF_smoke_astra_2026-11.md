@@ -4,7 +4,7 @@
 
 **Archive:** the repository ZIP of the commit under test is attached for reference (root folder name carries the hash; `dist/audio/` was stripped before packing — on the live site it is present). Extract read-only.
 
-**What changed.** In November 2026 a fidelity review by Gemini 4 Argon compared all 1,221 Russian paragraphs with the game data; 40 findings were repaired (registry `assets/text_corrections.json`, group `group_100_2026_11_02_argon_fidelity`; the review itself is archived in `audit_cycles/recheck_2026_11/argon/`). Every repair has a live check: rows **C32–C47** of `MANUAL_SMOKE_CHECKS.md`; the engine review that followed (group `group_101_2026_11_02_argon_engine`) adds rows **C48–C52**. The maintainer's deterministic probes already pass (`tests/smoke/fidelity_probes.js`, 43/43); this run is the reader's view: does the screen show what the text promises.
+**What changed.** In November 2026 a fidelity review by Gemini 4 Argon compared all 1,221 Russian paragraphs with the game data; 40 findings were repaired (registry `assets/text_corrections.json`, group `group_100_2026_11_02_argon_fidelity`; the review itself is archived in `audit_cycles/recheck_2026_11/argon/`). Every repair has a live check: rows **C32–C47** of `MANUAL_SMOKE_CHECKS.md`; the engine review that followed (group `group_101_2026_11_02_argon_engine`) adds rows **C48–C52**. The maintainer's deterministic probes already pass (`tests/smoke/fidelity_probes.js`, 49/49); this run is the reader's view: does the screen show what the text promises.
 
 ## How to run
 

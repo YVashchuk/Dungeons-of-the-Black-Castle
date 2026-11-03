@@ -1,6 +1,6 @@
 # REGISTRY_DIGEST — assets/text_corrections.json
 
-- Generated 2026-11-03 from the registry at `v2.202 -> v2.203` (last_updated 2026-11-02).
+- Generated 2026-11-03 from the registry at `v2.203 -> v2.204` (last_updated 2026-11-02).
 - One line per adjudicated item: `[STATUS] id (severity) §paragraphs — claim → resolution`. Statuses: OPEN, DONE, REJECTED, VERIFIED_RESOLVED (a stale claim re-checked and found already fixed). Full texts live in the registry itself.
 
 ## corrections (2 entries; canon-level text and data corrections applied on top of the fb2 source)
@@ -49,6 +49,11 @@
 ## group_73_2026_07_09_tests_migration — Verification battery migrated from the external C:/Users/.../Downloads/_audit_tmp scratch folder into the repo as tests/ (author directive 2026-07-09) - version-controlled and portable.
 - [DONE] battery_migration (-) —  → tests/ now holds the 16 active harnesses, 6 dist spot-checks, 7 golden fixtures (goldens/), verify_reach3.py, regen_fixtures.js and a run_all.js runner (16 harnesses + reachability baseline in one command). All absolute paths rew…
 - [DONE] sweep_incident_2026_07_09 (-) —  → Recorded for posterity: the housekeeping sweep earlier the same day deleted four golden fixtures (6b/6d/6e1/6e2) because the keep-pattern was incomplete, and the post-sweep sanity ran only three harnesses. Recovered by reconstruc…
+
+## group_103_2026_11_03_live_run_part2 — ChatGPT 6 Astra ULTRA continuation run (part 2) on the published build d2e44e3, 2026-11-03 09:28 EST, desktop Chrome 1363×936; brief audit_cycles/recheck_2026_11/BRIEF_smoke_astra_2026-11.md, section «Continuation runs»: rows C43 (second half), C44, C45, C48,…
+- [DONE] AS-04_combat_screen_follows_language (P2) §43,46,532,617,994,1175 — After a language switch in an open fight (§43) the spell buttons changed to English, but the enemy cards still read «ПЕРВЫЙ ОРК» / «ВТОРОЙ ОРК» and the round button «Удар!». → DONE. relabelCombatUi now rewrites the rendered cards (name; captions and damage note in classed spans), the round button by reverse lookup over the locales (Удар! / Продолжить / Конец: a label is only ever replaced by the same k…
+- [DONE] AS-05_c52_two_import_rejections (P2) — C52 expected «Ошибка загрузки» for any file that is not a save; a well-formed JSON file without save data showed «Несовместимый формат». → DONE. C52 names both notices and requires the current game to survive either; 2 probes (engine-import-rejects-malformed-json-E003, engine-import-rejects-an-unknown-format-E003) next to the existing «null» probe.
+- [DONE] AS-06_probe_rows_confirmed_live (P3) §129,205,335,358,480,542,608,618,957,1038,1221 — After the 2026-11-02 disconnect these rows were covered by deterministic probes only (group_102 AS-03); the reader's view was still missing. → DONE - no change needed. C32–C52 are now accepted live except the card part of C49 (re-check on the fixed build) and C51 (sound - the author's phone check).
 
 ## group_102_2026_11_02_live_run — ChatGPT 6 Astra ULTRA live run on the published build be1b154 (redeployed as 628cbf8 after a GitHub Pages 500), 2026-11-02 evening, brief audit_cycles/recheck_2026_11/BRIEF_smoke_astra_2026-11.md. Blocks A-E complete, F partial, G not started: the controller …
 - [DONE] AS-01_c38_checklist_expectation (P2) §385,410,427,462 — C38 expected 4 of 4 flask pips after §385 → §462 and 3 of 4 after a sip; the screen showed 2 of 4 and 1 of 4. → DONE. C38 rewritten: 2 of 4 after §462, 1 of 4 after a sip, 4 of 4 at §427, 3 of 4 after a sip, +7 STAMINA and 4 of 4 at §410.
@@ -549,4 +554,4 @@
 - {"id":"UB-02_sec300_watermelon_vs_sec574_banana_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.300 grants watermelon but sec.574 gates on banana - item id mismatch.","verdict":"rejected","reason":"Two differe…
 - {"id":"UB-03_sec96_sec112_art_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.96 (single Green Knight) is assigned art30_three_knights and the dialogue sec.112 is assigned combat artwork.","verdict":"rejected"…
 
-END OF DIGEST — 319 items with id and status + 82 legacy entries, registry v2.202 -> v2.203
+END OF DIGEST — 322 items with id and status + 82 legacy entries, registry v2.203 -> v2.204

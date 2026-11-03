@@ -207,7 +207,8 @@
     "v2.199 -> v2.200": "November 2026 - group_100 record completed: the Argon report archived in audit_cycles/recheck_2026_11/argon/; findings_map gives the verdict of each of the 45 findings (40 accepted, 5 rejected) and of the four uncertain readings; the five rejections are separate records AR-17a..e with their reasons; smoke rows C32-C47 cover every repair for live runs. GAME_RULES.md label 2.199 -> 2.200 (R-03 guard).",
     "v2.200 -> v2.201": "November 2026 - group_101: Gemini 4 Argon engine review adjudicated, all 7 findings fixed - guarded saveGame with one notice (E-001), pick-up continuation runs once on every close path and Escape closes the dialog (E-002), the map module's import normalizes the save (E-003), enemy keys and relabelCombatUi after a language switch, ghosts by key (E-004), arrow counts forgotten on drop (E-005), typed and loaded strings sanitized (E-006), bundled narration follows the speed slider and a stop settles playback (E-007). ui keys 377 -> 378; p1_6d 104 -> 105; fidelity probes 27 -> 35 (8 engine-*); smoke rows C48-C51. GAME_RULES.md label 2.200 -> 2.201 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.201 -> v2.202": "November 2026 - group_101 E-004 completed: the prompt of an open luck check follows a language switch (window._luckInfoRender); the post-roll panel and scripted custom prompts recorded as a deliberate rejection (EN-04r); probe engine-luck-prompt (36); smoke C49 extended, C52 export / import; live-run brief block G updated. GAME_RULES.md label 2.201 -> 2.202 (R-03 guard).",
-    "v2.202 -> v2.203": "November 2026 - group_102: the Astra live run of 2026-11-02 adjudicated (12 PASS, 0 game defects, 7 rows blocked by a transport disconnect): C38 checklist expectation corrected (AS-01), #N changes in an open tab now navigate like a fresh link (AS-02, hashchange -> reload), the blocked rows covered by deterministic probes (AS-03, fidelity probes 36 -> 43). p1_6d 105 -> 106. GAME_RULES.md hash line + label 2.202 -> 2.203 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.202 -> v2.203": "November 2026 - group_102: the Astra live run of 2026-11-02 adjudicated (12 PASS, 0 game defects, 7 rows blocked by a transport disconnect): C38 checklist expectation corrected (AS-01), #N changes in an open tab now navigate like a fresh link (AS-02, hashchange -> reload), the blocked rows covered by deterministic probes (AS-03, fidelity probes 36 -> 43). p1_6d 105 -> 106. GAME_RULES.md hash line + label 2.202 -> 2.203 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.203 -> v2.204": "November 2026 - group_103: the Astra continuation run of 2026-11-03 adjudicated (7 rows: 5 PASS, 2 FAIL): a language switch in an open fight now re-localizes what is on screen - the cards, the round button, the condition button and the scripted §1175 buttons (AS-04, ASTRA-02; the E-004 probe had read combatState only); C52 names both import rejections (AS-05, ASTRA-03); the rows covered by probes after the 2026-11-02 disconnect confirmed live (AS-06). Fidelity probes 43 -> 49; p1_6d 106 -> 107. GAME_RULES.md i18n line + label 2.203 -> 2.204 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -485,6 +486,40 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_103_2026_11_03_live_run_part2": {
+      "comment": "ChatGPT 6 Astra ULTRA continuation run (part 2) on the published build d2e44e3, 2026-11-03 09:28 EST, desktop Chrome 1363×936; brief audit_cycles/recheck_2026_11/BRIEF_smoke_astra_2026-11.md, section «Continuation runs»: rows C43 (second half), C44, C45, C48, C49, C50, C52 - the rows the 2026-11-02 run could not reach. 7 rows: 5 PASS, 2 FAIL - one game defect (ASTRA-02: the combat cards did not follow a language switch on screen) and one checklist wording (ASTRA-03). Report and anomalies JSON: _handoff/smoke_2026_11_02/part2 (kept out of git); the screenshots stay with the maintainer.",
+      "source": "chatgpt_6_astra_ultra_live_2026_11_03_part2",
+      "verified": "2026-11-03",
+      "items": [
+        {
+          "id": "AS-04_combat_screen_follows_language",
+          "finding": "ASTRA-02",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "After a language switch in an open fight (§43) the spell buttons changed to English, but the enemy cards still read «ПЕРВЫЙ ОРК» / «ВТОРОЙ ОРК» and the round button «Удар!».",
+          "note": "Confirmed against the code: group_101 E-004 (relabelCombatUi) renamed the enemies in combatState and relabelled the charge buttons, but the cards are drawn once by startCombat and updateCombatEnemyDisplay refreshes only HP, status pills and aria-labels - so the names and the stat captions (Мастерство / Выносливость / Состояние / урон) stayed; the round button has no data-i18n and was never relabelled; the condition button (§46 / §532 / §617 / §994) and the scripted §1175 buttons kept their labels too. The E-004 probe read combatState, not the screen - which is why the gap survived; the agent's advice to check the rendered cards was right.",
+          "resolution": "DONE. relabelCombatUi now rewrites the rendered cards (name; captions and damage note in classed spans), the round button by reverse lookup over the locales (Удар! / Продолжить / Конец: a label is only ever replaced by the same key in the new language), the condition button (labels re-hydrated with locSec when the choices are the current paragraph's) and the scripted extra buttons (setCombatExtraButtons stores the key; §1175 passes it). The combat log stays a transcript in the language each line was written in (as the journal, group_96 AC-02); the post-roll luck panel and the scripted §1175 luck prompt stay under EN-04r. 6d guard; 4 probes read the rendered modal: combat-cards-follow-language-ASTRA02 (including the switch back to Russian), combat-continue-, combat-condition-button- and combat-1175-buttons-follow-language-ASTRA02. Negative control: run against the previous build (d2e44e3) all four fail with exactly the picture the agent saw, and pass on the fix."
+        },
+        {
+          "id": "AS-05_c52_two_import_rejections",
+          "finding": "ASTRA-03",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "C52 expected «Ошибка загрузки» for any file that is not a save; a well-formed JSON file without save data showed «Несовместимый формат».",
+          "note": "Confirmed against the code (map_module importSave): a file that does not parse as JSON, or parses to something that is not an object, is reported as «Ошибка загрузки»; a JSON object without a known save version as «Несовместимый формат»; both return before the current game is touched, and the run saw the restored hero survive both. Two distinct messages are the better behaviour; the checklist written in group_101 was imprecise.",
+          "resolution": "DONE. C52 names both notices and requires the current game to survive either; 2 probes (engine-import-rejects-malformed-json-E003, engine-import-rejects-an-unknown-format-E003) next to the existing «null» probe."
+        },
+        {
+          "id": "AS-06_probe_rows_confirmed_live",
+          "finding": "C43 (second half), C44, C45, C48, C50 (PASS); the ghost and luck parts of C49",
+          "severity": "P3",
+          "status": "DONE",
+          "hypothesis": "After the 2026-11-02 disconnect these rows were covered by deterministic probes only (group_102 AS-03); the reader's view was still missing.",
+          "note": "Seen on screen: §205 without the old man's secret offers only 345 / 139 / 445; the bronze jug → silver vessel chain (§335 → §957 → §1038) and its single use at §608; the whistle only after the goblin falls at §129, the deck at §358, the sword at §542 only; Escape in the pick-up dialog continues to §480 with the skull and «Готово» elsewhere stays put; markup typed into the bag shows as plain text. In C49 the ghost at §618 kept 11/11 and all five arrows, and the luck check at §1221 behaved exactly as EN-04r records.",
+          "resolution": "DONE - no change needed. C32–C52 are now accepted live except the card part of C49 (re-check on the fixed build) and C51 (sound - the author's phone check)."
+        }
+      ]
     },
     "group_102_2026_11_02_live_run": {
       "comment": "ChatGPT 6 Astra ULTRA live run on the published build be1b154 (redeployed as 628cbf8 after a GitHub Pages 500), 2026-11-02 evening, brief audit_cycles/recheck_2026_11/BRIEF_smoke_astra_2026-11.md. Blocks A-E complete, F partial, G not started: the controller transport disconnected in F and the brief forbids retries (ENV). 21 rows: 12 PASS, 1 FAIL (a checklist expectation), 7 BLOCKED, 1 N/A (sound); 0 game defects in the executed part. Report, anomalies JSON and screenshots: _handoff/smoke_2026_11_02 (kept out of git).",

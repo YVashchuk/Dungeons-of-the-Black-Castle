@@ -4229,6 +4229,18 @@ function relabelCombatUi(){
   lab('btn-larva',t('razlomit_lichinku')+((S&&S.inventory)?S.inventory.filter(it=>canonItem(it)==='spider_larva').length:0)+']');
   lab('btn-crossbow',t('ui_btn_crossbow')+' ['+arrowsAvailable()+']');
   ['btn-summon-ally','btn-summon-ally2'].forEach(id=>{ const b=document.getElementById(id); const k=b&&b.dataset.ally; if(b&&k&&b.style.display!=='none'&&COMBAT_ALLIES[k]) b.textContent=COMBAT_ALLIES[k].icon+t('pozvat')+allyText(k).name; });
+  // group_103 AS-04 (ASTRA-02): what is on screen follows too. E-004 renamed the enemies in combatState only; the live run of
+  // 2026-11-03 still saw the old names, stat captions and round button. Cards (name, captions, damage note), the round button
+  // (reverse lookup over the locales, so a label is only ever replaced by the same key in the new language), the condition
+  // button (labels re-hydrated when the choices are the current paragraph's) and the scripted extra buttons (sec.1175) are
+  // re-localized. The combat log stays a transcript in the language each line was written in, like the journal (group_96 AC-02).
+  const cards=document.querySelectorAll('.combat-enemy');
+  (cs.enemies||[]).forEach((en,i)=>{ const card=cards[i]; if(!card) return; const put=(sel,txt)=>{ const el=card.querySelector(sel); if(el) el.textContent=txt; }; put('.combat-enemy-name',en.name); put('.ce-lbl-skill',t('masterstvo')); put('.ce-lbl-stamina',t('vynoslivost')); put('.ce-lbl-state',t('sostoyanie')); put('.ce-dmg-note',t('uron')+en.dmg+')'); });
+  const rb=document.getElementById('btn-combat-round');
+  if(rb){ const cur=rb.textContent.trim(); const rk=['udar','prodolzhit','konec'].find(key=>Object.keys(LOCALES).some(lc=>{ const u=LOCALES[lc]&&LOCALES[lc].ui; return !!u&&typeof u[key]==='string'&&u[key].trim()===cur; })); if(rk) rb.textContent=t(rk); }
+  document.querySelectorAll('#combat-buttons-extra button[data-lk]').forEach(b=>{ b.textContent=t(b.dataset.lk); });
+  if(cs.sec&&Array.isArray(cs.sec.choices)){ const fresh=locSec(S.section); if(fresh&&Array.isArray(fresh.choices)&&fresh.choices.length===cs.sec.choices.length&&fresh.choices.every((fc,i)=>fc.target===cs.sec.choices[i].target)) cs.sec.choices.forEach((ch,i)=>{ ch.label=fresh.choices[i].label; }); }
+  if(document.getElementById('combat-condition-btn')){ try{ updateCombatConditionButtons(cs); }catch(e){} }
   try{ updateCombatEnemyDisplay(cs); }catch(e){}
 }
 function applyLang(code, opts){
@@ -5393,7 +5405,7 @@ function setCombatExtraButtons(buttons){
   buttons.forEach(cfg=>{
     const btn=document.createElement('button');
     btn.className=cfg.className||'btn btn-s';
-    btn.textContent=cfg.text;
+    btn.textContent=cfg.text; if(cfg.key) btn.dataset.lk=cfg.key; /* group_103 AS-04: the label key lets a language switch re-localize the button */
     btn.onclick=cfg.onClick;
     if(cfg.style) btn.style.cssText=cfg.style;
     wrap.appendChild(btn);
@@ -5663,7 +5675,7 @@ function promptCanon1175Luck(){
   if(copyBtn) copyBtn.style.display='none';
   log.innerHTML+=`<div style="color:var(--gold);margin-top:6px">${t('mozhete_proverit_udachu_esli_pov')}</div>`;
   setCombatExtraButtons([
-    {text:t('proverit_udachu'), className:'btn btn-g', onClick:()=>startScriptedLuckCheck({
+    {text:t('proverit_udachu'), key:'proverit_udachu', className:'btn btn-g', onClick:()=>startScriptedLuckCheck({
       promptHtml:`<p style="color:var(--muted);font-size:20px;line-height:1.6;margin-bottom:16px">${t('pervyy_ork_uzhe_poverzhen_esli_u')}<br><span style="font-size:16px;opacity:.7">${t('posle_proverki_udacha_umenshitsy')}</span></p>`,
       successHtml:t('tretiy_ork_predpochitaet_spastis'),
       failHtml:t('tretiy_ork_ne_drognul_boy_prodol'),
@@ -5671,7 +5683,7 @@ function promptCanon1175Luck(){
       onUnlucky:()=>{ cs.special.luckChecked=true; },
       afterClose:()=>resumeCanonCombat()
     })},
-    {text:t('prodolzhit_boy_bez_proverki'), className:'btn btn-p', onClick:()=>{ cs.special.luckChecked=true; resumeCanonCombat(); }}
+    {text:t('prodolzhit_boy_bez_proverki'), key:'prodolzhit_boy_bez_proverki', className:'btn btn-p', onClick:()=>{ cs.special.luckChecked=true; resumeCanonCombat(); }}
   ]);
 }
 
@@ -6060,7 +6072,7 @@ function startCombat(enemies,sec){
   };
   const ce=document.getElementById('combat-enemies');ce.innerHTML='';
   combatState.enemies.forEach(e=>{
-    const dmgNote=e.dmg!==2?` <span style="color:var(--red2);font-size:14px;">${t('uron')}${e.dmg})</span>`:'';
+    const dmgNote=e.dmg!==2?` <span class="ce-dmg-note" style="color:var(--red2);font-size:14px;">${t('uron')}${e.dmg})</span>`:'';
     const hpWidth=Math.max(0, Math.min(100, (e.hp/e.stamina)*100));
     ce.innerHTML+=`<div class="combat-enemy">
       <div class="combat-enemy-head">
@@ -6071,11 +6083,11 @@ function startCombat(enemies,sec){
         <div class="combat-enemy-icon">☠</div>
       </div>
       <div class="combat-stats">
-        <div class="combat-stat-pill">${t('masterstvo')}<b>${e.skill}</b></div>
-        <div class="combat-stat-pill">${t('vynoslivost')}<b><span class="ce-hp">${e.hp}</span>/${e.stamina}</b>${dmgNote}</div>
+        <div class="combat-stat-pill"><span class="ce-lbl-skill">${t('masterstvo')}</span><b>${e.skill}</b></div>
+        <div class="combat-stat-pill"><span class="ce-lbl-stamina">${t('vynoslivost')}</span><b><span class="ce-hp">${e.hp}</span>/${e.stamina}</b>${dmgNote}</div>
       </div>
       <div class="combat-hp-wrap">
-        <div class="combat-hp-head"><span>${t('sostoyanie')}</span><span class="ce-hp-head">${e.hp}/${e.stamina}</span></div>
+        <div class="combat-hp-head"><span class="ce-lbl-state">${t('sostoyanie')}</span><span class="ce-hp-head">${e.hp}/${e.stamina}</span></div>
         <div class="combat-hp-track"><div class="combat-hp-fill" style="width:${hpWidth}%"></div></div>
       </div>
     </div>`;

@@ -68,6 +68,12 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9ah. group_103: a language switch mid-fight re-localizes what is on screen (cards, round button, condition and scripted buttons), not only combatState
+(function(){
+  const rl=gl.slice(gl.indexOf('function relabelCombatUi(){'), gl.indexOf('function applyLang(code, opts){'));
+  ck('AS-04 relabelCombatUi rewrites the rendered cards, the round button, the condition button and the scripted extra buttons', rl.includes("put('.combat-enemy-name',en.name)")&&rl.includes("put('.ce-lbl-skill',t('masterstvo'))")&&rl.includes("put('.ce-lbl-stamina',t('vynoslivost'))")&&rl.includes("put('.ce-lbl-state',t('sostoyanie'))")&&rl.includes("['udar','prodolzhit','konec']")&&rl.includes('#combat-buttons-extra button[data-lk]')&&rl.includes('updateCombatConditionButtons(cs)')&&gl.includes('<span class="ce-lbl-skill">${t(\'masterstvo\')}</span>')&&gl.includes('<span class="ce-lbl-stamina">${t(\'vynoslivost\')}</span>')&&gl.includes('<span class="ce-lbl-state">${t(\'sostoyanie\')}</span>')&&gl.includes('<span class="ce-dmg-note"')&&gl.includes('if(cfg.key) btn.dataset.lk=cfg.key;')&&gl.includes("key:'proverit_udachu'")&&gl.includes("key:'prodolzhit_boy_bez_proverki'"));
+})();
+
 // 9ag. group_102: a hash change in an open tab navigates like a fresh link; the engine itself never assigns location.hash
 (function(){
   ck('AS-02 hashchange reloads onto a valid paragraph and the engine never writes the hash', gl.includes("window.addEventListener('hashchange',()=>{ const h=location.hash.substring(1); if(!(h&&parseInt(h)>0&&GD[h])) return;")&&gl.includes('location.reload(); });')&&!/location\.hash\s*=[^=]/.test(gl));
