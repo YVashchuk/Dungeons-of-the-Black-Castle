@@ -31,7 +31,7 @@ Conventions:
 
 **Commit:** `group_72`
 
-**What to check:** Switch language via the picker (title screen or menu) to ANY non-Russian locale (EN/FR/UK skeletons). Verify the WHOLE game still renders in Russian via the active->RU fallback: title chrome, sidebar labels, buttons, paragraph prose, choice labels, combat/HUD, modals; NO raw key names (latin snake_case) anywhere; document.title stays set; switching back to RU repaints live. For Agent Mode: also spot-check one combat and the inventory modal while a non-RU locale is active.
+**What to check:** Switch the language via the picker (title screen or menu) to EN, FR or UK. All four locales are complete: paragraph prose, choice labels, the combat modal (enemy cards, captions, round, spell and healing buttons), luck checks, the bag and the map follow the switch live; NO raw key names (latin snake_case) anywhere; document.title stays set; switching back to RU repaints live. Log and journal lines already written keep their language. The pick-up dialog covers the menu, so the language cannot change while it is open.
 
 **Path:**
 
@@ -123,13 +123,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -141,7 +141,7 @@ Conventions:
     24. From §61: click '→ 119 → §119'
     25. From §119: click '→ 203 → §203'
 ```
-  (25 clicks total, graph: basic)
+  (25 clicks total, graph: full)
 
 ---
 
@@ -165,16 +165,16 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 289 → §289'
 ```
-  (16 clicks total, graph: basic)
+  (16 clicks total, graph: full)
 
 ---
 
@@ -208,7 +208,7 @@ Conventions:
     16. From §52: click '→ 406 → §406'
     17. From §406: click '→ 377 → §377'
 ```
-  (17 clicks total, graph: basic)
+  (17 clicks total, graph: full)
 
 ---
 
@@ -229,21 +229,24 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 1003 → §1003'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 1003 → §1003'
 ```
-  (18 clicks total, graph: full)
+  (21 clicks total, graph: full)
 
 ---
 
@@ -266,26 +269,29 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 343 → §343'
-    19. From §343: click '→ 867 → §867'
-    20. From §867: click '→ 1077 → §1077'
-    21. From §1077: click '→ 757 → §757'
-    22. From §757: click '→ 987 → §987'
-    23. From §987: click '→ 1003 → §1003'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 343 → §343'
+    22. From §343: click '→ 867 → §867'
+    23. From §867: click '→ 1077 → §1077'
+    24. From §1077: click '→ 757 → §757'
+    25. From §757: click '→ 987 → §987'
+    26. From §987: click '→ 1003 → §1003'
 ```
-  (23 clicks total, graph: full)
+  (26 clicks total, graph: full)
 
 ---
 
@@ -306,22 +312,25 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 1003 → §1003'
-    19. From §1003: click '→ 135 → §135'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 1003 → §1003'
+    22. From §1003: click '→ 135 → §135'
 ```
-  (19 clicks total, graph: full)
+  (22 clicks total, graph: full)
 
 ---
 
@@ -344,27 +353,30 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 343 → §343'
-    19. From §343: click '→ 867 → §867'
-    20. From §867: click '→ 1077 → §1077'
-    21. From §1077: click '→ 757 → §757'
-    22. From §757: click '→ 987 → §987'
-    23. From §987: click '→ 1003 → §1003'
-    24. From §1003: click '→ 135 → §135'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 343 → §343'
+    22. From §343: click '→ 867 → §867'
+    23. From §867: click '→ 1077 → §1077'
+    24. From §1077: click '→ 757 → §757'
+    25. From §757: click '→ 987 → §987'
+    26. From §987: click '→ 1003 → §1003'
+    27. From §1003: click '→ 135 → §135'
 ```
-  (24 clicks total, graph: full)
+  (27 clicks total, graph: full)
 
 ---
 
@@ -385,24 +397,27 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 393 → §393'
-    15. From §393: click '→ 622 → §622'
-    16. From §622: click '→ 394 → §394'
-    17. From §394: click '→ 507 → §507'
-    18. From §507: click '→ 912 → §912'
-    19. From §912: click '→ 1097 → §1097'
-    20. From §1097: click '→ 997 → §997'
-    21. From §997: click '→ 1085 → §1085'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 393 → §393'
+    18. From §393: click '→ 622 → §622'
+    19. From §622: click '→ 394 → §394'
+    20. From §394: click '→ 507 → §507'
+    21. From §507: click '→ 912 → §912'
+    22. From §912: click '→ 1097 → §1097'
+    23. From §1097: click '→ 997 → §997'
+    24. From §997: click '→ 1085 → §1085'
 ```
-  (21 clicks total, graph: full)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -414,7 +429,7 @@ Conventions:
 
 **Must visit first:** §440
 
-**What to check:** After visiting §440 (which grants 'Золотой ключ' via auto_items), §1085 shows BOTH buttons. Choose the gold-key option to confirm it leads to §1115.
+**What to check:** Win the dragon fight at §440: the 'Золотой ключ' is offered after the victory (post_combat_items, never on entry). Take it; §1085 then shows BOTH buttons. Choose the gold-key option to confirm it leads to §1115.
 
 **Path:**
 
@@ -540,7 +555,7 @@ Conventions:
     12. From §873: click '→ 767 → §767'
     13. From §767: click '→ 642 → §642'
 ```
-  (13 clicks total, graph: basic)
+  (13 clicks total, graph: full)
 
 ---
 
@@ -561,18 +576,21 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 393 → §393'
-    15. From §393: click '→ 688 → §688'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 393 → §393'
+    18. From §393: click '→ 688 → §688'
 ```
-  (15 clicks total, graph: full)
+  (18 clicks total, graph: full)
 
 ---
 
@@ -600,7 +618,7 @@ Conventions:
     10. From §314: click '→ 548 → §548'
     11. From §548: click '→ 535 → §535'
 ```
-  (11 clicks total, graph: basic)
+  (11 clicks total, graph: full)
 
 ---
 
@@ -643,29 +661,32 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 393 → §393'
-    15. From §393: click '→ 688 → §688'
-    16. From §688: click '→ 622 → §622'
-    17. From §622: click '→ 975 → §975'
-    18. From §975: click '→ 825 → §825'
-    19. From §825: click '→ 695 → §695'
-    20. From §695: click '→ 786 → §786'
-    21. From §786: click '→ 1074 → §1074'
-    22. From §1074: click '→ 766 → §766'
-    23. From §766: click '→ 718 → §718'
-    24. From §718: click '→ 285 → §285'
-    25. From §285: click '→ 782 → §782'
-    26. From §782: click '→ 1196 → §1196'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 393 → §393'
+    18. From §393: click '→ 688 → §688'
+    19. From §688: click '→ 622 → §622'
+    20. From §622: click '→ 975 → §975'
+    21. From §975: click '→ 825 → §825'
+    22. From §825: click '→ 695 → §695'
+    23. From §695: click '→ 786 → §786'
+    24. From §786: click '→ 1074 → §1074'
+    25. From §1074: click '→ 766 → §766'
+    26. From §766: click '→ 718 → §718'
+    27. From §718: click '→ 285 → §285'
+    28. From §285: click '→ 782 → §782'
+    29. From §782: click '→ 1196 → §1196'
 ```
-  (26 clicks total, graph: full)
+  (29 clicks total, graph: full)
 
 ---
 
@@ -686,24 +707,30 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 1218 → §1218'
-    16. From §1218: click '→ 1058 → §1058'
-    17. From §1058: click '→ 899 → §899'
-    18. From §899: click '→ 772 → §772'
-    19. From §772: click '→ 962 → §962'
-    20. From §962: click '→ 1075 → §1075'
-    21. From §1075: click '→ 570 → §570'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 784 → §784'
+    19. From §784: click '→ 858 → §858'
+    20. From §858: click '→ 833 → §833'
+    21. From §833: click '→ 1218 → §1218'
+    22. From §1218: click '→ 1058 → §1058'
+    23. From §1058: click '→ 899 → §899'
+    24. From §899: click '→ 772 → §772'
+    25. From §772: click '→ 962 → §962'
+    26. From §962: click '→ 1075 → §1075'
+    27. From §1075: click '→ 570 → §570'
 ```
-  (21 clicks total, graph: basic)
+  (27 clicks total, graph: basic)
 
 ---
 
@@ -724,24 +751,27 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 343 → §343'
-    19. From §343: click '→ 867 → §867'
-    20. From §867: click '→ 1077 → §1077'
-    21. From §1077: click '→ 757 → §757'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 343 → §343'
+    22. From §343: click '→ 867 → §867'
+    23. From §867: click '→ 1077 → §1077'
+    24. From §1077: click '→ 757 → §757'
 ```
-  (21 clicks total, graph: full)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -751,7 +781,7 @@ Conventions:
 
 **Commit:** `cce1a1f`
 
-**What to check:** On entering §1172 (alternate dragon-route victory) the player gains 'Золотой ключ'. Inventory should show it after.
+**What to check:** §1172 (the second dragon head): before «Вступить в бой» nothing is offered; after the victory the 'Золотой ключ' is offered (post_combat_items). The bag shows it after taking.
 
 **Path:**
 
@@ -795,37 +825,29 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 1218 → §1218'
-    16. From §1218: click '→ 1058 → §1058'
-    17. From §1058: click '→ 899 → §899'
-    18. From §899: click '→ 772 → §772'
-    19. From §772: click '→ 962 → §962'
-    20. From §962: click '→ 1075 → §1075'
-    21. From §1075: click '→ 1156 → §1156'
-    22. From §1156: click '→ 41 → §41'
-    23. From §41: click '→ 1094 → §1094'
-    24. From §1094: click '→ 1000 → §1000'
-    25. From §1000: click '→ 726 → §726'
-    26. From §726: click '→ 1074 → §1074'
-    27. From §1074: click '→ 766 → §766'
-    28. From §766: click '→ 718 → §718'
-    29. From §718: click '→ 285 → §285'
-    30. From §285: click '→ 782 → §782'
-    31. From §782: click '→ 1196 → §1196'
-    32. From §1196: click '→ 995 → §995'
-    33. From §995: click '→ 1210 → §1210'
-    34. From §1210: click '→ 810 → §810'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1074 → §1074'
+    19. From §1074: click '→ 766 → §766'
+    20. From §766: click '→ 718 → §718'
+    21. From §718: click '→ 285 → §285'
+    22. From §285: click '→ 782 → §782'
+    23. From §782: click '→ 1196 → §1196'
+    24. From §1196: click '→ 871 → §871'
+    25. From §871: click '→ 1210 → §1210'
+    26. From §1210: click '→ 810 → §810'
 ```
-  (34 clicks total, graph: basic)
+  (26 clicks total, graph: full)
 
 ---
 
@@ -846,23 +868,26 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 987 → §987'
-    19. From §987: click '→ 187 → §187'
-    20. From §187: click '→ 774 → §774'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 987 → §987'
+    22. From §987: click '→ 187 → §187'
+    23. From §187: click '→ 774 → §774'
 ```
-  (20 clicks total, graph: full)
+  (23 clicks total, graph: full)
 
 ---
 
@@ -883,23 +908,26 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 987 → §987'
-    19. From §987: click '→ 187 → §187'
-    20. From §187: click '→ 774 → §774'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 987 → §987'
+    22. From §987: click '→ 187 → §187'
+    23. From §187: click '→ 774 → §774'
 ```
-  (20 clicks total, graph: full)
+  (23 clicks total, graph: full)
 
 ---
 
@@ -920,23 +948,26 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 987 → §987'
-    19. From §987: click '→ 187 → §187'
-    20. From §187: click '→ 774 → §774'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 987 → §987'
+    22. From §987: click '→ 187 → §187'
+    23. From §187: click '→ 774 → §774'
 ```
-  (20 clicks total, graph: full)
+  (23 clicks total, graph: full)
 
 ---
 
@@ -957,24 +988,27 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 987 → §987'
-    19. From §987: click '→ 187 → §187'
-    20. From §187: click '→ 774 → §774'
-    21. From §774: click '→ 686 → §686'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 987 → §987'
+    22. From §987: click '→ 187 → §187'
+    23. From §187: click '→ 774 → §774'
+    24. From §774: click '→ 686 → §686'
 ```
-  (21 clicks total, graph: full)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -995,23 +1029,26 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 987 → §987'
-    19. From §987: click '→ 187 → §187'
-    20. From §187: click '→ 774 → §774'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 987 → §987'
+    22. From §987: click '→ 187 → §187'
+    23. From §187: click '→ 774 → §774'
 ```
-  (20 clicks total, graph: full)
+  (23 clicks total, graph: full)
 
 ---
 
@@ -1032,23 +1069,26 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 679 → §679'
-    18. From §679: click '→ 987 → §987'
-    19. From §987: click '→ 187 → §187'
-    20. From §187: click '→ 774 → §774'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 679 → §679'
+    21. From §679: click '→ 987 → §987'
+    22. From §987: click '→ 187 → §187'
+    23. From §187: click '→ 774 → §774'
 ```
-  (20 clicks total, graph: full)
+  (23 clicks total, graph: full)
 
 ---
 
@@ -1152,17 +1192,20 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 725 → §725'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 725 → §725'
 ```
-  (14 clicks total, graph: full)
+  (17 clicks total, graph: full)
 
 ---
 
@@ -1172,7 +1215,7 @@ Conventions:
 
 **Commit:** `group_14`
 
-**What to check:** On entering §340 the peasant shop renders 9 purchase buttons (3 food + 6 items) above 3 navigation buttons. Each purchase shows a gold-coin icon and a cost. Click 'Купить ананас' — 2 gold deducted, stamina +3, button stays available (food is consumable, unlimited buys until gold runs out).
+**What to check:** On entering §340 the peasant shop renders 12 purchase buttons (pineapple, banana and lemon - each to eat now or to take along - plus 6 goods) above 3 navigation buttons. Each purchase shows a gold-coin icon and a cost. Click 'Купить ананас' — 2 gold deducted, stamina +3. Goods turn into '✓ …' after one purchase.
 
 **Path:**
 
@@ -1180,26 +1223,19 @@ Conventions:
   Start at §1.
      1. From §1: click '→ 1219 → §1219'
      2. From §1219: click '→ 517 → §517'
-     3. From §517: click '→ 419 → §419'
-     4. From §419: click '→ 1181 → §1181'
-     5. From §1181: click '→ 234 → §234'
-     6. From §234: click '→ 14 → §14'
-     7. From §14: click '→ 310 → §310'
-     8. From §310: click '→ 312 → §312'
-     9. From §312: click '→ 201 → §201'
-    10. From §201: click '→ 425 → §425'
-    11. From §425: click '→ 184 → §184'
-    12. From §184: click '→ 235 → §235'
-    13. From §235: click '→ 338 → §338'
-    14. From §338: click '→ 228 → §228'
-    15. From §228: click '→ 557 → §557'
-    16. From §557: click '→ 109 → §109'
-    17. From §109: click '→ 426 → §426'
-    18. From §426: click '→ 327 → §327'
-    19. From §327: click '→ 185 → §185'
-    20. From §185: click '→ 340 → §340'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 264 → §264'
+     6. From §264: click '→ 424 → §424'
+     7. From §424: click '→ 261 → §261'
+     8. From §261: click '→ 520 → §520'
+     9. From §520: click '→ 413 → §413'
+    10. From §413: click '→ 20 → §20'
+    11. From §20: click '→ 332 → §332'
+    12. From §332: click '→ 209 → §209'
+    13. From §209: click '→ 340 → §340'
 ```
-  (20 clicks total, graph: basic)
+  (13 clicks total, graph: full)
 
 ---
 
@@ -1217,26 +1253,19 @@ Conventions:
   Start at §1.
      1. From §1: click '→ 1219 → §1219'
      2. From §1219: click '→ 517 → §517'
-     3. From §517: click '→ 419 → §419'
-     4. From §419: click '→ 1181 → §1181'
-     5. From §1181: click '→ 234 → §234'
-     6. From §234: click '→ 14 → §14'
-     7. From §14: click '→ 310 → §310'
-     8. From §310: click '→ 312 → §312'
-     9. From §312: click '→ 201 → §201'
-    10. From §201: click '→ 425 → §425'
-    11. From §425: click '→ 184 → §184'
-    12. From §184: click '→ 235 → §235'
-    13. From §235: click '→ 338 → §338'
-    14. From §338: click '→ 228 → §228'
-    15. From §228: click '→ 557 → §557'
-    16. From §557: click '→ 109 → §109'
-    17. From §109: click '→ 426 → §426'
-    18. From §426: click '→ 327 → §327'
-    19. From §327: click '→ 185 → §185'
-    20. From §185: click '→ 340 → §340'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 264 → §264'
+     6. From §264: click '→ 424 → §424'
+     7. From §424: click '→ 261 → §261'
+     8. From §261: click '→ 520 → §520'
+     9. From §520: click '→ 413 → §413'
+    10. From §413: click '→ 20 → §20'
+    11. From §20: click '→ 332 → §332'
+    12. From §332: click '→ 209 → §209'
+    13. From §209: click '→ 340 → §340'
 ```
-  (20 clicks total, graph: basic)
+  (13 clicks total, graph: full)
 
 ---
 
@@ -1254,26 +1283,19 @@ Conventions:
   Start at §1.
      1. From §1: click '→ 1219 → §1219'
      2. From §1219: click '→ 517 → §517'
-     3. From §517: click '→ 419 → §419'
-     4. From §419: click '→ 1181 → §1181'
-     5. From §1181: click '→ 234 → §234'
-     6. From §234: click '→ 14 → §14'
-     7. From §14: click '→ 310 → §310'
-     8. From §310: click '→ 312 → §312'
-     9. From §312: click '→ 201 → §201'
-    10. From §201: click '→ 425 → §425'
-    11. From §425: click '→ 184 → §184'
-    12. From §184: click '→ 235 → §235'
-    13. From §235: click '→ 338 → §338'
-    14. From §338: click '→ 228 → §228'
-    15. From §228: click '→ 557 → §557'
-    16. From §557: click '→ 109 → §109'
-    17. From §109: click '→ 426 → §426'
-    18. From §426: click '→ 327 → §327'
-    19. From §327: click '→ 185 → §185'
-    20. From §185: click '→ 340 → §340'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 264 → §264'
+     6. From §264: click '→ 424 → §424'
+     7. From §424: click '→ 261 → §261'
+     8. From §261: click '→ 520 → §520'
+     9. From §520: click '→ 413 → §413'
+    10. From §413: click '→ 20 → §20'
+    11. From §20: click '→ 332 → §332'
+    12. From §332: click '→ 209 → §209'
+    13. From §209: click '→ 340 → §340'
 ```
-  (20 clicks total, graph: basic)
+  (13 clicks total, graph: full)
 
 ---
 
@@ -1293,63 +1315,43 @@ Conventions:
   Start at §1.
      1. From §1: click '→ 1219 → §1219'
      2. From §1219: click '→ 517 → §517'
-     3. From §517: click '→ 419 → §419'
-     4. From §419: click '→ 1181 → §1181'
-     5. From §1181: click '→ 234 → §234'
-     6. From §234: click '→ 14 → §14'
-     7. From §14: click '→ 310 → §310'
-     8. From §310: click '→ 312 → §312'
-     9. From §312: click '→ 201 → §201'
-    10. From §201: click '→ 425 → §425'
-    11. From §425: click '→ 184 → §184'
-    12. From §184: click '→ 235 → §235'
-    13. From §235: click '→ 338 → §338'
-    14. From §338: click '→ 228 → §228'
-    15. From §228: click '→ 557 → §557'
-    16. From §557: click '→ 109 → §109'
-    17. From §109: click '→ 426 → §426'
-    18. From §426: click '→ 327 → §327'
-    19. From §327: click '→ 185 → §185'
-    20. From §185: click '→ 340 → §340'
-    21. From §340: click '→ 207 → §207'
-    22. From §207: click '→ 143 → §143'
-    23. From §143: click '→ 454 → §454'
-    24. From §454: click '→ 138 → §138'
-    25. From §138: click '→ 523 → §523'
-    26. From §523: click '→ 452 → §452'
-    27. From §452: click '→ 205 → §205'
-    28. From §205: click '→ 139 → §139'
-    29. From §139: click '→ 101 → §101'
-    30. From §101: click '→ 933 → §933'
-    31. From §933: click '→ 845 → §845'
-    32. From §845: click '→ 590 → §590'
-    33. From §590: click '→ 915 → §915'
-    34. From §915: click '→ 784 → §784'
-    35. From §784: click '→ 858 → §858'
-    36. From §858: click '→ 833 → §833'
-    37. From §833: click '→ 1218 → §1218'
-    38. From §1218: click '→ 1058 → §1058'
-    39. From §1058: click '→ 899 → §899'
-    40. From §899: click '→ 772 → §772'
-    41. From §772: click '→ 1059 → §1059'
-    42. From §1059: click '→ 671 → §671'
-    43. From §671: click '→ 42 → §42'
-    44. From §42: click '→ 161 → §161'
-    45. From §161: click '→ 488 → §488'
-    46. From §488: click '→ 359 → §359'
-    47. From §359: click '→ 814 → §814'
-    48. From §814: click '→ 735 → §735'
-    49. From §735: click '→ 1065 → §1065'
-    50. From §1065: click '→ 1056 → §1056'
-    51. From §1056: click '→ 646 → §646'
-    52. From §646: click '→ 1189 → §1189'
-    53. From §1189: click '→ 785 → §785'
-    54. From §785: click '→ 349 → §349'
-    55. From §349: click '→ 1046 → §1046'
-    56. From §1046: click '→ 215 → §215'
-    57. From §215: click '→ 1090 → §1090'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 264 → §264'
+     6. From §264: click '→ 424 → §424'
+     7. From §424: click '→ 261 → §261'
+     8. From §261: click '→ 520 → §520'
+     9. From §520: click '→ 413 → §413'
+    10. From §413: click '→ 20 → §20'
+    11. From §20: click '→ 332 → §332'
+    12. From §332: click '→ 209 → §209'
+    13. From §209: click '→ 340 → §340'
+    14. From §340: click '→ 316 → §316'
+    15. From §316: click '→ 431 → §431'
+    16. From §431: click '→ 240 → §240'
+    17. From §240: click '→ 452 → §452'
+    18. From §452: click '→ 205 → §205'
+    19. From §205: click '→ 146 → §146'
+    20. From §146: click '→ 1054 → §1054'
+    21. From §1054: click '→ 915 → §915'
+    22. From §915: click '→ 833 → §833'
+    23. From §833: click '→ 1177 → §1177'
+    24. From §1177: click '→ 393 → §393'
+    25. From §393: click '→ 816 → §816'
+    26. From §816: click '→ 676 → §676'
+    27. From §676: click '→ 844 → §844'
+    28. From §844: click '→ 1101 → §1101'
+    29. From §1101: click '→ 1065 → §1065'
+    30. From §1065: click '→ 1056 → §1056'
+    31. From §1056: click '→ 646 → §646'
+    32. From §646: click '→ 1189 → §1189'
+    33. From §1189: click '→ 785 → §785'
+    34. From §785: click '→ 349 → §349'
+    35. From §349: click '→ 1046 → §1046'
+    36. From §1046: click '→ 215 → §215'
+    37. From §215: click '→ 1090 → §1090'
 ```
-  (57 clicks total, graph: basic)
+  (37 clicks total, graph: full)
 
 ---
 
@@ -1426,13 +1428,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -1443,7 +1445,7 @@ Conventions:
     23. From §579: click '→ 317 → §317'
     24. From §317: click '→ 58 → §58'
 ```
-  (24 clicks total, graph: basic)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -1465,22 +1467,21 @@ Conventions:
      4. From §372: click '→ 103 → §103'
      5. From §103: click '→ 216 → §216'
      6. From §216: click '→ 423 → §423'
-     7. From §423: click '→ 83 → §83'
-     8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
-    16. From §164: click '→ 1203 → §1203'
-    17. From §1203: click '→ 153 → §153'
-    18. From §153: click '→ 503 → §503'
-    19. From §503: click '→ 555 → §555'
-    20. From §555: click '→ 69 → §69'
+     7. From §423: click '→ 5 → §5'
+     8. From §5: click '→ 105 → §105'
+     9. From §105: click '→ 467 → §467'
+    10. From §467: click '→ 553 → §553'
+    11. From §553: click '→ 480 → §480'
+    12. From §480: click '→ 1176 → §1176'
+    13. From §1176: click '→ 129 → §129'
+    14. From §129: click '→ 568 → §568'
+    15. From §568: click '→ 115 → §115'
+    16. From §115: click '→ 513 → §513'
+    17. From §513: click '→ 503 → §503'
+    18. From §503: click '→ 555 → §555'
+    19. From §555: click '→ 69 → §69'
 ```
-  (20 clicks total, graph: basic)
+  (19 clicks total, graph: full)
 
 ---
 
@@ -1502,22 +1503,21 @@ Conventions:
      4. From §372: click '→ 103 → §103'
      5. From §103: click '→ 216 → §216'
      6. From §216: click '→ 423 → §423'
-     7. From §423: click '→ 83 → §83'
-     8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
-    16. From §164: click '→ 1203 → §1203'
-    17. From §1203: click '→ 153 → §153'
-    18. From §153: click '→ 503 → §503'
-    19. From §503: click '→ 555 → §555'
-    20. From §555: click '→ 233 → §233'
+     7. From §423: click '→ 5 → §5'
+     8. From §5: click '→ 105 → §105'
+     9. From §105: click '→ 467 → §467'
+    10. From §467: click '→ 553 → §553'
+    11. From §553: click '→ 480 → §480'
+    12. From §480: click '→ 1176 → §1176'
+    13. From §1176: click '→ 129 → §129'
+    14. From §129: click '→ 568 → §568'
+    15. From §568: click '→ 115 → §115'
+    16. From §115: click '→ 513 → §513'
+    17. From §513: click '→ 503 → §503'
+    18. From §503: click '→ 555 → §555'
+    19. From §555: click '→ 233 → §233'
 ```
-  (20 clicks total, graph: basic)
+  (19 clicks total, graph: full)
 
 ---
 
@@ -1566,22 +1566,21 @@ Conventions:
      4. From §372: click '→ 103 → §103'
      5. From §103: click '→ 216 → §216'
      6. From §216: click '→ 423 → §423'
-     7. From §423: click '→ 83 → §83'
-     8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
-    16. From §164: click '→ 1203 → §1203'
-    17. From §1203: click '→ 153 → §153'
-    18. From §153: click '→ 503 → §503'
-    19. From §503: click '→ 555 → §555'
-    20. From §555: click '→ 567 → §567'
+     7. From §423: click '→ 5 → §5'
+     8. From §5: click '→ 105 → §105'
+     9. From §105: click '→ 467 → §467'
+    10. From §467: click '→ 553 → §553'
+    11. From §553: click '→ 480 → §480'
+    12. From §480: click '→ 1176 → §1176'
+    13. From §1176: click '→ 129 → §129'
+    14. From §129: click '→ 568 → §568'
+    15. From §568: click '→ 115 → §115'
+    16. From §115: click '→ 513 → §513'
+    17. From §513: click '→ 503 → §503'
+    18. From §503: click '→ 555 → §555'
+    19. From §555: click '→ 567 → §567'
 ```
-  (20 clicks total, graph: basic)
+  (19 clicks total, graph: full)
 
 ---
 
@@ -1605,13 +1604,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -1622,7 +1621,7 @@ Conventions:
     23. From §57: click '→ 641 → §641'
     24. From §641: click '→ 717 → §717'
 ```
-  (24 clicks total, graph: basic)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -1632,7 +1631,7 @@ Conventions:
 
 **Commit:** `group_6_fish_help`
 
-**What to check:** On entering sec.13 the only choice 'Теперь обратите внимание на местность (639)' should grant 'Помощь рыбки' via the acquires field (group_15 mechanism reused). Click it: notification 'Помощь рыбки' appears, inventory shows the token. Note: sec.195 (put fish in bag) is the alternative acquisition path and must NOT grant the help token.
+**What to check:** On entering sec.13 the only choice 'Теперь обратите внимание на местность (639)' grants the knowledge 'Помощь рыбки' (acquires). Knowledge is learned silently - no notification - and shows in the bag without a drop button. Note: sec.195 (put fish in bag) is the alternative acquisition path and must NOT grant the help token.
 
 **Path:**
 
@@ -1657,7 +1656,7 @@ Conventions:
     17. From §504: click '→ 248 → §248'
     18. From §248: click '→ 13 → §13'
 ```
-  (18 clicks total, graph: basic)
+  (18 clicks total, graph: full)
 
 ---
 
@@ -1681,13 +1680,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -1698,7 +1697,7 @@ Conventions:
     23. From §579: click '→ 402 → §402'
     24. From §402: click '→ 32 → §32'
 ```
-  (24 clicks total, graph: basic)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -1742,13 +1741,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -1760,7 +1759,7 @@ Conventions:
     24. From §61: click '→ 119 → §119'
     25. From §119: click '→ 203 → §203'
 ```
-  (25 clicks total, graph: basic)
+  (25 clicks total, graph: full)
 
 ---
 
@@ -1810,7 +1809,7 @@ Conventions:
 
 **Commit:** `group_6_candle_lamp`
 
-**What to check:** On entering sec.929 (buried chest), gold +10 already applies via auto_items. After click of the single nav choice to sec.167, the new acquires field should also deposit 'Свеча' into S.inventory. Open inventory after to confirm both gold delta and the new token.
+**What to check:** On entering sec.929 (buried chest) gold +10 applies and 'Свеча' is offered in the pick-up dialog on entry. Leaving to sec.167 without taking it does not grant it later.
 
 **Path:**
 
@@ -1850,21 +1849,27 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 969 → §969'
-    16. From §969: click '→ 809 → §809'
-    17. From §809: click '→ 862 → §862'
-    18. From §862: click '→ 696 → §696'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 784 → §784'
+    19. From §784: click '→ 858 → §858'
+    20. From §858: click '→ 833 → §833'
+    21. From §833: click '→ 969 → §969'
+    22. From §969: click '→ 809 → §809'
+    23. From §809: click '→ 862 → §862'
+    24. From §862: click '→ 696 → §696'
 ```
-  (18 clicks total, graph: basic)
+  (24 clicks total, graph: basic)
 
 ---
 
@@ -1939,27 +1944,26 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 1218 → §1218'
-    16. From §1218: click '→ 1058 → §1058'
-    17. From §1058: click '→ 899 → §899'
-    18. From §899: click '→ 772 → §772'
-    19. From §772: click '→ 962 → §962'
-    20. From §962: click '→ 1075 → §1075'
-    21. From §1075: click '→ 1156 → §1156'
-    22. From §1156: click '→ 41 → §41'
-    23. From §41: click '→ 1094 → §1094'
-    24. From §1094: click '→ 1000 → §1000'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 393 → §393'
+    18. From §393: click '→ 948 → §948'
+    19. From §948: click '→ 1173 → §1173'
+    20. From §1173: click '→ 840 → §840'
+    21. From §840: click '→ 41 → §41'
+    22. From §41: click '→ 1094 → §1094'
+    23. From §1094: click '→ 1000 → §1000'
 ```
-  (24 clicks total, graph: basic)
+  (23 clicks total, graph: full)
 
 ---
 
@@ -2027,7 +2031,7 @@ Conventions:
 
 **Commit:** `group_6_figured_key`
 
-**What to check:** Without 'Фигурный ключ' in inventory, sec.804 (locked hatch, item-offer prompt) should show THREE buttons: медный ключик (1064), кусок металла (1184), and the no-key exit (590). The 'Фигурный ключ (895)' button must be HIDDEN — this was a pre-fix regression where the figured-key button appeared without the key and led the player to a misleading dead-narrative.
+**What to check:** With an empty bag sec.804 (locked hatch, item-offer prompt) shows only the exit (590): each special exit checks its own item - медный ключик (1064), кусок металла (1184), фигурный ключ (895).
 
 **Path:**
 
@@ -2038,15 +2042,19 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 760 → §760'
-    11. From §760: click '→ 985 → §985'
-    12. From §985: click '→ 804 → §804'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 1145 → §1145'
+    13. From §1145: click '→ 885 → §885'
+    14. From §885: click '→ 760 → §760'
+    15. From §760: click '→ 985 → §985'
+    16. From §985: click '→ 804 → §804'
 ```
-  (12 clicks total, graph: full)
+  (16 clicks total, graph: full)
 
 ---
 
@@ -2058,7 +2066,7 @@ Conventions:
 
 **Must visit first:** §340
 
-**What to check:** After buying 'Фигурный ключ' at sec.340 (2 gold), sec.804 should show FOUR buttons including the new 'Фигурный ключ (895)' option. Click it: routes to sec.895 size-fail narrative, then sec.590 exit. This is the third figured-key consumer wired (after sec.774 / sec.1208 in earlier groups).
+**What to check:** After buying 'Фигурный ключ' at sec.340 (2 gold), sec.804 shows 'Фигурный ключ (895)' next to the exit (590); the other two special exits need their own items. Click it: routes to sec.895 size-fail narrative, then sec.590 exit.
 
 **Path:**
 
@@ -2082,14 +2090,13 @@ Conventions:
     16. From §431: click '→ 240 → §240'
     17. From §240: click '→ 452 → §452'
     18. From §452: click '→ 205 → §205'
-    19. From §205: click '→ 146 → §146'
-    20. From §146: click '→ 933 → §933'
-    21. From §933: click '→ 885 → §885'
-    22. From §885: click '→ 760 → §760'
-    23. From §760: click '→ 985 → §985'
-    24. From §985: click '→ 804 → §804'
+    19. From §205: click '→ 1145 → §1145'
+    20. From §1145: click '→ 885 → §885'
+    21. From §885: click '→ 760 → §760'
+    22. From §760: click '→ 985 → §985'
+    23. From §985: click '→ 804 → §804'
 ```
-  (24 clicks total, graph: full)
+  (23 clicks total, graph: full)
 
 ---
 
@@ -2143,27 +2150,33 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 1218 → §1218'
-    16. From §1218: click '→ 1058 → §1058'
-    17. From §1058: click '→ 899 → §899'
-    18. From §899: click '→ 772 → §772'
-    19. From §772: click '→ 962 → §962'
-    20. From §962: click '→ 1075 → §1075'
-    21. From §1075: click '→ 892 → §892'
-    22. From §892: click '→ 647 → §647'
-    23. From §647: click '→ 1103 → §1103'
-    24. From §1103: click '→ 91 → §91'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 784 → §784'
+    19. From §784: click '→ 858 → §858'
+    20. From §858: click '→ 833 → §833'
+    21. From §833: click '→ 1218 → §1218'
+    22. From §1218: click '→ 1058 → §1058'
+    23. From §1058: click '→ 899 → §899'
+    24. From §899: click '→ 772 → §772'
+    25. From §772: click '→ 962 → §962'
+    26. From §962: click '→ 1075 → §1075'
+    27. From §1075: click '→ 892 → §892'
+    28. From §892: click '→ 647 → §647'
+    29. From §647: click '→ 1103 → §1103'
+    30. From §1103: click '→ 91 → §91'
 ```
-  (24 clicks total, graph: basic)
+  (30 clicks total, graph: basic)
 
 ---
 
@@ -2415,31 +2428,35 @@ Conventions:
 
 ```
   Start at §1.
-     1. From §1: click '→ 282 → §282'
-     2. From §282: click '→ 397 → §397'
-     3. From §397: click '→ 372 → §372'
-     4. From §372: click '→ 103 → §103'
-     5. From §103: click '→ 216 → §216'
-     6. From §216: click '→ 423 → §423'
-     7. From §423: click '→ 83 → §83'
-     8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
-    16. From §164: click '→ 1203 → §1203'
-    17. From §1203: click '→ 253 → §253'
-    18. From §253: click '→ 508 → §508'
-    19. From §508: click '→ 155 → §155'
-    20. From §155: click '→ 415 → §415'
-    21. From §415: click '→ 84 → §84'
-    22. From §84: click '→ 281 → §281'
-    23. From §281: click '→ 612 → §612'
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 393 → §393'
+    18. From §393: click '→ 816 → §816'
+    19. From §816: click '→ 676 → §676'
+    20. From §676: click '→ 844 → §844'
+    21. From §844: click '→ 1043 → §1043'
+    22. From §1043: click '→ 593 → §593'
+    23. From §593: click '→ 1095 → §1095'
+    24. From §1095: click '→ 996 → §996'
+    25. From §996: click '→ 787 → §787'
+    26. From §787: click '→ 740 → §740'
+    27. From §740: click '→ 612 → §612'
 ```
-  (23 clicks total, graph: basic)
+  (27 clicks total, graph: full)
 
 ---
 
@@ -2460,30 +2477,23 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 969 → §969'
-    16. From §969: click '→ 809 → §809'
-    17. From §809: click '→ 862 → §862'
-    18. From §862: click '→ 696 → §696'
-    19. From §696: click '→ 1091 → §1091'
-    20. From §1091: click '→ 963 → §963'
-    21. From §963: click '→ 877 → §877'
-    22. From §877: click '→ 820 → §820'
-    23. From §820: click '→ 780 → §780'
-    24. From §780: click '→ 1067 → §1067'
-    25. From §1067: click '→ 888 → §888'
-    26. From §888: click '→ 907 → §907'
-    27. From §907: click '→ 803 → §803'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 215 → §215'
+    19. From §215: click '→ 744 → §744'
+    20. From §744: click '→ 803 → §803'
 ```
-  (27 clicks total, graph: basic)
+  (20 clicks total, graph: full)
 
 ---
 
@@ -2501,55 +2511,59 @@ Conventions:
 
 ```
   Start at §1.
-     1. From §1: click '→ 282 → §282'
-     2. From §282: click '→ 397 → §397'
-     3. From §397: click '→ 372 → §372'
-     4. From §372: click '→ 103 → §103'
-     5. From §103: click '→ 216 → §216'
-     6. From §216: click '→ 423 → §423'
-     7. From §423: click '→ 83 → §83'
-     8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
-    16. From §164: click '→ 1203 → §1203'
-    17. From §1203: click '→ 253 → §253'
-    18. From §253: click '→ 508 → §508'
-    19. From §508: click '→ 155 → §155'
-    20. From §155: click '→ 415 → §415'
-    21. From §415: click '→ 84 → §84'
-    22. From §84: click '→ 281 → §281'
-    23. From §281: click '→ 612 → §612'
-    24. From §612: click '→ 1106 → §1106'
-    25. From §1106: click '→ 955 → §955'
-    26. From §955: click '→ 361 → §361'
-    27. From §361: click '→ 658 → §658'
-    28. From §658: click '→ 1014 → §1014'
-    29. From §1014: click '→ 919 → §919'
-    30. From §919: click '→ 1100 → §1100'
-    31. From §1100: click '→ 671 → §671'
-    32. From §671: click '→ 42 → §42'
-    33. From §42: click '→ 161 → §161'
-    34. From §161: click '→ 488 → §488'
-    35. From §488: click '→ 359 → §359'
-    36. From §359: click '→ 814 → §814'
-    37. From §814: click '→ 735 → §735'
-    38. From §735: click '→ 1065 → §1065'
-    39. From §1065: click '→ 1056 → §1056'
-    40. From §1056: click '→ 646 → §646'
-    41. From §646: click '→ 1189 → §1189'
-    42. From §1189: click '→ 785 → §785'
-    43. From §785: click '→ 349 → §349'
-    44. From §349: click '→ 1046 → §1046'
-    45. From §1046: click '→ 215 → §215'
-    46. From §215: click '→ 744 → §744'
-    47. From §744: click '→ 803 → §803'
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 393 → §393'
+    18. From §393: click '→ 816 → §816'
+    19. From §816: click '→ 676 → §676'
+    20. From §676: click '→ 844 → §844'
+    21. From §844: click '→ 1043 → §1043'
+    22. From §1043: click '→ 593 → §593'
+    23. From §593: click '→ 1095 → §1095'
+    24. From §1095: click '→ 996 → §996'
+    25. From §996: click '→ 787 → §787'
+    26. From §787: click '→ 740 → §740'
+    27. From §740: click '→ 612 → §612'
+    28. From §612: click '→ 1106 → §1106'
+    29. From §1106: click '→ 955 → §955'
+    30. From §955: click '→ 361 → §361'
+    31. From §361: click '→ 658 → §658'
+    32. From §658: click '→ 1014 → §1014'
+    33. From §1014: click '→ 919 → §919'
+    34. From §919: click '→ 1100 → §1100'
+    35. From §1100: click '→ 671 → §671'
+    36. From §671: click '→ 42 → §42'
+    37. From §42: click '→ 161 → §161'
+    38. From §161: click '→ 488 → §488'
+    39. From §488: click '→ 359 → §359'
+    40. From §359: click '→ 814 → §814'
+    41. From §814: click '→ 735 → §735'
+    42. From §735: click '→ 1065 → §1065'
+    43. From §1065: click '→ 1056 → §1056'
+    44. From §1056: click '→ 646 → §646'
+    45. From §646: click '→ 1189 → §1189'
+    46. From §1189: click '→ 785 → §785'
+    47. From §785: click '→ 349 → §349'
+    48. From §349: click '→ 1046 → §1046'
+    49. From §1046: click '→ 215 → §215'
+    50. From §215: click '→ 744 → §744'
+    51. From §744: click '→ 803 → §803'
 ```
-  (47 clicks total, graph: basic)
+  (51 clicks total, graph: full)
 
 ---
 
@@ -2559,7 +2573,7 @@ Conventions:
 
 **Commit:** `group_6_bear_key`
 
-**What to check:** Without 'Медный ключик' in inventory, sec.804 shows THREE buttons (кусок металла sec.1184, the figured-key option ONLY if player owns it, and the exit-to-sec.590). The fail-narrative 'Может быть, есть медный ключик (1064)' must be HIDDEN — regression fix parallel to the figured-key sec.895 fix.
+**What to check:** Without 'Медный ключик' sec.804 hides 'Может быть, есть медный ключик (1064)'. The other special exits check their own items, so with an empty bag only the exit (590) remains.
 
 **Path:**
 
@@ -2570,15 +2584,19 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 760 → §760'
-    11. From §760: click '→ 985 → §985'
-    12. From §985: click '→ 804 → §804'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 1145 → §1145'
+    13. From §1145: click '→ 885 → §885'
+    14. From §885: click '→ 760 → §760'
+    15. From §760: click '→ 985 → §985'
+    16. From §985: click '→ 804 → §804'
 ```
-  (12 clicks total, graph: full)
+  (16 clicks total, graph: full)
 
 ---
 
@@ -2646,7 +2664,7 @@ Conventions:
     10. From §79: click '→ 382 → §382'
     11. From §382: click '→ 198 → §198'
 ```
-  (11 clicks total, graph: basic)
+  (11 clicks total, graph: full)
 
 ---
 
@@ -2668,21 +2686,19 @@ Conventions:
      4. From §372: click '→ 103 → §103'
      5. From §103: click '→ 216 → §216'
      6. From §216: click '→ 423 → §423'
-     7. From §423: click '→ 83 → §83'
-     8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 79 → §79'
-    10. From §79: click '→ 382 → §382'
-    11. From §382: click '→ 198 → §198'
-    12. From §198: click '→ 54 → §54'
-    13. From §54: click '→ 438 → §438'
-    14. From §438: click '→ 401 → §401'
-    15. From §401: click '→ 366 → §366'
-    16. From §366: click '→ 549 → §549'
-    17. From §549: click '→ 466 → §466'
-    18. From §466: click '→ 82 → §82'
-    19. From §82: click '→ 108 → §108'
+     7. From §423: click '→ 5 → §5'
+     8. From §5: click '→ 105 → §105'
+     9. From §105: click '→ 18 → §18'
+    10. From §18: click '→ 23 → §23'
+    11. From §23: click '→ 438 → §438'
+    12. From §438: click '→ 401 → §401'
+    13. From §401: click '→ 366 → §366'
+    14. From §366: click '→ 549 → §549'
+    15. From §549: click '→ 466 → §466'
+    16. From §466: click '→ 82 → §82'
+    17. From §82: click '→ 108 → §108'
 ```
-  (19 clicks total, graph: basic)
+  (17 clicks total, graph: full)
 
 ---
 
@@ -2720,7 +2736,7 @@ Conventions:
     18. From §466: click '→ 82 → §82'
     19. From §82: click '→ 108 → §108'
 ```
-  (19 clicks total, graph: basic)
+  (19 clicks total, graph: full)
 
 ---
 
@@ -2754,7 +2770,7 @@ Conventions:
     14. From §438: click '→ 401 → §401'
     15. From §401: click '→ 366 → §366'
 ```
-  (15 clicks total, graph: basic)
+  (15 clicks total, graph: full)
 
 ---
 
@@ -2787,7 +2803,7 @@ Conventions:
     13. From §54: click '→ 438 → §438'
     14. From §438: click '→ 401 → §401'
 ```
-  (14 clicks total, graph: basic)
+  (14 clicks total, graph: full)
 
 ---
 
@@ -2808,31 +2824,32 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1074 → §1074'
-    16. From §1074: click '→ 766 → §766'
-    17. From §766: click '→ 718 → §718'
-    18. From §718: click '→ 285 → §285'
-    19. From §285: click '→ 782 → §782'
-    20. From §782: click '→ 1196 → §1196'
-    21. From §1196: click '→ 886 → §886'
-    22. From §886: click '→ 1044 → §1044'
-    23. From §1044: click '→ 1096 → §1096'
-    24. From §1096: click '→ 1164 → §1164'
-    25. From §1164: click '→ 831 → §831'
-    26. From §831: click '→ 81 → §81'
-    27. From §81: click '→ 623 → §623'
-    28. From §623: click '→ 1071 → §1071'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 150 → §150'
+    19. From §150: click '→ 42 → §42'
+    20. From §42: click '→ 161 → §161'
+    21. From §161: click '→ 362 → §362'
+    22. From §362: click '→ 603 → §603'
+    23. From §603: click '→ 1015 → §1015'
+    24. From §1015: click '→ 1096 → §1096'
+    25. From §1096: click '→ 1164 → §1164'
+    26. From §1164: click '→ 831 → §831'
+    27. From §831: click '→ 81 → §81'
+    28. From §81: click '→ 623 → §623'
+    29. From §623: click '→ 1071 → §1071'
 ```
-  (28 clicks total, graph: full)
+  (29 clicks total, graph: full)
 
 ---
 
@@ -2853,41 +2870,30 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 1218 → §1218'
-    16. From §1218: click '→ 1058 → §1058'
-    17. From §1058: click '→ 899 → §899'
-    18. From §899: click '→ 772 → §772'
-    19. From §772: click '→ 962 → §962'
-    20. From §962: click '→ 1075 → §1075'
-    21. From §1075: click '→ 1156 → §1156'
-    22. From §1156: click '→ 41 → §41'
-    23. From §41: click '→ 1094 → §1094'
-    24. From §1094: click '→ 1000 → §1000'
-    25. From §1000: click '→ 726 → §726'
-    26. From §726: click '→ 1074 → §1074'
-    27. From §1074: click '→ 766 → §766'
-    28. From §766: click '→ 718 → §718'
-    29. From §718: click '→ 285 → §285'
-    30. From §285: click '→ 782 → §782'
-    31. From §782: click '→ 1196 → §1196'
-    32. From §1196: click '→ 995 → §995'
-    33. From §995: click '→ 1210 → §1210'
-    34. From §1210: click '→ 96 → §96'
-    35. From §96: click '→ 901 → §901'
-    36. From §901: click '→ 45 → §45'
-    37. From §45: click '→ 1019 → §1019'
-    38. From §1019: click '→ 226 → §226'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1074 → §1074'
+    19. From §1074: click '→ 766 → §766'
+    20. From §766: click '→ 718 → §718'
+    21. From §718: click '→ 285 → §285'
+    22. From §285: click '→ 782 → §782'
+    23. From §782: click '→ 1196 → §1196'
+    24. From §1196: click '→ 604 → §604'
+    25. From §604: click '→ 45 → §45'
+    26. From §45: click '→ 1019 → §1019'
+    27. From §1019: click '→ 226 → §226'
 ```
-  (38 clicks total, graph: basic)
+  (27 clicks total, graph: full)
 
 ---
 
@@ -2910,34 +2916,35 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1074 → §1074'
-    16. From §1074: click '→ 766 → §766'
-    17. From §766: click '→ 718 → §718'
-    18. From §718: click '→ 285 → §285'
-    19. From §285: click '→ 782 → §782'
-    20. From §782: click '→ 1196 → §1196'
-    21. From §1196: click '→ 886 → §886'
-    22. From §886: click '→ 1044 → §1044'
-    23. From §1044: click '→ 1096 → §1096'
-    24. From §1096: click '→ 1164 → §1164'
-    25. From §1164: click '→ 831 → §831'
-    26. From §831: click '→ 81 → §81'
-    27. From §81: click '→ 623 → §623'
-    28. From §623: click '→ 1071 → §1071'
-    29. From §1071: click '→ 297 → §297'
-    30. From §297: click '→ 284 → §284'
-    31. From §284: click '→ 226 → §226'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 150 → §150'
+    19. From §150: click '→ 42 → §42'
+    20. From §42: click '→ 161 → §161'
+    21. From §161: click '→ 362 → §362'
+    22. From §362: click '→ 603 → §603'
+    23. From §603: click '→ 1015 → §1015'
+    24. From §1015: click '→ 1096 → §1096'
+    25. From §1096: click '→ 1164 → §1164'
+    26. From §1164: click '→ 831 → §831'
+    27. From §831: click '→ 81 → §81'
+    28. From §81: click '→ 623 → §623'
+    29. From §623: click '→ 1071 → §1071'
+    30. From §1071: click '→ 297 → §297'
+    31. From §297: click '→ 284 → §284'
+    32. From §284: click '→ 226 → §226'
 ```
-  (31 clicks total, graph: full)
+  (32 clicks total, graph: full)
 
 ---
 
@@ -2958,26 +2965,27 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1218 → §1218'
-    14. From §1218: click '→ 1058 → §1058'
-    15. From §1058: click '→ 899 → §899'
-    16. From §899: click '→ 772 → §772'
-    17. From §772: click '→ 962 → §962'
-    18. From §962: click '→ 1075 → §1075'
-    19. From §1075: click '→ 705 → §705'
-    20. From §705: click '→ 905 → §905'
-    21. From §905: click '→ 722 → §722'
-    22. From §722: click '→ 684 → §684'
-    23. From §684: click '→ 791 → §791'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 215 → §215'
+    19. From §215: click '→ 744 → §744'
+    20. From §744: click '→ 323 → §323'
+    21. From §323: click '→ 888 → §888'
+    22. From §888: click '→ 722 → §722'
+    23. From §722: click '→ 684 → §684'
+    24. From §684: click '→ 791 → §791'
 ```
-  (23 clicks total, graph: full)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -3020,34 +3028,35 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1218 → §1218'
-    14. From §1218: click '→ 1058 → §1058'
-    15. From §1058: click '→ 899 → §899'
-    16. From §899: click '→ 772 → §772'
-    17. From §772: click '→ 962 → §962'
-    18. From §962: click '→ 1075 → §1075'
-    19. From §1075: click '→ 705 → §705'
-    20. From §705: click '→ 905 → §905'
-    21. From §905: click '→ 722 → §722'
-    22. From §722: click '→ 684 → §684'
-    23. From §684: click '→ 791 → §791'
-    24. From §791: click '→ 1075 → §1075'
-    25. From §1075: click '→ 1156 → §1156'
-    26. From §1156: click '→ 41 → §41'
-    27. From §41: click '→ 1094 → §1094'
-    28. From §1094: click '→ 1000 → §1000'
-    29. From §1000: click '→ 1010 → §1010'
-    30. From §1010: click '→ 1162 → §1162'
-    31. From §1162: click '→ 846 → §846'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 215 → §215'
+    19. From §215: click '→ 744 → §744'
+    20. From §744: click '→ 323 → §323'
+    21. From §323: click '→ 888 → §888'
+    22. From §888: click '→ 722 → §722'
+    23. From §722: click '→ 684 → §684'
+    24. From §684: click '→ 791 → §791'
+    25. From §791: click '→ 1075 → §1075'
+    26. From §1075: click '→ 1156 → §1156'
+    27. From §1156: click '→ 41 → §41'
+    28. From §41: click '→ 1094 → §1094'
+    29. From §1094: click '→ 1000 → §1000'
+    30. From §1000: click '→ 1010 → §1010'
+    31. From §1010: click '→ 1162 → §1162'
+    32. From §1162: click '→ 846 → §846'
 ```
-  (31 clicks total, graph: full)
+  (32 clicks total, graph: full)
 
 ---
 
@@ -3070,29 +3079,30 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1218 → §1218'
-    14. From §1218: click '→ 1058 → §1058'
-    15. From §1058: click '→ 899 → §899'
-    16. From §899: click '→ 772 → §772'
-    17. From §772: click '→ 962 → §962'
-    18. From §962: click '→ 1075 → §1075'
-    19. From §1075: click '→ 705 → §705'
-    20. From §705: click '→ 905 → §905'
-    21. From §905: click '→ 722 → §722'
-    22. From §722: click '→ 684 → §684'
-    23. From §684: click '→ 791 → §791'
-    24. From §791: click '→ 907 → §907'
-    25. From §907: click '→ 607 → §607'
-    26. From §607: click '→ 934 → §934'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 215 → §215'
+    19. From §215: click '→ 744 → §744'
+    20. From §744: click '→ 323 → §323'
+    21. From §323: click '→ 888 → §888'
+    22. From §888: click '→ 722 → §722'
+    23. From §722: click '→ 684 → §684'
+    24. From §684: click '→ 791 → §791'
+    25. From §791: click '→ 907 → §907'
+    26. From §907: click '→ 607 → §607'
+    27. From §607: click '→ 934 → §934'
 ```
-  (26 clicks total, graph: full)
+  (27 clicks total, graph: full)
 
 ---
 
@@ -3115,37 +3125,38 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1218 → §1218'
-    14. From §1218: click '→ 1058 → §1058'
-    15. From §1058: click '→ 899 → §899'
-    16. From §899: click '→ 772 → §772'
-    17. From §772: click '→ 962 → §962'
-    18. From §962: click '→ 1075 → §1075'
-    19. From §1075: click '→ 705 → §705'
-    20. From §705: click '→ 905 → §905'
-    21. From §905: click '→ 722 → §722'
-    22. From §722: click '→ 684 → §684'
-    23. From §684: click '→ 791 → §791'
-    24. From §791: click '→ 1029 → §1029'
-    25. From §1029: click '→ 671 → §671'
-    26. From §671: click '→ 42 → §42'
-    27. From §42: click '→ 161 → §161'
-    28. From §161: click '→ 488 → §488'
-    29. From §488: click '→ 359 → §359'
-    30. From §359: click '→ 814 → §814'
-    31. From §814: click '→ 735 → §735'
-    32. From §735: click '→ 1065 → §1065'
-    33. From §1065: click '→ 43 → §43'
-    34. From §43: click '→ 1082 → §1082'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 215 → §215'
+    19. From §215: click '→ 744 → §744'
+    20. From §744: click '→ 323 → §323'
+    21. From §323: click '→ 888 → §888'
+    22. From §888: click '→ 722 → §722'
+    23. From §722: click '→ 684 → §684'
+    24. From §684: click '→ 791 → §791'
+    25. From §791: click '→ 1029 → §1029'
+    26. From §1029: click '→ 671 → §671'
+    27. From §671: click '→ 42 → §42'
+    28. From §42: click '→ 161 → §161'
+    29. From §161: click '→ 488 → §488'
+    30. From §488: click '→ 359 → §359'
+    31. From §359: click '→ 814 → §814'
+    32. From §814: click '→ 735 → §735'
+    33. From §735: click '→ 1065 → §1065'
+    34. From §1065: click '→ 43 → §43'
+    35. From §43: click '→ 1082 → §1082'
 ```
-  (34 clicks total, graph: full)
+  (35 clicks total, graph: full)
 
 ---
 
@@ -3264,22 +3275,25 @@ Conventions:
      5. From §397: click '→ 372 → §372'
      6. From §372: click '→ 103 → §103'
      7. From §103: click '→ 216 → §216'
-     8. From §216: click '→ 212 → §212'
-     9. From §212: click '→ 255 → §255'
-    10. From §255: click '→ 380 → §380'
-    11. From §380: click '→ 371 → §371'
-    12. From §371: click '→ 76 → §76'
-    13. From §76: click '→ 1145 → §1145'
-    14. From §1145: click '→ 885 → §885'
-    15. From §885: click '→ 590 → §590'
-    16. From §590: click '→ 915 → §915'
-    17. From §915: click '→ 833 → §833'
-    18. From §833: click '→ 1177 → §1177'
-    19. From §1177: click '→ 393 → §393'
-    20. From §393: click '→ 816 → §816'
-    21. From §816: click '→ 732 → §732'
+     8. From §216: click '→ 423 → §423'
+     9. From §423: click '→ 5 → §5'
+    10. From §5: click '→ 288 → §288'
+    11. From §288: click '→ 493 → §493'
+    12. From §493: click '→ 461 → §461'
+    13. From §461: click '→ 250 → §250'
+    14. From §250: click '→ 19 → §19'
+    15. From §19: click '→ 452 → §452'
+    16. From §452: click '→ 205 → §205'
+    17. From §205: click '→ 146 → §146'
+    18. From §146: click '→ 1054 → §1054'
+    19. From §1054: click '→ 915 → §915'
+    20. From §915: click '→ 833 → §833'
+    21. From §833: click '→ 1177 → §1177'
+    22. From §1177: click '→ 393 → §393'
+    23. From §393: click '→ 816 → §816'
+    24. From §816: click '→ 732 → §732'
 ```
-  (21 clicks total, graph: full)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -3304,27 +3318,30 @@ Conventions:
      5. From §397: click '→ 372 → §372'
      6. From §372: click '→ 103 → §103'
      7. From §103: click '→ 216 → §216'
-     8. From §216: click '→ 212 → §212'
-     9. From §212: click '→ 255 → §255'
-    10. From §255: click '→ 380 → §380'
-    11. From §380: click '→ 371 → §371'
-    12. From §371: click '→ 76 → §76'
-    13. From §76: click '→ 1145 → §1145'
-    14. From §1145: click '→ 885 → §885'
-    15. From §885: click '→ 590 → §590'
-    16. From §590: click '→ 915 → §915'
-    17. From §915: click '→ 833 → §833'
-    18. From §833: click '→ 654 → §654'
-    19. From §654: click '→ 742 → §742'
-    20. From §742: click '→ 1160 → §1160'
-    21. From §1160: click '→ 1078 → §1078'
-    22. From §1078: click '→ 249 → §249'
-    23. From §249: click '→ 799 → §799'
-    24. From §799: click '→ 849 → §849'
-    25. From §849: click '→ 869 → §869'
-    26. From §869: click '→ 798 → §798'
+     8. From §216: click '→ 423 → §423'
+     9. From §423: click '→ 5 → §5'
+    10. From §5: click '→ 288 → §288'
+    11. From §288: click '→ 493 → §493'
+    12. From §493: click '→ 461 → §461'
+    13. From §461: click '→ 250 → §250'
+    14. From §250: click '→ 19 → §19'
+    15. From §19: click '→ 452 → §452'
+    16. From §452: click '→ 205 → §205'
+    17. From §205: click '→ 146 → §146'
+    18. From §146: click '→ 1054 → §1054'
+    19. From §1054: click '→ 915 → §915'
+    20. From §915: click '→ 833 → §833'
+    21. From §833: click '→ 654 → §654'
+    22. From §654: click '→ 742 → §742'
+    23. From §742: click '→ 1160 → §1160'
+    24. From §1160: click '→ 1078 → §1078'
+    25. From §1078: click '→ 249 → §249'
+    26. From §249: click '→ 799 → §799'
+    27. From §799: click '→ 849 → §849'
+    28. From §849: click '→ 869 → §869'
+    29. From §869: click '→ 798 → §798'
 ```
-  (26 clicks total, graph: full)
+  (29 clicks total, graph: full)
 
 ---
 
@@ -3348,13 +3365,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -3366,7 +3383,7 @@ Conventions:
     24. From §290: click '→ 582 → §582'
     25. From §582: click '→ 74 → §74'
 ```
-  (25 clicks total, graph: basic)
+  (25 clicks total, graph: full)
 
 ---
 
@@ -3487,27 +3504,28 @@ Conventions:
     34. From §1148: click '→ 1054 → §1054'
     35. From §1054: click '→ 915 → §915'
     36. From §915: click '→ 833 → §833'
-    37. From §833: click '→ 654 → §654'
-    38. From §654: click '→ 742 → §742'
-    39. From §742: click '→ 1074 → §1074'
-    40. From §1074: click '→ 766 → §766'
-    41. From §766: click '→ 718 → §718'
-    42. From §718: click '→ 285 → §285'
-    43. From §285: click '→ 782 → §782'
-    44. From §782: click '→ 1196 → §1196'
-    45. From §1196: click '→ 886 → §886'
-    46. From §886: click '→ 1044 → §1044'
-    47. From §1044: click '→ 1096 → §1096'
-    48. From §1096: click '→ 1164 → §1164'
-    49. From §1164: click '→ 831 → §831'
-    50. From §831: click '→ 81 → §81'
-    51. From §81: click '→ 623 → §623'
-    52. From §623: click '→ 1071 → §1071'
-    53. From §1071: click '→ 297 → §297'
-    54. From §297: click '→ 284 → §284'
-    55. From §284: click '→ 226 → §226'
+    37. From §833: click '→ 1218 → §1218'
+    38. From §1218: click '→ 1058 → §1058'
+    39. From §1058: click '→ 899 → §899'
+    40. From §899: click '→ 772 → §772'
+    41. From §772: click '→ 1059 → §1059'
+    42. From §1059: click '→ 671 → §671'
+    43. From §671: click '→ 42 → §42'
+    44. From §42: click '→ 161 → §161'
+    45. From §161: click '→ 362 → §362'
+    46. From §362: click '→ 603 → §603'
+    47. From §603: click '→ 1015 → §1015'
+    48. From §1015: click '→ 1096 → §1096'
+    49. From §1096: click '→ 1164 → §1164'
+    50. From §1164: click '→ 831 → §831'
+    51. From §831: click '→ 81 → §81'
+    52. From §81: click '→ 623 → §623'
+    53. From §623: click '→ 1071 → §1071'
+    54. From §1071: click '→ 297 → §297'
+    55. From §297: click '→ 284 → §284'
+    56. From §284: click '→ 226 → §226'
 ```
-  (55 clicks total, graph: full)
+  (56 clicks total, graph: full)
 
 ---
 
@@ -3528,18 +3546,21 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 393 → §393'
-    15. From §393: click '→ 688 → §688'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 393 → §393'
+    18. From §393: click '→ 688 → §688'
 ```
-  (15 clicks total, graph: full)
+  (18 clicks total, graph: full)
 
 ---
 
@@ -3560,19 +3581,25 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 969 → §969'
-    16. From §969: click '→ 741 → §741'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 784 → §784'
+    19. From §784: click '→ 858 → §858'
+    20. From §858: click '→ 833 → §833'
+    21. From §833: click '→ 969 → §969'
+    22. From §969: click '→ 741 → §741'
 ```
-  (16 clicks total, graph: basic)
+  (22 clicks total, graph: basic)
 
 ---
 
@@ -3584,7 +3611,7 @@ Conventions:
 
 **Must visit first:** §688
 
-**What to check:** After visiting sec.688, sec.741 should show THREE buttons including the gated 'Применить знание о троне (1141)'. Click → sec.1141 canonical narrative ('Вы помните, как открывался потайной ящичек в троне, стоящем в столовой… теперь в секретном ящичке не стрела, а карта-план этажа'). sec.1141 then routes to luck check (sec.974 lucky / sec.1118 unlucky).
+**What to check:** After visiting sec.688, sec.741 shows THREE buttons including the gated 'Применить знание о троне (1141)'. Click → sec.1141 ('Вы помните, как открывался потайной ящичек в троне…'). sec.1141 is a luck check (lucky → sec.974, unlucky → sec.1118) with the canon refusal 'Не проверять удачу' → sec.1118 without a roll and without spending Luck.
 
 **Path:**
 
@@ -3595,21 +3622,24 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 393 → §393'
-    15. From §393: click '→ 688 → §688'
-    16. From §688: click '→ 771 → §771'
-    17. From §771: click '→ 969 → §969'
-    18. From §969: click '→ 741 → §741'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 393 → §393'
+    18. From §393: click '→ 688 → §688'
+    19. From §688: click '→ 771 → §771'
+    20. From §771: click '→ 969 → §969'
+    21. From §969: click '→ 741 → §741'
 ```
-  (18 clicks total, graph: full)
+  (21 clicks total, graph: full)
 
 ---
 
@@ -3717,31 +3747,32 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1074 → §1074'
-    16. From §1074: click '→ 766 → §766'
-    17. From §766: click '→ 718 → §718'
-    18. From §718: click '→ 285 → §285'
-    19. From §285: click '→ 782 → §782'
-    20. From §782: click '→ 1196 → §1196'
-    21. From §1196: click '→ 886 → §886'
-    22. From §886: click '→ 1044 → §1044'
-    23. From §1044: click '→ 1096 → §1096'
-    24. From §1096: click '→ 1164 → §1164'
-    25. From §1164: click '→ 831 → §831'
-    26. From §831: click '→ 81 → §81'
-    27. From §81: click '→ 623 → §623'
-    28. From §623: click '→ 479 → §479'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 150 → §150'
+    19. From §150: click '→ 42 → §42'
+    20. From §42: click '→ 161 → §161'
+    21. From §161: click '→ 362 → §362'
+    22. From §362: click '→ 603 → §603'
+    23. From §603: click '→ 1015 → §1015'
+    24. From §1015: click '→ 1096 → §1096'
+    25. From §1096: click '→ 1164 → §1164'
+    26. From §1164: click '→ 831 → §831'
+    27. From §831: click '→ 81 → §81'
+    28. From §81: click '→ 623 → §623'
+    29. From §623: click '→ 479 → §479'
 ```
-  (28 clicks total, graph: full)
+  (29 clicks total, graph: full)
 
 ---
 
@@ -3764,34 +3795,35 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1074 → §1074'
-    16. From §1074: click '→ 766 → §766'
-    17. From §766: click '→ 718 → §718'
-    18. From §718: click '→ 285 → §285'
-    19. From §285: click '→ 782 → §782'
-    20. From §782: click '→ 1196 → §1196'
-    21. From §1196: click '→ 886 → §886'
-    22. From §886: click '→ 1044 → §1044'
-    23. From §1044: click '→ 1096 → §1096'
-    24. From §1096: click '→ 1164 → §1164'
-    25. From §1164: click '→ 831 → §831'
-    26. From §831: click '→ 81 → §81'
-    27. From §81: click '→ 623 → §623'
-    28. From §623: click '→ 479 → §479'
-    29. From §479: click '→ 297 → §297'
-    30. From §297: click '→ 284 → §284'
-    31. From §284: click '→ 226 → §226'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 150 → §150'
+    19. From §150: click '→ 42 → §42'
+    20. From §42: click '→ 161 → §161'
+    21. From §161: click '→ 362 → §362'
+    22. From §362: click '→ 603 → §603'
+    23. From §603: click '→ 1015 → §1015'
+    24. From §1015: click '→ 1096 → §1096'
+    25. From §1096: click '→ 1164 → §1164'
+    26. From §1164: click '→ 831 → §831'
+    27. From §831: click '→ 81 → §81'
+    28. From §81: click '→ 623 → §623'
+    29. From §623: click '→ 479 → §479'
+    30. From §479: click '→ 297 → §297'
+    31. From §297: click '→ 284 → §284'
+    32. From §284: click '→ 226 → §226'
 ```
-  (31 clicks total, graph: full)
+  (32 clicks total, graph: full)
 
 ---
 
@@ -3843,7 +3875,7 @@ Conventions:
     14. From §566: click '→ 279 → §279'
     15. From §279: click '→ 385 → §385'
 ```
-  (15 clicks total, graph: basic)
+  (15 clicks total, graph: full)
 
 ---
 
@@ -3919,7 +3951,7 @@ Conventions:
 
 **Commit:** `group_6_post_audit_sibling_gold_ring`
 
-**What to check:** After defeating Тролль at §1050, auto_items grants 'Золотое кольцо' (clean name, no longer 'Из его кармана…' fragment) plus +1 LUCK. Inventory shows the clean ring name; HUD shows the LUCK increment. Single nav choice → §383 unchanged.
+**What to check:** At §1050 nothing is offered before the fight and Luck does not change. After defeating the Troll the 'Золотое кольцо' is offered and +1 LUCK applies (post_combat_items). Single nav choice → §383.
 
 **Path:**
 
@@ -3930,24 +3962,30 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 969 → §969'
-    16. From §969: click '→ 1076 → §1076'
-    17. From §1076: click '→ 870 → §870'
-    18. From §870: click '→ 943 → §943'
-    19. From §943: click '→ 828 → §828'
-    20. From §828: click '→ 1135 → §1135'
-    21. From §1135: click '→ 1050 → §1050'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 784 → §784'
+    19. From §784: click '→ 858 → §858'
+    20. From §858: click '→ 833 → §833'
+    21. From §833: click '→ 969 → §969'
+    22. From §969: click '→ 1076 → §1076'
+    23. From §1076: click '→ 870 → §870'
+    24. From §870: click '→ 943 → §943'
+    25. From §943: click '→ 828 → §828'
+    26. From §828: click '→ 1135 → §1135'
+    27. From §1135: click '→ 1050 → §1050'
 ```
-  (21 clicks total, graph: basic)
+  (27 clicks total, graph: basic)
 
 ---
 
@@ -3968,27 +4006,28 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1074 → §1074'
-    16. From §1074: click '→ 766 → §766'
-    17. From §766: click '→ 718 → §718'
-    18. From §718: click '→ 285 → §285'
-    19. From §285: click '→ 782 → §782'
-    20. From §782: click '→ 1196 → §1196'
-    21. From §1196: click '→ 886 → §886'
-    22. From §886: click '→ 1044 → §1044'
-    23. From §1044: click '→ 1096 → §1096'
-    24. From §1096: click '→ 1164 → §1164'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 100 → §100'
+    15. From §100: click '→ 335 → §335'
+    16. From §335: click '→ 434 → §434'
+    17. From §434: click '→ 1046 → §1046'
+    18. From §1046: click '→ 150 → §150'
+    19. From §150: click '→ 42 → §42'
+    20. From §42: click '→ 161 → §161'
+    21. From §161: click '→ 362 → §362'
+    22. From §362: click '→ 603 → §603'
+    23. From §603: click '→ 1015 → §1015'
+    24. From §1015: click '→ 1096 → §1096'
+    25. From §1096: click '→ 1164 → §1164'
 ```
-  (24 clicks total, graph: full)
+  (25 clicks total, graph: full)
 
 ---
 
@@ -4011,32 +4050,35 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 969 → §969'
-    14. From §969: click '→ 1076 → §1076'
-    15. From §1076: click '→ 870 → §870'
-    16. From §870: click '→ 943 → §943'
-    17. From §943: click '→ 828 → §828'
-    18. From §828: click '→ 1135 → §1135'
-    19. From §1135: click '→ 1050 → §1050'
-    20. From §1050: click '→ 383 → §383'
-    21. From §383: click '→ 1100 → §1100'
-    22. From §1100: click '→ 671 → §671'
-    23. From §671: click '→ 42 → §42'
-    24. From §42: click '→ 161 → §161'
-    25. From §161: click '→ 362 → §362'
-    26. From §362: click '→ 603 → §603'
-    27. From §603: click '→ 1015 → §1015'
-    28. From §1015: click '→ 1096 → §1096'
-    29. From §1096: click '→ 1164 → §1164'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 969 → §969'
+    17. From §969: click '→ 1076 → §1076'
+    18. From §1076: click '→ 870 → §870'
+    19. From §870: click '→ 943 → §943'
+    20. From §943: click '→ 828 → §828'
+    21. From §828: click '→ 1135 → §1135'
+    22. From §1135: click '→ 1050 → §1050'
+    23. From §1050: click '→ 383 → §383'
+    24. From §383: click '→ 1100 → §1100'
+    25. From §1100: click '→ 671 → §671'
+    26. From §671: click '→ 42 → §42'
+    27. From §42: click '→ 161 → §161'
+    28. From §161: click '→ 362 → §362'
+    29. From §362: click '→ 603 → §603'
+    30. From §603: click '→ 1015 → §1015'
+    31. From §1015: click '→ 1096 → §1096'
+    32. From §1096: click '→ 1164 → §1164'
 ```
-  (29 clicks total, graph: full)
+  (32 clicks total, graph: full)
 
 ---
 
@@ -4091,28 +4133,31 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1160 → §1160'
-    16. From §1160: click '→ 1078 → §1078'
-    17. From §1078: click '→ 249 → §249'
-    18. From §249: click '→ 799 → §799'
-    19. From §799: click '→ 851 → §851'
-    20. From §851: click '→ 881 → §881'
-    21. From §881: click '→ 921 → §921'
-    22. From §921: click '→ 1155 → §1155'
-    23. From §1155: click '→ 1179 → §1179'
-    24. From §1179: click '→ 1113 → §1113'
-    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1160 → §1160'
+    19. From §1160: click '→ 1078 → §1078'
+    20. From §1078: click '→ 249 → §249'
+    21. From §249: click '→ 799 → §799'
+    22. From §799: click '→ 851 → §851'
+    23. From §851: click '→ 881 → §881'
+    24. From §881: click '→ 921 → §921'
+    25. From §921: click '→ 1155 → §1155'
+    26. From §1155: click '→ 1179 → §1179'
+    27. From §1179: click '→ 1113 → §1113'
+    28. From §1113: click '[riddle: answer §1113 correctly] → §1131'
 ```
-  (25 clicks total, graph: full)
+  (28 clicks total, graph: full)
 
 ---
 
@@ -4135,29 +4180,32 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1160 → §1160'
-    16. From §1160: click '→ 1078 → §1078'
-    17. From §1078: click '→ 249 → §249'
-    18. From §249: click '→ 799 → §799'
-    19. From §799: click '→ 851 → §851'
-    20. From §851: click '→ 881 → §881'
-    21. From §881: click '→ 921 → §921'
-    22. From §921: click '→ 1155 → §1155'
-    23. From §1155: click '→ 1179 → §1179'
-    24. From §1179: click '→ 1113 → §1113'
-    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
-    26. From §1131: click '[riddle: answer §1131 correctly] → §992'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1160 → §1160'
+    19. From §1160: click '→ 1078 → §1078'
+    20. From §1078: click '→ 249 → §249'
+    21. From §249: click '→ 799 → §799'
+    22. From §799: click '→ 851 → §851'
+    23. From §851: click '→ 881 → §881'
+    24. From §881: click '→ 921 → §921'
+    25. From §921: click '→ 1155 → §1155'
+    26. From §1155: click '→ 1179 → §1179'
+    27. From §1179: click '→ 1113 → §1113'
+    28. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+    29. From §1131: click '[riddle: answer §1131 correctly] → §992'
 ```
-  (26 clicks total, graph: full)
+  (29 clicks total, graph: full)
 
 ---
 
@@ -4167,7 +4215,7 @@ Conventions:
 
 **Commit:** `group_18_letter_riddle`
 
-**What to check:** Open browser devtools → inspect game_structure.js. sec.1131 should show riddle config with modifier:916 and valid_targets:[992]; sec.992 should show modifier:825 and valid_targets:[932]. NO answer strings ('кладбище', 'смерть') anywhere in game_structure.js or game_logic.js. Confirms anti-cheat-by-design — math sum is one-way; cannot recover answer from data.
+**What to check:** Open browser devtools → inspect game_structure.js. sec.1131 should show riddle config with modifier:916 and valid_targets:[992]; sec.992 should show modifier:825 and valid_targets:[932]. The first answer never appears in game_structure.js or game_logic.js, comments included; the second occurs only inside the canon item name «Смерть Орков», which reveals nothing. Confirms anti-cheat-by-design — math sum is one-way; cannot recover answer from data.
 
 **Path:**
 
@@ -4178,28 +4226,31 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1160 → §1160'
-    16. From §1160: click '→ 1078 → §1078'
-    17. From §1078: click '→ 249 → §249'
-    18. From §249: click '→ 799 → §799'
-    19. From §799: click '→ 851 → §851'
-    20. From §851: click '→ 881 → §881'
-    21. From §881: click '→ 921 → §921'
-    22. From §921: click '→ 1155 → §1155'
-    23. From §1155: click '→ 1179 → §1179'
-    24. From §1179: click '→ 1113 → §1113'
-    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1160 → §1160'
+    19. From §1160: click '→ 1078 → §1078'
+    20. From §1078: click '→ 249 → §249'
+    21. From §249: click '→ 799 → §799'
+    22. From §799: click '→ 851 → §851'
+    23. From §851: click '→ 881 → §881'
+    24. From §881: click '→ 921 → §921'
+    25. From §921: click '→ 1155 → §1155'
+    26. From §1155: click '→ 1179 → §1179'
+    27. From §1179: click '→ 1113 → §1113'
+    28. From §1113: click '[riddle: answer §1113 correctly] → §1131'
 ```
-  (25 clicks total, graph: full)
+  (28 clicks total, graph: full)
 
 ---
 
@@ -4220,28 +4271,31 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1160 → §1160'
-    16. From §1160: click '→ 1078 → §1078'
-    17. From §1078: click '→ 249 → §249'
-    18. From §249: click '→ 799 → §799'
-    19. From §799: click '→ 851 → §851'
-    20. From §851: click '→ 881 → §881'
-    21. From §881: click '→ 921 → §921'
-    22. From §921: click '→ 1155 → §1155'
-    23. From §1155: click '→ 1179 → §1179'
-    24. From §1179: click '→ 1113 → §1113'
-    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1160 → §1160'
+    19. From §1160: click '→ 1078 → §1078'
+    20. From §1078: click '→ 249 → §249'
+    21. From §249: click '→ 799 → §799'
+    22. From §799: click '→ 851 → §851'
+    23. From §851: click '→ 881 → §881'
+    24. From §881: click '→ 921 → §921'
+    25. From §921: click '→ 1155 → §1155'
+    26. From §1155: click '→ 1179 → §1179'
+    27. From §1179: click '→ 1113 → §1113'
+    28. From §1113: click '[riddle: answer §1113 correctly] → §1131'
 ```
-  (25 clicks total, graph: full)
+  (28 clicks total, graph: full)
 
 ---
 
@@ -4262,28 +4316,31 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1160 → §1160'
-    16. From §1160: click '→ 1078 → §1078'
-    17. From §1078: click '→ 249 → §249'
-    18. From §249: click '→ 799 → §799'
-    19. From §799: click '→ 851 → §851'
-    20. From §851: click '→ 881 → §881'
-    21. From §881: click '→ 921 → §921'
-    22. From §921: click '→ 1155 → §1155'
-    23. From §1155: click '→ 1179 → §1179'
-    24. From §1179: click '→ 1113 → §1113'
-    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1160 → §1160'
+    19. From §1160: click '→ 1078 → §1078'
+    20. From §1078: click '→ 249 → §249'
+    21. From §249: click '→ 799 → §799'
+    22. From §799: click '→ 851 → §851'
+    23. From §851: click '→ 881 → §881'
+    24. From §881: click '→ 921 → §921'
+    25. From §921: click '→ 1155 → §1155'
+    26. From §1155: click '→ 1179 → §1179'
+    27. From §1179: click '→ 1113 → §1113'
+    28. From §1113: click '[riddle: answer §1113 correctly] → §1131'
 ```
-  (25 clicks total, graph: full)
+  (28 clicks total, graph: full)
 
 ---
 
@@ -4304,28 +4361,31 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1160 → §1160'
-    16. From §1160: click '→ 1078 → §1078'
-    17. From §1078: click '→ 249 → §249'
-    18. From §249: click '→ 799 → §799'
-    19. From §799: click '→ 851 → §851'
-    20. From §851: click '→ 881 → §881'
-    21. From §881: click '→ 921 → §921'
-    22. From §921: click '→ 1155 → §1155'
-    23. From §1155: click '→ 1179 → §1179'
-    24. From §1179: click '→ 1113 → §1113'
-    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1160 → §1160'
+    19. From §1160: click '→ 1078 → §1078'
+    20. From §1078: click '→ 249 → §249'
+    21. From §249: click '→ 799 → §799'
+    22. From §799: click '→ 851 → §851'
+    23. From §851: click '→ 881 → §881'
+    24. From §881: click '→ 921 → §921'
+    25. From §921: click '→ 1155 → §1155'
+    26. From §1155: click '→ 1179 → §1179'
+    27. From §1179: click '→ 1113 → §1113'
+    28. From §1113: click '[riddle: answer §1113 correctly] → §1131'
 ```
-  (25 clicks total, graph: full)
+  (28 clicks total, graph: full)
 
 ---
 
@@ -4346,29 +4406,32 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1160 → §1160'
-    16. From §1160: click '→ 1078 → §1078'
-    17. From §1078: click '→ 249 → §249'
-    18. From §249: click '→ 799 → §799'
-    19. From §799: click '→ 851 → §851'
-    20. From §851: click '→ 881 → §881'
-    21. From §881: click '→ 921 → §921'
-    22. From §921: click '→ 1155 → §1155'
-    23. From §1155: click '→ 1179 → §1179'
-    24. From §1179: click '→ 1113 → §1113'
-    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
-    26. From §1131: click '[riddle: answer §1131 correctly] → §992'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1160 → §1160'
+    19. From §1160: click '→ 1078 → §1078'
+    20. From §1078: click '→ 249 → §249'
+    21. From §249: click '→ 799 → §799'
+    22. From §799: click '→ 851 → §851'
+    23. From §851: click '→ 881 → §881'
+    24. From §881: click '→ 921 → §921'
+    25. From §921: click '→ 1155 → §1155'
+    26. From §1155: click '→ 1179 → §1179'
+    27. From §1179: click '→ 1113 → §1113'
+    28. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+    29. From §1131: click '[riddle: answer §1131 correctly] → §992'
 ```
-  (26 clicks total, graph: full)
+  (29 clicks total, graph: full)
 
 ---
 
@@ -4389,29 +4452,32 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1160 → §1160'
-    16. From §1160: click '→ 1078 → §1078'
-    17. From §1078: click '→ 249 → §249'
-    18. From §249: click '→ 799 → §799'
-    19. From §799: click '→ 851 → §851'
-    20. From §851: click '→ 881 → §881'
-    21. From §881: click '→ 921 → §921'
-    22. From §921: click '→ 1155 → §1155'
-    23. From §1155: click '→ 1179 → §1179'
-    24. From §1179: click '→ 1113 → §1113'
-    25. From §1113: click '[riddle: answer §1113 correctly] → §1131'
-    26. From §1131: click '[riddle: answer §1131 correctly] → §992'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1160 → §1160'
+    19. From §1160: click '→ 1078 → §1078'
+    20. From §1078: click '→ 249 → §249'
+    21. From §249: click '→ 799 → §799'
+    22. From §799: click '→ 851 → §851'
+    23. From §851: click '→ 881 → §881'
+    24. From §881: click '→ 921 → §921'
+    25. From §921: click '→ 1155 → §1155'
+    26. From §1155: click '→ 1179 → §1179'
+    27. From §1179: click '→ 1113 → §1113'
+    28. From §1113: click '[riddle: answer §1113 correctly] → §1131'
+    29. From §1131: click '[riddle: answer §1131 correctly] → §992'
 ```
-  (26 clicks total, graph: full)
+  (29 clicks total, graph: full)
 
 ---
 
@@ -4435,13 +4501,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -4451,7 +4517,7 @@ Conventions:
     22. From §596: click '→ 171 → §171'
     23. From §171: click '→ 93 → §93'
 ```
-  (23 clicks total, graph: basic)
+  (23 clicks total, graph: full)
 
 ---
 
@@ -4506,11 +4572,10 @@ Conventions:
     10. From §201: click '→ 425 → §425'
     11. From §425: click '→ 184 → §184'
     12. From §184: click '→ 235 → §235'
-    13. From §235: click '→ 338 → §338'
-    14. From §338: click '→ 228 → §228'
-    15. From §228: click '→ 521 → §521'
+    13. From §235: click '→ 228 → §228'
+    14. From §228: click '→ 521 → §521'
 ```
-  (15 clicks total, graph: basic)
+  (14 clicks total, graph: full)
 
 ---
 
@@ -4531,24 +4596,30 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 784 → §784'
-    13. From §784: click '→ 858 → §858'
-    14. From §858: click '→ 833 → §833'
-    15. From §833: click '→ 1218 → §1218'
-    16. From §1218: click '→ 1058 → §1058'
-    17. From §1058: click '→ 899 → §899'
-    18. From §899: click '→ 772 → §772'
-    19. From §772: click '→ 962 → §962'
-    20. From §962: click '→ 1075 → §1075'
-    21. From §1075: click '→ 705 → §705'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 784 → §784'
+    19. From §784: click '→ 858 → §858'
+    20. From §858: click '→ 833 → §833'
+    21. From §833: click '→ 1218 → §1218'
+    22. From §1218: click '→ 1058 → §1058'
+    23. From §1058: click '→ 899 → §899'
+    24. From §899: click '→ 772 → §772'
+    25. From §772: click '→ 962 → §962'
+    26. From §962: click '→ 1075 → §1075'
+    27. From §1075: click '→ 705 → §705'
 ```
-  (21 clicks total, graph: basic)
+  (27 clicks total, graph: basic)
 
 ---
 
@@ -4569,26 +4640,29 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 654 → §654'
-    14. From §654: click '→ 742 → §742'
-    15. From §742: click '→ 1074 → §1074'
-    16. From §1074: click '→ 766 → §766'
-    17. From §766: click '→ 718 → §718'
-    18. From §718: click '→ 285 → §285'
-    19. From §285: click '→ 782 → §782'
-    20. From §782: click '→ 1196 → §1196'
-    21. From §1196: click '→ 871 → §871'
-    22. From §871: click '→ 925 → §925'
-    23. From §925: click '→ 935 → §935'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 654 → §654'
+    17. From §654: click '→ 742 → §742'
+    18. From §742: click '→ 1074 → §1074'
+    19. From §1074: click '→ 766 → §766'
+    20. From §766: click '→ 718 → §718'
+    21. From §718: click '→ 285 → §285'
+    22. From §285: click '→ 782 → §782'
+    23. From §782: click '→ 1196 → §1196'
+    24. From §1196: click '→ 871 → §871'
+    25. From §871: click '→ 925 → §925'
+    26. From §925: click '→ 935 → §935'
 ```
-  (23 clicks total, graph: full)
+  (26 clicks total, graph: full)
 
 ---
 
@@ -4598,7 +4672,7 @@ Conventions:
 
 **Commit:** `group_17_spell_hooks`
 
-**What to check:** §308 FORCE cast → §1175 combat: clicking the choice now consumes FORCE charge. Combat at §1175 begins with +2 СИЛА УДАРА per canonical effect.
+**What to check:** The Force charge is spent on §208 → §308 (the cast). §308 → §1175 carries the +2 into the fight without a second charge (a combat_mod bridge); the fight at §1175 starts with +2 СИЛА УДАРА.
 
 **Path:**
 
@@ -4619,7 +4693,7 @@ Conventions:
     13. From §345: click '→ 208 → §208'
     14. From §208: click '→ 308 → §308'
 ```
-  (14 clicks total, graph: basic)
+  (14 clicks total, graph: full)
 
 ---
 
@@ -4643,13 +4717,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -4657,7 +4731,7 @@ Conventions:
     20. From §291: click '→ 7 → §7'
     21. From §7: click '→ 596 → §596'
 ```
-  (21 clicks total, graph: basic)
+  (21 clicks total, graph: full)
 
 ---
 
@@ -4678,13 +4752,17 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 951 → §951'
-    10. From §951: click '→ 698 → §698'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 1145 → §1145'
+    13. From §1145: click '→ 951 → §951'
+    14. From §951: click '→ 698 → §698'
 ```
-  (10 clicks total, graph: basic)
+  (14 clicks total, graph: full)
 
 ---
 
@@ -4708,20 +4786,20 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
     19. From §508: click '→ 155 → §155'
     20. From §155: click '→ 415 → §415'
 ```
-  (20 clicks total, graph: basic)
+  (20 clicks total, graph: full)
 
 ---
 
@@ -4745,20 +4823,20 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
     19. From §508: click '→ 155 → §155'
     20. From §155: click '→ 197 → §197'
 ```
-  (20 clicks total, graph: basic)
+  (20 clicks total, graph: full)
 
 ---
 
@@ -4811,13 +4889,13 @@ Conventions:
      6. From §216: click '→ 423 → §423'
      7. From §423: click '→ 83 → §83'
      8. From §83: click '→ 408 → §408'
-     9. From §408: click '→ 31 → §31'
-    10. From §31: click '→ 53 → §53'
-    11. From §53: click '→ 355 → §355'
-    12. From §355: click '→ 973 → §973'
-    13. From §973: click '→ 194 → §194'
-    14. From §194: click '→ 6 → §6'
-    15. From §6: click '→ 164 → §164'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
     16. From §164: click '→ 1203 → §1203'
     17. From §1203: click '→ 253 → §253'
     18. From §253: click '→ 508 → §508'
@@ -4828,7 +4906,7 @@ Conventions:
     23. From §57: click '→ 641 → §641'
     24. From §641: click '→ 717 → §717'
 ```
-  (24 clicks total, graph: basic)
+  (24 clicks total, graph: full)
 
 ---
 
@@ -4873,7 +4951,7 @@ Conventions:
 
 **Commit:** `group_19_combat_modal_spells`
 
-**What to check:** §950 arena goblin combat: combat_spells_allowed=['FORCE'] means only Force button visible, WEAKNESS and COPY hidden. HEALING engine HUD button still works between combats. Per canon: 'можете использовать заклятие Силы и Исцеления.'
+**What to check:** §950 arena goblin combat: combat_spells_allowed=['FORCE','HEALING'] - the Force button and the Healing button (+8 STAMINA) are shown, Weakness and Copy are hidden. Per canon: 'можете использовать заклятие Силы и Исцеления'. Both buttons follow a language switch mid-fight.
 
 **Path:**
 
@@ -4884,24 +4962,27 @@ Conventions:
      3. From §517: click '→ 212 → §212'
      4. From §212: click '→ 255 → §255'
      5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 371 → §371'
-     7. From §371: click '→ 76 → §76'
-     8. From §76: click '→ 1145 → §1145'
-     9. From §1145: click '→ 885 → §885'
-    10. From §885: click '→ 590 → §590'
-    11. From §590: click '→ 915 → §915'
-    12. From §915: click '→ 833 → §833'
-    13. From §833: click '→ 1177 → §1177'
-    14. From §1177: click '→ 246 → §246'
-    15. From §246: click '→ 730 → §730'
-    16. From §730: click '→ 90 → §90'
-    17. From §90: click '→ 720 → §720'
-    18. From §720: click '→ 781 → §781'
-    19. From §781: click '→ 863 → §863'
-    20. From §863: click '→ 926 → §926'
-    21. From §926: click '→ 950 → §950'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+    13. From §146: click '→ 1054 → §1054'
+    14. From §1054: click '→ 915 → §915'
+    15. From §915: click '→ 833 → §833'
+    16. From §833: click '→ 1177 → §1177'
+    17. From §1177: click '→ 246 → §246'
+    18. From §246: click '→ 730 → §730'
+    19. From §730: click '→ 90 → §90'
+    20. From §90: click '→ 720 → §720'
+    21. From §720: click '→ 781 → §781'
+    22. From §781: click '→ 863 → §863'
+    23. From §863: click '→ 926 → §926'
+    24. From §926: click '→ 950 → §950'
 ```
-  (21 clicks total, graph: full)
+  (24 clicks total, graph: full)
 
 ---
 

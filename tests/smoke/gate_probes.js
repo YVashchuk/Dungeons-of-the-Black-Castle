@@ -74,4 +74,5 @@ const TAG = "(function(){ if(window.__tagged) return; window.__tagged=true; cons
   const md = ['# GATE_PROBES_REPORT.md - live probes of the story-state gates (groups 83/85)', '', '- URL: ' + URL + ' - ' + new Date().toISOString(), '- Method: tester hero via hash entry; the state (flags, items, origin, spell charges) is prepared through S and the paragraph re-rendered; the observation is the rendered UI (visible enabled choice buttons by target, bag text and buttons, death overlay). One screenshot per probe.', '', '| id | verdict | observation |', '|---|---|---|', ...rows.map(r => '| ' + r.id + ' | ' + r.verdict + ' | ' + r.obs.replace(/\|/g, '\\|') + ' |'), '', '## Counts', '', Object.entries(counts).map(([k, v]) => '- ' + k + ': ' + v).join('\n'), ''].join('\n');
   fs.writeFileSync(path.join(OUT, 'GATE_PROBES_REPORT.md'), md, 'utf8');
   console.log('REPORT: ' + path.join(OUT, 'GATE_PROBES_REPORT.md') + ' | ' + JSON.stringify(counts));
+  if (rows.some(r => r.verdict === 'FAIL' || r.verdict === 'UNCLEAR')) process.exitCode = 1; // group_105 QA-01
 })().catch(e => { console.error('PROBES FAILED: ' + e.stack); process.exit(1); });

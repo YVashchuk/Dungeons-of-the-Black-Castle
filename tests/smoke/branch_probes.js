@@ -81,4 +81,5 @@ const view = () => ({ sec: S.section, st: S.stamina, death: !!document.getElemen
   const md = ['# BRANCH_PROBES_REPORT.md - deterministic probes of the dice / deadline branches', '', '- URL: ' + URL + ' - ' + new Date().toISOString(), '- Method: tester hero via hash entry, state prepared through S, d6() replaced by a scripted sequence; real clicks on the fight / door / collect buttons; observations from the rendered UI and the game state.', '', '| id | verdict | observation |', '|---|---|---|', ...rows.map(r => '| ' + r.id + ' | ' + r.verdict + ' | ' + r.obs.replace(/\|/g, '\\|') + ' |'), '', '## Counts', '', Object.entries(counts).map(([k, v]) => '- ' + k + ': ' + v).join('\n'), ''].join('\n');
   fs.writeFileSync(path.join(OUT, 'BRANCH_PROBES_REPORT.md'), md, 'utf8');
   console.log('REPORT: ' + path.join(OUT, 'BRANCH_PROBES_REPORT.md') + ' | ' + JSON.stringify(counts));
+  if (rows.some(r => r.verdict === 'FAIL' || r.verdict === 'UNCLEAR')) process.exitCode = 1; // group_105 QA-01
 })().catch(e => { console.error('PROBES FAILED: ' + e.stack); process.exit(1); });

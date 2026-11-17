@@ -79,6 +79,11 @@ def build_basic_graph(gd: dict) -> dict[int, list[tuple[int, str]]]:
                 continue
             if ch.get('post_combat'):
                 continue
+            # group_105 DOC-04: retired exits are not shown; spell, gold, origin and item-set gates are conditional too.
+            if ch.get('retired') or ch.get('spell') or ch.get('spell_any') or ch.get('spell_gate') or ch.get('inventory_all') or ch.get('only_after_unlucky') or ch.get('purchase') or ch.get('pickup_batch'):
+                continue
+            if ch.get('gold_condition') is not None or ch.get('from_section') is not None:
+                continue
             target = ch.get('target')
             if target is None:
                 continue
@@ -100,6 +105,8 @@ def build_full_graph(gd: dict) -> dict[int, list[tuple[int, str, dict]]]:
             continue
         edges: list[tuple[int, str, dict]] = []
         for ch in sec.get('choices', []):
+            if ch.get('retired'):
+                continue
             target = ch.get('target')
             if target is None:
                 continue
@@ -107,7 +114,8 @@ def build_full_graph(gd: dict) -> dict[int, list[tuple[int, str, dict]]]:
             short = label.split('(')[0].strip() or f"→ {target}"
             cond = {k: v for k, v in ch.items() if k in (
                 'luck_type', 'combat_condition', 'inventory_condition',
-                'post_combat'
+                'post_combat', 'spell', 'spell_any', 'spell_gate', 'gold_condition',
+                'from_section', 'inventory_all', 'inventory_missing'
             )}
             edges.append((int(target), short, cond))
         r = sec.get('riddle')
@@ -198,7 +206,7 @@ SCENARIOS = [
     {
         "id": "i18n_ru_fallback_non_russian_lang",
         "target": 1,
-        "what_to_check": "Switch language via the picker (title screen or menu) to ANY non-Russian locale (EN/FR/UK skeletons). Verify the WHOLE game still renders in Russian via the active->RU fallback: title chrome, sidebar labels, buttons, paragraph prose, choice labels, combat/HUD, modals; NO raw key names (latin snake_case) anywhere; document.title stays set; switching back to RU repaints live. For Agent Mode: also spot-check one combat and the inventory modal while a non-RU locale is active.",
+        "what_to_check": "Switch the language via the picker (title screen or menu) to EN, FR or UK. All four locales are complete: paragraph prose, choice labels, the combat modal (enemy cards, captions, round, spell and healing buttons), luck checks, the bag and the map follow the switch live; NO raw key names (latin snake_case) anywhere; document.title stays set; switching back to RU repaints live. Log and journal lines already written keep their language. The pick-up dialog covers the menu, so the language cannot change while it is open.",
         "commit": "group_72",
     },
     # ── Illustrations ────────────────────────────────────────────────────
@@ -280,7 +288,7 @@ SCENARIOS = [
         "id": "gold_key_§1085_WITH_key_via_§440",
         "target": 1085,
         "must_visit": [440],
-        "what_to_check": "After visiting §440 (which grants 'Золотой ключ' via auto_items), §1085 shows BOTH buttons. Choose the gold-key option to confirm it leads to §1115.",
+        "what_to_check": "Win the dragon fight at §440: the 'Золотой ключ' is offered after the victory (post_combat_items, never on entry). Take it; §1085 then shows BOTH buttons. Choose the gold-key option to confirm it leads to §1115.",
         "commit": "9b2f60b",
     },
     {
@@ -347,7 +355,7 @@ SCENARIOS = [
     {
         "id": "gold_key_acq_§1172",
         "target": 1172,
-        "what_to_check": "On entering §1172 (alternate dragon-route victory) the player gains 'Золотой ключ'. Inventory should show it after.",
+        "what_to_check": "§1172 (the second dragon head): before «Вступить в бой» nothing is offered; after the victory the 'Золотой ключ' is offered (post_combat_items). The bag shows it after taking.",
         "commit": "cce1a1f",
     },
 
@@ -428,7 +436,7 @@ SCENARIOS = [
     {
         "id": "shop_§340_food_purchase",
         "target": 340,
-        "what_to_check": "On entering §340 the peasant shop renders 9 purchase buttons (3 food + 6 items) above 3 navigation buttons. Each purchase shows a gold-coin icon and a cost. Click 'Купить ананас' — 2 gold deducted, stamina +3, button stays available (food is consumable, unlimited buys until gold runs out).",
+        "what_to_check": "On entering §340 the peasant shop renders 12 purchase buttons (pineapple, banana and lemon - each to eat now or to take along - plus 6 goods) above 3 navigation buttons. Each purchase shows a gold-coin icon and a cost. Click 'Купить ананас' — 2 gold deducted, stamina +3. Goods turn into '✓ …' after one purchase.",
         "commit": "group_14",
     },
     {
@@ -501,7 +509,7 @@ SCENARIOS = [
     {
         "id": "fish_help_acq_sec13",
         "target": 13,
-        "what_to_check": "On entering sec.13 the only choice 'Теперь обратите внимание на местность (639)' should grant 'Помощь рыбки' via the acquires field (group_15 mechanism reused). Click it: notification 'Помощь рыбки' appears, inventory shows the token. Note: sec.195 (put fish in bag) is the alternative acquisition path and must NOT grant the help token.",
+        "what_to_check": "On entering sec.13 the only choice 'Теперь обратите внимание на местность (639)' grants the knowledge 'Помощь рыбки' (acquires). Knowledge is learned silently - no notification - and shows in the bag without a drop button. Note: sec.195 (put fish in bag) is the alternative acquisition path and must NOT grant the help token.",
         "commit": "group_6_fish_help",
     },
     {
@@ -544,7 +552,7 @@ SCENARIOS = [
     {
         "id": "candle_lamp_acq_sec929",
         "target": 929,
-        "what_to_check": "On entering sec.929 (buried chest), gold +10 already applies via auto_items. After click of the single nav choice to sec.167, the new acquires field should also deposit 'Свеча' into S.inventory. Open inventory after to confirm both gold delta and the new token.",
+        "what_to_check": "On entering sec.929 (buried chest) gold +10 applies and 'Свеча' is offered in the pick-up dialog on entry. Leaving to sec.167 without taking it does not grant it later.",
         "commit": "group_6_candle_lamp",
     },
     {
@@ -577,14 +585,14 @@ SCENARIOS = [
     {
         "id": "figured_key_sec804_NO_key",
         "target": 804,
-        "what_to_check": "Without 'Фигурный ключ' in inventory, sec.804 (locked hatch, item-offer prompt) should show THREE buttons: медный ключик (1064), кусок металла (1184), and the no-key exit (590). The 'Фигурный ключ (895)' button must be HIDDEN — this was a pre-fix regression where the figured-key button appeared without the key and led the player to a misleading dead-narrative.",
+        "what_to_check": "With an empty bag sec.804 (locked hatch, item-offer prompt) shows only the exit (590): each special exit checks its own item - медный ключик (1064), кусок металла (1184), фигурный ключ (895).",
         "commit": "group_6_figured_key",
     },
     {
         "id": "figured_key_sec804_WITH_key",
         "target": 804,
         "must_visit": [340],
-        "what_to_check": "After buying 'Фигурный ключ' at sec.340 (2 gold), sec.804 should show FOUR buttons including the new 'Фигурный ключ (895)' option. Click it: routes to sec.895 size-fail narrative, then sec.590 exit. This is the third figured-key consumer wired (after sec.774 / sec.1208 in earlier groups).",
+        "what_to_check": "After buying 'Фигурный ключ' at sec.340 (2 gold), sec.804 shows 'Фигурный ключ (895)' next to the exit (590); the other two special exits need their own items. Click it: routes to sec.895 size-fail narrative, then sec.590 exit.",
         "commit": "group_6_figured_key",
     },
     # ── Group 6: castle_key (item 5 of 13) — +40 consumer doors via inventory_condition ─
@@ -651,7 +659,7 @@ SCENARIOS = [
     {
         "id": "bear_key_sec804_NO_key",
         "target": 804,
-        "what_to_check": "Without 'Медный ключик' in inventory, sec.804 shows THREE buttons (кусок металла sec.1184, the figured-key option ONLY if player owns it, and the exit-to-sec.590). The fail-narrative 'Может быть, есть медный ключик (1064)' must be HIDDEN — regression fix parallel to the figured-key sec.895 fix.",
+        "what_to_check": "Without 'Медный ключик' sec.804 hides 'Может быть, есть медный ключик (1064)'. The other special exits check their own items, so with an empty bag only the exit (590) remains.",
         "commit": "group_6_bear_key",
     },
     {
@@ -833,7 +841,7 @@ SCENARIOS = [
         "id": "throne_knowledge_sec741_WITH_knowledge",
         "target": 741,
         "must_visit": [688],
-        "what_to_check": "After visiting sec.688, sec.741 should show THREE buttons including the gated 'Применить знание о троне (1141)'. Click → sec.1141 canonical narrative ('Вы помните, как открывался потайной ящичек в троне, стоящем в столовой… теперь в секретном ящичке не стрела, а карта-план этажа'). sec.1141 then routes to luck check (sec.974 lucky / sec.1118 unlucky).",
+        "what_to_check": "After visiting sec.688, sec.741 shows THREE buttons including the gated 'Применить знание о троне (1141)'. Click → sec.1141 ('Вы помните, как открывался потайной ящичек в троне…'). sec.1141 is a luck check (lucky → sec.974, unlucky → sec.1118) with the canon refusal 'Не проверять удачу' → sec.1118 without a roll and without spending Luck.",
         "commit": "group_6_white_arrow_navigation",
     },
     # ── Post-audit (Gemini 3.1 Pro): consume_on_use verification ─
@@ -898,7 +906,7 @@ SCENARIOS = [
     {
         "id": "gold_ring_acq_sec1050",
         "target": 1050,
-        "what_to_check": "After defeating Тролль at §1050, auto_items grants 'Золотое кольцо' (clean name, no longer 'Из его кармана…' fragment) plus +1 LUCK. Inventory shows the clean ring name; HUD shows the LUCK increment. Single nav choice → §383 unchanged.",
+        "what_to_check": "At §1050 nothing is offered before the fight and Luck does not change. After defeating the Troll the 'Золотое кольцо' is offered and +1 LUCK applies (post_combat_items). Single nav choice → §383.",
         "commit": "group_6_post_audit_sibling_gold_ring",
     },
     {
@@ -937,7 +945,7 @@ SCENARIOS = [
     {
         "id": "riddle_anti_cheat_data_inspection",
         "target": 1131,
-        "what_to_check": "Open browser devtools → inspect game_structure.js. sec.1131 should show riddle config with modifier:916 and valid_targets:[992]; sec.992 should show modifier:825 and valid_targets:[932]. NO answer strings ('кладбище', 'смерть') anywhere in game_structure.js or game_logic.js. Confirms anti-cheat-by-design — math sum is one-way; cannot recover answer from data.",
+        "what_to_check": "Open browser devtools → inspect game_structure.js. sec.1131 should show riddle config with modifier:916 and valid_targets:[992]; sec.992 should show modifier:825 and valid_targets:[932]. The first answer never appears in game_structure.js or game_logic.js, comments included; the second occurs only inside the canon item name «Смерть Орков», which reveals nothing. Confirms anti-cheat-by-design — math sum is one-way; cannot recover answer from data.",
         "commit": "group_18_letter_riddle",
     },
     {
@@ -1005,7 +1013,7 @@ SCENARIOS = [
     {
         "id": "group17_sec308_FORCE_combat_transition",
         "target": 308,
-        "what_to_check": "§308 FORCE cast → §1175 combat: clicking the choice now consumes FORCE charge. Combat at §1175 begins with +2 СИЛА УДАРА per canonical effect.",
+        "what_to_check": "The Force charge is spent on §208 → §308 (the cast). §308 → §1175 carries the +2 into the fight without a second charge (a combat_mod bridge); the fight at §1175 starts with +2 СИЛА УДАРА.",
         "commit": "group_17_spell_hooks",
     },
     {
@@ -1054,7 +1062,7 @@ SCENARIOS = [
     {
         "id": "group19_arena_only_force_sec950",
         "target": 950,
-        "what_to_check": "§950 arena goblin combat: combat_spells_allowed=['FORCE'] means only Force button visible, WEAKNESS and COPY hidden. HEALING engine HUD button still works between combats. Per canon: 'можете использовать заклятие Силы и Исцеления.'",
+        "what_to_check": "§950 arena goblin combat: combat_spells_allowed=['FORCE','HEALING'] - the Force button and the Healing button (+8 STAMINA) are shown, Weakness and Copy are hidden. Per canon: 'можете использовать заклятие Силы и Исцеления'. Both buttons follow a language switch mid-fight.",
         "commit": "group_19_combat_modal_spells",
     },
 

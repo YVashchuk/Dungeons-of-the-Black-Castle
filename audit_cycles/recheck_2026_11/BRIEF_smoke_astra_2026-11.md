@@ -4,11 +4,11 @@
 
 **Archive:** the repository ZIP of the commit under test is attached for reference (root folder name carries the hash; `dist/audio/` was stripped before packing — on the live site it is present). Extract read-only.
 
-**What changed.** In November 2026 a fidelity review by Gemini 4 Argon compared all 1,221 Russian paragraphs with the game data; 40 findings were repaired (registry `assets/text_corrections.json`, group `group_100_2026_11_02_argon_fidelity`; the review itself is archived in `audit_cycles/recheck_2026_11/argon/`). Every repair has a live check: rows **C32–C47** of `MANUAL_SMOKE_CHECKS.md`; the engine review that followed (group `group_101_2026_11_02_argon_engine`) adds rows **C48–C52**. The maintainer's deterministic probes already pass (`tests/smoke/fidelity_probes.js`, 51/51); this run is the reader's view: does the screen show what the text promises.
+**What changed.** In November 2026 a fidelity review by Gemini 4 Argon compared all 1,221 Russian paragraphs with the game data; 40 findings were repaired (registry `assets/text_corrections.json`, group `group_100_2026_11_02_argon_fidelity`; the review itself is archived in `audit_cycles/recheck_2026_11/argon/`). Every repair has a live check: rows **C32–C47** of `MANUAL_SMOKE_CHECKS.md`; the engine review that followed (group `group_101_2026_11_02_argon_engine`) adds rows **C48–C52**; the audit of 2026-11-17 (group `group_105_2026_11_17_astra62_audit`) adds rows **C53–C57**. The maintainer's deterministic probes already pass (`tests/smoke/fidelity_probes.js`, 75/75); this run is the reader's view: does the screen show what the text promises.
 
 ## How to run
 
-- Read `MANUAL_SMOKE_CHECKS.md` rows C32–C52 (Russian: «Вход» = where to start, «Шаги» = what to click, «Ожидаемо» = what must happen) and `SMOKE_BRIEF_chatgpt.md` sections 1–3 (interface glossary).
+- Read `MANUAL_SMOKE_CHECKS.md` rows C32–C57 (Russian: «Вход» = where to start, «Шаги» = what to click, «Ожидаемо» = what must happen) and `SMOKE_BRIEF_chatgpt.md` sections 1–3 (interface glossary).
 - **Create the hero once from the title screen** with these spells: Левитация 2, Исцеление 2, Огонь 2, Сила 2, Слабость 2, Копия 0 (for C47 the hero must have Levitation and no Copy). Then use `#N` to jump (typing a new `#N` in the address bar of the open tab reloads the page onto that paragraph by itself); the save persists between jumps, so an item taken at one paragraph is still in the bag at another. Start a new game only where a row says «новая игра».
 - Work block by block in the order below. After each block write its result into the report draft and print a one-line progress note. If the browser connection dies, do not retry: deliver the partial report and name the remaining blocks.
 - About 15 browser actions per block; one screenshot per finding plus one per block.
@@ -26,6 +26,7 @@
 | E | C40, C41, C46 | gates: the spy's gifts, food for the fugitives, the helmet, the liver, the shiny metal |
 | F | C42, C43, C44, C45 | routes and items: the river plaque, the old man's secret and the hidden door, the green gas and the silver vessel, trophies after fights |
 | G | C48, C49, C50, C52 | engine fixes of group_101: Escape in the pick-up dialog, a language switch in the middle of a fight and of a luck check, a typed item name with markup, export and import of a save (C52: BLOCKED if you cannot upload a file; C51 needs sound — N/A) |
+| H | C53, C54, C55, C56, C57 | findings of the 2026-11-17 audit (group_105): dead ends end the adventure, exits that need a spell or an item, the optional luck check at §1141, rewards only after the win, the toll at §686, the death text after a failed roll, the healing button after a language switch |
 
 ## Continuation runs
 

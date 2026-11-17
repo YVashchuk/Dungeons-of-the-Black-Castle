@@ -729,6 +729,7 @@ function relabelCombatUi(){
   lab('btn-weakness-spell',t('zaklyatie_slabosti')+getSpellRemaining('WEAKNESS')+']');
   lab('btn-larva',t('razlomit_lichinku')+((S&&S.inventory)?S.inventory.filter(it=>canonItem(it)==='spider_larva').length:0)+']');
   lab('btn-crossbow',t('ui_btn_crossbow')+' ['+arrowsAvailable()+']');
+  lab('btn-heal-spell',t('zaklyatie_isceleniya_8')+getSpellRemaining('HEALING')+']'); // group_105 GAME-08: the arena's healing button (sec.950) follows the switch too
   ['btn-summon-ally','btn-summon-ally2'].forEach(id=>{ const b=document.getElementById(id); const k=b&&b.dataset.ally; if(b&&k&&b.style.display!=='none'&&COMBAT_ALLIES[k]) b.textContent=COMBAT_ALLIES[k].icon+t('pozvat')+allyText(k).name; });
   // group_103 AS-04 (ASTRA-02): what is on screen follows too. E-004 renamed the enemies in combatState only; the live run of
   // 2026-11-03 still saw the old names, stat captions and round button. Cards (name, captions, damage note), the round button
@@ -831,6 +832,8 @@ function t(k){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, 
 function enemyName(k){ var A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null, F=(typeof LOCALE_RU!=='undefined')?LOCALE_RU:null; if(A&&A.enemies&&A.enemies[k]!==undefined)return A.enemies[k]; if(F&&F.enemies&&F.enemies[k]!==undefined)return F.enemies[k]; return k; }
 
 // ── Game Rendering ──
+// group_105 GAME-04: what the choice gates read - gold, the bag, spells; renderGame compares it before and after the entry effects.
+function gateStateKey(){ return S?[S.gold,JSON.stringify(S.inventory),JSON.stringify(S.spells)].join('|'):''; }
 function renderGame(opts){
   if(!S)return;updateHUD();
   const sec=locSec(S.section);
@@ -865,6 +868,7 @@ function renderGame(opts){
   // Riddle mechanic dispatch: if paragraph has a riddle field, render the
   // text-input widget instead of standard choice buttons. Per group_18 design.
   if(sec.riddle){renderRiddle(sec);}else if(sec.dice_roll){renderDiceRoll(sec);}else if(sec.dice_check){renderDiceCheck(sec);}else if(sec.dice_loot){renderDiceLoot(sec);}else if(sec.stake_picker){renderStakePicker(sec);}else{renderChoices(sec);}
+  const _gateSnap=gateStateKey(); // group_105 GAME-04: the gate state the choices above were drawn with
   // Track visited
   const firstVisit=!S.visited.includes(S.section);
   if(firstVisit)S.visited.push(S.section);
@@ -959,7 +963,10 @@ function renderGame(opts){
       const learned=offered.filter(v=>typeof v==='string'&&KNOWLEDGE_FLAGS.has(canonItem(v)));
       learned.forEach(f=>{ if(!S.inventory.some(it=>canonItem(it)===canonItem(f))) S.inventory.push(canonItem(f)); }); if(learned.length){ updateHUD(); saveGame(); } // group_87 PL-35
       const newItems=offered.filter(item=>!(typeof item==='string'&&KNOWLEDGE_FLAGS.has(canonItem(item)))&&!S.inventory.some(it=>canonItem(it)===canonItem(item)));
-      if(newItems.length>0){
+      // group_105 GAME-01: a paragraph that has just ended the adventure (fatal_when_stuck - sec.391 offers a whistle) offers nothing:
+      // the offer would open under the death screen and take the keyboard focus away from its button.
+      const endedHere=document.getElementById('end-death').classList.contains('on');
+      if(newItems.length>0&&!endedHere){
         showInventoryModal(newItems, notifications);
       } else if(notifications.length>0){
         updateHUD();saveGame();
@@ -989,9 +996,12 @@ function renderGame(opts){
   // auto_items) because the gambling loop is re-entrant — each round must deduct
   // the stake and pay out again on revisited commit/outcome paragraphs.
   if(!(opts&&opts.repaint)) applyBetting(sec);
+  // group_105 GAME-04: the choices were drawn before this paragraph's own entry effects (auto_items, betting); when those changed
+  // what the gates read - gold, the bag, spells - draw them again: sec.686 throws one coin in, and «4 more» must see what is left.
+  if(!(sec.riddle||sec.dice_roll||sec.dice_check||sec.dice_loot||sec.stake_picker)&&gateStateKey()!==_gateSnap){ try{ renderChoices(sec); }catch(e){} }
   // Check death
   if(S.stamina<=0){
-    showDeathOverlay();
+    if(!document.getElementById('end-death').classList.contains('on')) showDeathOverlay(); // group_105 GAME-01: a dead end that already showed its own text keeps it (sec.698 at one STAMINA)
     return;
   }
   // Check win
@@ -1411,12 +1421,12 @@ function applyChoiceConsume(ch){
 }
 
 // Letter-sum riddle mechanic (group_18, May 2026).
-// Two canonical riddles in the FB2: sec.1131 (cemetery riddle, +916 → sec.992)
-// and sec.992 (spider's column riddle, +825 → sec.932). Player types Russian
+// Two canonical riddles in the FB2: sec.1131 (the first riddle, +916 → sec.992)
+// and sec.992 (the second riddle, +825 → sec.932). Player types Russian
 // answer; engine computes letter-ordinal sum and adds the modifier. Anti-cheat
 // by design — answer string is never stored in code or data. Math sum is
 // one-way; modifier + valid_targets reveal nothing about the answer (76
-// could be "кладбище" or thousands of other 76-summing strings).
+// could be any of thousands of 76-summing strings).
 //
 // Russian alphabet: А=1, Б=2 ... Ё=7 ... Я=33. The "*" prefix below makes
 // indexOf return the correct 1-based position for letters.
@@ -1838,6 +1848,13 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
   if(ch.combat_mod){
     btn.innerHTML=ch.label;
     btn.onclick=()=>{if(S)S.pending_combat_buff={mod:ch.combat_mod,section:ch.target};applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+    return btn;
+  }
+  // group_105: spell_gate - an exit into a paragraph whose every way on needs one of these spells (sec.398 the trick, sec.889 the
+  // escape spell); it spends nothing itself, but without a charge of any of them it is drawn disabled like a spell exit.
+  if(Array.isArray(ch.spell_gate)&&ch.spell_gate.length>0&&ch.spell_gate.reduce((n,id)=>n+getSpellRemaining(id),0)<=0){
+    btn.textContent=ch.label; btn.style.opacity='.35';btn.style.cursor='not-allowed';btn.style.borderStyle='dashed';
+    btn.title=t('zaklyatie_nedostupno');btn.setAttribute('aria-disabled','true');btn.onclick=(e)=>{e.preventDefault();};
     return btn;
   }
   const spellId=getSpellId(ch);
@@ -2437,6 +2454,9 @@ function renderStakePicker(sec){
   });
 }
 
+// group_105 GAME-03: the canon's victory rewards and costs that are not items (sec.486 one gold and -1 Luck, sec.1050 +1 Luck)
+// land after the win, once per paragraph (S.postCombatDone), and are shown with the trophy offer.
+function postCombatStats(pci){ const pn=[]; if(!pci||!S) return pn; if(pci.gold>0){ S.gold=(S.gold||0)+pci.gold; pn.push('+ '+pci.gold+t('zolotyh')); logEvent('gain','+ '+pci.gold+t('zolotyh'),t('vsego')+S.gold); } if(pci.luck_add>0){ const lb=S.luck; S.luck=Math.min(S.luckMax,S.luck+pci.luck_add); const inc=S.luck-lb; if(inc>0) pn.push('+ '+inc+t('udachi')); } if(pci.luck_sub>0){ S.luck=Math.max(0,S.luck-pci.luck_sub); pn.push('− '+pci.luck_sub+t('udachi')); } if(pn.length){ updateHUD(); saveGame(); } return pn; }
 function renderChoices(sec){
   const list=document.getElementById('c-list');list.innerHTML='';
   // group_81 B-07: a resolved luck roll is persisted (S.luckChecks) so an F5 before
@@ -2464,7 +2484,7 @@ function renderChoices(sec){
 
   if(combatWon){
     // group_87 PL-20: trophies granted after the victory, once per paragraph
-    if(sec.post_combat_items){ S.postCombatDone=S.postCombatDone||{}; if(!S.postCombatDone[S.section]){ S.postCombatDone[S.section]=true; saveGame(); const pci=sec.post_combat_items; const offered=(pci.items||[]).map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v); const newItems=offered.filter(item=>!S.inventory.some(it=>canonItem(it)===canonItem(item))); if(newItems.length) showInventoryModal(newItems,[]); } }
+    if(sec.post_combat_items){ S.postCombatDone=S.postCombatDone||{}; if(!S.postCombatDone[S.section]){ S.postCombatDone[S.section]=true; saveGame(); const pci=sec.post_combat_items; const offered=(pci.items||[]).map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v); const newItems=offered.filter(item=>!S.inventory.some(it=>canonItem(it)===canonItem(item))); const pn=postCombatStats(pci); /* group_105 GAME-03 */ if(newItems.length) showInventoryModal(newItems,pn); else if(pn.length){ playSound('item'); showItemNotification(pn); } } }
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
     sec.choices.forEach((ch,idx)=>{
       // group_87 PL-43: spell exits survive the victory (their charges gate them); PL-52: a condition exit after a full win reads «Продолжить».
@@ -3390,7 +3410,7 @@ function doLuckCheck(sec){
         const btn=document.createElement('button');btn.className='btn btn-s';
         btn.style.cssText='margin:8px;font-size:18px;padding:12px 24px;';
         btn.textContent=t('konec_priklyucheniya');
-        btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');showDeathOverlay();};
+        btn.onclick=()=>{document.getElementById('modal-luck').classList.remove('on');showDeathOverlay({sec:live||sec,secKey:String(S.section)});}; /* group_105 GAME-06: the same death screen as after a reload - the paragraph's own text */
         ch.appendChild(btn);
       } else {
         // No tagged luck choices — close modal and show in main view

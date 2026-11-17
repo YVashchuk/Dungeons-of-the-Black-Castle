@@ -209,7 +209,8 @@
     "v2.201 -> v2.202": "November 2026 - group_101 E-004 completed: the prompt of an open luck check follows a language switch (window._luckInfoRender); the post-roll panel and scripted custom prompts recorded as a deliberate rejection (EN-04r); probe engine-luck-prompt (36); smoke C49 extended, C52 export / import; live-run brief block G updated. GAME_RULES.md label 2.201 -> 2.202 (R-03 guard).",
     "v2.202 -> v2.203": "November 2026 - group_102: the Astra live run of 2026-11-02 adjudicated (12 PASS, 0 game defects, 7 rows blocked by a transport disconnect): C38 checklist expectation corrected (AS-01), #N changes in an open tab now navigate like a fresh link (AS-02, hashchange -> reload), the blocked rows covered by deterministic probes (AS-03, fidelity probes 36 -> 43). p1_6d 105 -> 106. GAME_RULES.md hash line + label 2.202 -> 2.203 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.203 -> v2.204": "November 2026 - group_103: the Astra continuation run of 2026-11-03 adjudicated (7 rows: 5 PASS, 2 FAIL): a language switch in an open fight now re-localizes what is on screen - the cards, the round button, the condition button and the scripted §1175 buttons (AS-04, ASTRA-02; the E-004 probe had read combatState only); C52 names both import rejections (AS-05, ASTRA-03); the rows covered by probes after the 2026-11-02 disconnect confirmed live (AS-06). Fidelity probes 43 -> 49; p1_6d 106 -> 107. GAME_RULES.md i18n line + label 2.203 -> 2.204 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.204 -> v2.205": "November 2026 - group_104: the Astra continuation run of 2026-11-03 (part 3, C49) adjudicated: C49 PASS, ASTRA-02 confirmed fixed on screen (AS-08); ASTRA-04 fixed (AS-07): a luck roll made after a language switch is drawn in the active language - the continuation buttons of ordinary checks and the prompt, success and failure texts of the scripted checks (§21, §368, §436, §1175); EN-04r narrowed to a panel already drawn after the roll. Fidelity probes 49 -> 51; p1_6d 107 -> 108. GAME_RULES.md i18n line + label 2.204 -> 2.205 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.204 -> v2.205": "November 2026 - group_104: the Astra continuation run of 2026-11-03 (part 3, C49) adjudicated: C49 PASS, ASTRA-02 confirmed fixed on screen (AS-08); ASTRA-04 fixed (AS-07): a luck roll made after a language switch is drawn in the active language - the continuation buttons of ordinary checks and the prompt, success and failure texts of the scripted checks (§21, §368, §436, §1175); EN-04r narrowed to a panel already drawn after the roll. Fidelity probes 49 -> 51; p1_6d 107 -> 108. GAME_RULES.md i18n line + label 2.204 -> 2.205 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.205 -> v2.206": "November 2026 - group_105: the ChatGPT 6.2 Astra audit of 2026-11-17 adjudicated (16 findings; the agent's browser could not start, it ran the game in a DOM model): dead ends now end the adventure (fatal_when_stuck on 8 paragraphs incl. §614 / §391 from the maintainer's sweep), entries that need the means (spell_gate on §398 / §889, an item gate on §730), the optional luck check at §1141 (new exit, four locales), victory rewards after the win (post_combat_items with gold / Luck), choices redrawn after entry effects (§686), the death text after a failed roll, the riddle comment, the arena healing button; GAME-05 rejected (the pick-up dialog covers the menu - probe); probe scripts exit non-zero on failure, the ONLY row loss and the E007 assertion fixed; checklist B1 / B5 / C9 / C37 and new rows C53-C57; SMOKE_TEST_PATHS regenerated. Fidelity probes 51 -> 75; p1_6d 108 -> 114. GAME_RULES.md + label 2.205 -> 2.206 (R-03 guard). Dist rebuilt; battery ALL GREEN."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -487,6 +488,148 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_105_2026_11_17_astra62_audit": {
+      "comment": "ChatGPT 6.2 Astra full smoke audit of main at aa4210e (registry v2.205), 2026-11-17. The agent's browser could not start (sandbox), so it executed the built HTML and the game handlers in Node with LinkeDOM: battery 739/739 and a byte-identical build reproduced, a fresh hero reached the victory at §1220 with the game's own dice (76 paragraphs, 156 clicks), all 74 rows of MANUAL_SMOKE_CHECKS.md and all 127 scenarios of SMOKE_TEST_PATHS.md assessed. 16 findings: 8 game (GAME-01..08), 3 test-suite (QA-01..03), 5 documentation (DOC-01..05). Every one re-verified against the tree; the maintainer's sweep of the GAME-01 class found five more paragraphs (§350 and §1066 entered without a usable spell, §90 entered without an offerable item, §391 and §614 with no way on). GAME-05 rejected with evidence, the rest fixed. The agent also asked for a branch with a GitHub Actions workflow to run the browser suites (draft ci-draft/qa-smoke.yml): not needed for adjudication - the maintainer runs every browser suite in real Chrome - and left to the author (HANDOFF open item 11). Evidence: _handoff/smoke_2026_11_17 (kept out of git).",
+      "source": "chatgpt_6_2_astra_audit_2026_11_17",
+      "verified": "2026-11-17",
+      "items": [
+        {
+          "id": "AS62-01_dead_ends_end_the_adventure",
+          "finding": "GAME-01",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§93, §329, §521, §698, §935 (and the unreachable §1133): without the needed spell the only exit is a disabled button and the death the canon describes never comes - the screen freezes (shown on the last Swimming spent on §944 → §698).",
+          "note": "Confirmed: the dead-end rule of renderGame counts only choices hidden by item and gold gates; a spell exit without a charge is drawn disabled (aria-disabled), so the rule never fires, and fatal_when_stuck existed only on §835. A sweep of the whole graph for paragraphs whose every exit can be unusable found two more with no way on: §614 (the canon: stranded on the fruit island) and §391 (no road or bridge across the river: Swimming, Levitation or the diving suit). §350 and §1066 have the same shape but are now entered only through an exit that needs one of their spells (AS62-02).",
+          "resolution": "DONE. fatal_when_stuck on §93, §329, §521, §698, §935, §1133, §614 and §391: with no usable exit the adventure ends with the paragraph's own text («† Гибель»). §391 is a judgment call - the book gives no other way across; the author may prefer a different handling (HANDOFF open item 10). Such an end offers nothing on entry (§391 finds a whistle: the offer would open under the death screen and take the keyboard focus) and a STAMINA loss on entry that empties the hero no longer replaces its text with the generic line (§698 at one STAMINA). 6d guard sweeps the graph (every paragraph whose exits are all gated and include a spell exit carries the flag or is entered only through a matching spell_gate); probes dead-end-*-GAME01 (the eight paragraphs with the death screen on top and no offer, the §944 → §698 route, §698 at one STAMINA, the Levitation control at §93)."
+        },
+        {
+          "id": "AS62-02_entries_need_the_means",
+          "finding": "maintainer sweep (GAME-01 class)",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "§398 → §350 (a trick: Fire, Illusion or Levitation), §889 → §1066 (an escape: Fire or Illusion) and §730 → §90 (offer the fox pelt, the watermelon or the bronze jug) opened paragraphs whose every exit needs a spell or an item, without checking that the hero has any.",
+          "note": "The canon frames the three entries as attempts that presuppose the means («показать фокус с помощью заклятий», «воспользоваться каким-нибудь заклятием», «поискать в мешке что-то вроде пропуска»). Without them §350 and §1066 froze, and §90 fell into the dead-end rule and showed a death the book never describes.",
+          "resolution": "DONE. New choice field spell_gate (one of the listed spells must have a charge; the exit itself spends nothing; without a charge it is drawn disabled like a spell exit) on §398 → §350 (FIRE, ILLUSION, LEVITATION) and §889 → §1066 (FIRE, ILLUSION); §730 → §90 gated by inventory_condition [fox_pelt, watermelon, bronze_jug] (any of). Probes trick-needs-a-spell-398, escape-spell-needs-a-charge-889, pass-needs-an-item-730."
+        },
+        {
+          "id": "AS62-03_optional_luck_check_1141",
+          "finding": "GAME-02",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§1141 says «А теперь можете ПРОВЕРИТЬ СВОЮ УДАЧУ. Если не хотите её проверять, вы автоматически считаетесь неудачливым. Так вот, если вам повезло, то 974, если же нет, то 1118», but both exits were plain buttons: §974 opened without a roll and Luck stayed 6.",
+          "note": "Confirmed: §1141 had has_luck false and untagged choices.",
+          "resolution": "DONE. has_luck on §1141, 974 lucky, 1118 unlucky, and the canon's refusal as a new exit «Не проверять удачу — вы считаетесь неудачливым (1118)» (appended; labels in all four locales; golden 6a), shown only before the roll: it leads to §1118 without a roll and without spending Luck. Probes luck-check-at-1141-GAME02, decline-the-check-1141-GAME02."
+        },
+        {
+          "id": "AS62-04_rewards_after_the_win",
+          "finding": "GAME-03",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "§1050 (gold ring, +1 Luck), §1172 (gold key) and §486 (+1 gold, −1 Luck) gave their victory rewards and costs on entry, before the fight.",
+          "note": "Confirmed: auto_items, applied on the first visit, while the canon ties all three to the victory («Если вы победили…»); post_combat_items (PL-20) carried items only. A sweep of every paragraph with enemies found no other entry rewards (§440, §532, §656, §760 deal damage before the fight, as written).",
+          "resolution": "DONE. The three moved to post_combat_items; the field now also applies gold, luck_add and luck_sub, once per paragraph (postCombatStats), shown with the trophy offer. 6d guard: a paragraph with enemies may carry only pre-fight damage in auto_items; the group_78 G-13 guard now pins the gold and Luck of §486 in post_combat_items. Probes ring-after-the-troll-1050-GAME03, key-after-the-dragon-1172-GAME03, gold-after-the-woodcutters-486-GAME03."
+        },
+        {
+          "id": "AS62-05_choices_drawn_after_entry_effects",
+          "finding": "GAME-04",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "§774 → §686 with 4 gold: §686 throws one coin in (3 left), yet «кинуть ещё 4 золотых (299)» stayed available and §299 opened with 0 gold.",
+          "note": "Confirmed: renderGame draws the choices before it applies the paragraph's first-visit auto_items (and the betting stake), so the 4-gold gate saw the gold before the coin. No other paragraph currently combines an entry effect with a gate that reads it, but the ordering could show any gate a stale state.",
+          "resolution": "DONE. renderGame keeps the gate state (gold, bag, spells) the choices were drawn with and draws them again when the entry effects (auto_items, betting) changed it. Data invariant (6d guard): every navigation choice with gold_cost carries gold_condition not lower than the cost. Probes toll-sees-the-thrown-coin-686-GAME04, toll-with-five-686-GAME04."
+        },
+        {
+          "id": "AS62-06r_pickup_dialog_language",
+          "finding": "GAME-05",
+          "severity": "P3",
+          "status": "REJECTED",
+          "hypothesis": "Switching the language with the pick-up dialog open (§649) translated its heading and «Готово» but kept «FOUND:», the item names and «+ Take» in the old language.",
+          "note": "The run reproduced it by calling the language handler in its DOM model and noted that physical access to the menu over the dialog was unmeasured. Measured in real Chrome (desktop 1440×900 and phone 412×915): the dialog's overlay covers both menu buttons (sidebar «☰ Меню», HUD «☰»), a real click at their centre does not open the menu, and Tab stays inside the dialog (focus trap). The language cannot change while the dialog is open.",
+          "resolution": "REJECTED - unreachable for a reader; rebuilding a critical dialog for a state no input can produce is not worth the risk. Pinned by the probe pickup-dialog-covers-the-menu-GAME05: if a future layout makes the menu reachable over the dialog, it fails and the finding reopens."
+        },
+        {
+          "id": "AS62-07_death_text_after_a_failed_roll",
+          "finding": "GAME-06",
+          "severity": "P3",
+          "status": "DONE",
+          "hypothesis": "§203, §289, §377: after a failed roll, «Конец приключения» showed the generic «Ваше путешествие окончено…», while the same result restored after F5 showed the paragraph's own text.",
+          "note": "Confirmed: the luck dialog called showDeathOverlay() without the paragraph; the restore path passes it.",
+          "resolution": "DONE. The button passes the paragraph (hydrated in the active language) like the restore path. Probe death-text-after-a-failed-roll-203-GAME06."
+        },
+        {
+          "id": "AS62-08_riddle_answer_in_a_comment",
+          "finding": "GAME-07",
+          "severity": "P3",
+          "status": "DONE",
+          "hypothesis": "A comment in the shipped game_logic.js named the first riddle's answer verbatim (and its English description hinted at it), against scenarios №108 / №110.",
+          "note": "Confirmed: the letter-sum comment block. The second riddle's answer occurs in game_logic.js only inside a canon item name in the RU name maps, which reveals nothing.",
+          "resolution": "DONE. The comment neutralised (the first / the second riddle; «any of thousands of 76-summing strings»); 6d guard: neither the word nor the English hint occurs in game_logic.js."
+        },
+        {
+          "id": "AS62-09_healing_button_language",
+          "finding": "GAME-08",
+          "severity": "P3",
+          "status": "DONE",
+          "hypothesis": "§950: after a language switch in the fight the round button changed but «💚 Заклятие Исцеления +8 [2]» kept the old language.",
+          "note": "Confirmed: relabelCombatUi (group_103) did not list btn-heal-spell.",
+          "resolution": "DONE. Relabelled with its charge count. Probe heal-button-follows-language-950-GAME08."
+        },
+        {
+          "id": "AS62-10_probe_exit_codes",
+          "finding": "QA-01",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "A fidelity run with a FAIL exited with code 0; the other browser scripts likewise, and a playthrough that did not reach the victory was invisible to a CI runner.",
+          "note": "Confirmed: every script only printed the counts.",
+          "resolution": "DONE. fidelity, gate, branch and smoke scripts exit 1 on any FAIL / UNCLEAR (smoke also on BLOCKED and anomalies; fidelity also on zero rows, which catches a mistyped ONLY); playthrough exits 0 on VICTORY, 2 when a chunk ends unfinished, 1 otherwise."
+        },
+        {
+          "id": "AS62-11_only_filter_row_loss",
+          "finding": "QA-02",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "With ONLY=crossbow the console showed three PASS but the report two - the ghost row vanished.",
+          "note": "Confirmed: a leftover warm-up call of spells-forgotten-648 followed by an unconditional rows.pop(); under a filter the warm-up row is not created and the pop removed a real one.",
+          "resolution": "DONE. The warm-up and the pop removed (the real probe stays)."
+        },
+        {
+          "id": "AS62-12_e007_requires_settled_playback",
+          "finding": "QA-03",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "engine-pack-rate-and-stop-E007 accepted a rejected play() as success.",
+          "note": "Confirmed in the assertion (outcome !== 'pending'). In the maintainer's Chrome the playback promise settles through Stop.",
+          "resolution": "DONE. The probe now requires 'settled'."
+        },
+        {
+          "id": "AS62-13_checklist_wording",
+          "finding": "DOC-01, DOC-02, DOC-03, C9",
+          "severity": "P3",
+          "status": "DONE",
+          "hypothesis": "B1 (a capped choice area with its own scroll) contradicts C15 and the current single reading flow; B5 asks 44 px of every map button although CA-12 keeps the HUD buttons at 36 px; C37 asks for zero counters in the sidebar, which shows only spells with charges; C9 expects a ✦ on the condition exit after the win.",
+          "note": "All four confirmed against the current layout and registry (C15, CA-12, UI-05, PL-52).",
+          "resolution": "DONE. B1, B5, C9 and C37 rewritten; the checklist header no longer calls SMOKE_TEST_PATHS.md harness-pinned - it is generated by scripts/find_smoke_paths.py. New rows C53-C57 for this group."
+        },
+        {
+          "id": "AS62-14_smoke_paths_regenerated",
+          "finding": "DOC-04",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Six routes of SMOKE_TEST_PATHS.md used §886 → §1044, which no longer exists; two conditional transitions sat in ordinary routes; ten scenario expectations were outdated.",
+          "note": "Confirmed: the generator did not skip retired exits (§886 → §1044 is retired in place) nor spell, gold, origin and item-set gates; the ten expectations predate later groups (complete locales, post-combat trophies, the shop size, silent knowledge, per-item exits at §804, the Force bridge, the arena's Healing).",
+          "resolution": "DONE. scripts/find_smoke_paths.py skips retired and gated exits in the basic graph and annotates every gate in the fallback; the outdated expectations and the ones this group changes (§1050, §1172, §1141, the riddle text) rewritten; SMOKE_TEST_PATHS.md regenerated."
+        },
+        {
+          "id": "AS62-15_fidelity_readme",
+          "finding": "DOC-05",
+          "severity": "P3",
+          "status": "DONE",
+          "hypothesis": "tests/smoke/README.md still said «all 25 probes».",
+          "note": "Confirmed.",
+          "resolution": "DONE. The section describes groups 100-105 without a frozen count and documents the exit codes of every script."
+        }
+      ]
     },
     "group_104_2026_11_03_live_run_part3": {
       "comment": "ChatGPT 6 Astra ULTRA continuation run (part 3) on the published build a0aed07, 2026-11-03 10:32–10:35 EST, desktop Chrome 1363×936: row C49 only, as rewritten after part 2. C49 PASS - the combat modal follows RU → EN → RU on screen (ASTRA-02 confirmed fixed), the ghost and the luck check met their criteria; one new low finding (ASTRA-04). Report, anomalies JSON and 11 screenshots: _handoff/smoke_2026_11_02/part3 (kept out of git).",

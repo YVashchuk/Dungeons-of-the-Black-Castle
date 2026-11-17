@@ -68,6 +68,23 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9aj. group_105: the ChatGPT 6.2 Astra audit of 2026-11-17 - dead ends, entries that need the means, sec.1141, rewards after the win, choices after entry effects
+(function(){
+  const live=s=>(s.choices||[]).filter(c=>!c.retired);
+  const gatedExit=c=>!!(c.spell||c.spell_any||c.inventory_condition||c.inventory_all||c.gold_condition!=null||c.from_section!=null);
+  const special=s=>(s.enemies&&s.enemies.length)||s.has_luck||s.riddle||s.dice_roll||s.dice_check||s.dice_loot||s.stake_picker;
+  const into={}; for(const [k,s] of Object.entries(GD)) for(const c of live(s)) (into[c.target]=into[c.target]||[]).push(c);
+  const bad=Object.entries(GD).filter(([k,s])=>{ const L=live(s); if(!L.length||special(s)||!L.every(gatedExit)||!L.some(c=>c.spell||c.spell_any)) return false; if(s.fatal_when_stuck) return false; const spells=new Set(L.flatMap(c=>c.spell?[c.spell]:(c.spell_any||[]))); const inc=into[Number(k)]||[]; return !(inc.length&&inc.every(c=>Array.isArray(c.spell_gate)&&c.spell_gate.every(id=>spells.has(id)))); }).map(([k])=>k);
+  ck('GAME-01 every paragraph whose exits can all be unusable ends the adventure or is entered only through a matching spell_gate (unprotected: '+(bad.join(',')||'none')+'); such an end offers nothing on entry and keeps its own text at zero STAMINA', bad.length===0&&[93,329,521,698,935,1133,614,391,835].every(n=>GD[String(n)].fatal_when_stuck===true)&&gl.includes("const endedHere=document.getElementById('end-death').classList.contains('on');")&&gl.includes("if(!document.getElementById('end-death').classList.contains('on')) showDeathOverlay(); // group_105 GAME-01"));
+  ck('AS62-02 entries need the means: spell_gate on 398->350 / 889->1066, item gate on 730->90; an empty spell_gate is drawn disabled and spends nothing', JSON.stringify(GD['398'].choices[0].spell_gate)==='["FIRE","ILLUSION","LEVITATION"]'&&JSON.stringify(GD['889'].choices[0].spell_gate)==='["FIRE","ILLUSION"]'&&JSON.stringify(GD['730'].choices[1].inventory_condition)==='["fox_pelt","watermelon","bronze_jug"]'&&gl.includes('if(Array.isArray(ch.spell_gate)&&ch.spell_gate.length>0&&ch.spell_gate.reduce('));
+  ck('GAME-02 sec.1141 is a luck check with the canon refusal before the roll', GD['1141'].has_luck===true&&GD['1141'].choices[0].luck_type==='lucky'&&GD['1141'].choices[0].target===974&&GD['1141'].choices[1].luck_type==='unlucky'&&GD['1141'].choices[1].target===1118&&GD['1141'].choices[2].target===1118&&!GD['1141'].choices[2].luck_type);
+  const combatEntry=Object.entries(GD).filter(([k,s])=>s.enemies&&s.enemies.length&&s.auto_items&&Object.keys(s.auto_items).some(x=>x!=='stamina_sub')).map(([k])=>k);
+  ck('GAME-03 victory rewards come after the win (post_combat_items with gold / Luck at 1050, 1172, 486); combat paragraphs carry only pre-fight damage on entry (others: '+(combatEntry.join(',')||'none')+')', combatEntry.length===0&&JSON.stringify(GD['1050'].post_combat_items)==='{"items":["gold_ring"],"luck_add":1}'&&JSON.stringify(GD['1172'].post_combat_items)==='{"items":["gold_key"]}'&&JSON.stringify(GD['486'].post_combat_items)==='{"gold":1,"luck_sub":1}'&&gl.includes('function postCombatStats(pci){')&&gl.includes('const pn=postCombatStats(pci);'));
+  const costNoGate=[]; for(const [k,s] of Object.entries(GD)) (s.choices||[]).forEach((c,i)=>{ if(c.gold_cost&&!c.purchase&&!(c.gold_condition>=c.gold_cost)) costNoGate.push(k+':'+i); });
+  ck('GAME-04 choices are redrawn after the entry effects; every paid exit is gated by its price (ungated: '+(costNoGate.join(',')||'none')+')', costNoGate.length===0&&gl.includes('const _gateSnap=gateStateKey();')&&gl.includes('gateStateKey()!==_gateSnap'));
+  ck('GAME-06/07/08: the luck death passes the paragraph; no riddle answer or hint in game_logic.js; the arena healing button is relabelled', gl.includes("showDeathOverlay({sec:live||sec,secKey:String(S.section)});")&&!/кладбищ|cemetery/i.test(gl)&&gl.includes("lab('btn-heal-spell',t('zaklyatie_isceleniya_8')+getSpellRemaining('HEALING')+']');"));
+})();
+
 // 9ai. group_104: a luck roll made after a language switch is drawn in the active language (continuation labels; scripted prompt and result texts)
 (function(){
   const dl=gl.slice(gl.indexOf('function doLuckCheck(sec){'), gl.indexOf('function doLuckCheck(sec){')+3000);
@@ -348,8 +365,8 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('V-01/R-02 registry==runtime slug maps + normalization + eat-now', keysOk && namesOk && glSrc.includes("v.food)?{kind:'food',id:v.food,stamina:v.stamina}") && glSrc.includes('function eatFoundItem'));
 })();
 
-// 9h. group_78 G-13: gold and loot
-ck('G-13 shapes exact', JSON.stringify(GD['486'].auto_items)==='{"gold":1,"luck_sub":1}' && JSON.stringify(GD['510'].auto_items)==='{"gold":85}' && JSON.stringify(GD['812'].choices[1])==='{"target":675,"gold_condition":2}' && JSON.stringify(GD['770'].auto_items)==='{"gold":4}' && JSON.stringify(GD['873'].choices[1])==='{"target":922,"gold_condition":1,"gold_cost":1}' && JSON.stringify(GD['922'].auto_items)==='{"stamina_add":2}');
+// 9h. group_78 G-13: gold and loot (group_105 GAME-03: the gold and Luck of sec.486 moved from auto_items to post_combat_items - after the win)
+ck('G-13 shapes exact', JSON.stringify(GD['486'].post_combat_items)==='{"gold":1,"luck_sub":1}' && !GD['486'].auto_items && JSON.stringify(GD['510'].auto_items)==='{"gold":85}' && JSON.stringify(GD['812'].choices[1])==='{"target":675,"gold_condition":2}' && JSON.stringify(GD['770'].auto_items)==='{"gold":4}' && JSON.stringify(GD['873'].choices[1])==='{"target":922,"gold_condition":1,"gold_cost":1}' && JSON.stringify(GD['922'].auto_items)==='{"stamina_add":2}');
 
 // 9g. group_78 G-12: pickups and food
 ck('G-12 shapes exact', JSON.stringify(GD['159'].auto_items)==='{"items":["bronze_whistle","copper_bracelet"],"gold":3}' && JSON.stringify(GD['389'].auto_items)==='{"items":[{"food":"melon","stamina":4}]}' && JSON.stringify(GD['482'].auto_items.items)==='["rose","peacock_feather"]' && GD['582'].choices[0].pickup_batch.length===15 && GD['585'].choices[0].pickup_batch.length===2 && JSON.stringify(GD['724'].choices[0].pickup_batch)==='["rope","gold_arrow"]' && GD['801'].choices[0].pickup_batch.length===2 && GD['1140'].choices[0].pickup_batch.length===3);
