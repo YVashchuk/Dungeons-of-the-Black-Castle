@@ -31,7 +31,7 @@ Conventions:
 
 **Commit:** `group_72`
 
-**What to check:** Switch the language via the picker (title screen or menu) to EN, FR or UK. All four locales are complete: paragraph prose, choice labels, the combat modal (enemy cards, captions, round, spell and healing buttons), luck checks, the bag and the map follow the switch live; NO raw key names (latin snake_case) anywhere; document.title stays set; switching back to RU repaints live. Log and journal lines already written keep their language. The pick-up dialog covers the menu, so the language cannot change while it is open.
+**What to check:** Switch the language via the picker (title screen or menu) to EN, FR or UK. All four locales are complete: paragraph prose, choice labels, the combat window (enemy cards, captions, round, spell and healing buttons), luck checks, the bag and the map are drawn in the active language; NO raw key names (latin snake_case) anywhere; document.title stays set; switching back to RU repaints the page live. Log and journal lines already written keep their language. The combat, luck and pick-up windows are modal - the menu cannot be reached while one is open, so the language is switched between them.
 
 **Path:**
 
@@ -4951,7 +4951,7 @@ Conventions:
 
 **Commit:** `group_19_combat_modal_spells`
 
-**What to check:** §950 arena goblin combat: combat_spells_allowed=['FORCE','HEALING'] - the Force button and the Healing button (+8 STAMINA) are shown, Weakness and Copy are hidden. Per canon: 'можете использовать заклятие Силы и Исцеления'. Both buttons follow a language switch mid-fight.
+**What to check:** §950 arena goblin combat: combat_spells_allowed=['FORCE','HEALING'] - the Force button and the Healing button (+8 STAMINA) are shown, Weakness and Copy are hidden. Per canon: 'можете использовать заклятие Силы и Исцеления'. Entered in English the fight shows «Strike!» and «💚 Healing Spell +8 [N]» (the language is chosen in the menu before the fight - the combat window is modal).
 
 **Path:**
 

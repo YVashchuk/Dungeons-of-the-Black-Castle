@@ -1405,7 +1405,11 @@ function applyChoiceConsume(ch){
   };
   // Count form {item:'Banan', count:4} (group_38): remove N matches (para 12 /
   // para 625 banana sinks). Stops early if fewer than N are present.
-  if(cu&&typeof cu==='object'&&!Array.isArray(cu)&&cu.item){
+  if(cu&&typeof cu==='object'&&!Array.isArray(cu)&&Array.isArray(cu.any)){
+    // group_106 ASTRA-05: one of several equivalent items - the first listed that is held (sec.90 -> 720: a watermelon of
+    // either kind, the sec.300 field watermelon before the sec.389 edible one).
+    for(const name of cu.any){ if(removeOne(name)) break; }
+  } else if(cu&&typeof cu==='object'&&!Array.isArray(cu)&&cu.item){
     for(let k=0;k<(cu.count||1);k++){ if(!removeOne(cu.item)) break; }
   } else {
     const list=Array.isArray(cu)?cu:[cu];

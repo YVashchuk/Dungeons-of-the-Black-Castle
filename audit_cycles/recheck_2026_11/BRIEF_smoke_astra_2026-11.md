@@ -4,7 +4,7 @@
 
 **Archive:** the repository ZIP of the commit under test is attached for reference (root folder name carries the hash; `dist/audio/` was stripped before packing — on the live site it is present). Extract read-only.
 
-**What changed.** In November 2026 a fidelity review by Gemini 4 Argon compared all 1,221 Russian paragraphs with the game data; 40 findings were repaired (registry `assets/text_corrections.json`, group `group_100_2026_11_02_argon_fidelity`; the review itself is archived in `audit_cycles/recheck_2026_11/argon/`). Every repair has a live check: rows **C32–C47** of `MANUAL_SMOKE_CHECKS.md`; the engine review that followed (group `group_101_2026_11_02_argon_engine`) adds rows **C48–C52**; the audit of 2026-11-17 (group `group_105_2026_11_17_astra62_audit`) adds rows **C53–C57**. The maintainer's deterministic probes already pass (`tests/smoke/fidelity_probes.js`, 75/75); this run is the reader's view: does the screen show what the text promises.
+**What changed.** In November 2026 a fidelity review by Gemini 4 Argon compared all 1,221 Russian paragraphs with the game data; 40 findings were repaired (registry `assets/text_corrections.json`, group `group_100_2026_11_02_argon_fidelity`; the review itself is archived in `audit_cycles/recheck_2026_11/argon/`). Every repair has a live check: rows **C32–C47** of `MANUAL_SMOKE_CHECKS.md`; the engine review that followed (group `group_101_2026_11_02_argon_engine`) adds rows **C48–C52**; the audit of 2026-11-17 (group `group_105_2026_11_17_astra62_audit`) adds rows **C53–C57**, and its recheck (group `group_106_2026_11_17_astra62_recheck`) revises C49, C53, C54 and C57. The maintainer's deterministic probes already pass (`tests/smoke/fidelity_probes.js`, 77/77); this run is the reader's view: does the screen show what the text promises.
 
 ## How to run
 
@@ -25,8 +25,8 @@
 | D | C38, C39 | two flasks: sips, springs, the merchant |
 | E | C40, C41, C46 | gates: the spy's gifts, food for the fugitives, the helmet, the liver, the shiny metal |
 | F | C42, C43, C44, C45 | routes and items: the river plaque, the old man's secret and the hidden door, the green gas and the silver vessel, trophies after fights |
-| G | C48, C49, C50, C52 | engine fixes of group_101: Escape in the pick-up dialog, a language switch in the middle of a fight and of a luck check, a typed item name with markup, export and import of a save (C52: BLOCKED if you cannot upload a file; C51 needs sound — N/A) |
-| H | C53, C54, C55, C56, C57 | findings of the 2026-11-17 audit (group_105): dead ends end the adventure, exits that need a spell or an item, the optional luck check at §1141, rewards only after the win, the toll at §686, the death text after a failed roll, the healing button after a language switch |
+| G | C48, C49, C50, C52 | engine fixes of group_101: Escape in the pick-up dialog, the fight and the luck check in each language (enter each language separately - the dialogs are modal, so a switch inside an open one is left to the probes), a typed item name with markup, export and import of a save (C52: BLOCKED if you cannot upload a file; C51 needs sound — N/A) |
+| H | C53, C54, C55, C56, C57 | findings of the 2026-11-17 audit (group_105): dead ends end the adventure, exits that need a spell or an item, the optional luck check at §1141, rewards only after the win, the toll at §686, the death text after a failed roll, the healing button in English; the recheck of the same day (group_106) adds the edible watermelon from §389 to C54 |
 
 ## Continuation runs
 
