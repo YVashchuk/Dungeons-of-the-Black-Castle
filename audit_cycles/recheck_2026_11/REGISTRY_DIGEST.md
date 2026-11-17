@@ -1,6 +1,6 @@
 # REGISTRY_DIGEST — assets/text_corrections.json
 
-- Generated 2026-11-17 from the registry at `v2.206 -> v2.207` (last_updated 2026-11-02).
+- Generated 2026-11-17 from the registry at `v2.207 -> v2.208` (last_updated 2026-11-17).
 - One line per adjudicated item: `[STATUS] id (severity) §paragraphs — claim → resolution`. Statuses: OPEN, DONE, REJECTED, VERIFIED_RESOLVED (a stale claim re-checked and found already fixed). Full texts live in the registry itself.
 
 ## corrections (2 entries; canon-level text and data corrections applied on top of the fb2 source)
@@ -54,6 +54,7 @@
 - [DONE] AS62r-01_either_watermelon_opens_the_pass (P2) §90,300,389,720,730,966 — A watermelon taken at §389 («Арбуз (еда: +4)», the food melon) opened neither §730 → §90 nor §90 → §720, while the §300 field watermelon opened both; a direct entry into §90 with it ended in «† Гибель» (no vis… → DONE. Both gates accept either watermelon (any of [watermelon, melon]); §90 → §720 takes one through a new consume_on_use form {any: [...]} - the first listed item that is held, so the field watermelon goes first and an edible on…
 - [DONE] AS62r-02_checklist_steps_need_live_input (P3) §43,944,950,1221 — C49 and C57 ask to open ☰ Меню and switch the language inside an open fight (§43, §950) and an open luck check (§1221); in desktop Chrome a click on the menu does not reach it and Tab stays inside the dialog. → DONE. C49 and C57 rewritten: each language is entered separately (chosen in the menu before the fight or the check); the switch inside an open window is left to the probes (*-ASTRA02, *-ASTRA04, heal-button-follows-language-950-G…
 - [CONFIRMED] AS62r-03_group105_confirmed_live (INFO) §93,203,391,398,486,698,730,889,950,1050,1141,1172 — The fixes of group_105 needed the reader's view on the published build. → CONFIRMED - group_105 accepted live, except ASTRA-05 (AS62r-01) and the checklist wording (AS62r-02).
+- [CONFIRMED] AS62r-04_group106_confirmed_live (INFO) §43,90,203,300,389,391,398,618,698,720,730,889,944,950 — The fixes of group_106 (ASTRA-05, CHECK-01) needed the reader's view on the published build. → CONFIRMED - ASTRA-05 and CHECK-01 accepted live; the 2026-11-17 audit cycle (group_105-106) is closed. Evidence: _handoff/smoke_2026_11_17/recheck2 (kept out of git).
 
 ## group_105_2026_11_17_astra62_audit — ChatGPT 6.2 Astra full smoke audit of main at aa4210e (registry v2.205), 2026-11-17. The agent's browser could not start (sandbox), so it executed the built HTML and the game handlers in Node with LinkeDOM: battery 739/739 and a byte-identical build reproduce…
 - [DONE] AS62-01_dead_ends_end_the_adventure (P1) §93,329,350,391,521,614,698,835,935,944,1066,1133 — §93, §329, §521, §698, §935 (and the unreachable §1133): without the needed spell the only exit is a disabled button and the death the canon describes never comes - the screen freezes (shown on the last Swimmi… → DONE. fatal_when_stuck on §93, §329, §521, §698, §935, §1133, §614 and §391: with no usable exit the adventure ends with the paragraph's own text («† Гибель»). §391 is a judgment call - the book gives no other way across; the aut…
@@ -580,4 +581,4 @@
 - {"id":"UB-02_sec300_watermelon_vs_sec574_banana_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.300 grants watermelon but sec.574 gates on banana - item id mismatch.","verdict":"rejected","reason":"Two differe…
 - {"id":"UB-03_sec96_sec112_art_rejected","previously_claimed":"Gemini combined run 2026-09-04: sec.96 (single Green Knight) is assigned art30_three_knights and the dialogue sec.112 is assigned combat artwork.","verdict":"rejected"…
 
-END OF DIGEST — 342 items with id and status + 82 legacy entries, registry v2.206 -> v2.207
+END OF DIGEST — 343 items with id and status + 82 legacy entries, registry v2.207 -> v2.208
