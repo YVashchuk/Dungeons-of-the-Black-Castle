@@ -586,7 +586,7 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
     <button type="button" class="speak-btn" id="btn-speak-preface" data-src="preface-text" onclick="bcSpeakToggle(this.dataset.src)" aria-pressed="false" aria-label="Озвучить параграф" data-i18n-aria="ui_btn_speak" style="display:none">🔊</button></div>
 <div class="s-text" style="font-size:21px;line-height:1.8;color:var(--parchment);" id="preface-text"></div>
     <div style="margin-top:24px;text-align:center;">
-      <button class="btn btn-s" onclick="showScr('spells')">← К выбору заклятий</button>
+      <button class="btn btn-s" onclick="showScr('spells')" data-i18n="ui_btn_back_to_spells">← К выбору заклятий</button>
       <button class="btn btn-p" id="btn-start-from-preface" data-i18n="ui_btn_start_preface">Начать игру ⚔</button>
     </div>
   </div>
@@ -753,14 +753,14 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
 <div class="end-overlay" id="end-death" role="dialog" aria-modal="true" aria-labelledby="death-title">
   <div class="end-title death" id="death-title" data-i18n="ui_death_title">† Гибель</div>
   <p class="end-text" id="death-text">Ваше путешествие окончено. Зачарованный лес поглотил ещё одного смельчака…</p>
-  <button class="btn btn-p" onclick="localStorage.removeItem(SAVE_KEY);history.replaceState(null,'',location.pathname);location.reload()" data-i18n="ui_btn_restart">Начать заново</button>
+  <button class="btn btn-p" onclick="restartClean()" data-i18n="ui_btn_restart">Начать заново</button>
 </div>
 
 <!-- WIN -->
 <div class="end-overlay" id="end-win" role="dialog" aria-modal="true" aria-labelledby="win-title">
   <div class="end-title win" id="win-title" data-i18n="ui_win_title">✦ Победа!</div>
   <p class="end-text" data-i18n="ui_win_text">Барлад Дэрт повержен! Принцесса свободна! Слава вам, герой!</p>
-  <button class="btn btn-p" onclick="localStorage.removeItem(SAVE_KEY);history.replaceState(null,'',location.pathname);location.reload()" data-i18n="ui_btn_play_again">Играть снова</button>
+  <button class="btn btn-p" onclick="restartClean()" data-i18n="ui_btn_play_again">Играть снова</button>
 </div>
 
 <!-- EVENT LOG -->
@@ -847,7 +847,7 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
       <div id="voice-openai" style="display:none">
         <label><span data-i18n="ui_voice_key">Ключ API OpenAI</span> <input type="password" id="voice-key" autocomplete="off" spellcheck="false" placeholder="sk-…" onchange="voiceMenuChanged()" aria-label="Ключ API OpenAI" data-i18n-aria="ui_voice_key"></label>
         <div class="voice-hint" data-i18n="ui_voice_key_hint">Ключ хранится только в этом браузере</div>
-        <label><span data-i18n="ui_voice_voice">Голос</span> <select id="voice-openai-voice" onchange="voiceMenuChanged()" aria-label="Голос OpenAI"><option value="onyx">onyx</option><option value="ash">ash</option><option value="echo">echo</option><option value="fable">fable</option><option value="alloy">alloy</option><option value="sage">sage</option><option value="nova">nova</option><option value="shimmer">shimmer</option><option value="coral">coral</option></select></label>
+        <label><span data-i18n="ui_voice_voice">Голос</span> <select id="voice-openai-voice" onchange="voiceMenuChanged()" aria-label="Голос OpenAI" data-i18n-aria="ui_voice_openai_voice"><option value="onyx">onyx</option><option value="ash">ash</option><option value="echo">echo</option><option value="fable">fable</option><option value="alloy">alloy</option><option value="sage">sage</option><option value="nova">nova</option><option value="shimmer">shimmer</option><option value="coral">coral</option></select></label>
         <label><span data-i18n="ui_voice_model">Модель</span> <select id="voice-openai-model" onchange="voiceMenuChanged()" aria-label="Модель" data-i18n-aria="ui_voice_model"><option value="gpt-4o-mini-tts">gpt-4o-mini-tts</option><option value="tts-1">tts-1</option><option value="tts-1-hd">tts-1-hd</option></select></label>
       </div>
       <label id="voice-device"><span data-i18n="ui_voice_voice">Голос</span> <select id="voice-select" onchange="voiceMenuChanged()" aria-label="Голос" data-i18n-aria="ui_voice_voice"></select></label>
@@ -859,7 +859,7 @@ button,.choice-btn,.visual-pill,.combat-enemy,.hud-btn,.inv-eat,.inv-remove{-web
       <span data-i18n="ui_menu_import">📂 Импорт сохранения</span>
       <input type="file" accept=".json" class="sr-only" onchange="importSave(event)">
     </label>
-    <button class="btn btn-d menu-btn" onclick="bcConfirm(t('ui_confirm_new_game'),function(){localStorage.removeItem(SAVE_KEY);history.replaceState(null,'',location.pathname);location.reload();})" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
+    <button class="btn btn-d menu-btn" onclick="bcConfirm(t('ui_confirm_new_game'),function(){restartClean();})" data-i18n="ui_menu_new_game">🗑 Новая игра</button>
     <button class="btn btn-s menu-btn" onclick="closeModal('overlay-menu')" data-i18n="ui_btn_menu_close">← Закрыть</button>
   </div>
 </div>

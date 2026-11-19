@@ -1,6 +1,6 @@
 // fidelity_probes.js - live probes of the text-vs-engine repairs of group_100 (Gemini 4 Argon fidelity sweep, 2026-11-02),
 // the engine repairs of group_101 (engine-*), the findings of the live runs (group_102-104), of the 2026-11-17 audit and its recheck (group_105-106)
-// and of the Gemini 4 Carbon fidelity sweep (group_107, *-C1NNN).
+// of the Gemini 4 Carbon fidelity sweep (group_107, *-C1NNN) and engine audit (group_108, *-C2NNN).
 // Grey-box like branch_probes.js: the tester hero is prepared through S, navigation uses the engine's goTo() (what a choice click does),
 // d6() is scripted where a fight must be won; every verdict is read from the rendered UI or the game state after real button clicks.
 // Usage (server on 8001 from the repo root): node tests/smoke/fidelity_probes.js [url] -> tests/smoke/out/FIDELITY_PROBES_REPORT.md
@@ -155,9 +155,79 @@ const V = () => ({ sec: S.section, inv: S.inventory.map(i => typeof i === 'strin
   await probe('figurine-at-1120-C1008', new Function(hero(['cupboard_seen']) + go(1120)), click(989), v => ({ ok: v.sec === 989, obs: '§1120 the figurine -> §' + v.sec }));
   await probe('no-figurine-ride-at-94-C1008', new Function(hero([]) + go(94)), null, v => ({ ok: !v.targets.includes('989'), obs: '§94 exits ' + v.targets.join(',') }));
   await probe('all-key-and-carpet-302-C1019', new Function(hero(['all_key']) + go(302)), click(342), v => ({ ok: v.sec === 342 && v.pending.includes('flying_carpet'), obs: '§302 the «All» key -> §' + v.sec + ', offer [' + v.pending.join(',') + ']' }));
+  // ---- group_108: the Gemini 4 Carbon engine audit (Track 2) - saved state, the shell, the fights after the win ----
+  const atHash = async (page, n) => { await page.evaluate(k => history.replaceState(null, '', location.pathname + '#' + k), n); await page.reload({ waitUntil: 'load' }); await page.waitForFunction(() => document.getElementById('scr-game')?.classList.contains('on'), null, { timeout: 15000 }); await page.evaluate(TAG); await page.waitForTimeout(500); };
+  const loseRounds = async page => { for (let i = 0; i < 8; i++) { if (await page.evaluate(() => S.stamina <= 0)) break; await page.evaluate(() => document.getElementById('btn-combat-round').click()); await page.waitForTimeout(80); } };
+  const importJson = (page, json) => page.evaluate(j => importSave({ target: { files: [new File([j], 'save.json', { type: 'application/json' })], value: '' } }), json).then(() => page.waitForTimeout(700));
+  await probe('restart-with-blocked-storage-C2001', new Function(hero([]) + go(1)), async page => {
+    await page.evaluate(() => { Storage.prototype.removeItem = function () { throw new DOMException('blocked', 'SecurityError'); }; });
+    const nav = page.waitForNavigation({ timeout: 8000 }).then(() => true).catch(() => false);
+    await page.evaluate(() => { const b = document.querySelector('#end-death .btn-p'); if (b) b.click(); });
+    const reloaded = await nav;
+    await page.goto('about:blank'); await page.goto(URL + '#1', { waitUntil: 'load' }); await page.waitForFunction(() => document.getElementById('scr-game')?.classList.contains('on'), null, { timeout: 15000 });
+    return reloaded;
+  }, (v, x) => ({ ok: x === true, obs: 'browser storage blocked, «Начать заново» on the death screen: the page reloaded ' + x }));
+  await probe('import-forgets-the-won-fight-942-C2002', new Function(hero([]) + winDice + go(942) + " window.__pre=JSON.stringify(S);"), async page => {
+    await fight(page, 30); const won = await page.evaluate(() => !!combatDone[942]);
+    await importJson(page, await page.evaluate(() => window.__pre));
+    return { won, offered: await page.evaluate(() => [...document.querySelectorAll('#c-list button')].some(b => /Вступить в бой/.test(b.textContent))), done: await page.evaluate(() => !!combatDone[942]) };
+  }, (v, x) => ({ ok: x.won && x.offered && !x.done && v.sec === 942, obs: 'won ' + x.won + '; the save from before the fight imported: fight offered ' + x.offered + ', remembered as won ' + x.done }));
+  await probe('import-sanitizes-food-journal-spells-C2003', new Function(hero([]) + go(1)), async page => {
+    const evil = await page.evaluate(() => { const s = JSON.parse(JSON.stringify(S)); s.inventory = [{ kind: 'food', id: 'apple', stamina: '<img src=x onerror="window.__xss=1">' }, { kind: 'food', id: 'pear', stamina: 'bad' }, { foo: 1 }]; s.eventLog = [{ type: 'gain" onclick="window.__xss2=1', para: 1, main: 'x' }]; s.spells = [null, { id: 'FIRE', remaining: 1 }]; return JSON.stringify(s); });
+    await importJson(page, evil); await page.evaluate(() => { try { renderEventLog(); } catch (e) { } }); await page.waitForTimeout(300);
+    return page.evaluate(() => ({ xss: window.__xss === 1, attr: !!document.querySelector('#event-log-list [onclick]'), st: S.inventory.map(i => typeof i.stamina).join(','), n: S.inventory.length, spells: S.spells.length }));
+  }, (v, x) => ({ ok: !x.xss && !x.attr && x.n === 2 && x.st === 'number,number' && x.spells === 1, obs: 'crafted save imported: ' + JSON.stringify(x) }));
+  await probe('hash-entry-forgets-the-origin-146-C2004', new Function(hero([]) + go(1) + " S.cameFrom=1; saveGame();"), async page => {
+    const nav = page.waitForNavigation({ timeout: 8000 }).catch(() => null);
+    await page.evaluate(() => { location.hash = '#146'; }); await nav;
+    await page.waitForFunction(() => document.getElementById('scr-game')?.classList.contains('on') && typeof S !== 'undefined' && S && S.section === 146, null, { timeout: 15000 });
+    await page.evaluate(TAG); await page.evaluate(() => { if (!document.getElementById('end-death').classList.contains('on')) renderGame(); }); await page.waitForTimeout(400);
+  }, v => ({ ok: v.sec === 146 && !v.death && v.targets.length === 2, obs: '#146 typed after §1: exits ' + v.targets.join(',') + ', death ' + v.death }));
+  await probe('eaten-food-closes-the-gate-597-C2006', new Function(hero([{ kind: 'food', id: 'apple', stamina: 2 }], 'S.stamina=20;') + go(597)), async page => {
+    const before = await page.evaluate(() => [...document.querySelectorAll('#c-list button')].map(b => b.dataset.target).filter(Boolean));
+    await page.evaluate(() => { const b = document.querySelector('#inv-list .inv-eat'); if (b) b.click(); }); await page.waitForTimeout(400); return before;
+  }, (v, x) => ({ ok: x.includes('85') && !v.targets.includes('85') && v.st === 22, obs: '§597 the food exit before eating ' + x.includes('85') + '; the apple eaten from the bag -> STAMINA ' + v.st + ', exits ' + v.targets.join(',') }));
+  await probe('won-fight-hides-the-ways-before-388-C2007', new Function(hero([], "S.spells=[{id:'FIRE',remaining:1},{id:'COPY',remaining:1}];") + winDice + go(388)), async page => { await fight(page, 40); return page.evaluate(() => !!combatDone[388]); }, (v, x) => ({ ok: x && !v.targets.includes('450') && !v.targets.includes('911') && ['94', '1098', '1196'].every(t => v.targets.includes(t)), obs: 'won ' + x + ', exits after the win ' + v.targets.join(',') }));
+  await probe('won-fight-no-second-round-96-C2007', new Function(hero([], "S.spells=[{id:'FORCE',remaining:1},{id:'WEAKNESS',remaining:1},{id:'FIRE',remaining:1}];") + winDice + go(96)), async page => { await fight(page, 30); return page.evaluate(() => !!combatDone[96]); }, (v, x) => ({ ok: x && v.targets.join(',') === '45', obs: 'the Green Knight won ' + x + ', exits ' + v.targets.join(',') }));
+  await probe('pickup-dialog-survives-a-reload-1214-C2008', new Function(hero([]) + go(1214)), async page => { const before = await page.evaluate(() => document.getElementById('modal-inventory').classList.contains('on') ? pendingItems.map(i => typeof i === 'string' ? i : i.id) : []); await atHash(page, 1214); return before; }, (v, x) => ({ ok: x.includes('diving_suit') && v.pending.includes('diving_suit') && v.sec === 1214, obs: 'offer before F5 [' + x.join(',') + '], after F5 [' + v.pending.join(',') + ']' }));
+  await probe('taken-and-reloaded-goes-on-84-C2008', new Function(hero([]) + go(84)), async page => { await click(511)(page); await page.evaluate(() => { const i = pendingItems.findIndex(x => (typeof x === 'string' ? x : x.id) === 'bear_amulet'); if (i >= 0) takeItem(i); }); await atHash(page, 84); }, v => ({ ok: v.sec === 511 && v.inv.includes('bear_amulet') && !v.targets.includes('575'), obs: 'the amulet taken at §84, F5 before «Готово» -> §' + v.sec + ', bag [' + v.inv.join(',') + ']' }));
+  await probe('trophies-after-a-reload-129-C2008', new Function(hero([]) + winDice + go(129)), async page => {
+    await fight(page, 30); const first = await page.evaluate(() => document.getElementById('modal-inventory').classList.contains('on') ? pendingItems.map(i => typeof i === 'string' ? i : i.id) : []);
+    await atHash(page, 129); await page.evaluate(() => { d6 = function () { return (window.__flip = !window.__flip) ? 6 : 1; }; });
+    await fight(page, 30); return first;
+  }, (v, x) => ({ ok: x.includes('bronze_whistle') && v.pending.includes('bronze_whistle'), obs: 'trophies [' + x.join(',') + ']; F5, the goblin beaten again: offer [' + v.pending.join(',') + ']' }));
+  await probe('no-healing-for-the-dead-950-C2010', new Function(hero([], "S.skill=1; S.stamina=2; S.spells=[{id:'HEALING',remaining:1}]; d6=function(){ return 3; };") + go(950)), async page => {
+    await startFight(page); await loseRounds(page);
+    const shown = await page.evaluate(() => getComputedStyle(document.getElementById('btn-heal-spell')).display);
+    await page.evaluate(() => useHealingInCombat()); await page.waitForTimeout(200);
+    return Object.assign({ shown }, await page.evaluate(() => ({ st: S.stamina, left: getSpellRemaining('HEALING') })));
+  }, (v, x) => ({ ok: x.shown === 'none' && x.st <= 0 && x.left === 1, obs: 'the arena, killed: healing button ' + x.shown + '; a heal attempt -> STAMINA ' + x.st + ', charges ' + x.left }));
+  await probe('no-indifference-for-the-dead-942-C2010', new Function(hero([], "S.skill=1; S.stamina=2; S.spells=[{id:'INDIFFERENCE',remaining:1}]; d6=function(){ return 3; };") + go(942)), async page => {
+    await startFight(page); await loseRounds(page);
+    const shown = await page.evaluate(() => getComputedStyle(document.getElementById('btn-indifference-spell')).display);
+    await page.evaluate(() => useIndifferenceInCombat()); await page.waitForTimeout(200);
+    return Object.assign({ shown }, await page.evaluate(() => ({ st: S.stamina, left: getSpellRemaining('INDIFFERENCE'), btn: document.getElementById('btn-combat-round').textContent })));
+  }, (v, x) => ({ ok: x.shown === 'none' && x.st <= 0 && x.left === 1 && !/Продолжить/.test(x.btn), obs: 'killed by the orc: Indifference button ' + x.shown + '; a cast attempt -> charges ' + x.left + ', button «' + x.btn + '»' }));
+  await probe('batch-eat-button-goes-1140-C2011', new Function(hero([]) + go(1140)), async page => { await page.evaluate(() => { const e = [...document.querySelectorAll('#c-list button')].find(x => /Съесть сразу/.test(x.textContent)); if (e && e.previousElementSibling) e.previousElementSibling.click(); }); await page.waitForTimeout(300); return page.evaluate(() => [...document.querySelectorAll('#c-list button')].filter(b => /Съесть сразу/.test(b.textContent)).length); }, (v, x) => ({ ok: x === 0 && v.inv.includes('silver_whistle'), obs: '§1140 collected: eat buttons left ' + x + ', bag [' + v.inv.join(',') + ']' }));
+  await probe('batch-eat-reports-the-whistle-1140-C2011', new Function(hero(full, 'S.stamina=10;') + go(1140)), async page => { await page.evaluate(() => { const e = [...document.querySelectorAll('#c-list button')].find(x => /Съесть сразу/.test(x.textContent)); if (e) e.click(); }); await page.waitForTimeout(250); return page.evaluate(() => [...document.querySelectorAll('.item-notification')].map(e => e.textContent).join(' | ')); }, (v, x) => ({ ok: /не взято/i.test(x) && !v.inv.includes('silver_whistle') && v.st === 15, obs: 'full bag, eaten at once: STAMINA ' + v.st + ', notice «' + x.replace(/\s+/g, ' ') + '»' }));
+  const orcs1175 = async (page, which) => { await startFight(page); for (let i = 0; i < 20; i++) { if (await page.evaluate(() => !!document.getElementById('combat-buttons-extra'))) break; await page.evaluate(() => document.getElementById('btn-combat-round').click()); await page.waitForTimeout(70); } await page.evaluate(w => { combatState.targetIdx = w; document.getElementById('btn-larva').click(); }, which); await page.waitForTimeout(250); };
+  await probe('orcs-beaten-ends-the-fight-1175-C2012', new Function(hero(['spider_larva'], 'S.luck=12;') + winDice + go(1175)), async page => {
+    await orcs1175(page, 1);
+    await page.evaluate(() => { d6 = function () { return 1; }; const b = document.querySelector('#combat-buttons-extra button'); if (b) b.click(); }); await page.waitForTimeout(250);
+    await page.evaluate(() => document.getElementById('btn-luck-roll').click()); await page.waitForTimeout(250);
+    await page.evaluate(() => { const b = document.querySelector('#luck-choices button'); if (b) b.click(); }); await page.waitForTimeout(300);
+    return page.evaluate(() => ({ btn: document.getElementById('btn-combat-round').textContent, done: !!combatDone[1175] }));
+  }, (v, x) => ({ ok: x.done && /Продолжить/.test(x.btn), obs: 'the second orc killed by the larva, the third scared off: ' + JSON.stringify(x) }));
+  await probe('dead-orc-not-scared-off-1175-C2012', new Function(hero(['spider_larva'], 'S.luck=12;') + winDice + go(1175)), async page => { await orcs1175(page, 2); return page.evaluate(() => ({ offer: !!document.getElementById('combat-buttons-extra'), btn: document.getElementById('btn-combat-round').textContent, shown: getComputedStyle(document.getElementById('btn-combat-round')).display })); }, (v, x) => ({ ok: !x.offer && x.shown !== 'none' && /Удар/.test(x.btn), obs: 'the third orc killed by the larva during the luck offer: ' + JSON.stringify(x) }));
+  await probe('preface-back-and-voice-label-en-C2013', new Function(hero([]) + go(1)), async page => page.evaluate(() => { applyLang('en'); const b = document.querySelector('#scr-preface button[onclick*="spells"]'), s = document.getElementById('voice-openai-voice'); const r = { back: b ? b.textContent : '-', aria: s ? s.getAttribute('aria-label') : '-' }; applyLang('ru'); return r; }), (v, x) => ({ ok: !/[А-яЁё]/.test(x.back) && !/[А-яЁё]/.test(x.aria) && x.back !== '-', obs: 'EN: the preface back button «' + x.back + '», the voice select «' + x.aria + '»' }));
+  const riddleEn = (inv) => [new Function(hero(inv) + "applyLang('en');" + go(435)), async page => { await page.evaluate(() => { const i = document.getElementById('riddle-input'); if (i) i.value = 'hyena'; const b = document.querySelector('.riddle-submit'); if (b) b.click(); }); await page.waitForTimeout(400); const r = await page.evaluate(() => S.section); await page.evaluate(() => applyLang('ru')); return r; }];
+  await probe('hyena-riddle-needs-the-hyena-en-435-C2014', ...riddleEn([]), (v, x) => ({ ok: x === 100, obs: 'EN, «hyena» at §435 without the §337 encounter -> §' + x }));
+  await probe('hyena-riddle-with-the-hyena-en-435-C2014', ...riddleEn(['hyena_met']), (v, x) => ({ ok: x === 66, obs: 'EN, «hyena» at §435 after the §337 encounter -> §' + x }));
+  await probe('forest-dragon-not-in-the-castle-437-C2015', new Function(hero([]) + go(437)), page => page.evaluate(() => ({ layers: S.mapState.opened_layers.join(','), corr: S.mapState.discovered_nodes.includes('ci_trap_corridors') })), (v, x) => ({ ok: !/castle_interior/.test(x.layers) && !x.corr, obs: '§437 (the dragon in the forest): map layers ' + x.layers + ', castle corridors discovered ' + x.corr }));
+  await probe('wood-goblin-victory-on-the-map-303-C2015', new Function(hero([]) + winDice + go(303)), async page => { await fight(page, 30); return page.evaluate(() => S.mapState.victories.join(',')); }, (v, x) => ({ ok: /enc_wood_goblin/.test(x), obs: 'the Lesovichok beaten at §303: map victories [' + x + ']' }));
   await browser.close();
   const counts = rows.reduce((m, r) => { m[r.verdict] = (m[r.verdict] || 0) + 1; return m; }, {});
-  fs.writeFileSync(path.join(OUT, 'FIDELITY_PROBES_REPORT.md'), ['# FIDELITY_PROBES_REPORT.md - repairs of groups 100-107 (text vs engine, engine reliability, live-run and audit findings)', '', '- URL: ' + URL + ' - ' + new Date().toISOString(), '', '| probe | verdict | observation |', '|---|---|---|', ...rows.map(r => '| ' + r.id + ' | ' + r.verdict + ' | ' + r.obs.replace(/\|/g, '\\|') + ' |'), '', '## Counts', '', Object.entries(counts).map(([k, v]) => '- ' + k + ': ' + v).join('\n'), ''].join('\n'), 'utf8');
+  fs.writeFileSync(path.join(OUT, 'FIDELITY_PROBES_REPORT.md'), ['# FIDELITY_PROBES_REPORT.md - repairs of groups 100-108 (text vs engine, engine reliability, live-run and audit findings)', '', '- URL: ' + URL + ' - ' + new Date().toISOString(), '', '| probe | verdict | observation |', '|---|---|---|', ...rows.map(r => '| ' + r.id + ' | ' + r.verdict + ' | ' + r.obs.replace(/\|/g, '\\|') + ' |'), '', '## Counts', '', Object.entries(counts).map(([k, v]) => '- ' + k + ': ' + v).join('\n'), ''].join('\n'), 'utf8');
   console.log('REPORT: ' + path.join(OUT, 'FIDELITY_PROBES_REPORT.md') + ' | ' + JSON.stringify(counts));
   if (!rows.length || rows.some(r => r.verdict === 'FAIL')) process.exitCode = 1; // group_105 QA-01: a red run is a failed process (no rows = a mistyped ONLY)
 })().catch(e => { console.error('PROBES FAILED: ' + e.stack); process.exit(1); });

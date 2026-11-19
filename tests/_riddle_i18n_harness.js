@@ -24,11 +24,12 @@ ok(riddleHash('\u0407\u0416\u0410\u041a')===riddleHash('\u0457\u0436\u0430\u043a
 ok(hasWord(EN,'67','Password'),'EN p67 password');
 ok(hasWord(EN,'1131','graveyard')&&hasWord(EN,'1131','Cemetery'),'EN p1131 two synonyms');
 ok(hasWord(EN,'992','death'),'EN p992 death');
+ok(hasWord(EN,'435','hyena')&&hasWord(EN,'435','Hyaena')&&!hasWord(EN,'435','hedgehog'),'EN p435 hyena, not hedgehog (group_108)');
 // FR answers
 ok(hasWord(FR,'67','mot de passe')&&hasWord(FR,'67','MotDePasse'),'FR p67 mot de passe');
-ok(hasWord(FR,'435','h\u00e9risson')&&hasWord(FR,'435','herisson'),'FR p435 herisson w/o accent too');
+ok(hasWord(FR,'435','hy\u00e8ne')&&hasWord(FR,'435','hyene')&&!hasWord(FR,'435','herisson'),'FR p435 hyene w/o accent too, no herisson (group_108: the acquaintance of sec.66 is the Hyena)');
 // UK answers
-ok(hasWord(UK,'435','\u0457\u0436\u0430\u043a'),'UK p435 yizhak');
+ok(hasWord(UK,'435','\u0433\u0456\u0454\u043d\u0430')&&!hasWord(UK,'435','\u0457\u0436\u0430\u043a'),'UK p435 hiiena, not yizhak (group_108)');
 ok(hasWord(UK,'1131','\u0446\u0432\u0438\u043d\u0442\u0430\u0440'),'UK p1131 tsvyntar');
 // negative + integrity
 ok(!hasWord(EN,'67','dragon'),'wrong word does not match');

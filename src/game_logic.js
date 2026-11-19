@@ -63,6 +63,20 @@ function renderAutosaveNote(){ try{ var el=document.getElementById('autosave-not
 //   - runtime-only fields (eventLog, shopBought, riddle_attempts) added in
 //     later sessions are backfilled so old saves match current structure
 // Mutates and returns the same object. Safe to call on null (returns null).
+// ── group_108 (Gemini 4 Carbon, Track 2: the engine) ──
+// C2-001: a restart that survives blocked browser storage (the end screens have no other way out)
+function restartClean(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} try{ history.replaceState(null,'',location.pathname); }catch(e){} location.reload(); }
+// C2-002: an imported save starts with clean per-paragraph state, like a paragraph entered anew
+function resetRuntimeState(){ combatDone={}; luckDone={}; luckResult={}; sectionPrepState={}; try{ window._invModalOnDone=null; }catch(e){} try{ lastImageSection=null; }catch(e){} combatState=null; try{ if(typeof renderEventLog==='function') renderEventLog(); }catch(e){} }
+// C2-006: the choices follow what the reader does with the bag and the flask on this paragraph (shops, gates, the stake picker)
+function refreshChoicesForState(){
+  try{
+    if(!S) return; const sg=document.getElementById('scr-game'); if(!sg||!sg.classList.contains('on')) return;
+    const dead=document.getElementById('end-death'); if(dead&&dead.classList.contains('on')) return;
+    const sec=locSec(S.section); if(!sec||sec.riddle||sec.dice_roll||sec.dice_check||sec.dice_loot) return;
+    if(sec.stake_picker) renderStakePicker(sec); else renderChoices(sec);
+  }catch(e){}
+}
 function normalizeSave(s){
   if(!s||typeof s!=='object') return s;
   // Core fields from initState() — backfill if missing or wrong type.
@@ -73,6 +87,13 @@ function normalizeSave(s){
   s.inventory=s.inventory.map(it=>typeof it==='string'?it.replace(/[<>&"'`]/g,''):((it&&typeof it==='object'&&typeof it.id==='string')?Object.assign({},it,{id:it.id.replace(/[<>&"'`]/g,'')}):it));
   if(Array.isArray(s.eventLog)) s.eventLog=s.eventLog.filter(ev=>ev&&typeof ev==='object').map(ev=>{ const o=Object.assign({},ev); ['main','detail','para','type'].forEach(f=>{ if(typeof o[f]==='string') o[f]=o[f].replace(/[<>]/g,''); }); return o; });
   if(!Array.isArray(s.spells))    s.spells=[];
+  // group_108 C2-003: a food's STAMINA and a stack's count are numbers, a thing without a string id is dropped, a journal type is a
+  // plain word (it lands in a class attribute), a spell is an object with an id
+  s.inventory=s.inventory.filter(it=>typeof it==='string'||(it&&typeof it==='object'&&typeof it.id==='string')).map(it=>(typeof it==='object'&&it.kind==='food')?Object.assign({},it,{stamina:(typeof it.stamina==='number'&&isFinite(it.stamina))?it.stamina:0}):((typeof it==='object'&&it.kind==='stack')?Object.assign({},it,{count:(typeof it.count==='number'&&isFinite(it.count)&&it.count>0)?Math.floor(it.count):0}):it));
+  if(Array.isArray(s.eventLog)) s.eventLog=s.eventLog.map(ev=>{ if(typeof ev.type==='string') ev.type=ev.type.replace(/[^a-z0-9_-]/gi,''); return ev; });
+  if(s.pendingPickup&&!(typeof s.pendingPickup==='object'&&typeof s.pendingPickup.section==='number'&&Array.isArray(s.pendingPickup.items))) s.pendingPickup=null; // group_108 C2-008: an interrupted pick-up dialog
+  if(s.pendingPickup){ s.pendingPickup.items=s.pendingPickup.items.filter(it=>typeof it==='string'||(it&&typeof it==='object'&&typeof it.id==='string')).map(it=>typeof it==='string'?it.replace(/[<>&"'`]/g,''):Object.assign({},it,{id:it.id.replace(/[<>&"'`]/g,'')},it.kind==='food'?{stamina:(typeof it.stamina==='number'&&isFinite(it.stamina))?it.stamina:0}:{})); if(typeof s.pendingPickup.next!=='number') s.pendingPickup.next=null; }
+  s.spells=s.spells.filter(sp=>sp&&typeof sp==='object'&&typeof sp.id==='string').map(sp=>Object.assign({},sp,{remaining:(typeof sp.remaining==='number'&&isFinite(sp.remaining))?sp.remaining:0}));
   if(!Array.isArray(s.visited))   s.visited=[];
   if(typeof s.notes!=='string')   s.notes='';
   if(typeof s.gold!=='number')    s.gold=0;
@@ -121,7 +142,7 @@ function importSave(e){const f=e.target.files[0];if(!f)return;f.text().then(rawT
   if(s.v!==5&&s.v!==4){bcNotice(t('nesovmestimyy_format'));return;}
   if(s.v===4){s.v=5;s.luckMax=s.luck;delete s.luckBoxes;}// upgrade v4→v5
   normalizeSave(s);
-  S=s;saveGame();showScr('game');renderGame();closeModal('overlay-menu');}catch{bcNotice(t('oshibka_zagruzki'));}});e.target.value='';}
+  S=s;resetRuntimeState();saveGame();showScr('game');renderGame();closeModal('overlay-menu');} /* group_108 C2-002 */catch{bcNotice(t('oshibka_zagruzki'));}});e.target.value='';}
 
 // ── Screens ──
 function showScr(id){ try{ bcStopSpeech(); }catch(e){} /* group_88 V-02: speech does not outlive its screen */document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById('scr-'+id).classList.add('on');const elb=document.getElementById('event-log-btn');if(elb)elb.style.display=(id==='game'&&!isMobileHud())?'block':'none';}
@@ -202,6 +223,7 @@ function _bcCloseTopDialog(){
 // group_87 PL-39: Indifference - the current target forgets the fight (not a kill: no potion tick, no loot logic)
 function useIndifferenceInCombat(){
   if(!combatState||!S||!S.spells)return;
+  if(combatDone[S.section]||S.stamina<=0||combatResolved(combatState)) return; // group_108 C2-010: not after the fight, not for the dead
   const sp=S.spells.find(x=>x.id==='INDIFFERENCE'); if(!sp||sp.remaining<=0)return;
   const cs=combatState; const alive=getAliveCombatEnemies(cs); if(alive.length===0)return;
   const target=getCombatTarget(cs)||alive[0];
@@ -215,7 +237,7 @@ function useIndifferenceInCombat(){
   if(combatResolved(cs)){ endCombat(true); } else { updateCombatConditionButtons(cs); }
 }
 // group_87 PL-39 / PL-41: after a fight starts - show the Indifference button while a charge remains, consume a carry-over
-(function(){ const orig=startCombat; startCombat=function(){ const r=orig.apply(this,arguments); try{ if(S&&S.carryOver&&combatState&&S.carryOver.to===S.section){ S.carryOver=null; saveGame(); } const b=document.getElementById('btn-indifference-spell'); if(b) b.style.display=(combatState&&getSpellRemaining('INDIFFERENCE')>0&&!(combatState.sec&&Array.isArray(combatState.sec.combat_spells_allowed))&&!isBarladFight())?'inline-block':'none'; /* group_107 C1-045: not where the canon lists the spells allowed (sec.823: none) */ addFleeButton(); }catch(e){} return r; }; })();
+(function(){ const orig=startCombat; startCombat=function(){ const r=orig.apply(this,arguments); try{ if(S&&S.carryOver&&combatState&&S.carryOver.to===S.section){ S.carryOver=null; saveGame(); } const b=document.getElementById('btn-indifference-spell'); if(b) b.style.display=(combatState&&getSpellRemaining('INDIFFERENCE')>0&&!(combatState.sec&&Array.isArray(combatState.sec.combat_spells_allowed))&&!isBarladFight()&&!combatDone[S.section]&&!combatResolved(combatState))?'inline-block':'none'; /* group_107 C1-045: not where the canon lists the spells allowed (sec.823: none) */ addFleeButton(); }catch(e){} return r; }; })();
 
 // group_85 AS-06: fatal_when_stuck - a paragraph whose every exit is unusable (no spell charge, no rescue)
 // ends the adventure as the canon says (sec.835: the walls close in) instead of soft-locking.
@@ -522,6 +544,7 @@ function pluralKey(n){ const L=getLang(); n=Math.abs(Number(n)||0); if(L==='ru'|
 function renderInvModalHeader(){ const txt=document.getElementById('inv-modal-text'); if(!txt) return; const n=pendingItems.length; const freeSlots=getBagSize()-getBagUsed(); const incomingSize=pendingItems.reduce((s,it)=>s+getItemSize(it),0); const what=n+' '+t(pluralKey(n)); if(n>0&&freeSlots<incomingSize){ txt.innerHTML=`${t('naydeno_2')}${what}${t('zanimayut_tail')}${incomingSize}${t('mest_no_v_meshke_tolko')}${freeSlots}${t('svobodnyh_iz')}${getBagSize()}.<br>${t('vyberite_chto_vzyat_ili_vybroste')}`; } else { txt.innerHTML=`${t('naydeno_2')}${what}${t('svobodnyh_mest_tail')}${freeSlots}.`; } }
 function showInventoryModal(newItems, extraNotifs){
   pendingItems=newItems.slice();
+  if(S){ S.pendingPickup={section:S.section,items:pendingItems,next:null}; try{ saveGame(); }catch(e){} } // group_108 C2-008: an F5 reopens it
   const modal=document.getElementById('modal-inventory');
   
   // Text (group_87 PL-02)
@@ -635,7 +658,9 @@ function closeInvModal(){
   document.getElementById('modal-inventory').classList.remove('on');
   updateHUD();saveGame();
   const after=window._invModalOnDone; window._invModalOnDone=null; // group_101 E-002
+  if(S) S.pendingPickup=null; // group_108 C2-008: the dialog is done
   if(typeof after==='function'){ try{ after(); }catch(e){} }
+  else refreshChoicesForState(); // group_108 C2-006
 }
 
 // ── Death Overlay ──
@@ -996,6 +1021,12 @@ function renderGame(opts){
     if(ai.luck_sub){S.luck=Math.max(0,S.luck-ai.luck_sub);statNotifs.push('− '+ai.luck_sub+t('udachi'));}
     if(statNotifs.length>0){updateHUD();saveGame();showItemNotification(statNotifs);}
   }
+  // group_108 C2-008: a pick-up dialog that a reload interrupted opens again with what was not taken (a trophy offer waits for the win)
+  if(!firstVisit&&S.pendingPickup&&S.pendingPickup.section===S.section&&!(sec.enemies&&sec.enemies.length)&&!document.getElementById('modal-inventory').classList.contains('on')&&!document.getElementById('end-death').classList.contains('on')){
+    const pp=S.pendingPickup; const left=(pp.items||[]).filter(it=>!(it&&it._eaten)&&!S.inventory.some(x=>canonItem(x)===canonItem(it)));
+    if(left.length){ const nx=pp.next; showInventoryModal(left,[]); if(nx){ S.pendingPickup.next=nx; window._invModalOnDone=()=>goTo(nx); saveGame(); } }
+    else { S.pendingPickup=null; saveGame(); if(pp.next){ goTo(pp.next); return; } }
+  } else if(S.pendingPickup&&S.pendingPickup.section!==S.section){ S.pendingPickup=null; }
   // Betting stake-commit + payout (group_41). Runs EVERY visit (not first-visit
   // auto_items) because the gambling loop is re-entrant — each round must deduct
   // the stake and pay out again on revisited commit/outcome paragraphs.
@@ -1215,11 +1246,12 @@ function eatFood(i){
   playSound('item');
   showItemNotification(['🍴 '+itemName(clean)+': +'+actual+t('vyn')]);
   updateHUD();saveGame();
+  refreshChoicesForState(); // group_108 C2-006: eaten food no longer opens a food gate or a stake
   focusInventoryRow(i); // group_81 CA-09
 }
 // group_100 AR-18 (sec.462): «тогда у вас будут две фляги» - the Orc's flask doubles the water: 2 sips per flask.
 function flaskMax(){ return 2+((S&&S.inventory&&S.inventory.some(it=>canonItem(it)==='water_flask'))?2:0); }
-function useFlask(){if(!S||S.flask<=0)return;S.flask--;S.stamina=Math.min(S.staminaMax,S.stamina+2);logEvent('gain',t('glotok_iz_flyagi'),t('2_vynoslivosti_ostalos_glotkov')+S.flask+')');updateHUD();saveGame();}
+function useFlask(){if(!S||S.flask<=0)return;S.flask--;S.stamina=Math.min(S.staminaMax,S.stamina+2);logEvent('gain',t('glotok_iz_flyagi'),t('2_vynoslivosti_ostalos_glotkov')+S.flask+')');updateHUD();saveGame();refreshChoicesForState();} // group_108 C2-006
 function useHealing(){
   if(!S)return;
   const remaining=getSpellRemaining('HEALING');
@@ -1235,6 +1267,7 @@ function useHealing(){
 // combat_spells_allowed includes 'HEALING'. Caps at staminaMax; refuses at full.
 function useHealingInCombat(){
   if(!S)return;
+  if(!combatState||combatDone[S.section]||S.stamina<=0) return; // group_108 C2-010: no healing after the fight or for the dead
   const remaining=getSpellRemaining('HEALING');
   if(remaining<=0)return;
   const log=document.getElementById('combat-log');
@@ -1254,12 +1287,12 @@ function useHealingInCombat(){
 function toggleAddItem(){const a=document.getElementById('add-item-area');a.style.display=a.style.display==='none'?'block':'none';}
 function addItem(){if(!S)return;const inp=document.getElementById('add-item-input');const v=inp.value.replace(/[<>&"'`]/g,'').trim().slice(0,60); /* group_101 E-006: rendered through innerHTML and attributes */
   if(!v)return;if(getBagUsed()+getItemSize(v)>getBagSize()){bcNotice(t('meshok_polon_3')+getBagSize()+t('mest_2'));return;}
-  S.inventory.push(v);inp.value='';updateHUD();saveGame();}
+  S.inventory.push(v);inp.value='';updateHUD();saveGame();refreshChoicesForState();} // group_108 C2-006
 // group_81 CA-09: updateHUD rebuilds #inv-list, destroying the activated button -
 // land on the equivalent row (or the add-item control) so keyboard users keep their place.
 function focusInventoryRow(i){ try{ const rows=document.querySelectorAll('#inv-list .inv-item'); const row=rows.length?rows[Math.min(i,rows.length-1)]:null; const b=row&&row.querySelector('button'); if(b){ b.focus({preventScroll:true}); return; } const add=document.getElementById('inv-add-btn'); if(add) add.focus({preventScroll:true}); }catch(e){} }
 function removeItem(i){ if(S&&S.inventory&&KNOWLEDGE_FLAGS.has(canonItem(S.inventory[i]))) return; // group_85 AS-12
-if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);forgetArrowCount(itm);updateHUD();saveGame();focusInventoryRow(i);}
+if(!S)return;const itm=S.inventory[i];logEvent('loss','− '+invDisplay(itm),t('vybrosheno_iz_meshka'));S.inventory.splice(i,1);forgetArrowCount(itm);updateHUD();saveGame();refreshChoicesForState();focusInventoryRow(i);} // group_108 C2-006
 
 // ── Choices ──
 // Spell detection and styling
@@ -1363,7 +1396,7 @@ function applyChoiceAcquires(ch, onDone){
   // Hand off to the standard pickup modal so 7-slot overflow logic
   // is shared with auto_items. The modal's Continue button closes
   // itself; we wire navigation onto the close-handler via a one-shot.
-  showInventoryModal(newItems, []);
+  showInventoryModal(newItems, []); if(S&&S.pendingPickup) { S.pendingPickup.next=ch.target; saveGame(); } // group_108 C2-008: where the choice goes on
   // group_100 AR-19 + group_101 E-002: the continuation is parked, not wired onto a button - closeInvModal() runs it
   // exactly once whichever way the dialog closes («Готово», Escape, code), so no stale handler can survive.
   window._invModalOnDone=onDone||null;
@@ -1479,6 +1512,7 @@ function applyRiddleAnswer(input,riddleConfig){
   if(!input||!riddleConfig)return;
   // Locale answer-list path (any language) — checked before the classic sum.
   const locTarget=localeRiddleTarget(input);
+  if(locTarget&&riddleConfig.requires_flag&&!(S.inventory||[]).some(it=>canonItem(it)===riddleConfig.requires_flag)){ S.riddle_attempts=0; logEvent('loss',t('zagadka_ne_razgadana'),t('paragraf_2')+riddleConfig.fail_target); playSound('death'); goTo(riddleConfig.fail_target); return; } // group_108 C2-014
   if(locTarget){
     S.riddle_attempts=0;
     logEvent('gain',t('zagadka_razgadana'),t('paragraf_2')+locTarget);
@@ -1788,6 +1822,7 @@ function makeBatchBtn(ch, choiceIndex){
     logEvent('gain',t('sobrano')+' ('+taken.length+')','');
     playSound('item');showItemNotification(msgs);updateHUD();saveGame();
     btn.disabled=true;btn.style.opacity='0.5';btn.innerHTML='\u2713 '+t('sobrano');
+    const eatSib=btn.nextElementSibling; if(eatSib&&eatSib.dataset&&eatSib.dataset.batchEat) eatSib.remove(); // group_108 C2-011: no idle eat button after the batch is taken
   };
   // group_87 PL-37: «съесть их сразу или положить в мешок» - a batch with food also offers eating it on the spot
   const foods=(ch.pickup_batch||[]).filter(ent=>typeof ent==='object'&&ent.food);
@@ -1796,14 +1831,17 @@ function makeBatchBtn(ch, choiceIndex){
   const eat=document.createElement('button'); eat.className='choice-btn';
   eat.style.borderColor='var(--green)'; eat.style.color='var(--green2)'; eat.style.background='rgba(40,180,100,.08)';
   const total=foods.reduce((s,f)=>s+(Number(f.stamina)||0),0);
-  eat.innerHTML='\ud83c\udf74 '+t('syest_srazu')+' (+'+total+t('vyn')+')';
+  eat.innerHTML='\ud83c\udf74 '+t('syest_srazu')+' (+'+total+t('vyn')+')'; eat.dataset.batchEat='1';
   eat.onclick=()=>{
     if(S.batchPicked&&S.batchPicked[key]) return; // PL-37
-    let free=getBagSize()-getBagUsed(); const msgs=[]; let gained=0;
+    let free=getBagSize()-getBagUsed(); const msgs=[]; let gained=0; let skippedE=0;
     (ch.pickup_batch||[]).forEach(ent=>{
       if(typeof ent==='object'&&ent.food){ const before=S.stamina; S.stamina=Math.min(S.staminaMax,S.stamina+(Number(ent.stamina)||0)); gained+=S.stamina-before; msgs.push('\ud83c\udf74 '+invDisplay({kind:'food',id:ent.food,stamina:ent.stamina})); }
+      else if(typeof ent==='string'&&S.inventory.some(x=>canonItem(x)===canonItem(ent))){ /* already held */ }
       else if(free>=getItemSize(ent)){ S.inventory.push(ent); free-=getItemSize(ent); msgs.push('+ '+invDisplay(ent)); }
+      else skippedE++; // group_108 C2-011: a thing that does not fit is reported
     });
+    if(skippedE) msgs.push(t('meshok_polon_2')+skippedE+t('ne_vzyato'));
     if(gained>0) msgs.push('+ '+gained+t('vynoslivosti'));
     S.batchPicked=S.batchPicked||{}; S.batchPicked[key]=true;
     logEvent('gain',t('syest_srazu')+' (+'+gained+')','');
@@ -2045,6 +2083,7 @@ function updateCombatEnemyDisplay(cs){
 }
 
 function resumeCanonCombat(){
+  if(combatState&&combatResolved(combatState)){ clearCombatExtraButtons(); endCombat(true); return; } // group_108 C2-012: nobody left to strike
   clearCombatExtraButtons();
   const roundBtn=document.getElementById('btn-combat-round');
   if(roundBtn){
@@ -2626,11 +2665,12 @@ function renderChoices(sec){
 
   if(combatWon){
     // group_87 PL-20: trophies granted after the victory, once per paragraph
+    if(sec.post_combat_items&&S.postCombatDone&&S.postCombatDone[S.section]&&S.pendingPickup&&S.pendingPickup.section===S.section&&!document.getElementById('modal-inventory').classList.contains('on')){ const left=(S.pendingPickup.items||[]).filter(it=>!(it&&it._eaten)&&!S.inventory.some(x=>canonItem(x)===canonItem(it))); if(left.length) showInventoryModal(left,[]); else S.pendingPickup=null; } // group_108 C2-008: trophies a reload interrupted
     if(sec.post_combat_items){ S.postCombatDone=S.postCombatDone||{}; if(!S.postCombatDone[S.section]){ S.postCombatDone[S.section]=true; saveGame(); const pci=sec.post_combat_items; const offered=(pci.items||[]).map(v=>(v&&typeof v==='object'&&v.food)?{kind:'food',id:v.food,stamina:v.stamina}:v); const newItems=offered.filter(item=>!S.inventory.some(it=>canonItem(it)===canonItem(item))); const pn=postCombatStats(pci); /* group_105 GAME-03 */ if(newItems.length) showInventoryModal(newItems,pn); else if(pn.length){ playSound('item'); showItemNotification(pn); } } }
     // After winning: show post-combat + non-spell, hide spell/luck/combat-condition
     sec.choices.forEach((ch,idx)=>{
       // group_87 PL-43: spell exits survive the victory (their charges gate them); PL-52: a condition exit after a full win reads «Продолжить».
-      if(!ch.luck_type && (!ch.combat_condition || (S.combatCondMet&&S.combatCondMet[S.section])) && passesInventoryCheck(ch) && passesGoldCheck(ch)){
+      if(!ch.luck_type && (ch.post_combat || (ch.combat_condition && S.combatCondMet&&S.combatCondMet[S.section])) && passesInventoryCheck(ch) && passesGoldCheck(ch)){ // group_108 C2-007: the ways before the fight are gone
         const b=makeChoiceBtn(ch, false, idx); if(ch.combat_condition) b.textContent=t('prodolzhit')+' ('+ch.target+')'; list.appendChild(b);
       }
     });
@@ -2920,6 +2960,7 @@ function updateCombatConditionButtons(cs){
   if(old)old.remove();
   if(!cs||!combatState||cs!==combatState)return;
   if(combatResolved(cs))return;
+  if(cs.special&&cs.special.type==='sec1175'&&!cs.special.luckChecked&&document.getElementById('combat-buttons-extra')&&cs.enemies[2]&&(cs.enemies[2].hp<=0||cs.enemies[2].fled)){ cs.special.luckChecked=true; resumeCanonCombat(); } // group_108 C2-012: the third Orc is already down - no luck to spend on scaring him off
   if(!cs.sec||!cs.sec.choices)return;
   const log=document.getElementById('combat-log');
   cs.sec.choices.forEach(ch=>{
@@ -3098,7 +3139,7 @@ function endCombat(won){
   const larvaBtnEnd=document.getElementById('btn-larva');
   if(larvaBtnEnd)larvaBtnEnd.style.display='none';
   const snakeBtnEnd=document.getElementById('btn-snake'); if(snakeBtnEnd)snakeBtnEnd.style.display='none'; // group_97 PL-01
-  const xbBtnEnd=document.getElementById('btn-crossbow'); if(xbBtnEnd)xbBtnEnd.style.display='none'; const flBtnEnd=document.getElementById('combat-flee-btn'); if(flBtnEnd) flBtnEnd.remove(); // group_107 C1-028 / group_100
+  const xbBtnEnd=document.getElementById('btn-crossbow'); if(xbBtnEnd)xbBtnEnd.style.display='none'; ['btn-heal-spell','btn-indifference-spell'].forEach(id=>{ const b=document.getElementById(id); if(b) b.style.display='none'; }); /* group_108 C2-010 */ const flBtnEnd=document.getElementById('combat-flee-btn'); if(flBtnEnd) flBtnEnd.remove(); // group_107 C1-028 / group_100
   if(won){
     playSound('victory');
     const _csec=GD[S.section];
@@ -3192,7 +3233,7 @@ function endCombatRouted(target,msgKey){
   combatDone[S.section]=true;
   clearCombatExtraButtons();
   const log=document.getElementById('combat-log');
-  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva','btn-snake','btn-crossbow','btn-indifference-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';});
+  ['btn-copy-spell','btn-summon-ally','btn-summon-ally2','btn-force-spell','btn-weakness-spell','btn-larva','btn-snake','btn-crossbow','btn-indifference-spell','btn-heal-spell'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none';}); // group_108 C2-010
   log.innerHTML+=`<div style="color:var(--red2);font-weight:bold;margin-top:8px">${t(msgKey)}</div>`;
   logEvent('combat',t(msgKey),t('raundov')+(combatState?combatState.round:0));
   const b=document.getElementById('btn-combat-round');
@@ -3615,7 +3656,7 @@ window.onload=()=>{
   const h=location.hash.substring(1);
   if(h&&parseInt(h)>0&&GD[h]){
     const sv=loadGame();
-    if(sv){S=sv;const tgt=parseInt(h);if(S.section!==tgt)S.luckChecks={}; /* group_82 CB-04: a luck record belongs to the paragraph it was rolled on */ S.section=tgt;showScr('game');renderGame();}
+    if(sv){S=sv;const tgt=parseInt(h);if(S.section!==tgt){ S.luckChecks={}; S.cameFrom=null; S.pendingDiceRoll=null; S.powerAt=null; } /* group_108 C2-004: an unknown origin keeps sec.146 open */ /* group_82 CB-04: a luck record belongs to the paragraph it was rolled on */ S.section=tgt;showScr('game');renderGame();}
     else{S=initState(t('tester'),12,24,12,[{id:'FIRE',remaining:2},{id:'HEALING',remaining:2},{id:'FORCE',remaining:2},{id:'WEAKNESS',remaining:2},{id:'COPY',remaining:1},{id:'SWIMMING',remaining:1}]);S.section=parseInt(h);showScr('game');renderGame();}
   }
 };

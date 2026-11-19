@@ -213,7 +213,8 @@
     "v2.205 -> v2.206": "November 2026 - group_105: the ChatGPT 6.2 Astra audit of 2026-11-17 adjudicated (16 findings; the agent's browser could not start, it ran the game in a DOM model): dead ends now end the adventure (fatal_when_stuck on 8 paragraphs incl. §614 / §391 from the maintainer's sweep), entries that need the means (spell_gate on §398 / §889, an item gate on §730), the optional luck check at §1141 (new exit, four locales), victory rewards after the win (post_combat_items with gold / Luck), choices redrawn after entry effects (§686), the death text after a failed roll, the riddle comment, the arena healing button; GAME-05 rejected (the pick-up dialog covers the menu - probe); probe scripts exit non-zero on failure, the ONLY row loss and the E007 assertion fixed; checklist B1 / B5 / C9 / C37 and new rows C53-C57; SMOKE_TEST_PATHS regenerated. Fidelity probes 51 -> 75; p1_6d 108 -> 114. GAME_RULES.md + label 2.205 -> 2.206 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.206 -> v2.207": "November 2026 - group_106: the ChatGPT 6.2 Astra recheck of group_105 (2026-11-17, desktop Chrome with live input on the published build d082d4e) adjudicated: 21 of 26 rows PASS; ASTRA-05 fixed - either watermelon (the §389 food or the §300 field watermelon) opens §730 → §90 → §720, and §720 takes one (new consume_on_use form {any: [...]}); CHECK-01 - rows C49 and C57 rewritten for live input (the dialogs are modal; the in-dialog language switch stays with the probes), C53 names the Swimming hero; group_105 confirmed live. Fidelity probes 75 -> 77; p1_6d 114 -> 115. GAME_RULES.md + label 2.206 -> 2.207 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.207 -> v2.208": "November 2026 - group_106 closed: the final ChatGPT 6.2 Astra check of 81eb997 (2026-11-17, desktop Chrome with live input on the published build) - C49, C53, C54, C57 PASS, no findings; ASTRA-05 and CHECK-01 confirmed (AS62r-04); the DOM model 37/37. Record only: registry (last_updated 2026-11-17), checklist journal, launch cards, HANDOFF; GAME_RULES.md label 2.207 -> 2.208 (R-03 guard). Battery ALL GREEN.",
-    "v2.208 -> v2.209": "November 2026 - group_107: the Gemini 4 Carbon Track 1 fidelity sweep (62 findings) adjudicated: 61 fixed, 1 rejected (§887 face 6 - group_43). The book's arithmetic wired at 13 paragraphs called vestigial in June (reachability 1205 -> 1219; only §650 and §736 stay unreachable). Items' powers on the author's decision: the flying carpet and the diving suit stand in for Levitation and Swimming, the black pearl strikes the Green Knights (twelve eyes open §860), the copper ring passes living foes that bar the way, the children's secret turns back the spy's spells. Engine: the luck window keeps a rescue without luck (§203), a batch of things goes through the pick-up dialog (§724), Indifference obeys the allowed spells, prizes at dice are offered, a stake before every roll (§365, §1212), the any-spell picker, the flee inside a fight, a cost paid with the way (§468), stack items. Keys: the bear's key and the «Всё» key join the +40 family; the goblins' copper key opens only its own doors. The tavern candle needs the flint. §87 -> 942. Fidelity probes 77 -> 111; p1_6d 115 -> 125; the signet, group B, gate and branch checks follow. GAME_RULES.md + label 2.208 -> 2.209 (R-03 guard). Dist rebuilt; battery ALL GREEN."
+    "v2.208 -> v2.209": "November 2026 - group_107: the Gemini 4 Carbon Track 1 fidelity sweep (62 findings) adjudicated: 61 fixed, 1 rejected (§887 face 6 - group_43). The book's arithmetic wired at 13 paragraphs called vestigial in June (reachability 1205 -> 1219; only §650 and §736 stay unreachable). Items' powers on the author's decision: the flying carpet and the diving suit stand in for Levitation and Swimming, the black pearl strikes the Green Knights (twelve eyes open §860), the copper ring passes living foes that bar the way, the children's secret turns back the spy's spells. Engine: the luck window keeps a rescue without luck (§203), a batch of things goes through the pick-up dialog (§724), Indifference obeys the allowed spells, prizes at dice are offered, a stake before every roll (§365, §1212), the any-spell picker, the flee inside a fight, a cost paid with the way (§468), stack items. Keys: the bear's key and the «Всё» key join the +40 family; the goblins' copper key opens only its own doors. The tavern candle needs the flint. §87 -> 942. Fidelity probes 77 -> 111; p1_6d 115 -> 125; the signet, group B, gate and branch checks follow. GAME_RULES.md + label 2.208 -> 2.209 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
+    "v2.209 -> v2.210": "November 2026 - group_108: the Gemini 4 Carbon Track 2 engine audit (19 findings) adjudicated: all confirmed - 16 fixed here, 3 fixed in group_107 as Track 1 findings. After a win only the exits after the fight remain (the ways before it led to a second fight, the indoor Fire death or a spent vessel); the pick-up dialog and the trophies survive a reload; an imported save starts with clean paragraph state and cannot smuggle markup; a typed #146 keeps both gates; the choices follow eating, dropping and sips; no healing or Indifference for the dead; the restart works with blocked storage; the §1175 orcs; the §435 riddle needs the hyena in every language and its translated answers now name the Hyena (they held a hedgehog since group_72). The map, two shell strings, dead data and the census of the docs corrected; the labels group_107 added were reviewed in four languages."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -491,6 +492,202 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_108_2026_11_19_carbon_track2": {
+      "comment": "Gemini 4 Carbon (Google AI Studio, Thinking High) - Track 2, the engine audit (saved state, the shell, data integrity) over the 14 engine files of the bundle at 7fdf978, 2026-11-19 (4 answers): 19 findings (P0 4, P1 7, P2 8). All 19 confirmed: 16 fixed here, 3 the same as Track 1 findings fixed in group_107 (C2-005 = C1-015, C2-009 = C1-061, C2-016 = C1-024); verifying C2-014 found the §435 answer lists of the translations wrong (CT2-020); the labels group_107 added were reviewed in four languages (G108-LBL). Evidence: _handoff/carbon_2026_11/results/2_engine (out of git).",
+      "source": "gemini_4_carbon_track2_2026_11_19",
+      "verified": "2026-11-19",
+      "items": [
+        {
+          "id": "CT2-001_restart_with_blocked_storage",
+          "finding": "C2-001",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "EN-01 guarded saveGame() with try/catch so play continues when browser storage is blocked (privacy settings, blocked site data, or sandboxed frames), and every other localStorage access in src/game_logic.js is wrapped in try/catch.",
+          "note": "Confirmed: the three restart handlers of the shell (#end-death «Начать заново», #end-win «Играть снова», ☰ «Новая игра») called localStorage.removeItem unguarded; with browser storage blocked (the EN-01 environment) it throws before location.reload(), and the end screens have no other way out.",
+          "resolution": "DONE. restartClean() - the removal and history.replaceState each in try/catch, then reload - in all three handlers."
+        },
+        {
+          "id": "CT2-002_import_keeps_runtime_state",
+          "finding": "C2-002",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "EN-03 routed window.importSave through normalizeSave(s), but neither window.importSave nor importSave resets the in-memory per-paragraph state maps (combatDone, luckDone, luckResult, sectionPrepState, window._invModalOnDone) that goTo() clears on paragraph transitions, nor refreshes an open desktop journal panel via renderEventLog().",
+          "note": "Confirmed: neither import path (game_logic importSave, the map module's window.importSave) reset combatDone / luckDone / luckResult / sectionPrepState / the pick-up continuation; a save from before a fight imported after winning it skipped the fight with the pre-fight STAMINA.",
+          "resolution": "DONE. resetRuntimeState() in both import paths; the journal is re-rendered."
+        },
+        {
+          "id": "CT2-003_normalize_save_gaps",
+          "finding": "C2-003",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "EN-06 sanitized inventory strings, food ids, and [<>] in eventLog so imported saves cannot inject markup or corrupt state, but left three gaps: (1) on food objects in s.inventory, it.stamina is neither coerced to a finite number nor stripped of markup (and objects with non-string id pass through untouched), while invDisplay() and updateHUD() interpolate item.stamina raw into il.innerHTML and aria-",
+          "note": "Confirmed: a food's STAMINA, an object without an id, the journal type (it lands in a class attribute) and null spells passed normalizeSave - a crafted save ran script in the HUD or the journal, and a text STAMINA made the hero's NaN.",
+          "resolution": "DONE. normalizeSave: a food's STAMINA a finite number (else 0), a stack's count a positive integer, objects without a string id dropped, the journal type [a-z0-9_-] only, spells objects with an id and a numeric remainder; the saved pick-up dialog (C2-008) is sanitized the same way."
+        },
+        {
+          "id": "CT2-004_hash_entry_keeps_the_origin",
+          "finding": "C2-004",
+          "severity": "P0",
+          "status": "DONE",
+          "hypothesis": "REGRESSION / broken interaction between AS-01 and AS-02.",
+          "note": "Confirmed: a hash entry into another paragraph kept S.cameFrom of the paragraph left; #146 typed after any move hid both gates (from_section 205 / 56) and the dead-end rule ended the adventure.",
+          "resolution": "DONE. A hash entry into another paragraph clears the origin, a pending dice roll and the item power of the paragraph left along with the luck record; an F5 on §146 keeps its true origin."
+        },
+        {
+          "id": "CT2-005_luck_window_ignores_the_rescue",
+          "finding": "C2-005",
+          "severity": "P0",
+          "status": "DONE",
+          "hypothesis": "Code-path drift between doLuckCheck() (modified in GAME-06) and renderChoices().",
+          "note": "Same as Track 1 C1-015 - fixed in group_107 (doLuckCheck ends the adventure on a one-sided failed roll only when no exit without luck is usable).",
+          "resolution": "DONE. No change in group_108; probe luck-rescue-goldfish-203-C1015, guard 6d C2-005."
+        },
+        {
+          "id": "CT2-006_choices_not_redrawn_after_bag_changes",
+          "finding": "C2-006",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "GAME-04 added gateStateKey() / _gateSnap in renderGame() to redraw choices after synchronous entry effects, but choices/shops/stake-pickers are never redrawn after user-driven inventory or flask changes on the current paragraph: (1) auto_items.items and post_combat_items.items mutate S.inventory asynchronously inside #modal-inventory, and closeInvModal() does not redraw choices when !after; (2) si",
+          "note": "Confirmed: choices, shops and the stake picker were drawn on entry only; food eaten or a thing dropped from the bag left its gate open (and the food could still be given or staked), a shop button stayed disabled after a bag place was freed - until F5.",
+          "resolution": "DONE. refreshChoicesForState() after the pick-up dialog closes without a continuation, after eating, dropping or adding a thing and after a sip from the flask (riddle and dice paragraphs excepted)."
+        },
+        {
+          "id": "CT2-007_ways_before_the_fight_after_the_win",
+          "finding": "C2-007",
+          "severity": "P0",
+          "status": "DONE",
+          "hypothesis": "Across all 77 combat paragraphs in GD, 100% (77/77) tag every genuine victory exit with either post_combat:true (74 paragraphs) or combat_condition (3 paragraphs: §46, §532, §994).",
+          "note": "Confirmed: after the win the choices before the fight came back (77 fights; every one names its exits after the win by post_combat or combat_condition): §388 / §760 → the indoor Fire death, §96 / §174 / §235 / §436 / §455 / §536 / §656 / §915 / §994 back into a won fight, the silver vessel or the mirror spent on the dead (§388 → 739, §742 → 861, §1096 → 1164).",
+          "resolution": "DONE. After the win only post_combat exits and a met combat_condition are shown; guard 6d checks that every fight names its exits."
+        },
+        {
+          "id": "CT2-008_pickup_dialog_lost_on_reload",
+          "finding": "C2-008",
+          "severity": "P0",
+          "status": "DONE",
+          "hypothesis": "Unlike persisted rolls and wagers (S.luckChecks, S.diceCheckDone, S.diceLootRoll, S.pendingDiceRoll), #modal-inventory's pendingItems and window._invModalOnDone live only in volatile JS variables while S is immediately saved to localStorage: (1) for auto_items.items (68 paragraphs) and post_combat_items.items (7 paragraphs), S.visited.push(S.section) or S.postCombatDone[S.section]=true is saved be",
+          "note": "Confirmed: the pick-up dialog lived in memory while the visit (and the trophies) were saved at once - an F5 with the dialog open lost the offer for good; an item of a choice taken before F5 left the hero on the origin paragraph with both rewards open (§84, §227, §252). §1071 is no longer an example (the signet is put on since group_107 C1-056).",
+          "resolution": "DONE. S.pendingPickup (paragraph, offer, where the choice goes on) is saved when the dialog opens and cleared when it closes; after a reload the dialog opens again with what is left (a choice whose items are all taken goes on); trophies are offered again after the fight is won again (an F5 inside a fight still restarts it - B-08)."
+        },
+        {
+          "id": "CT2-009_stake_picker_round",
+          "finding": "C2-009",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "AS-14 added round-ledger deduplication to applyBetting: sec.set_stake increments S.betRoundId and sec.bet_payout executes only when S.betLedger[key]!==(S.betRoundId||0), then sets S.betLedger[key]=(S.betRoundId||0).",
+          "note": "Same as Track 1 C1-061 - fixed in group_107 (a picked stake opens a betting round: S.betRoundId+1).",
+          "resolution": "DONE. No change in group_108; guard 6d C2-009."
+        },
+        {
+          "id": "CT2-010_healing_and_indifference_after_the_fight",
+          "finding": "C2-010",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "endCombat(won) hides Copy, Ally 1/2, Force, Weakness, Larva, Snake, and Crossbow, but omits #btn-heal-spell and #btn-indifference-spell (endCombatRouted also omits #btn-heal-spell).",
+          "note": "Confirmed: the healing (§950) and Indifference buttons outlived the fight, a lost one too - a dead hero could heal (and an F5 revived him) or win by Indifference; Indifference was shown when «Смерть Орков» had ended the fight on entry.",
+          "resolution": "DONE. Both buttons hidden when a fight ends (won, lost or routed); both handlers refuse after the fight or at 0 STAMINA; Indifference is not shown for a fight already over."
+        },
+        {
+          "id": "CT2-011_batch_eat_button",
+          "finding": "C2-011",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "On pickup_batch choices that contain food (§582, §585, §801, §1140), makeBatchBtn appends both btn («Собрать…») and eat («🍴 Съесть сразу (+N вын.)»).",
+          "note": "Confirmed: after a batch with food was taken its «Съесть сразу» stayed bright and did nothing; eating §1140 with a full bag dropped the silver whistle without a word.",
+          "resolution": "DONE. The eat button goes with the batch; eating reports «мешок полон: N не взято» and does not take a thing twice."
+        },
+        {
+          "id": "CT2-012_sec1175_item_kill_during_the_luck_offer",
+          "finding": "C2-012",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "At §1175, when Orc 1 dies, promptCanon1175Luck() hides #btn-combat-round and #btn-copy-spell while leaving instant-kill item/spell buttons (#btn-larva, #btn-snake, #btn-crossbow, #btn-summon-ally, #btn-indifference-spell) visible.",
+          "note": "Confirmed: at §1175 a kill by an item during the luck offer left either a won fight asking for one more strike (the second orc killed, the third scared off) or an offer to scare off a dead orc.",
+          "resolution": "DONE. resumeCanonCombat ends a resolved fight; the luck offer closes and «Удар!» returns when the third orc falls to an item."
+        },
+        {
+          "id": "CT2-013_shell_strings_not_translated",
+          "finding": "C2-013",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "In src/game_shell_top.html, the button on #scr-preface returning to #scr-spells («← К выбору заклятий») lacks a data-i18n attribute, and #voice-openai-voice in #overlay-menu has a hardcoded aria-label=\"Голос OpenAI\" without data-i18n-aria (unlike all sibling controls in #voice-row).",
+          "note": "Confirmed: the preface's «← К выбору заклятий» had no data-i18n and the OpenAI voice select a Russian aria-label in every language.",
+          "resolution": "DONE. Keys ui_btn_back_to_spells and ui_voice_openai_voice in all four locales."
+        },
+        {
+          "id": "CT2-014_riddle_435_flag_in_the_locale_path",
+          "finding": "C2-014",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "GD[\"435\"].riddle specifies \"requires_flag\":\"hyena_met\" and \"fail_target\":100 (AS-04: answering «ГИЕНА»",
+          "note": "Confirmed for the requires_flag gap: the locale answer path went to §66 before checking hyena_met. Verifying the scenario found more: the answer lists of group_72 held «hedgehog» (EN), «їжак» (UK) and «hérisson» beside «hyène» (FR), while §66 asks «Так вы и в самом деле встречали Гиену?» (ГИЕНА 36 + 30 = 66) - the right answer failed in English and Ukrainian, a hedgehog passed in three languages (see CT2-020).",
+          "resolution": "DONE. requires_flag checked in the locale path too (a correct answer without the §337 encounter goes to fail_target 100); the §435 answers fixed (CT2-020)."
+        },
+        {
+          "id": "CT2-015_map_refs",
+          "finding": "C2-015",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Two data-integrity mismatches between BC_MAP_DEF and GD: (1) Node ci_trap_corridors on layer \"castle_interior\" («Внутренние уровни замка») lists paragraph_refs [1207, 440, 532, 437], all four of which sit in the Enchanted Forest upstream of the castle gates (245/640 → 449 → 532 → 437 → 230/1172 → 353 → ...",
+          "note": "Confirmed: ci_trap_corridors (castle interior) listed the forest paragraphs 1207 / 440 / 532 / 437 (the dragon) and opened the castle layer early; three victory markers named no fight paragraph.",
+          "resolution": "DONE. The forest paragraphs taken off the castle corridors; enc_wood_goblin + §303, enc_gate_guards + §262 / §628, enc_princess_room + §823 (§1175 is enc_orc_gatehall already); guard 6d: every victory marker names a fight."
+        },
+        {
+          "id": "CT2-016_sec365_free_stake",
+          "finding": "C2-016",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "GD[\"826\"].choices[4] is gated on inventory_condition:\"dragon_liver\" (AR-13: «печень дракона (365)») and leads to GD[\"365\"], whose choices are [{\"target\":1062},{\"target\":919}].",
+          "note": "Same as Track 1 C1-024 - fixed in group_107 (§365 is a stake picker that refuses the dragon liver; the roll at §1062).",
+          "resolution": "DONE. No change in group_108; probe liver-refused-365-C1024, guard 6d C2-016."
+        },
+        {
+          "id": "CT2-017_dead_data",
+          "finding": "C2-017",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Cross-check of unused data and engine fields (Section 6.C): (1) Data fields never read by the engine: GD[\"536\"].has_copy_spell (superseded by combat_spells_allowed:[\"COPY\"]) and GD[\"781\"].dice_check.dice (renderDiceCheck hardcodes rolling two dice d6()+d6() and ignores dc.dice).",
+          "note": "Confirmed: §536 has_copy_spell is read by nothing (combat_spells_allowed rules), and items.json lacked the flask's slotCost 0 (a registry-generated ITEM_SIZES would weigh it again). §781 dice:2 matches the two dice of the check (kept as data); of the hooks named unused, auto_items.lose (§837, §1174) and stake_roll_target (§365) are used since group_107, summon_allowed (an opt-out) and alphabet_mode ru_yo_eq stay as extension points.",
+          "resolution": "DONE. §536 has_copy_spell removed; water_flask slotCost 0 in items.json; guard 6d C2-017."
+        },
+        {
+          "id": "CT2-018_stale_census",
+          "finding": "C2-018",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Several counts in GAME_RULES.md, HANDOFF.md, and README.md lag behind the groups 100–106 changes (or mislabel map edges as encounters): (1) auto_items is 199 in GD (AS62-04 moved §486, §1050, §1172 to post_combat_items), but GAME_RULES.md §8, HANDOFF.md, and README.md (table and UI/UX bullet) all state 202; (2) choices is 2,224 in GD (AS62-03 added §1141's refusal), but HANDOFF.md and README.md st",
+          "note": "Confirmed at 7fdf978 (2224 choices, auto_items 199, inventory_condition 154, consume_on_use 50, 77 fights, 20 luck checks, 378 ui keys, 35 nodes / 34 edges / 5 markers); group_107 moved them again.",
+          "resolution": "DONE. The census recomputed from the tree (scripted) and written to README, HANDOFF («Census (v2.210)»), GAME_RULES and TRANSLATION_GUIDE."
+        },
+        {
+          "id": "CT2-019_docs_vs_code",
+          "finding": "C2-019",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "Four non-count descriptions in README.md and GAME_RULES.md contradict the current codebase: (1) README.md («UI/UX»",
+          "note": "Confirmed: README described procedural Web Audio sounds (the 20 OGG files play through <audio>), marked dist/sounds «prepared», left map/ and sounds/ out of the distribution folder and listed the purged assets/illustrations; GAME_RULES §6 left the Golden Snake and the crossbow out of the Dragon Strength kills.",
+          "resolution": "DONE. README: sound, tree and the distribution folder (art/, map/, sounds/, audio/) corrected; GAME_RULES §6 lists every kill that ticks."
+        },
+        {
+          "id": "CT2-020_sec435_answer_lists_hedgehog",
+          "finding": "adjudication of C2-014",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "The §435 answer lists of the translations (group_72) do not name the acquaintance of §66.",
+          "note": "EN held only «hedgehog», UK only «їжак», FR «hérisson» and «hyène»; §66 «Так вы и в самом деле встречали Гиену?» (EN «So you really did meet the Hyena?», FR «la Hyène», UK «Гієну»), and the RU sum ГИЕНА 36 + 30 = 66. The six other riddles were checked in all three languages and are right.",
+          "resolution": "DONE. EN hyena / hyaena, UK гієна, FR hyène (folded hyene); the riddle harness pins them and refuses the hedgehog; probes hyena-riddle-*-C2014."
+        },
+        {
+          "id": "G108-LBL_group107_labels_reviewed",
+          "finding": "maintainer review of the group_107 labels (newer than the Track 3 bundle)",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The 29 choice labels, 6 item names and 15 interface strings added by group_107 were never reviewed against the prose of each language.",
+          "note": "Four did not match: EN §361 «controller» (the prose: «the attendant»), UK §1212 «Йти геть» and «кістку» (§826 «Піти», §1062 «гральну кістку»), the «Всё» key named «All» / «Усе» (EN «Everything», UK «Все» in §795), and the spell picker asked «which spell to give up» where it also serves a cast (§614). The RU and FR §893 labels were generator artifacts («Есть золотая стрела, то (1079)»).",
+          "resolution": "DONE. Relabelled in their languages; the picker asks which spell to spend; golden 6a follows RU §893; checklist C59 follows."
+        }
+      ]
     },
     "group_107_2026_11_19_carbon_track1": {
       "comment": "Gemini 4 Carbon (Google AI Studio, Thinking High) - Track 1, the fidelity sweep «text promises - engine does» over all 1221 paragraphs of the bundle at 7fdf978, 2026-11-19 (13 answers): 62 findings (P0 6, P1 46, P2 10). 61 confirmed and fixed - seven on the author's decisions of 2026-11-19 (the copper ring, the black pearl and the twelve eyes, the flying carpet and the diving suit, the children's secret, the trophy sword of §625, the flint of §600; §70 with no preference), 1 rejected (§887, decided in group_43). Evidence: _handoff/carbon_2026_11/results/1_fidelity (out of git).",

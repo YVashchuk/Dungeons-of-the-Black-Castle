@@ -97,7 +97,7 @@
   "thread_ball": {"legacyRu":"Клубочек","kind":"item"},
   "throne_lore": {"legacyRu":"Знание о троне","kind":"flag"},
   "treasure_lore": {"legacyRu":"Знание о кладе","kind":"flag"},
-  "water_flask": {"legacyRu":"Фляга с водой","kind":"item"},
+  "water_flask": {"legacyRu":"Фляга с водой","kind":"item","slotCost":0},
   "watermelon": {"legacyRu":"Арбуз с бахчи","kind":"item"},
   "whip": {"legacyRu":"Кнут","kind":"item"},
   "white_arrow": {"legacyRu":"Белая стрела","kind":"item"},

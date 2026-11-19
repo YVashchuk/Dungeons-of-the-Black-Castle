@@ -11,6 +11,7 @@ const CYR=/[\u0400-\u04FF]/;
 
 globalThis.GD=JSON.parse(remakeSrc.match(/^\s*const\s+GD\s*=\s*(\{[\s\S]*\})\s*;?\s*$/)[1]);
 globalThis.LOCALE_RU=JSON.parse(localeSrc.match(/const\s+LOCALE_RU\s*=\s*(\{[\s\S]*\})\s*;\s*$/)[1]);
+const J2=JSON.stringify;
 function brace(s){let i=gl.indexOf('{',s),d=0,j=i;for(;j<gl.length;j++){if(gl[j]==='{')d++;else if(gl[j]==='}'){d--;if(d===0){j++;break;}}}return gl.slice(s,j);}
 function gfn(n){const s=gl.indexOf('function '+n+'(');return brace(s).replace('function '+n+'(','globalThis.'+n+'=function(');}
 [gfn('pText'),gfn('label'),gfn('locSec'),gfn('enemyName')].forEach(c=>eval(c));
@@ -68,6 +69,36 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9am. group_108: the Gemini 4 Carbon engine audit (Track 2) of 7fdf978 - saved state, the shell, the fights after the win, the map
+(function(){
+  const sh=fs.readFileSync(path.join(REPO,'src','game_shell_top.html'),'utf8'), mp=fs.readFileSync(path.join(REPO,'src','map_module.js'),'utf8'), items=JSON.parse(fs.readFileSync(path.join(REPO,'src','registries','items.json'),'utf8'));
+  const fn=n=>{ const s=gl.indexOf('function '+n+'('); return s<0?'':brace(s); };
+  ck('C2-001 the restart buttons survive blocked storage (no bare localStorage.removeItem in the shell)', !/onclick="[^"]*localStorage\.removeItem/.test(sh)&&(sh.match(/restartClean\(\)/g)||[]).length===3&&/try\{ localStorage\.removeItem\(SAVE_KEY\); \}catch/.test(fn('restartClean')));
+  const rr=fn('resetRuntimeState');
+  ck('C2-002 an imported save starts with clean per-paragraph state (both import paths)', ['combatDone={}','luckDone={}','luckResult={}','sectionPrepState={}','_invModalOnDone=null','renderEventLog'].every(x=>rr.includes(x))&&fn('importSave').includes('resetRuntimeState()')&&/resetRuntimeState\(\); \/\* group_108 C2-002 \*\/ saveGame\(\)/.test(mp));
+  const ns=fn('normalizeSave');
+  ck('C2-003 normalizeSave: food STAMINA numeric, objects without an id dropped, a journal type a plain word, spells objects; the interrupted pick-up sanitized', ns.includes("isFinite(it.stamina))?it.stamina:0")&&ns.includes("ev.type.replace(/[^a-z0-9_-]/gi,'')")&&ns.includes("s.spells=s.spells.filter(sp=>sp&&typeof sp==='object'&&typeof sp.id==='string')")&&ns.includes('s.pendingPickup.items=s.pendingPickup.items.filter('));
+  ck('C2-004 a hash entry into another paragraph forgets the origin and a pending roll (sec.146 keeps both gates)', gl.includes('if(S.section!==tgt){ S.luckChecks={}; S.cameFrom=null; S.pendingDiceRoll=null; S.powerAt=null; }'));
+  ck('C2-005 / C1-015 a failed roll inside the luck window leaves a rescue exit (sec.203 the fish)', /if\(lr==='unlucky' && hasLucky && !hasUnlucky && !luckRescue\(sec\)\)\{/.test(gl));
+  const rc=fn('refreshChoicesForState');
+  ck('C2-006 the choices follow the bag and the flask: the pick-up dialog, eating, dropping, adding, a sip', rc.includes('renderStakePicker(sec)')&&rc.includes('renderChoices(sec)')&&fn('closeInvModal').includes('else refreshChoicesForState();')&&['eatFood','removeItem','addItem','useFlask'].every(n=>fn(n).includes('refreshChoicesForState()')));
+  let pre=[]; for(const [k,s] of Object.entries(GD)){ if(!(s.enemies||[]).length) continue; if(!(s.choices||[]).some(c=>c.post_combat||c.combat_condition)) pre.push(k); }
+  ck('C2-007 after the win only the exits after the fight remain (every fight names its exits: '+(pre.join(',')||'none')+' without)', gl.includes('if(!ch.luck_type && (ch.post_combat || (ch.combat_condition && S.combatCondMet&&S.combatCondMet[S.section])) && passesInventoryCheck(ch) && passesGoldCheck(ch)){')&&pre.length===0);
+  ck('C2-008 an interrupted pick-up dialog is saved and opens again after a reload (entry offers, trophies after the win, a choice that goes on)', fn('showInventoryModal').includes('S.pendingPickup={section:S.section,items:pendingItems,next:null}')&&fn('closeInvModal').includes('S.pendingPickup=null')&&gl.includes('S.pendingPickup.next=ch.target')&&gl.includes("const pp=S.pendingPickup; const left=(pp.items||[]).filter(")&&gl.includes('// group_108 C2-008: trophies a reload interrupted'));
+  ck('C2-009 / C1-061 the stake picker opens a new round', /S\.betRoundId=\(S\.betRoundId\|\|0\)\+1/.test(fn('renderStakePicker')));
+  ck('C2-010 healing and Indifference end with the fight and do nothing for the dead', fn('useHealingInCombat').includes('if(!combatState||combatDone[S.section]||S.stamina<=0) return;')&&fn('useIndifferenceInCombat').includes('if(combatDone[S.section]||S.stamina<=0||combatResolved(combatState)) return;')&&fn('endCombat').includes("['btn-heal-spell','btn-indifference-spell'].forEach")&&(()=>{ const l=fn('endCombat').split('\n').find(x=>x.includes("const flBtnEnd=document.getElementById('combat-flee-btn')")); return !!l&&!l.slice(0,l.indexOf('const flBtnEnd=')).includes('//'); })()&&fn('endCombatRouted').includes("'btn-indifference-spell','btn-heal-spell'"));
+  ck('C2-011 the batch\'s eat button goes with the batch; a thing that does not fit is reported', gl.includes("if(eatSib&&eatSib.dataset&&eatSib.dataset.batchEat) eatSib.remove();")&&gl.includes("eat.dataset.batchEat='1';")&&gl.includes("if(skippedE) msgs.push(t('meshok_polon_2')+skippedE+t('ne_vzyato'));"));
+  ck('C2-012 sec.1175: a fight already won ends on resume; the luck offer closes when the third Orc falls to an item', fn('resumeCanonCombat').includes('if(combatState&&combatResolved(combatState)){ clearCombatExtraButtons(); endCombat(true); return; }')&&fn('updateCombatConditionButtons').includes("cs.special.type==='sec1175'&&!cs.special.luckChecked&&document.getElementById('combat-buttons-extra')"));
+  ck('C2-013 the preface back button and the OpenAI voice select are translated (keys in four languages)', sh.includes('data-i18n="ui_btn_back_to_spells"')&&sh.includes('data-i18n-aria="ui_voice_openai_voice"')&&['ru','en','fr','uk'].every(l=>{ const s=fs.readFileSync(path.join(REPO,'src','locale.'+l+'.js'),'utf8'); return s.includes('"ui_btn_back_to_spells"')&&s.includes('"ui_voice_openai_voice"'); }));
+  ck('C2-014 a riddle\'s required encounter holds in every language (the locale answer path checks requires_flag)', /if\(locTarget&&riddleConfig\.requires_flag&&!\(S\.inventory\|\|\[\]\)\.some\(it=>canonItem\(it\)===riddleConfig\.requires_flag\)\)/.test(fn('applyRiddleAnswer')));
+  const defLine=mp.split('\n').find(l=>/BC_MAP_DEF\s*=/.test(l)); const MAP=JSON.parse(defLine.slice(defLine.indexOf('{'),defLine.lastIndexOf('}')+1));
+  const node=id=>(MAP.nodes||[]).find(n=>n.id===id)||{}, enc=id=>(MAP.encounters||[]).find(n=>n.id===id)||{};
+  const forestInCastle=(MAP.nodes||[]).filter(n=>n.layer==='castle_interior').flatMap(n=>n.paragraph_refs||[]).filter(r=>[1207,440,532,437].includes(r));
+  const victories=(MAP.encounters||[]).filter(e=>!(e.paragraph_refs||[]).some(r=>GD[String(r)]&&(GD[String(r)].enemies||[]).length)).map(e=>e.id);
+  ck('C2-015 the forest dragon is not on the castle layer; every victory marker names a fight (no fight: '+(victories.join(',')||'none')+')', forestInCastle.length===0&&J2(node('ci_trap_corridors').paragraph_refs)==='[1082,1083,1206]'&&victories.length===0&&[[ 'enc_wood_goblin',303],['enc_gate_guards',262],['enc_gate_guards',628],['enc_princess_room',823]].every(([e,r])=>(enc(e).paragraph_refs||[]).includes(r)));
+  ck('C2-016 / C1-024 sec.365 lets the reader stake from the bag (not the liver)', GD['365'].stake_picker===true&&J2(GD['365'].stake_exclude)==='["dragon_liver"]');
+  ck('C2-017 no dead data: sec.536 has no has_copy_spell, the flask weighs nothing in the registry too', GD['536'].has_copy_spell===undefined&&!Object.values(GD).some(s=>'has_copy_spell' in s)&&(items.items||items).water_flask.slotCost===0);
+})();
 // 9al. group_107: the Gemini 4 Carbon fidelity sweep (Track 1) of 7fdf978 - the arithmetic of the book, the items' powers, the repairs
 (function(){
   const K40=['black_castle_key','signet','bear_key','all_key'], METAL=['black_castle_key','bear_key','all_key'], J=JSON.stringify, has=(p,t,cond)=>(GD[p].choices||[]).some(c=>c.target===t&&J(c.inventory_condition)===J(cond));
@@ -280,7 +311,7 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
 (function(){
   ck('CB-02 scripted luck persisted with prep and restored in getSectionPrep', gl.includes('scripted:true,prep:JSON.parse(JSON.stringify(prep))')&&gl.includes('rec&&rec.scripted&&rec.prep')&&gl.includes("S.luckChecks[String(S.section)].scripted){ luckDone[S.section]=true;"));
   ck('CB-03 summon commit is saved immediately', /S\.summonsUsed\.push\(allyKey\);\s*\n\s*saveGame\(\);/.test(gl));
-  ck('CB-04 hash entry clears a stale luck record', gl.includes('if(S.section!==tgt)S.luckChecks={};'));
+  ck('CB-04 hash entry clears a stale luck record', gl.includes('if(S.section!==tgt){ S.luckChecks={};'));
   ck('CU-01 riddle focus guarded by the dialog stack', gl.includes("if(inp.isConnected&&!(typeof _bcTopDialog==='function'&&_bcTopDialog())) inp.focus({preventScroll:true});"));
   ck('CU-02 paragraph marker focused on a genuine section change', gl.includes("sn.setAttribute('tabindex','-1'); sn.focus({preventScroll:true});")&&gl.includes('if(!(opts&&opts.repaint)){'));
   ck('CU-12 riddle feedback is a live status', gl.includes("fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');")&&gl.includes('bcAnnounce((feedback.textContent'));
