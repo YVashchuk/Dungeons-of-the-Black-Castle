@@ -183,7 +183,8 @@ The field counts are in Appendix A.
 - `HANDOFF.md`.
 
 **Method.**
-- Go through paragraphs 1…1221 in order, in batches of 100 (1–100, 101–200, …, 1201–1221). Deliver about three batches per answer.
+- Go through paragraphs 1…1221 in order, in batches of 100 (1–100, 101–200, …, 1201–1221). Deliver **one batch per answer**: with high thinking, a larger answer can spend the whole output budget on thinking and show nothing.
+- Keep your thinking on the current batch; the earlier batches are already delivered.
 - For each paragraph, read the prose and the labels, and list for yourself every mechanical promise.
 - Check each promise against `GD[N]`, and against the engine wherever the promise depends on it.
 - After each batch, write one coverage line, for example: `batch 401–500: read 100/100, findings 2`.
@@ -305,7 +306,7 @@ The field counts are in Appendix A.
 **Context.** The translations were reviewed in September 2026 against the proofread Russian (3,808 corrections). Labels and interface strings added since then were translated by the maintainer, for example the refusal at §1141 and the combat, luck and map strings.
 
 **Method.**
-- Paragraphs 1…1221 in batches of 100, about three batches per answer.
+- Paragraphs 1…1221 in batches of 100, **one batch per answer**.
 - Compare `p[N].t` and every `p[N].c[i]` with the Russian.
 - Then compare `ui`, `items`, `enemies`, `spells`, `allies`, `map`, `riddles`, `preface` and `pregame`.
 - Write one coverage line per batch.
