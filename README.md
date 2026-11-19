@@ -116,15 +116,12 @@ Dungeons-of-the-Black-Castle/
 │       └── art_catalog.py              # Python-каталог: 45 арт-записей, промпты + CDN URL + маппинг
 │
 ├── docs/
-│   ├── MIDJOURNEY_PROMPTS.md           # Промпты всех артов (включая Batch 4) + hero --cref
+│   ├── MIDJOURNEY_PROMPTS.md           # Промпты всех артов (Batch 1–4, очередь art55–71) + референс героя (V6 --cref; V8.2 — Edit Model)
 │   └── PWA_IMPLEMENTATION.md           # План активации PWA (от ChatGPT C-1)
 │
-├── scripts/                            # Git push helpers
+├── scripts/                            # Сборка оболочки, i18n, хэши загадок, озвучка, дайджест реестра, сценарии смоука, git-хелперы
 │
-└── _handoff/                           # Briefs для передачи контекста в новые AI-сессии
-    ├── PROJECT_BRIEF.md
-    ├── TASKS_CHATGPT.md
-    └── TASKS_GEMINI.md
+└── _handoff/                           # (вне git) канон-источники, оригиналы арта и карты, бандлы и результаты внешних AI-сессий, патчеры адьюдикации, раннер проб
 ```
 
 > **(prepared)** — файлы подготовлены, но ещё не активированы в билде.
@@ -147,7 +144,7 @@ bash build.sh
 Для перегенерации или добавления новых сцен:
 
 - Промпты → [`docs/MIDJOURNEY_PROMPTS.md`](docs/MIDJOURNEY_PROMPTS.md)
-- Hero `--cref` URL → `https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png`
+- Референс героя (V6: `--cref`; V8.2: референс Edit Model) → `https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png`
 - Python-каталог (программный доступ) → `art-pack/metadata/art_catalog.py`
 
 **Приоритет при рендеринге** (в `src/game_logic.js`):
@@ -192,7 +189,7 @@ bash build.sh
 - **Ремейк (основной):** Браславский + Морозов, 2018 — 1221 параграф
 - **Оригинальные издания:** 1991, 1995, 2010, 2014, 2023
 - **Ч/б иллюстрации 1991:** из сканов 1-го издания
-- **Цветные иллюстрации:** Midjourney v6 (2026), промпты в `docs/MIDJOURNEY_PROMPTS.md`
+- **Цветные иллюстрации:** Midjourney V6 (2026); очередь готовится под V8.2 (раздел «Midjourney, ноябрь 2026»); промпты в `docs/MIDJOURNEY_PROMPTS.md`
 
 **Источник истины.** Игровой текст — **русский**; эталон — `src/locale.ru.js`. За ним стоит канон: `_handoff/canon_sources/fb2_remake.fb2` (вне git с 11.09.2026) — ремастер 1-го издания с исправлением ошибок (**1221 параграф**; библиография 1-го издания 1991 г.: <https://fantlab.ru/edition25230>) — и `_handoff/canon_sources/book_1991_extracted.txt` (OCR издания 1991 г. для адьюдикации; тоже вне git). Все **намеренные** правки и отклонения фиксируются в `assets/text_corrections.json`. При любом вопросе или несоответствии «текст ↔ книга» порядок сверки: **реестр → FB2 → 1991**. Расхождение, не отражённое в реестре, — баг данных: заведите запись, не «чините» текст молча.
 

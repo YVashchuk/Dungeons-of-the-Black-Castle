@@ -22,7 +22,8 @@ Conventions:
     are still fully testable: the engine autosaves on every paragraph
     render and applies first-visit auto_items on render, so appending
     #N to the URL and reloading (F5) restores the save at that
-    paragraph with all entry grants applied. Each such scenario lists
+    paragraph with all entry grants applied (things are offered in the pick-up
+    dialog - take them). Each such scenario lists
     its exact hash-hops in place of a click list.
 
 ## i18n_ru_fallback_non_russian_lang
@@ -586,7 +587,7 @@ Conventions:
 
 **Commit:** `87a58d2`
 
-**What to check:** On entering §688 the hero finds a white-fletched arrow in the throne's secret compartment. auto_items notification should display 'Белая стрела'. Open inventory: 'Белая стрела' present.
+**What to check:** On entering §688 the hero finds a white-fletched arrow in the throne's secret compartment: the pick-up dialog offers 'Белая стрела' (take it with «+ Взять»), and the knowledge 'Знание о троне' is learned silently - it shows in the bag without a drop button (group_85 AS-12).
 
 **Path:**
 
@@ -660,7 +661,7 @@ Conventions:
 
   >> STATE ROUTE (no click path exists — see Conventions):
 
-  1) Hash-load #688 (append to the URL, press F5): 'Белая стрела' is granted on entry via first-visit auto_items, and the game autosaves.
+  1) Hash-load #688 (append to the URL, press F5): the pick-up dialog offers 'Белая стрела' - take it, «Готово»; the game autosaves.
   2) Hash-load #535.
   3) Verify the 'Белую стрелу (2)' offer button as described above.
 
@@ -767,7 +768,7 @@ Conventions:
 
 **Commit:** `cce1a1f`
 
-**What to check:** On entering §757 the player gains 'Целый меч' AND a +1 МАСТЕРСТВО bonus. Both notifications should appear; HUD skill counter should tick up by 1.
+**What to check:** On entering §757 the pick-up dialog offers 'Целый меч'. There is no separate +1 SKILL notification any more (group_107 C1-043): the sword's +1 is its own equipment effect, applied in combat (G-09), so the HUD SKILL does not change on pick-up.
 
 **Path:**
 
@@ -1869,7 +1870,7 @@ Conventions:
 
 **Commit:** `group_6_candle_lamp`
 
-**What to check:** On entering sec.929 (buried chest) gold +10 applies and 'Свеча' is offered in the pick-up dialog on entry. Leaving to sec.167 without taking it does not grant it later.
+**What to check:** On entering sec.929 (the buried chest) +10 gold and +1 LUCK apply, and 'Свеча' and 'Серебряное кольцо' are offered in the pick-up dialog. Leaving to sec.167 without taking them does not grant them later.
 
 **Path:**
 
@@ -1941,7 +1942,7 @@ Conventions:
 
 **Must visit first:** §600
 
-**What to check:** After visiting sec.600 (Vodyanoi taverna chest auto-grant 'Свеча' + 'Огниво' + 'Белая стрела'), sec.696 should show THREE buttons: the new 'Зажечь свечу или светильник (706)' light-source branch ALONGSIDE the two fallback darkness branches. Click the light button — should navigate to sec.706 with the 'у вас есть свой источник света' narrative.
+**What to check:** After sec.600 (the tavern chest offers 'Огниво', 'Незажжённая свеча' and 'Белая стрела' - take the candle and the flint), sec.696 shows 'Зажечь свечу или светильник (706)' alongside the two darkness branches: the tavern candle lights only with the flint (group_107 C1-035). Click it → sec.706. With the unlit candle but no flint the light branch stays hidden; a lit 'Свеча' (sec.929) opens it alone.
 
 **Path:**
 
@@ -2042,7 +2043,7 @@ Conventions:
 
 **Must visit first:** §600
 
-**What to check:** With 'Свеча' in inventory, sec.1000 shows THREE buttons including the new 'Зажечь свечу или светильник (1010)'. Click → sec.1010 darkness-rescue narrative.
+**What to check:** With 'Незажжённая свеча' and 'Огниво' from sec.600 (or a lit 'Свеча' from sec.929), sec.1000 shows 'Зажечь свечу или светильник (1010)' alongside the two darkness fallbacks. Click → sec.1010.
 
 **Path:**
 
@@ -2214,7 +2215,7 @@ Conventions:
 
 **Commit:** `group_6_castle_key`
 
-**What to check:** Without 'Ключ Чёрного замка' in inventory, sec.91 (corridor locked door) shows ONLY the corridor-continue fallback (sec.671). The new 'Отпереть дверь Ключом Чёрного замка (131)' button must be HIDDEN.
+**What to check:** Without any +40 key (Ключ Чёрного замка, a signet, Ключ медведя, Ключ «Всё») sec.91 shows ONLY the corridor fallback (671); 'Отпереть дверь ключом (131)' is hidden (group_107 C1-036: the +40 family).
 
 **Path:**
 
@@ -2263,7 +2264,7 @@ Conventions:
 
 **Must visit first:** §471
 
-**What to check:** After visiting sec.471 (acquisition), sec.91 should show BOTH buttons: the new gated 'Отпереть дверь Ключом Чёрного замка (131)' AND the existing fallback (sec.671). Click the key option → sec.131 sentry-tower battle narrative ('Вы достаете ключ. Он легко поворачивается').
+**What to check:** After sec.471 (take 'Ключ Чёрного замка' in the pick-up dialog), sec.91 shows 'Отпереть дверь ключом (131)' and the fallback (671). Click the key → sec.131 ('Вы достаете ключ. Он легко поворачивается'). Any +40 key works here (a signet, Ключ медведя, Ключ «Всё»).
 
 **Path:**
 
@@ -2325,7 +2326,7 @@ Conventions:
 
 **Must visit first:** §471
 
-**What to check:** With the castle key, sec.687 shows 'Отпереть дверь Ключом Чёрного замка (727)' alongside the existing fallback to sec.1009. Click the key → sec.727 stairwell narrative.
+**What to check:** With a +40 key, sec.687 shows 'Отпереть дверь ключом (727)' alongside the fallback (1009). Click the key → sec.727 stairwell narrative.
 
 **Path:**
 
@@ -2381,7 +2382,7 @@ Conventions:
 
 **Must visit first:** §471
 
-**What to check:** With the castle key, sec.694 shows 'Отпереть дверь Ключом Чёрного замка (734)' alongside the existing fallback to sec.1046. Click the key → sec.734 'Достав ключ, вы отпираете дверь' narrative leading to sec.671.
+**What to check:** With a +40 key, sec.694 shows 'Отпереть дверь ключом (734)' alongside the fallback (1046). Click the key → sec.734 'Достав ключ, вы отпираете дверь' → sec.671.
 
 **Path:**
 
@@ -2447,7 +2448,7 @@ Conventions:
 
 **Must visit first:** §471
 
-**What to check:** With the castle key, sec.768 shows 'Отпереть дверь Ключом Чёрного замка (808)' alongside the existing fallback to sec.362. Click the key → sec.808 'Вы находите в заплечном мешке ключ' narrative leading to sec.1150.
+**What to check:** With a +40 key, sec.768 shows 'Отпереть дверь ключом (808)' alongside the fallback (362). Click the key → sec.808 → sec.1150.
 
 **Path:**
 
@@ -2509,7 +2510,7 @@ Conventions:
 
 **Commit:** `group_6_bear_key`
 
-**What to check:** sec.612 (bear gift after rescuing the cub) now grants 'Медный ключик' via auto_items (was previously the anonymous 'Ключ' — name unification). Click the only nav choice to sec.1106. Open inventory: 'Медный ключик' should be present, alongside the magical bell.
+**What to check:** sec.612 (the bear's gift after rescuing the cub) offers 'Ключ медведя' - a +40 key («им можно открыть многие двери в замке», group_107 C1-036) - and the magic bell. Take them and continue to sec.1106.
 
 **Path:**
 
@@ -2556,7 +2557,7 @@ Conventions:
 
 **Commit:** `group_6_bear_key`
 
-**What to check:** Without 'Медный ключик' in inventory, sec.803 shows ONLY two fallback buttons (window sec.323, back-door sec.607). The success branch 'Есть медный ключик, то достаньте его (1035)' must be HIDDEN — regression fix.
+**What to check:** Without the goblins' 'Медный ключик' (taken after the goblin fights at §69 / §233 / §567) sec.803 shows ONLY the window (323) and the back door (607). The bear's key of §612 does not open this lock.
 
 **Path:**
 
@@ -2607,71 +2608,61 @@ Conventions:
 
 **Commit:** `group_6_bear_key`
 
-**Must visit first:** §612
+**Must visit first:** §69
 
-**What to check:** After visiting sec.612 (bear gift), sec.803 should show THREE buttons including the gated 'Есть медный ключик, то достаньте его (1035)'. Click it to confirm the storeroom narrative (sec.1035 with sword/shield/potion).
+**What to check:** Win the two-goblin fight at §69 and take the bronze whistle and 'Медный ключик' («Забрать… (19)»); sec.803 then shows 'Есть медный ключик, то достаньте его и (1035)'. Click it → the storeroom (sec.1035). The bear's key of §612 does NOT open this lock.
 
 **Path:**
 
 ```
   Start at §1.
-     1. From §1: click '→ 1219 → §1219'
-     2. From §1219: click '→ 517 → §517'
-     3. From §517: click '→ 212 → §212'
-     4. From §212: click '→ 255 → §255'
-     5. From §255: click '→ 380 → §380'
-     6. From §380: click '→ 560 → §560'
-     7. From §560: click '→ 538 → §538'
-     8. From §538: click '→ 370 → §370'
-     9. From §370: click '→ 559 → §559'
-    10. From §559: click '→ 452 → §452'
-    11. From §452: click '→ 205 → §205'
-    12. From §205: click '→ 139 → §139'
-    13. From §139: click '→ 101 → §101'
-    14. From §101: click '→ 933 → §933'
-    15. From §933: click '→ 845 → §845'
-    16. From §845: click '→ 590 → §590'
-    17. From §590: click '→ 915 → §915'
-    18. From §915: click '→ 833 → §833'
-    19. From §833: click '→ 1177 → §1177'
-    20. From §1177: click '→ 393 → §393'
-    21. From §393: click '→ 816 → §816'
-    22. From §816: click '→ 676 → §676'
-    23. From §676: click '→ 844 → §844'
-    24. From §844: click '→ 1043 → §1043'
-    25. From §1043: click '→ 593 → §593'
-    26. From §593: click '→ 1095 → §1095'
-    27. From §1095: click '→ 996 → §996'
-    28. From §996: click '→ 787 → §787'
-    29. From §787: click '→ 740 → §740'
-    30. From §740: click '→ 612 → §612'
-    31. From §612: click '→ 1106 → §1106'
-    32. From §1106: click '→ 955 → §955'
-    33. From §955: click '→ 361 → §361'
-    34. From §361: click '→ 900 → §900'
-    35. From §900: click '→ 663 → §663'
-    36. From §663: click '→ 719 → §719'
-    37. From §719: click '→ 919 → §919'
-    38. From §919: click '→ 1100 → §1100'
-    39. From §1100: click '→ 671 → §671'
-    40. From §671: click '→ 42 → §42'
-    41. From §42: click '→ 161 → §161'
-    42. From §161: click '→ 488 → §488'
-    43. From §488: click '→ 359 → §359'
-    44. From §359: click '→ 814 → §814'
-    45. From §814: click '→ 735 → §735'
-    46. From §735: click '→ 1065 → §1065'
-    47. From §1065: click '→ 1056 → §1056'
-    48. From §1056: click '→ 646 → §646'
-    49. From §646: click '→ 1189 → §1189'
-    50. From §1189: click '→ 1099 → §1099'
-    51. From §1099: click '→ 894 → §894'
-    52. From §894: click '→ 1046 → §1046'
-    53. From §1046: click '→ 215 → §215'
-    54. From §215: click '→ 744 → §744'
-    55. From §744: click '→ 803 → §803'
+     1. From §1: click '→ 282 → §282'
+     2. From §282: click '→ 397 → §397'
+     3. From §397: click '→ 372 → §372'
+     4. From §372: click '→ 311 → §311'
+     5. From §311: click '→ 216 → §216'
+     6. From §216: click '→ 423 → §423'
+     7. From §423: click '→ 5 → §5'
+     8. From §5: click '→ 105 → §105'
+     9. From §105: click '→ 467 → §467'
+    10. From §467: click '→ 553 → §553'
+    11. From §553: click '→ 480 → §480'
+    12. From §480: click '→ 1176 → §1176'
+    13. From §1176: click '→ 129 → §129'
+    14. From §129: click '→ 568 → §568'
+    15. From §568: click '→ 115 → §115'
+    16. From §115: click '→ 513 → §513'
+    17. From §513: click '→ 503 → §503'
+    18. From §503: click '→ 555 → §555'
+    19. From §555: click '→ 69 → §69'
+    20. From §69: click '→ 19 → §19'
+    21. From §19: click '→ 452 → §452'
+    22. From §452: click '→ 205 → §205'
+    23. From §205: click '→ 139 → §139'
+    24. From §139: click '→ 101 → §101'
+    25. From §101: click '→ 933 → §933'
+    26. From §933: click '→ 845 → §845'
+    27. From §845: click '→ 590 → §590'
+    28. From §590: click '→ 915 → §915'
+    29. From §915: click '→ 833 → §833'
+    30. From §833: click '→ 1177 → §1177'
+    31. From §1177: click '→ 393 → §393'
+    32. From §393: click '→ 816 → §816'
+    33. From §816: click '→ 676 → §676'
+    34. From §676: click '→ 844 → §844'
+    35. From §844: click '→ 1101 → §1101'
+    36. From §1101: click '→ 1065 → §1065'
+    37. From §1065: click '→ 1056 → §1056'
+    38. From §1056: click '→ 646 → §646'
+    39. From §646: click '→ 1189 → §1189'
+    40. From §1189: click '→ 1099 → §1099'
+    41. From §1099: click '→ 894 → §894'
+    42. From §894: click '→ 1046 → §1046'
+    43. From §1046: click '→ 215 → §215'
+    44. From §215: click '→ 744 → §744'
+    45. From §744: click '→ 803 → §803'
 ```
-  (55 clicks total, graph: full)
+  (45 clicks total, graph: full)
 
 ---
 
@@ -2718,7 +2709,7 @@ Conventions:
 
 **Must visit first:** §612
 
-**What to check:** After visiting sec.612, sec.851 (long polutemniy corridor with a door) should show 'Отпереть дверь Медным ключиком (891)' alongside the existing fallback (sec.881). Click the key option → sec.891 jamming-narrative.
+**What to check:** After sec.612 ('Ключ медведя'), sec.851 shows 'Отпереть дверь ключом (891)' alongside the fallback (881). A metal +40 key turns this lock and snaps in it (consumed); a signet does not open it (group_107 C1-036).
 
 **Path:**
 
@@ -2793,7 +2784,7 @@ Conventions:
 
 **Must visit first:** §612
 
-**What to check:** After visiting sec.612, sec.881 (corridor branching from sec.851) should show 'Отпереть дверь Медным ключиком (921)' alongside the existing fallback (sec.1123). Click the key option → sec.921 tomb-entrance narrative. This restores an orphan-target — sec.921 was unreachable in remake prior to this commit.
+**What to check:** After sec.612, sec.881 shows 'Отпереть дверь ключом (921)' alongside the fallback (1123). Click → sec.921 (the tomb entrance).
 
 **Path:**
 
@@ -2931,7 +2922,7 @@ Conventions:
 
 **Must visit first:** §198
 
-**What to check:** After visiting sec.198, sec.108 shows THREE buttons: the new gated 'Идти за клубочком (158)' AND the two existing manual-direction options. Click the klubochek option → sec.158 'Клубочек сворачивает на тропинку, ведущую налево'. This canonically follows Лесовичок's 'налево первый перекресток' directive.
+**What to check:** After sec.198, sec.108 shows 'Идти за клубочком (158)' and the two manual directions. Taking a manual direction (485 / 64) loses the ball («клубочек укатится», group_107 C1-025); following it to sec.158 and on to sec.747 spends it («клубка за ними нет»).
 
 **Path:**
 
@@ -2969,7 +2960,7 @@ Conventions:
 
 **Must visit first:** §198
 
-**What to check:** After visiting sec.198, sec.366 (three-way fork) shows FOUR buttons: the new gated 'Идти за клубочком (416)' AND the three existing manual choices. Click klubochek → sec.416 'Клубочек катится прямо. Вернитесь на sec.366'.
+**What to check:** After sec.198, sec.366 shows 'Идти за клубочком (416)' and the three manual choices; turning left (483) or right (473) loses the ball, straight on (549) keeps it. Following it → sec.416 → back to sec.366.
 
 **Path:**
 
@@ -3003,7 +2994,7 @@ Conventions:
 
 **Must visit first:** §198
 
-**What to check:** After visiting sec.198, sec.401 shows THREE buttons: the new gated 'Идти за клубочком (451)' AND the two existing manual choices. Click klubochek → sec.451 'Клубочек катится прямо, а вы можете вернуться на sec.401'.
+**What to check:** After sec.198, sec.401 shows 'Идти за клубочком (451)' and the two manual choices; turning to it (381) loses the ball. Following it → sec.451 → back to sec.401.
 
 **Path:**
 
@@ -3034,7 +3025,7 @@ Conventions:
 
 **Commit:** `group_6_ruby_ring`
 
-**What to check:** sec.1071 (post-magician cabinet, ring selection) should now grant 'Перстень с рубином' via auto_items on entry. Open inventory after entering sec.1071: the ruby ring is present. The four cabinet inspection options (sec.797 / sec.411 / sec.850 / sec.297) remain unchanged.
+**What to check:** sec.1071: the hero puts on 'Перстень с рубином' - it is equipped (weightless, no pick-up dialog, it cannot be lost to a full bag, group_107 C1-056) and shows in the bag. The four cabinet inspections (797 / 411 / 850 / 297) remain.
 
 **Path:**
 
@@ -3246,7 +3237,7 @@ Conventions:
 
   >> STATE ROUTE (no click path exists — see Conventions):
 
-  1) Hash-load #791: 'Рубиновая звезда' is granted on entry via auto_items.
+  1) Hash-load #791: the pick-up dialog offers 'Рубиновая звезда' - take it.
   2) Hash-load #637.
   3) Verify the star-hint button (708) as described above.
 
@@ -3805,7 +3796,7 @@ Conventions:
 
 **Commit:** `group_6_white_arrow_navigation (FINAL group_6 item)`
 
-**What to check:** sec.688 (dining-hall throne discovery) should now grant BOTH 'Белая стрела' AND new token 'Знание о троне' via auto_items. Open inventory after entering: both items present. The arrow remains a separate physical item; the knowledge token is a new transferable mechanic specifically for the throne-tray +400 consumer.
+**What to check:** sec.688: the pick-up dialog offers 'Белая стрела' (a physical item - take it), and the knowledge 'Знание о троне' is learned silently (no dialog; it shows in the bag without a drop button). The arrow and the knowledge are separate: the knowledge alone opens sec.741 → 1141.
 
 **Path:**
 
@@ -3927,7 +3918,7 @@ Conventions:
 
 **Must visit first:** §612
 
-**What to check:** After visiting sec.612 (bear-gift acquisition), enter sec.851 and click the gated 'Отпереть дверь Медным ключиком (891)' button. Two state changes expected: (1) navigation to sec.891 jamming-narrative; (2) 'Медный ключик' REMOVED from S.inventory via the new consume_on_use field. Verify inventory after the click — the copper key should be gone. The notification panel should show '− Медный ключик'. The event log should record 'Предмет израсходован.'
+**What to check:** After sec.612 (take 'Ключ медведя'), enter sec.851 and click 'Отпереть дверь ключом (891)'. Two state changes: (1) navigation to sec.891; (2) the key is gone from the bag (consume_on_use: any metal +40 key - «придется вычеркнуть ключ»), with the notification '− Ключ медведя'.
 
 **Path:**
 
@@ -4071,7 +4062,7 @@ Conventions:
 
 **Commit:** `group_6_emerald_ring`
 
-**What to check:** sec.479 (emerald-ring put-on) should now grant 'Перстень с изумрудом' via auto_items on entry. Open inventory after entering: 'Перстень с изумрудом' present. The four cabinet inspection choices (sec.797 / sec.411 / sec.850 / sec.297) remain unchanged.
+**What to check:** sec.479: the hero puts on 'Перстень с изумрудом' - equipped, weightless, no pick-up dialog (group_107 C1-056); it shows in the bag. The four cabinet inspections remain.
 
 **Path:**
 
@@ -4188,7 +4179,7 @@ Conventions:
 
   >> STATE ROUTE (no click path exists — see Conventions):
 
-  1) Hash-load #479 ('Перстень с изумрудом' granted on entry), then #74 ('Золотой апельсин'), then #1071 ('Перстень с рубином') - each hop autosaves.
+  1) Hash-load #479 ('Перстень с изумрудом' is put on), then #74 (take 'Золотой апельсин' in the pick-up dialog), then #1071 ('Перстень с рубином' is put on) - each hop autosaves.
   2) Hash-load #226.
   3) Verify FIVE buttons as described above.
 
@@ -4262,7 +4253,7 @@ Conventions:
 
 **Must visit first:** §385
 
-**What to check:** After visiting sec.385, sec.19 shows THREE buttons including 'Копать под дуплом сухого дерева (929)'. Click → sec.929 treasure-chest narrative (10 gold + Свеча via existing auto_items + 1 LUCK + Серебряное кольцо per canon — note known_gap: серебряное кольцо and 1 LUCK not yet in auto_items). This route was the SOLE canonical entry to sec.929 before this commit; without it, the candle_lamp acquisition via this paragraph was unreachable.
+**What to check:** After visiting sec.385, sec.19 shows THREE buttons including 'Копать под дуплом сухого дерева (929)'. Click → sec.929: +10 gold, +1 LUCK, and the pick-up dialog offers 'Свеча' and 'Серебряное кольцо'. This route is the only canonical entry to sec.929.
 
 **Path:**
 
@@ -4773,7 +4764,7 @@ Conventions:
 
 **Commit:** `group_17_spell_hooks`
 
-**What to check:** §93 marsh rescue: player with LEVITATION in spell budget should see 'Использовать заклятие Левитации (130)' button. Click → spell count decrements by 1, navigates to §130. Player without LEVITATION sees only the dead-end (game over). The spell:'LEVITATION' field added in this commit.
+**What to check:** §93 marsh rescue: with Levitation the button 'Использовать заклятие Левитации (130)' spends one charge and leads to §130. With the flying carpet in the bag (§227 → 529, §193, §342) the Levitation way is usable with the suffix «— на ковре-самолёте» and no charge is spent (group_107 C1-017); without Levitation and without the carpet the adventure ends there (group_105: a paragraph whose every way is unusable).
 
 **Path:**
 
@@ -4813,7 +4804,7 @@ Conventions:
 
 **Commit:** `group_17_spell_hooks`
 
-**What to check:** §329 sinkhole — same pattern as §93. Click 'target 432' button consumes LEVITATION charge. Without spell, dead-end death.
+**What to check:** §329 sinkhole: the way to §432 spends a Levitation charge. With the flying carpet in the bag (§227 → 529, §193, §342) the Levitation way is usable with the suffix «— на ковре-самолёте» and no charge is spent (group_107 C1-017); without Levitation and without the carpet the adventure ends there (group_105: a paragraph whose every way is unusable).
 
 **Path:**
 
@@ -4840,7 +4831,7 @@ Conventions:
 
 **Commit:** `group_17_spell_hooks`
 
-**What to check:** §521 bog rescue — same pattern. Click 'target 326' button consumes LEVITATION charge.
+**What to check:** §521 bog rescue: the way to §326 spends a Levitation charge. With the flying carpet in the bag (§227 → 529, §193, §342) the Levitation way is usable with the suffix «— на ковре-самолёте» and no charge is spent (group_107 C1-017); without Levitation and without the carpet the adventure ends there (group_105: a paragraph whose every way is unusable).
 
 **Path:**
 
@@ -4871,7 +4862,7 @@ Conventions:
 
 **Commit:** `group_17_spell_hooks`
 
-**What to check:** §705 castle window flight: 'Вылетите в окно, наложив заклятие Левитации (905)' button now consumes LEVITATION charge. Other 2 choices (target 892, 1059) remain non-spell.
+**What to check:** §705 castle window: 'Вылетите в окно, наложив заклятие… (905)' spends a Levitation charge; the two doors (892, 1059) stay open to anyone. With the flying carpet the window is usable «— на ковре-самолёте», no charge spent (group_107 C1-017).
 
 **Path:**
 
@@ -4915,7 +4906,7 @@ Conventions:
 
 **Commit:** `group_17_spell_hooks`
 
-**What to check:** §935 stone pit escape — single LEVITATION choice now consumes charge on click → §469.
+**What to check:** §935 stone pit: the single Levitation way (469) spends a charge. With the flying carpet in the bag (§227 → 529, §193, §342) the Levitation way is usable with the suffix «— на ковре-самолёте» and no charge is spent (group_107 C1-017); without Levitation and without the carpet the adventure ends there (group_105: a paragraph whose every way is unusable).
 
 **Path:**
 
@@ -4992,7 +4983,7 @@ Conventions:
 
 **Commit:** `group_17_spell_hooks`
 
-**What to check:** §596 lake crossing — 'target 57' SWIMMING branch now consumes spell. §596 LEVITATION branch (target 579) was already correctly wired. Third option (walk along shore, target 171) remains non-spell.
+**What to check:** §596 lake crossing: the Swimming way (57) spends a charge, the Levitation way (579) too; the shore path (171) is free. With the diving suit the Swimming way is usable «— в водолазном костюме», no charge spent (group_107 C1-062); the carpet stands in for Levitation.
 
 **Path:**
 
@@ -5030,7 +5021,7 @@ Conventions:
 
 **Commit:** `group_17_spell_hooks`
 
-**What to check:** §698 second SWIMMING cast against underground current. Click 'target 813' consumes SECOND SWIMMING charge per canonical 'наложить еще одно заклятие Плавания'. Player without two SWIMMING charges dies (canon).
+**What to check:** §698 the underground current: 'Продолжить (813)' needs a second Swimming charge. Without it the diving suit stands in for Swimming, or 'Помощь рыбки' offers 'Позвать на помощь Золотую рыбку (713)' → the shore (group_107 C1-041); with none of them the adventure ends.
 
 **Path:**
 
@@ -5281,11 +5272,684 @@ Conventions:
 
 ---
 
+## key40_bear_key_sec835
+
+**Target:** §835
+
+**Commit:** `group_107`
+
+**Must visit first:** §612
+
+**What to check:** With 'Ключ медведя' (§612) and no Levitation, sec.835 offers 'Открыть дверь ключом (875)' → §875 → rescue at §1060 (group_107 C1-036 / C1-046). Without a +40 key, Levitation or Pegasus the walls close in and the adventure ends.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 833 → §833'
+    19. From §833: click '→ 1177 → §1177'
+    20. From §1177: click '→ 393 → §393'
+    21. From §393: click '→ 816 → §816'
+    22. From §816: click '→ 676 → §676'
+    23. From §676: click '→ 844 → §844'
+    24. From §844: click '→ 1043 → §1043'
+    25. From §1043: click '→ 593 → §593'
+    26. From §593: click '→ 1095 → §1095'
+    27. From §1095: click '→ 996 → §996'
+    28. From §996: click '→ 787 → §787'
+    29. From §787: click '→ 740 → §740'
+    30. From §740: click '→ 612 → §612'
+    31. From §612: click '→ 1106 → §1106'
+    32. From §1106: click '→ 955 → §955'
+    33. From §955: click '→ 361 → §361'
+    34. From §361: click '→ 900 → §900'
+    35. From §900: click '→ 663 → §663'
+    36. From §663: click '→ 719 → §719'
+    37. From §719: click '→ 919 → §919'
+    38. From §919: click '→ 1100 → §1100'
+    39. From §1100: click '→ 671 → §671'
+    40. From §671: click '→ 42 → §42'
+    41. From §42: click '→ 161 → §161'
+    42. From §161: click '→ 488 → §488'
+    43. From §488: click '→ 359 → §359'
+    44. From §359: click '→ 814 → §814'
+    45. From §814: click '→ 735 → §735'
+    46. From §735: click '→ 1065 → §1065'
+    47. From §1065: click '→ 1056 → §1056'
+    48. From §1056: click '→ 646 → §646'
+    49. From §646: click '→ 1189 → §1189'
+    50. From §1189: click '→ 1099 → §1099'
+    51. From §1099: click '→ 894 → §894'
+    52. From §894: click '→ 1046 → §1046'
+    53. From §1046: click '→ 215 → §215'
+    54. From §215: click '→ 744 → §744'
+    55. From §744: click '→ 323 → §323'
+    56. From §323: click '→ 888 → §888'
+    57. From §888: click '→ 836 → §836'
+    58. From §836: click '→ 1192 → §1192'
+    59. From §1192: click '→ 980 → §980'
+    60. From §980: click '→ 1067 → §1067'
+    61. From §1067: click '→ 993 → §993'
+    62. From §993: click '→ 835 → §835'
+```
+  (62 clicks total, graph: full)
+
+---
+
+## key40_all_key_sec302
+
+**Target:** §302
+
+**Commit:** `group_107`
+
+**Must visit first:** §795
+
+**What to check:** With 'Ключ «Всё»' (§795) sec.302 offers the hidden door (342); §342 offers the flying carpet for the bag (group_107 C1-019 / C1-044).
+
+**Path:**
+
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #795: the pick-up dialog offers 'Ключ «Всё»' - take it, «Готово» (autosave).
+  2) Hash-load #302.
+  3) Verify the hidden door (342) as described above; at §342 the carpet is offered.
+
+---
+
+## copper_ring_sec129
+
+**Target:** §129
+
+**Commit:** `group_107`
+
+**Must visit first:** §88
+
+**What to check:** With the copper ring (§88 - take it in the pick-up dialog) the fight at §129 offers «💍 Надеть медное кольцо и пройти мимо»: the hero slips past to 568 without a fight, no bronze whistle is offered (group_107 C1-007). The ring is never offered against ghosts and spirits (§618).
+
+**Path:**
+
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #88: the pick-up dialog offers the copper ring - take it, «Готово».
+  2) Hash-load #129.
+  3) Verify the ring button and the pass to 568 as described above.
+
+---
+
+## black_pearl_sec468
+
+**Target:** §468
+
+**Commit:** `group_107`
+
+**Must visit first:** §457
+
+**What to check:** With the black pearl (§457) §468 offers «⚫ Зажать чёрную жемчужину между ладонями (482)» before the lance strike: STAMINA intact, «Глаза Зелёных рыцарей ×2» in the bag (four eyes to a bag place). Twelve eyes open §860 → 196 (group_107 C1-029 / C1-030 / C1-048).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 15 → §15'
+     6. From §15: click '→ 407 → §407'
+     7. From §407: click '→ 181 → §181'
+     8. From §181: click '→ 40 → §40'
+     9. From §40: click '→ 528 → §528'
+    10. From §528: click '→ 267 → §267'
+    11. From §267: click '→ 147 → §147'
+    12. From §147: click '→ 457 → §457'
+    13. From §457: click '→ 156 → §156'
+    14. From §156: click '→ 367 → §367'
+    15. From §367: click '→ 44 → §44'
+    16. From §44: click '→ 468 → §468'
+```
+  (16 clicks total, graph: full)
+
+---
+
+## flying_carpet_sec980
+
+**Target:** §980
+
+**Commit:** `group_107`
+
+**Must visit first:** §227, §529
+
+**What to check:** Take the flying carpet at §227 («…(529)»). Without Levitation, §980 offers «Вылететь из окна (780) — на ковре-самолёте»: usable, no charge spent, the carpet stays (group_107 C1-017).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 227 → §227'
+    11. From §227: click '→ 529 → §529'
+    12. From §529: click '→ 447 → §447'
+    13. From §447: click '→ 536 → §536'
+    14. From §536: click '→ 257 → §257'
+    15. From §257: click '→ 452 → §452'
+    16. From §452: click '→ 205 → §205'
+    17. From §205: click '→ 139 → §139'
+    18. From §139: click '→ 101 → §101'
+    19. From §101: click '→ 933 → §933'
+    20. From §933: click '→ 845 → §845'
+    21. From §845: click '→ 590 → §590'
+    22. From §590: click '→ 915 → §915'
+    23. From §915: click '→ 833 → §833'
+    24. From §833: click '→ 1218 → §1218'
+    25. From §1218: click '→ 1058 → §1058'
+    26. From §1058: click '→ 899 → §899'
+    27. From §899: click '→ 772 → §772'
+    28. From §772: click '→ 962 → §962'
+    29. From §962: click '→ 1075 → §1075'
+    30. From §1075: click '→ 705 → §705'
+    31. From §705: click '→ 905 → §905'
+    32. From §905: click '→ 836 → §836'
+    33. From §836: click '→ 1192 → §1192'
+    34. From §1192: click '→ 980 → §980'
+```
+  (34 clicks total, graph: full)
+
+---
+
+## diving_suit_sec614
+
+**Target:** §614
+
+**Commit:** `group_107`
+
+**Must visit first:** §1214
+
+**What to check:** At §1214 the pick-up dialog offers the diving suit: +1 LUCK only when it is taken (once). Without spells, §614 «…Плавания или Левитации (581)» is usable «— в водолазном костюме» (group_107 C1-062).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 282 → §282'
+     2. From §282: click '→ 397 → §397'
+     3. From §397: click '→ 372 → §372'
+     4. From §372: click '→ 311 → §311'
+     5. From §311: click '→ 216 → §216'
+     6. From §216: click '→ 423 → §423'
+     7. From §423: click '→ 83 → §83'
+     8. From §83: click '→ 408 → §408'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 586 → §586'
+    11. From §586: click '→ 610 → §610'
+    12. From §610: click '→ 1214 → §1214'
+    13. From §1214: click '→ 157 → §157'
+    14. From §157: click '→ 716 → §716'
+    15. From §716: click '→ 737 → §737'
+    16. From §737: click '→ 391 → §391'
+    17. From §391: click '→ 841 → §841'
+    18. From §841: click '→ 164 → §164'
+    19. From §164: click '→ 1203 → §1203'
+    20. From §1203: click '→ 253 → §253'
+    21. From §253: click '→ 508 → §508'
+    22. From §508: click '→ 291 → §291'
+    23. From §291: click '→ 7 → §7'
+    24. From §7: click '→ 596 → §596'
+    25. From §596: click '→ 57 → §57'
+    26. From §57: click '→ 290 → §290'
+    27. From §290: click '→ 582 → §582'
+    28. From §582: click '→ 614 → §614'
+```
+  (28 clicks total, graph: full)
+
+---
+
+## spell_picker_sec76
+
+**Target:** §76
+
+**Commit:** `group_107`
+
+**What to check:** With two kinds of spells (e.g. Levitation and Fire), «Согласиться и отдать заклятие за перстень (487)» opens a picker: the reader chooses which charge goes; «Отмена» closes it (group_107 C1-005). With one kind the charge goes at once.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+```
+  (7 clicks total, graph: basic)
+
+---
+
+## money_stakes_sec1212
+
+**Target:** §1212
+
+**Commit:** `group_107`
+
+**What to check:** §1212 offers «Поставить 2 / 4 / 8 золотых (1062)» (as at §826) and the stake picker for a thing from the bag; the dragon's liver is not among the stakes (group_107 C1-061 / C1-024). A picked stake opens a new betting round.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 784 → §784'
+    19. From §784: click '→ 858 → §858'
+    20. From §858: click '→ 833 → §833'
+    21. From §833: click '→ 1218 → §1218'
+    22. From §1218: click '→ 1058 → §1058'
+    23. From §1058: click '→ 587 → §587'
+    24. From §587: click '→ 1009 → §1009'
+    25. From §1009: click '→ 792 → §792'
+    26. From §792: click '→ 990 → §990'
+    27. From §990: click '→ 361 → §361'
+    28. From §361: click '→ 900 → §900'
+    29. From §900: click '→ 663 → §663'
+    30. From §663: click '→ 826 → §826'
+    31. From §826: click '→ 1212 → §1212'
+```
+  (31 clicks total, graph: basic)
+
+---
+
+## flee_in_combat_sec455
+
+**Target:** §455
+
+**Commit:** `group_107`
+
+**What to check:** In the fight a «🏃 …» button flees to §733 for −2 STAMINA once (§733 adds nothing more, group_107 C1-028); the button leaves with the fight.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 833 → §833'
+    19. From §833: click '→ 1177 → §1177'
+    20. From §1177: click '→ 393 → §393'
+    21. From §393: click '→ 622 → §622'
+    22. From §622: click '→ 394 → §394'
+    23. From §394: click '→ 507 → §507'
+    24. From §507: click '→ 1108 → §1108'
+    25. From §1108: click '→ 659 → §659'
+    26. From §659: click '→ 455 → §455'
+```
+  (26 clicks total, graph: full)
+
+---
+
+## spell_reflect_sec3
+
+**Target:** §3
+
+**Commit:** `group_107`
+
+**Must visit first:** §522
+
+**What to check:** With the children's secret (§522: 'Секрет обращения заклятий') and Weakness known, §3 offers «Обратить заклятие Слабости на шпиона (3)»: the spy's −2 lands on him (group_107 C1-031). Without the secret the button is not shown.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 264 → §264'
+     6. From §264: click '→ 424 → §424'
+     7. From §424: click '→ 261 → §261'
+     8. From §261: click '→ 520 → §520'
+     9. From §520: click '→ 413 → §413'
+    10. From §413: click '→ 20 → §20'
+    11. From §20: click '→ 332 → §332'
+    12. From §332: click '→ 209 → §209'
+    13. From §209: click '→ 442 → §442'
+    14. From §442: click '→ 202 → §202'
+    15. From §202: click '→ 599 → §599'
+    16. From §599: click '→ 398 → §398'
+    17. From §398: click '→ 350 → §350'
+    18. From §350: click '→ 238 → §238'
+    19. From §238: click '→ 522 → §522'
+    20. From §522: click '→ 443 → §443'
+    21. From §443: click '→ 207 → §207'
+    22. From §207: click '→ 143 → §143'
+    23. From §143: click '→ 3 → §3'
+```
+  (23 clicks total, graph: full)
+
+---
+
+## fish_help_sec203_failed_roll
+
+**Target:** §203
+
+**Commit:** `group_107`
+
+**Must visit first:** §13
+
+**What to check:** With 'Помощь рыбки' (§13), fail the luck roll at §203: the luck window offers «Продолжить» (not «Конец приключения»), then «Позвать на помощь Золотую рыбку (218)» (group_107 C1-015). Without the fish a failed roll ends the adventure.
+
+**Path:**
+
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #13 and click the only nav choice to sec.639: 'Помощь рыбки' is learned on that click (autosave).
+  2) Hash-load #203, test the luck and fail the roll (or roll until it fails on a fresh hero).
+  3) Verify «Продолжить» and then the fish button (218) as described above.
+
+---
+
+## secret_door_sec70
+
+**Target:** §70
+
+**Commit:** `group_109`
+
+**Must visit first:** §76
+
+**What to check:** With the old man's secret (§76), §70 offers «Открыть потайную дверцу, о которой рассказал старичок (1145)» → §1145. His advice «Напоследок держись поправее» is §452 «Направо по лесу… (70)». The gates §56 / §205 have no such door (the author's decision, group_109 CT3-AUTH-01).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 371 → §371'
+     7. From §371: click '→ 76 → §76'
+     8. From §76: click '→ 560 → §560'
+     9. From §560: click '→ 538 → §538'
+    10. From §538: click '→ 370 → §370'
+    11. From §370: click '→ 559 → §559'
+    12. From §559: click '→ 452 → §452'
+    13. From §452: click '→ 70 → §70'
+```
+  (13 clicks total, graph: basic)
+
+---
+
+## victory_exits_sec388
+
+**Target:** §388
+
+**Commit:** `group_108`
+
+**What to check:** Win the fight with a Fire charge held: after the victory only 94 / 1098 / 1196 remain - no «Огонь (450)», no Copy, no talisman or silver vessel (group_108 C2-007: the ways before a fight are gone after the win).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 139 → §139'
+    13. From §139: click '→ 101 → §101'
+    14. From §101: click '→ 933 → §933'
+    15. From §933: click '→ 845 → §845'
+    16. From §845: click '→ 590 → §590'
+    17. From §590: click '→ 915 → §915'
+    18. From §915: click '→ 833 → §833'
+    19. From §833: click '→ 654 → §654'
+    20. From §654: click '→ 742 → §742'
+    21. From §742: click '→ 1074 → §1074'
+    22. From §1074: click '→ 766 → §766'
+    23. From §766: click '→ 718 → §718'
+    24. From §718: click '→ 285 → §285'
+    25. From §285: click '→ 1157 → §1157'
+    26. From §1157: click '→ 388 → §388'
+```
+  (26 clicks total, graph: full)
+
+---
+
+## pickup_dialog_F5_sec1214
+
+**Target:** §1214
+
+**Commit:** `group_108`
+
+**What to check:** With the pick-up dialog open press F5: the dialog opens again with the diving suit (group_108 C2-008). Take it: +1 LUCK; «Готово» closes the dialog for good.
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 282 → §282'
+     2. From §282: click '→ 397 → §397'
+     3. From §397: click '→ 372 → §372'
+     4. From §372: click '→ 311 → §311'
+     5. From §311: click '→ 216 → §216'
+     6. From §216: click '→ 423 → §423'
+     7. From §423: click '→ 83 → §83'
+     8. From §83: click '→ 408 → §408'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 586 → §586'
+    11. From §586: click '→ 610 → §610'
+    12. From §610: click '→ 1214 → §1214'
+```
+  (12 clicks total, graph: full)
+
+---
+
+## hash_entry_sec146
+
+**Target:** §146
+
+**Commit:** `group_108`
+
+**What to check:** After any move type #146 in the address bar: §146 shows both exits (933, 1054) and does not end the adventure (group_108 C2-004: a hash entry forgets where the hero came from).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 370 → §370'
+     9. From §370: click '→ 559 → §559'
+    10. From §559: click '→ 452 → §452'
+    11. From §452: click '→ 205 → §205'
+    12. From §205: click '→ 146 → §146'
+```
+  (12 clicks total, graph: full)
+
+---
+
+## eaten_food_gate_sec597
+
+**Target:** §597
+
+**Commit:** `group_108`
+
+**What to check:** With one food in the bag and STAMINA below the maximum, eat it with 🍴 in the bag: the food exit (85) disappears at once, without F5 (group_108 C2-006).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 282 → §282'
+     2. From §282: click '→ 397 → §397'
+     3. From §397: click '→ 372 → §372'
+     4. From §372: click '→ 311 → §311'
+     5. From §311: click '→ 216 → §216'
+     6. From §216: click '→ 423 → §423'
+     7. From §423: click '→ 83 → §83'
+     8. From §83: click '→ 408 → §408'
+     9. From §408: click '→ 292 → §292'
+    10. From §292: click '→ 157 → §157'
+    11. From §157: click '→ 716 → §716'
+    12. From §716: click '→ 737 → §737'
+    13. From §737: click '→ 391 → §391'
+    14. From §391: click '→ 841 → §841'
+    15. From §841: click '→ 164 → §164'
+    16. From §164: click '→ 1203 → §1203'
+    17. From §1203: click '→ 253 → §253'
+    18. From §253: click '→ 508 → §508'
+    19. From §508: click '→ 291 → §291'
+    20. From §291: click '→ 7 → §7'
+    21. From §7: click '→ 294 → §294'
+    22. From §294: click '→ 60 → §60'
+    23. From §60: click '→ 597 → §597'
+```
+  (23 clicks total, graph: full)
+
+---
+
+## riddle_hyena_en_sec435
+
+**Target:** §435
+
+**Commit:** `group_108`
+
+**What to check:** In English, without the §337 encounter, «hyena» → §100 (the lie is found out); after it → §66. «hedgehog» is not accepted (group_108 C2-014 / CT2-020).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 529 → §529'
+    11. From §529: click '→ 447 → §447'
+    12. From §447: click '→ 210 → §210'
+    13. From §210: click '→ 319 → §319'
+    14. From §319: click '→ 223 → §223'
+    15. From §223: click '→ 435 → §435'
+```
+  (15 clicks total, graph: basic)
+
+---
+
+## riddle_articles_fr_sec1113
+
+**Target:** §1113
+
+**Commit:** `group_109`
+
+**What to check:** In French «la toile» → §1131 and there «le cimetière» → §992: an answer typed with its article, as §28 teaches it, is accepted; a wrong word with an article is not (group_109 C3-FR-001).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 1219 → §1219'
+     2. From §1219: click '→ 517 → §517'
+     3. From §517: click '→ 212 → §212'
+     4. From §212: click '→ 255 → §255'
+     5. From §255: click '→ 380 → §380'
+     6. From §380: click '→ 560 → §560'
+     7. From §560: click '→ 538 → §538'
+     8. From §538: click '→ 274 → §274'
+     9. From §274: click '→ 433 → §433'
+    10. From §433: click '→ 227 → §227'
+    11. From §227: click '→ 1166 → §1166'
+    12. From §1166: click '→ 465 → §465'
+    13. From §465: click '→ 400 → §400'
+    14. From §400: click '→ 302 → §302'
+    15. From §302: click '→ 342 → §342'
+    16. From §342: click '→ 1155 → §1155'
+    17. From §1155: click '→ 1179 → §1179'
+    18. From §1179: click '→ 1113 → §1113'
+```
+  (18 clicks total, graph: full)
+
+---
+
 
 ## Summary
 
-- Scenarios with paths found: **121 / 127**
-- Scenarios with state routes (hash-navigation setup): **6**
+- Scenarios with paths found: **136 / 145**
+- Scenarios with state routes (hash-navigation setup): **9**
 - Scenarios needing manual route discovery: **0**
 
 ### State-routed (no click path by design):
@@ -5296,3 +5960,6 @@ Conventions:
   - fish_help_sec699_WITH_token: §1 → §699 via [13]
   - ruby_star_sec637_WITH_star: §1 → §637 via [791]
   - emerald_ring_sec226_WITH_all_three_items: §1 → §226 via [479, 74, 1071]
+  - key40_all_key_sec302: §1 → §302 via [795]
+  - copper_ring_sec129: §1 → §129 via [88]
+  - fish_help_sec203_failed_roll: §1 → §203 via [13]

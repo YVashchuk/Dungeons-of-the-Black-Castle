@@ -4,7 +4,8 @@ Dungeons of the Black Castle (Remake 1221-paragraph edition).
 
 Each entry contains:
   - prompt: original Midjourney prompt (for re-generation)
-  - ref_url: Midjourney CDN URL (for --cref reference in new generations)
+  - ref_url: Midjourney CDN URL of the generated image (V6: a --cref / --sref reference;
+             V8.2: a --sref style anchor or an Edit Model reference image)
   - remake_paragraphs: list of paragraph IDs in the 1221-paragraph REMAKE
   - original_paragraphs: list of paragraph IDs in the 583-paragraph ORIGINAL (reference)
   - scene: brief description
@@ -17,6 +18,8 @@ STYLE_SUFFIX = (
     'meets Viktor Vasnetsov, muted earth tones, candlelit gothic atmosphere, '
     'painterly detail, cinematic framing, golden autumn leaves drifting'
 )
+# The V6 line of the 45 generated arts. --cref works only on V6 / Niji 6; for V8.2 (the default
+# since 2026-07-24) see docs/MIDJOURNEY_PROMPTS.md, «Midjourney, ноябрь 2026».
 DEFAULT_PARAMS = f'--cref {HERO_CREF} --ar 3:2 --stylize 250 --v 6'
 DEFAULT_NEG = '--no cartoon, anime, modern clothing, CGI, text, watermark'
 

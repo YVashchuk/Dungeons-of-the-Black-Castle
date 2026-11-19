@@ -1,6 +1,6 @@
 # tests/smoke - automated live smoke (not part of the battery)
 
-`smoke_run.js` drives the BUILT game in the locally installed Google Chrome (headless, via `playwright-core`, no browser download) and executes 27 checks for real (rows of `MANUAL_SMOKE_CHECKS.md` plus the automation-only S-TITLE and S-EAT): hash entries, real button clicks, F5 reloads, keyboard (Tab / Enter / Esc / M incl. a Cyrillic-layout keydown), phone viewport 412x915 with bottom sheets, landscape 915x412, fonts, the reading column, dice / luck / purchase persistence. It is grey-box: assertions go through the DOM and the game globals (`S`, `combatState`).
+`smoke_run.js` drives the BUILT game in the locally installed Google Chrome (headless, via `playwright-core`, no browser download) and executes 32 checks for real (rows of `MANUAL_SMOKE_CHECKS.md` plus the automation-only S-TITLE, S-EAT and - after the Gemini 4 Carbon tracks, group_110 - S-POWERS-PHONE, S-PICKER-PHONE, S-FLEE-PHONE, S-PICKUP-F5, S-DOOR70: the item powers, the spell picker and the flee button on a phone, the pick-up dialog across F5, the secret door only at §70): hash entries, real button clicks, F5 reloads, keyboard (Tab / Enter / Esc / M incl. a Cyrillic-layout keydown), phone viewport 412x915 with bottom sheets, landscape 915x412, fonts, the reading column, dice / luck / purchase persistence. It is grey-box: assertions go through the DOM and the game globals (`S`, `combatState`).
 
 ## Run
 

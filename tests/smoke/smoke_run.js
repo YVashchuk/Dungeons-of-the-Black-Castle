@@ -314,6 +314,65 @@ async function check(id, browser, opts, fn) {
     const b = await ev(page, () => ({ st: S.stamina, bag: S.inventory.length, done: [...document.querySelectorAll('#c-list button')].filter(x => /Собрано/.test(x.textContent)).length, eatLeft: [...document.querySelectorAll('#c-list button')].some(x => /Съесть сразу/.test(x.textContent)) }));
     await shot(page, 'S-EAT'); rec('S-EAT', (a.eat && b.st === a.max && b.bag === a.bag && b.done === 1 && !b.eatLeft) ? 'PASS' : 'FAIL', 'eat-now offered=' + a.eat + '; stamina ' + a.st + ' -> ' + b.st + ' (max ' + a.max + '); bag ' + a.bag + ' -> ' + b.bag + '; collected marks=' + b.done + ' eat button left=' + b.eatLeft);
   });
+  // ---- group_110: the live smoke of groups 107-109 - the new buttons on the phone, the pick-up dialog across F5, the old man's door ----
+  const phoneG = { viewport: { width: 412, height: 915 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 };
+  const fits = (page, sel) => ev(page, s => [...document.querySelectorAll(s)].filter(b => b.offsetParent !== null).map(b => { const r = b.getBoundingClientRect(); return { h: Math.round(r.height), l: Math.round(r.left), r: Math.round(r.right), w: window.innerWidth }; }), sel);
+  const noHScroll = page => ev(page, () => document.scrollingElement.scrollWidth <= window.innerWidth + 1);
+  await check('S-POWERS-PHONE', browser, phoneG, async page => {
+    await open(page, 96); await ev(page, () => { S.inventory = ['ring', 'black_pearl']; S.stamina = S.staminaMax; saveGame(); renderGame({ repaint: true }); }); await page.waitForTimeout(400);
+    const btns = await fits(page, '#c-list button[data-power]'); const hs = await noHScroll(page);
+    await shot(page, 'S-POWERS-PHONE');
+    await ev(page, () => { const b = document.querySelector('#c-list button[data-power="pearl"]'); if (b) b.click(); }); await page.waitForTimeout(500);
+    await page.locator('.hud-btn[onclick="openSheet(\'inv\')"]').click(); await page.waitForTimeout(300);
+    const bag = await ev(page, () => document.getElementById('sheet-body').textContent.replace(/\s+/g, ' '));
+    const exits = await ev(page, () => [...document.querySelectorAll('#c-list button')].map(b => b.textContent).join('|'));
+    const ok = btns.length === 2 && btns.every(b => b.h >= 44 && b.l >= 0 && b.r <= b.w) && hs && /Глаза Зелёных рыцарей ×1/.test(bag) && /\(45\)/.test(exits);
+    rec('S-POWERS-PHONE', ok ? 'PASS' : 'FAIL', 'phone §96: power buttons ' + JSON.stringify(btns) + ' no h-scroll=' + hs + '; after the pearl: bag has «×1» eyes=' + /Глаза Зелёных рыцарей ×1/.test(bag) + ', exit 45=' + /\(45\)/.test(exits));
+  });
+  await check('S-PICKER-PHONE', browser, phoneG, async page => {
+    await open(page, 76); await ev(page, () => { S.spells = [{ id: 'LEVITATION', remaining: 1 }, { id: 'FIRE', remaining: 1 }]; saveGame(); renderGame({ repaint: true }); }); await page.waitForTimeout(400);
+    await ev(page, () => { document.querySelectorAll('.modal-overlay.on').forEach(m => m.classList.remove('on')); });
+    await clickText(page, /Согласиться и отдать заклятие/, '#c-list');
+    const box = await fits(page, '.spell-pick button'); const hs = await noHScroll(page); await shot(page, 'S-PICKER-PHONE');
+    await ev(page, () => { const b = document.querySelector('.spell-pick button[data-spell="FIRE"]'); if (b) b.click(); }); await page.waitForTimeout(500);
+    const r = await ev(page, () => ({ sec: S.section, spells: S.spells.map(s => s.id + ':' + s.remaining).join(',') }));
+    const ok = box.length === 3 && box.every(b => b.h >= 44 && b.l >= 0 && b.r <= b.w) && hs && r.sec === 487 && r.spells === 'LEVITATION:1,FIRE:0';
+    rec('S-PICKER-PHONE', ok ? 'PASS' : 'FAIL', 'phone §76: picker buttons ' + JSON.stringify(box) + ' no h-scroll=' + hs + '; Fire given -> §' + r.sec + ' spells ' + r.spells);
+  });
+  await check('S-FLEE-PHONE', browser, phoneG, async page => {
+    await open(page, 455); await ev(page, () => { S.stamina = 20; S.staminaMax = 24; saveGame(); renderGame({ repaint: true }); }); await page.waitForTimeout(300);
+    await clickText(page, /Вступить в бой/, '#c-list'); await page.waitForTimeout(300);
+    const f = await ev(page, () => { const b = document.getElementById('combat-flee-btn'); if (!b) return null; b.scrollIntoView({ block: 'center' }); const r = b.getBoundingClientRect(); return { h: Math.round(r.height), l: Math.round(r.left), r: Math.round(r.right), w: window.innerWidth, inView: r.top >= 0 && r.bottom <= window.innerHeight, text: b.textContent.trim() }; });
+    await shot(page, 'S-FLEE-PHONE');
+    await page.locator('#combat-flee-btn').click(); await page.waitForTimeout(500);
+    const r = await ev(page, () => ({ sec: S.section, st: S.stamina, modal: document.getElementById('modal-combat').classList.contains('on') }));
+    const ok = !!f && f.h >= 44 && f.l >= 0 && f.r <= f.w && f.inView && r.sec === 733 && r.st === 18 && !r.modal;
+    rec('S-FLEE-PHONE', ok ? 'PASS' : 'FAIL', 'phone §455: flee button ' + JSON.stringify(f) + '; fled -> §' + r.sec + ' STAMINA ' + r.st + ' (20 - 2)');
+  });
+  await check('S-PICKUP-F5', browser, phoneG, async page => {
+    await open(page, 1214);
+    const a = await ev(page, () => ({ on: document.getElementById('modal-inventory').classList.contains('on'), items: (typeof pendingItems !== 'undefined' ? pendingItems : []).map(i => typeof i === 'string' ? i : i.id) }));
+    await reload(page); await page.waitForTimeout(400); await ev(page, () => { S.luck = 8; S.luckMax = 12; saveGame(); });
+    const b = await ev(page, () => ({ on: document.getElementById('modal-inventory').classList.contains('on'), items: (typeof pendingItems !== 'undefined' ? pendingItems : []).map(i => typeof i === 'string' ? i : i.id), luck: S.luck }));
+    await shot(page, 'S-PICKUP-F5');
+    await ev(page, () => { const i = pendingItems.findIndex(x => (typeof x === 'string' ? x : x.id) === 'diving_suit'); if (i >= 0) takeItem(i); }); await page.waitForTimeout(200);
+    await page.locator('#btn-inv-done').click(); await page.waitForTimeout(400);
+    const c = await ev(page, () => ({ suit: S.inventory.includes('diving_suit'), luck: S.luck, on: document.getElementById('modal-inventory').classList.contains('on'), pend: !!S.pendingPickup }));
+    const ok = a.on && a.items.includes('diving_suit') && b.on && b.items.includes('diving_suit') && c.suit && c.luck === b.luck + 1 && !c.on && !c.pend;
+    rec('S-PICKUP-F5', ok ? 'PASS' : 'FAIL', 'phone §1214: offer ' + JSON.stringify(a) + '; after F5 ' + JSON.stringify(b) + '; taken: suit=' + c.suit + ' LUCK ' + b.luck + '->' + c.luck + ' dialog closed=' + !c.on + ' saved dialog cleared=' + !c.pend);
+  });
+  await check('S-DOOR70', browser, null, async page => {
+    await open(page, 452); await ev(page, () => { if (!S.inventory.includes('secret_door')) S.inventory.push('secret_door'); saveGame(); renderGame({ repaint: true }); }); await page.waitForTimeout(300);
+    await clickText(page, /Направо по лесу/, '#c-list'); await page.waitForTimeout(300);
+    const at70 = await ev(page, () => ({ sec: S.section, door: [...document.querySelectorAll('#c-list button')].some(b => /потайную дверцу/.test(b.textContent)) }));
+    await clickText(page, /потайную дверцу/, '#c-list'); await page.waitForTimeout(300);
+    const after = await ev(page, () => S.section);
+    await open(page, 56); await ev(page, () => { if (!S.inventory.includes('secret_door')) S.inventory.push('secret_door'); saveGame(); renderGame({ repaint: true }); }); await page.waitForTimeout(300);
+    const gate = await ev(page, () => [...document.querySelectorAll('#c-list button')].some(b => /потайную дверцу/.test(b.textContent)));
+    await shot(page, 'S-DOOR70');
+    const ok = at70.sec === 70 && at70.door && after === 1145 && !gate;
+    rec('S-DOOR70', ok ? 'PASS' : 'FAIL', '§452 «Направо по лесу» -> §' + at70.sec + ' door offered=' + at70.door + ' -> §' + after + '; at the gate §56 the door offered=' + gate + ' (expected false)');
+  });
   await browser.close();
   // ---- report ----
   const counts = results.reduce((m, r) => { m[r.verdict] = (m[r.verdict] || 0) + 1; return m; }, {});

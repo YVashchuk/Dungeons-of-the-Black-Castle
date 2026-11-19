@@ -40,19 +40,15 @@ The original 1991 edition is kept only as a scanned reference:
 
 `
 Dungeons-of-the-Black-Castle/
-├── assets/                     ← Source texts + reference PDFs + illustrations
-│   ├── fb2_remake.fb2          ← The canonical source (1221 paragraphs)
-│   ├── pdf_original_1991.pdf   ← Scanned 1st-edition PDF (historical reference only)
-│   ├── book_1991_extracted.txt ← Decoded 1991 text (617 paragraphs) — adjudication source
+├── assets/                     ← Texts, the registry, the rules, runtime art and map backgrounds (the canon sources — fb2, the 1991 PDF and its decoded text — are in _handoff/canon_sources, out of git since 2026-09-11)
 │   ├── book_text.md            ← Full text + corrections log (for Gemini/AI tools, MD format)
 │   ├── text_corrections.json   ← Authoritative correction registry (versioned; the last `version_history` key is the current version)
+│   ├── GAME_RULES.md           ← The rules as the engine implements them (regenerated from the code and the registry)
 │   ├── analytical_report.pdf   ← Design analysis for Windows + Android adaptation
-│   ├── art/                    ← Canonical runtime art binaries (75 files, 7.6 MB) → copied to dist/art
-│   └── illustrations/
-│       ├── originals/          ← 46 Midjourney PNGs, FULL RESOLUTION (kept as source)
-│       └── web/                ← 46 web-optimised JPEGs (900px, Q82) for runtime
+│   ├── art/                    ← Canonical runtime art binaries (75 files, 7.6 MB) → copied to dist/art (the full-resolution Midjourney originals are in _handoff/illustrations_originals, out of git)
+│   └── map/                    ← 3 map backgrounds → copied to dist/map
 ├── src/                        ← Game source (JS + HTML shell)
-│   ├── game_shell_top.html     ← HTML frame + CSS (still uses Google Fonts @import)
+│   ├── game_shell_top.html     ← HTML frame + CSS (its Google Fonts @import is stripped by the build — scripts/build_shell.py)
 │   ├── game_structure.js          ← GD = {1221 paragraph objects}, synced with dist
 │   ├── locale.ru.js            ← LOCALE_RU: all game text (1221 paragraphs + labels + UI), reference locale
 │   ├── locale.en/fr/uk.js       — full EN/FR/UK locales (prose + UI + riddle hashes; group_72)
@@ -69,21 +65,25 @@ Dungeons-of-the-Black-Castle/
 │   └── metadata/
 │       └── art_catalog.py      ← Programmatic catalog: 45 art entries
 ├── docs/
-│   ├── MIDJOURNEY_PROMPTS.md   ← All Midjourney prompts (incl. Batch 4) + hero --cref URL
+│   ├── MIDJOURNEY_PROMPTS.md   ← All Midjourney prompts (Batch 1–4, the queue art55–71) + the hero reference (V6 --cref; V8.2 — Edit Model)
 │   └── PWA_IMPLEMENTATION.md   ← PWA activation plan (ChatGPT C-1 verified)
 ├── dist/                       ← Built artifacts
 │   ├── dungeons-of-the-black-castle.html  ← BUILT game HTML (~3.5 MB, 4 languages)
 │   ├── art/                    ← Runtime art copied from assets/art (75 files, 7.6 MB)
+│   ├── map/                    ← 3 map backgrounds copied from assets/map
+│   ├── audio/                  ← Pre-rendered narration ru/ en/ fr/ uk/ — 4 × 1223 m4a
+│   ├── sounds/                 ← Sound effects (ui, combat, spells, ambience, events)
+│   ├── OFL.txt                 ← SIL Open Font License of the inlined fonts
 │   ├── manifest.webmanifest    ← (PREPARED, not active) PWA install metadata
 │   ├── sw.js                   ← (PREPARED, not active) Service worker
 │   └── icons/                  ← (PREPARED, not active)
 │       ├── icon-192.png
 │       ├── icon-512.png
 │       └── icon-maskable-512.png  ← Android adaptive icon
-├── scripts/                    ← Git push helpers
+├── scripts/                    ← Build helper (build_shell.py), i18n export / import, riddle hashes, narration (tts_*), registry digest, smoke paths (find_smoke_paths.py), git push helpers
 ├── tests/       — verification battery (17 harnesses + goldens + runner; node tests/run_all.js)
 ├── audit_cycles/               ← Historical audit archive (per-cycle briefs/reports; tracked)
-├── _handoff/                   ← (GIT-IGNORED) Briefs for external AI sessions
+├── _handoff/                   ← (GIT-IGNORED) Canon sources, art and map originals, bundles and results of external AI sessions, adjudication patchers, the probe runner
 ├── build.sh                    ← Concatenate src/* into dist/
 ├── README.md
 ├── QUICKSTART.md
@@ -113,7 +113,7 @@ See `docs/PWA_IMPLEMENTATION.md` for the step-by-step activation guide.
    - `src/mj_art.js` → `MJ_META` — runtime metadata (JavaScript)
    - `docs/MIDJOURNEY_PROMPTS.md` — human-readable catalog
    - `art-pack/metadata/art_catalog.py` — programmatic Python catalog
-   This allows re-generation with consistent style using `--cref <HERO_REF_URL>`.
+   This allows re-generation in a consistent style: on V6 with `--cref <HERO_REF_URL>`; on V8.2 (the default since July 2026, no `--cref`) the `ref_url`s serve as `--sref` style anchors and the hero comes through the Edit Model — see `docs/MIDJOURNEY_PROMPTS.md`, «Midjourney, ноябрь 2026».
 4. **Runtime precedence** in `game_logic.js` (`renderGame()`):
    1. Midjourney colored art (`MJ_MAP` → `MJ_DATA`) — preferred
    2. Legacy 1991 b/w scans (`ILLUST_MAP` → `ILLUST_DATA`) — fallback
@@ -121,8 +121,9 @@ See `docs/PWA_IMPLEMENTATION.md` for the step-by-step activation guide.
 
 ## Hero character reference
 
-When generating new Midjourney art, use this URL as `--cref` to keep the
-hero's appearance consistent across all scenes:
+When generating new Midjourney art on V6, use this URL as `--cref` to keep the
+hero's appearance consistent across all scenes (V8.2 has no `--cref`: give the
+same image to the Edit Model as a reference — see `docs/MIDJOURNEY_PROMPTS.md`):
 
 `
 https://cdn.midjourney.com/7115e2f5-78b6-488b-9cf0-285652478210/0_0.png
@@ -149,7 +150,7 @@ Examples:
 Full mapping lives in `src/mj_art.js` (`MJ_META.<art_id>.remakeParagraphs`)
 and mirrored in `art-pack/metadata/art_catalog.py`.
 
-Coverage (current, verified against `src/mj_art.js` / `src/illustrations.js`, registry v2.46+):
+Coverage (current, verified against `src/mj_art.js` / `src/illustrations.js`, re-verified 2026-11-19 at registry v2.212):
 - **107 paragraphs** covered by Midjourney colour art (42 art-ids / 45 runtime images; 46 source PNGs incl. title art and Batch 4)
 - **56 paragraphs** covered by 21 legacy 1991 b/w scans (fallback when no MJ art)
 - **132 paragraphs total** have art; the rest show text only

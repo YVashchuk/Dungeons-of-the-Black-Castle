@@ -215,7 +215,8 @@
     "v2.207 -> v2.208": "November 2026 - group_106 closed: the final ChatGPT 6.2 Astra check of 81eb997 (2026-11-17, desktop Chrome with live input on the published build) - C49, C53, C54, C57 PASS, no findings; ASTRA-05 and CHECK-01 confirmed (AS62r-04); the DOM model 37/37. Record only: registry (last_updated 2026-11-17), checklist journal, launch cards, HANDOFF; GAME_RULES.md label 2.207 -> 2.208 (R-03 guard). Battery ALL GREEN.",
     "v2.208 -> v2.209": "November 2026 - group_107: the Gemini 4 Carbon Track 1 fidelity sweep (62 findings) adjudicated: 61 fixed, 1 rejected (§887 face 6 - group_43). The book's arithmetic wired at 13 paragraphs called vestigial in June (reachability 1205 -> 1219; only §650 and §736 stay unreachable). Items' powers on the author's decision: the flying carpet and the diving suit stand in for Levitation and Swimming, the black pearl strikes the Green Knights (twelve eyes open §860), the copper ring passes living foes that bar the way, the children's secret turns back the spy's spells. Engine: the luck window keeps a rescue without luck (§203), a batch of things goes through the pick-up dialog (§724), Indifference obeys the allowed spells, prizes at dice are offered, a stake before every roll (§365, §1212), the any-spell picker, the flee inside a fight, a cost paid with the way (§468), stack items. Keys: the bear's key and the «Всё» key join the +40 family; the goblins' copper key opens only its own doors. The tavern candle needs the flint. §87 -> 942. Fidelity probes 77 -> 111; p1_6d 115 -> 125; the signet, group B, gate and branch checks follow. GAME_RULES.md + label 2.208 -> 2.209 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.209 -> v2.210": "November 2026 - group_108: the Gemini 4 Carbon Track 2 engine audit (19 findings) adjudicated: all confirmed - 16 fixed here, 3 fixed in group_107 as Track 1 findings. After a win only the exits after the fight remain (the ways before it led to a second fight, the indoor Fire death or a spent vessel); the pick-up dialog and the trophies survive a reload; an imported save starts with clean paragraph state and cannot smuggle markup; a typed #146 keeps both gates; the choices follow eating, dropping and sips; no healing or Indifference for the dead; the restart works with blocked storage; the §1175 orcs; the §435 riddle needs the hyena in every language and its translated answers now name the Hyena (they held a hedgehog since group_72). The map, two shell strings, dead data and the census of the docs corrected; the labels group_107 added were reviewed in four languages.",
-    "v2.210 -> v2.211": "November 2026 - group_109: the Gemini 4 Carbon Track 3 translation sweep (EN, FR, UK against the Russian) adjudicated. A riddle answer typed with its article («la toile», «le cimetière», «the web» - as §28 teaches them) now counts as the bare word; the §435 hedgehog of the translations was fixed in group_108; the labels of §348 (a chest) and §641 (a goldfish) in four languages, the Ukrainian §592 (the carpet) and §724 (the bedroom), and the French names of the Lesovichok, the diving suit and the council hall corrected. The author's decision: the old man's door opens only in the wall of §70 (the gates' exits of group_100 retired)."
+    "v2.210 -> v2.211": "November 2026 - group_109: the Gemini 4 Carbon Track 3 translation sweep (EN, FR, UK against the Russian) adjudicated. A riddle answer typed with its article («la toile», «le cimetière», «the web» - as §28 teaches them) now counts as the bare word; the §435 hedgehog of the translations was fixed in group_108; the labels of §348 (a chest) and §641 (a goldfish) in four languages, the Ukrainian §592 (the carpet) and §724 (the bedroom), and the French names of the Lesovichok, the diving suit and the council hall corrected. The author's decision: the old man's door opens only in the wall of §70 (the gates' exits of group_100 retired).",
+    "v2.211 -> v2.212": "November 2026 - group_110: maintenance after the three Gemini 4 Carbon tracks. The live smoke grows to 32 checks (the ring and pearl powers, the spell picker and the flee button on a phone, the pick-up dialog across F5, the door only at §70); the smoke-path scenarios follow the fixes (145 scenarios, none manual); the documentation and the registry match the tree again (10 retired choices; AR-06 and CT1-004 marked superseded by the author's §70 decision); the Midjourney catalog is brought up to November 2026 (V8.2 the default, --cref only on V6, the Edit Model) and the Track 4 brief prepares the queued prompts for V8.2. No game data changed."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -493,6 +494,50 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_110_2026_11_19_after_carbon": {
+      "comment": "Maintenance after the three Gemini 4 Carbon tracks (group_107-109), 2026-11-19: the live smoke and the smoke-path scenarios follow the big fixes, the documentation and the registry checked against the tree, the Midjourney prompt catalog brought up to November 2026 (V8.2 is the default, --cref is V6-only) and the Track 4 brief for Gemini 4 Carbon prepared. No game data changed.",
+      "source": "maintainer_2026_11_19",
+      "verified": "2026-11-19",
+      "items": [
+        {
+          "id": "G110-01_smoke_after_carbon",
+          "status": "DONE",
+          "hypothesis": "The live smoke (27 checks) did not exercise what the Carbon tracks changed most: the powers of the ring and the pearl, the spell picker and the flee button on a phone, the pick-up dialog across a reload, the secret door only at §70.",
+          "resolution": "DONE. tests/smoke/smoke_run.js +5 checks (32 in all): S-POWERS-PHONE (§96 at 412x915 - the power buttons at least 44 px high inside the viewport, no horizontal scroll; the pearl puts the Green Knights' eyes in the bag and opens the exit 45), S-PICKER-PHONE (§76 - the spell picker, Fire leads to §487 and spends its charge), S-FLEE-PHONE (§455 - the flee button in view, §733 with STAMINA -2), S-PICKUP-F5 (§1214 - the offer of the diving suit survives F5; taking it gives LUCK +1 and clears S.pendingPickup), S-DOOR70 (§452 «Направо по лесу» -> §70 offers the door -> §1145; the gate §56 does not). 32/32 PASS."
+        },
+        {
+          "id": "G110-02_smoke_paths_after_carbon",
+          "status": "DONE",
+          "hypothesis": "SMOKE_TEST_PATHS.md (generated by scripts/find_smoke_paths.py) described the routes before group_107-109: things granted silently on entry (now offered in the pick-up dialog), gates that changed (the +40 keys, the candle with the flint, the bear key, the ruby star, the ball of thread), and no scenario for the new mechanics.",
+          "resolution": "DONE. The affected scenarios updated (what_to_check, state_route, must_visit) and 18 added: the +40 keys at §835 and §302, the copper ring §129, the black pearl §468, the flying carpet §980, the diving suit §614, the spell picker §76, the stakes §1212, the flight §455, the reflected spell §3, the goldfish after a failed roll §203, the door §70, the victory exits §388, the pick-up dialog across F5 §1214, the address-bar entry #146, the eaten-food gate §597, the EN riddle §435, the FR riddle with its article §1113. Regenerated: 145 scenarios, 136 click paths, 9 state routes, 0 manual."
+        },
+        {
+          "id": "G110-03_docs_drift",
+          "status": "DONE",
+          "hypothesis": "The documentation lagged the tree: HANDOFF and GAME_RULES counted 8 retired choices (10 since group_107-109) and 27 smoke checks; PROJECT_NOTES listed the canon sources and the art originals under assets/ (in _handoff since 2026-09-11), said the shell «still uses Google Fonts @import» (the build strips it), and its dist tree lacked map/, audio/ and sounds/; README listed _handoff files that no longer exist; scripts/ was called «Git push helpers».",
+          "resolution": "DONE. HANDOFF (status, census v2.212 with 10 retired, smoke 32, tools, open items), GAME_RULES (label, §8 retired 10), tests/smoke/README.md, PROJECT_NOTES (tree, illustration rule 3, the hero reference, coverage re-verified: 107 paragraphs with colour art from 42 art ids, 56 with 21 scans of 1991, 132 in all), README (tree, art section, sources), the run log of MANUAL_SMOKE_CHECKS.md. The census numbers otherwise match the tree."
+        },
+        {
+          "id": "G110-04_superseded_secret_door",
+          "status": "DONE",
+          "hypothesis": "The registry still read as if the old man's door opened at the gates: AR-06 (group_100) and CT1-004 (group_107) carried no mark of the author's decision of 2026-11-19 (CT3-AUTH-01, group_109).",
+          "resolution": "DONE. Both items carry `superseded` pointing to v2.211 (group_109 CT3-AUTH-01): the door opens only in the castle wall at §70; the gates §56 / §205 no longer lead to §1145."
+        },
+        {
+          "id": "G110-05_midjourney_november_2026",
+          "status": "DONE",
+          "hypothesis": "The prompt catalog was written for Midjourney V6 (July 2026): every default line carries --cref and the note planned a V6 vs V7 test pair. Since then V8.2 became the default (24 July 2026), --cref works only on V6 / Niji 6, the Edit Model (V8.1 / V8.2, 27 August; masked inpainting and outpainting 24 September) replaced Omni and Character Reference, Draft mode and --hd exist, and V9 is announced for December 2026.",
+          "note": "From third-party guides and update digests (the official updates page needs JavaScript); to be verified against docs.midjourney.com before generating.",
+          "resolution": "DONE. docs/MIDJOURNEY_PROMPTS.md revision v3: the section «Midjourney, ноябрь 2026» (the models, what changes for our set, a draft V8.2 line beside the unchanged V6 line, the order of the move: Track 4, a Draft-mode test pair, the author's decision), the hero section and the model note updated; art_catalog.py docstring (ref_url as a --sref anchor or an Edit Model reference); PROJECT_NOTES and README follow. The 45 generated arts are unchanged."
+        },
+        {
+          "id": "G110-06_track4_brief",
+          "status": "DONE",
+          "hypothesis": "The queued arts (the regenerations art30 and art47, the replacements art55-59, Batch 5 art60-71 and the variants) need prompts for the current Midjourney before the author subscribes.",
+          "resolution": "DONE (prepared; the track itself will be a group of its own). audit_cycles/recheck_2026_11/BRIEF_midjourney_prompts_carbon.md - Track 4 for Gemini 4 Carbon: pre-flight; T1 the 45 arts (keep / regenerate / edit); T2 the V8.2 style system (--sref anchors from our own arts, the hero through the Edit Model); T3 the queued prompts; T4 the fixes by editing (art51, art08); T5 the V6 vs V8.2 test plan; deliverables MJ_PROMPTS_V8.json and a report. The upload bundle (six text files and 75 images) is built by _handoff/carbon_2026_11/make_bundle_mj.js (out of git)."
+        }
+      ]
     },
     "group_109_2026_11_19_carbon_track3": {
       "comment": "Gemini 4 Carbon (Google AI Studio, Thinking High) - Track 3, the translation sweep of EN, FR and UK against the Russian over all 1221 paragraphs and the nine meta maps of the bundle at 7fdf978, 2026-11-19 (one chat per language). EN 1 finding, FR 1, UK 3. The §435 hedgehog (EN) had been fixed in group_108 already; the answers with their articles fixed in the engine; places from the reviewers' notes (the chest of §348 and the goldfish of §641 in four languages, the French names, a Ukrainian misspelling) fixed by the maintainer; the author decided the old man's door is §70 only. Evidence: _handoff/carbon_2026_11/results/3_translation_* (out of git).",
@@ -826,7 +871,8 @@
           "status": "DONE",
           "hypothesis": "§70 is the reachable paragraph on the §76 → §560 → … → §452 → §70 wall-bypass route that actually finds the small secret door in the castle wall described by the old man at §76 and opened at §1145 («Это то, что искали.",
           "note": "§70: «вы видите в стене небольшую дверцу. Если знаете, как открыть ее, то сделайте это» - the old man's door is here; AR-06 had put it at the gates only. The author named no preference: the gate options are kept.",
-          "resolution": "DONE. §70 → 1145 «Открыть потайную дверцу, о которой рассказал старичок» for a hero who knows the secret; §56 / §205 unchanged."
+          "resolution": "DONE. §70 → 1145 «Открыть потайную дверцу, о которой рассказал старичок» for a hero who knows the secret; §56 / §205 unchanged.",
+          "superseded": "v2.211 (group_109 CT3-AUTH-01, 2026-11-19): the author's decision - the old man's door opens only in the castle wall at §70 (§70 → 1145 for a hero who knows the secret); the exits at the gates §56 → 1145 and §205 → 1145 are retired."
         },
         {
           "id": "CT1-005_sec76_optional_not_optional",
@@ -1814,7 +1860,8 @@
           "status": "DONE",
           "hypothesis": "§76 offered «Войти в замок через потайную дверцу (1145)» from the old man's house, while §1145 begins «Это то, что искали. Вы прекрасно помните слова старичка…» - the door is used at the castle; the deer hide the old man gives was granted only on the leave and trade exits.",
           "note": "Argon F-003 plus the maintainer's reading of §1145 (precedent: group_85 AS-05 / AS-06). Reversible on the author's word.",
-          "resolution": "DONE. §76 grants the deer hide and the knowledge flag secret_door («Тайна потайной дверцы»); §76→1145 retired; the castle gates §56 and §205 offer «Войти через потайную дверцу, о которой рассказал старичок (1145)» to a hero who knows the secret, with or without the password; §487 no longer duplicates the hide."
+          "resolution": "DONE. §76 grants the deer hide and the knowledge flag secret_door («Тайна потайной дверцы»); §76→1145 retired; the castle gates §56 and §205 offer «Войти через потайную дверцу, о которой рассказал старичок (1145)» to a hero who knows the secret, with or without the password; §487 no longer duplicates the hide.",
+          "superseded": "v2.211 (group_109 CT3-AUTH-01, 2026-11-19): the author's decision - the old man's door opens only in the castle wall at §70 (§70 → 1145 for a hero who knows the secret); the exits at the gates §56 → 1145 and §205 → 1145 are retired."
         },
         {
           "id": "AR-07_mirror_fight_239",

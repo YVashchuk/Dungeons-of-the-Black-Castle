@@ -325,7 +325,7 @@ SCENARIOS = [
     {
         "id": "white_arrow_acq_§688",
         "target": 688,
-        "what_to_check": "On entering §688 the hero finds a white-fletched arrow in the throne's secret compartment. auto_items notification should display 'Белая стрела'. Open inventory: 'Белая стрела' present.",
+        "what_to_check": "On entering §688 the hero finds a white-fletched arrow in the throne's secret compartment: the pick-up dialog offers 'Белая стрела' (take it with «+ Взять»), and the knowledge 'Знание о троне' is learned silently - it shows in the bag without a drop button (group_85 AS-12).",
         "commit": "87a58d2",
     },
     {
@@ -340,7 +340,7 @@ SCENARIOS = [
         "must_visit": [688],
         "what_to_check": "After §688 (white arrow grant), §535 shows the 'Белую стрелу (2)' offer button.",
         "commit": "87a58d2",
-        "state_route": "1) Hash-load #688 (append to the URL, press F5): 'Белая стрела' is granted on entry via first-visit auto_items, and the game autosaves.\n2) Hash-load #535.\n3) Verify the 'Белую стрелу (2)' offer button as described above.",
+        "state_route": "1) Hash-load #688 (append to the URL, press F5): the pick-up dialog offers 'Белая стрела' - take it, «Готово»; the game autosaves.\n2) Hash-load #535.\n3) Verify the 'Белую стрелу (2)' offer button as described above.",
     },
     {
         "id": "white_arrow_door_§1196",
@@ -362,7 +362,7 @@ SCENARIOS = [
     {
         "id": "sword_acq_§757",
         "target": 757,
-        "what_to_check": "On entering §757 the player gains 'Целый меч' AND a +1 МАСТЕРСТВО bonus. Both notifications should appear; HUD skill counter should tick up by 1.",
+        "what_to_check": "On entering §757 the pick-up dialog offers 'Целый меч'. There is no separate +1 SKILL notification any more (group_107 C1-043): the sword's +1 is its own equipment effect, applied in combat (G-09), so the HUD SKILL does not change on pick-up.",
         "commit": "cce1a1f",
     },
     {
@@ -565,7 +565,7 @@ SCENARIOS = [
     {
         "id": "candle_lamp_acq_sec929",
         "target": 929,
-        "what_to_check": "On entering sec.929 (buried chest) gold +10 applies and 'Свеча' is offered in the pick-up dialog on entry. Leaving to sec.167 without taking it does not grant it later.",
+        "what_to_check": "On entering sec.929 (the buried chest) +10 gold and +1 LUCK apply, and 'Свеча' and 'Серебряное кольцо' are offered in the pick-up dialog. Leaving to sec.167 without taking them does not grant them later.",
         "commit": "group_6_candle_lamp",
     },
     {
@@ -578,7 +578,7 @@ SCENARIOS = [
         "id": "candle_lamp_sec696_WITH_token",
         "target": 696,
         "must_visit": [600],
-        "what_to_check": "After visiting sec.600 (Vodyanoi taverna chest auto-grant 'Свеча' + 'Огниво' + 'Белая стрела'), sec.696 should show THREE buttons: the new 'Зажечь свечу или светильник (706)' light-source branch ALONGSIDE the two fallback darkness branches. Click the light button — should navigate to sec.706 with the 'у вас есть свой источник света' narrative.",
+        "what_to_check": "After sec.600 (the tavern chest offers 'Огниво', 'Незажжённая свеча' and 'Белая стрела' - take the candle and the flint), sec.696 shows 'Зажечь свечу или светильник (706)' alongside the two darkness branches: the tavern candle lights only with the flint (group_107 C1-035). Click it → sec.706. With the unlit candle but no flint the light branch stays hidden; a lit 'Свеча' (sec.929) opens it alone.",
         "commit": "group_6_candle_lamp",
     },
     {
@@ -591,7 +591,7 @@ SCENARIOS = [
         "id": "candle_lamp_sec1000_WITH_token",
         "target": 1000,
         "must_visit": [600],
-        "what_to_check": "With 'Свеча' in inventory, sec.1000 shows THREE buttons including the new 'Зажечь свечу или светильник (1010)'. Click → sec.1010 darkness-rescue narrative.",
+        "what_to_check": "With 'Незажжённая свеча' and 'Огниво' from sec.600 (or a lit 'Свеча' from sec.929), sec.1000 shows 'Зажечь свечу или светильник (1010)' alongside the two darkness fallbacks. Click → sec.1010.",
         "commit": "group_6_candle_lamp",
     },
     # ── Group 6: figured_key (item 4 of 13) — shop-purchase gating regression fix ─
@@ -618,55 +618,55 @@ SCENARIOS = [
     {
         "id": "castle_key_sec91_NO_key",
         "target": 91,
-        "what_to_check": "Without 'Ключ Чёрного замка' in inventory, sec.91 (corridor locked door) shows ONLY the corridor-continue fallback (sec.671). The new 'Отпереть дверь Ключом Чёрного замка (131)' button must be HIDDEN.",
+        "what_to_check": "Without any +40 key (Ключ Чёрного замка, a signet, Ключ медведя, Ключ «Всё») sec.91 shows ONLY the corridor fallback (671); 'Отпереть дверь ключом (131)' is hidden (group_107 C1-036: the +40 family).",
         "commit": "group_6_castle_key",
     },
     {
         "id": "castle_key_sec91_WITH_key",
         "target": 91,
         "must_visit": [471],
-        "what_to_check": "After visiting sec.471 (acquisition), sec.91 should show BOTH buttons: the new gated 'Отпереть дверь Ключом Чёрного замка (131)' AND the existing fallback (sec.671). Click the key option → sec.131 sentry-tower battle narrative ('Вы достаете ключ. Он легко поворачивается').",
+        "what_to_check": "After sec.471 (take 'Ключ Чёрного замка' in the pick-up dialog), sec.91 shows 'Отпереть дверь ключом (131)' and the fallback (671). Click the key → sec.131 ('Вы достаете ключ. Он легко поворачивается'). Any +40 key works here (a signet, Ключ медведя, Ключ «Всё»).",
         "commit": "group_6_castle_key",
     },
     {
         "id": "castle_key_sec687_WITH_key",
         "target": 687,
         "must_visit": [471],
-        "what_to_check": "With the castle key, sec.687 shows 'Отпереть дверь Ключом Чёрного замка (727)' alongside the existing fallback to sec.1009. Click the key → sec.727 stairwell narrative.",
+        "what_to_check": "With a +40 key, sec.687 shows 'Отпереть дверь ключом (727)' alongside the fallback (1009). Click the key → sec.727 stairwell narrative.",
         "commit": "group_6_castle_key",
     },
     {
         "id": "castle_key_sec694_WITH_key",
         "target": 694,
         "must_visit": [471],
-        "what_to_check": "With the castle key, sec.694 shows 'Отпереть дверь Ключом Чёрного замка (734)' alongside the existing fallback to sec.1046. Click the key → sec.734 'Достав ключ, вы отпираете дверь' narrative leading to sec.671.",
+        "what_to_check": "With a +40 key, sec.694 shows 'Отпереть дверь ключом (734)' alongside the fallback (1046). Click the key → sec.734 'Достав ключ, вы отпираете дверь' → sec.671.",
         "commit": "group_6_castle_key",
     },
     {
         "id": "castle_key_sec768_WITH_key",
         "target": 768,
         "must_visit": [471],
-        "what_to_check": "With the castle key, sec.768 shows 'Отпереть дверь Ключом Чёрного замка (808)' alongside the existing fallback to sec.362. Click the key → sec.808 'Вы находите в заплечном мешке ключ' narrative leading to sec.1150.",
+        "what_to_check": "With a +40 key, sec.768 shows 'Отпереть дверь ключом (808)' alongside the fallback (362). Click the key → sec.808 → sec.1150.",
         "commit": "group_6_castle_key",
     },
     # ── Group 6: bear_key (item 6 of 13) — +40 castle doors, "Медный ключик" unified ─
     {
         "id": "bear_key_acq_sec612",
         "target": 612,
-        "what_to_check": "sec.612 (bear gift after rescuing the cub) now grants 'Медный ключик' via auto_items (was previously the anonymous 'Ключ' — name unification). Click the only nav choice to sec.1106. Open inventory: 'Медный ключик' should be present, alongside the magical bell.",
+        "what_to_check": "sec.612 (the bear's gift after rescuing the cub) offers 'Ключ медведя' - a +40 key («им можно открыть многие двери в замке», group_107 C1-036) - and the magic bell. Take them and continue to sec.1106.",
         "commit": "group_6_bear_key",
     },
     {
         "id": "bear_key_sec803_NO_key",
         "target": 803,
-        "what_to_check": "Without 'Медный ключик' in inventory, sec.803 shows ONLY two fallback buttons (window sec.323, back-door sec.607). The success branch 'Есть медный ключик, то достаньте его (1035)' must be HIDDEN — regression fix.",
+        "what_to_check": "Without the goblins' 'Медный ключик' (taken after the goblin fights at §69 / §233 / §567) sec.803 shows ONLY the window (323) and the back door (607). The bear's key of §612 does not open this lock.",
         "commit": "group_6_bear_key",
     },
     {
         "id": "bear_key_sec803_WITH_key",
         "target": 803,
-        "must_visit": [612],
-        "what_to_check": "After visiting sec.612 (bear gift), sec.803 should show THREE buttons including the gated 'Есть медный ключик, то достаньте его (1035)'. Click it to confirm the storeroom narrative (sec.1035 with sword/shield/potion).",
+        "must_visit": [69],
+        "what_to_check": "Win the two-goblin fight at §69 and take the bronze whistle and 'Медный ключик' («Забрать… (19)»); sec.803 then shows 'Есть медный ключик, то достаньте его и (1035)'. Click it → the storeroom (sec.1035). The bear's key of §612 does NOT open this lock.",
         "commit": "group_6_bear_key",
     },
     {
@@ -679,17 +679,17 @@ SCENARIOS = [
         "id": "bear_key_sec851_WITH_key",
         "target": 851,
         "must_visit": [612],
-        "what_to_check": "After visiting sec.612, sec.851 (long polutemniy corridor with a door) should show 'Отпереть дверь Медным ключиком (891)' alongside the existing fallback (sec.881). Click the key option → sec.891 jamming-narrative.",
+        "what_to_check": "After sec.612 ('Ключ медведя'), sec.851 shows 'Отпереть дверь ключом (891)' alongside the fallback (881). A metal +40 key turns this lock and snaps in it (consumed); a signet does not open it (group_107 C1-036).",
         "commit": "group_6_bear_key",
-        "state_route": "1) Hash-load #612: 'Медный ключик' is granted on entry via auto_items (autosave).\n2) Hash-load #851.\n3) Verify the key option (891) alongside the fallback (881) as described above.",
+        "state_route": "1) Hash-load #612: the pick-up dialog offers 'Ключ медведя' - take it, «Готово» (autosave).\n2) Hash-load #851.\n3) Verify the key option (891) alongside the fallback (881) as described above.",
     },
     {
         "id": "bear_key_sec881_WITH_key",
         "target": 881,
         "must_visit": [612],
-        "what_to_check": "After visiting sec.612, sec.881 (corridor branching from sec.851) should show 'Отпереть дверь Медным ключиком (921)' alongside the existing fallback (sec.1123). Click the key option → sec.921 tomb-entrance narrative. This restores an orphan-target — sec.921 was unreachable in remake prior to this commit.",
+        "what_to_check": "After sec.612, sec.881 shows 'Отпереть дверь ключом (921)' alongside the fallback (1123). Click → sec.921 (the tomb entrance).",
         "commit": "group_6_bear_key",
-        "state_route": "1) Hash-load #612: 'Медный ключик' granted on entry.\n2) Hash-load #881.\n3) Verify the key option (921) alongside the fallback (1123) as described above.",
+        "state_route": "1) Hash-load #612: take 'Ключ медведя' in the pick-up dialog.\n2) Hash-load #881.\n3) Verify the key option (921) alongside the fallback (1123) as described above.",
     },
     # ── Group 6: thread_ball (item 8 of 13) — Klubochek crossroads +50 mechanic ─
     {
@@ -708,28 +708,28 @@ SCENARIOS = [
         "id": "thread_ball_sec108_WITH_klubochek",
         "target": 108,
         "must_visit": [198],
-        "what_to_check": "After visiting sec.198, sec.108 shows THREE buttons: the new gated 'Идти за клубочком (158)' AND the two existing manual-direction options. Click the klubochek option → sec.158 'Клубочек сворачивает на тропинку, ведущую налево'. This canonically follows Лесовичок\'s 'налево первый перекресток' directive.",
+        "what_to_check": "After sec.198, sec.108 shows 'Идти за клубочком (158)' and the two manual directions. Taking a manual direction (485 / 64) loses the ball («клубочек укатится», group_107 C1-025); following it to sec.158 and on to sec.747 spends it («клубка за ними нет»).",
         "commit": "group_6_thread_ball",
     },
     {
         "id": "thread_ball_sec366_WITH_klubochek",
         "target": 366,
         "must_visit": [198],
-        "what_to_check": "After visiting sec.198, sec.366 (three-way fork) shows FOUR buttons: the new gated 'Идти за клубочком (416)' AND the three existing manual choices. Click klubochek → sec.416 'Клубочек катится прямо. Вернитесь на sec.366'.",
+        "what_to_check": "After sec.198, sec.366 shows 'Идти за клубочком (416)' and the three manual choices; turning left (483) or right (473) loses the ball, straight on (549) keeps it. Following it → sec.416 → back to sec.366.",
         "commit": "group_6_thread_ball",
     },
     {
         "id": "thread_ball_sec401_WITH_klubochek",
         "target": 401,
         "must_visit": [198],
-        "what_to_check": "After visiting sec.198, sec.401 shows THREE buttons: the new gated 'Идти за клубочком (451)' AND the two existing manual choices. Click klubochek → sec.451 'Клубочек катится прямо, а вы можете вернуться на sec.401'.",
+        "what_to_check": "After sec.198, sec.401 shows 'Идти за клубочком (451)' and the two manual choices; turning to it (381) loses the ball. Following it → sec.451 → back to sec.401.",
         "commit": "group_6_thread_ball",
     },
     # ── Group 6: ruby_ring (item 9 of 13) — canonical Princess wake-up via +401 ─
     {
         "id": "ruby_ring_acq_sec1071",
         "target": 1071,
-        "what_to_check": "sec.1071 (post-magician cabinet, ring selection) should now grant 'Перстень с рубином' via auto_items on entry. Open inventory after entering sec.1071: the ruby ring is present. The four cabinet inspection options (sec.797 / sec.411 / sec.850 / sec.297) remain unchanged.",
+        "what_to_check": "sec.1071: the hero puts on 'Перстень с рубином' - it is equipped (weightless, no pick-up dialog, it cannot be lost to a full bag, group_107 C1-056) and shows in the bag. The four cabinet inspections (797 / 411 / 850 / 297) remain.",
         "commit": "group_6_ruby_ring",
     },
     {
@@ -758,7 +758,7 @@ SCENARIOS = [
         "must_visit": [791],
         "what_to_check": "After visiting sec.791, sec.637 (corridor fork sec.1105 right / sec.676 left) should show THREE buttons including the new gated 'Прочитать подсказку Рубиновой звезды (708)'. Click the star button → sec.708 'У правого прохода звезда сияет ярче, чем у левого'.",
         "commit": "group_6_ruby_star",
-        "state_route": "1) Hash-load #791: 'Рубиновая звезда' is granted on entry via auto_items.\n2) Hash-load #637.\n3) Verify the star-hint button (708) as described above.",
+        "state_route": "1) Hash-load #791: the pick-up dialog offers 'Рубиновая звезда' - take it.\n2) Hash-load #637.\n3) Verify the star-hint button (708) as described above.",
     },
     {
         "id": "ruby_star_sec846_WITH_star",
@@ -841,7 +841,7 @@ SCENARIOS = [
     {
         "id": "throne_knowledge_acq_sec688",
         "target": 688,
-        "what_to_check": "sec.688 (dining-hall throne discovery) should now grant BOTH 'Белая стрела' AND new token 'Знание о троне' via auto_items. Open inventory after entering: both items present. The arrow remains a separate physical item; the knowledge token is a new transferable mechanic specifically for the throne-tray +400 consumer.",
+        "what_to_check": "sec.688: the pick-up dialog offers 'Белая стрела' (a physical item - take it), and the knowledge 'Знание о троне' is learned silently (no dialog; it shows in the bag without a drop button). The arrow and the knowledge are separate: the knowledge alone opens sec.741 → 1141.",
         "commit": "group_6_white_arrow_navigation (FINAL group_6 item)",
     },
     {
@@ -862,9 +862,9 @@ SCENARIOS = [
         "id": "consume_on_use_sec891_breaks_key",
         "target": 851,
         "must_visit": [612],
-        "what_to_check": "After visiting sec.612 (bear-gift acquisition), enter sec.851 and click the gated 'Отпереть дверь Медным ключиком (891)' button. Two state changes expected: (1) navigation to sec.891 jamming-narrative; (2) 'Медный ключик' REMOVED from S.inventory via the new consume_on_use field. Verify inventory after the click — the copper key should be gone. The notification panel should show '− Медный ключик'. The event log should record 'Предмет израсходован.'",
+        "what_to_check": "After sec.612 (take 'Ключ медведя'), enter sec.851 and click 'Отпереть дверь ключом (891)'. Two state changes: (1) navigation to sec.891; (2) the key is gone from the bag (consume_on_use: any metal +40 key - «придется вычеркнуть ключ»), with the notification '− Ключ медведя'.",
         "commit": "group_6_post_audit_consume_on_use",
-        "state_route": "1) Hash-load #612: 'Медный ключик' granted on entry.\n2) Hash-load #851 and click 'Отпереть дверь Медным ключиком (891)'.\n3) Verify the navigation to sec.891 AND that 'Медный ключик' disappeared from the inventory (consume_on_use), with the notification and the event-log line, as described above.",
+        "state_route": "1) Hash-load #612: take 'Ключ медведя' in the pick-up dialog.\n2) Hash-load #851 and click 'Отпереть дверь ключом (891)'.\n3) Verify the navigation to sec.891 AND that 'Ключ медведя' disappeared from the bag.",
     },
     {
         "id": "consume_on_use_sec976_cuts_orange",
@@ -877,7 +877,7 @@ SCENARIOS = [
     {
         "id": "emerald_ring_acq_sec479",
         "target": 479,
-        "what_to_check": "sec.479 (emerald-ring put-on) should now grant 'Перстень с изумрудом' via auto_items on entry. Open inventory after entering: 'Перстень с изумрудом' present. The four cabinet inspection choices (sec.797 / sec.411 / sec.850 / sec.297) remain unchanged.",
+        "what_to_check": "sec.479: the hero puts on 'Перстень с изумрудом' - equipped, weightless, no pick-up dialog (group_107 C1-056); it shows in the bag. The four cabinet inspections remain.",
         "commit": "group_6_emerald_ring",
     },
     {
@@ -893,7 +893,7 @@ SCENARIOS = [
         "must_visit": [479, 74, 1071],
         "what_to_check": "After visiting all three ring/orange acquisition paragraphs, sec.226 shows FIVE buttons: gated ruby_ring → sec.627, gated golden_orange → sec.976, gated emerald → sec.86 (fail-feedback), plus two fallbacks. The player has full diagnostic feedback for any item choice. Canonical victory route via ruby or orange remains the success path.",
         "commit": "group_6_emerald_ring",
-        "state_route": "1) Hash-load #479 ('Перстень с изумрудом' granted on entry), then #74 ('Золотой апельсин'), then #1071 ('Перстень с рубином') - each hop autosaves.\n2) Hash-load #226.\n3) Verify FIVE buttons as described above.",
+        "state_route": "1) Hash-load #479 ('Перстень с изумрудом' is put on), then #74 (take 'Золотой апельсин' in the pick-up dialog), then #1071 ('Перстень с рубином' is put on) - each hop autosaves.\n2) Hash-load #226.\n3) Verify FIVE buttons as described above.",
     },
     # ── Group 6 extension: bandit_tip (item 15, +910 treasure-tip) ─
     {
@@ -912,7 +912,7 @@ SCENARIOS = [
         "id": "bandit_tip_sec19_WITH_knowledge",
         "target": 19,
         "must_visit": [385],
-        "what_to_check": "After visiting sec.385, sec.19 shows THREE buttons including 'Копать под дуплом сухого дерева (929)'. Click → sec.929 treasure-chest narrative (10 gold + Свеча via existing auto_items + 1 LUCK + Серебряное кольцо per canon — note known_gap: серебряное кольцо and 1 LUCK not yet in auto_items). This route was the SOLE canonical entry to sec.929 before this commit; without it, the candle_lamp acquisition via this paragraph was unreachable.",
+        "what_to_check": "After visiting sec.385, sec.19 shows THREE buttons including 'Копать под дуплом сухого дерева (929)'. Click → sec.929: +10 gold, +1 LUCK, and the pick-up dialog offers 'Свеча' and 'Серебряное кольцо'. This route is the only canonical entry to sec.929.",
         "commit": "group_6_bandit_tip",
     },
     # ── §600 sibling audit follow-ups ─
@@ -996,31 +996,31 @@ SCENARIOS = [
     {
         "id": "group17_sec93_LEVITATION_marsh",
         "target": 93,
-        "what_to_check": "§93 marsh rescue: player with LEVITATION in spell budget should see 'Использовать заклятие Левитации (130)' button. Click → spell count decrements by 1, navigates to §130. Player without LEVITATION sees only the dead-end (game over). The spell:'LEVITATION' field added in this commit.",
+        "what_to_check": "§93 marsh rescue: with Levitation the button 'Использовать заклятие Левитации (130)' spends one charge and leads to §130. With the flying carpet in the bag (§227 → 529, §193, §342) the Levitation way is usable with the suffix «— на ковре-самолёте» and no charge is spent (group_107 C1-017); without Levitation and without the carpet the adventure ends there (group_105: a paragraph whose every way is unusable).",
         "commit": "group_17_spell_hooks",
     },
     {
         "id": "group17_sec329_LEVITATION_sinkhole",
         "target": 329,
-        "what_to_check": "§329 sinkhole — same pattern as §93. Click 'target 432' button consumes LEVITATION charge. Without spell, dead-end death.",
+        "what_to_check": "§329 sinkhole: the way to §432 spends a Levitation charge. With the flying carpet in the bag (§227 → 529, §193, §342) the Levitation way is usable with the suffix «— на ковре-самолёте» and no charge is spent (group_107 C1-017); without Levitation and without the carpet the adventure ends there (group_105: a paragraph whose every way is unusable).",
         "commit": "group_17_spell_hooks",
     },
     {
         "id": "group17_sec521_LEVITATION_bog",
         "target": 521,
-        "what_to_check": "§521 bog rescue — same pattern. Click 'target 326' button consumes LEVITATION charge.",
+        "what_to_check": "§521 bog rescue: the way to §326 spends a Levitation charge. With the flying carpet in the bag (§227 → 529, §193, §342) the Levitation way is usable with the suffix «— на ковре-самолёте» and no charge is spent (group_107 C1-017); without Levitation and without the carpet the adventure ends there (group_105: a paragraph whose every way is unusable).",
         "commit": "group_17_spell_hooks",
     },
     {
         "id": "group17_sec705_LEVITATION_window_flight",
         "target": 705,
-        "what_to_check": "§705 castle window flight: 'Вылетите в окно, наложив заклятие Левитации (905)' button now consumes LEVITATION charge. Other 2 choices (target 892, 1059) remain non-spell.",
+        "what_to_check": "§705 castle window: 'Вылетите в окно, наложив заклятие… (905)' spends a Levitation charge; the two doors (892, 1059) stay open to anyone. With the flying carpet the window is usable «— на ковре-самолёте», no charge spent (group_107 C1-017).",
         "commit": "group_17_spell_hooks",
     },
     {
         "id": "group17_sec935_LEVITATION_pit_escape",
         "target": 935,
-        "what_to_check": "§935 stone pit escape — single LEVITATION choice now consumes charge on click → §469.",
+        "what_to_check": "§935 stone pit: the single Levitation way (469) spends a charge. With the flying carpet in the bag (§227 → 529, §193, §342) the Levitation way is usable with the suffix «— на ковре-самолёте» and no charge is spent (group_107 C1-017); without Levitation and without the carpet the adventure ends there (group_105: a paragraph whose every way is unusable).",
         "commit": "group_17_spell_hooks",
     },
     {
@@ -1032,13 +1032,13 @@ SCENARIOS = [
     {
         "id": "group17_sec596_SWIMMING_lake",
         "target": 596,
-        "what_to_check": "§596 lake crossing — 'target 57' SWIMMING branch now consumes spell. §596 LEVITATION branch (target 579) was already correctly wired. Third option (walk along shore, target 171) remains non-spell.",
+        "what_to_check": "§596 lake crossing: the Swimming way (57) spends a charge, the Levitation way (579) too; the shore path (171) is free. With the diving suit the Swimming way is usable «— в водолазном костюме», no charge spent (group_107 C1-062); the carpet stands in for Levitation.",
         "commit": "group_17_spell_hooks",
     },
     {
         "id": "group17_sec698_SWIMMING_second_cast",
         "target": 698,
-        "what_to_check": "§698 second SWIMMING cast against underground current. Click 'target 813' consumes SECOND SWIMMING charge per canonical 'наложить еще одно заклятие Плавания'. Player without two SWIMMING charges dies (canon).",
+        "what_to_check": "§698 the underground current: 'Продолжить (813)' needs a second Swimming charge. Without it the diving suit stands in for Swimming, or 'Помощь рыбки' offers 'Позвать на помощь Золотую рыбку (713)' → the shore (group_107 C1-041); with none of them the adventure ends.",
         "commit": "group_17_spell_hooks",
     },
     {
@@ -1077,6 +1077,144 @@ SCENARIOS = [
         "target": 950,
         "what_to_check": "§950 arena goblin combat: combat_spells_allowed=['FORCE','HEALING'] - the Force button and the Healing button (+8 STAMINA) are shown, Weakness and Copy are hidden. Per canon: 'можете использовать заклятие Силы и Исцеления'. Entered in English the fight shows «Strike!» and «💚 Healing Spell +8 [N]» (the language is chosen in the menu before the fight - the combat window is modal).",
         "commit": "group_19_combat_modal_spells",
+    },
+    # ── group_107 ──
+    {
+        "id": "key40_bear_key_sec835",
+        "target": 835,
+        "must_visit": [612],
+        "what_to_check": "With 'Ключ медведя' (§612) and no Levitation, sec.835 offers 'Открыть дверь ключом (875)' → §875 → rescue at §1060 (group_107 C1-036 / C1-046). Without a +40 key, Levitation or Pegasus the walls close in and the adventure ends.",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "key40_all_key_sec302",
+        "target": 302,
+        "must_visit": [795],
+        "what_to_check": "With 'Ключ «Всё»' (§795) sec.302 offers the hidden door (342); §342 offers the flying carpet for the bag (group_107 C1-019 / C1-044).",
+        "state_route": "1) Hash-load #795: the pick-up dialog offers 'Ключ «Всё»' - take it, «Готово» (autosave).\n2) Hash-load #302.\n3) Verify the hidden door (342) as described above; at §342 the carpet is offered.",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "copper_ring_sec129",
+        "target": 129,
+        "must_visit": [88],
+        "what_to_check": "With the copper ring (§88 - take it in the pick-up dialog) the fight at §129 offers «💍 Надеть медное кольцо и пройти мимо»: the hero slips past to 568 without a fight, no bronze whistle is offered (group_107 C1-007). The ring is never offered against ghosts and spirits (§618).",
+        "state_route": "1) Hash-load #88: the pick-up dialog offers the copper ring - take it, «Готово».\n2) Hash-load #129.\n3) Verify the ring button and the pass to 568 as described above.",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "black_pearl_sec468",
+        "target": 468,
+        "must_visit": [457],
+        "what_to_check": "With the black pearl (§457) §468 offers «⚫ Зажать чёрную жемчужину между ладонями (482)» before the lance strike: STAMINA intact, «Глаза Зелёных рыцарей ×2» in the bag (four eyes to a bag place). Twelve eyes open §860 → 196 (group_107 C1-029 / C1-030 / C1-048).",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "flying_carpet_sec980",
+        "target": 980,
+        "must_visit": [227,529],
+        "what_to_check": "Take the flying carpet at §227 («…(529)»). Without Levitation, §980 offers «Вылететь из окна (780) — на ковре-самолёте»: usable, no charge spent, the carpet stays (group_107 C1-017).",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "diving_suit_sec614",
+        "target": 614,
+        "must_visit": [1214],
+        "what_to_check": "At §1214 the pick-up dialog offers the diving suit: +1 LUCK only when it is taken (once). Without spells, §614 «…Плавания или Левитации (581)» is usable «— в водолазном костюме» (group_107 C1-062).",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "spell_picker_sec76",
+        "target": 76,
+        "what_to_check": "With two kinds of spells (e.g. Levitation and Fire), «Согласиться и отдать заклятие за перстень (487)» opens a picker: the reader chooses which charge goes; «Отмена» closes it (group_107 C1-005). With one kind the charge goes at once.",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "money_stakes_sec1212",
+        "target": 1212,
+        "what_to_check": "§1212 offers «Поставить 2 / 4 / 8 золотых (1062)» (as at §826) and the stake picker for a thing from the bag; the dragon's liver is not among the stakes (group_107 C1-061 / C1-024). A picked stake opens a new betting round.",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "flee_in_combat_sec455",
+        "target": 455,
+        "what_to_check": "In the fight a «🏃 …» button flees to §733 for −2 STAMINA once (§733 adds nothing more, group_107 C1-028); the button leaves with the fight.",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "spell_reflect_sec3",
+        "target": 3,
+        "must_visit": [522],
+        "what_to_check": "With the children's secret (§522: 'Секрет обращения заклятий') and Weakness known, §3 offers «Обратить заклятие Слабости на шпиона (3)»: the spy's −2 lands on him (group_107 C1-031). Without the secret the button is not shown.",
+        "commit": "group_107",
+    },
+    # ── group_107 ──
+    {
+        "id": "fish_help_sec203_failed_roll",
+        "target": 203,
+        "must_visit": [13],
+        "what_to_check": "With 'Помощь рыбки' (§13), fail the luck roll at §203: the luck window offers «Продолжить» (not «Конец приключения»), then «Позвать на помощь Золотую рыбку (218)» (group_107 C1-015). Without the fish a failed roll ends the adventure.",
+        "state_route": "1) Hash-load #13 and click the only nav choice to sec.639: 'Помощь рыбки' is learned on that click (autosave).\n2) Hash-load #203, test the luck and fail the roll (or roll until it fails on a fresh hero).\n3) Verify «Продолжить» and then the fish button (218) as described above.",
+        "commit": "group_107",
+    },
+    # ── group_109 ──
+    {
+        "id": "secret_door_sec70",
+        "target": 70,
+        "must_visit": [76],
+        "what_to_check": "With the old man's secret (§76), §70 offers «Открыть потайную дверцу, о которой рассказал старичок (1145)» → §1145. His advice «Напоследок держись поправее» is §452 «Направо по лесу… (70)». The gates §56 / §205 have no such door (the author's decision, group_109 CT3-AUTH-01).",
+        "commit": "group_109",
+    },
+    # ── group_108 ──
+    {
+        "id": "victory_exits_sec388",
+        "target": 388,
+        "what_to_check": "Win the fight with a Fire charge held: after the victory only 94 / 1098 / 1196 remain - no «Огонь (450)», no Copy, no talisman or silver vessel (group_108 C2-007: the ways before a fight are gone after the win).",
+        "commit": "group_108",
+    },
+    # ── group_108 ──
+    {
+        "id": "pickup_dialog_F5_sec1214",
+        "target": 1214,
+        "what_to_check": "With the pick-up dialog open press F5: the dialog opens again with the diving suit (group_108 C2-008). Take it: +1 LUCK; «Готово» closes the dialog for good.",
+        "commit": "group_108",
+    },
+    # ── group_108 ──
+    {
+        "id": "hash_entry_sec146",
+        "target": 146,
+        "what_to_check": "After any move type #146 in the address bar: §146 shows both exits (933, 1054) and does not end the adventure (group_108 C2-004: a hash entry forgets where the hero came from).",
+        "commit": "group_108",
+    },
+    # ── group_108 ──
+    {
+        "id": "eaten_food_gate_sec597",
+        "target": 597,
+        "what_to_check": "With one food in the bag and STAMINA below the maximum, eat it with 🍴 in the bag: the food exit (85) disappears at once, without F5 (group_108 C2-006).",
+        "commit": "group_108",
+    },
+    # ── group_108 ──
+    {
+        "id": "riddle_hyena_en_sec435",
+        "target": 435,
+        "what_to_check": "In English, without the §337 encounter, «hyena» → §100 (the lie is found out); after it → §66. «hedgehog» is not accepted (group_108 C2-014 / CT2-020).",
+        "commit": "group_108",
+    },
+    # ── group_109 ──
+    {
+        "id": "riddle_articles_fr_sec1113",
+        "target": 1113,
+        "what_to_check": "In French «la toile» → §1131 and there «le cimetière» → §992: an answer typed with its article, as §28 teaches it, is accepted; a wrong word with an article is not (group_109 C3-FR-001).",
+        "commit": "group_109",
     },
 
 
@@ -1152,7 +1290,8 @@ def main() -> int:
         "    are still fully testable: the engine autosaves on every paragraph",
         "    render and applies first-visit auto_items on render, so appending",
         "    #N to the URL and reloading (F5) restores the save at that",
-        "    paragraph with all entry grants applied. Each such scenario lists",
+        "    paragraph with all entry grants applied (things are offered in the pick-up",
+        "    dialog - take them). Each such scenario lists",
         "    its exact hash-hops in place of a click list.",
         "",
     ]
