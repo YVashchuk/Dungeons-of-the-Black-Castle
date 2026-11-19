@@ -215,7 +215,7 @@ function useIndifferenceInCombat(){
   if(combatResolved(cs)){ endCombat(true); } else { updateCombatConditionButtons(cs); }
 }
 // group_87 PL-39 / PL-41: after a fight starts - show the Indifference button while a charge remains, consume a carry-over
-(function(){ const orig=startCombat; startCombat=function(){ const r=orig.apply(this,arguments); try{ if(S&&S.carryOver&&combatState&&S.carryOver.to===S.section){ S.carryOver=null; saveGame(); } const b=document.getElementById('btn-indifference-spell'); if(b) b.style.display=(combatState&&getSpellRemaining('INDIFFERENCE')>0)?'inline-block':'none'; }catch(e){} return r; }; })();
+(function(){ const orig=startCombat; startCombat=function(){ const r=orig.apply(this,arguments); try{ if(S&&S.carryOver&&combatState&&S.carryOver.to===S.section){ S.carryOver=null; saveGame(); } const b=document.getElementById('btn-indifference-spell'); if(b) b.style.display=(combatState&&getSpellRemaining('INDIFFERENCE')>0&&!(combatState.sec&&Array.isArray(combatState.sec.combat_spells_allowed))&&!isBarladFight())?'inline-block':'none'; /* group_107 C1-045: not where the canon lists the spells allowed (sec.823: none) */ addFleeButton(); }catch(e){} return r; }; })();
 
 // group_85 AS-06: fatal_when_stuck - a paragraph whose every exit is unusable (no spell charge, no rescue)
 // ends the adventure as the canon says (sec.835: the walls close in) instead of soft-locking.
@@ -615,6 +615,7 @@ function takeItem(idx){
   if(getBagUsed()+getItemSize(item)>getBagSize())return;
   S.inventory.push(item);
   if(canonItem(item)==='water_flask'){ S.flask=Math.min(flaskMax(),(S.flask||0)+2); } // group_100 AR-18: «флягу с водой» - it comes full
+  if(canonItem(item)==='diving_suit'&&!S.suitLuck){ S.suitLuck=true; const lb=S.luck; S.luck=Math.min(S.luckMax,S.luck+1); if(S.luck>lb){ logEvent('gain','+ 1'+t('udachi'),invDisplay(item)); showItemNotification(['+ 1'+t('udachi')]); } } // group_107 C1-062: «если вы его берете, то добавьте себе 1 УДАЧУ»
   logEvent('gain','+ '+invDisplay(item),t('v_meshok'));
   playSound('item');
   renderInvModalCurrent();
@@ -908,8 +909,11 @@ function renderGame(opts){
     }
     // Lose items
     if(ai.lose){
-      ai.lose.forEach(item=>{
-        const idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(item)); // (auto_items.lose: currently unused in data)
+      ai.lose.forEach(entry=>{
+        // group_107 C1-047 / C1-060: the burnt-out candle (sec.837), the light dropped into the shaft (sec.1174) - {any:[...]}: whichever is held
+        const names=(entry&&typeof entry==='object'&&Array.isArray(entry.any))?entry.any:[entry];
+        const item=names.find(n=>S.inventory.some(it=>canonItem(it)===canonItem(n)));
+        const idx=item===undefined?-1:S.inventory.findIndex(it=>canonItem(it)===canonItem(item));
         if(idx>=0){
           notifications.push('− '+invDisplay(S.inventory[idx]));
           S.inventory.splice(idx,1);
@@ -1104,7 +1108,7 @@ function getBagSize(){return (S&&typeof S.bagSize==='number'&&S.bagSize>0)?S.bag
 // RU->slug migration (phase1.5b-5f). itemName(): slug -> Russian display name (passthrough for
 // unknown / hand-typed strings). invDisplay(): an inventory entry -> display string (resolves the
 // slug, preserves any food suffix). RU_TO_SLUG/SLUG_TO_RU are generated from items.json.
-const RU_TO_SLUG={"Золотая змейка":"golden_snake","Череп":"skull","Арбалет":"crossbow","Тайна потайной дверцы":"secret_door","Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield","Арбуз":"melon","Кокос":"coconut","Булочка":"bun","Немного еды":"provisions",
+const RU_TO_SLUG={"Ключ медведя":"bear_key","Ключ «Всё»":"all_key","Незажжённая свеча":"unlit_candle","Глаза Зелёных рыцарей":"knight_eyes","Секрет обращения заклятий":"spell_reflect","Торговец убит":"merchant_dead","Золотая змейка":"golden_snake","Череп":"skull","Арбалет":"crossbow","Тайна потайной дверцы":"secret_door","Личинка паука":"spider_larva","Меч «Смерть Орков»":"death_of_orcs","Рыцарский щит":"knight_shield","Арбуз":"melon","Кокос":"coconut","Булочка":"bun","Немного еды":"provisions",
   "Яблоко":"apple","Здесь 5 стрел":"arrows_5","Банан":"banana","Медвежий амулет":"bear_amulet",
   "Шкурка бобра":"beaver_pelt","Клетка для птиц":"birdcage","Здесь 5 чёрных стрел":"black_arrows_5",
   "Ключ Чёрного замка":"black_castle_key","Чёрная жемчужина":"black_pearl","Книга":"book","Хлеб":"bread",
@@ -1137,7 +1141,7 @@ const RU_TO_SLUG={"Золотая змейка":"golden_snake","Череп":"sku
   "Белая стрела":"white_arrow","Целый меч":"whole_sword","Бутылка вина":"wine_bottle",
   "Красивый кусочек дерева":"wood_piece",
 };
-const SLUG_TO_RU={golden_snake:"Золотая змейка",skull:"Череп",crossbow:"Арбалет",secret_door:"Тайна потайной дверцы",spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",melon:"Арбуз",coconut:"Кокос",bun:"Булочка",provisions:"Немного еды",
+const SLUG_TO_RU={bear_key:"Ключ медведя",all_key:"Ключ «Всё»",unlit_candle:"Незажжённая свеча",knight_eyes:"Глаза Зелёных рыцарей",spell_reflect:"Секрет обращения заклятий",merchant_dead:"Торговец убит",golden_snake:"Золотая змейка",skull:"Череп",crossbow:"Арбалет",secret_door:"Тайна потайной дверцы",spider_larva:"Личинка паука",death_of_orcs:"Меч «Смерть Орков»",knight_shield:"Рыцарский щит",melon:"Арбуз",coconut:"Кокос",bun:"Булочка",provisions:"Немного еды",
   "apple":"Яблоко","arrows_5":"Здесь 5 стрел","banana":"Банан","bear_amulet":"Медвежий амулет",
   "beaver_pelt":"Шкурка бобра","birdcage":"Клетка для птиц","black_arrows_5":"Здесь 5 чёрных стрел",
   "black_castle_key":"Ключ Чёрного замка","black_pearl":"Чёрная жемчужина","book":"Книга","bread":"Хлеб",
@@ -1170,18 +1174,19 @@ const SLUG_TO_RU={golden_snake:"Золотая змейка",skull:"Череп",
   "white_arrow":"Белая стрела","whole_sword":"Целый меч","wine_bottle":"Бутылка вина",
   "wood_piece":"Красивый кусочек дерева",
 };
-function canonItem(x){if(x&&typeof x==='object'&&x.kind==='food')return x.id;return RU_TO_SLUG[x]||x;}
+function canonItem(x){if(x&&typeof x==='object'&&(x.kind==='food'||x.kind==='stack'))return x.id;return RU_TO_SLUG[x]||x;}
 function itemName(x){ const A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null; return (A&&A.items&&A.items[x])||SLUG_TO_RU[x]||x; } // group_84 SA-02: active locale first, Russian fallback
-function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';const c=canonItem(entry);if(c==='arrows_5'||c==='black_arrows_5'){const left=(S&&S.arrowsLeft&&typeof S.arrowsLeft[c]==='number')?S.arrowsLeft[c]:5;return itemName(entry)+' ('+left+')';}return itemName(entry);} // group_100: arrows show what is left
-const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0,crossbow:0,water_flask:0}; // group_100: the crossbow hangs on the back, the Orc's flask on the belt (not in the bag) // group_100: the crossbow hangs on the back (weapons are not carried in the bag)
+function invDisplay(entry){if(entry&&typeof entry==='object'&&entry.kind==='food')return itemName(entry.id)+t('eda_2')+entry.stamina+')';if(entry&&typeof entry==='object'&&entry.kind==='stack')return itemName(entry.id)+' \u00d7'+(Number(entry.count)||0);const c=canonItem(entry);if(c==='arrows_5'||c==='black_arrows_5'){const left=(S&&S.arrowsLeft&&typeof S.arrowsLeft[c]==='number')?S.arrowsLeft[c]:5;return itemName(entry)+' ('+left+')';}return itemName(entry);} // group_100: arrows show what is left
+const ITEM_SIZES={diving_suit:2,flying_carpet:3,whole_sword:0,death_of_orcs:0,knight_shield:0,crossbow:0,water_flask:0,signet_ruby:0,signet_emerald:0}; // group_107 C1-056: the signets are worn on the finger // group_100: the crossbow hangs on the back, the Orc's flask on the belt (not in the bag) // group_100: the crossbow hangs on the back (weapons are not carried in the bag)
 // group_83 PT-01: story flags - hidden, weightless, undroppable state markers kept in the inventory so the
 // inventory_condition / inventory_missing gates work unchanged (princess awakened, Barlad Dert slain).
-const STORY_FLAGS=new Set(['princess_awake','barlad_dead','merchant_loot','hyena_met','bear_greeting','pegasus_friend','cliff_circled','vessel_silver_seen','vessel_glass_seen','chest_big_seen','chest_mid_seen','cupboard_seen','study_cupboard','study_door','study_maps','study_mirror']);
+const STORY_FLAGS=new Set(['princess_awake','barlad_dead','merchant_loot','hyena_met','bear_greeting','pegasus_friend','cliff_circled','vessel_silver_seen','vessel_glass_seen','chest_big_seen','chest_mid_seen','cupboard_seen','study_cupboard','study_door','study_maps','study_mirror','merchant_dead']); // group_107 C1-002
 // group_85 AS-12: knowledge flags - learned facts (passwords, lore, the fish's promise): weightless, mandatory,
 // undroppable, but listed in the bag so the player can see what they know.
-const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo','secret_door']); // group_100: the old man's hidden door (sec.76 -> sec.56 / sec.205)
+const KNOWLEDGE_FLAGS=new Set(['castle_password','mirror_secret','throne_lore','treasure_lore','fish_help','password_evenlo','secret_door','spell_reflect']); // group_107 C1-031: the children's secret (sec.522) // group_100: the old man's hidden door (sec.76 -> sec.56 / sec.205)
 function getItemSize(name){
   if(!name) return 1;
+  if(typeof name==='object'&&name.kind==='stack') return Math.ceil((Number(name.count)||0)/4); // group_107: four Green Knight eyes take one place
   if(typeof STORY_FLAGS!=='undefined'&&STORY_FLAGS.has(canonItem(name))) return 0; // group_83 PT-01 (typeof: harnesses eval this function in isolation)
   if(typeof KNOWLEDGE_FLAGS!=='undefined'&&KNOWLEDGE_FLAGS.has(canonItem(name))) return 0; // group_85 AS-12
   // group_81 B-01: numeric-typed lookup - `||1` turned the slotCost:0 armament
@@ -1290,9 +1295,12 @@ function passesInventoryCheck(ch){
   if(!ch) return true;
   // group_83 PT-01: negative gate - the choice is offered only while the item / flag is ABSENT
   // (sec.627/976 «если волшебник жив» -> 1120 disappears once barlad_dead exists).
-  if(ch.food_offer){ if(!S||!S.inventory||!S.inventory.some(it=>it&&typeof it==='object'&&it.kind==='food')) return false; } /* group_100: «дадите им поесть» needs food */ if(ch.inventory_missing){ if(!S||!S.inventory) return false; const miss=ch.inventory_missing; if(S.inventory.some(it=>canonItem(it)===canonItem(miss))) return false; }
+  if(ch.food_offer){ if(!S||!S.inventory||!S.inventory.some(it=>it&&typeof it==='object'&&it.kind==='food')) return false; } /* group_100: «дадите им поесть» needs food */ if(ch.inventory_missing){ if(!S||!S.inventory) return false; const miss=ch.inventory_missing; const misses=Array.isArray(miss)?miss:[miss]; if(S.inventory.some(it=>misses.some(m=>canonItem(it)===canonItem(m)))) return false; } /* group_107 C1-009: a list - none of them may be held */
   // group_85 batch 8: a choice retired by canon adjudication keeps its index (choice labels are positional per locale) but never renders
   if(ch.retired) return false;
+  // group_107: «напиться из твоей фляги» needs water in the flask (C1-018); the children's secret turns back only a spell you know (C1-031)
+  if(ch.flask_condition&&(!S||(S.flask||0)<ch.flask_condition)) return false;
+  if(ch.spell_known&&!(S&&Array.isArray(S.spells)&&S.spells.some(sp=>sp&&sp.id===ch.spell_known))) return false;
   // group_85 AS-01: origin gate - «если вы пришли с параграфа N» (permissive when the origin is unknown: hash entry, old saves)
   if(ch.from_section!==undefined&&ch.from_section!==null){ const from=(S&&S.cameFrom!==undefined&&S.cameFrom!==null)?Number(S.cameFrom):null; if(from!==null&&from!==Number(ch.from_section)) return false; }
   // group_85 AS-02: inventory_all - EVERY listed item / flag must be present (inventory_condition arrays stay OR)
@@ -1311,7 +1319,7 @@ function passesInventoryCheck(ch){
   // count-gate). Both are food base-name aware via baseEq/has.
   if(cond&&typeof cond==='object'&&!Array.isArray(cond)){
     if(Array.isArray(cond.all)) return cond.all.every(has);
-    if(cond.item) return S.inventory.filter(it=>baseEq(it,cond.item)).length>=(cond.count||1);
+    if(cond.item) return S.inventory.filter(it=>baseEq(it,cond.item)).reduce((n,it)=>n+((it&&typeof it==='object'&&it.kind==='stack')?(Number(it.count)||0):1),0)>=(cond.count||1); // group_107: a stack counts its pieces
   }
   if(Array.isArray(cond)) return cond.some(has);
   return has(cond);
@@ -1410,7 +1418,9 @@ function applyChoiceConsume(ch){
     // either kind, the sec.300 field watermelon before the sec.389 edible one).
     for(const name of cu.any){ if(removeOne(name)) break; }
   } else if(cu&&typeof cu==='object'&&!Array.isArray(cu)&&cu.item){
-    for(let k=0;k<(cu.count||1);k++){ if(!removeOne(cu.item)) break; }
+    const st=S.inventory.find(it=>it&&typeof it==='object'&&it.kind==='stack'&&canonItem(it)===canonItem(cu.item));
+    if(st){ const n=Math.min(Number(st.count)||0,cu.count||1); st.count=(Number(st.count)||0)-n; if(st.count<=0) S.inventory.splice(S.inventory.indexOf(st),1); if(n>0) removed.push(cu.item); } // group_107 C1-048: the twelve eyes are laid out
+    else for(let k=0;k<(cu.count||1);k++){ if(!removeOne(cu.item)) break; }
   } else {
     const list=Array.isArray(cu)?cu:[cu];
     for(const name of list){ removeOne(name); }
@@ -1750,6 +1760,15 @@ function makeBatchBtn(ch, choiceIndex){
   const key=S.section+':'+choiceIndex;
   const done=S.batchPicked&&S.batchPicked[key];
   const btn=document.createElement('button');btn.className='choice-btn';
+  // group_107 C1-042: a batch of things only (sec.724: the rope and the gold arrow) goes through the pick-up dialog - take either or both,
+  // make room first - and stays on offer until everything in it is in the bag.
+  if((ch.pickup_batch||[]).every(ent=>!(ent&&typeof ent==='object'&&ent.food))){
+    btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';btn.innerHTML=ch.label;
+    const missing=()=>(ch.pickup_batch||[]).filter(it=>!S.inventory.some(x=>canonItem(x)===canonItem(it)));
+    if(!missing().length){ btn.disabled=true;btn.style.opacity='0.5';btn.innerHTML='\u2713 '+t('sobrano'); return btn; }
+    btn.onclick=()=>{ const m=missing(); if(!m.length) return; showInventoryModal(m,[]); window._invModalOnDone=()=>{ try{ renderChoices(locSec(S.section)); }catch(e){} }; };
+    return btn;
+  }
   if(done){btn.disabled=true;btn.style.opacity='0.5';btn.innerHTML='\u2713 '+t('sobrano');return btn;}
   btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';
   btn.innerHTML=ch.label;
@@ -1758,9 +1777,11 @@ function makeBatchBtn(ch, choiceIndex){
     const taken=[];let skipped=0;
     (ch.pickup_batch||[]).forEach(ent=>{
       const v=(typeof ent==='object'&&ent.food)?{kind:'food',id:ent.food,stamina:ent.stamina}:ent;
+      if(typeof v==='string'&&S.inventory.some(x=>canonItem(x)===canonItem(v))) return; // group_107: a thing already in the bag is not taken twice
       if(free>=getItemSize(v)){S.inventory.push(v);free-=getItemSize(v);taken.push('+ '+invDisplay(v));}
       else skipped++;
     });
+    if(!taken.length){ showItemNotification([t('meshok_polon_2')+skipped+t('ne_vzyato')]); return; } // group_107 C1-042: nothing fitted - the offer stays
     S.batchPicked=S.batchPicked||{};S.batchPicked[key]=true;
     const msgs=taken.length?taken.slice():[t('meshok_polon_2')+(ch.pickup_batch||[]).length+t('ne_vzyato')];
     if(skipped&&taken.length)msgs.push(t('meshok_polon_2')+skipped+t('ne_vzyato'));
@@ -1824,6 +1845,15 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
     return makeBatchBtn(ch, choiceIndex);
   }
   const btn=document.createElement('button');btn.className='choice-btn';
+  // group_107 C1-017 / C1-062: the flying carpet / the diving suit instead of the spell - nothing is spent
+  const subst=substituteFor(ch);
+  if(subst){
+    const style=SPELL_STYLE_BY_ID[subst==='carpet'?'LEVITATION':'SWIMMING']||{icon:'\u2728',border:'#8a4dbd',color:'#b070e0',bg:'rgba(140,70,200,.12)'};
+    btn.style.borderColor=style.border;btn.style.color=style.color;btn.style.background=style.bg;
+    btn.textContent=style.icon+' '+ch.label+t(subst==='carpet'?'ui_by_carpet':'ui_by_suit'); btn.dataset.subst=subst;
+    btn.onclick=()=>{ logEvent('gain',t(subst==='carpet'?'ui_carpet_used':'ui_suit_used'),t('paragraf_2')+S.section); applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target)); };
+    return btn;
+  }
   // spell_any: one destination reachable by ANY of several spells (canon
   // "заклятие X или Y" → single target). Enabled if any listed spell has a
   // charge; on click, spend ONE charge from the first listed spell that has
@@ -1841,7 +1871,17 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
       btn.title=t('zaklyatie_nedostupno');btn.setAttribute('aria-disabled','true');
       btn.onclick=(e)=>{e.preventDefault();};
     } else {
-      btn.onclick=()=>{const pick=ids.find(id=>getSpellRemaining(id)>0);useSpell(pick);applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+      // group_107 C1-005 / C1-011: «любое заклятие» - the reader picks which charge goes when several kinds are held
+      btn.onclick=()=>{
+        const go=id=>{useSpell(id);applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
+        const held=ids.filter(id=>getSpellRemaining(id)>0); if(held.length<=1){ go(held[0]); return; }
+        const open=btn.nextElementSibling; if(open&&open.classList&&open.classList.contains('spell-pick')){ open.remove(); return; }
+        const box=document.createElement('div'); box.className='spell-pick'; box.setAttribute('role','group'); box.setAttribute('aria-label',t('ui_spell_pick'));
+        const hint=document.createElement('div'); hint.style.cssText='font-size:14px;color:var(--gold);margin:4px 0 6px;'; hint.textContent=t('ui_spell_pick'); box.appendChild(hint);
+        held.forEach(id=>{ const st=SPELL_STYLE_BY_ID[id]||style; const b=document.createElement('button'); b.className='choice-btn'; b.style.borderColor=st.border;b.style.color=st.color;b.style.background=st.bg; b.textContent=st.icon+' '+spellText(id).name+' ['+getSpellRemaining(id)+']'; b.dataset.spell=id; b.onclick=()=>go(id); box.appendChild(b); });
+        const cancel=document.createElement('button'); cancel.className='choice-btn'; cancel.textContent=t('ui_spell_pick_cancel'); cancel.onclick=()=>{ box.remove(); btn.focus(); }; box.appendChild(cancel);
+        btn.after(box); const first=box.querySelector('button'); if(first) first.focus();
+      };
     }
     return btn;
   }
@@ -1889,12 +1929,16 @@ function makeChoiceBtn(ch, duringCombat, choiceIndex){
         applyChoiceConsume(ch);
         applyChoiceAcquires(ch,()=>goTo(ch.target));
       };
+    } else if(ch.stake_gold){
+      btn.onclick=()=>{ placeGoldStake(ch.stake_gold); goTo(ch.target); }; // group_107 C1-061
     } else {
       btn.onclick=()=>{applyChoiceGoldCost(ch);applyChoiceConsume(ch);applyChoiceAcquires(ch,()=>goTo(ch.target));};
     }
   }
   return btn;
 }
+// group_107 C1-030: a cost paid as the way is taken (sec.468: the lance strikes unless the black pearl acts first)
+(function(){ const orig=makeChoiceBtn; makeChoiceBtn=function(ch,dc,idx){ const b=orig(ch,dc,idx); if(ch&&ch.stamina_cost>0&&b&&b.onclick&&b.getAttribute&&b.getAttribute('aria-disabled')!=='true'){ const inner=b.onclick; b.onclick=function(e){ if(!S) return; S.stamina=Math.max(0,S.stamina-ch.stamina_cost); logEvent('loss','\u2212 '+ch.stamina_cost+t('vynoslivosti'),t('teper')+S.stamina+'/'+S.staminaMax); updateHUD(); saveGame(); showItemNotification(['\u2212 '+ch.stamina_cost+t('vynoslivosti')]); if(S.stamina<=0){ showDeathOverlay(); return; } return inner.call(this,e); }; } return b; }; })();
 
 
 let sectionPrepState={};
@@ -1917,6 +1961,7 @@ function clearCombatExtraButtons(){
   if(extra) extra.remove();
   const cond=document.getElementById('combat-condition-btn');
   if(cond) cond.remove();
+  const flee=document.getElementById('combat-flee-btn'); if(flee) flee.remove(); // group_107
 }
 
 function setCombatExtraButtons(buttons){
@@ -2371,7 +2416,7 @@ function renderDiceLoot(sec){
 //   {multiply:N}-> winnings of N× the gold stake added (stake itself consumed)
 function applyBetting(sec){
   if(!S||!sec) return;
-  const notifs=[];
+  const notifs=[]; const betOffer=[]; // group_107 C1-053: things won are offered through the pick-up dialog
   // group_85 AS-14: a ledger of betting rounds - a stake is charged once per pending round, a payout once per
   // round; same-paragraph reloads (or a hash re-entry) neither charge nor pay twice.
   S.betLedger=S.betLedger||{}; const rid=S.betRoundId||0; const key=String(sec.id);
@@ -2414,12 +2459,13 @@ function applyBetting(sec){
       S.bet_stake=null;
     }
     if(bp.gold){ S.gold+=bp.gold; notifs.push('+ '+bp.gold+t('zolotyh')); logEvent('gain','+ '+bp.gold+t('zolotyh'),t('vyigrysh_vsego')+S.gold); }
-    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.some(x=>canonItem(x)===canonItem(it))&&getBagUsed()+getItemSize(it)<=getBagSize()){ S.inventory.push(it); notifs.push('+ '+invDisplay(it)); logEvent('gain','+ '+invDisplay(it),t('vyigrysh_3')); } }); }
+    if(bp.items){ bp.items.forEach(it=>{ if(!S.inventory.some(x=>canonItem(x)===canonItem(it))&&!betOffer.some(x=>canonItem(x)===canonItem(it))) betOffer.push(it); }); } // group_107 C1-053: offered, never silently dropped
     if(bp.food){ let f2=0; bp.food.forEach(f=>{ for(let k=0;k<(f.count||1);k++){ const obj={id:f.name,kind:'food',stamina:f.stamina}; if(getBagUsed()+getItemSize(obj)<=getBagSize()){ S.inventory.push(obj); f2++; } } }); if(f2>0){ notifs.push(t('eda')+f2); logEvent('gain',t('eda')+f2,t('vyigrysh_3')); } }
     if(bp.flask_zero&&S.inventory.some(it=>canonItem(it)==='water_flask')){ S.inventory.splice(S.inventory.findIndex(it=>canonItem(it)==='water_flask'),1); S.flask=Math.min(S.flask||0,2); notifs.push(t('flyaga_poteryana')); logEvent('loss',t('flyaga_poteryana_2'),t('proigrana_v_igre')); } // group_100 AR-18: the second flask is staked first
     else if(bp.flask_zero){ if((S.flask||0)>0){ S.flask=0; notifs.push(t('flyaga_poteryana')); logEvent('loss',t('flyaga_poteryana_2'),t('proigrana_v_igre')); } }
   }
-  if(notifs.length>0){ playSound('item'); showItemNotification(notifs,t('igra_v_kosti')); updateHUD(); saveGame(); }
+  if(betOffer.length){ updateHUD(); saveGame(); showInventoryModal(betOffer, notifs); }
+  else if(notifs.length>0){ playSound('item'); showItemNotification(notifs,t('igra_v_kosti')); updateHUD(); saveGame(); }
 }
 
 // §1212 stake-any-item picker (group_41). A general inventory-select primitive:
@@ -2431,7 +2477,8 @@ function renderStakePicker(sec){
   const list=document.getElementById('c-list'); if(!list) return;
   list.innerHTML='';
   // group_87 PL-38: flags are not things in the bag - never stakeable
-  const items=((S&&S.inventory)?S.inventory:[]).filter(it=>!STORY_FLAGS.has(canonItem(it))&&!KNOWLEDGE_FLAGS.has(canonItem(it)));
+  const excl=new Set((sec.stake_exclude||[]).map(canonItem)); // group_107 C1-024 / C1-061: «Печень дракона — сущий яд для Гоблинов»
+  const items=((S&&S.inventory)?S.inventory:[]).filter(it=>!STORY_FLAGS.has(canonItem(it))&&!KNOWLEDGE_FLAGS.has(canonItem(it))&&!excl.has(canonItem(it))&&!(it&&typeof it==='object'&&it.kind==='stack'));
   const rollTarget=sec.stake_roll_target||910;
   const hint=document.createElement('div');
   hint.style.cssText='font-size:14px;color:var(--gold);margin:4px 0 8px;letter-spacing:.06em;';
@@ -2442,6 +2489,7 @@ function renderStakePicker(sec){
     b.style.borderColor='var(--gold)';b.style.color='var(--gold)';b.style.background='rgba(212,175,55,.10)';
     b.textContent=t('postavit')+invDisplay(item);
     b.onclick=()=>{
+      S.betRoundId=(S.betRoundId||0)+1; // group_107: a new stake opens a new betting round (its payout is paid once)
       S.bet_stake={kind:'item',name:item};
       const idx=S.inventory.findIndex(it=>canonItem(it)===canonItem(item));
       if(idx>=0) S.inventory.splice(idx,1);
@@ -2461,16 +2509,106 @@ function renderStakePicker(sec){
 // group_105 GAME-03: the canon's victory rewards and costs that are not items (sec.486 one gold and -1 Luck, sec.1050 +1 Luck)
 // land after the win, once per paragraph (S.postCombatDone), and are shown with the trophy offer.
 function postCombatStats(pci){ const pn=[]; if(!pci||!S) return pn; if(pci.gold>0){ S.gold=(S.gold||0)+pci.gold; pn.push('+ '+pci.gold+t('zolotyh')); logEvent('gain','+ '+pci.gold+t('zolotyh'),t('vsego')+S.gold); } if(pci.luck_add>0){ const lb=S.luck; S.luck=Math.min(S.luckMax,S.luck+pci.luck_add); const inc=S.luck-lb; if(inc>0) pn.push('+ '+inc+t('udachi')); } if(pci.luck_sub>0){ S.luck=Math.max(0,S.luck-pci.luck_sub); pn.push('− '+pci.luck_sub+t('udachi')); } if(pn.length){ updateHUD(); saveGame(); } return pn; }
+// ── group_107 (Gemini 4 Carbon, Track 1): powers of the remake's items and small helpers of the repairs ──
+// The flying carpet stands in for a Levitation spell and the diving suit for a Swimming spell wherever a way on asks for that spell
+// (sec.227 «вместо заклятия Левитации», sec.1214 «плыть через любую водную преграду»); a payment or a trick in spells
+// (no_substitute) and a paragraph that names its own diving-suit way take no substitute. Nothing is spent.
+function substituteFor(ch){
+  if(!ch||ch.no_substitute||!S||!Array.isArray(S.inventory)) return null;
+  const ids=ch.spell?[ch.spell]:(Array.isArray(ch.spell_any)?ch.spell_any:[]);
+  const has=id=>S.inventory.some(it=>canonItem(it)===id);
+  if(ids.includes('LEVITATION')&&has('flying_carpet')) return 'carpet';
+  if(ids.includes('SWIMMING')&&has('diving_suit')){ const own=GD[String(S.section)]; if(!(own&&(own.choices||[]).some(c=>c.inventory_condition==='diving_suit'))) return 'suit'; }
+  return null;
+}
+function choiceSpellReady(c){
+  if(substituteFor(c)) return true;
+  if(c.spell&&getSpellRemaining(c.spell)<=0) return false;
+  if(Array.isArray(c.spell_any)&&!c.spell_any.some(id=>getSpellRemaining(id)>0)) return false;
+  if(Array.isArray(c.spell_gate)&&!c.spell_gate.some(id=>getSpellRemaining(id)>0)) return false;
+  return true;
+}
+// C1-015: a failed one-sided luck check still leaves a rescue that needs no Luck (sec.203: the goldfish, «прибавьте 15»)
+function luckRescue(sec){ return !!(sec&&(sec.choices||[]).some(c=>!c.luck_type&&!c.post_combat&&!c.combat_condition&&passesInventoryCheck(c)&&passesGoldCheck(c)&&choiceSpellReady(c))); }
+// C1-061: «поставить деньги» commits a gold stake before the roll (a betting round of its own, like set_stake)
+function placeGoldStake(amt){
+  if(!S) return; S.betLedger=S.betLedger||{}; S.betRoundId=(S.betRoundId||0)+1;
+  S.gold=Math.max(0,(S.gold||0)-amt); S.bet_stake={kind:'gold',amount:amt};
+  logEvent('loss',t('stavka_2')+amt+t('zolotyh'),t('na_konu_ostalos')+S.gold); updateHUD(); saveGame();
+}
+// C1-029 / C1-048: the black pearl (sec.457) - every Green Knight it strikes leaves an eye; four eyes take one place in the bag;
+// the pearl works until twelve eyes have been collected.
+function pearlActive(){ return !!(S&&Array.isArray(S.inventory)&&S.inventory.some(it=>canonItem(it)==='black_pearl')&&(S.pearlEyes||0)<12); }
+function grantKnightEyes(n){
+  const notes=[]; const give=Math.max(0,Math.min(n,12-(S.pearlEyes||0)));
+  let st=S.inventory.find(it=>it&&typeof it==='object'&&it.kind==='stack'&&it.id==='knight_eyes');
+  const cur=st?(Number(st.count)||0):0; const base=getBagUsed()-(st?getItemSize(st):0); let take=give;
+  while(take>0&&base+Math.ceil((cur+take)/4)>getBagSize()) take--;
+  if(take>0){ if(!st){ st={id:'knight_eyes',kind:'stack',count:0}; S.inventory.push(st); } st.count=cur+take; S.pearlEyes=(S.pearlEyes||0)+take; notes.push(t('ui_eyes_gain')+take); logEvent('gain',t('ui_eyes_gain')+take,t('v_meshke_3')+getBagUsed()+'/'+getBagSize()); }
+  if(give>take) notes.push(t('meshok_polon_2')+(give-take)+t('ne_vzyato'));
+  if((S.pearlEyes||0)>=12) notes.push(t('ui_eyes_left'));
+  return notes;
+}
+function usePearl(sec){
+  if(!S||!sec||!sec.pearl||!pearlActive()) return;
+  const notes=[t('ui_pearl_log')].concat(grantKnightEyes(sec.pearl.eyes||1));
+  logEvent('combat',t('ui_pearl_log'),t('paragraf_2')+S.section); playSound('victory'); updateHUD(); saveGame(); showItemNotification(notes);
+  if(sec.pearl.to){ goTo(sec.pearl.to); return; }
+  S.powerAt={sec:S.section,kind:'pearl'}; combatDone[S.section]=true; S.combatCondMet=S.combatCondMet||{}; S.combatCondMet[S.section]=true; saveGame();
+  renderChoices(sec);
+}
+// C1-007: the copper ring (sec.88) - invisible to the living, the hero walks past a fight that bars the way (sec.ring_pass: its ways on);
+// spirits and ghosts, traps, water and Barlad Dert are not passed (those fights carry no ring_pass).
+function ringHeld(){ return !!(S&&Array.isArray(S.inventory)&&S.inventory.some(it=>canonItem(it)==='ring')); }
+function useRing(sec){
+  if(!S||!sec||!Array.isArray(sec.ring_pass)||!ringHeld()) return;
+  S.powerAt={sec:S.section,kind:'ring'}; logEvent('combat',t('ui_ring_log'),t('paragraf_2')+S.section); saveGame(); showItemNotification([t('ui_ring_log')]);
+  renderChoices(sec);
+}
+// draws the pearl / ring buttons; returns true when the ring has already taken the hero past the fight (only its ways on are drawn)
+function renderItemPowers(sec,list){
+  const pa=S&&S.powerAt, here=!!(pa&&pa.sec===S.section);
+  if(here&&pa.kind==='ring'&&Array.isArray(sec.ring_pass)){
+    sec.ring_pass.forEach(tg=>{
+      const idx=(sec.choices||[]).findIndex(c=>c.target===tg); const ch=idx>=0?sec.choices[idx]:null;
+      if(ch&&(ch.spell||ch.spell_any)&&passesInventoryCheck(ch)&&passesGoldCheck(ch)){ const c2=Object.assign({},ch); delete c2.acquires; delete c2.consume_on_use; delete c2.post_combat; list.appendChild(makeChoiceBtn(c2,false,idx)); return; }
+      const b=document.createElement('button'); b.className='choice-btn'; b.textContent='\u{1F48D} '+t('ui_ring_pass')+' ('+tg+')'; b.dataset.target=String(tg); b.onclick=()=>goTo(tg); list.appendChild(b);
+    });
+    return true;
+  }
+  const fight=!!(sec.enemies&&sec.enemies.length), won=fight&&!!combatDone[S.section];
+  if(sec.pearl&&pearlActive()&&!won){ const b=document.createElement('button'); b.className='choice-btn'; b.style.borderColor='#6b6b8a'; b.style.color='#c9c9e8'; b.textContent=t('ui_pearl_btn')+(sec.pearl.to?' ('+sec.pearl.to+')':''); b.dataset.power='pearl'; if(sec.pearl.to) b.dataset.target=String(sec.pearl.to); b.onclick=()=>usePearl(sec); list.appendChild(b); }
+  if(Array.isArray(sec.ring_pass)&&ringHeld()&&fight&&!won){ const b=document.createElement('button'); b.className='choice-btn'; b.style.borderColor='#b87333'; b.style.color='#e0a46a'; b.textContent=t('ui_ring_btn'); b.dataset.power='ring'; b.onclick=()=>useRing(sec); list.appendChild(b); }
+  return false;
+}
+// C1-028: «во время битвы можете попытаться убежать» - the flee exit stays at hand inside the fight (the usual 2 STAMINA)
+function addFleeButton(){
+  const old=document.getElementById('combat-flee-btn'); if(old) old.remove();
+  const cs=combatState, sec=cs&&cs.sec; if(!sec||!S) return;
+  const ch=(sec.choices||[]).find(c=>c.flee===true&&!c.combat_condition&&passesInventoryCheck(c)); if(!ch) return;
+  const b=document.createElement('button'); b.id='combat-flee-btn'; b.className='btn btn-s'; b.style.cssText='margin-top:10px;';
+  b.textContent=t('ui_flee_btn')+(ch.label||('('+ch.target+')'));
+  const bsec=S.section; b.onclick=()=>{
+    if(!S||S.section!==bsec||combatState!==cs) return;
+    S.stamina=Math.max(0,S.stamina-2); updateHUD(); saveGame(); showItemNotification([t('2_vynoslivosti_begstvo_iz_boya')]);
+    document.getElementById('modal-combat').classList.remove('on'); b.remove();
+    if(S.stamina<=0){ showDeathOverlay(); return; }
+    goTo(ch.target);
+  };
+  const round=document.getElementById('btn-combat-round'); if(round&&round.parentElement) round.parentElement.appendChild(b);
+}
 function renderChoices(sec){
   const list=document.getElementById('c-list');list.innerHTML='';
   // group_81 B-07: a resolved luck roll is persisted (S.luckChecks) so an F5 before
   // choosing cannot reroll it - restore it into the runtime maps before the branches.
   if(sec.has_luck&&!luckDone[S.section]&&S.luckChecks&&S.luckChecks[String(S.section)]&&!S.luckChecks[String(S.section)].scripted){ luckDone[S.section]=true; luckResult[S.section]=S.luckChecks[String(S.section)].lucky?'lucky':'unlucky'; }
+  if(S&&S.powerAt&&S.powerAt.sec===S.section&&S.powerAt.kind==='pearl') combatDone[S.section]=true; // group_107: the pearl's knights stay dead after a reload
   const hasPendingCombat=sec.enemies&&sec.enemies.length>0&&!combatDone[S.section];
   const combatWon=sec.enemies&&sec.enemies.length>0&&combatDone[S.section];
   const hasPendingLuck=sec.has_luck&&!luckDone[S.section];
 
   if(hasPendingCombat){
+    if(renderItemPowers(sec,list)) return; // group_107: the copper ring and the black pearl
     if(renderCanonCombatChoices(sec,list)) return;
     const btn=document.createElement('button');btn.className='choice-btn';
     btn.style.borderColor='var(--red)';btn.style.color='var(--red2)';
@@ -2551,6 +2689,7 @@ function renderChoices(sec){
     return;
   }
 
+  renderItemPowers(sec,list); // group_107: the pearl at sec.468
   nonLuckChoices.forEach(e=>list.appendChild(makeChoiceBtn(e.ch,false,e.idx)));
 }
 
@@ -2558,6 +2697,7 @@ function goTo(id){
   if(!S)return;try{ bcStopSpeech(); }catch(e){} S.cameFrom=S.section; /* group_85 AS-01 */ S.section=id;
   combatDone={};luckDone={};luckResult={};sectionPrepState={};
   S.luckChecks={}; // group_81 B-07: a persisted luck roll belongs to the paragraph being left
+  S.powerAt=null; // group_107: the ring's passage and the pearl's dead knights belong to the paragraph being left
   S.pendingDiceRoll=null; // group_85 AS-14
   renderGame();
   try{ bcVoiceAutoRead(); }catch(e){} // group_88 V-01
@@ -2584,7 +2724,7 @@ function startCombat(enemies,sec){
   const pb=(S&&S.pending_combat_buff)||null;
   const pendingBuff=(pb&&typeof pb==='object')?((pb.section===S.section)?pb.mod:null):pb;
   if(S)S.pending_combat_buff=null;
-  const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0);
+  const pModInit=pMod+(pendingBuff==='PLAYER_MINUS2'?-2:0)+(pendingBuff==='REFLECT_WEAKNESS'?-pMod:0); // group_107 C1-031: the spy's Weakness turned back - off you, onto him
   combatState={
     enemies:enemies.map((e,idx)=>(e=(e&&e.mirror_hero&&S)?Object.assign({},e,{skill:S.skill,stamina:Math.max(1,S.stamina)}):e /* group_100: sec.239 - your own Copy has your SKILL and STAMINA */,{...e,rawName:e.name,name:enemyName(e.name),hp:((idx===0&&S&&S.carryOver&&S.carryOver.to===S.section&&typeof S.carryOver.hp==='number')?Math.max(1,Math.min(e.stamina,S.carryOver.hp)):e.stamina) /* group_87 PL-41 */,dmg:e.damage||2,active:!(((script==='sec1175_canon_orcs'||script==='sec131_eagle_joins') && idx>0) || e.joins!==undefined),fled:false})),
     round:0,
@@ -2592,7 +2732,7 @@ function startCombat(enemies,sec){
     sec:sec,
     playerMod:pModInit,
     forceBuff:(pendingBuff==='FORCE'),  // group_19 FORCE whole-combat +2; R2-3 may pre-set via bridge
-    weaknessDebuff:false,  // group_19: WEAKNESS spell active for whole combat (-2 enemy attack)
+    weaknessDebuff:(pendingBuff==='REFLECT_WEAKNESS'),  // group_19: WEAKNESS spell active for whole combat (-2 enemy attack); group_107: or turned back on the enemy
     enemyAttackMod:(pendingBuff==='ENEMY_PLUS2'?2:0),  // R2-3 §865 Force-backfire: enemy +2 whole combat
     pendingWeakPick:(pendingBuff==='ENEMY_WEAK_PICK'),  // G-06: targeted -2, lands on the selected enemy at round 1
     special:script==='sec1175_canon_orcs'?{type:'sec1175',reinforcementsJoined:false,firstDeathHandled:false,luckChecked:false}:(script==='sec131_eagle_joins'?{type:'sec131',reinforcementsJoined:false}:null)
@@ -2629,6 +2769,7 @@ function startCombat(enemies,sec){
   if(combatState.enemyAttackMod){
     document.getElementById('combat-log').innerHTML+=`<div style="color:var(--red2);margin-bottom:8px;">${t('zaklyatie_obratilos_protiv_vas_s')}${combatState.enemyAttackMod}${t('do_konca_boya')}</div>`;
   }
+  if(pendingBuff==='REFLECT_WEAKNESS'){ document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">${t('ui_reflect_log')}</div>`; } // group_107
   if(script==='sec1175_canon_orcs'){
     document.getElementById('combat-log').innerHTML+=`<div style="color:var(--gold);margin-bottom:8px;">${t('snachala_vy_srazhaetes_tolko_s_p')}</div>`;
   }
@@ -2957,7 +3098,7 @@ function endCombat(won){
   const larvaBtnEnd=document.getElementById('btn-larva');
   if(larvaBtnEnd)larvaBtnEnd.style.display='none';
   const snakeBtnEnd=document.getElementById('btn-snake'); if(snakeBtnEnd)snakeBtnEnd.style.display='none'; // group_97 PL-01
-  const xbBtnEnd=document.getElementById('btn-crossbow'); if(xbBtnEnd)xbBtnEnd.style.display='none'; // group_100
+  const xbBtnEnd=document.getElementById('btn-crossbow'); if(xbBtnEnd)xbBtnEnd.style.display='none'; const flBtnEnd=document.getElementById('combat-flee-btn'); if(flBtnEnd) flBtnEnd.remove(); // group_107 C1-028 / group_100
   if(won){
     playSound('victory');
     const _csec=GD[S.section];
@@ -3410,7 +3551,7 @@ function doLuckCheck(sec){
       const hasLucky=sec.choices.some(c=>c.luck_type==='lucky');
       const hasUnlucky=sec.choices.some(c=>c.luck_type==='unlucky');
       // Pure luck-to-death sections often only encode the lucky escape paragraph.
-      if(lr==='unlucky' && hasLucky && !hasUnlucky){
+      if(lr==='unlucky' && hasLucky && !hasUnlucky && !luckRescue(sec)){ // group_107 C1-015: unless a rescue without luck is at hand
         const btn=document.createElement('button');btn.className='btn btn-s';
         btn.style.cssText='margin:8px;font-size:18px;padding:12px 24px;';
         btn.textContent=t('konec_priklyucheniya');

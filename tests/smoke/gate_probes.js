@@ -64,7 +64,7 @@ const TAG = "(function(){ if(window.__tagged) return; window.__tagged=true; cons
   await probe('G-12a', 435, null, v => ({ ok: v.sec === 100, obs: 'correct answer without hyena_met -> sec ' + v.sec }), { act: () => { const inp = document.getElementById('riddle-input'); inp.value = 'ГИЕНА'; [...document.querySelectorAll('#c-list button')].find(b => /Ответить/.test(b.textContent)).click(); } });
   await probe('G-12b', 435, () => { S.inventory.push('hyena_met'); saveGame(); }, v => ({ ok: v.sec !== 435 && v.sec !== 100, obs: 'correct answer with hyena_met -> sec ' + v.sec }), { act: () => { const inp = document.getElementById('riddle-input'); inp.value = 'ГИЕНА'; [...document.querySelectorAll('#c-list button')].find(b => /Ответить/.test(b.textContent)).click(); } });
   // G-13 black horse
-  await probe('G-13a', 94, null, v => ({ ok: has(v, 989), obs: 'sec.94 Barlad alive: targets=' + v.targets.join(',') }));
+  await probe('G-13a', 94, null, v => ({ ok: !has(v, 989), obs: 'sec.94 Barlad alive - the ride is no exit of the cupboard (group_107 C1-008: the figurine is used at sec.1120): targets=' + v.targets.join(',') }));
   await probe('G-13b', 94, () => { S.inventory.push('barlad_dead'); saveGame(); }, v => ({ ok: !has(v, 989), obs: 'sec.94 Barlad dead: targets=' + v.targets.join(',') }));
   // G-14 bag
   await probe('G-14', 1, () => { S.inventory.push('castle_password', 'death_of_orcs', 'knight_shield', 'apple'); saveGame(); }, v => ({ ok: v.used === 1 && /Пароль в замок/.test(v.bag) && v.bagButtons === 3, obs: 'used=' + v.used + ' (only the apple) bag="' + v.bag + '" drop buttons=' + v.bagButtons + ' (password has none)' }));

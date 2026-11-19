@@ -30,10 +30,10 @@ while q:
 unreach=sorted(V-seen)
 print("reachable WITH valid_targets:", len(seen), "| unreachable:", len(unreach))
 print("unreachable set:", unreach)
-print("\nMatches handoff claim of 1205 reachable:", len(seen)==1205)
+print("\nMatches handoff claim of 1219 reachable:", len(seen)==1219)
 # classify remaining unreachable vs audit Tiers
-tierB={175,321,342,650,661,968,1002,1149}
-tierC={330,644,713,736,875,1114,1165}
+tierB={650}   # group_107: a key door of the 1991 numbering - no paragraph of the remake adds up to it
+tierC={736}   # group_107: the golden horseshoe - remake text that no paragraph leads to
 other=set(unreach)-tierB-tierC
 print("\nremaining unreachable breakdown:")
 print("  Tier B (documented, need 1991 confirm):", sorted(set(unreach)&tierB))

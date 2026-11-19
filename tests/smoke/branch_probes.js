@@ -71,10 +71,12 @@ const view = () => ({ sec: S.section, st: S.stamina, death: !!document.getElemen
     const used0 = await page.evaluate(() => getBagUsed() + '/' + getBagSize());
     await page.evaluate(() => { const b = document.querySelector('#c-list button'); if (b) b.click(); }); await page.waitForTimeout(400);
     const a = await page.evaluate(() => ({ inv: S.inventory.length, txt: document.querySelector('#c-list button').textContent.trim().slice(0, 30), dis: document.querySelector('#c-list button').disabled, note: (document.body.innerText.match(/мешок полон[^\n]{0,40}/i) || [''])[0] }));
+    // group_107 C1-042: nothing fitted - the offer stays; with room the fruit is taken, and the collected state survives a reload
+    await page.evaluate(() => { S.inventory = ['rope']; saveGame(); const b = document.querySelector('#c-list button'); if (b) b.click(); }); await page.waitForTimeout(400);
     await page.reload({ waitUntil: 'load' }); await page.waitForTimeout(700);
-    const b = await page.evaluate(() => ({ sec: S.section, txt: document.querySelector('#c-list button').textContent.trim().slice(0, 30), dis: document.querySelector('#c-list button').disabled }));
+    const b = await page.evaluate(() => ({ sec: S.section, inv: S.inventory.length, txt: document.querySelector('#c-list button').textContent.trim().slice(0, 30), dis: document.querySelector('#c-list button').disabled }));
     return { used0, a, b };
-  }, (v, x) => ({ ok: x.used0 === '7/7' && x.a.inv === 7 && /✓/.test(x.a.txt) && x.a.dis && x.b.sec === 582 && /✓/.test(x.b.txt) && x.b.dis, obs: 'bag ' + x.used0 + '; after collecting: items ' + x.a.inv + ', button «' + x.a.txt + '» disabled=' + x.a.dis + ', notice «' + x.a.note + '»; after reload: «' + x.b.txt + '» disabled=' + x.b.dis }));
+  }, (v, x) => ({ ok: x.used0 === '7/7' && x.a.inv === 7 && !/✓/.test(x.a.txt) && !x.a.dis && /мешок полон/i.test(x.a.note) && x.b.sec === 582 && x.b.inv === 7 && /✓/.test(x.b.txt) && x.b.dis, obs: 'bag ' + x.used0 + '; full bag: items ' + x.a.inv + ', button «' + x.a.txt + '» disabled=' + x.a.dis + ', notice «' + x.a.note + '»; with room, after reload: items ' + x.b.inv + ', «' + x.b.txt + '» disabled=' + x.b.dis }));
 
   await browser.close();
   const counts = rows.reduce((m, r) => { m[r.verdict] = (m[r.verdict] || 0) + 1; return m; }, {});

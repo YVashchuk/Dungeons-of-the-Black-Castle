@@ -162,31 +162,44 @@ def bfs(graph: dict, start: int, goal: int, must_visit: Optional[list[int]] = No
     return _bfs_one(graph, start, goal)
 
 
+GATED_KEYS = ('inventory_condition', 'inventory_all', 'spell', 'spell_any', 'spell_gate', 'gold_condition', 'from_section')
+
+
+def _edge_cost(edge) -> int:
+    # group_107: a way that needs an item, a spell, gold or an origin costs 10, a free way 1 (Dijkstra below)
+    cond = edge[2] if len(edge) > 2 and isinstance(edge[2], dict) else {}
+    return 10 if any(cond.get(k) for k in GATED_KEYS) else 1
+
+
 def _bfs_one(graph: dict, start: int, goal: int) -> Optional[list[tuple[int, str]]]:
     if start == goal:
         return []
-    seen = {start}
+    import heapq
+    best = {start: 0}
     parent: dict[int, tuple[int, str]] = {}
-    queue: deque[int] = deque([start])
-    while queue:
-        node = queue.popleft()
+    heap = [(0, 0, start)]
+    order = 0
+    while heap:
+        dist, _, node = heapq.heappop(heap)
+        if dist > best.get(node, 1 << 30):
+            continue
+        if node == goal:
+            path: list[tuple[int, str]] = []
+            cur = goal
+            while cur != start:
+                prev, lab = parent[cur]
+                path.append((cur, lab))
+                cur = prev
+            path.reverse()
+            return path
         for edge in graph.get(node, []):
             target, label = edge[0], edge[1]
-            if target in seen:
-                continue
-            seen.add(target)
-            parent[target] = (node, label)
-            if target == goal:
-                # Reconstruct
-                path: list[tuple[int, str]] = []
-                cur = goal
-                while cur != start:
-                    prev, lab = parent[cur]
-                    path.append((cur, lab))
-                    cur = prev
-                path.reverse()
-                return path
-            queue.append(target)
+            nd = dist + _edge_cost(edge)
+            if nd < best.get(target, 1 << 30):
+                best[target] = nd
+                parent[target] = (node, label)
+                order += 1
+                heapq.heappush(heap, (nd, order, target))
     return None
 
 

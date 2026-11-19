@@ -5,7 +5,7 @@ relative to the repo, so it works from any clone location.
 
 ## Run (from the repo root)
     npm --prefix tests install          # optional: acorn for the AST-based harnesses (tests/vendor/acorn.js is the offline fallback, so a bare archive runs the battery without npm)
-    node tests/run_all.js               # 17 harnesses + reachability baseline (expect ALL GREEN, 1205 reachable)
+    node tests/run_all.js               # 17 harnesses + reachability baseline (expect ALL GREEN, 1219 reachable)
 
 Dist spot-checks (run after `bash build.sh` when relevant), each exits 0:
     for f in tests/_dist_*_check.js; do node "$f"; done                              # POSIX shells
@@ -20,7 +20,7 @@ runner path has no `tests/` prefix there, and the `_dist_` checks must be run on
 - `goldens/` — golden fixtures/manifests the harnesses compare against
 - `regen_fixtures.js` — rebuilds the 6b/6d/6e1/6e2 goldens from current sources (use ONLY after
   an intentional change to the guarded values; other goldens are maintained by hand per increment)
-- `verify_reach3.py` — BFS reachability baseline (1205/1221, 16 documented islands)
+- `verify_reach3.py` — BFS reachability baseline (1219/1221, 2 documented islands: §650, §736 — group_107)
 - `run_all.js` — runner
 
 ## Do not delete

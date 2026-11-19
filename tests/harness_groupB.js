@@ -20,7 +20,7 @@ const ciArr=a=>JSON.stringify((a||[]).map(canonItem));    // canon-normalize an 
 console.log('# Pearl §457/§468');
 check('§457 grants Чёрная жемчужина (auto_items)', ciArr(GD['457'].auto_items.items)===ciArr(['Чёрная жемчужина']));
 inv(); check('§468->482 hidden w/o pearl', passesInventoryCheck(g(468,482))===false);
-inv('Чёрная жемчужина'); check('§468->482 shown w/ pearl', passesInventoryCheck(g(468,482))===true);
+check('§468 pearl is the paragraph\'s power now (group_107 C1-029: the choice retired, GD pearl {to:482, eyes:2})', g(468,482).retired===true&&JSON.stringify(GD['468'].pearl)==='{"to":482,"eyes":2}');
 check('§468->482 NOT consumed (reusable death-ray)', !g(468,482).consume_on_use);
 inv(); check('§468->46 (fight fallback) always visible', passesInventoryCheck(g(468,46))===true);
 inv(); check('§468->368 (FIRE fallback) always visible', passesInventoryCheck(g(468,368))===true);

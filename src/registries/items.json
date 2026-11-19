@@ -123,5 +123,11 @@
   "golden_snake": {"legacyRu":"Золотая змейка","kind":"item"},
   "skull": {"legacyRu":"Череп","kind":"item"},
   "crossbow": {"legacyRu":"Арбалет","kind":"weapon","slotCost":0},
-  "secret_door": {"legacyRu":"Тайна потайной дверцы","kind":"flag"}
+  "secret_door": {"legacyRu":"Тайна потайной дверцы","kind":"flag"},
+  "bear_key": {"legacyRu":"Ключ медведя","kind":"item"},
+  "all_key": {"legacyRu":"Ключ «Всё»","kind":"item"},
+  "unlit_candle": {"legacyRu":"Незажжённая свеча","kind":"item"},
+  "knight_eyes": {"legacyRu":"Глаза Зелёных рыцарей","kind":"item"},
+  "spell_reflect": {"legacyRu":"Секрет обращения заклятий","kind":"flag"},
+  "merchant_dead": {"legacyRu":"Торговец убит","kind":"flag"}
 }

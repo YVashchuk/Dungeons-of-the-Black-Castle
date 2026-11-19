@@ -4,7 +4,7 @@ const REPO=path.resolve(__dirname,'..');
 const d=fs.readFileSync(path.join(REPO,'dist','dungeons-of-the-black-castle.html'),'utf8');
 let ok=0, bad=0;
 const ck=(c,m)=>{ if(c)ok++; else {bad++; console.log('  FAIL: '+m);} };
-[131,727,734,808].forEach(t=>ck(d.split('"target":'+t+',"inventory_condition":["black_castle_key","signet"]').length-1===1,'array cond '+t));
+[131,727,734,808].forEach(t=>ck(d.split('"target":'+t+',"inventory_condition":["black_castle_key","signet","bear_key","all_key"]').length-1===1,'array cond '+t)); // group_107 C1-036: the +40 key family
 [131,727,734,808].forEach(t=>ck(d.split('\u041e\u0442\u043f\u0435\u0440\u0435\u0442\u044c \u0434\u0432\u0435\u0440\u044c \u043a\u043b\u044e\u0447\u043e\u043c ('+t+')').length-1===1,'neutral label '+t));
 ck(d.split('\u041a\u043b\u044e\u0447\u043e\u043c \u0427\u0451\u0440\u043d\u043e\u0433\u043e \u0437\u0430\u043c\u043a\u0430').length-1===0,'old label wording gone');
 console.log('DIST CHECK: '+ok+' passed, '+bad+' failed');
