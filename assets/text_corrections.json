@@ -214,7 +214,8 @@
     "v2.206 -> v2.207": "November 2026 - group_106: the ChatGPT 6.2 Astra recheck of group_105 (2026-11-17, desktop Chrome with live input on the published build d082d4e) adjudicated: 21 of 26 rows PASS; ASTRA-05 fixed - either watermelon (the §389 food or the §300 field watermelon) opens §730 → §90 → §720, and §720 takes one (new consume_on_use form {any: [...]}); CHECK-01 - rows C49 and C57 rewritten for live input (the dialogs are modal; the in-dialog language switch stays with the probes), C53 names the Swimming hero; group_105 confirmed live. Fidelity probes 75 -> 77; p1_6d 114 -> 115. GAME_RULES.md + label 2.206 -> 2.207 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.207 -> v2.208": "November 2026 - group_106 closed: the final ChatGPT 6.2 Astra check of 81eb997 (2026-11-17, desktop Chrome with live input on the published build) - C49, C53, C54, C57 PASS, no findings; ASTRA-05 and CHECK-01 confirmed (AS62r-04); the DOM model 37/37. Record only: registry (last_updated 2026-11-17), checklist journal, launch cards, HANDOFF; GAME_RULES.md label 2.207 -> 2.208 (R-03 guard). Battery ALL GREEN.",
     "v2.208 -> v2.209": "November 2026 - group_107: the Gemini 4 Carbon Track 1 fidelity sweep (62 findings) adjudicated: 61 fixed, 1 rejected (§887 face 6 - group_43). The book's arithmetic wired at 13 paragraphs called vestigial in June (reachability 1205 -> 1219; only §650 and §736 stay unreachable). Items' powers on the author's decision: the flying carpet and the diving suit stand in for Levitation and Swimming, the black pearl strikes the Green Knights (twelve eyes open §860), the copper ring passes living foes that bar the way, the children's secret turns back the spy's spells. Engine: the luck window keeps a rescue without luck (§203), a batch of things goes through the pick-up dialog (§724), Indifference obeys the allowed spells, prizes at dice are offered, a stake before every roll (§365, §1212), the any-spell picker, the flee inside a fight, a cost paid with the way (§468), stack items. Keys: the bear's key and the «Всё» key join the +40 family; the goblins' copper key opens only its own doors. The tavern candle needs the flint. §87 -> 942. Fidelity probes 77 -> 111; p1_6d 115 -> 125; the signet, group B, gate and branch checks follow. GAME_RULES.md + label 2.208 -> 2.209 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
-    "v2.209 -> v2.210": "November 2026 - group_108: the Gemini 4 Carbon Track 2 engine audit (19 findings) adjudicated: all confirmed - 16 fixed here, 3 fixed in group_107 as Track 1 findings. After a win only the exits after the fight remain (the ways before it led to a second fight, the indoor Fire death or a spent vessel); the pick-up dialog and the trophies survive a reload; an imported save starts with clean paragraph state and cannot smuggle markup; a typed #146 keeps both gates; the choices follow eating, dropping and sips; no healing or Indifference for the dead; the restart works with blocked storage; the §1175 orcs; the §435 riddle needs the hyena in every language and its translated answers now name the Hyena (they held a hedgehog since group_72). The map, two shell strings, dead data and the census of the docs corrected; the labels group_107 added were reviewed in four languages."
+    "v2.209 -> v2.210": "November 2026 - group_108: the Gemini 4 Carbon Track 2 engine audit (19 findings) adjudicated: all confirmed - 16 fixed here, 3 fixed in group_107 as Track 1 findings. After a win only the exits after the fight remain (the ways before it led to a second fight, the indoor Fire death or a spent vessel); the pick-up dialog and the trophies survive a reload; an imported save starts with clean paragraph state and cannot smuggle markup; a typed #146 keeps both gates; the choices follow eating, dropping and sips; no healing or Indifference for the dead; the restart works with blocked storage; the §1175 orcs; the §435 riddle needs the hyena in every language and its translated answers now name the Hyena (they held a hedgehog since group_72). The map, two shell strings, dead data and the census of the docs corrected; the labels group_107 added were reviewed in four languages.",
+    "v2.210 -> v2.211": "November 2026 - group_109: the Gemini 4 Carbon Track 3 translation sweep (EN, FR, UK against the Russian) adjudicated. A riddle answer typed with its article («la toile», «le cimetière», «the web» - as §28 teaches them) now counts as the bare word; the §435 hedgehog of the translations was fixed in group_108; the labels of §348 (a chest) and §641 (a goldfish) in four languages, the Ukrainian §592 (the carpet) and §724 (the bedroom), and the French names of the Lesovichok, the diving suit and the council hall corrected. The author's decision: the old man's door opens only in the wall of §70 (the gates' exits of group_100 retired)."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -492,6 +493,103 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_109_2026_11_19_carbon_track3": {
+      "comment": "Gemini 4 Carbon (Google AI Studio, Thinking High) - Track 3, the translation sweep of EN, FR and UK against the Russian over all 1221 paragraphs and the nine meta maps of the bundle at 7fdf978, 2026-11-19 (one chat per language). EN 1 finding, FR 1, UK 3. The §435 hedgehog (EN) had been fixed in group_108 already; the answers with their articles fixed in the engine; places from the reviewers' notes (the chest of §348 and the goldfish of §641 in four languages, the French names, a Ukrainian misspelling) fixed by the maintainer; the author decided the old man's door is §70 only. Evidence: _handoff/carbon_2026_11/results/3_translation_* (out of git).",
+      "source": "gemini_4_carbon_track3_2026_11_19",
+      "verified": "2026-11-19",
+      "items": [
+        {
+          "id": "CT3-EN-001_sec435_answer_hedgehog",
+          "finding": "C3-EN-001",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "In LOCALE_EN, the robbers' acquaintance is consistently named \"Hyena\" (LOCALE_EN.p[\"337\"].t: \"a Hyena\"; p[\"458\"].t: \"The Hyena\"; p[\"66\"].t: \"“So you really did meet the Hyena?”\"), and LOCALE_EN.p[\"435\"].t instructs the reader to \"enter that acquaintance’s name in English below\".",
+          "note": "Confirmed: the English answer list of §435 held only «hedgehog» (the source word list of group_72 had «ежик» for RU - ЕЖИК sums to 36 like ГИЕНА, so the canon check passed with the wrong word), while §66 asks «So you really did meet the Hyena?».",
+          "resolution": "DONE. Fixed in group_108 (CT2-020): EN hyena / hyaena, UK гієна, FR hyène; the plaintext word list (_handoff, out of git) corrected too, the generator reproduces the hashes in the locales."
+        },
+        {
+          "id": "CT3-FR-001_riddle_answers_with_articles",
+          "finding": "C3-FR-001",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "In LOCALE_FR.p[\"28\"].t, the magic Book translates the three lifesaving spider-riddle answers with French definite articles: « la toile », « le cimetière », « la mort »",
+          "note": "Confirmed: §28 teaches the spider's answers with their articles (FR «la toile», «le cimetière», «la mort»; EN «the web», «the cemetery»), the lists held the bare words (and FR «la mort») - «la toile» at §1113 and «le cimetière» at §1131 were refused, three refusals end at §1190. The same held for EN, and for every riddle with an article.",
+          "resolution": "DONE. The engine accepts an answer typed with a leading article as the bare word (EN the / a / an, FR le / la / les / l' / un / une / des / du / de la) - riddleArticleless() in the locale answer path; the word lists stay bare; the placeholder stays as it is. A wrong answer stays wrong."
+        },
+        {
+          "id": "CT3-UK-001_sec592_carpet_label",
+          "finding": "C3-UK-001",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "In LOCALE_RU.p[\"592\"].t («Вы берете статуэтку человечка и бросаете в заплечный мешок.",
+          "note": "Confirmed: §592 → 653 is the branch for a hero who has the flying carpet - at §653 the figurine bursts into flame in the bag and the carpet burns; «Скористатися килимом-літаком» promised a use of it. The RU label itself was a truncated artifact («Берете статуэтку человечка и бросаете в… (653)») and EN «continue with a flying carpet» read as a use too.",
+          "resolution": "DONE. UK «Якщо у вас є килим-літак (653)», RU «Если у вас есть ковер-самолет (653)» (as its pair «Если ковра-самолета нет…»), EN «If you have a flying carpet (653)»; FR («ranger la statuette dans le sac») was right."
+        },
+        {
+          "id": "CT3-UK-002_sec724_bedroom_not_study",
+          "finding": "C3-UK-002",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "LOCALE_RU.p[\"724\"].t and c[1] simply return the reader to §980 without naming the room.",
+          "note": "Confirmed: §724 (the table drawer) returns to §980, Barlad Dert's bedroom; the study (§1096) is behind the golden-arrow door. EN already says «Return to the bedroom».",
+          "resolution": "DONE. UK «Повернутися й оглянути ще щось у спальні (980)»."
+        },
+        {
+          "id": "CT3-UK-003_sec435_answer_yizhak",
+          "finding": "C3-UK-003",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "At §337, §458 and §66 the robbers' acquaintance is the Hyena — «Гиена»",
+          "note": "Confirmed: the Ukrainian answer list of §435 held only «їжак» (the source word list had «ежик» for RU - the same letter sum as ГИЕНА).",
+          "resolution": "DONE. Fixed in group_108 (CT2-020): UK гієна; the plaintext word list corrected; the generator reproduces the hashes."
+        },
+        {
+          "id": "CT3-EN-N01_sec348_chest_label",
+          "finding": "Track 3 EN, a place with two readings",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The unlucky label of §348 (the fall from the bridge, a plain luck test) speaks of a chest: «Если сундук не поддался — идти дальше (537)».",
+          "note": "Confirmed in all four languages (the reviewer, bound to the Russian, rightly did not report the English mirror of it). §537 is the broken leg in the ravine.",
+          "resolution": "DONE. The standard unlucky label in each language («Удача вас покинула… (537)», «Luck has abandoned you… (537)», «La Chance vous a abandonné… (537)», UK «Удача вас покинула… (537)»); golden 6a follows RU."
+        },
+        {
+          "id": "CT3-FR-N01_french_names",
+          "finding": "Track 3 FR, places not reported",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "The French text names the Lesovichok three ways (Petit Vieux de la Forêt §54 / §79, Vieil Homme des Bois §198 / §747, Petit Homme des Bois in the fight §303), the diving suit «tenue de plongée» at §16 / §182 (the bag: «Scaphandre»), the council hall «salle de réunion» at §144 (its door: «Salle du conseil»), and writes «de assauts».",
+          "note": "The Russian has one name each (Лесовичок, водолазный костюм, зал заседаний). The reviewer judged them harmless in context; the maintainer harmonised them - one name helps where the fight and the gates meet the earlier prose.",
+          "resolution": "DONE. FR: «le Petit Homme des Bois» (§54, §79, §198 with its label, §747), «un scaphandre» (§16, §182 with their labels), «la salle du conseil» (§144), «d’assauts» (ui). The narrative «petit vieux» for «старичок» stays."
+        },
+        {
+          "id": "CT3-UK-N01_sec641_goldfish_label",
+          "finding": "Track 3 UK, places not reported",
+          "severity": "P2",
+          "status": "DONE",
+          "hypothesis": "§641 («Вы благополучно достигаете противоположного берега… — 717») carried the label «Позвать на помощь Золотую рыбку и выбраться к берегу (717)» in all four languages.",
+          "note": "Confirmed: §641 is reached by swimming (§57), a spell (§402) or the bank (§581); no goldfish is involved. The reviewer, bound to the Russian, did not report the mirrored label.",
+          "resolution": "DONE. «Продолжить (717)» / «Continue (717)» / «Continuer (717)» / «Продовжити (717)»; golden 6a follows RU."
+        },
+        {
+          "id": "CT3-UK-N02_sec19_spelling",
+          "finding": "Track 3 UK, below P2",
+          "severity": "P3",
+          "status": "DONE",
+          "hypothesis": "UK §19 «Присясти відпочити (167)».",
+          "note": "A misspelling of «Присісти».",
+          "resolution": "DONE. «Присісти відпочити (167)»."
+        },
+        {
+          "id": "CT3-AUTH-01_secret_door_only_at_70",
+          "finding": "the author's decision of 2026-11-19 (asked while Track 3 was adjudicated)",
+          "severity": "P1",
+          "status": "DONE",
+          "hypothesis": "Where does the old man's secret open the castle: §76 «В замок можно войти через потайную дверцу, посмотрите параграф 1145» names no place; group_100 AR-06 put the door at the gates §56 / §205, group_107 C1-004 added §70.",
+          "note": "The book has one door: §70 «вы видите в стене небольшую дверцу. Если знаете, как открыть ее, то сделайте это»; §1145 «Это то, что искали… нажимаете третий камень слева от дверной ручки»; the old man's advice «Напоследок держись поправее» is §452 «направо по лесу, в обход замка… (70)». The gates (three orcs) speak of a password, talk and a fight only - their exits were the maintainer's invention and made the advice pointless. The author chose §70 only.",
+          "resolution": "DONE. §56 → 1145 and §205 → 1145 retired; the door opens at §70 for a hero who knows the secret. Probes hidden-door-in-the-wall-70-C3AUTH / no-hidden-door-at-the-gate-56-C3AUTH, guard 6d AR routing, checklist C43."
+        }
+      ]
     },
     "group_108_2026_11_19_carbon_track2": {
       "comment": "Gemini 4 Carbon (Google AI Studio, Thinking High) - Track 2, the engine audit (saved state, the shell, data integrity) over the 14 engine files of the bundle at 7fdf978, 2026-11-19 (4 answers): 19 findings (P0 4, P1 7, P2 8). All 19 confirmed: 16 fixed here, 3 the same as Track 1 findings fixed in group_107 (C2-005 = C1-015, C2-009 = C1-061, C2-016 = C1-024); verifying C2-014 found the §435 answer lists of the translations wrong (CT2-020); the labels group_107 added were reviewed in four languages (G108-LBL). Evidence: _handoff/carbon_2026_11/results/2_engine (out of git).",

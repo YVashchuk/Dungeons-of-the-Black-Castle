@@ -6,13 +6,16 @@ const gl=fs.readFileSync(path.join(REPO,'src','game_logic.js'),'utf8');
 // extract helpers and eval
 const normSrc=gl.match(/function riddleNorm\(s\)\{[\s\S]*?\n\}/)[0];
 const hashSrc=gl.match(/function riddleHash\(s\)\{[\s\S]*?\n\}/)[0];
-eval(normSrc); eval(hashSrc);
+const artSrc=gl.match(/function riddleArticleless\(s\)\{[\s\S]*?\n\}/)[0];
+eval(normSrc); eval(hashSrc); eval(artSrc);
 // locales
 const load=(f,v)=>JSON.parse(fs.readFileSync(path.join(REPO,'src',f),'utf8').match(new RegExp('const\\s+'+v+'\\s*=\\s*(\\{[\\s\\S]*\\})\\s*;'))[1]);
 const EN=load('locale.en.js','LOCALE_EN'), FR=load('locale.fr.js','LOCALE_FR'), UK=load('locale.uk.js','LOCALE_UK');
 const gsrc=fs.readFileSync(path.join(REPO,'src','game_structure.js'),'utf8');
 const GD=(new Function('window',gsrc+'\n; return (typeof GD!=="undefined")?GD:(window&&window.GD);'))({});
 const hasWord=(L,pid,word)=>{ const h=riddleHash(word); return (L.riddles[pid]||[]).some(e=>e.h===h); };
+// group_109 C3-FR-001: what the engine accepts - the word as typed, or without its leading article
+const accepts=(L,pid,word)=>hasWord(L,pid,word)||(riddleArticleless(word)!==null&&hasWord(L,pid,riddleArticleless(word)));
 // structural
 ok(gl.includes('const locTarget=localeRiddleTarget(input);'),'locale path wired into applyRiddleAnswer');
 ok(gl.indexOf('localeRiddleTarget')<gl.indexOf('function applyRiddleAnswer'),'helpers precede handler');
@@ -31,6 +34,11 @@ ok(hasWord(FR,'435','hy\u00e8ne')&&hasWord(FR,'435','hyene')&&!hasWord(FR,'435',
 // UK answers
 ok(hasWord(UK,'435','\u0433\u0456\u0454\u043d\u0430')&&!hasWord(UK,'435','\u0457\u0436\u0430\u043a'),'UK p435 hiiena, not yizhak (group_108)');
 ok(hasWord(UK,'1131','\u0446\u0432\u0438\u043d\u0442\u0430\u0440'),'UK p1131 tsvyntar');
+// group_109 C3-FR-001: the answers as sec.28 teaches them, with their articles
+ok(gl.includes('const bare=riddleArticleless(input); if(bare) hs.push(riddleHash(bare));'),'locale path tries the word without its article');
+ok(accepts(FR,'1113','la toile')&&accepts(FR,'1131','le cimeti\u00e8re')&&accepts(FR,'992','la mort')&&accepts(FR,'435','la hy\u00e8ne')&&accepts(FR,'439','le dragon')&&accepts(FR,'67','le mot de passe')&&accepts(FR,'1113','l\u2019araign\u00e9e')===false,'FR answers with an article (la toile, le cimetiere, la mort, la hyene, le dragon, le mot de passe)');
+ok(accepts(EN,'1113','the web')&&accepts(EN,'1131','the cemetery')&&accepts(EN,'435','a hyena')&&accepts(EN,'67','the password')&&accepts(EN,'439','The Dragon'),'EN answers with an article (the web, the cemetery, a hyena, the password, the dragon)');
+ok(!accepts(EN,'1113','the cemetery')&&!accepts(FR,'1131','la toile')&&riddleArticleless('la')===null&&riddleArticleless('lamort')===null,'an article does not make a wrong answer right');
 // negative + integrity
 ok(!hasWord(EN,'67','dragon'),'wrong word does not match');
 let allOk=true;

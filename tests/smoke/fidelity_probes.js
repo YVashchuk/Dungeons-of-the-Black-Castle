@@ -1,6 +1,6 @@
 // fidelity_probes.js - live probes of the text-vs-engine repairs of group_100 (Gemini 4 Argon fidelity sweep, 2026-11-02),
 // the engine repairs of group_101 (engine-*), the findings of the live runs (group_102-104), of the 2026-11-17 audit and its recheck (group_105-106)
-// of the Gemini 4 Carbon fidelity sweep (group_107, *-C1NNN) and engine audit (group_108, *-C2NNN).
+// of the Gemini 4 Carbon fidelity sweep (group_107, *-C1NNN), engine audit (group_108, *-C2NNN) and translation sweep (group_109, *-C3NNN).
 // Grey-box like branch_probes.js: the tester hero is prepared through S, navigation uses the engine's goTo() (what a choice click does),
 // d6() is scripted where a fight must be won; every verdict is read from the rendered UI or the game state after real button clicks.
 // Usage (server on 8001 from the repo root): node tests/smoke/fidelity_probes.js [url] -> tests/smoke/out/FIDELITY_PROBES_REPORT.md
@@ -58,7 +58,8 @@ const V = () => ({ sec: S.section, inv: S.inventory.map(i => typeof i === 'strin
   await probe('river-teleport-retired-1205', new Function(hero([]) + go(1205)), null, v => ({ ok: !v.targets.includes('249') && v.targets.includes('670'), obs: 'exits ' + v.targets.join(',') }));
   await probe('ship-plaque-spent-1078', new Function(hero(['ship_plaque']) + go(1078)), click(249), v => ({ ok: v.sec === 249 && !v.inv.includes('ship_plaque'), obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') }));
   await probe('old-man-secret-76', new Function(hero([]) + go(76)), null, v => ({ ok: !v.targets.includes('1145') && v.inv.includes('secret_door') && v.pending.includes('deer_hide'), obs: 'exits ' + v.targets.join(',') + ', bag ' + v.inv.join(',') + ', offer ' + v.pending.join(',') }));
-  await probe('hidden-door-at-gate-56', new Function(hero(['secret_door']) + go(56)), click(1145), v => ({ ok: v.sec === 1145, obs: 'sec ' + v.sec }));
+  await probe('hidden-door-in-the-wall-70-C3AUTH', new Function(hero(['secret_door']) + go(70)), click(1145), v => ({ ok: v.sec === 1145, obs: '§70 with the secret -> §' + v.sec }));
+  await probe('no-hidden-door-at-the-gate-56-C3AUTH', new Function(hero(['secret_door']) + go(56)), null, v => ({ ok: !v.targets.includes('1145'), obs: '§56 with the secret: exits ' + v.targets.join(',') + ' (the door is in the wall of §70)' }));
   await probe('no-hidden-door-without-secret-205', new Function(hero([]) + go(205)), null, v => ({ ok: !v.targets.includes('1145'), obs: 'exits ' + v.targets.join(',') }));
   await probe('green-gas-needs-jug-957', new Function(hero([]) + go(957)), null, v => ({ ok: !v.targets.includes('1038'), obs: 'exits ' + v.targets.join(',') }));
   await probe('green-gas-silvers-the-jug-957', new Function(hero(['bronze_jug']) + go(957)), click(1038), v => ({ ok: v.sec === 1038 && !v.inv.includes('bronze_jug') && v.pending.includes('silver_vessel'), obs: 'sec ' + v.sec + ', bag ' + v.inv.join(',') + ', offer ' + v.pending.join(',') }));
@@ -225,9 +226,15 @@ const V = () => ({ sec: S.section, inv: S.inventory.map(i => typeof i === 'strin
   await probe('hyena-riddle-with-the-hyena-en-435-C2014', ...riddleEn(['hyena_met']), (v, x) => ({ ok: x === 66, obs: 'EN, «hyena» at §435 after the §337 encounter -> §' + x }));
   await probe('forest-dragon-not-in-the-castle-437-C2015', new Function(hero([]) + go(437)), page => page.evaluate(() => ({ layers: S.mapState.opened_layers.join(','), corr: S.mapState.discovered_nodes.includes('ci_trap_corridors') })), (v, x) => ({ ok: !/castle_interior/.test(x.layers) && !x.corr, obs: '§437 (the dragon in the forest): map layers ' + x.layers + ', castle corridors discovered ' + x.corr }));
   await probe('wood-goblin-victory-on-the-map-303-C2015', new Function(hero([]) + winDice + go(303)), async page => { await fight(page, 30); return page.evaluate(() => S.mapState.victories.join(',')); }, (v, x) => ({ ok: /enc_wood_goblin/.test(x), obs: 'the Lesovichok beaten at §303: map victories [' + x + ']' }));
+  // ---- group_109: the Gemini 4 Carbon translation sweep (Track 3) - the spider's answers as the book teaches them ----
+  const riddleIn = (lang, sec, word) => [new Function(hero([]) + "applyLang('" + lang + "');" + go(sec)), async page => { await page.evaluate(w => { const i = document.getElementById('riddle-input'); if (i) i.value = w; const b = document.querySelector('.riddle-submit'); if (b) b.click(); }, word); await page.waitForTimeout(400); const r = await page.evaluate(() => S.section); await page.evaluate(() => applyLang('ru')); return r; }];
+  await probe('web-with-its-article-fr-1113-C3001', ...riddleIn('fr', 1113, 'la toile'), (v, x) => ({ ok: x === 1131, obs: 'FR, «la toile» (as §28 teaches it) at §1113 -> §' + x }));
+  await probe('cemetery-with-its-article-fr-1131-C3001', ...riddleIn('fr', 1131, 'le cimetière'), (v, x) => ({ ok: x === 992, obs: 'FR, «le cimetière» at §1131 -> §' + x }));
+  await probe('web-with-its-article-en-1113-C3001', ...riddleIn('en', 1113, 'the web'), (v, x) => ({ ok: x === 1131, obs: 'EN, «the web» at §1113 -> §' + x }));
+  await probe('wrong-answer-stays-wrong-en-1113-C3001', ...riddleIn('en', 1113, 'the cemetery'), (v, x) => ({ ok: x === 1113, obs: 'EN, «the cemetery» at §1113 (the wrong riddle) -> §' + x + ' (one attempt spent)' }));
   await browser.close();
   const counts = rows.reduce((m, r) => { m[r.verdict] = (m[r.verdict] || 0) + 1; return m; }, {});
-  fs.writeFileSync(path.join(OUT, 'FIDELITY_PROBES_REPORT.md'), ['# FIDELITY_PROBES_REPORT.md - repairs of groups 100-108 (text vs engine, engine reliability, live-run and audit findings)', '', '- URL: ' + URL + ' - ' + new Date().toISOString(), '', '| probe | verdict | observation |', '|---|---|---|', ...rows.map(r => '| ' + r.id + ' | ' + r.verdict + ' | ' + r.obs.replace(/\|/g, '\\|') + ' |'), '', '## Counts', '', Object.entries(counts).map(([k, v]) => '- ' + k + ': ' + v).join('\n'), ''].join('\n'), 'utf8');
+  fs.writeFileSync(path.join(OUT, 'FIDELITY_PROBES_REPORT.md'), ['# FIDELITY_PROBES_REPORT.md - repairs of groups 100-109 (text vs engine, engine reliability, live-run and audit findings)', '', '- URL: ' + URL + ' - ' + new Date().toISOString(), '', '| probe | verdict | observation |', '|---|---|---|', ...rows.map(r => '| ' + r.id + ' | ' + r.verdict + ' | ' + r.obs.replace(/\|/g, '\\|') + ' |'), '', '## Counts', '', Object.entries(counts).map(([k, v]) => '- ' + k + ': ' + v).join('\n'), ''].join('\n'), 'utf8');
   console.log('REPORT: ' + path.join(OUT, 'FIDELITY_PROBES_REPORT.md') + ' | ' + JSON.stringify(counts));
   if (!rows.length || rows.some(r => r.verdict === 'FAIL')) process.exitCode = 1; // group_105 QA-01: a red run is a failed process (no rows = a mistyped ONLY)
 })().catch(e => { console.error('PROBES FAILED: ' + e.stack); process.exit(1); });

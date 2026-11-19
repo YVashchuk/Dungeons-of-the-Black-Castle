@@ -1498,13 +1498,18 @@ function riddleHash(s){
   for(const ch of riddleNorm(s)){ h=(((h<<5)+h)+ch.codePointAt(0))>>>0; }
   return h;
 }
+// group_109 C3-FR-001: an answer typed with its article («la toile», «le cimetière», «the web» - as sec.28 teaches them) counts as the bare word
+function riddleArticleless(s){
+  const m=String(s||'').trim().match(/^(?:(?:the|an?|les|le|la|une?|des|du|de\s+la)\s+|(?:de\s+)?l['\u2019]\s*)(.+)$/i);
+  return m?m[1]:null;
+}
 function localeRiddleTarget(input){
   const pid=String(S.section);
   const A=(typeof ACTIVE_LOCALE!=='undefined'&&ACTIVE_LOCALE)||null;
   const list=(A&&A.riddles&&A.riddles[pid])||(typeof LOCALE_RU!=='undefined'&&LOCALE_RU.riddles&&LOCALE_RU.riddles[pid])||null;
   if(!list)return null;
-  const h=riddleHash(input);
-  for(const e of list){ if(e&&e.h===h&&GD[String(e.target)])return e.target; }
+  const hs=[riddleHash(input)]; const bare=riddleArticleless(input); if(bare) hs.push(riddleHash(bare)); // group_109 C3-FR-001
+  for(const h of hs) for(const e of list){ if(e&&e.h===h&&GD[String(e.target)])return e.target; }
   return null;
 }
 
