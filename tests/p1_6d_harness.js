@@ -69,6 +69,19 @@ ck('one-sided luck set is exactly the adjudicated seven', JSON.stringify(oneSide
   ck('PL-20 data + engine: trophies after the fight', !GD['440'].auto_items.items&&GD['440'].post_combat_items.items.includes('gold_key')&&!GD['182'].auto_items&&GD['182'].post_combat_items.items.includes('bronze_whistle')&&gl.includes('S.postCombatDone[S.section]=true'));
 })();
 
+// 9ao. group_111: the live runs of 2026-11-19 (ChatGPT full smoke + targeted recheck) - the ring, the pick-up dialog, quoted answers, 44 px targets
+(function(){
+  const fn=n=>{ const s=gl.indexOf('function '+n+'('); return s<0?'':brace(s); }; const mc=fs.readFileSync(path.join(REPO,'src','mobile.css'),'utf8');
+  const rp=fn('renderItemPowers');
+  ck('RC-01 the ring pass keeps the conditions of its ways (a failing way is not drawn; an item way goes through makeChoiceBtn)', rp.includes('if(ch&&!(passesInventoryCheck(ch)&&passesGoldCheck(ch))) return;')&&rp.includes('if(ch&&(ch.spell||ch.spell_any||ch.inventory_condition||ch.inventory_all)){'));
+  let loot=[]; for(const [k,s] of Object.entries(GD)){ if(!s.ring_pass) continue; for(const t of s.ring_pass){ const d=GD[String(t)]; if(!(d&&d.auto_items&&d.auto_items.items)) continue; if(!(k==='131'||k==='684')||String(t)!=='791') loot.push(k+'>'+t); } }
+  ck('RC-02 no trophies of a skipped fight: §1177 → the three doors, §588 → the building; a ring way into a paragraph that hands out things only §131/§684 → 791 (the chest by the wall) (other: '+(loot.join(',')||'none')+')', JSON.stringify(GD['1177'].ring_pass)==='[246,393,725]'&&JSON.stringify(GD['588'].ring_pass)==='[845]'&&loot.length===0);
+  const ci=fn('closeInvModal');
+  ck('RC-03 «Готово» saves the cleared pick-up (the null comes before the save)', ci.indexOf('S.pendingPickup=null')>=0&&ci.indexOf('S.pendingPickup=null')<ci.indexOf('saveGame()'));
+  const ra=new Function(gl.match(/function riddleArticleless\(s\)\{[\s\S]*?\n\}/)[0]+'; return riddleArticleless;')();
+  ck('RC-04 the marks around an answer are not part of it («la toile», "the web", «l\u2019hyène»)', ra('\u00abla toile\u00bb')==='toile'&&ra('"the web"')==='web'&&ra('\u00abl\u2019hy\u00e8ne\u00bb')==='hy\u00e8ne'&&ra('la')===null&&ra('\u00ab\u00bb')===null);
+  ck('NOV19-GAME-01 / -02 on a phone the map\'s Close and the pick-up dialog\'s Take / Eat now / discard are 44 px targets', /\.map-toolbar \.map-toolbar-right button,\s*\.inv-take-btn,\s*\.inv-eatnow-btn,\s*\.inv-drop-btn \{\s*min-width: var\(--tap, 44px\);\s*min-height: var\(--tap, 44px\);/.test(mc)&&gl.includes('<button class="inv-drop-btn" style="background:none;border:none;color:#c44;'));
+})();
 // 9an. group_109: the Gemini 4 Carbon translation sweep (Track 3) of 7fdf978 - EN, FR, UK against the Russian
 (function(){
   const lc=l=>JSON.parse(fs.readFileSync(path.join(REPO,'src','locale.'+l+'.js'),'utf8').match(new RegExp('const\\s+LOCALE_'+l.toUpperCase()+'\\s*=\\s*(\\{[\\s\\S]*\\})\\s*;\\s*$'))[1]);

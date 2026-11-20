@@ -5393,6 +5393,77 @@ Conventions:
 
 ---
 
+## ring_sec182_keeps_the_suit_condition
+
+**Target:** §182
+
+**Commit:** `group_111`
+
+**Must visit first:** §88
+
+**What to check:** With the ring «Кольцо» (§88) and no diving suit the fight at §182 offers «💍 Надеть медное кольцо и пройти мимо»; after it only the spell ways (unavailable without charges) and «💍 Пройти мимо (589)» - no way to §1004 «in the diving suit». With the suit (§1214) «Может, у вас есть Водолазный костюм (1004)» is offered too (group_111 RC-01).
+
+**Path:**
+
+  >> STATE ROUTE (no click path exists — see Conventions):
+
+  1) Hash-load #88: take the ring in the pick-up dialog, «Готово».
+  2) Hash-load #182 and press the ring button.
+  3) Verify the ways as described; then take the suit at #1214 and repeat.
+
+---
+
+## ring_sec1177_doors_without_trophies
+
+**Target:** §1177
+
+**Commit:** `group_111`
+
+**Must visit first:** §88
+
+**What to check:** With the ring at §1177 the hero slips past the two goblins to one of the three doors (246 / 393 / 725), not to their card table (§358): no cards offered. A victory by the sword still offers the cards at §358. Likewise §588 with the ring leads only to the building (845), not into the guardhouse with the goblins' stakes (group_111 RC-02).
+
+**Path:**
+
+```
+  Start at §1.
+     1. From §1: click '→ 282 → §282'
+     2. From §282: click '→ 397 → §397'
+     3. From §397: click '→ 372 → §372'
+     4. From §372: click '→ 311 → §311'
+     5. From §311: click '→ 216 → §216'
+     6. From §216: click '→ 423 → §423'
+     7. From §423: click '→ 5 → §5'
+     8. From §5: click '→ 105 → §105'
+     9. From §105: click '→ 467 → §467'
+    10. From §467: click '→ 553 → §553'
+    11. From §553: click '→ 480 → §480'
+    12. From §480: click '→ 1176 → §1176'
+    13. From §1176: click '→ 129 → §129'
+    14. From §129: click '→ 568 → §568'
+    15. From §568: click '→ 498 → §498'
+    16. From §498: click '→ 265 → §265'
+    17. From §265: click '→ 606 → §606'
+    18. From §606: click '→ 88 → §88'
+    19. From §88: click '→ 503 → §503'
+    20. From §503: click '→ 555 → §555'
+    21. From §555: click '→ 567 → §567'
+    22. From §567: click '→ 19 → §19'
+    23. From §19: click '→ 452 → §452'
+    24. From §452: click '→ 205 → §205'
+    25. From §205: click '→ 139 → §139'
+    26. From §139: click '→ 101 → §101'
+    27. From §101: click '→ 933 → §933'
+    28. From §933: click '→ 845 → §845'
+    29. From §845: click '→ 590 → §590'
+    30. From §590: click '→ 915 → §915'
+    31. From §915: click '→ 833 → §833'
+    32. From §833: click '→ 1177 → §1177'
+```
+  (32 clicks total, graph: full)
+
+---
+
 ## black_pearl_sec468
 
 **Target:** §468
@@ -5786,7 +5857,7 @@ Conventions:
 
 **Commit:** `group_108`
 
-**What to check:** With the pick-up dialog open press F5: the dialog opens again with the diving suit (group_108 C2-008). Take it: +1 LUCK; «Готово» closes the dialog for good.
+**What to check:** With the pick-up dialog open press F5: the dialog opens again with the diving suit (group_108 C2-008). «Готово» without taking it is final: F5 does not offer the suit again (group_111 RC-03). In a fresh entry take it: +1 LUCK. On a phone «+ Взять» and 🗑 are 44 px targets (group_111 NOV19-GAME-02).
 
 **Path:**
 
@@ -5916,7 +5987,7 @@ Conventions:
 
 **Commit:** `group_109`
 
-**What to check:** In French «la toile» → §1131 and there «le cimetière» → §992: an answer typed with its article, as §28 teaches it, is accepted; a wrong word with an article is not (group_109 C3-FR-001).
+**What to check:** In French «la toile» → §1131 and there «le cimetière» → §992: an answer typed with its article, as §28 teaches it, is accepted; a wrong word with an article is not (group_109 C3-FR-001). Typed in quotes («la toile») it counts too (group_111 RC-04).
 
 **Path:**
 
@@ -5948,8 +6019,8 @@ Conventions:
 
 ## Summary
 
-- Scenarios with paths found: **136 / 145**
-- Scenarios with state routes (hash-navigation setup): **9**
+- Scenarios with paths found: **137 / 147**
+- Scenarios with state routes (hash-navigation setup): **10**
 - Scenarios needing manual route discovery: **0**
 
 ### State-routed (no click path by design):
@@ -5962,4 +6033,5 @@ Conventions:
   - emerald_ring_sec226_WITH_all_three_items: §1 → §226 via [479, 74, 1071]
   - key40_all_key_sec302: §1 → §302 via [795]
   - copper_ring_sec129: §1 → §129 via [88]
+  - ring_sec182_keeps_the_suit_condition: §1 → §182 via [88]
   - fish_help_sec203_failed_roll: §1 → §203 via [13]

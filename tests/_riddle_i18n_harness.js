@@ -38,6 +38,8 @@ ok(hasWord(UK,'1131','\u0446\u0432\u0438\u043d\u0442\u0430\u0440'),'UK p1131 tsv
 ok(gl.includes('const bare=riddleArticleless(input); if(bare) hs.push(riddleHash(bare));'),'locale path tries the word without its article');
 ok(accepts(FR,'1113','la toile')&&accepts(FR,'1131','le cimeti\u00e8re')&&accepts(FR,'992','la mort')&&accepts(FR,'435','la hy\u00e8ne')&&accepts(FR,'439','le dragon')&&accepts(FR,'67','le mot de passe')&&accepts(FR,'1113','l\u2019araign\u00e9e')===false,'FR answers with an article (la toile, le cimetiere, la mort, la hyene, le dragon, le mot de passe)');
 ok(accepts(EN,'1113','the web')&&accepts(EN,'1131','the cemetery')&&accepts(EN,'435','a hyena')&&accepts(EN,'67','the password')&&accepts(EN,'439','The Dragon'),'EN answers with an article (the web, the cemetery, a hyena, the password, the dragon)');
+// group_111 RC-04: the answer typed in quotes («la toile», "the web") - the marks around it are not part of it
+ok(accepts(FR,'1113','\u00abla toile\u00bb')&&accepts(FR,'1113','\u00ab la toile \u00bb')&&accepts(EN,'1113','"the web"')&&accepts(EN,'1113','\u201cthe web\u201d')&&accepts(FR,'435','\u00abl\u2019hy\u00e8ne\u00bb')&&!accepts(FR,'1113','\u00abla table\u00bb')&&!accepts(EN,'1113','"the cemetery"')&&riddleArticleless('\u00ab\u00bb')===null,'answers in quotes (\u00abla toile\u00bb, "the web", \u201cthe web\u201d, \u00abl\u2019hy\u00e8ne\u00bb) count; a wrong word in quotes stays wrong');
 ok(!accepts(EN,'1113','the cemetery')&&!accepts(FR,'1131','la toile')&&riddleArticleless('la')===null&&riddleArticleless('lamort')===null,'an article does not make a wrong answer right');
 // negative + integrity
 ok(!hasWord(EN,'67','dragon'),'wrong word does not match');

@@ -226,6 +226,15 @@
     padding: 6px;
   }
 
+  /* group_111 NOV19-GAME-01 / -02: the map's Close (M) and the pick-up dialog's Take / Eat now / discard reach the 44 px target too */
+  .map-toolbar .map-toolbar-right button,
+  .inv-take-btn,
+  .inv-eatnow-btn,
+  .inv-drop-btn {
+    min-width: var(--tap, 44px);
+    min-height: var(--tap, 44px);
+  }
+
   /* Prevent iOS zoom-on-focus by ensuring inputs are ≥16px. */
   .cr-name input,
   .add-item-input,

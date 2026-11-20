@@ -587,7 +587,7 @@ function renderInvModalCurrent(){
       const row=document.createElement('div');
       row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);';
       row.innerHTML=`<span style="font-size:15px;color:var(--parchment);">${invDisplay(item)}</span>
-        ${KNOWLEDGE_FLAGS.has(canonItem(item))?'':`<button style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button>`}`;
+        ${KNOWLEDGE_FLAGS.has(canonItem(item))?'':`<button class="inv-drop-btn" style="background:none;border:none;color:#c44;cursor:pointer;font-size:14px;padding:2px 6px;" onclick="dropItemModal(${i})" aria-label="${t('vybrosit')}: ${invDisplay(item)}" title="${t('vybrosit')}">\uD83D\uDDD1</button>`}`;
       cur.appendChild(row);
     });
   }
@@ -656,9 +656,9 @@ function dropItemModal(idx){ if(S&&S.inventory&&KNOWLEDGE_FLAGS.has(canonItem(S.
 
 function closeInvModal(){
   document.getElementById('modal-inventory').classList.remove('on');
+  if(S) S.pendingPickup=null; // group_108 C2-008: the dialog is done - group_111 RC-03: cleared before the save, so an F5 after «Готово» does not offer the things again
   updateHUD();saveGame();
   const after=window._invModalOnDone; window._invModalOnDone=null; // group_101 E-002
-  if(S) S.pendingPickup=null; // group_108 C2-008: the dialog is done
   if(typeof after==='function'){ try{ after(); }catch(e){} }
   else refreshChoicesForState(); // group_108 C2-006
 }
@@ -1498,9 +1498,12 @@ function riddleHash(s){
   for(const ch of riddleNorm(s)){ h=(((h<<5)+h)+ch.codePointAt(0))>>>0; }
   return h;
 }
-// group_109 C3-FR-001: an answer typed with its article («la toile», «le cimetière», «the web» - as sec.28 teaches them) counts as the bare word
+// group_109 C3-FR-001: an answer typed with its article («la toile», «le cimetière», «the web» - as sec.28 teaches them) counts as the bare word;
+// group_111 RC-04: in quotes too («la toile», "the web") - the marks around the answer are not part of it
 function riddleArticleless(s){
-  const m=String(s||'').trim().match(/^(?:(?:the|an?|les|le|la|une?|des|du|de\s+la)\s+|(?:de\s+)?l['\u2019]\s*)(.+)$/i);
+  const raw=String(s||''); let a=0, b=raw.length; const isL=ch=>ch.toLowerCase()!==ch.toUpperCase();
+  while(a<b&&!isL(raw[a])) a++; while(b>a&&!isL(raw[b-1])) b--;
+  const m=raw.slice(a,b).match(/^(?:(?:the|an?|les|le|la|une?|des|du|de\s+la)\s+|(?:de\s+)?l['\u2019]\s*)(.+)$/i);
   return m?m[1]:null;
 }
 function localeRiddleTarget(input){
@@ -2615,7 +2618,8 @@ function renderItemPowers(sec,list){
   if(here&&pa.kind==='ring'&&Array.isArray(sec.ring_pass)){
     sec.ring_pass.forEach(tg=>{
       const idx=(sec.choices||[]).findIndex(c=>c.target===tg); const ch=idx>=0?sec.choices[idx]:null;
-      if(ch&&(ch.spell||ch.spell_any)&&passesInventoryCheck(ch)&&passesGoldCheck(ch)){ const c2=Object.assign({},ch); delete c2.acquires; delete c2.consume_on_use; delete c2.post_combat; list.appendChild(makeChoiceBtn(c2,false,idx)); return; }
+      if(ch&&!(passesInventoryCheck(ch)&&passesGoldCheck(ch))) return; // group_111 RC-01: a way on keeps its own condition - the ring passes the fight, it does not lend the gear (sec.182 → 1004 needs the diving suit)
+      if(ch&&(ch.spell||ch.spell_any||ch.inventory_condition||ch.inventory_all)){ const c2=Object.assign({},ch); delete c2.acquires; delete c2.post_combat; if(ch.spell||ch.spell_any) delete c2.consume_on_use; list.appendChild(makeChoiceBtn(c2,false,idx)); return; }
       const b=document.createElement('button'); b.className='choice-btn'; b.textContent='\u{1F48D} '+t('ui_ring_pass')+' ('+tg+')'; b.dataset.target=String(tg); b.onclick=()=>goTo(tg); list.appendChild(b);
     });
     return true;

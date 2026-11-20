@@ -349,17 +349,35 @@ async function check(id, browser, opts, fn) {
     const ok = !!f && f.h >= 44 && f.l >= 0 && f.r <= f.w && f.inView && r.sec === 733 && r.st === 18 && !r.modal;
     rec('S-FLEE-PHONE', ok ? 'PASS' : 'FAIL', 'phone §455: flee button ' + JSON.stringify(f) + '; fled -> §' + r.sec + ' STAMINA ' + r.st + ' (20 - 2)');
   });
+  // group_111 (the live recheck of 2026-11-19): real taps only - «Готово» without taking is a decision that survives F5 (RC-03); an open dialog
+  // survives F5; its Take and discard buttons are 44 px targets on a phone (NOV19-GAME-02) - the tap lands 40 px below the button's top
+  const tapAt = async (page, sel, dy) => { const bb = await page.locator(sel).first().boundingBox(); if (!bb) return null; await page.touchscreen.tap(bb.x + bb.width / 2, bb.y + dy); await page.waitForTimeout(350); return { w: Math.round(bb.width), h: Math.round(bb.height) }; };
+  const modalOn = () => document.getElementById('modal-inventory').classList.contains('on');
   await check('S-PICKUP-F5', browser, phoneG, async page => {
     await open(page, 1214);
     const a = await ev(page, () => ({ on: document.getElementById('modal-inventory').classList.contains('on'), items: (typeof pendingItems !== 'undefined' ? pendingItems : []).map(i => typeof i === 'string' ? i : i.id) }));
+    await tapAt(page, '#btn-inv-done', 10); await reload(page); await page.waitForTimeout(400);
+    const a2 = await ev(page, () => ({ on: document.getElementById('modal-inventory').classList.contains('on'), suit: S.inventory.includes('diving_suit'), pend: !!S.pendingPickup }));
+    await ev(page, () => { try { localStorage.clear(); } catch (e) {} }); await open(page, 1214);
     await reload(page); await page.waitForTimeout(400); await ev(page, () => { S.luck = 8; S.luckMax = 12; saveGame(); });
     const b = await ev(page, () => ({ on: document.getElementById('modal-inventory').classList.contains('on'), items: (typeof pendingItems !== 'undefined' ? pendingItems : []).map(i => typeof i === 'string' ? i : i.id), luck: S.luck }));
     await shot(page, 'S-PICKUP-F5');
-    await ev(page, () => { const i = pendingItems.findIndex(x => (typeof x === 'string' ? x : x.id) === 'diving_suit'); if (i >= 0) takeItem(i); }); await page.waitForTimeout(200);
-    await page.locator('#btn-inv-done').click(); await page.waitForTimeout(400);
+    const take = await tapAt(page, '#inv-modal-found .inv-take-btn', 40);
+    const drop = await ev(page, () => { const e = document.querySelector('#inv-modal-current .inv-drop-btn'); if (!e) return null; const q = e.getBoundingClientRect(); return { w: Math.round(q.width), h: Math.round(q.height), inView: q.left >= 0 && q.right <= innerWidth }; });
+    await tapAt(page, '#btn-inv-done', 10); await reload(page); await page.waitForTimeout(400);
     const c = await ev(page, () => ({ suit: S.inventory.includes('diving_suit'), luck: S.luck, on: document.getElementById('modal-inventory').classList.contains('on'), pend: !!S.pendingPickup }));
-    const ok = a.on && a.items.includes('diving_suit') && b.on && b.items.includes('diving_suit') && c.suit && c.luck === b.luck + 1 && !c.on && !c.pend;
-    rec('S-PICKUP-F5', ok ? 'PASS' : 'FAIL', 'phone §1214: offer ' + JSON.stringify(a) + '; after F5 ' + JSON.stringify(b) + '; taken: suit=' + c.suit + ' LUCK ' + b.luck + '->' + c.luck + ' dialog closed=' + !c.on + ' saved dialog cleared=' + !c.pend);
+    const ok = a.on && a.items.includes('diving_suit') && !a2.on && !a2.suit && !a2.pend && b.on && b.items.includes('diving_suit') && take && take.h >= 44 && drop && drop.h >= 44 && drop.w >= 44 && drop.inView && c.suit && c.luck === b.luck + 1 && !c.on && !c.pend;
+    rec('S-PICKUP-F5', ok ? 'PASS' : 'FAIL', 'phone §1214: offer ' + JSON.stringify(a) + '; «Готово» untaken + F5: dialog=' + a2.on + ' suit=' + a2.suit + ' saved=' + a2.pend + ' (all expected false); clean entry + F5 ' + JSON.stringify(b) + '; Take ' + JSON.stringify(take) + ' tapped 40 px down, discard ' + JSON.stringify(drop) + '; after «Готово» + F5: suit=' + c.suit + ' LUCK ' + b.luck + '->' + c.luck + ' dialog=' + c.on + ' saved=' + c.pend);
+  });
+  await check('S-MAP-CLOSE-PHONE', browser, phoneG, async page => {
+    await open(page, 1); await page.locator('.hud-btn[onclick="openMapModal()"]').click(); await page.waitForTimeout(600);
+    const on = await ev(page, () => document.getElementById('overlay-map').classList.contains('on'));
+    const box = await ev(page, () => { const e = document.querySelector('#overlay-map .map-toolbar-right button'); if (!e) return null; const q = e.getBoundingClientRect(); return { w: Math.round(q.width), h: Math.round(q.height), inView: q.left >= 0 && q.right <= innerWidth && q.top >= 0 }; });
+    await shot(page, 'S-MAP-CLOSE-PHONE');
+    await tapAt(page, '#overlay-map .map-toolbar-right button', 40);
+    const off = await ev(page, () => !document.getElementById('overlay-map').classList.contains('on'));
+    const ok = on && box && box.h >= 44 && box.inView && off;
+    rec('S-MAP-CLOSE-PHONE', ok ? 'PASS' : 'FAIL', 'phone: the map opened=' + on + '; «Закрыть (M)» ' + JSON.stringify(box) + '; a tap 40 px below its top closed the map=' + off + ' (NOV19-GAME-01)');
   });
   await check('S-DOOR70', browser, null, async page => {
     await open(page, 452); await ev(page, () => { if (!S.inventory.includes('secret_door')) S.inventory.push('secret_door'); saveGame(); renderGame({ repaint: true }); }); await page.waitForTimeout(300);

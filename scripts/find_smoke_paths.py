@@ -1104,6 +1104,24 @@ SCENARIOS = [
         "state_route": "1) Hash-load #88: the pick-up dialog offers the copper ring - take it, «Готово».\n2) Hash-load #129.\n3) Verify the ring button and the pass to 568 as described above.",
         "commit": "group_107",
     },
+    # ── group_111 ──
+    {
+        "id": "ring_sec182_keeps_the_suit_condition",
+        "target": 182,
+        "must_visit": [88],
+        "what_to_check": "With the ring «Кольцо» (§88) and no diving suit the fight at §182 offers «💍 Надеть медное кольцо и пройти мимо»; after it only the spell ways (unavailable without charges) and «💍 Пройти мимо (589)» - no way to §1004 «in the diving suit». With the suit (§1214) «Может, у вас есть Водолазный костюм (1004)» is offered too (group_111 RC-01).",
+        "state_route": "1) Hash-load #88: take the ring in the pick-up dialog, «Готово».\n2) Hash-load #182 and press the ring button.\n3) Verify the ways as described; then take the suit at #1214 and repeat.",
+        "commit": "group_111",
+    },
+    # ── group_111 ──
+    {
+        "id": "ring_sec1177_doors_without_trophies",
+        "target": 1177,
+        "must_visit": [88],
+        "what_to_check": "With the ring at §1177 the hero slips past the two goblins to one of the three doors (246 / 393 / 725), not to their card table (§358): no cards offered. A victory by the sword still offers the cards at §358. Likewise §588 with the ring leads only to the building (845), not into the guardhouse with the goblins' stakes (group_111 RC-02).",
+        "state_route": "1) Hash-load #88: take the ring, «Готово».\n2) Hash-load #1177, press the ring button, choose a door.\n3) Verify as described; separately hash-load #588 and press the ring button.",
+        "commit": "group_111",
+    },
     # ── group_107 ──
     {
         "id": "black_pearl_sec468",
@@ -1185,7 +1203,7 @@ SCENARIOS = [
     {
         "id": "pickup_dialog_F5_sec1214",
         "target": 1214,
-        "what_to_check": "With the pick-up dialog open press F5: the dialog opens again with the diving suit (group_108 C2-008). Take it: +1 LUCK; «Готово» closes the dialog for good.",
+        "what_to_check": "With the pick-up dialog open press F5: the dialog opens again with the diving suit (group_108 C2-008). «Готово» without taking it is final: F5 does not offer the suit again (group_111 RC-03). In a fresh entry take it: +1 LUCK. On a phone «+ Взять» and 🗑 are 44 px targets (group_111 NOV19-GAME-02).",
         "commit": "group_108",
     },
     # ── group_108 ──
@@ -1213,7 +1231,7 @@ SCENARIOS = [
     {
         "id": "riddle_articles_fr_sec1113",
         "target": 1113,
-        "what_to_check": "In French «la toile» → §1131 and there «le cimetière» → §992: an answer typed with its article, as §28 teaches it, is accepted; a wrong word with an article is not (group_109 C3-FR-001).",
+        "what_to_check": "In French «la toile» → §1131 and there «le cimetière» → §992: an answer typed with its article, as §28 teaches it, is accepted; a wrong word with an article is not (group_109 C3-FR-001). Typed in quotes («la toile») it counts too (group_111 RC-04).",
         "commit": "group_109",
     },
 

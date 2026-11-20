@@ -216,7 +216,8 @@
     "v2.208 -> v2.209": "November 2026 - group_107: the Gemini 4 Carbon Track 1 fidelity sweep (62 findings) adjudicated: 61 fixed, 1 rejected (§887 face 6 - group_43). The book's arithmetic wired at 13 paragraphs called vestigial in June (reachability 1205 -> 1219; only §650 and §736 stay unreachable). Items' powers on the author's decision: the flying carpet and the diving suit stand in for Levitation and Swimming, the black pearl strikes the Green Knights (twelve eyes open §860), the copper ring passes living foes that bar the way, the children's secret turns back the spy's spells. Engine: the luck window keeps a rescue without luck (§203), a batch of things goes through the pick-up dialog (§724), Indifference obeys the allowed spells, prizes at dice are offered, a stake before every roll (§365, §1212), the any-spell picker, the flee inside a fight, a cost paid with the way (§468), stack items. Keys: the bear's key and the «Всё» key join the +40 family; the goblins' copper key opens only its own doors. The tavern candle needs the flint. §87 -> 942. Fidelity probes 77 -> 111; p1_6d 115 -> 125; the signet, group B, gate and branch checks follow. GAME_RULES.md + label 2.208 -> 2.209 (R-03 guard). Dist rebuilt; battery ALL GREEN.",
     "v2.209 -> v2.210": "November 2026 - group_108: the Gemini 4 Carbon Track 2 engine audit (19 findings) adjudicated: all confirmed - 16 fixed here, 3 fixed in group_107 as Track 1 findings. After a win only the exits after the fight remain (the ways before it led to a second fight, the indoor Fire death or a spent vessel); the pick-up dialog and the trophies survive a reload; an imported save starts with clean paragraph state and cannot smuggle markup; a typed #146 keeps both gates; the choices follow eating, dropping and sips; no healing or Indifference for the dead; the restart works with blocked storage; the §1175 orcs; the §435 riddle needs the hyena in every language and its translated answers now name the Hyena (they held a hedgehog since group_72). The map, two shell strings, dead data and the census of the docs corrected; the labels group_107 added were reviewed in four languages.",
     "v2.210 -> v2.211": "November 2026 - group_109: the Gemini 4 Carbon Track 3 translation sweep (EN, FR, UK against the Russian) adjudicated. A riddle answer typed with its article («la toile», «le cimetière», «the web» - as §28 teaches them) now counts as the bare word; the §435 hedgehog of the translations was fixed in group_108; the labels of §348 (a chest) and §641 (a goldfish) in four languages, the Ukrainian §592 (the carpet) and §724 (the bedroom), and the French names of the Lesovichok, the diving suit and the council hall corrected. The author's decision: the old man's door opens only in the wall of §70 (the gates' exits of group_100 retired).",
-    "v2.211 -> v2.212": "November 2026 - group_110: maintenance after the three Gemini 4 Carbon tracks. The live smoke grows to 32 checks (the ring and pearl powers, the spell picker and the flee button on a phone, the pick-up dialog across F5, the door only at §70); the smoke-path scenarios follow the fixes (145 scenarios, none manual); the documentation and the registry match the tree again (10 retired choices; AR-06 and CT1-004 marked superseded by the author's §70 decision); the Midjourney catalog is brought up to November 2026 (V8.2 the default, --cref only on V6, the Edit Model) and the Track 4 brief prepares the queued prompts for V8.2. No game data changed."
+    "v2.211 -> v2.212": "November 2026 - group_110: maintenance after the three Gemini 4 Carbon tracks. The live smoke grows to 32 checks (the ring and pearl powers, the spell picker and the flee button on a phone, the pick-up dialog across F5, the door only at §70); the smoke-path scenarios follow the fixes (145 scenarios, none manual); the documentation and the registry match the tree again (10 retired choices; AR-06 and CT1-004 marked superseded by the author's §70 decision); the Midjourney catalog is brought up to November 2026 (V8.2 the default, --cref only on V6, the Edit Model) and the Track 4 brief prepares the queued prompts for V8.2. No game data changed.",
+    "v2.212 -> v2.213": "November 2026 - group_111: the live runs of 2026-11-19 by ChatGPT adjudicated - the full smoke of all 92 checklist rows (95 verdicts, 86 PASS) and a targeted recheck of the Carbon repairs. Fixed: the copper ring no longer opens the diving-suit way of §182 without the suit and gives no trophies of a skipped fight (§1177 → the three doors, §588 → the building); «Готово» in the pick-up dialog survives F5; a riddle answer typed in quotes counts; on a phone the pick-up dialog's buttons and the map's Close are 44 px targets; checklist rows C61, C64 and A11 match the game (B5, C66, C70 extended). Smoke 33 checks by real taps, fidelity probes 145."
   },
   "schema_fields": {
     "field": "JSON path inside the paragraph object, e.g. 'text', 'choices.label', 'choices[N].label', 'auto_items.gold_sub', or external location like 'src/game_logic.js:PREFACE_TEXT'",
@@ -494,6 +495,101 @@
         }
       ],
       "verified": "2026-07-09"
+    },
+    "group_111_2026_11_19_chatgpt_live": {
+      "comment": "The live runs of 2026-11-19 by ChatGPT on the published build of 73d2d24 (registry v2.212): the full smoke of all 92 checklist rows plus the maintainer's tasks M1-M3 (95 verdicts: 86 PASS, 5 FAIL, 1 BLOCKED, 3 N/A) and a targeted recheck of the Carbon repairs (4 new findings). Reports kept out of git in _handoff/smoke_2026_11_19/: REPORT_chatgpt_smoke_2026-11-19.md (SHA-256 c8dd54962ed044c75e55f2415fc68dc1d0125cb5eedf36da9073c19f2bc9fe58), anomalies_chatgpt_smoke_2026-11-19.json (16a4fd7658492efb71439d993dc7593d50108af1c34b89402bab7b1bd43d3826), screenshots_chatgpt_smoke_2026-11-19.zip (63 images, edddb5a75e24278dad5f98e7e8ec9c5c098a69fa3ba03dfcba4c9e49ebbe4d44), RECHECK_Carbon_2026-11-19_RU.md (4ae728f658c4c9873968e920cc756ff5d5ee2364ddd238787b99521a1d7224b2), Carbon_live_evidence_2026-11-19.zip (9 images, b2e5ffbbc0d93a5eaea6ee9082e8f92adc3662278439c900e4480f0914f43558). All 9 findings confirmed and fixed: 2 P2 (the copper ring), 4 P3 in the game, 3 P3 in the checklist.",
+      "source": "chatgpt_live_2026_11_19",
+      "verified": "2026-11-19",
+      "items": [
+        {
+          "id": "RC-01_sec182_ring_lends_the_suit_way",
+          "status": "DONE",
+          "severity": "P2",
+          "source": "RECHECK_Carbon_2026-11-19_RU.md §1",
+          "hypothesis": "With the copper ring and no diving suit, «💍 Надеть медное кольцо и пройти мимо» at §182 offered «💍 Пройти мимо (1004)», and §1004 swam the river «В костюме…» without the suit: renderItemPowers drew every ring_pass target that is not a spell exit as a plain goTo, losing the choice's own inventory_condition.",
+          "verdict": "CONFIRMED (reproduced on 73d2d24: §182 buttons 841, 904, 1004, 589; §1004 with the bag «ring» only).",
+          "resolution": "DONE. renderItemPowers: a ring way whose choice fails its own inventory or gold condition is not drawn; a way with a spell or an item condition is drawn through makeChoiceBtn (its own label and checks; the trophy acquires and post_combat removed, a consumed item still consumed). §182 with the ring: the spell ways (unavailable without charges) and «💍 Пройти мимо (589)»; with the suit also «Может, у вас есть Водолазный костюм (1004)»."
+        },
+        {
+          "id": "RC-02_sec1177_ring_bypass_gives_the_dead_goblins_cards",
+          "status": "DONE",
+          "severity": "P2",
+          "source": "RECHECK_Carbon_2026-11-19_RU.md §2; the maintainer's sweep of all 34 ring_pass lists",
+          "hypothesis": "GAME_RULES says the ring gives «пути дальше, без трофеев победы», yet §1177 ring_pass [358] led past the two living goblins to their card table («мертвецам она больше не понадобится») and offered the deck; the sweep found the same at §588 ring_pass [159, 845]: §159 is the guardhouse after the goblins fled through the window, with their stakes (bronze whistle, copper bracelet, 3 gold).",
+          "verdict": "CONFIRMED (both reproduced on 73d2d24; no other ring way hands out things except §131 / §684 → 791, the chest by the wall that belongs to no one).",
+          "resolution": "DONE. §1177 ring_pass [358] → [246, 393, 725] (the three doors of the paragraph); §588 ring_pass [159, 845] → [845] (the building in the yard). A victory by the sword still offers the cards at §358 and the stakes at §159."
+        },
+        {
+          "id": "RC-03_pickup_done_does_not_survive_F5",
+          "status": "DONE",
+          "severity": "P3",
+          "source": "RECHECK_Carbon_2026-11-19_RU.md, table row §1214",
+          "hypothesis": "«Готово» in the pick-up dialog without taking the diving suit at §1214, then F5: the dialog offered the suit again (twice). closeInvModal saved the game before it cleared S.pendingPickup, so the save kept the open dialog.",
+          "verdict": "CONFIRMED (reproduced on 73d2d24). The group_110 smoke check S-PICKUP-F5 took the suit by calling takeItem() and never declined.",
+          "resolution": "DONE. closeInvModal clears S.pendingPickup before updateHUD / saveGame. S-PICKUP-F5 rewritten with real taps: «Готово» untaken + F5 (no dialog, no suit), a clean entry with the dialog open + F5, Take tapped 40 px below its top, «Готово» + F5."
+        },
+        {
+          "id": "RC-04_answer_typed_in_quotes",
+          "status": "DONE",
+          "severity": "P3",
+          "source": "RECHECK_Carbon_2026-11-19_RU.md, table row §1113",
+          "hypothesis": "French «la toile» typed with its guillemets at §1113 was rejected (an attempt spent) while la toile was accepted: riddleArticleless matched the article only at the very start of the input, and a leading quote mark hid it.",
+          "verdict": "CONFIRMED (reproduced on 73d2d24 for «la toile», « la toile », \"the web\" and “the web”).",
+          "resolution": "DONE. riddleArticleless first strips the non-letters around the answer (quotes, spaces, a final period); inner apostrophes stay («l’hyène» → hyène). A wrong word in quotes stays wrong. Riddle harness +1 check, 6d, three probes."
+        },
+        {
+          "id": "NOV19-GAME-01_map_close_26px_on_a_phone",
+          "status": "DONE",
+          "severity": "P3",
+          "source": "REPORT_chatgpt_smoke_2026-11-19.md B5; RECHECK table",
+          "hypothesis": "At 412 px the map's «Закрыть (M)» measured 89 × 26 px; a tap 40 px below its top missed. The mobile 44 px rule covered `.map-controls button`, not the toolbar's Close.",
+          "verdict": "CONFIRMED (89 × 26 in the container at 412 × 915).",
+          "resolution": "DONE. src/mobile.css (≤ 960 px): `.map-toolbar .map-toolbar-right button` min-width / min-height var(--tap, 44px) - now 89 × 44; smoke S-MAP-CLOSE-PHONE taps 40 px below its top."
+        },
+        {
+          "id": "NOV19-GAME-02_pickup_buttons_28_20px_on_a_phone",
+          "status": "DONE",
+          "severity": "P3",
+          "source": "REPORT_chatgpt_smoke_2026-11-19.md M2; RECHECK table",
+          "hypothesis": "At 412 px the pick-up dialog's «+ Взять» measured 71 × 28 px and its discard button 29 × 20 px (an unclassed inline-styled button), below the 44 px target of the checklist.",
+          "verdict": "CONFIRMED (71 × 28 and 26 × 20 in the container).",
+          "resolution": "DONE. The discard button gets class inv-drop-btn; src/mobile.css (≤ 960 px): `.inv-take-btn`, `.inv-eatnow-btn`, `.inv-drop-btn` min 44 × 44 - now 71 × 44 and 44 × 44; S-PICKUP-F5 measures and taps them."
+        },
+        {
+          "id": "NOV19-CHECK-01_C61_ring_before_the_fight",
+          "status": "DONE",
+          "severity": "P3",
+          "source": "REPORT_chatgpt_smoke_2026-11-19.md C61",
+          "hypothesis": "C61 said «Войти в бой #129» and the tester entered the combat window, where there is no ring action: the ring button stands on the paragraph, before the fight. The game behaved as designed (the pass to 568, no whistle).",
+          "verdict": "CONFIRMED (checklist wording).",
+          "resolution": "DONE. C61: press the ring at #129 without starting the fight; extended with §182 (without and with the suit) and §1177 (the three doors, no cards)."
+        },
+        {
+          "id": "NOV19-CHECK-02_C64_sec365_stakes_an_item",
+          "status": "DONE",
+          "severity": "P3",
+          "source": "REPORT_chatgpt_smoke_2026-11-19.md C64",
+          "hypothesis": "C64 said «§365 — то же» after the 2 / 4 / 8 gold stakes of §1212; §365 («Поставьте что-нибудь другое… вам придется уйти (919)») stakes only an item (stake_picker, the liver excluded) and offers the way out.",
+          "verdict": "CONFIRMED (checklist wording; the game follows the text).",
+          "resolution": "DONE. C64: §365 has its own expectation - an item stake without the liver, «Уйти, если поставить больше нечего (919)»; the 2 / 4 / 8 gold belong to §1212."
+        },
+        {
+          "id": "NOV19-CHECK-03_A11_full_bag_and_the_sec724_set",
+          "status": "DONE",
+          "severity": "P3",
+          "source": "REPORT_chatgpt_smoke_2026-11-19.md A11",
+          "hypothesis": "A11 said the collection becomes «✓ Собрано» under overflow; with no free place nothing is taken and the offer stays (as GAME_RULES says since group_107), and the §724 set goes through the pick-up dialog one thing at a time.",
+          "verdict": "CONFIRMED (checklist wording).",
+          "resolution": "DONE. A11: no free place - «мешок полон: N не взято», the button stays; some room - up to the free places and «✓ Собрано»; §724 described apart (the dialog, the button stays until both things are taken)."
+        },
+        {
+          "id": "G111-TESTS_real_taps_and_probes",
+          "status": "DONE",
+          "source": "RECHECK_Carbon_2026-11-19_RU.md «Очерёдность исправления и регрессии»",
+          "hypothesis": "The recheck noted that S-PICKUP-F5 called a game function instead of tapping, and asked for opposite checks (with and without the suit, bypass and victory) and a quoted answer.",
+          "resolution": "DONE. Smoke 33 checks (S-PICKUP-F5 by real taps, S-MAP-CLOSE-PHONE); fidelity probes +8 *-G111 (§182 without / with the suit, §1177 by the ring / by the sword, §588, FR / EN answers in quotes, a wrong word in quotes); 6d block 9ao (5 checks); the riddle harness +1; checklist rows B5, C66, C70 extended; SMOKE_TEST_PATHS scenarios +2. C19 (the Russian layout «ь» for M) stayed BLOCKED in the agent's browser - an environment limit, covered by the automated smoke."
+        }
+      ]
     },
     "group_110_2026_11_19_after_carbon": {
       "comment": "Maintenance after the three Gemini 4 Carbon tracks (group_107-109), 2026-11-19: the live smoke and the smoke-path scenarios follow the big fixes, the documentation and the registry checked against the tree, the Midjourney prompt catalog brought up to November 2026 (V8.2 is the default, --cref is V6-only) and the Track 4 brief for Gemini 4 Carbon prepared. No game data changed.",
