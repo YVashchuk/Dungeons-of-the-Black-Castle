@@ -339,6 +339,29 @@ The attached ZIP is the repository archive of the audited commit (root folder na
 `scripts/tts_pregenerate.js` по языкам; движок и голос — по пробе на трёх параграфах (см. переписку).
 
 
+## 12. ChatGPT — полный живой смоук после треков Gemini 4 Carbon (2026-11-19)
+
+Бриф: **`audit_cycles/recheck_2026_11/BRIEF_smoke_chatgpt_2026-11-19.md`** (в архиве). Все 92 строки `MANUAL_SMOKE_CHECKS.md` блоками: сначала C58–C70 (ремонт Carbon, вживую ещё не проверялся), задания сопровождающего M1–M3 (подписи переводов group_109, узкое окно, дорога старичка до §1145), затем C32–C57, C1–C31, A, B. Не уложится в одну сессию — продолжение по §6 брифа.
+
+### Архив
+Собирает сопровождающий: `git archive` коммита с брифом без `dist/audio/` → `%USERPROFILE%\Downloads\Dungeons-of-the-Black-Castle-<хэш>-noaudio.zip` (~25 МБ; корневая папка несёт полный хэш).
+
+### Настройки чата
+- Как 17.11: Work Mode, агент с браузером, последняя Astra (6.2 или новее), рассуждения включены; отдельный проект без наших чатов и файлов.
+- Web — только сайт игры и его `#N`; чтение файлов и исполнение кода — для архива.
+- ZIP к первому сообщению.
+
+### Первое сообщение
+
+```
+The attached ZIP is the repository archive of the commit under test (the root folder name carries the hash; dist/audio/ was stripped on purpose). It is a read-only reference: extract it, never modify it, never use it to alter the running game. Read audit_cycles/recheck_2026_11/BRIEF_smoke_chatgpt_2026-11-19.md in full, then MANUAL_SMOKE_CHECKS.md and sections 1–3 of audit_cycles/recheck_2026_09/SMOKE_BRIEF_chatgpt.md. Do the pre-flight in the browser at https://yvashchuk.github.io/DotBC/, then the blocks in the order of the brief, one block at a time, with a progress line after each. Deliver REPORT_chatgpt_smoke_2026-11-19.md, the anomalies JSON and the screenshots.
+```
+
+Продолжение: `Continue: <блоки или строки>. Create the heroes again (section 3 of the brief); do not repeat rows already PASS.`
+
+### Приём
+Отчёт, JSON и скриншоты — в `_handoff\smoke_2026_11_19\` (вне git); находки адьюдицирую новой группой.
+
 ## 4. Приёмка (что делаю я)
 
 1. Сохраняю отчёт как `audit_cycles/recheck_2026_09/REPORT_<provider>_<track>.md`, считаю SHA-256, записываю в реестр.

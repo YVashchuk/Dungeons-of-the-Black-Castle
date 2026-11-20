@@ -23,6 +23,7 @@
 9. **Gemini 4 Argon:** сверка и обзор движка выполнены (group_100–101, отчёты в `audit_cycles/recheck_2026_11/argon/`); не запускалось исследование хостинга / доступа / офлайна после перевода в private (`BRIEF_deep_research_distribution.md`); дайджест реестра для внешних ревью — `node scripts/registry_digest.js`.
 10. **§391 (group_105):** без Плавания, Левитации и водолазного костюма путешествие у реки заканчивается — в книге другого пути нет; если автор предпочитает иное, поменять `fatal_when_stuck`.
 11. **CI (по желанию):** Astra 6.2 предложила workflow GitHub Actions для браузерных наборов (черновик — `_handoff/smoke_2026_11_17/evidence/ci-draft/qa-smoke.yml`); коды выхода скриптов для этого уже готовы (group_105 QA-01).
+12. **Живой смоук ChatGPT после Carbon** — бриф `audit_cycles/recheck_2026_11/BRIEF_smoke_chatgpt_2026-11-19.md` (все 92 строки чек-листа; C58–C70 вживую впервые), карточка 12 в `LAUNCH_CARDS.md`; результат — новой группой реестра.
 
 ## Инструменты
 - `node tests/run_all.js` — батарея (офлайн, acorn завендорен). `bash build.sh` — сборка `src/` → `dist/`.
